@@ -1,0 +1,30 @@
+﻿@model IEnumerable<SelectListItemVo>
+@{
+    Layout = null;
+    var canInteract = User.Identity.IsAuthenticated;
+    ListNoItemsViewModel noItemsModel;
+
+    if (canInteract)
+    {
+        noItemsModel = new ListNoItemsViewModel("fas fa-sad-tear", "You are not on a team! C'mon, make some friends!");
+    }
+    else
+    {
+
+        noItemsModel = new ListNoItemsViewModel("fas fa-sad-tear", "We can't show your teams if you are not logged in!");
+    }
+}
+
+@if (!Model.Any())
+{
+    <partial name="_ListNoItems" model="noItemsModel" />
+}
+else
+{
+    @foreach (var team in Model)
+    {
+        <div class="col-12">
+            <a asp-area="" asp-controller="team" asp-action="details" asp-route-teamId="@team.Value"><span>@team.Text</span></a>
+        </div>
+    }
+}

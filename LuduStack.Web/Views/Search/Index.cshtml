@@ -1,0 +1,47 @@
+﻿@{
+
+    ViewData["Title"] = SharedLocalizer["Search"];
+    ViewData["Description"] = SharedLocalizer["Search for posts or other items on the platform."];
+
+    var q = (string)ViewData["term"];
+    var noItemsModel = new ListNoItemsViewModel("fas fa-exclamation-triangle", "You searched nothing! Literally nothing!");
+}
+
+@if (string.IsNullOrWhiteSpace(q))
+{
+    <div class="col">
+        <partial name="_ListNoItems" model="noItemsModel" />
+    </div>
+}
+else
+{
+    <h1>@SharedLocalizer["Searching for \"{0}\"", q]</h1>
+    <input type="hidden" id="q" value="@q" />
+
+    <div class="col-12">
+        <h2>@SharedLocalizer["Posts"]</h2>
+        <div id="divSearchPosts">
+            posts
+        </div>
+    </div>
+}
+
+@section Scripts {
+    <environment include="Development">
+        <script src="~/js/search/search.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/js/search/search.min.js" asp-append-version="true"></script>
+    </environment>
+}
+
+<style>
+    .flex-square .flex-square-inner-content {
+        bottom: auto;
+    }
+
+    .searchresult-item-footer {
+        vertical-align: middle;
+        line-height: 30px;
+    }
+</style>

@@ -1,0 +1,70 @@
+
+.feature-details {
+    padding: 0 !important;
+}
+
+.translation-item .box-body {
+    padding: 0;
+}
+
+.translation-term .term-item-actions {
+    margin-top: -5px;
+    right: -5px;
+    z-index: 1000;
+}
+
+.translation-progress-chart {
+    margin-top: -40px;
+}
+
+@media (max-width: 767px) {
+    .border-right, .border-left {
+        border: 0 !important;
+    }
+}
+
+.sticky {
+    z-index: 900 !important;
+    border-radius: 0;
+}
+
+
+
+.progress {
+    height: 8px;
+    box-shadow: none;
+    overflow: visible;
+}
+
+    .progress .progress-bar {
+        position: relative;
+        animation: animate-positive 2s;
+    }
+
+    .progress .progress-value {
+        color: #fff;
+        position: absolute;
+        right: 8px;
+    }
+
+@-webkit-keyframes animate-positive {
+    0% {
+        width: 0%;
+    }
+}
+
+@keyframes animate-positive {
+    0% {
+        width: 0%;
+    }
+}
+
+.entry-authors .avatar {
+    width:30px;
+    height:30px;
+}
+
+.review-actions {
+    float: right;
+    margin-top: -40px;
+}

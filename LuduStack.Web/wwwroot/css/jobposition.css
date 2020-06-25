@@ -1,0 +1,61 @@
+.jobposition-box ul {
+    padding: 0;
+    list-style: none;
+}
+
+.noitems .noitems-icon {
+    transform: rotate(-20deg);
+    color: lightgray;
+}
+
+.jobposition-item {
+    padding: 10px;
+    min-height: 140px;
+    border-radius: 0.25rem;
+}
+
+    .jobposition-item.list-item {
+        border: 1px solid gray;
+    }
+
+    .jobposition-item .jobposition-details, .jobposition-item .author-details {
+        width: 100%;
+        display: inline-block;
+    }
+
+    .jobposition-item .jobposition-details {
+        min-height: 110px;
+    }
+
+#jobpositionsidebar .jobposition-box {
+    margin-top: 10px;
+    border: 1px solid gray;
+    min-height: 50px;
+    background-color: white;
+    padding: 5px;
+    border-radius: 0.25rem;
+}
+
+.badge-status {
+    color: white;
+}
+
+    .badge-status.badge-proposed {
+        background-color: #9488AD;
+    }
+
+    .badge-status.badge-inanalysis {
+        background-color: #BFA200;
+    }
+
+    .badge-status.badge-accepted {
+        background-color: #4582FC;
+    }
+
+    .badge-status.badge-rejected {
+        background-color: #FB5012;
+    }
+
+    .badge-status.badge-implemented {
+        background-color: #03CF99;
+    }

@@ -1,0 +1,18 @@
+﻿using System;
+
+namespace LuduStack.Application.ViewModels.User
+{
+    public class UserConnectionViewModel : BaseViewModel
+    {
+        public Guid TargetUserId { get; set; }
+
+        public DateTime? ApprovalDate { get; set; }
+
+        public string TargetUserName { get; set; }
+
+        public string ProfileImageUrl { get; set; }
+        public string CoverImageUrl { get; set; }
+        public Guid ProfileId { get; set; }
+        public string Location { get; internal set; }
+    }
+}

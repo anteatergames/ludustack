@@ -1,0 +1,33 @@
+﻿@model IEnumerable<JobApplicantViewModel>
+
+@{
+    Layout = null;
+    var noItemsModel = new ListNoItemsViewModel("fas fa-dizzy", "Nobody applied... yet!");
+
+    var description = ViewData["ListDescription"] == null ? SharedLocalizer["applicants"] : (string)ViewData["ListDescription"];
+}
+
+<h4 class="text-capitalize">@SharedLocalizer[description]</h4>
+
+@if (!Model.Any())
+{
+    <partial name="_ListNoItems" model="noItemsModel" />
+}
+else
+{
+
+    @foreach (var applicant in Model)
+    {
+        <div class="bordered mb-2">
+            <partial name="_UserCard" model="applicant" />
+            <div class="text-center"><a href="mailto:@applicant.Email" target="_blank"><i class="fas fa-envelope" aria-hidden="true"></i> @applicant.Email</a></div>
+            <div class="row">
+                <div class="col-12" style="min-height:50px">
+                    <div class="px-2">
+                        <input id="txtScore" name="Score" type="number" class="d-none applicant-rating" step="1" value="@applicant.Score.ToString(new System.Globalization.CultureInfo("en-US"))" data-url="@Url.Action("RateApplicant", "JobPosition", new { area = "Work", jobPositionId = applicant.JobPositionId, userId = applicant.UserId })">
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}

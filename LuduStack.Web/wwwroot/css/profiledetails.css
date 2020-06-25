@@ -1,0 +1,287 @@
+.box.user-profile .user-profile-header, .box.user-profile .overlay {
+    height: 300px;
+}
+
+.user-profile .user-profile-header {
+    color: #fff;
+    background-color: #89ad87;
+    text-align: center;
+    border-radius: 5px 5px 0 0;
+}
+
+.user-profile .user-profile-username {
+    margin-top: 0;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, .2);
+}
+
+.user-profile .user-profile-desc {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.user-profile .user-profile-image {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+    .user-profile .user-profile-image img {
+        width: 90px;
+        height: auto;
+    }
+
+.box.user-profile {
+    padding: 0;
+    box-shadow: none;
+}
+
+    .box.user-profile .overlay {
+        z-index: 50;
+        border-radius: 5px 5px 0 0;
+        padding: 20px;
+    }
+
+        .box.user-profile .overlay.overlay-none {
+            background: rgba(0, 0, 0, 0);
+        }
+
+.user-profile-xp {
+    border-radius: 0;
+    border-top: 1px solid #ccc;
+    padding-top: 10px;
+}
+
+.user-profile .box-footer {
+    border: 0;
+}
+
+.badge-wrapper {
+    display: inline-flex;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+}
+
+    .badge-wrapper .badge-icon {
+        width: 64px;
+        height: 64px;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .badge-wrapper .counter {
+        position: absolute;
+        bottom: 0px;
+    }
+
+.user-profile-header .user-social-acount {
+    border-radius: 0;
+    border-top: 1px solid white;
+    margin-top: 10px;
+    padding-top: 10px;
+    display: inline-block
+}
+
+    .user-profile-header .user-social-acount .btn-social-icon {
+        margin-top: 5px;
+    }
+
+        .user-profile-header .user-social-acount .btn-social-icon.bg-transparent {
+            border: 2px dotted #dbdbdb;
+        }
+
+.user-profile .nav-tabs-custom {
+    box-shadow: none;
+}
+
+.user-profile .nav-pills {
+    background-color: white;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+    .user-profile .nav-pills .nav-link {
+        text-transform: capitalize;
+    }
+
+        .user-profile .nav-pills .nav-link.active {
+            color: #249637;
+            font-weight: bold;
+            background-color: transparent;
+            border-bottom: 2px solid #249637;
+            border-radius: 0;
+        }
+
+            .user-profile .nav-pills .nav-link.active:first-child {
+                border-bottom-left-radius: 5px;
+            }
+
+            .user-profile .nav-pills .nav-link.active:last-child {
+                border-bottom-right-radius: 5px;
+            }
+
+.profileactions {
+    position: absolute;
+    margin-top: -42px;
+    right: 5px;
+}
+
+.btn-follow {
+    color: #fff;
+}
+
+.btn-follow-following {
+    color: #0094ff;
+    border-color: #0094ff;
+    background: rgba(0, 0, 0, 0.5) !important;
+}
+
+.btn-connect {
+    color: #fff;
+}
+
+.btn-connect-connected {
+    color: #00ff21;
+    border-color: #00ff21;
+    background: rgba(0, 0, 0, 0.5) !important;
+}
+
+.user-profile-others {
+    position: relative;
+    margin: 0 0 10px 10px;
+    min-width: 100px;
+    min-height: 100px;
+    vertical-align: middle;
+    color: #666;
+    border: 1px solid #ddd;
+    background-color: #f4f4f4;
+    font-size: 12px;
+    overflow: visible;
+    text-align: center;
+    display: inline-block;
+}
+
+    .user-profile-others div.centered {
+        margin: 0;
+        position: absolute;
+        top: 50%;
+        width: 100%;
+        -ms-transform: translateY(-50%);
+        transform: translateY(-50%);
+    }
+
+    .user-profile-others > .other-icon {
+        padding: 5px;
+    }
+
+@media (max-width: 575px) {
+    .box.user-profile .overlay, .user-profile .user-profile-header {
+        border-radius: 0;
+    }
+
+    .user-profile .user-profile-username {
+        font-size: 1rem;
+    }
+
+    .user-profile .user-profile-desc {
+        font-size: 1rem;
+    }
+
+    .user-profile .nav-pills, .user-profile .nav-pills .nav-link {
+        border-radius: 0 !important;
+    }
+}
+
+@media (max-width: 767px) {
+    .user-profile .user-profile-username {
+        font-size: 1.4rem;
+    }
+
+    .user-profile .user-profile-desc {
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 991px) {
+    .user-profile .user-profile-username {
+        font-size: 1.6rem;
+    }
+
+    .user-profile .user-profile-desc {
+        font-size: 1rem;
+    }
+}
+
+.status-secondary .border-right {
+    border-right: 1px solid gray !important;
+    border-radius: 0;
+}
+
+.team-item img.avatar {
+    width: 64px;
+    height: 64px;
+}
+
+.profile-user-info {
+    padding: 30px 15px;
+    border-top: 1px solid #ccc;
+    margin-top: 30px;
+}
+
+    .profile-user-info p {
+        color: #999;
+        font-size: small;
+    }
+
+    .profile-user-info h5 {
+        color: #666;
+        margin-bottom: 25px;
+    }
+
+    .profile-user-info .map-box {
+        margin-top: 40px;
+        margin-bottom: 40px;
+    }
+
+    .profile-user-info .user-social-acount .btn {
+        -webkit-box-shadow: 0 2px 2px 0 rgba(169, 169, 169, .14), 0 3px 1px -2px rgba(169, 169, 169, .2), 0 1px 5px 0 rgba(169, 169, 169, .12);
+        box-shadow: 0 2px 2px 0 rgba(169, 169, 169, .14), 0 3px 1px -2px rgba(169, 169, 169, .2), 0 1px 5px 0 rgba(169, 169, 169, .12);
+    }
+
+.box-profile div {
+    border-radius: 0;
+}
+
+.box-profile .social-states {
+    font-size: 16px;
+}
+
+    .box-profile .social-states a {
+        color: #333;
+    }
+
+        .box-profile .social-states a:hover {
+            color: #0092ee;
+        }
+
+.profile-username {
+    font-size: 21px;
+    margin-top: 5px;
+}
+
+
+.avatar-wrapper label {
+    margin-bottom: 0px;
+}
+
+.externallink-icon {
+    border-radius: 50%;
+}
+
+    .externallink-icon img {
+        width: 32px;
+        height: 32px;
+    }

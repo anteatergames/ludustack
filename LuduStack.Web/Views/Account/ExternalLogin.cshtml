@@ -1,0 +1,55 @@
+﻿@model MvcExternalLoginViewModel
+@{
+    ViewData["Title"] = SharedLocalizer["Account association"];
+}
+
+<div class="col-xl-12">
+    <div class="box box-default">
+        <div class="box-header with-border">
+            <h3>@ViewData["Title"]</h3>
+            <h4>@SharedLocalizer["Associate your {0} account", ViewData["LoginProvider"]]</h4>
+        </div>
+
+        <div class="box-body">
+            <div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="col-12">
+                            <div class="alert alert-info">
+                                @Html.Raw(ViewData["RegisterText"])
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <form asp-action="ExternalLoginConfirmation" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
+                                <div class="form-group">
+                                    <label asp-for="Username"></label>
+                                    <input asp-for="Username" class="form-control" asp-is-readonly="@Model.UserExists" />
+                                    <span asp-validation-for="Username" class="text-danger"></span>
+                                </div>
+                                @if (!string.IsNullOrWhiteSpace(Model.ProfileName))
+                                {
+                                    <div class="form-group">
+                                        <label asp-for="ProfileName"></label>
+                                        <input asp-for="ProfileName" class="form-control" asp-is-readonly="@Model.UserExists" />
+                                        <span asp-validation-for="ProfileName" class="text-danger"></span>
+                                    </div>
+                                }
+                                <div class="form-group">
+                                    <label asp-for="Email"></label>
+                                    <input asp-for="Email" class="form-control" asp-is-readonly="true" />
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                </div>
+                                <button type="submit" class="btn btn-lg btn-success btn-block">@ViewData["ButtonText"]</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

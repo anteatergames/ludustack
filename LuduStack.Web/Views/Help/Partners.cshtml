@@ -1,0 +1,49 @@
+﻿@{
+    Layout = "~/Views/Help/_HelpLayout.cshtml";
+    ViewData["Title"] = SharedLocalizer["partners"].Value.ToUpper();
+    ViewData["HelpActive"] = "partners";
+}
+
+<p>
+    These are our current partners:
+</p>
+
+<div class="list-group mb-3">
+    <a href="https://www.mongodb.com/startup-accelerator" target="_blank" rel="noopener noreferrer" class="list-group-item list-group-item-action flex-column align-items-start">
+        <div class="d-flex w-100 justify-content-between mb-3">
+            <div class="col-12 text-center">
+                <img src="~/images/partners/mongodbforstartups.png" alt="MongoDB" class="img-fluid" />
+            </div>
+        </div>
+        <p class="mb-1">MongoDB is the leading NoSQL database system.</p>
+        <small>LuduStack is part of the MongoDB Startup Accelerator Program</small>
+    </a>
+</div>
+
+<div class="list-group mb-3">
+    <a href="https://codersrank.io/?utm_source=partner&utm_medium=referral&utm_campaign=danielgomes" target="_blank" rel="noopener noreferrer" class="list-group-item list-group-item-action flex-column align-items-start">
+        <div class="d-flex w-100 justify-content-between mb-3">
+            <div class="col-12 text-center">
+                <img src="~/images/partners/codersrank.png" alt="Coders Rank" class="img-fluid" />
+            </div>
+        </div>
+        <p class="mb-1">The ultimate profile for coders.</p>
+        <small>Measure your skills and knowledge, compare them to market and find a personalized way to grow.</small>
+    </a>
+</div>
+
+<div class="list-group mb-3">
+    <a href="https://mpgames.online" target="_blank" rel="noopener noreferrer" class="list-group-item list-group-item-action flex-column align-items-start">
+        <div class="d-flex w-100 justify-content-between mb-3">
+            <div class="col-12 text-center">
+                <img src="~/images/partners/mpgames.png" alt="MPGAMES" class="img-fluid" />
+            </div>
+        </div>
+        <p class="mb-1">MPGAMES, a great place for starting developers to host their games.</p>
+        <small>Host your game and find more players to know your work.</small>
+    </a>
+</div>
+
+<div class="mt-4">
+    Want to be a partner? <span class="font-weight-bold"><a href="mailto:contact@ludustack.com">send us an email</a></span> and let's talk about it.
+</div>

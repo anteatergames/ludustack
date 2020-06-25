@@ -1,0 +1,151 @@
+﻿@{
+    ViewData["Title"] = null;
+    ViewData["CanonicalUrl"] = "https://www.ludustack.com/";
+
+    var postModel = ViewBag.PostFromHome as PostFromHomeViewModel;
+
+    var joinUsViewModel = new HomeSquareViewModel("account", "login", "bg-purple", "far fa-3x fa-smile", SharedLocalizer["Join us!"]);
+}
+
+@section Styles {
+    <environment include="Development">
+        <link rel="stylesheet" href="~/css/home.css" />
+        <link rel="stylesheet" href="~/css/polls.css" />
+        <link rel="stylesheet" href="~/lib/dropzone/dropzone.css" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.7.0/dropzone.min.css"
+              asp-fallback-href="~/lib/dropzone/min/dropzone.min.css"
+              asp-fallback-test-class="dropzone"
+              asp-fallback-test-property="box-sizing"
+              asp-fallback-test-value="border-box"
+              integrity="sha256-NkyhTCRnLQ7iMv7F3TQWjVq25kLnjhbKEVPqGJBcCUg="
+              crossorigin="anonymous">
+
+        <link rel="stylesheet" href="~/css/home.min.css" asp-append-version="true" />
+    </environment>
+}
+
+@section Scripts {
+    <environment include="Development">
+        <script src="~/lib/embedo/embedo.js"></script>
+        <script src="~/lib/dropzone/dropzone.js"></script>
+        <script src="~/js/shared/contentactions.js"></script>
+        <script src="~/js/shared/polls.js"></script>
+        <script src="~/js/shared/activityfeed.js"></script>
+        <script src="~/js/home/home.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/embedo/1.13.0/embedo.min.js"
+                asp-fallback-src="~/lib/embedo/embedo.min.js"
+                asp-fallback-test="window.Embedo"
+                integrity="sha256-iV1+ZN2IJ5wgrZujdohJeFjfuJlKTLTrAIqFJ5ptftE="
+                crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.7.0/dropzone.min.js"
+                asp-fallback-src="~/lib/dropzone/min/dropzone.min.js"
+                asp-fallback-test="window.Dropzone"
+                integrity="sha256-OG/103wXh6XINV06JTPspzNgKNa/jnP1LjPP5Y3XQDY="
+                crossorigin="anonymous">
+        </script>
+
+        <script src="~/js/home/home.min.js" asp-append-version="true"></script>
+    </environment>
+
+    <script type="application/ld+json">
+        {
+        "@@context": "http://schema.org",
+        "@@type": "WebSite",
+        "name": "@ConstantHelper.DefaultTitle",
+        "alternateName": "LuduStack",
+        "url": "@(ViewBag.BaseUrl)",
+        "sameAs" : ["https://www.facebook.com/ludustack/"],
+        "image": "@(ViewBag.BaseUrl)/images/og/img_facebook600x315.png",
+        "author": {
+        "@@type": "Person",
+        "name": "Daniel Gomes",
+        "email": "contact@ludustack.com",
+        "image": "@(ViewBag.BaseUrl)/images/profileimages/programad.jpg"
+        }
+        }
+    </script>
+}
+
+<section class="content container">
+    <div class="row mt-0 mt-md-10 no-gutters px-0 px-lg-10">
+
+        <h1 class="sr-only">LUDUSTACK - Home</h1>
+
+        <div class="col-xl-2 d-none d-lg-block">
+            <div class="row">
+                @if (!User.Identity.IsAuthenticated)
+                {
+                    <div class="col-12 d-none d-xl-block">
+                        <partial name="_HomeSquare" model="joinUsViewModel" />
+                    </div>
+                }
+                <div class="col-12">
+                    <div id="divCounters"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class=" col-lg-8 col-xl-7 pr-lg-2 pl-xl-2 pr-xl-2">
+
+            <environment include="Development"><div class="text-center position-absolute w-100 text-white" style="z-index:9999;top:-45px;margin-left: 50px;margin-right: 50px;">dev</div></environment>
+            <environment include="Staging"><div class="text-center position-absolute w-100 text-white" style="z-index:9999;top:-45px;margin-left: 50px;margin-right: 50px;">staging</div></environment>
+
+            @await Html.PartialAsync("_Carousel", ViewBag.Carousel as CarouselViewModel)
+
+            @if (User.Identity.IsAuthenticated)
+            {
+                @await Html.PartialAsync("_PostFromHome", ViewBag.PostFromHome as PostFromHomeViewModel)
+            }
+
+            <div class="row mb-2">
+                <div class="col-12 text-center">
+                    <a href="https://codersrank.io/?utm_source=partner&utm_medium=referral&utm_campaign=danielgomes" target="_blank" rel="noopener noreferrer">
+                        <img src="~/images/partners/codersrankbanner.png" alt="CodersRank - Create Your Ultimate Developer Profile" class="img-fluid" />
+                    </a>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-12">
+                    <div id="divActivityFeed"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-xl-3">
+            <div class="row">
+                <div class="col-12">
+                    <div id="divLatestGames"></div>
+                </div>
+                @if (postModel.DefaultLanguage == SupportedLanguage.Portuguese)
+                {
+                    <div class="col-12 d-xl-none">
+                        <div class="flex-square clickable rectangle bg-patreon">
+                            <div class="flex-square-inner">
+                                <a href="https://apoia.se/indievisible" target="_blank" rel="noopener noreferrer">
+                                    <div class="flex-square-inner-content text-white">
+                                        <div><i class="fas fa-3x fa-dollar-sign" aria-hidden="true"></i></div>
+                                        <div>@SharedLocalizer["apoie"]</div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                <div class="col-12 mt-1 no-gutters">
+                    <partial name="_TagList" model="@ViewData["Genres"]" />
+                </div>
+
+                <div class="col-12 mt-1">
+                    <partial name="_InfoBox" />
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

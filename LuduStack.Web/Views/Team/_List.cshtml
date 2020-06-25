@@ -1,0 +1,17 @@
+﻿@model IEnumerable<TeamViewModel>
+@{
+    Layout = null;
+    var noItemsModel = new ListNoItemsViewModel("fas fa-users", "What? We have no Teams here! Hurry up, create one!");
+}
+
+@if (!Model.Any())
+{
+    <partial name="_ListNoItems" model="noItemsModel" />
+}
+else
+{
+    @foreach (var team in Model)
+    {
+        <partial name="_TeamListItem" model="team" />
+    }
+}

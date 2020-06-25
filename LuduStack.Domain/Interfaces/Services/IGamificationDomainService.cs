@@ -1,0 +1,42 @@
+﻿using LuduStack.Domain.Core.Enums;
+using LuduStack.Domain.Models;
+using LuduStack.Domain.ValueObjects;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace LuduStack.Domain.Interfaces.Services
+{
+    public interface IGamificationDomainService
+    {
+        #region Gamification
+
+        IEnumerable<RankingVo> Get(int count);
+
+        Gamification GetByUserId(Guid userId);
+
+        #endregion Gamification
+
+        #region Levels
+
+        GamificationLevel GetLevel(int levelNumber);
+
+        IQueryable<GamificationLevel> GetAllLevels();
+
+        #endregion Levels
+
+        #region UserBadges
+
+        IEnumerable<UserBadge> GetBadges();
+
+        UserBadge GetBadgeById(Guid id);
+
+        IEnumerable<UserBadge> GetBadgesByUserId(Guid userId);
+
+        bool SetBadgeOccurence(Guid userId, BadgeType type, Guid referenceId);
+
+        #endregion UserBadges
+
+        int ProcessAction(Guid userId, PlatformAction action);
+    }
+}

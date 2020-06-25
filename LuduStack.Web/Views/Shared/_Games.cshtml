@@ -1,0 +1,27 @@
+﻿@model IEnumerable<GameListItemViewModel>
+@{
+    Layout = null;
+    var noItemsModel = new ListNoItemsViewModel("fas fa-gamepad", "No games here");
+}
+
+@if (!Model.Any())
+{
+    <div class="col-12">
+        <partial name="_ListNoItems" model="noItemsModel" />
+    </div>
+}
+else
+{
+    <div class="col-12">
+        <div class="row">
+            @foreach (var game in Model)
+            {
+                <div class="col-md-12 col-lg-4 col-xl-3">
+                    <div class="box box-game bg-white">
+                        <partial name="_GameCard.cshtml" model="game" />
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}

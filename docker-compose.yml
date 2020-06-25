@@ -1,0 +1,22 @@
+version: '3.4'
+
+services:
+  ludustack-web:
+    container_name: ludustack-web
+    image: ${DOCKER_REGISTRY-}ludustack-web
+    build:
+      context: .
+      dockerfile: LuduStack.Web/Dockerfile
+    networks:
+      - ludustack-network
+    depends_on:
+      - 'ludustack-db'
+  ludustack-db:
+      container_name: ludustack-db
+      command: mongod --auth
+      image: mongo:latest
+      networks:
+        - ludustack-network
+networks:
+  ludustack-network:
+    driver: bridge

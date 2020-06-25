@@ -1,0 +1,39 @@
+﻿@model ErrorViewModel
+@{
+    var isAjax = ViewContext.HttpContext.Request.IsAjaxRequest();
+    ViewData["Title"] = "Error";
+
+    if (isAjax)
+    {
+        Layout = null;
+    }
+}
+<div class="error-body">
+    <div class="error-page">
+
+        <div class="error-content">
+
+            <h2 class="headline text-orange"> ERROR</h2>
+
+            <h3 class="mt-0"><i class="fa fa-warning text-orange" aria-hidden="true"></i>An error has occurred!</h3>
+
+            <p>
+                YOU SEEM TO BE TRYING TO FIND HIS WAY HOME
+            </p>
+            <div class="text-center">
+                <a asp-area="" asp-controller="home" asp-action="index" class="btn btn-orange btn-block btn-flat mt-2">Back to home page</a>
+            </div>
+
+            @if (Model.ShowRequestId)
+            {
+                <p>
+                    <strong>Request ID:</strong> <code>@Model.RequestId</code>
+                </p>
+            }
+        </div>
+    </div>
+
+    <footer class="main-footer">
+        Copyright &copy; 2018 <a href="https://www.ludustack.com/">LuduStack</a>.
+    </footer>
+</div>

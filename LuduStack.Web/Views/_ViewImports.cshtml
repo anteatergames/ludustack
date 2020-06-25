@@ -1,0 +1,27 @@
+@using Microsoft.AspNetCore.Identity
+@using LuduStack.Web
+@using LuduStack.Web.Models
+@using LuduStack.Infra.CrossCutting.Identity.Models
+@using LuduStack.Infra.CrossCutting.Identity.Models.AccountViewModels
+@using LuduStack.Infra.CrossCutting.Identity.Models.ManageViewModels
+@using LuduStack.Domain.Core.Enums
+@using LuduStack.Application.ViewModels.Home
+@using LuduStack.Application.ViewModels.Game
+@using LuduStack.Application.ViewModels.User
+@using LuduStack.Application.ViewModels.Content
+@using LuduStack.Web.Enums
+@using System.Text.Encodings.Web
+@using LuduStack.Web.Extensions
+@using LuduStack.Domain.Core.Extensions
+@using LuduStack.Domain.Core.Attributes
+@using LuduStack.Application.ViewModels
+@using LuduStack.Domain.ValueObjects
+@using LuduStack.Domain.Interfaces.Models
+@using System
+@using LuduStack.Application.Interfaces
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, LuduStack.Web
+
+@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResources> SharedLocalizer
+@inject LuduStack.Web.Services.ICookieMgrService CookieMgrService

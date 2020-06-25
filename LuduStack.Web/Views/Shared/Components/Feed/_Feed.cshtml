@@ -1,0 +1,135 @@
+﻿@model List<UserContentViewModel>
+
+@{
+    Layout = null;
+    var myFullName = CookieMgrService.Get(SessionValues.FullName.ToString());
+}
+
+@foreach (var item in Model)
+{
+    <div class="box box-widget box-content p-0 bg-white" data-id="@item.Id">
+        <div class="box-header with-border">
+            <div class="user-block">
+                <a asp-area="" asp-controller="profile" asp-action="details" asp-route-id="@item.UserId">
+                    <img class="rounded-circle" src="@item.AuthorPicture" alt="This is @item.AuthorName">
+                </a>
+                <span class="username"><a asp-area="" asp-controller="profile" asp-action="details" asp-route-id="@item.UserId">@item.AuthorName</a></span>
+
+                @if (!String.IsNullOrWhiteSpace(item.Url))
+                {
+                    <a href="@item.Url" class="contenturl">
+                        <span class="description">@item.CreateDate.ToString()</span>
+                    </a>
+                }
+                else
+                {
+                    <a asp-protocol="@ViewData["protocol"]" asp-host="@ViewData["host"]" asp-area="" asp-controller="content" asp-action="details" asp-route-id="@item.Id" class="contenturl">
+                        <span class="description">@item.CreateDate.ToString()</span>
+                    </a>
+                }
+            </div>
+            <div class="box-tools">
+                @if (item.Permissions.CanDelete || item.Permissions.CanEdit)
+                {
+                    <div class="btn-group">
+                        <button type="button" class="btn  btn-box-tool" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-ellipsis-v" aria-hidden="true"></i>
+                        </button>
+                        <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(-67px, 28px, 0px); top: 0px; left: 0px; will-change: transform;">
+                            @if (item.Permissions.CanEdit)
+                            {
+                                <a class="btnEditPost dropdown-item text-capitalize" asp-area="" asp-controller="content" asp-action="edit" asp-route-id="@item.Id">@SharedLocalizer["edit"]</a>
+                            }
+                            @if (item.Permissions.CanDelete)
+                            {
+                                <a class="btnDeletePost dropdown-item text-capitalize" href="#" data-id="@item.Id" data-confirmationtitle="@SharedLocalizer["Are you sure?"]" data-confirmationmessage="@SharedLocalizer["Are you sure you want to delete this post?"]" data-confirmationbuttontext="@SharedLocalizer["Yes, delete it!"]" data-cancelbuttontext="@SharedLocalizer["Cancel"]">@SharedLocalizer["delete"]</a>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="box-body no-gutters p-0 @(item.HasFeaturedImage ? "hasimage": "noimage")">
+            @if (!item.IsArticle)
+            {
+
+                @if (!String.IsNullOrWhiteSpace(item.Url))
+                {
+                    <div class="p-2 bottomcontent">
+                        <a href="@item.Url">
+                            @Html.Raw(item.Content)
+                        </a>
+                    </div>
+                }
+                else
+                {
+                    <div class="col-12 p-2">
+                        @Html.Raw(item.Content)
+                    </div>
+                }
+            }
+
+            @if (item.HasFeaturedImage)
+            {
+                <div class="col-12 text-center overflow-hidden rounded-0 featuredimage @item.FeaturedMediaType">
+                    <a asp-area="" asp-controller="content" asp-action="details" asp-route-id="@item.Id">
+                        @if (item.FeaturedMediaType == MediaType.Youtube)
+                        {
+                            <div class="videoWrapper"><oembed>@item.FeaturedImage</oembed></div>
+                        }
+                        else if (item.FeaturedMediaType == MediaType.Video)
+                        {
+                            <video src="@item.FeaturedImage" width="500" height="281" controls>
+                                <track kind="captions" src="@Url.Content("~/default.vtt")" srclang="en">
+                            </video>
+                        }
+                        else
+                        {
+                            <img data-sizes="auto" src="@item.FeaturedImageLquip" data-src="@item.FeaturedImageLquip" data-srcset="@item.FeaturedImageResponsive" class="img-fluid lazyload blur-up" style="width:100%" alt="@(String.IsNullOrWhiteSpace(item.Title) ? SharedLocalizer["User Content"] : item.Title)" />
+                        }
+                    </a>
+                </div>
+            }
+
+            @if (item.IsArticle)
+            {
+                <div class="p-2 bottomcontent">
+                    <a asp-area="" asp-controller="content" asp-action="details" asp-route-id="@item.Id">
+                        <div class="row col-12 font-weight-bold text-uppercase">@item.Title</div>
+                        <div class="row col-12">@Html.Raw(item.Introduction)</div>
+                    </a>
+                </div>
+            }
+
+            @if (item.HasPoll)
+            {
+                <div class="poll-wrapper">
+                    @{
+                        var pollName = String.Format("poll_{0}", item.Id);
+                        <ul class="poll @(User.Identity.IsAuthenticated ? "canvote" : " cannotvote")" id="@pollName">
+                            @for (int i = 0; i < item.Poll.PollOptions.Count; i++)
+                            {
+                                var option = item.Poll.PollOptions.ElementAt(i);
+                                var optionName = String.Format("poll_{0}_{1}", item.Id, option.Id);
+                                <li class="@(option.CurrentUserVoted ? "voted" : "notvoted") ">
+                                    <span class="perc-back" style="width: @(option.VotePercentageText)%"></span>
+                                    <input type="radio" class="poll-option" name="@pollName" id="@optionName" value="@option.Id">
+                                    <label for="@optionName">
+                                        <span>@option.Text</span>
+                                    </label>
+                                    <span class="perc-number">@(option.VotePercentageText)%</span>
+                                </li>
+                            }
+                        </ul>
+                        <div class="col-12 px-3 text-right">
+                            <span class="poll-vote-count">@item.Poll.TotalVotes</span>
+                            &nbsp;@SharedLocalizer["votes"]
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+
+        <partial name="_CommentSection" model="item" />
+    </div>
+}

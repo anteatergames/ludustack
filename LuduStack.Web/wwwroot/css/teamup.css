@@ -1,0 +1,79 @@
+.team-item {
+    margin-top: 10px;
+    padding: 10px;
+}
+
+    .team-item .team-members {
+        border: 1px solid #ced4da;
+        padding: 5px;
+    }
+
+    .team-item img.avatar {
+        width: 64px;
+        height: 64px;
+    }
+
+.team-list ul {
+    padding: 0;
+    list-style: none;
+}
+
+#divMembeManagement {
+    min-height: 150px;
+    padding: 10px;
+    border: 1px solid #ced4da;
+}
+
+.convidado {
+    background-color: rgba(0, 0, 0, .05);
+}
+
+    .convidado .div-details {
+        color: #ced4da;
+    }
+
+    .convidado img, #divMembers .convidado .badge, #divMembers .convidado .form-group {
+        -webkit-filter: grayscale(100%) blur(1px); /* Safari 6.0 - 9.0 */
+        filter: grayscale(100%) blur(1px);
+    }
+
+    .convidado .badge {
+        background-color: #ced4da;
+    }
+
+.team-member {
+    padding: 10px;
+    border: 1px solid #ced4da;
+}
+
+    .team-member img.avatar {
+        width: 128px;
+        height: 128px;
+        margin-bottom: 10px;
+    }
+
+    .team-member .div-details {
+        border-radius: 0;
+        margin-left: 10px;
+        border-left: 1px solid #ced4da;
+    }
+
+@media (max-width:575px) {
+    #divToolbar button, #divListTeams, #divListTeams div, #teamsidebar div {
+        border-radius: 0;
+    }
+
+    .team-member img.avatar {
+        width: 64px;
+        height: 64px;
+        margin-bottom: 10px;
+    }
+
+    .team-member {
+        margin: 10px 0 0 0;
+    }
+}
+
+#divApplication .team-member {
+    background-color: #F8F5F5;
+}

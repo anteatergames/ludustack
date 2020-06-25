@@ -1,0 +1,16 @@
+﻿using LuduStack.Domain.Core.Enums;
+using LuduStack.Domain.Core.Models;
+using System;
+
+namespace LuduStack.Domain.Models
+{
+    public class BrainstormVote : Entity
+    {
+        public Guid SessionId { get; set; }
+        public Guid IdeaId { get; set; }
+
+        public VoteValue VoteValue { get; set; }
+
+        public virtual BrainstormIdea Idea { get; set; }
+    }
+}
