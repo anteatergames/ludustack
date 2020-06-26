@@ -263,6 +263,7 @@ namespace LuduStack.Web.Areas.Learn.Controllers
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 return PartialView("_ListPlansForEdit", model);
             }
         }

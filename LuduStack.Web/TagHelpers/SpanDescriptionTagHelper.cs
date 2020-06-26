@@ -47,7 +47,7 @@ namespace LuduStack.Web.TagHelpers
 
         /// <inheritdoc />
         /// <remarks>Does nothing if <see cref="DescriptionFor"/> is <c>null</c>.</remarks>
-        public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+        public override Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
             if (context == null)
             {
@@ -75,6 +75,8 @@ namespace LuduStack.Web.TagHelpers
                 output.Content.SetHtmlContent(content);
                 output.TagMode = TagMode.StartTagAndEndTag;
             }
+
+            return Task.CompletedTask;
         }
     }
 }

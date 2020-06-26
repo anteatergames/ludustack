@@ -70,7 +70,7 @@ namespace LuduStack.Infra.CrossCutting.Notifications
             await client.SendEmailAsync(msg);
         }
 
-        public Task SendTeamNotificationAsync(string message)
+        public async Task SendTeamNotificationAsync(string message)
         {
             SlackMessage slackMessage = new SlackMessage(message);
 
@@ -94,25 +94,12 @@ namespace LuduStack.Infra.CrossCutting.Notifications
 
             try
             {
-                client.ExecuteAsync(request, response =>
-                {
-                    if (response.StatusCode == HttpStatusCode.OK)
-                    {
-                        logger.LogInformation("Notification sent");
-                    }
-                    else
-                    {
-                        string jsonResponse = JsonConvert.SerializeObject(response);
-                        logger.LogWarning(jsonResponse);
-                    }
-                });
+                var response = await client.ExecuteAsync(request);
             }
             catch (Exception ex)
             {
                 logger.LogError(ex, "Error on sending notification to Slack");
             }
-
-            return Task.CompletedTask;
         }
     }
 }

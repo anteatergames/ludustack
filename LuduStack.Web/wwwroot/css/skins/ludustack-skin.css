@@ -139,13 +139,8 @@ a {
 
 .skin-ludustack .main-header .logo {
     background-color: #242a33;
-    color: #ffffff;
     border-bottom: 0 solid transparent;
 }
-
-    .skin-ludustack .main-header .logo:hover {
-        background-color: #242a33;
-    }
 
 .skin-ludustack .main-header li.user-header {
     background-color: #fff;

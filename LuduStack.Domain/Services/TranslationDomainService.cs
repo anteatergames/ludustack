@@ -219,11 +219,11 @@ namespace LuduStack.Domain.Services
             };
         }
 
-        public async Task<List<Guid>> GetContributors(Guid projectId, ExportContributorsType type)
+        public Task<List<Guid>> GetContributors(Guid projectId, ExportContributorsType type)
         {
             List<Guid> contributorsIds = repository.GetEntries(projectId).Select(x => x.UserId).Distinct().ToList();
 
-            return contributorsIds;
+            return Task.FromResult(contributorsIds);
         }
 
         public double CalculatePercentage(int totalTerms, int translatedCount, int languageCount)

@@ -65,9 +65,9 @@ body {
     position: relative;
 }
 
-.box-body:after, .box-footer:after, .box-header:after, .navbar-nav > .messages-menu > .dropdown-menu > li .menu > li > a:after, .navbar-nav > .user-menu > .dropdown-menu > .user-body:after, .navbar-nav > .user-menu > .dropdown-menu > .user-footer:after, .user-block:after, .user-panel:after, .wrapper:after {
-    clear: both;
-}
+    .box-body:after, .box-footer:after, .box-header:after, .navbar-nav > .messages-menu > .dropdown-menu > li .menu > li > a:after, .navbar-nav > .user-menu > .dropdown-menu > .user-body:after, .navbar-nav > .user-menu > .dropdown-menu > .user-footer:after, .user-block:after, .user-panel:after, .wrapper:after {
+        clear: both;
+    }
 
 div {
     border-radius: 5px;
@@ -112,11 +112,30 @@ a:active, a:focus, a:hover {
 
 .main-header {
     position: fixed;
+    height: 50px;
     max-height: 100px;
     z-index: 1030;
     left: 0;
     right: 0;
 }
+
+    .main-header .logo {
+        display: block;
+        float: left;
+        line-height: 50px;
+        text-align: center;
+        width: 230px;
+        padding: 0 15px;
+        font-weight: 300;
+    }
+
+        .main-header .logo .logo-lg {
+            display: block;
+        }
+
+        .main-header .logo .logo-mini {
+            display: none;
+        }
 
     .main-header .sidebar-toggle {
         float: left;
@@ -162,29 +181,6 @@ a:active, a:focus, a:hover {
         border: 0;
     }
 }
-
-.main-header .logo {
-    -webkit-transition: width .3s ease-in-out;
-    -o-transition: width .3s ease-in-out;
-    transition: width .3s ease-in-out;
-    display: block;
-    float: left;
-    height: 50px;
-    font-size: 20px;
-    line-height: 50px;
-    text-align: center;
-    width: 230px;
-    padding: 0 15px;
-    font-weight: 300;
-}
-
-    .main-header .logo .logo-lg {
-        display: block;
-    }
-
-    .main-header .logo .logo-mini {
-        display: none;
-    }
 
 @media (max-width:991px) {
     .navbar-custom-menu .navbar-nav > li {
@@ -840,9 +836,9 @@ ul.flexbox {
 .card-header {
     display: flex;
     align-items: center;
-    border-bottom:none;
-
+    border-bottom: none;
 }
+
 .card-body {
     border-top: 1px solid rgba(0, 0, 0, 0.125);
 }
