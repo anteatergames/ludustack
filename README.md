@@ -22,4 +22,4 @@ To run a local container of the mongodb database, run the following command:
 If running inside Visual Studio, it will set the needed environment variables.
 
 ## License
-This project is licensed under the [Apache License 2.0](https://github.com/anteatergames/ludustack/blob/master/LICENSE)
+This project is licensed under the [MIT License](https://github.com/anteatergames/ludustack/blob/master/LICENSE)
