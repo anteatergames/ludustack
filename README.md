@@ -12,10 +12,12 @@
 
 ## How to run
 To run the whole application inside a container, run the following command:
+
 *docker-compose up*
 
 
 To run a local container of the mongodb database, run the following command:
+
 *docker-compose -f ./docker-compose.db.yml up*
 
 
