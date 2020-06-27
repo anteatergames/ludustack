@@ -3,6 +3,7 @@
 ## Table Of Contents
 - [Technical Specifications](#technical-specifications)
 - [How to run](#how-to-run)
+- [Preparing the environment](#preparing-the-environment)
 - [License](#license)
 
 ## Technical specifications
