@@ -12,6 +12,12 @@
 - Mongodb
 
 ## Preparing the environment
+
+You need the following Environment Variables on your system:
+| Name           |                           Value                           |
+|----------------|:---------------------------------------------------------:|
+| CLOUDINARY_URL | cloudinary://{yourapikey}:{yourapisecret}@{yourcloudname} |
+
 If you need to clean the certificate mess on your machine, run this:
 
 *dotnet dev-certs https --clean*
