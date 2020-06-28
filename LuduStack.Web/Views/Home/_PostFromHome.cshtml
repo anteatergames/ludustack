@@ -40,13 +40,13 @@
                                 </div>
                                 <div id="divPostGame">
                                     <div class="form-group">
-                                        <label>@SharedLocalizer["game"]</label>
                                         <select asp-items="@userGames" id="ddlPostGameId" class="form-control select2">
-                                            <option selected="selected" value="">@SharedLocalizer["Select"]</option>
+                                            <option selected="selected" value="">@SharedLocalizer["select a game"]</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div id="divPostImages" class="dropzone">
+                                    <label class="text-capitalize">@SharedLocalizer["add an image"]</label>
                                     <div class="dz-message needsclick">
                                         @SharedLocalizer["Drop files here or click to upload."]<br>
                                         <span class="note needsclick">
@@ -55,21 +55,18 @@
                                     </div>
                                 </div>
                                 <div id="divPostPoll">
+                                    <label class="text-capitalize">@SharedLocalizer["add a poll"]</label>
                                     <div class="input-group mt-2 polloption">
                                         <input type="text" class="form-control polloptioninput" placeholder="@SharedLocalizer["add option..."]" aria-label="@SharedLocalizer[" add option..."]">
                                         <div class="input-group-append">
-                                            <button class="input-group-text btn-image-add">
-                                                &nbsp;
-                                            </button>
+                                            <button class="input-group-text btn-image-add bg-transparent"></button>
                                         </div>
                                         <button class="btn btn-lg bg-transparent btn-option-remove invisible"><i class="fas fa-times" aria-hidden="true"></i></button>
                                     </div>
                                     <div class="input-group mt-2 polloption">
                                         <input type="text" class="form-control polloptioninput" placeholder="@SharedLocalizer["add option..."]" aria-label="@SharedLocalizer["add option..."]">
                                         <div class="input-group-append">
-                                            <button class="input-group-text btn-image-add">
-                                                &nbsp;
-                                            </button>
+                                            <button class="input-group-text btn-image-add bg-transparent"></button>
                                         </div>
                                         <button class="btn btn-lg bg-transparent btn-option-remove invisible"><i class="fas fa-times" aria-hidden="true"></i></button>
                                     </div>

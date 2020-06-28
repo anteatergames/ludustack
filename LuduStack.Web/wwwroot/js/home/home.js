@@ -12,9 +12,44 @@
     var defaultCommentBoxHeight = minheight;
     var defaultTxtPostContentHeight = 0;
     var selectors = {};
+    var objs = {};
+
+    function setSelectors() {
+        selectors.divCounters = '#divCounters';
+        selectors.divLatestGames = '#divLatestGames';
+        selectors.divActivityFeed = '#divActivityFeed';
+        selectors.divPostGame = 'div#divPostGame';
+        selectors.divPostImages = 'div#divPostImages';
+        selectors.divPostPoll = 'div#divPostPoll';
+        selectors.txtPostContent = '#txtPostContent';
+        selectors.commentBox = '.commentmodal';
+        selectors.commentModal = '.commentmodal .modal';
+        selectors.postImages = '#txtPostImages';
+        selectors.commentModalBody = undefined;
+        selectors.ddlPostGameId = '#ddlPostGameId';
+        selectors.btnPostAddGame = '#btnPostAddGame';
+        selectors.btnPostAddImage = '#btnPostAddImage';
+        selectors.btnPostAddPoll = '#btnPostAddPoll';
+    }
+
+    function cacheObjects() {
+        objs.divActivityFeed = $(selectors.divActivityFeed);
+        objs.divPostGame = $(selectors.divPostGame);
+        objs.divPostImages = $(selectors.divPostImages);
+        objs.divPostPoll = $(selectors.divPostPoll);
+        objs.txtPostContent = $(selectors.txtPostContent);
+        objs.commentBox = $(selectors.commentBox);
+        objs.commentModal = $(selectors.commentModal);
+        objs.postImages = $(selectors.postImages);
+        objs.ddlPostGameId = $(selectors.ddlPostGameId);
+        objs.btnPostAddGame = $(selectors.btnPostAddGame);
+        objs.btnPostAddImage = $(selectors.btnPostAddImage);
+        objs.btnPostAddPoll = $(selectors.btnPostAddPoll);
+    }
 
     function init() {
-        cacheSelectors();
+        setSelectors();
+        cacheObjects();
 
         bindAll();
 
@@ -22,32 +57,17 @@
 
         loadLatestGames();
 
-        //defaultCommentBoxHeight = Math.ceil(selectors.commentBox.outerHeight());
+        //defaultCommentBoxHeight = Math.ceil(objs.commentBox.outerHeight());
 
-        defaultTxtPostContentHeight = Math.ceil(selectors.txtPostContent.height());
+        defaultTxtPostContentHeight = Math.ceil(objs.txtPostContent.height());
 
         POLLS.Events.PostAddOption = resizePostBox;
 
-        ACTIVITYFEED.Init(selectors.divActivityFeed, FEEDTYPE.HOME);
+        ACTIVITYFEED.Init(objs.divActivityFeed, FEEDTYPE.HOME);
 
         ACTIVITYFEED.Methods.LoadActivityFeed();
 
         setStickyElements();
-    }
-
-    function cacheSelectors() {
-        selectors.divCounters = $("#divCounters");
-        selectors.divLatestGames = $("#divLatestGames");
-        selectors.divActivityFeed = $("#divActivityFeed");
-        selectors.divPostGame = $('div#divPostGame');
-        selectors.divPostImages = $('div#divPostImages');
-        selectors.divPostPoll = $('div#divPostPoll');
-        selectors.txtPostContent = $('#txtPostContent');
-        selectors.commentBox = $('.commentmodal');
-        selectors.commentModal = $('.commentmodal .modal');
-        selectors.postImages = $('#txtPostImages');
-        selectors.commentModalBody = undefined;
-        selectors.ddlPostGameId = $('#ddlPostGameId');
     }
 
     function bindAll() {
@@ -83,19 +103,21 @@
             }
             $(this).focus();
             resizePostBox();
-            selectors.commentModal.animate({ scrollTop: 0 }, "fast");
+            objs.commentModal.animate({ scrollTop: 0 }, "fast");
         });
     }
 
     function bindBtnPostAddGameBtn() {
-        $('.content').on('click', '#btnPostAddGame', function () {
+        $('.content').on('click', selectors.btnPostAddGame, function () {
             if (postModalActive === false) {
                 showPostModal();
             }
 
             if (divPostGameActive) {
+                objs.btnPostAddGame.removeClass('btn-warning');
                 hideGameAdd();
             } else {
+                objs.btnPostAddGame.addClass('btn-warning');
                 showGameAdd();
             }
 
@@ -105,12 +127,13 @@
 
     function bindPostAddImageBtn() {
         Dropzone.autoDiscover = false;
-        $('.content').on('click', '#btnPostAddImage', function () {
+        $('.content').on('click', selectors.btnPostAddImage, function () {
             if (postModalActive === false) {
                 showPostModal();
             }
 
             if (divPostImagesActive) {
+                objs.btnPostAddImage.removeClass('btn-warning');
                 hideImageAdd();
 
                 if (postImagesDropZone) {
@@ -119,6 +142,7 @@
                 }
             }
             else {
+                objs.btnPostAddImage.addClass('btn-warning');
                 divPostImagesActive = true;
                 if (!postImagesDropZone) {
                     instantiateDropZone();
@@ -129,7 +153,7 @@
                     });
                 }
 
-                selectors.divPostImages.show();
+                objs.divPostImages.show();
             }
 
             resizePostBox();
@@ -137,15 +161,17 @@
     }
 
     function bindBtnPostAddPollBtn() {
-        $('.content').on('click', '#btnPostAddPoll', function () {
+        $('.content').on('click', selectors.btnPostAddPoll, function () {
             if (postModalActive === false) {
                 showPostModal();
             }
 
             if (divPostPollActive) {
+                objs.btnPostAddPoll.removeClass('btn-warning');
                 hidePollAdd();
                 POLLS.Methods.ClearOptions();
             } else {
+                objs.btnPostAddPoll.addClass('btn-warning');
                 showPollAdd();
             }
 
@@ -163,9 +189,9 @@
                 return false;
             }
 
-            var languageSelect = selectors.commentBox.find('#postlanguage');
+            var languageSelect = objs.commentBox.find('#postlanguage');
             var language = languageSelect.val();
-            var gameId = selectors.ddlPostGameId.val();
+            var gameId = objs.ddlPostGameId.val();
 
             var pollOptions = document.getElementsByClassName("polloptioninput");
 
@@ -179,7 +205,7 @@
             }).get();
 
             if (!postImagesDropZone || postImagesDropZone.getQueuedFiles().length === 0) {
-                var images = selectors.postImages.val();
+                var images = objs.postImages.val();
                 var json = { text: text, gameId: gameId, images: images, pollOptions: options, language: language };
 
                 sendSimpleContent(json).done(function (response) {
@@ -197,7 +223,7 @@
                     var response = JSON.parse(file.xhr.response);
                     if (response.uploaded) {
                         success = true;
-                        selectors.postImages.val(selectors.postImages.val() + '|' + response.url);
+                        objs.postImages.val(objs.postImages.val() + '|' + response.url);
                     }
                     else {
                         if (response.error) {
@@ -208,7 +234,7 @@
 
                 postImagesDropZone.on("queuecomplete", function (file) {
                     if (success === true) {
-                        var images2 = selectors.postImages.val();
+                        var images2 = objs.postImages.val();
                         var json2 = { text: text, gameId: gameId, images: images2, pollOptions: options };
                         sendSimpleContent(json2).done(function (response) {
                             sendSimpleContentCallback(response, txtArea);
@@ -229,11 +255,12 @@
 
     function bindPostModalHide() {
         $('#modalPost').on('hidden.bs.modal', function () {
+            hideGameAdd();
             hideImageAdd();
             hidePollAdd();
 
             if (postModalActive === true) {
-                selectors.txtPostContent.val('');
+                objs.txtPostContent.val('');
 
                 hidePostModal();
             }
@@ -259,8 +286,8 @@
         postModalActive = true;
         $('#modalPost').addClass('modal');
         $('#modalPost').modal('show');
-        selectors.commentBox.css('min-height', minheight + 'px');
-        selectors.commentModal.css('padding-right', '');
+        objs.commentBox.css('min-height', minheight + 'px');
+        objs.commentModal.css('padding-right', '');
         $('.commentmodal .modal-header').removeClass('d-none');
         $('.commentmodal .modal-footer').removeClass('d-none');
         $('.commentmodal .modal-header .close').show();
@@ -269,11 +296,11 @@
     }
 
     function resizePostBox() {
-        var divPostGameHeight = selectors.divPostGame.outerHeight();
-        var divPostImagesHeight = selectors.divPostImages.outerHeight();
-        var divPostPollHeight = selectors.divPostPoll.outerHeight();
+        var divPostGameHeight = objs.divPostGame.outerHeight();
+        var divPostImagesHeight = objs.divPostImages.outerHeight();
+        var divPostPollHeight = objs.divPostPoll.outerHeight();
 
-        var h = Math.floor(selectors.txtPostContent.height());
+        var h = Math.floor(objs.txtPostContent.height());
         var txtPostContentHeight = h === defaultTxtPostContentHeight ? 0 : h - defaultTxtPostContentHeight;
 
         var height = defaultCommentBoxHeight + txtPostContentHeight;
@@ -281,7 +308,7 @@
         var extra = 0;
         if (divPostGameActive) {
             height += divPostGameHeight;
-            extra += 10;
+            extra += 15;
         }
 
         if (divPostImagesActive) {
@@ -296,11 +323,11 @@
 
         height += extra;
 
-        selectors.commentModalBody.height(selectors.txtPostContent.height());
+        selectors.commentModalBody.height(objs.txtPostContent.height());
 
-        selectors.commentModal.height(height);
+        objs.commentModal.height(height);
 
-        selectors.commentBox.height(height);
+        objs.commentBox.height(height);
     }
 
     function hidePostModal() {
@@ -319,33 +346,33 @@
 
         selectors.commentModalBody.height('38px');
 
-        resizeTextArea(selectors.txtPostContent[0]);
+        resizeTextArea(objs.txtPostContent[0]);
     }
 
     function hideGameAdd() {
         divPostGameActive = false;
-        selectors.divPostGame.hide();
-        selectors.ddlPostGameId.val('');
+        objs.divPostGame.hide();
+        objs.ddlPostGameId.val('');
     }
 
     function hideImageAdd() {
         divPostImagesActive = false;
-        selectors.divPostImages.hide();
+        objs.divPostImages.hide();
     }
 
     function hidePollAdd() {
         divPostPollActive = false;
-        selectors.divPostPoll.hide();
+        objs.divPostPoll.hide();
     }
 
     function showGameAdd() {
         divPostGameActive = true;
-        selectors.divPostGame.show();
+        objs.divPostGame.show();
     }
 
     function showPollAdd() {
         divPostPollActive = true;
-        selectors.divPostPoll.show();
+        objs.divPostPoll.show();
     }
 
     function sendSimpleContent(json) {
@@ -372,15 +399,13 @@
                 postImagesDropZone.disable();
             }
 
-            selectors.postImages.val('');
+            objs.postImages.val('');
 
             MAINMODULE.Common.HandlePointsEarned(response);
         }
     }
 
     function loadCounters() {
-        selectors.divCounters.html(MAINMODULE.Default.Spinner);
-
         MAINMODULE.Ajax.LoadHtml("/home/counters", selectors.divCounters);
     }
 

@@ -59,6 +59,11 @@
         font-weight: 400;
     }
 
+#divPostGame {
+    margin-top: 10px;
+    display: none;
+}
+
 #divPostPoll {
     color: #495057;
     margin-top: 10px;

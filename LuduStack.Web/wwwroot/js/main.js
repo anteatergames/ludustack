@@ -322,21 +322,28 @@
         var idList = '';
 
         if (listObj instanceof jQuery) {
-            idList = listObj.attr('id');
+            idList = '#' + listObj.attr('id');
         }
         else {
             idList = listObj;
+
+            if (idList.indexOf('#') !== 0) {
+                console.log(idList);
+                idList = '#' + idList;
+                console.log(idList);
+            }
         }
 
         if (idList === undefined) {
             return Promise.resolve();
         }
 
-        document.querySelector('#' + idList).innerHTML = MAINMODULE.Default.SpinnerTop;
+
+        document.querySelector(idList).innerHTML = MAINMODULE.Default.SpinnerTop;
 
         const promise = await getHtml(url)
             .then(function (body) {
-                document.querySelector('#' + idList).innerHTML = body;
+                document.querySelector(idList).innerHTML = body;
 
                 //lazyLoadInstance.update();
 

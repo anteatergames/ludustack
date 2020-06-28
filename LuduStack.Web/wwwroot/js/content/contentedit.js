@@ -112,8 +112,8 @@
             cropped = true;
             if (cropper) {
                 canvas = cropper.getCroppedCanvas({
-                    width: 1024,
-                    minWidth: 1024
+                    width: 1200,
+                    minWidth: 1200
                 });
                 initialUrl = imgFeaturedImage.src;
                 imgFeaturedImage.src = canvas.toDataURL();
