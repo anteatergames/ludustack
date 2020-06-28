@@ -99,7 +99,7 @@ namespace LuduStack.Web.Controllers.Base
 
                 ApplicationUser user = task.Result;
 
-                sessionEmailConfirmed = user.EmailConfirmed.ToString();
+                sessionEmailConfirmed = user?.EmailConfirmed.ToString() ?? "False";
             }
 
             SetEmailConfirmed(sessionEmailConfirmed);

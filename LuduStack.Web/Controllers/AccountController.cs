@@ -457,6 +457,7 @@ namespace LuduStack.Web.Controllers
             }
             else
             {
+                SetEmailConfirmed(existingUser);
                 await SetStaffRoles(user);
             }
 
