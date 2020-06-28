@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace LuduStack.Web.Controllers
 {
@@ -50,6 +51,8 @@ namespace LuduStack.Web.Controllers
             ViewBag.UserGames = gamesDropDown;
 
             SetGamificationMessage(pointsEarned);
+
+            SetEmailConfirmed();
 
             return View();
         }

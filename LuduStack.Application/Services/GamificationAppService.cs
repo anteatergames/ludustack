@@ -65,6 +65,14 @@ namespace LuduStack.Application.Services
 
                 GamificationLevel currentLevel = gamificationDomainService.GetLevel(gamification.CurrentLevelNumber);
 
+                if (currentLevel == null)
+                {
+                    currentLevel = new GamificationLevel
+                    {
+                        Name = "No Levels On The Database"
+                    };
+                }
+
                 vm.IndieXp.LevelName = currentLevel.Name;
                 vm.IndieXp.CurrentLevelNumber = gamification.CurrentLevelNumber;
                 vm.IndieXp.XpCurrentLevel = gamification.XpCurrentLevel;

@@ -1,0 +1,11 @@
+﻿@model HomeSquareViewModel
+
+<a asp-area="@Model.Area" asp-controller="@Model.Controller" asp-action="@Model.Action">
+    <div class="info-box @(string.IsNullOrWhiteSpace(Model.ColorClass) ? "bg-purple" : Model.ColorClass)">
+        <span class="info-box-icon"><i class="@Model.Icon" aria-hidden="true"></i></span>
+
+        <div class="info-box-content">
+            <span class="info-box-text">@SharedLocalizer[Model.Text]</span>
+        </div>
+    </div>
+</a>

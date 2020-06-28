@@ -5,6 +5,9 @@
     var postModel = ViewBag.PostFromHome as PostFromHomeViewModel;
 
     var joinUsViewModel = new HomeSquareViewModel("account", "login", "bg-purple", "far fa-3x fa-smile", SharedLocalizer["Join us!"]);
+    var confirmEmailViewModel = new HomeSquareViewModel("member", "preferences", "index", "bg-green", "fas fa-check", SharedLocalizer["Confirm your email!"]);
+
+    var emailConfirmed = bool.Parse((string)(ViewData["emailConfirmed"] ?? "False"));
 }
 
 @section Styles {
@@ -75,15 +78,24 @@
 
         <h1 class="sr-only">LUDUSTACK - Home</h1>
 
-        <div class="col-xl-2 d-none d-lg-block">
+        <div class="col-xl-2">
             <div class="row">
-                @if (!User.Identity.IsAuthenticated)
+                @if (User.Identity.IsAuthenticated)
+                {
+                    if (!emailConfirmed)
+                    {
+                        <div class="col-12">
+                            <partial name="_HomeRectangle" model="confirmEmailViewModel" />
+                        </div>
+                    }
+                }
+                else
                 {
                     <div class="col-12 d-none d-xl-block">
                         <partial name="_HomeSquare" model="joinUsViewModel" />
                     </div>
                 }
-                <div class="col-12">
+                <div class="col-12 d-none d-lg-block">
                     <div id="divCounters"></div>
                 </div>
             </div>

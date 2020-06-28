@@ -8,6 +8,7 @@ using LuduStack.Application.ViewModels.Content;
 using LuduStack.Application.ViewModels.Poll;
 using LuduStack.Application.ViewModels.Search;
 using LuduStack.Domain.Core.Enums;
+using LuduStack.Domain.Core.Extensions;
 using LuduStack.Domain.Interfaces;
 using LuduStack.Domain.Interfaces.Infrastructure;
 using LuduStack.Domain.Interfaces.Services;
@@ -315,6 +316,8 @@ namespace LuduStack.Application.Services
                     item.Poll = SetPoll(vm.CurrentUserId, item.Id);
 
                     LoadAuthenticatedData(vm.CurrentUserId, item);
+
+                    item.Content = item.Content.ReplaceCloudname();
                 }
 
                 return viewModels;

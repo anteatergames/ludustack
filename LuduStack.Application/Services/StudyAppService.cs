@@ -386,7 +386,7 @@ namespace LuduStack.Application.Services
                         return UrlFormatter.Image(userId, ImageType.CourseThumbnail, thumbnailUrl, 278, 10);
 
                     case ImageRenderType.Responsive:
-                        return UrlFormatter.Image(userId, ImageType.CourseThumbnail, thumbnailUrl, 0, 0, true);
+                        return UrlFormatter.Image(userId, ImageType.CourseThumbnail, thumbnailUrl, true, 0, 0);
 
                     case ImageRenderType.Full:
                     default:

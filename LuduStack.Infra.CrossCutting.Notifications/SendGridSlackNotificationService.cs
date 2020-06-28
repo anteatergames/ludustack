@@ -24,7 +24,7 @@ namespace LuduStack.Infra.CrossCutting.Notifications
             this.logger = logger;
         }
 
-        public async Task SendEmailAsync(string email, string subject, string message)
+        public async Task<bool> SendEmailAsync(string email, string subject, string message)
         {
             string apiKey = Environment.GetEnvironmentVariable("SENDGRID_APIKEY");
             if (string.IsNullOrEmpty(apiKey))
@@ -44,10 +44,12 @@ namespace LuduStack.Infra.CrossCutting.Notifications
 
             msg.AddTo(new EmailAddress(email));
 
-            await client.SendEmailAsync(msg);
+            var response = await client.SendEmailAsync(msg);
+
+            return true;
         }
 
-        public async Task SendEmailAsync(string email, string templateId, object templateData)
+        public async Task<bool> SendEmailAsync(string email, string templateId, object templateData)
         {
             string apiKey = Environment.GetEnvironmentVariable("SENDGRID_APIKEY");
             if (string.IsNullOrEmpty(apiKey))
@@ -67,10 +69,12 @@ namespace LuduStack.Infra.CrossCutting.Notifications
 
             msg.AddTo(new EmailAddress(email));
 
-            await client.SendEmailAsync(msg);
+            var response = await client.SendEmailAsync(msg);
+
+            return true;
         }
 
-        public async Task SendTeamNotificationAsync(string message)
+        public async Task<bool> SendTeamNotificationAsync(string message)
         {
             SlackMessage slackMessage = new SlackMessage(message);
 
@@ -99,7 +103,10 @@ namespace LuduStack.Infra.CrossCutting.Notifications
             catch (Exception ex)
             {
                 logger.LogError(ex, "Error on sending notification to Slack");
+                return false;
             }
+
+            return true;
         }
     }
 }

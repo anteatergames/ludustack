@@ -114,6 +114,8 @@ namespace LuduStack.Web.Controllers
 
             if (user != null && !string.IsNullOrWhiteSpace(user.UserName))
             {
+                SetEmailConfirmed(user);
+
                 SetProfileOnSession(new Guid(user.Id), user.UserName);
 
                 await SetStaffRoles(user);
@@ -273,7 +275,6 @@ namespace LuduStack.Web.Controllers
             if (ModelState.IsValid)
             {
                 ApplicationUser user = new ApplicationUser { UserName = model.UserName, Email = model.Email };
-                user.UserName = model.UserName;
 
                 IdentityResult result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
@@ -510,7 +511,11 @@ namespace LuduStack.Web.Controllers
             {
                 throw new CustomApplicationException($"Unable to load user with ID '{userId}'.");
             }
+
             IdentityResult result = await _userManager.ConfirmEmailAsync(user, code);
+
+            SetEmailConfirmed(user);
+
             return View(result.Succeeded ? "ConfirmEmail" : "Error");
         }
 
@@ -660,6 +665,8 @@ namespace LuduStack.Web.Controllers
         // HACK replace by default admin user
         private async Task SetStaffRoles(ApplicationUser user)
         {
+            var userCount = _userManager.Users.Count();
+
             IList<string> userRoles = await _userManager.GetRolesAsync(user);
 
             bool userIsMember = userRoles.Contains(Roles.Member.ToString());
@@ -669,7 +676,7 @@ namespace LuduStack.Web.Controllers
                 await _userManager.AddToRoleAsync(user, Roles.Member.ToString());
             }
 
-            if (user.UserName.Equals("programad"))
+            if (userCount == 1)
             {
                 bool userIsAdmin = userRoles.Contains(Roles.Administrator.ToString());
 

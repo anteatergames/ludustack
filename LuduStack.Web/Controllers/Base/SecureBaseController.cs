@@ -82,6 +82,36 @@ namespace LuduStack.Web.Controllers.Base
             }
         }
 
+        protected void SetEmailConfirmed(ApplicationUser user)
+        {
+            var sessionEmailConfirmed = user.EmailConfirmed.ToString();
+
+            SetEmailConfirmed(sessionEmailConfirmed);
+        }
+
+        protected void SetEmailConfirmed()
+        {
+            var sessionEmailConfirmed = GetSessionValue(SessionValues.EmailConfirmed);
+            if (string.IsNullOrWhiteSpace(sessionEmailConfirmed))
+            {
+                var task = UserManager.GetUserAsync(User);
+                task.Wait();
+
+                ApplicationUser user = task.Result;
+
+                sessionEmailConfirmed = user.EmailConfirmed.ToString();
+            }
+
+            SetEmailConfirmed(sessionEmailConfirmed);
+        }
+
+        private  void SetEmailConfirmed(string sessionEmailConfirmed)
+        {
+            SetSessionValue(SessionValues.EmailConfirmed, sessionEmailConfirmed);
+
+            ViewData["emailConfirmed"] = sessionEmailConfirmed;
+        }
+
         protected string GetAvatar()
         {
             return GetCookieValue(SessionValues.UserProfileImageUrl);

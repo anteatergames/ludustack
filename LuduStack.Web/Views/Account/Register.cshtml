@@ -42,12 +42,12 @@
                 <div class="col-12">
                     <div class="checkbox">
                         <input asp-for="AcceptTerms">
-                        <label asp-for="AcceptTerms">@SharedLocalizer["I agree to the"] <strong><a asp-area="" asp-controller="home" asp-action="terms">@SharedLocalizer["Terms"]</a></strong></label>
+                        <label asp-for="AcceptTerms">@SharedLocalizer["I agree to the"] <strong><a asp-area="" asp-controller="home" asp-action="terms" target="_blank">@SharedLocalizer["terms"]</a></strong></label>
                     </div>
                 </div>
                 <!-- /.col -->
-                <div class="col-12 text-center">
-                    <button type="submit" id="btnSubmitRegister" class="btn btn-info btn-block btn-flat mt-2">@SharedLocalizer["SIGN UP"]</button>
+                <div class="col-12 text-center text-capitalize">
+                    <button type="submit" id="btnSubmitRegister" class="btn btn-info btn-block btn-flat mt-2">@SharedLocalizer["Sign Up"]</button>
                 </div>
                 <!-- /.col -->
             </div>

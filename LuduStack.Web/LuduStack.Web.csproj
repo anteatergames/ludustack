@@ -204,6 +204,9 @@
     <Content Update="Views\Shared\_GameCard.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="Views\Shared\_HomeRectangle.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\Shared\_TagManagerBody.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

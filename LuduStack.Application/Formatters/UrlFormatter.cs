@@ -1,5 +1,6 @@
 ﻿using CloudinaryDotNet;
 using LuduStack.Domain.Core.Enums;
+using LuduStack.Domain.Core.Extensions;
 using System;
 using System.Linq;
 using System.Text;
@@ -69,9 +70,9 @@ namespace LuduStack.Application.Formatters
         {
             string fileName = String.Format("profileimage_{0}_Personal", userId);
 
-            string url = CdnCommon(userId, fileName, width);
+            string url = CdnCommon(userId, fileName, false, width, 0, Constants.DefaultAvatar);
 
-            return url;
+            return url.ReplaceCloudname();
         }
 
         public static string ProfileCoverImage(Guid userId, Guid profileId)
@@ -99,7 +100,7 @@ namespace LuduStack.Application.Formatters
                 url = CdnCommon(userId, fileName, width);
             }
 
-            return url;
+            return url.ReplaceCloudname();
         }
 
         public static string Image(Guid userId, ImageType type, string fileName)
@@ -112,34 +113,44 @@ namespace LuduStack.Application.Formatters
             return Image(userId, type, fileName, width, 0);
         }
 
-        public static string Image(Guid userId, ImageType type, string fileName, int width, int quality)
+        public static string Image(Guid userId, ImageType type, string fileName, int width, string defaultImage)
         {
-            return Image(userId, type, fileName, width, quality, false);
+            return Image(userId, type, fileName, false, width, 0, defaultImage);
         }
 
-        public static string Image(Guid userId, ImageType type, string fileName, int width, int quality, bool responsive)
+        public static string Image(Guid userId, ImageType type, string fileName, int width, int quality)
+        {
+            return Image(userId, type, fileName, false, width, quality, Constants.DefaultFeaturedImage);
+        }
+
+        public static string Image(Guid userId, ImageType type, string fileName, bool responsive, int width, int quality)
+        {
+            return Image(userId, type, fileName, responsive, width, quality, Constants.DefaultFeaturedImage);
+        }
+
+        public static string Image(Guid userId, ImageType type, string fileName, bool responsive, int width, int quality, string defaultImage)
         {
             if (Constants.DefaultGameThumbnail.Contains(fileName))
             {
                 return Constants.DefaultGameThumbnail;
             }
 
-            string url = CdnCommon(userId, fileName, responsive, width, quality);
+            string url = CdnCommon(userId, fileName, responsive, width, quality, defaultImage);
 
-            return url;
+            return url.ReplaceCloudname();
         }
 
         public static string CdnCommon(Guid userId, string fileName)
         {
-            return CdnCommon(userId, fileName, 0);
+            return CdnCommon(userId, fileName, false, 0, 0, Constants.DefaultFeaturedImage);
         }
 
         public static string CdnCommon(Guid userId, string fileName, int width)
         {
-            return CdnCommon(userId, fileName, false, width, 0);
+            return CdnCommon(userId, fileName, false, width, 0, Constants.DefaultFeaturedImage);
         }
 
-        public static string CdnCommon(Guid userId, string fileName, bool responsive, int width, int quality)
+        public static string CdnCommon(Guid userId, string fileName, bool responsive, int width, int quality, string defaultImage)
         {
             try
             {
@@ -198,7 +209,7 @@ namespace LuduStack.Application.Formatters
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return Constants.DefaultFeaturedImage;
+                return defaultImage;
             }
         }
 

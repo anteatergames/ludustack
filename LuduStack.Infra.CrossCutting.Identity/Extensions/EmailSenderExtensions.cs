@@ -10,7 +10,8 @@ namespace LuduStack.Infra.CrossCutting.Identity.Services
         {
             EmailSendRequest request = new EmailSendRequest
             {
-                ActionUrl = HtmlEncoder.Default.Encode(link),
+                Subject = "LUDUSTACK - Email Verification",
+                ActionUrl = link,
                 ActionText = "Confirm your email",
                 Greeting = "Hi there,",
                 TextBeforeAction = "You just registered yourself at LUDUSTACK community. Now you need to confirm your email.",
@@ -18,26 +19,29 @@ namespace LuduStack.Infra.CrossCutting.Identity.Services
                 ByeText = "And welcome to YOUR community."
             };
 
-            return notificationSender.SendEmailAsync(email, "d-186b082218114c889a72a197c6ec2fa3", request);
+            return notificationSender.SendEmailAsync(email, "d-e9b748bc725c48b18f00b3d1cc88c790", request);
         }
 
         public static Task SendEmailPasswordResetAsync(this INotificationSender notificationSender, string email, string link)
         {
             EmailSendRequest request = new EmailSendRequest
             {
+                Subject = "LUDUSTACK - Password Reset",
                 ActionUrl = link,
+                ActionText = "Reset your password",
                 TextBeforeAction = "You requested for a password reset. Click the button below and choose a new password.",
                 TextAfterAction = "Do not share your password with anyone."
             };
 
-            return notificationSender.SendEmailAsync(email, "d-d0224f347d57420bb39a025787b6443a", request);
+            return notificationSender.SendEmailAsync(email, "d-e9b748bc725c48b18f00b3d1cc88c790", request);
         }
 
-        public static Task SendEmailApplicationAsync(this INotificationSender notificationSender, string emailPoster, string emailApplicant, string link)
+        public static Task SendEmailApplicationAsync(this INotificationSender notificationSender, string email, string emailApplicant, string link)
         {
             EmailSendRequest request = new EmailSendRequest
             {
-                ActionUrl = HtmlEncoder.Default.Encode(link),
+                Subject = "LUDUSTACK - New Job Applicant",
+                ActionUrl = link,
                 ActionText = "Go to the job position",
                 Greeting = "Hi there",
                 TextBeforeAction = string.Format("We have great news! Recently you posted a job position on the LUDUSTACK Jobs and now someone applied to the job position you posted. The applicant's email is {0}", emailApplicant),
@@ -45,11 +49,12 @@ namespace LuduStack.Infra.CrossCutting.Identity.Services
                 ByeText = "Thank you for helping the game development industry. We hope you find a good collaborator so we all can grow together."
             };
 
-            return notificationSender.SendEmailAsync(emailPoster, "d-826fd97ae44d409f85408d64918c7be8", request);
+            return notificationSender.SendEmailAsync(email, "d-e9b748bc725c48b18f00b3d1cc88c790", request);
         }
 
         public class EmailSendRequest
         {
+            public string Subject { get; set; }
             public string ActionUrl { get; set; }
             public string ActionText { get; set; }
             public string Greeting { get; set; }

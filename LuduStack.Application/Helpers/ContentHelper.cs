@@ -20,7 +20,7 @@ namespace LuduStack.Application.Helpers
                         return UrlFormatter.Image(userId, ImageType.FeaturedImage, featuredImage, 600, 10);
 
                     case ImageRenderType.Responsive:
-                        return UrlFormatter.Image(userId, ImageType.FeaturedImage, featuredImage, 0, 0, true);
+                        return UrlFormatter.Image(userId, ImageType.FeaturedImage, featuredImage, true, 0, 0);
 
                     case ImageRenderType.Full:
                     default:

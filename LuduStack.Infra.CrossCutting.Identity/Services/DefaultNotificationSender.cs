@@ -5,19 +5,19 @@ namespace LuduStack.Infra.CrossCutting.Identity.Services
 {
     public class DefaultNotificationSender : INotificationSender
     {
-        public Task SendEmailAsync(string email, string subject, string message)
+        public Task<bool> SendEmailAsync(string email, string subject, string message)
         {
-            return Task.CompletedTask;
+            return Task.FromResult(true);
         }
 
-        public Task SendEmailAsync(string email, string templateId, object templateData)
+        public Task<bool> SendEmailAsync(string email, string templateId, object templateData)
         {
-            return Task.CompletedTask;
+            return Task.FromResult(true);
         }
 
-        public Task SendTeamNotificationAsync(string message)
+        public Task<bool> SendTeamNotificationAsync(string message)
         {
-            return Task.CompletedTask;
+            return Task.FromResult(true);
         }
     }
 }

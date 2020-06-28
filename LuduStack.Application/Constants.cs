@@ -1,4 +1,6 @@
-﻿namespace LuduStack.Application
+﻿using System;
+
+namespace LuduStack.Application
 {
     public static class Constants
     {
@@ -94,7 +96,15 @@
         {
             get
             {
-                return "https://res.cloudinary.com/indievisible/image/upload/f_auto/";
+                return "https://res.cloudinary.com/ludustack/image/upload/f_auto/";
+            }
+        }
+
+        public static string DefaultAvatarPlaceholder
+        {
+            get
+            {
+                return string.Format("{0},q_auto/v1/xpto/profileimage_xpto_Personal", DefaultCloudinaryPath);
             }
         }
 
@@ -110,7 +120,7 @@
         {
             get
             {
-                return "https://indievisiblecdn.azureedge.net/";
+                return "https://ludustackcdn.azureedge.net/";
             }
         }
 
@@ -118,7 +128,7 @@
         {
             get
             {
-                return "https://indievisible.blob.core.windows.net/";
+                return "https://ludustack.blob.core.windows.net/";
             }
         }
 

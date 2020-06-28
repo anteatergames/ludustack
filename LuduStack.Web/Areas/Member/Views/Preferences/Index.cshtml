@@ -28,7 +28,10 @@
                 }
                 else
                 {
-                    <input asp-for="Email" class="form-control" />
+                    <div class="input-group">
+                        <input asp-for="Email" class="form-control" />
+                        <span class="input-group-addon" aria-hidden="true"><span class="fas fa-times-circle text-danger" style="line-height: 38px;font-size: 29px;margin-left: 5px;"></span></span>
+                    </div>
                     <span asp-validation-for="Email" class="text-danger"></span>
                     <button asp-action="SendVerificationEmail" class="btn btn-link">@SharedLocalizer["Send verification email"]</button>
                 }
