@@ -7,6 +7,7 @@ namespace LuduStack.Web.Controllers
     {
         public IActionResult DiscordWidget()
         {
+
             return View();
         }
     }
