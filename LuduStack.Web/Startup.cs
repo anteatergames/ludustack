@@ -138,6 +138,26 @@ namespace LuduStack.Web
             {
                 app.UseDeveloperExceptionPage();
             }
+            else if (env.IsProduction()) // this code redirects from old domain.
+            {
+                app.Use(async (context, next) =>
+                {
+                    if (context.Request.Host != new HostString("www.ludustack.com"))
+                    {
+                        var withDomain = "https://www.ludustack.com" + context.Request.Path;
+                        context.Response.Redirect(withDomain);
+                    }
+                    else if (!context.Request.IsHttps)
+                    {
+                        var withHttps = "https://" + context.Request.Host + context.Request.Path;
+                        context.Response.Redirect(withHttps);
+                    }
+                    else
+                    {
+                        await next();
+                    }
+                });
+            }
             else
             {
                 app.UseExceptionHandler("/Home/Error");

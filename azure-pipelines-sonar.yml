@@ -25,8 +25,8 @@ steps:
   inputs:
     SonarCloud: '9d5d2c29-7aa7-4f09-abf3-cd9de903d547'
     organization: 'anteatergames'
-    projectKey: 'anteatergames_indievisible'
-    projectName: 'indievisible'
+    projectKey: 'anteatergames_ludustack'
+    projectName: 'ludustack'
     projectVersion: $(Build.BuildNumber)
     extraProperties: |
       sonar.exclusions=**/obj/**,**/*.dll,**/Migrations/**,**/wwwroot/lib/**,**/wwwroot/thirdparty/**
