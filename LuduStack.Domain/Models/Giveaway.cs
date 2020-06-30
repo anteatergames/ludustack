@@ -1,0 +1,36 @@
+﻿using LuduStack.Domain.Core.Enums;
+using LuduStack.Domain.Core.Models;
+using System;
+using System.Collections.Generic;
+
+namespace LuduStack.Domain.Models
+{
+    public class Giveaway : Entity
+    {
+        public string Name { get; set; }
+
+        public string Description { get; set; }
+
+        public string FeaturedImage { get; set; }
+
+        public string CoverImage { get; set; }
+
+        public DateTime StartDate { get; set; }
+
+        public DateTime? EndDate { get; set; }
+
+        public GiveawayStatus Status { get; set; }
+
+        public bool MembersOnly { get; set; }
+
+        public int WinnerAmount { get; set; }
+
+        public string TermsAndConditions { get; set; }
+
+        public List<GiveawayPrize> Prizes { get; set; }
+
+        public List<GiveawayEntryOption> EntryOptions { get; set; }
+
+        public List<GiveawayParticipant> Participants { get; set; }
+    }
+}

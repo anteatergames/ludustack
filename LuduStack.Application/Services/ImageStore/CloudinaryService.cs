@@ -1,10 +1,8 @@
 ﻿using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
 using LuduStack.Application.Interfaces;
-using Microsoft.Extensions.Configuration;
 using System;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace LuduStack.Application.Services
@@ -16,7 +14,7 @@ namespace LuduStack.Application.Services
         }
 
         public async Task<string> StoreImageAsync(string container, string fileName, byte[] image)
-        {            
+        {
             Cloudinary cloudinary = new Cloudinary();
 
             fileName = fileName.Contains(".") ? fileName.Split(".")[0] : fileName;
@@ -32,7 +30,7 @@ namespace LuduStack.Application.Services
                 Invalidate = true
             };
 
-            var upLoadResult = await cloudinary.UploadAsync(uploadParams);
+            ImageUploadResult upLoadResult = await cloudinary.UploadAsync(uploadParams);
 
             return fileName;
         }

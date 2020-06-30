@@ -81,7 +81,7 @@ namespace LuduStack.Domain.Services
         {
             IQueryable<UserContent> allModels = repository.Get();
 
-            var featuredIds = featuredContentRepository.Get(x => x.Active).Select(x => x.UserContentId).ToList();
+            List<Guid> featuredIds = featuredContentRepository.Get(x => x.Active).Select(x => x.UserContentId).ToList();
 
             if (featuredIds.Any())
             {

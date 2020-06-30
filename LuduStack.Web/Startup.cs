@@ -144,12 +144,12 @@ namespace LuduStack.Web
                 {
                     if (context.Request.Host != new HostString("www.ludustack.com"))
                     {
-                        var withDomain = "https://www.ludustack.com" + context.Request.Path;
+                        string withDomain = "https://www.ludustack.com" + context.Request.Path;
                         context.Response.Redirect(withDomain);
                     }
                     else if (!context.Request.IsHttps)
                     {
-                        var withHttps = "https://" + context.Request.Host + context.Request.Path;
+                        string withHttps = "https://" + context.Request.Host + context.Request.Path;
                         context.Response.Redirect(withHttps);
                     }
                     else

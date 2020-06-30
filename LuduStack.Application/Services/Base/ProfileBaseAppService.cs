@@ -1,10 +1,9 @@
-﻿using AutoMapper;
-using CountryData;
+﻿using CountryData;
+using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels.Game;
 using LuduStack.Application.ViewModels.User;
 using LuduStack.Domain.Core.Models;
 using LuduStack.Domain.Interfaces;
-using LuduStack.Domain.Interfaces.Infrastructure;
 using LuduStack.Domain.Interfaces.Services;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
@@ -18,12 +17,9 @@ namespace LuduStack.Application.Services
     {
         protected readonly IProfileDomainService profileDomainService;
 
-        protected ProfileBaseAppService(IMapper mapper
-            , IUnitOfWork unitOfWork
-            , ICacheService cacheService
-            , IProfileDomainService profileDomainService) : base(mapper, unitOfWork, cacheService)
+        protected ProfileBaseAppService(IProfileBaseAppServiceCommon profileBaseAppServiceCommon) : base(profileBaseAppServiceCommon.Mapper, profileBaseAppServiceCommon.UnitOfWork, profileBaseAppServiceCommon.CacheService)
         {
-            this.profileDomainService = profileDomainService;
+            profileDomainService = profileBaseAppServiceCommon.ProfileDomainService;
         }
 
         #region Profile

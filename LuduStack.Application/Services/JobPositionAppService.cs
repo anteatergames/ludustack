@@ -1,11 +1,8 @@
-﻿using AutoMapper;
-using LuduStack.Application.Formatters;
+﻿using LuduStack.Application.Formatters;
 using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels.Jobs;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Core.Extensions;
-using LuduStack.Domain.Interfaces;
-using LuduStack.Domain.Interfaces.Infrastructure;
 using LuduStack.Domain.Interfaces.Services;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
@@ -20,12 +17,9 @@ namespace LuduStack.Application.Services
         private readonly IJobPositionDomainService jobPositionDomainService;
         private readonly IGamificationDomainService gamificationDomainService;
 
-        public JobPositionAppService(IMapper mapper
-            , IUnitOfWork unitOfWork
-            , ICacheService cacheService
-            , IProfileDomainService profileDomainService
+        public JobPositionAppService(IProfileBaseAppServiceCommon profileBaseAppServiceCommon
             , IJobPositionDomainService jobPositionDomainService
-            , IGamificationDomainService gamificationDomainService) : base(mapper, unitOfWork, cacheService, profileDomainService)
+            , IGamificationDomainService gamificationDomainService) : base(profileBaseAppServiceCommon)
         {
             this.jobPositionDomainService = jobPositionDomainService;
             this.gamificationDomainService = gamificationDomainService;

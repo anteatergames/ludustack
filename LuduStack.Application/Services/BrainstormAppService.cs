@@ -1,12 +1,9 @@
-﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
+﻿using AutoMapper.QueryableExtensions;
 using LuduStack.Application.Formatters;
 using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels;
 using LuduStack.Application.ViewModels.Brainstorm;
 using LuduStack.Domain.Core.Enums;
-using LuduStack.Domain.Interfaces;
-using LuduStack.Domain.Interfaces.Infrastructure;
 using LuduStack.Domain.Interfaces.Services;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
@@ -22,12 +19,9 @@ namespace LuduStack.Application.Services
 
         private readonly IBrainstormDomainService brainstormDomainService;
 
-        public BrainstormAppService(IMapper mapper
-            , IUnitOfWork unitOfWork
-            , ICacheService cacheService
-            , IProfileDomainService profileDomainService
+        public BrainstormAppService(IProfileBaseAppServiceCommon profileBaseAppServiceCommon
             , IGamificationDomainService gamificationDomainService
-            , IBrainstormDomainService brainstormDomainService) : base(mapper, unitOfWork, cacheService, profileDomainService)
+            , IBrainstormDomainService brainstormDomainService) : base(profileBaseAppServiceCommon)
         {
             this.gamificationDomainService = gamificationDomainService;
 

@@ -139,6 +139,19 @@ namespace LuduStack.Infra.CrossCutting.IoC
 
             #endregion Study
 
+            #region Giveaway
+
+            services.AddScoped<IGiveawayAppService, GiveawayAppService>();
+            services.AddScoped<IGiveawayDomainService, GiveawayDomainService>();
+            services.AddScoped<IGiveawayRepository, GiveawayRepository>();
+
+            #endregion Giveaway
+
+
+            #region Common
+            services.AddScoped<IProfileBaseAppServiceCommon, ProfileBaseAppServiceCommon>();
+            #endregion Common
+
             // Infra
             services.AddTransient<INotificationSender, SendGridSlackNotificationService>();
 

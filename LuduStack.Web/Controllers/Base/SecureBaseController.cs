@@ -84,17 +84,17 @@ namespace LuduStack.Web.Controllers.Base
 
         protected void SetEmailConfirmed(ApplicationUser user)
         {
-            var sessionEmailConfirmed = user.EmailConfirmed.ToString();
+            string sessionEmailConfirmed = user.EmailConfirmed.ToString();
 
             SetEmailConfirmed(sessionEmailConfirmed);
         }
 
         protected void SetEmailConfirmed()
         {
-            var sessionEmailConfirmed = GetSessionValue(SessionValues.EmailConfirmed);
+            string sessionEmailConfirmed = GetSessionValue(SessionValues.EmailConfirmed);
             if (string.IsNullOrWhiteSpace(sessionEmailConfirmed))
             {
-                var task = UserManager.GetUserAsync(User);
+                Task<ApplicationUser> task = UserManager.GetUserAsync(User);
                 task.Wait();
 
                 ApplicationUser user = task.Result;
@@ -105,7 +105,7 @@ namespace LuduStack.Web.Controllers.Base
             SetEmailConfirmed(sessionEmailConfirmed);
         }
 
-        private  void SetEmailConfirmed(string sessionEmailConfirmed)
+        private void SetEmailConfirmed(string sessionEmailConfirmed)
         {
             SetSessionValue(SessionValues.EmailConfirmed, sessionEmailConfirmed);
 

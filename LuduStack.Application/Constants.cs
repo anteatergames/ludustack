@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace LuduStack.Application
+﻿namespace LuduStack.Application
 {
     public static class Constants
     {

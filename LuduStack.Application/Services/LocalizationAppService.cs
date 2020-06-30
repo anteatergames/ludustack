@@ -1,12 +1,9 @@
-﻿using AutoMapper;
-using LuduStack.Application.Formatters;
+﻿using LuduStack.Application.Formatters;
 using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels.Game;
 using LuduStack.Application.ViewModels.Localization;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Core.Extensions;
-using LuduStack.Domain.Interfaces;
-using LuduStack.Domain.Interfaces.Infrastructure;
 using LuduStack.Domain.Interfaces.Services;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
@@ -28,13 +25,10 @@ namespace LuduStack.Application.Services
         private readonly IGameDomainService gameDomainService;
         private readonly IGamificationDomainService gamificationDomainService;
 
-        public LocalizationAppService(IMapper mapper
-            , IUnitOfWork unitOfWork
-            , ICacheService cacheService
-            , IProfileDomainService profileDomainService
+        public LocalizationAppService(IProfileBaseAppServiceCommon profileBaseAppServiceCommon
             , ILocalizationDomainService translationDomainService
             , IGameDomainService gameDomainService
-            , IGamificationDomainService gamificationDomainService) : base(mapper, unitOfWork, cacheService, profileDomainService)
+            , IGamificationDomainService gamificationDomainService) : base(profileBaseAppServiceCommon)
         {
             this.translationDomainService = translationDomainService;
             this.gameDomainService = gameDomainService;
