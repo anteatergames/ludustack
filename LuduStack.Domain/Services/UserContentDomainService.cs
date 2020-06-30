@@ -14,7 +14,7 @@ namespace LuduStack.Domain.Services
 {
     public class UserContentDomainService : BaseDomainMongoService<UserContent, IUserContentRepository>, IUserContentDomainService
     {
-        IFeaturedContentRepository featuredContentRepository;
+        private readonly IFeaturedContentRepository featuredContentRepository;
 
         public UserContentDomainService(IUserContentRepository repository, IFeaturedContentRepository featuredContentRepository) : base(repository)
         {

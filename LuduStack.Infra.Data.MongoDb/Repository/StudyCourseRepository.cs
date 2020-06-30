@@ -24,7 +24,7 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
                 Id = x.Id,
                 Name = x.Name,
                 OpenForApplication = x.OpenForApplication,
-                StudentCount = x.Members.Count()
+                StudentCount = x.Members.Count
             });
 
             return obj.ToList();
@@ -37,7 +37,7 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
                 Id = x.Id,
                 Name = x.Name,
                 OpenForApplication = x.OpenForApplication,
-                StudentCount = x.Members.Count()
+                StudentCount = x.Members.Count
             });
 
             return obj.ToList();

@@ -30,7 +30,7 @@ namespace LuduStack.Application.Services
                 Invalidate = true
             };
 
-            ImageUploadResult upLoadResult = await cloudinary.UploadAsync(uploadParams);
+            await cloudinary.UploadAsync(uploadParams);
 
             return fileName;
         }

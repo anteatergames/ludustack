@@ -572,18 +572,7 @@ namespace LuduStack.Application.Services
 
                             FillEntries(dataTable, model.Terms, loadedEntries, columns);
 
-                            bool entriesUpdated = false;
-                            foreach (LocalizationEntry loadedEntry in loadedEntries)
-                            {
-                                entriesUpdated = AddOrUpdateEntry(currentUserId, model, loadedEntry);
-                            }
-
-                            if (entriesUpdated)
-                            {
-                                translationDomainService.Update(model);
-
-                                await unitOfWork.Commit();
-                            }
+                            await UpdateEntries(currentUserId, loadedEntries, model);
                         }
                     }
                 }
@@ -593,6 +582,22 @@ namespace LuduStack.Application.Services
             catch (Exception ex)
             {
                 return new OperationResultVo(ex.Message);
+            }
+        }
+
+        private async Task UpdateEntries(Guid currentUserId, List<LocalizationEntry> loadedEntries, Localization model)
+        {
+            bool entriesUpdated = false;
+            foreach (LocalizationEntry loadedEntry in loadedEntries)
+            {
+                entriesUpdated = AddOrUpdateEntry(currentUserId, model, loadedEntry);
+            }
+
+            if (entriesUpdated)
+            {
+                translationDomainService.Update(model);
+
+                await unitOfWork.Commit();
             }
         }
 
@@ -751,21 +756,26 @@ namespace LuduStack.Application.Services
 
                 if (firstCell != null && secondCell != null && !string.IsNullOrWhiteSpace(firstCell.ToString()) && !string.IsNullOrWhiteSpace(secondCell.ToString()))
                 {
-                    for (int j = row.FirstCellNum; j < cellCount; j++)
-                    {
-                        if (row.GetCell(j) != null && !string.IsNullOrEmpty(row.GetCell(j).ToString()) && !string.IsNullOrWhiteSpace(row.GetCell(j).ToString()))
-                        {
-                            rowList.Add(row.GetCell(j).ToString());
-                        }
-                    }
-
-                    if (rowList.Count > 0)
-                    {
-                        dtTable.Rows.Add(rowList.ToArray());
-                    }
+                    FillRows(dtTable, cellCount, rowList, row);
 
                     rowList.Clear();
                 }
+            }
+        }
+
+        private static void FillRows(DataTable dtTable, int cellCount, List<string> rowList, IRow row)
+        {
+            for (int j = row.FirstCellNum; j < cellCount; j++)
+            {
+                if (row.GetCell(j) != null && !string.IsNullOrEmpty(row.GetCell(j).ToString()) && !string.IsNullOrWhiteSpace(row.GetCell(j).ToString()))
+                {
+                    rowList.Add(row.GetCell(j).ToString());
+                }
+            }
+
+            if (rowList.Count > 0)
+            {
+                dtTable.Rows.Add(rowList.ToArray());
             }
         }
 

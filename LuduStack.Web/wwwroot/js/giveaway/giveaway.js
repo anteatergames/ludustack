@@ -31,7 +31,7 @@
         canInteract = objs.container.find(selectors.canInteract).val();
 
         var url = objs.urls.data('urlList');
-        loadItems(false, url);
+        loadItems(url);
     }
 
     function bindAll() {

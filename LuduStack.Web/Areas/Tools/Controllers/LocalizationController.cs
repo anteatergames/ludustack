@@ -576,15 +576,9 @@ namespace LuduStack.Web.Areas.Tools.Controllers
 
         private void SetLocalization(LocalizationViewModel model, bool editing)
         {
-            if (model != null)
+            if (model != null && !editing && string.IsNullOrWhiteSpace(model.Introduction))
             {
-                if (!editing)
-                {
-                    if (string.IsNullOrWhiteSpace(model.Introduction))
-                    {
-                        model.Introduction = SharedLocalizer["No extra information."];
-                    }
-                }
+                model.Introduction = SharedLocalizer["No extra information."];
             }
         }
 
