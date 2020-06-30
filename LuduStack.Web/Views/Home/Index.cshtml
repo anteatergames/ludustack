@@ -103,9 +103,6 @@
 
         <div class=" col-lg-8 col-xl-7 pr-lg-2 pl-xl-2 pr-xl-2">
 
-            <environment include="Development"><div class="text-center position-absolute w-100 text-white" style="z-index:9999;top:-45px;margin-left: 50px;margin-right: 50px;">dev</div></environment>
-            <environment include="Staging"><div class="text-center position-absolute w-100 text-white" style="z-index:9999;top:-45px;margin-left: 50px;margin-right: 50px;">staging</div></environment>
-
             @await Html.PartialAsync("_Carousel", ViewBag.Carousel as CarouselViewModel)
 
             @if (User.Identity.IsAuthenticated)
@@ -113,17 +110,11 @@
                 @await Html.PartialAsync("_PostFromHome", ViewBag.PostFromHome as PostFromHomeViewModel)
             }
 
-            <div class="row mb-2">
-                <div class="col-12 text-center">
-                    <a href="https://codersrank.io/?utm_source=partner&utm_medium=referral&utm_campaign=danielgomes" target="_blank" rel="noopener noreferrer">
-                        <img src="~/images/partners/codersrankbanner.png" alt="CodersRank - Create Your Ultimate Developer Profile" class="img-fluid" />
-                    </a>
-                </div>
-            </div>
-
-
             <div class="row">
                 <div class="col-12">
+                    <environment include="Development"><div class="text-center position-absolute w-100 text-white" style="z-index:9999;top:-25px;padding-right: 30px;">dev</div></environment>
+                    <environment include="Staging"><div class="text-center position-absolute w-100 text-white" style="z-index:9999;top:-25px;padding-right: 30px;">staging</div></environment>
+
                     <div id="divActivityFeed"></div>
                 </div>
             </div>
