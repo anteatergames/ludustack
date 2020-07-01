@@ -1,5 +1,13 @@
 ![ludustack](https://github.com/anteatergames/ludustack/blob/master/LuduStack.Web/wwwroot/images/logo-horizontal-black-1024w.png?raw=true)
 
+[![License](https://img.shields.io/github/license/anteatergames/indievisible)](https://github.com/anteatergames/ludustack/blob/master/LICENSE)
+
+
+| Name|Deploy|Code Factor|
+|-|:-:|:-:|
+|development|[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?branch=development&project=anteatergames_ludustack&metric=alert_status)](https://sonarcloud.io/dashboard?id=anteatergames_ludustack&branch=development)|[![CodeFactor](https://www.codefactor.io/repository/github/anteatergames/ludustack/badge)](https://www.codefactor.io/repository/github/anteatergames/ludustack)|
+|master|[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?branch=master&project=anteatergames_ludustack&metric=alert_status)](https://sonarcloud.io/dashboard?id=anteatergames_ludustack&branch=master)|[![CodeFactor](https://www.codefactor.io/repository/github/anteatergames/ludustack/badge)](https://www.codefactor.io/repository/github/anteatergames/ludustack)|
+
 ## Table Of Contents
 - [Technical Specifications](#technical-specifications)
 - [How to run](#how-to-run)
@@ -12,6 +20,8 @@
 - Mongodb
 
 ## Preparing the environment
+
+Create an account at https://cloudinary.com and get the CLOUDINARY_URL provided on your dashboard.
 
 You need the following Environment Variables on your system:
 | Name           |                           Value                           |
