@@ -1,0 +1,80 @@
+variables:
+    buildConfiguration: "Debug"
+    testProject: "LuduStack.Tests"
+    solution: "LuduStack.sln"
+
+strategy:
+  matrix:
+    linux:
+      imageName: 'ubuntu-16.04'
+
+trigger:
+- master
+
+pool:
+  vmImage: $(imageName)
+
+steps:
+- task: UseDotNet@2
+  displayName: 'Set .NET SDK'
+  inputs:
+    packageType: 'sdk'
+
+- task: SonarCloudPrepare@1
+  displayName: 'Prepare Sonar'
+  inputs:
+    SonarCloud: '9d5d2c29-7aa7-4f09-abf3-cd9de903d547'
+    organization: 'anteatergames'
+    projectKey: 'anteatergames_ludustack'
+    projectName: 'ludustack'
+    projectVersion: $(Build.BuildNumber)
+    extraProperties: |
+      sonar.exclusions=**/obj/**,**/*.dll,**/Migrations/**,**/wwwroot/lib/**,**/wwwroot/thirdparty/**
+      sonar.cs.vstest.reportsPaths=$(Agent.TempDirectory)/*.trx
+      sonar.cs.opencover.reportsPaths=$(Agent.TempDirectory)/**/coverage.opencover.xml
+        
+- task: DotNetCoreCLI@2
+  displayName: Restore Packages
+  inputs:
+    command: 'restore'
+    projects: '$(solution)'
+
+- task: DotNetCoreCLI@2
+  displayName: 'Build $(buildConfiguration)'
+  inputs:
+    command: 'build'
+    projects: '$(solution)'
+    arguments: '--configuration $(buildConfiguration) --no-restore'
+
+- task: DotNetCoreCLI@2
+  displayName: 'Run Tests'
+  inputs:
+    command: 'test'
+    projects: '**/*Tests.csproj'
+    arguments: '--configuration $(buildConfiguration) --no-restore --no-build --logger trx --collect:"XPlat Code Coverage" --settings coverlet.runsettings'
+    workingDirectory: '$(Build.SourcesDirectory)'
+
+- task: SonarCloudAnalyze@1
+  displayName: 'Sonar Cloud Analyze'
+
+- task: SonarCloudPublish@1
+  displayName: 'Publish Quality Gate Results'
+
+- task: PublishCodeCoverageResults@1
+  displayName: 'Publish code coverage'
+  inputs:
+    codeCoverageTool: 'cobertura'
+    summaryFileLocation: '$(Agent.TempDirectory)/**/coverage.cobertura.xml'
+
+- task: DotNetCoreCLI@2
+  displayName: 'Publish'
+  inputs:
+    command: publish
+    arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+    projects: $(solution)
+    publishWebProjects: false
+    modifyOutputPath: true
+    zipAfterPublish: true
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifacts'
