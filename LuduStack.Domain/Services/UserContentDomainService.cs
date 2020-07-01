@@ -14,8 +14,11 @@ namespace LuduStack.Domain.Services
 {
     public class UserContentDomainService : BaseDomainMongoService<UserContent, IUserContentRepository>, IUserContentDomainService
     {
-        public UserContentDomainService(IUserContentRepository repository) : base(repository)
+        private readonly IFeaturedContentRepository featuredContentRepository;
+
+        public UserContentDomainService(IUserContentRepository repository, IFeaturedContentRepository featuredContentRepository) : base(repository)
         {
+            this.featuredContentRepository = featuredContentRepository;
         }
 
         public new IEnumerable<UserContentSearchVo> Search(Expression<Func<UserContent, bool>> where)
@@ -77,6 +80,13 @@ namespace LuduStack.Domain.Services
         public IQueryable<UserContent> GetActivityFeed(Guid? gameId, Guid? userId, List<SupportedLanguage> languages, Guid? oldestId, DateTime? oldestDate, bool? articlesOnly, int count)
         {
             IQueryable<UserContent> allModels = repository.Get();
+
+            List<Guid> featuredIds = featuredContentRepository.Get(x => x.Active).Select(x => x.UserContentId).ToList();
+
+            if (featuredIds.Any())
+            {
+                allModels = allModels.Where(x => !featuredIds.Contains(x.Id));
+            }
 
             if (articlesOnly.HasValue && articlesOnly.Value)
             {

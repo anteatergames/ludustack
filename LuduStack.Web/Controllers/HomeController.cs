@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace LuduStack.Web.Controllers
 {
@@ -53,6 +52,8 @@ namespace LuduStack.Web.Controllers
             SetGamificationMessage(pointsEarned);
 
             SetEmailConfirmed();
+
+            ViewBag.BuildNumber = Environment.GetEnvironmentVariable("LUDUSTACK_BUILD_NUMBER") ?? "no-buildnumber-env-var";
 
             return View();
         }

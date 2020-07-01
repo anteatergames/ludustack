@@ -220,7 +220,6 @@ namespace LuduStack.Domain.Services
         {
             List<UserConnection> connections = userConnectionRepository.Get(x => x.UserId == originalUserId && x.TargetUserId == connectedUserId || x.UserId == connectedUserId && x.TargetUserId == originalUserId).ToList();
 
-
             bool fromUser = connections.Any(x => x.UserId == originalUserId);
             bool toUser = connections.Any(x => x.TargetUserId == originalUserId);
 
@@ -255,7 +254,6 @@ namespace LuduStack.Domain.Services
         }
 
         #endregion Connection
-
 
         public override IEnumerable<Guid> GetAllIds()
         {

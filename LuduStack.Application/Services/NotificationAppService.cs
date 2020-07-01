@@ -36,6 +36,7 @@ namespace LuduStack.Application.Services
         {
             return new OperationResultListVo<NotificationItemViewModel>(string.Empty);
         }
+
         public OperationResultVo GetAllIds(Guid currentUserId)
         {
             try

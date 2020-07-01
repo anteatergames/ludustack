@@ -144,7 +144,6 @@ namespace LuduStack.Web.Controllers
                     bool recruiting = !vm.RecruitingBefore && vm.Recruiting;
                     GenerateTeamPost(vm, isNew, recruiting);
 
-
                     if (isNew)
                     {
                         NotificationSender.SendTeamNotificationAsync($"New team Created: {vm.Name}");

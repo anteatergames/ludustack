@@ -120,7 +120,6 @@ var ACTIVITYFEED = (function () {
                 callback();
             }
 
-
             //lazyLoadInstance.update();
         });
     }

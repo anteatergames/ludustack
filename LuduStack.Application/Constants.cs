@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace LuduStack.Application
+﻿namespace LuduStack.Application
 {
     public static class Constants
     {
@@ -131,7 +129,6 @@ namespace LuduStack.Application
                 return "https://ludustack.blob.core.windows.net/";
             }
         }
-
 
         public static string DefaultCourseThumbnail
         {

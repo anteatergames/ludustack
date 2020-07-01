@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
+﻿using AutoMapper.QueryableExtensions;
 using LuduStack.Application.Formatters;
 using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels;
@@ -9,8 +8,6 @@ using LuduStack.Domain.Core.Attributes;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Core.Extensions;
 using LuduStack.Domain.Core.Interfaces;
-using LuduStack.Domain.Interfaces;
-using LuduStack.Domain.Interfaces.Infrastructure;
 using LuduStack.Domain.Interfaces.Services;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.Specifications;
@@ -28,13 +25,10 @@ namespace LuduStack.Application.Services
 
         private readonly IGameDomainService gameDomainService;
 
-        public GameAppService(IMapper mapper
-            , IUnitOfWork unitOfWork
-            , ICacheService cacheService
-            , IProfileDomainService profileDomainService
+        public GameAppService(IProfileBaseAppServiceCommon profileBaseAppServiceCommon
             , ITeamDomainService teamDomainService
             , IGameDomainService gameDomainService
-            , IGamificationDomainService gamificationDomainService) : base(mapper, unitOfWork, cacheService, profileDomainService)
+            , IGamificationDomainService gamificationDomainService) : base(profileBaseAppServiceCommon)
         {
             this.gameDomainService = gameDomainService;
             this.teamDomainService = teamDomainService;

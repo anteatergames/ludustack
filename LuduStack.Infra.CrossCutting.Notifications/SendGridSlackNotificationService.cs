@@ -8,7 +8,6 @@ using RestSharp;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 using System;
-using System.Net;
 using System.Threading.Tasks;
 
 namespace LuduStack.Infra.CrossCutting.Notifications
@@ -44,7 +43,7 @@ namespace LuduStack.Infra.CrossCutting.Notifications
 
             msg.AddTo(new EmailAddress(email));
 
-            var response = await client.SendEmailAsync(msg);
+            Response response = await client.SendEmailAsync(msg);
 
             return true;
         }
@@ -69,7 +68,7 @@ namespace LuduStack.Infra.CrossCutting.Notifications
 
             msg.AddTo(new EmailAddress(email));
 
-            var response = await client.SendEmailAsync(msg);
+            Response response = await client.SendEmailAsync(msg);
 
             return true;
         }
@@ -98,7 +97,7 @@ namespace LuduStack.Infra.CrossCutting.Notifications
 
             try
             {
-                var response = await client.ExecuteAsync(request);
+                IRestResponse response = await client.ExecuteAsync(request);
             }
             catch (Exception ex)
             {

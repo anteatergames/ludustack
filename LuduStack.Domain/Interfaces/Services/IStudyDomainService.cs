@@ -14,9 +14,11 @@ namespace LuduStack.Domain.Interfaces.Services
         IEnumerable<Guid> GetMentorsByUserId(Guid userId);
 
         IEnumerable<Guid> GetStudentsByUserId(Guid userId);
-        #endregion
+
+        #endregion General
 
         #region Course
+
         List<StudyCourseListItemVo> GetCourses();
 
         List<StudyCourseListItemVo> GetCoursesByUserId(Guid userId);
@@ -40,6 +42,7 @@ namespace LuduStack.Domain.Interfaces.Services
         Task<bool> EnrollCourse(Guid userId, Guid courseId);
 
         Task<bool> LeaveCourse(Guid userId, Guid courseId);
-        #endregion
+
+        #endregion Course
     }
 }

@@ -63,7 +63,6 @@
     }
 
     function bindCountry() {
-
         objs.country.select2();
     }
 

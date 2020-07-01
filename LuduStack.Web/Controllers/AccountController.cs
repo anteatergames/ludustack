@@ -666,7 +666,7 @@ namespace LuduStack.Web.Controllers
         // HACK replace by default admin user
         private async Task SetStaffRoles(ApplicationUser user)
         {
-            var userCount = _userManager.Users.Count();
+            int userCount = _userManager.Users.Count();
 
             IList<string> userRoles = await _userManager.GetRolesAsync(user);
 

@@ -266,7 +266,6 @@
             }
 
             ALERTSYSTEM.Toastr.ShowSuccess(response.message, function (result) {
-
                 if (response.url) {
                     window.location = response.url;
                 }
@@ -297,7 +296,6 @@
     }
 
     async function getHtml(url) {
-
         var useJquery = false;
         var promise;
 
@@ -337,7 +335,6 @@
         if (idList === undefined) {
             return Promise.resolve();
         }
-
 
         document.querySelector(idList).innerHTML = MAINMODULE.Default.SpinnerTop;
 

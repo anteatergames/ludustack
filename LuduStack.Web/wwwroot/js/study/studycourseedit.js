@@ -38,7 +38,6 @@
         objs.sortablePlanning = document.getElementById(selectors.sortablePlanning);
         objs.divPlans = $(selectors.divPlans);
         objs.divNoItems = $(selectors.divNoItems);
-
     }
 
     function init() {
@@ -114,7 +113,6 @@
         });
     }
 
-
     function bindBtnCollapse() {
         objs.container.on('click', selectors.btnCollapse, function (e) {
             e.preventDefault();
@@ -133,7 +131,6 @@
             return false;
         });
     }
-
 
     function bindBtnSavePlans() {
         objs.container.on('click', selectors.btnSavePlans, function (e) {
@@ -276,8 +273,6 @@
 
         COMMONEDIT.ResetValidator(objs.form);
     }
-
-
 
     function savePlans(btn, callback) {
         var url = objs.urls.data('urlPlansSave');

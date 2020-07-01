@@ -142,14 +142,14 @@ namespace LuduStack.Web
             {
                 app.Use(async (context, next) =>
                 {
-                    if (context.Request.Host != new HostString("www.ludustack.com"))
+                    if (!context.Request.Host.Host.Contains("ludustack.com"))
                     {
-                        var withDomain = "https://www.ludustack.com" + context.Request.Path;
+                        string withDomain = "https://www.ludustack.com" + context.Request.Path;
                         context.Response.Redirect(withDomain);
                     }
                     else if (!context.Request.IsHttps)
                     {
-                        var withHttps = "https://" + context.Request.Host + context.Request.Path;
+                        string withHttps = "https://" + context.Request.Host + context.Request.Path;
                         context.Response.Redirect(withHttps);
                     }
                     else
@@ -251,7 +251,6 @@ namespace LuduStack.Web
                 await RoleManager.CreateAsync(new Role(roleName));
             }
         }
-
 
         private void SetupAuthentication(IServiceCollection services)
         {

@@ -26,7 +26,6 @@ namespace LuduStack.Domain.Services
 
         #region General
 
-
         public IEnumerable<Guid> GetMentorsByUserId(Guid userId)
         {
             IEnumerable<UserConnection> mentorsIAdded = profileDomainService.GetConnectionByUserId(userId, UserConnectionType.Mentor);
@@ -72,9 +71,11 @@ namespace LuduStack.Domain.Services
 
             return finalList;
         }
-        #endregion
+
+        #endregion General
 
         #region Course
+
         public List<StudyCourseListItemVo> GetCourses()
         {
             List<StudyCourseListItemVo> objs = studyCourseRepository.GetCourses();
@@ -109,6 +110,7 @@ namespace LuduStack.Domain.Services
 
             return result;
         }
+
         public StudyCourse GenerateNewCourse(Guid userId)
         {
             StudyCourse model = new StudyCourse
@@ -201,6 +203,7 @@ namespace LuduStack.Domain.Services
 
             return await studyCourseRepository.AddStudent(courseId, student);
         }
+
         public async Task<bool> LeaveCourse(Guid userId, Guid courseId)
         {
             bool userAlreadyEnroled = studyCourseRepository.CheckStudentEnrolled(courseId, userId);
@@ -212,6 +215,7 @@ namespace LuduStack.Domain.Services
 
             return await studyCourseRepository.RemoveStudent(courseId, userId);
         }
-        #endregion
+
+        #endregion Course
     }
 }

@@ -1,5 +1,4 @@
 using LuduStack.Infra.CrossCutting.Abstractions;
-using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
 namespace LuduStack.Infra.CrossCutting.Identity.Services

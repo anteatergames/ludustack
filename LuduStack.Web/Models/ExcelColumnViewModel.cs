@@ -11,7 +11,6 @@ namespace LuduStack.Web.Models
 
     public static class ExcelColumnViewModelExtensions
     {
-
         public static IEnumerable<KeyValuePair<int, SupportedLanguage>> ToKeyValuePairs(this IEnumerable<ExcelColumnViewModel> list)
         {
             List<KeyValuePair<int, SupportedLanguage>> kvList = new List<KeyValuePair<int, SupportedLanguage>>();
@@ -28,4 +27,3 @@ namespace LuduStack.Web.Models
         }
     }
 }
-

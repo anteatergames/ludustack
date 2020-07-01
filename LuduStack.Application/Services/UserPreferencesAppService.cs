@@ -56,6 +56,7 @@ namespace LuduStack.Application.Services
                 return new OperationResultListVo<UserPreferencesViewModel>(ex.Message);
             }
         }
+
         public OperationResultVo GetAllIds(Guid currentUserId)
         {
             try

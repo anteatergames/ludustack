@@ -113,7 +113,6 @@
 
             $.post(url, data).done(function (response) {
                 if (response.success === true) {
-
                     if (callback) {
                         callback();
                     }
@@ -195,7 +194,6 @@
             rejectBtn.removeAttr('disabled');
             rejectBtn.addClass('text-danger');
         }
-
 
         var entryInput = newEntryObj.find(selectors.entryInput);
 

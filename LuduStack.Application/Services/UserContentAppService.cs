@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
+﻿using AutoMapper.QueryableExtensions;
 using LuduStack.Application.Formatters;
 using LuduStack.Application.Helpers;
 using LuduStack.Application.Interfaces;
@@ -9,8 +8,6 @@ using LuduStack.Application.ViewModels.Poll;
 using LuduStack.Application.ViewModels.Search;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Core.Extensions;
-using LuduStack.Domain.Interfaces;
-using LuduStack.Domain.Interfaces.Infrastructure;
 using LuduStack.Domain.Interfaces.Services;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
@@ -29,14 +26,10 @@ namespace LuduStack.Application.Services
         private readonly IGamificationDomainService gamificationDomainService;
         private readonly IPollDomainService pollDomainService;
 
-        public UserContentAppService(ILogger<UserContentAppService> logger
-            , IMapper mapper
-            , IUnitOfWork unitOfWork
-            , ICacheService cacheService
-            , IProfileDomainService profileDomainService
+        public UserContentAppService(IProfileBaseAppServiceCommon profileBaseAppServiceCommon, ILogger<UserContentAppService> logger
             , IUserContentDomainService userContentDomainService
             , IGamificationDomainService gamificationDomainService
-            , IPollDomainService pollDomainService) : base(mapper, unitOfWork, cacheService, profileDomainService)
+            , IPollDomainService pollDomainService) : base(profileBaseAppServiceCommon)
         {
             this.logger = logger;
             this.userContentDomainService = userContentDomainService;
@@ -46,6 +39,7 @@ namespace LuduStack.Application.Services
         }
 
         #region ICrudAppService
+
         public OperationResultVo<int> Count(Guid currentUserId)
         {
             try
@@ -75,6 +69,7 @@ namespace LuduStack.Application.Services
                 return new OperationResultListVo<UserContentViewModel>(ex.Message);
             }
         }
+
         public OperationResultVo GetAllIds(Guid currentUserId)
         {
             try
@@ -221,7 +216,8 @@ namespace LuduStack.Application.Services
                 return new OperationResultVo<Guid>(ex.Message);
             }
         }
-        #endregion
+
+        #endregion ICrudAppService
 
         private bool CheckSpam(Guid id, string content)
         {

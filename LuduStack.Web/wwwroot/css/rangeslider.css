@@ -1,6 +1,4 @@
-﻿
-
-.rangeslider__tooltip {
+﻿.rangeslider__tooltip {
     display: block;
     margin-top: 2.5em;
     font-size: 12px;
@@ -83,17 +81,17 @@
     width: 100%;
 }
 
-    .rangeslider__handle.js-low {
-        border-color: #4bc67d;
-    }
+.rangeslider__handle.js-low {
+    border-color: #4bc67d;
+}
 
-    .rangeslider__handle.js-med {
-        border-color: #f1c40f;
-    }
+.rangeslider__handle.js-med {
+    border-color: #f1c40f;
+}
 
-    .rangeslider__handle.js-high {
-        border-color: #b94a48;
-    }
+.rangeslider__handle.js-high {
+    border-color: #b94a48;
+}
 
 .rangeslider--horizontal .rangeslider__handle {
     top: -15px;

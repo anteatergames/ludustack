@@ -50,8 +50,10 @@ namespace LuduStack.Web.Areas.Learn.Controllers
             {
                 case "Mentor":
                     return View("MentorDashboard");
+
                 case "Student":
                     return View("StudentDashboard");
+
                 default:
                     return View("StudentDashboard");
             }
@@ -97,7 +99,6 @@ namespace LuduStack.Web.Areas.Learn.Controllers
             }
         }
 
-
         [Route("learn/study/listmymentors")]
         public PartialViewResult ListMyMentors()
         {
@@ -120,7 +121,6 @@ namespace LuduStack.Web.Areas.Learn.Controllers
 
             return PartialView("_ListUsers", model);
         }
-
 
         [Route("learn/study/listmystudents")]
         public PartialViewResult ListMyStudents()

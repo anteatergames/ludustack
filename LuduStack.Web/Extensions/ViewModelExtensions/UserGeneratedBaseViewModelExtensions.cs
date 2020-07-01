@@ -8,6 +8,7 @@ namespace LuduStack.Web.Extensions.ViewModelExtensions
         {
             vm.ShareUrl = url;
         }
+
         public static void SetShareText(this UserGeneratedBaseViewModel vm, string text)
         {
             vm.ShareText = text;

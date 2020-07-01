@@ -1,12 +1,9 @@
-﻿using AutoMapper;
-using LuduStack.Application.Formatters;
+﻿using LuduStack.Application.Formatters;
 using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels.Study;
 using LuduStack.Application.ViewModels.User;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Core.Extensions;
-using LuduStack.Domain.Interfaces;
-using LuduStack.Domain.Interfaces.Infrastructure;
 using LuduStack.Domain.Interfaces.Services;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
@@ -23,11 +20,9 @@ namespace LuduStack.Application.Services
         private readonly IStudyDomainService studyDomainService;
         private readonly IGamificationDomainService gamificationDomainService;
 
-        public StudyAppService(IMapper mapper, IUnitOfWork unitOfWork,
-            ICacheService cacheService,
-            IProfileDomainService profileDomainService,
-            IStudyDomainService studyDomainService,
-            IGamificationDomainService gamificationDomainService) : base(mapper, unitOfWork, cacheService, profileDomainService)
+        public StudyAppService(IProfileBaseAppServiceCommon profileBaseAppServiceCommon
+            , IStudyDomainService studyDomainService
+            , IGamificationDomainService gamificationDomainService) : base(profileBaseAppServiceCommon)
         {
             this.studyDomainService = studyDomainService;
             this.gamificationDomainService = gamificationDomainService;
@@ -102,6 +97,7 @@ namespace LuduStack.Application.Services
         }
 
         #region Course
+
         public OperationResultVo GetCourses(Guid currentUserId)
         {
             try
@@ -351,7 +347,8 @@ namespace LuduStack.Application.Services
                 return new OperationResultVo(ex.Message);
             }
         }
-        #endregion
+
+        #endregion Course
 
         #region Private Methods
 
@@ -394,6 +391,7 @@ namespace LuduStack.Application.Services
                 }
             }
         }
-        #endregion
+
+        #endregion Private Methods
     }
 }

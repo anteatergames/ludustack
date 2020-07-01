@@ -6,6 +6,7 @@ using LuduStack.Application.ViewModels.Content;
 using LuduStack.Application.ViewModels.FeaturedContent;
 using LuduStack.Application.ViewModels.Game;
 using LuduStack.Application.ViewModels.Gamification;
+using LuduStack.Application.ViewModels.Giveaway;
 using LuduStack.Application.ViewModels.Jobs;
 using LuduStack.Application.ViewModels.Localization;
 using LuduStack.Application.ViewModels.Notification;
@@ -134,6 +135,16 @@ namespace LuduStack.Application.AutoMapper
             CreateMap<StudyActivityViewModel, StudyActivity>();
 
             #endregion Study
+
+            #region Giveaway
+
+            CreateMap<GiveawayViewModel, Giveaway>();
+            CreateMap<GiveawayPrizeViewModel, GiveawayPrize>();
+            CreateMap<GiveawayEntryOptionViewModel, GiveawayEntryOption>();
+            CreateMap<GiveawayParticipantViewModel, GiveawayParticipant>();
+            CreateMap<GiveawayEntryViewModel, GiveawayEntry>();
+
+            #endregion Giveaway
         }
     }
 }

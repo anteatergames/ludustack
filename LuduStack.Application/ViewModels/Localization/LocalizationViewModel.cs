@@ -33,7 +33,6 @@ namespace LuduStack.Application.ViewModels.Localization
 
         public double TranslationPercentage { get; set; }
 
-
         public string TranslationPercentageText
         {
             get

@@ -5,7 +5,6 @@ namespace LuduStack.Application.Interfaces
 {
     public interface ICrudAppService<T>
     {
-
         OperationResultVo<int> Count(Guid currentUserId);
 
         OperationResultListVo<T> GetAll(Guid currentUserId);

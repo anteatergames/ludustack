@@ -6,6 +6,7 @@ using LuduStack.Application.ViewModels.Content;
 using LuduStack.Application.ViewModels.FeaturedContent;
 using LuduStack.Application.ViewModels.Game;
 using LuduStack.Application.ViewModels.Gamification;
+using LuduStack.Application.ViewModels.Giveaway;
 using LuduStack.Application.ViewModels.Jobs;
 using LuduStack.Application.ViewModels.Localization;
 using LuduStack.Application.ViewModels.Search;
@@ -135,13 +136,22 @@ namespace LuduStack.Application.AutoMapper
             CreateMap<StudyCourse, CourseViewModel>()
                     .ForMember(dest => dest.SkillSet, opt => opt.MapFrom<StudyCourseWorkTypeFromDomainResolver>());
 
-
             CreateMap<CourseMember, CourseMemberViewModel>();
             CreateMap<StudyGroup, StudyGroupViewModel>();
             CreateMap<StudyPlan, StudyPlanViewModel>();
             CreateMap<StudyActivity, StudyActivityViewModel>();
 
             #endregion Study
+
+            #region Giveaway
+
+            CreateMap<Giveaway, GiveawayViewModel>();
+            CreateMap<GiveawayPrize, GiveawayPrizeViewModel>();
+            CreateMap<GiveawayEntryOption, GiveawayEntryOptionViewModel>();
+            CreateMap<GiveawayParticipant, GiveawayParticipantViewModel>();
+            CreateMap<GiveawayEntry, GiveawayEntryViewModel>();
+
+            #endregion Giveaway
         }
     }
 }
