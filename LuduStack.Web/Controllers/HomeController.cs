@@ -53,6 +53,8 @@ namespace LuduStack.Web.Controllers
 
             SetEmailConfirmed();
 
+            ViewBag.BuildNumber = Environment.GetEnvironmentVariable("LUDUSTACK_BUILD_NUMBER") ?? "no-buildnumber-env-var";
+
             return View();
         }
 
