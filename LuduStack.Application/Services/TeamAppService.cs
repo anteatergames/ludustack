@@ -61,6 +61,7 @@ namespace LuduStack.Application.Services
                 return new OperationResultListVo<TeamViewModel>(ex.Message);
             }
         }
+
         public OperationResultVo GetAllIds(Guid currentUserId)
         {
             try
@@ -184,7 +185,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        #endregion ICrudAPpService
+        #endregion ICrudAppService
 
         #region ITeamAppService
 

@@ -252,7 +252,6 @@ namespace LuduStack.Web
             }
         }
 
-
         private void SetupAuthentication(IServiceCollection services)
         {
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)

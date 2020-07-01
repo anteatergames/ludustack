@@ -95,7 +95,7 @@
         btn.attr('data-value', translation.value);
 
         newAuthorObj.removeClass('template');
-            
+
         newAuthorObj.appendTo(container);
 
         setSelectedTranslator(btn);

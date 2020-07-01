@@ -130,7 +130,6 @@
             }
         }
 
-
         public static string DefaultCourseThumbnail
         {
             get

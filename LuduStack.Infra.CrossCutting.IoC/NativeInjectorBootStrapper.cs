@@ -147,9 +147,10 @@ namespace LuduStack.Infra.CrossCutting.IoC
 
             #endregion Giveaway
 
-
             #region Common
+
             services.AddScoped<IProfileBaseAppServiceCommon, ProfileBaseAppServiceCommon>();
+
             #endregion Common
 
             // Infra

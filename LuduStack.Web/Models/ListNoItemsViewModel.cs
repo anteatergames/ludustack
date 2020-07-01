@@ -13,6 +13,7 @@
             Text = text;
             Rotate = true;
         }
+
         public ListNoItemsViewModel(string icon, string text, bool rotate)
         {
             Icon = icon;

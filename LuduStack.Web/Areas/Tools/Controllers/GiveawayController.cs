@@ -12,7 +12,6 @@ namespace LuduStack.Web.Areas.Tools.Controllers
             return View();
         }
 
-
         [Authorize]
         [Route("tools/giveaway/add/")]
         public IActionResult Add()

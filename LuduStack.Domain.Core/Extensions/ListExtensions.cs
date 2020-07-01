@@ -10,6 +10,7 @@ namespace LuduStack.Domain.Core.Extensions
         {
             return list ?? new List<T>();
         }
+
         public static void Shuffle<T>(this IList<T> list)
         {
             RNGCryptoServiceProvider provider = new RNGCryptoServiceProvider();

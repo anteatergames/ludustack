@@ -84,6 +84,7 @@ namespace LuduStack.Application.Services
                 return new OperationResultListVo<LocalizationViewModel>(ex.Message);
             }
         }
+
         public OperationResultVo GetAllIds(Guid currentUserId)
         {
             try
@@ -806,6 +807,7 @@ namespace LuduStack.Application.Services
                 }
             }
         }
+
         private static string SanitizeKey(string key)
         {
             if (key.EndsWith("\n") || key.StartsWith("\n"))

@@ -78,7 +78,6 @@
     };
 }());
 
-
 $(function () {
     COURSEDETAILS.Init();
 });

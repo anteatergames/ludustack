@@ -76,7 +76,6 @@
         });
     }
 
-
     function bindSwitchCharacteristicChange() {
         objs.container.on('change', selectors.switchCharacteristic, function () {
             var obj = $(this);

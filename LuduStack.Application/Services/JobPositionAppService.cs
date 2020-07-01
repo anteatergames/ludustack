@@ -191,7 +191,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        #endregion ICrudAPpService
+        #endregion ICrudAppService
 
         public OperationResultVo GenerateNew(Guid currentUserId, JobPositionOrigin origin)
         {

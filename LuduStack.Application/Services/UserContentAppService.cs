@@ -39,6 +39,7 @@ namespace LuduStack.Application.Services
         }
 
         #region ICrudAppService
+
         public OperationResultVo<int> Count(Guid currentUserId)
         {
             try
@@ -68,6 +69,7 @@ namespace LuduStack.Application.Services
                 return new OperationResultListVo<UserContentViewModel>(ex.Message);
             }
         }
+
         public OperationResultVo GetAllIds(Guid currentUserId)
         {
             try
@@ -214,7 +216,8 @@ namespace LuduStack.Application.Services
                 return new OperationResultVo<Guid>(ex.Message);
             }
         }
-        #endregion
+
+        #endregion ICrudAppService
 
         private bool CheckSpam(Guid id, string content)
         {

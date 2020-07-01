@@ -69,6 +69,7 @@ namespace LuduStack.Domain.Services
 
             return DomainActionPerformed.None;
         }
+
         public void SaveEntries(Guid projectId, IEnumerable<LocalizationEntry> entries)
         {
             List<LocalizationEntry> existingEntrys = repository.GetEntries(projectId).ToList();

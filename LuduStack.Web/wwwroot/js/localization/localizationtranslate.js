@@ -94,7 +94,6 @@
                 loadSelectedLanguage(objs.ddlLanguage);
             }
 
-
             var inputs = objs.container.find(selectors.entryInput);
 
             var showTranslated = filter === 'All' || filter === 'Translated';
@@ -186,7 +185,6 @@
 
                 $.post(url, { language: language, entries: data }).done(function (response) {
                     if (response.success === true) {
-
                         for (var j = 0; j < changedEntries.length; j++) {
                             var input2 = $(selectors.entryInput + '[data-termid=' + changedEntries[j] + ']');
 

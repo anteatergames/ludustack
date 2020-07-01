@@ -24,7 +24,6 @@ namespace LuduStack.Tests.Domain
             Fixture.Behaviors.Add(new OmitOnRecursionBehavior());
         }
 
-
         [Theory]
         [Trait("Method", "GetAll")]
         [AutoSubstituteData]
@@ -35,7 +34,6 @@ namespace LuduStack.Tests.Domain
             System.Collections.Generic.IEnumerable<Game> result = sut.GetAll();
 
             await repository.Received().GetAll();
-
 
             result.Should().NotBeNull();
             result.Should().HaveCountGreaterOrEqualTo(0);
@@ -55,7 +53,6 @@ namespace LuduStack.Tests.Domain
             Game result = sut.GetById(obj.Id);
 
             await repository.Received().GetById(obj.Id);
-
 
             result.Should().NotBeNull();
 

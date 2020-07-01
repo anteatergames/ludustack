@@ -44,8 +44,6 @@ a {
         box-shadow: 0 3px 10px rgba(0,0,0,0.2);
     }
 
-
-
 .hover:hover {
     box-shadow: 0 3px 10px rgba(0,0,0,0.2);
 }
@@ -462,27 +460,26 @@ a {
         background-color: #01921f;
     }
 
-
 .list-group .list-group-item.active {
     background-color: var(--color-bg-dark);
     border-color: var(--color-bg-dark);
 }
 
-.list-group .list-group-item.active a {
-    color: white;
-}
-
-    .list-group .list-group-item.active a:hover {
-        color: var(--color-highlight);
+    .list-group .list-group-item.active a {
+        color: white;
     }
 
+        .list-group .list-group-item.active a:hover {
+            color: var(--color-highlight);
+        }
 
 .bg-game-genre-strategy {
     color: var(--color-white);
     background-color: var(--game-genre-strategy);
     opacity: 0.8;
 }
-.bg-game-genre-strategy:hover {
-    color: var(--color-white);
-    opacity: 1;
-}
+
+    .bg-game-genre-strategy:hover {
+        color: var(--color-white);
+        opacity: 1;
+    }

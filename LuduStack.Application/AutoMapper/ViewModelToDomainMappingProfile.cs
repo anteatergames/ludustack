@@ -136,14 +136,14 @@ namespace LuduStack.Application.AutoMapper
 
             #endregion Study
 
-
-
             #region Giveaway
+
             CreateMap<GiveawayViewModel, Giveaway>();
             CreateMap<GiveawayPrizeViewModel, GiveawayPrize>();
             CreateMap<GiveawayEntryOptionViewModel, GiveawayEntryOption>();
             CreateMap<GiveawayParticipantViewModel, GiveawayParticipant>();
             CreateMap<GiveawayEntryViewModel, GiveawayEntry>();
+
             #endregion Giveaway
         }
     }

@@ -26,7 +26,6 @@
         objs.sortablePlanning = document.getElementById(selectors.sortablePlanning);
         objs.divPlans = $(selectors.divPlans);
         objs.divNoItems = $(selectors.divNoItems);
-
     }
 
     function init() {

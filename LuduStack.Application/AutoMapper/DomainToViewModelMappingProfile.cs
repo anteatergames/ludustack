@@ -136,7 +136,6 @@ namespace LuduStack.Application.AutoMapper
             CreateMap<StudyCourse, CourseViewModel>()
                     .ForMember(dest => dest.SkillSet, opt => opt.MapFrom<StudyCourseWorkTypeFromDomainResolver>());
 
-
             CreateMap<CourseMember, CourseMemberViewModel>();
             CreateMap<StudyGroup, StudyGroupViewModel>();
             CreateMap<StudyPlan, StudyPlanViewModel>();
@@ -145,12 +144,14 @@ namespace LuduStack.Application.AutoMapper
             #endregion Study
 
             #region Giveaway
+
             CreateMap<Giveaway, GiveawayViewModel>();
             CreateMap<GiveawayPrize, GiveawayPrizeViewModel>();
             CreateMap<GiveawayEntryOption, GiveawayEntryOptionViewModel>();
             CreateMap<GiveawayParticipant, GiveawayParticipantViewModel>();
             CreateMap<GiveawayEntry, GiveawayEntryViewModel>();
-            #endregion
+
+            #endregion Giveaway
         }
     }
 }

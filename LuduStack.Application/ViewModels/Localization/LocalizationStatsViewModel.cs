@@ -14,6 +14,7 @@ namespace LuduStack.Application.ViewModels.Localization
             Languages = new List<TranslationStatsLanguageViewModel>();
         }
     }
+
     public class TranslationStatsLanguageViewModel
     {
         public SupportedLanguage Language { get; set; }

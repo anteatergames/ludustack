@@ -97,6 +97,7 @@ namespace LuduStack.Application.Services
         }
 
         #region Course
+
         public OperationResultVo GetCourses(Guid currentUserId)
         {
             try
@@ -346,7 +347,8 @@ namespace LuduStack.Application.Services
                 return new OperationResultVo(ex.Message);
             }
         }
-        #endregion
+
+        #endregion Course
 
         #region Private Methods
 
@@ -389,6 +391,7 @@ namespace LuduStack.Application.Services
                 }
             }
         }
-        #endregion
+
+        #endregion Private Methods
     }
 }

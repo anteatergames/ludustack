@@ -18,12 +18,12 @@
         border-radius: 50% !important;
     }
 }
+
 @media (min-width: 1200px) {
     .container {
         max-width: 1250px;
     }
 }
-
 
 .form-control {
     /*-webkit-box-sizing: border-box;
@@ -180,7 +180,6 @@ select.form-control {
     display: none;
 }
 
-
 .select2-container .select2-selection--single {
     height: 36px !important;
 }
@@ -189,12 +188,10 @@ select.form-control {
         line-height: 34px !important;
     }
 
-
     .select2-container .select2-selection--single .select2-selection__arrow {
         height: 34px !important;
         right: 8px !important;
     }
-
 
 img.grayscale {
     filter: grayscale(100%) contrast(50%) blur(1px);

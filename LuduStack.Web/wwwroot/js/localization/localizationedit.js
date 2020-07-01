@@ -209,7 +209,6 @@
             urlTerms = urlTerms + id;
 
             MAINMODULE.Ajax.LoadHtml(urlTerms, objs.divTerms).then(() => {
-
                 objs.btnSaveTerms = $(selectors.btnSaveTerms);
                 objs.divNoItems = $(selectors.divNoItems);
 
@@ -223,7 +222,6 @@
 
                 MAINMODULE.Common.BindPopOvers();
             });
-
         }
     }
 
@@ -371,7 +369,6 @@
                         formData.append("projectId", response.value);
                     });
 
-
                     termsUploadDropZone.processQueue();
 
                     termsUploadDropZone.on("success", function (file) {
@@ -399,7 +396,6 @@
             var id = btn.data('projectId');
 
             var columns = $(selectors.ddlColumn);
-
 
             termsUploadDropZone.on("sending", function (file, xhr, formData) {
                 formData.append("projectId", id);
@@ -462,7 +458,6 @@
     function instantiateDropZone() {
         if (window.Dropzone) {
             var url = objs.divUploadTerms.data('url');
-
 
             if (termsUploadDropZone) {
                 termsUploadDropZone.destroy();

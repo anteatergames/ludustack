@@ -127,7 +127,7 @@
                     method: 'share',
                     href: url
                 }, function (response) {
-                        console.log(response);
+                    console.log(response);
                 });
             }
             else if (provider === 'reddit') {

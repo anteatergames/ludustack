@@ -4,7 +4,6 @@
     function init() {
     }
 
-
     function resetValidator(formObject) {
         formObject.removeData("validator").removeData("unobtrusiveValidation");
 
