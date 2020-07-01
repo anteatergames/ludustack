@@ -9,7 +9,6 @@ strategy:
       imageName: 'ubuntu-16.04'
 
 trigger:
-- development
 - master
 
 pool:
