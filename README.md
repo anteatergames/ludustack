@@ -4,7 +4,7 @@
 
 
 | Name|Deploy|Code Factor|Better Code|
-|-|:-:|:-:|:-:|
+|:-|:-:|:-:|:-:|
 |development|[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?branch=development&project=anteatergames_ludustack&metric=alert_status)](https://sonarcloud.io/dashboard?id=anteatergames_ludustack&branch=development)|[![CodeFactor](https://www.codefactor.io/repository/github/anteatergames/ludustack/badge)](https://www.codefactor.io/repository/github/anteatergames/ludustack)|[![BCH compliance](https://bettercodehub.com/edge/badge/anteatergames/indievisible?branch=development)](https://bettercodehub.com/)|
 |master|[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?branch=master&project=anteatergames_ludustack&metric=alert_status)](https://sonarcloud.io/dashboard?id=anteatergames_ludustack&branch=master)|[![CodeFactor](https://www.codefactor.io/repository/github/anteatergames/ludustack/badge)](https://www.codefactor.io/repository/github/anteatergames/ludustack)|[![BCH compliance](https://bettercodehub.com/edge/badge/anteatergames/indievisible?branch=master)](https://bettercodehub.com/)|
 
