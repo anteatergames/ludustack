@@ -137,5 +137,13 @@
                 return "/images/placeholders/courseplaceholder.png";
             }
         }
+
+        public static string DefaultGiveawayThumbnail
+        {
+            get
+            {
+                return "/images/placeholders/giveawayplaceholder.png";
+            }
+        }
     }
 }

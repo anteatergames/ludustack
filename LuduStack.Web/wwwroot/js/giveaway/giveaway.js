@@ -38,7 +38,7 @@
     }
 
     function loadItems(url) {
-        MAINMODULE.Ajax.LoadHtml(url, objs.listCourses);
+        MAINMODULE.Ajax.LoadHtml(url, objs.list);
     }
 
     return {

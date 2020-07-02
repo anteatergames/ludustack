@@ -40,8 +40,8 @@
     <input type="hidden" id="isajax" value="@isAjax.ToString().ToLower()" />
     <input type="hidden" id="caninteract" value="@canInteract.ToString().ToLower()" />
     <input type="hidden" id="urls" value="urls"
-           data-url-list="@Url.Action("list", "giveaway", new { area = "tools" })"
-           data-url-mine="@Url.Action("listMine", "giveaway", new { area = "tools" })" />
+           data-url-list="@Url.Action("listbyme", "giveaway", new { area = "tools" })"
+           data-url-mine="@Url.Action("listmine", "giveaway", new { area = "tools" })" />
 
     <div id="containerlist" class="row">
         <div class="col-lg-12 mb-2 px-4">
@@ -68,10 +68,6 @@
                         <div class="col-12">
                             <div id="divActions">
                                 <a asp-area="tools" asp-controller="giveaway" asp-action="add" class="btn btn-outline-primary btn-block">@SharedLocalizer["New Giveaway"]</a>
-                            </div>
-                            <div class="mt-2">
-                                <h4>@SharedLocalizer["My Giveaways"]:</h4>
-                                <div id="divMyProjects" class="mt-1 p-1"></div>
                             </div>
                         </div>
                     </div>

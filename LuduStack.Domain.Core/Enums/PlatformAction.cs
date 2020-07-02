@@ -18,6 +18,7 @@
         JobPositionPost = 14,
         LocalizationRequest = 15,
         LocalizationHelp = 16,
-        CourseAddition = 17
+        CourseAdd = 17,
+        GiveawayAdd = 18
     }
 }
