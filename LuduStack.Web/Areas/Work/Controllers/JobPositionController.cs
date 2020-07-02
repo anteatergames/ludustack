@@ -215,7 +215,7 @@ namespace LuduStack.Web.Areas.Work.Controllers
 
             SetLocalization(vm);
             SetAuthorDetails(vm);
-            vm.Description = ContentHelper.FormatContentToShow(vm.Description);
+            vm.Description = ContentFormatter.FormatContentToShow(vm.Description);
 
             SetGamificationMessage(pointsEarned);
 

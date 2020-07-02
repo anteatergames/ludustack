@@ -1,0 +1,62 @@
+﻿@model IEnumerable<GiveawayListItemVo>
+
+@{
+    Layout = null;
+    var noItemsModel = new ListNoItemsViewModel("fas fa-dizzy", "What? You don't have Giveaways!");
+
+    var description = ViewData["ListDescription"] == null ? SharedLocalizer["giveaways"] : (string)ViewData["ListDescription"];
+}
+
+<div class="col-12">
+    <h2>@SharedLocalizer[description]</h2>
+</div>
+
+@if (!Model.Any())
+{
+    <partial name="_ListNoItems" model="noItemsModel" />
+}
+else
+{
+    <div class="col-12 bg-white">
+        <table class="table">
+            <caption class="sr-only">@SharedLocalizer["The available giveaways."]</caption>
+            <thead>
+                <tr>
+                    <th scope="col">@SharedLocalizer["Name"]</th>
+                    <th scope="col">@SharedLocalizer["Participants"]</th>
+                    <th scope="col">@SharedLocalizer["Actions"]</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td><a asp-area="tools" asp-controller="giveaway" asp-action="details" asp-route-id="@item.Id"><span>@item.Name</span></a></td>
+                        <td><a asp-area="tools" asp-controller="giveaway" asp-action="details" asp-route-id="@item.Id"><span>@item.ParticipantCount</span></a></td>
+                        <td>
+                            <div class="btn-group" role="group">
+                                <a class="btn btn-sm btn-outline-info" href="#"><i class="fas fa-bullhorn" aria-hidden="true"></i> Promote</a>
+
+                                <div class="dropdown show">
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                        <a class="dropdown-item" href="#">Action</a>
+                                        <a class="dropdown-item" href="#">Another action</a>
+                                        <a class="dropdown-item" href="#">Something else here</a>
+                                    </div>
+                                </div>
+
+                                <div class="dropdown">
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item" href="#">Action</a>
+                                        <a class="dropdown-item" href="#">Another action</a>
+                                        <a class="dropdown-item" href="#">Something else here</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

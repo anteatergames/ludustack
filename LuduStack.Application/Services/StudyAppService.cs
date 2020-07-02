@@ -106,7 +106,7 @@ namespace LuduStack.Application.Services
 
                 foreach (StudyCourseListItemVo course in courses)
                 {
-                    course.ThumbnailUrl = SetFeaturedImage(currentUserId, course.ThumbnailUrl, ImageRenderType.Full);
+                    course.ThumbnailUrl = SetFeaturedImage(currentUserId, course.ThumbnailUrl, ImageRenderType.Full, Constants.DefaultCourseThumbnail);
                 }
 
                 return new OperationResultListVo<StudyCourseListItemVo>(courses);
@@ -200,7 +200,7 @@ namespace LuduStack.Application.Services
                     studyDomainService.AddCourse(model);
                     vm.Id = model.Id;
 
-                    pointsEarned += gamificationDomainService.ProcessAction(currentUserId, PlatformAction.CourseAddition);
+                    pointsEarned += gamificationDomainService.ProcessAction(currentUserId, PlatformAction.CourseAdd);
                 }
                 else
                 {
@@ -249,7 +249,7 @@ namespace LuduStack.Application.Services
 
                 SetPermissions(currentUserId, vm);
 
-                vm.ThumbnailUrl = SetFeaturedImage(currentUserId, vm.ThumbnailUrl, ImageRenderType.Full);
+                vm.ThumbnailUrl = SetFeaturedImage(currentUserId, vm.ThumbnailUrl, ImageRenderType.Full, Constants.DefaultCourseThumbnail);
 
                 return new OperationResultVo<CourseViewModel>(vm);
             }
@@ -367,29 +367,6 @@ namespace LuduStack.Application.Services
             vm.Permissions.CanConnect = vm.UserId != currentUserId && !vm.Members.Any(x => x.UserId == currentUserId);
 
             SetBasePermissions(currentUserId, vm);
-        }
-
-        private static string SetFeaturedImage(Guid userId, string thumbnailUrl, ImageRenderType imageType)
-        {
-            if (string.IsNullOrWhiteSpace(thumbnailUrl) || Constants.DefaultCourseThumbnail.NoExtension().Contains(thumbnailUrl.NoExtension()))
-            {
-                return Constants.DefaultCourseThumbnail;
-            }
-            else
-            {
-                switch (imageType)
-                {
-                    case ImageRenderType.LowQuality:
-                        return UrlFormatter.Image(userId, ImageType.CourseThumbnail, thumbnailUrl, 278, 10);
-
-                    case ImageRenderType.Responsive:
-                        return UrlFormatter.Image(userId, ImageType.CourseThumbnail, thumbnailUrl, true, 0, 0);
-
-                    case ImageRenderType.Full:
-                    default:
-                        return UrlFormatter.Image(userId, ImageType.CourseThumbnail, thumbnailUrl, 278);
-                }
-            }
         }
 
         #endregion Private Methods

@@ -1,9 +1,14 @@
 ﻿using CountryData;
+using LuduStack.Application.Formatters;
 using LuduStack.Application.Interfaces;
+using LuduStack.Application.ViewModels;
 using LuduStack.Application.ViewModels.Game;
 using LuduStack.Application.ViewModels.User;
+using LuduStack.Domain.Core.Enums;
+using LuduStack.Domain.Core.Extensions;
 using LuduStack.Domain.Core.Models;
 using LuduStack.Domain.Interfaces;
+using LuduStack.Domain.Interfaces.Models;
 using LuduStack.Domain.Interfaces.Services;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
@@ -120,6 +125,39 @@ namespace LuduStack.Application.Services
             catch (Exception ex)
             {
                 return new OperationResultVo(ex.Message);
+            }
+        }
+
+        protected static string SetFeaturedImage(Guid userId, string thumbnailUrl, ImageRenderType imageType, string defaultImage)
+        {
+            if (string.IsNullOrWhiteSpace(thumbnailUrl) || defaultImage.NoExtension().Contains(thumbnailUrl.NoExtension()))
+            {
+                return Constants.DefaultCourseThumbnail;
+            }
+            else
+            {
+                switch (imageType)
+                {
+                    case ImageRenderType.LowQuality:
+                        return UrlFormatter.Image(userId, ImageType.CourseThumbnail, thumbnailUrl, 278, 10);
+
+                    case ImageRenderType.Responsive:
+                        return UrlFormatter.Image(userId, ImageType.CourseThumbnail, thumbnailUrl, true, 0, 0);
+
+                    case ImageRenderType.Full:
+                    default:
+                        return UrlFormatter.Image(userId, ImageType.CourseThumbnail, thumbnailUrl, 278);
+                }
+            }
+        }
+
+        protected void SetAuthorDetails(IUserGeneratedContent vm)
+        {
+            UserProfile authorProfile = GetCachedProfileByUserId(vm.UserId);
+            if (authorProfile != null)
+            {
+                vm.AuthorPicture = UrlFormatter.ProfileImage(vm.UserId, 40);
+                vm.AuthorName = authorProfile.Name;
             }
         }
 

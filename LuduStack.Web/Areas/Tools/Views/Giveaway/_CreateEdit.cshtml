@@ -49,7 +49,20 @@
             <input type="hidden" asp-for="CreateDate" />
             <div class="row">
                 <div class="col-md-12">
-                    dddd
+                    <div class="form-group">
+                        <label asp-for="Name" class="col-form-label"></label>
+                        <span asp-description-for="Name" class="col-form-label" />
+                        <input asp-for="Name" class="form-control" placeholder="@SharedLocalizer["Type the Giveaway name here"]" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label asp-for="Description" class="col-form-label"></label>
+                        <span asp-description-for="Description" class="col-form-label" />
+                        <textarea asp-for="Description" class="form-control" placeholder="@SharedLocalizer["Describe the Giveaway here"]"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
                 </div>
 
                 <div class="col-12 col-lg-6 offset-lg-6 col-xl-4 offset-xl-8 mt-1">
