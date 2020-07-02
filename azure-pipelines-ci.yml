@@ -5,6 +5,8 @@
 
 trigger:
 - development
+
+pr:
 - master
 
 pool:
