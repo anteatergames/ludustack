@@ -52,7 +52,7 @@ namespace LuduStack.Web.Controllers
 
             UserContentViewModel vm = serviceResult.Value;
 
-            vm.Content = ContentHelper.FormatContentToShow(vm.Content);
+            vm.Content = ContentFormatter.FormatContentToShow(vm.Content);
 
             SetAuthorDetails(vm);
 

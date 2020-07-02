@@ -141,7 +141,7 @@ namespace LuduStack.Web.Areas.Learn.Controllers
 
             model = castResult.Value;
 
-            model.Description = ContentHelper.FormatCFormatTextAreaBreaks(model.Description);
+            model.Description = ContentFormatter.FormatCFormatTextAreaBreaks(model.Description);
 
             return View("CourseCreateEditWrapper", model);
         }

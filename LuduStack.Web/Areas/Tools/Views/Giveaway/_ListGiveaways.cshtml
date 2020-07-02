@@ -24,6 +24,7 @@ else
                 <tr>
                     <th scope="col">@SharedLocalizer["Name"]</th>
                     <th scope="col">@SharedLocalizer["Participants"]</th>
+                    <th scope="col">@SharedLocalizer["Actions"]</th>
                 </tr>
             </thead>
             <tbody>
@@ -32,6 +33,27 @@ else
                     <tr>
                         <td><a asp-area="tools" asp-controller="giveaway" asp-action="details" asp-route-id="@item.Id"><span>@item.Name</span></a></td>
                         <td><a asp-area="tools" asp-controller="giveaway" asp-action="details" asp-route-id="@item.Id"><span>@item.ParticipantCount</span></a></td>
+                        <td>
+                            <div class="btn-group" role="group">
+                                <a class="btn btn-sm btn-outline-info" href="#"><i class="fas fa-bullhorn" aria-hidden="true"></i> Promote</a>
+
+                                <div class="dropdown show">
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                        <a class="dropdown-item" href="#">Action</a>
+                                        <a class="dropdown-item" href="#">Another action</a>
+                                        <a class="dropdown-item" href="#">Something else here</a>
+                                    </div>
+                                </div>
+
+                                <div class="dropdown">
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item" href="#">Action</a>
+                                        <a class="dropdown-item" href="#">Another action</a>
+                                        <a class="dropdown-item" href="#">Something else here</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
                     </tr>
                 }
             </tbody>

@@ -5,7 +5,7 @@ using System.Web;
 
 namespace LuduStack.Web.Helpers
 {
-    public static class ContentHelper
+    public static class ContentFormatter
     {
         public static string FormatCFormatTextAreaBreaks(string content)
         {
@@ -14,16 +14,18 @@ namespace LuduStack.Web.Helpers
 
         public static string FormatContentToShow(string content)
         {
-            //group 1 <figure
-            //group 2 <img src="
-            //group 5 oembed
+            //group 1 figure class="xxxx">
+            //group 2 oembed start
+            //group 3 <img src="
+            //group 5 
             //group 6 abre parenteses
-            //group 7 url
-            //group 9 fecha parenteses
-            //group 10 oembed ending
+            //group 7 indica url já formatada
+            //group 8 url
+            //group 10 fecha parenteses
+            //group 11 oembed ending
             //group 11 figure ending
 
-            string patternUrl = @"(<figure class=""image"">)?(<img(.?)?(data-)?src="")?(<figure class=""media""><oembed url=""|<figure class=""media""><div data-oembed-url=""|<oembed>)?(\()?([(http(s)?):\/\/(www\.)?a-zA-Z0-9\-@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=\,]*)\/[\w|\?|\=|\&|\;|\-\%\.]+)""?(\))?(<\/oembed>|><\/oembed><\/figure>)?(><\/figure>)?(.>)?";
+            string patternUrl = @"(<figure class="".+"">)?(<oembed url=""|<div data-oembed-url=""|<oembed>)?(<img(.?)?(data-)?src="")?(\()?(\<a href\=\"")?([(http(s)?):\/\/(www\.)?a-zA-Z0-9\-@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=\,]*)\/[\w|\?|\=|\&|\;|\-\%\.]+)""?(\))?(<\/oembed>|><\/oembed><\/figure>)?(><\/figure>)?(.>)?";
 
             Regex theRegex = new Regex(patternUrl);
 
@@ -32,11 +34,11 @@ namespace LuduStack.Web.Helpers
             foreach (Match match in matchesUrl)
             {
                 string toReplace = match.Groups[0].Value;
-                string imagePrefix = match.Groups[2].Value;
-                string oembedPrefix = match.Groups[5].Value;
+                string oembedPrefix = match.Groups[2].Value;
+                string imagePrefix = match.Groups[3].Value;
                 string openParenthesis = match.Groups[6].Value;
-                string url = match.Groups[7].Value;
-                string closeParenthesis = match.Groups[9].Value;
+                string url = match.Groups[8].Value;
+                string closeParenthesis = match.Groups[10].Value;
 
                 url = !url.TrimStart('(').TrimEnd(')').ToLower().StartsWith("http") ? String.Format("http://{0}", url) : url;
 
@@ -59,7 +61,7 @@ namespace LuduStack.Web.Helpers
                     newText = String.Format("({0})", newText);
                 }
 
-                string templateUrlCkEditor = String.Format("<a href=\"{0}\">{0}</a>", url);
+                string templateUrlCkEditor = String.Format("<a href=\"{0}\">.+</a>", url);
 
                 bool isAlreadyUrl = Regex.IsMatch(content, templateUrlCkEditor);
 

@@ -3,7 +3,6 @@
 
     var selectors = {};
     var objs = {};
-    var canInteract = false;
 
     function setSelectors() {
         selectors.canInteract = '#caninteract';
@@ -14,7 +13,6 @@
     }
 
     function cacheObjs() {
-        objs.controlsidebar = $(selectors.controlsidebar);
         objs.container = $(selectors.container);
         objs.urls = $(selectors.urls);
         objs.containerDetails = $(selectors.containerDetails);
@@ -27,8 +25,6 @@
         cacheObjs();
 
         bindAll();
-
-        canInteract = objs.container.find(selectors.canInteract).val();
 
         var url = objs.urls.data('urlList');
         loadItems(url);

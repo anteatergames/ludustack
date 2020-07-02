@@ -68,12 +68,12 @@ namespace LuduStack.Web.ViewComponents
                 }
                 else
                 {
-                    item.Content = ContentHelper.FormatContentToShow(item.Content);
+                    item.Content = ContentFormatter.FormatContentToShow(item.Content);
                 }
 
                 foreach (CommentViewModel comment in item.Comments)
                 {
-                    comment.Text = ContentHelper.FormatHashTagsToShow(comment.Text);
+                    comment.Text = ContentFormatter.FormatHashTagsToShow(comment.Text);
                 }
 
                 item.Permissions.CanEdit = !item.HasPoll && (item.UserId == CurrentUserId || userIsAdmin);
@@ -110,7 +110,7 @@ namespace LuduStack.Web.ViewComponents
                 recruiting = bool.Parse(teamData[4] ?? "False");
             }
 
-            string postTemplate = ContentHelper.FormatUrlContentToShow(item.UserContentType);
+            string postTemplate = ContentFormatter.FormatUrlContentToShow(item.UserContentType);
             string translatedText = SharedLocalizer["A new team has been created with {0} members.", memberCount].ToString();
 
             if (recruiting)
@@ -139,7 +139,7 @@ namespace LuduStack.Web.ViewComponents
                 language = obj.Language;
             }
 
-            string postTemplate = ContentHelper.FormatUrlContentToShow(item.UserContentType);
+            string postTemplate = ContentFormatter.FormatUrlContentToShow(item.UserContentType);
             string translatedText = SharedLocalizer["A new job position for {0}({1}) is open for applications.", SharedLocalizer[obj.WorkType.ToDisplayName()], obj.Location].ToString();
 
             item.Content = String.Format(postTemplate, translatedText, SharedLocalizer[obj.WorkType.ToDisplayName()], obj.Location);
