@@ -28,7 +28,7 @@ jobs:
       run: dotnet build LuduStack.sln --configuration Release --no-restore
       
     - name: Test
-      run: dotnet test LuduStack.sln --no-build --no-restore --verbosity normal
+      run: dotnet test LuduStack.sln --no-restore --verbosity normal
 
     - name: Publish app for deploy
       run: dotnet publish --configuration Release --no-build --output ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
