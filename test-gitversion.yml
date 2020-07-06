@@ -2,7 +2,6 @@ trigger:
 - development
 
 pool:
-  name: Test GitVersion
   vmImage: 'ubuntu-latest'
 
 variables:
