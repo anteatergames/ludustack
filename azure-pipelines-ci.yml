@@ -19,7 +19,20 @@ variables:
   buildConfiguration: 'Release'
   artifactName: 'ludustackweb'
 
-steps:        
+steps:
+    - task: gitversion/setup@0
+      displayName: Install GitVersion
+      inputs:
+        versionSpec: '5.1.3'
+
+    - task: gitversion/execute@0
+      displayName: Use GitVersion
+
+    - bash: |
+        echo "##vso[build.updatebuildnumber]$(fullSemVer)"
+      name: SetReleaseBuildNumber
+      displayName: Set Release Build Number
+
     - task: DotNetCoreCLI@2
       displayName: Restore Packages
       inputs:
