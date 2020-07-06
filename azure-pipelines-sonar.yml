@@ -10,6 +10,7 @@ strategy:
 
 trigger:
 - development
+- master
 pr:
 - master
 
