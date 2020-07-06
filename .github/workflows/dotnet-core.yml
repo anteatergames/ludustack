@@ -18,7 +18,7 @@ jobs:
       with:
         dotnet-version: '3.1.x'
     - name: Install dependencies
-      run: dotnet restore
+      run: dotnet restore LuduStack.sln
     - name: Build
       run: dotnet build LuduStack.sln --configuration Release --no-restore
     - name: Test
