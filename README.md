@@ -54,7 +54,6 @@ This command will download the needed images from the docker hub and start two c
 - ludustack-db;
 - luduscack-web;
 
-
 To run a local container of the mongodb database, run the following command:
 
 *docker-compose -f ./docker-compose.db.yml up*
