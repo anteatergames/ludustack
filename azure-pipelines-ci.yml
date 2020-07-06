@@ -20,11 +20,12 @@ variables:
 
 steps:
     - task: freestyle@0
+      displayName: Semantic Release
       inputs:
         gitHubServiceConnection: 'githubindievisible'
         configPath: '.releaserc'
         cwd: '$(Build.Repository.LocalPath)'
-        versionOverwrite: 'semantic-release@15'
+        versionOverwrite: 'semantic-release@16'
 
     - task: DotNetCoreCLI@2
       displayName: Restore Packages
