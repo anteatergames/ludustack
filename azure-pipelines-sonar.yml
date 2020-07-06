@@ -10,6 +10,8 @@ strategy:
 
 trigger:
 - development
+pr:
+- master
 
 pool:
   vmImage: $(imageName)
