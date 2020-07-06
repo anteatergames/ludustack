@@ -19,13 +19,6 @@ variables:
   artifactName: 'ludustackweb'
 
 steps:
-    - task: freestyle@0
-      inputs:
-        gitHubServiceConnection: 'githubindievisible'
-        configPath: '.releaserc'
-        cwd: '$(Build.Repository.LocalPath)'
-        versionOverwrite: 'semantic-release@15'
-
     - task: DotNetCoreCLI@2
       displayName: Restore Packages
       inputs:
