@@ -19,3 +19,15 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - uses: Azure/pipelines@v1
+        with:
+          azure-devops-project-url: 'https://dev.azure.com/anteatergames/ludustack'
+          azure-pipeline-name: 'ludustack-ci'
+          azure-devops-token: '${{ secrets.AZURE_DEVOPS_TOKEN }}'
+
+      - uses: Azure/pipelines@v1
+        with:
+          azure-devops-project-url: 'https://dev.azure.com/anteatergames/ludustack'
+          azure-pipeline-name: 'ludustack-sonar'
+          azure-devops-token: '${{ secrets.AZURE_DEVOPS_TOKEN }}'
