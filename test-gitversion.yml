@@ -16,11 +16,15 @@ steps:
   inputs:
     versionSpec: '5.1.3'
 
+- script: echo Build.BuildNumber before $(Build.BuildNumber)
 - task: gitversion/execute@0
   displayName: Use GitVersion
 - script: |
     echo FullSemVer: $(fullSemVer)
     echo ##vso[build.updatebuildnumber]$(fullSemVer)
+
+- script: echo artifactName $(artifactName)
+- script: echo Build.BuildNumber after $(Build.BuildNumber)
 
 - task: DotNetCoreCLI@2
   displayName: Restore Packages
