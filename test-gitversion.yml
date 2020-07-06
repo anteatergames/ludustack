@@ -28,8 +28,8 @@ steps:
 
 - bash: |
     echo "##vso[build.updatebuildnumber]$(fullSemVer)"
-  condition: eq(variables['release.enabled'], 'true')
   name: SetReleaseBuildName
+
 - script: echo Build.BuildNumber after $(Build.BuildNumber)
 
 - task: DotNetCoreCLI@2
