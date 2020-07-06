@@ -163,6 +163,12 @@ namespace LuduStack.Web
                 app.UseExceptionHandler("/Home/Error");
             }
 
+            app.Use(async (context, next) =>
+            {
+                context.Response.Headers.Add("X-Frame-Options", "SAMEORIGIN");
+                await next();
+            });
+
             app.UseHttpsRedirection();
             app.UseHsts();
 
