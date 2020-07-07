@@ -293,5 +293,11 @@
       "wwwroot/js/giveaway/giveawaycommon.js",
       "wwwroot/js/giveaway/giveawayedit.js"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/js/giveaway/giveawaydetails.min.js",
+    "inputFiles": [
+      "wwwroot/js/giveaway/giveawaydetails.js"
+    ]
   }
 ]

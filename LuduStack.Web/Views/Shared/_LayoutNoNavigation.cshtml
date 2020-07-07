@@ -61,21 +61,7 @@
 
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/twitter-bootstrap/css/bootstrap.css">
-        <link rel="stylesheet" href="~/lib/font-awesome/css/all.css">
-        <link rel="stylesheet" href="~/lib/pace/themes/white/pace-theme-minimal.css">
-        <link rel="stylesheet" href="~/lib/jquery-toast/jquery.toast.css" />
         @RenderSection("ComponentStyles", required: false)
-        <link rel="stylesheet" href="~/css/skins/ludustack-skin.css">
-        <link rel="stylesheet" href="~/css/bootstrap_overrides.css">
-        <link rel="stylesheet" href="~/css/main.css">
-        <link rel="stylesheet" href="~/css/master_style.css">
-        <link rel="stylesheet" href="~/css/animations.css">
-        <link rel="stylesheet" href="~/css/box.css">
-        <link rel="stylesheet" href="~/css/typography.css">
-        <link rel="stylesheet" href="~/css/social.css">
-        <link rel="stylesheet" href="~/thirdparty/tinyDrawyer/css/tinyDrawer.css">
-        <link rel="stylesheet" href="~/css/sidebar.css">
-        <link rel="stylesheet" href="~/css/userwidgets.css">
         @RenderSection("Styles", required: false)
     </environment>
     <environment exclude="Development">
@@ -85,33 +71,7 @@
               asp-fallback-test-property="position"
               asp-fallback-test-value="absolute"
               integrity="sha256-/ykJw/wDxMa0AQhHDYfuMEwVb4JHMx9h4jD4XvHqVzU=" crossorigin="anonymous">
-        <link rel="stylesheet"
-              href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css"
-              asp-fallback-href="~/lib/font-awesome/css/all.min.css"
-              asp-fallback-test-class="fa"
-              asp-fallback-test-property="display"
-              asp-fallback-test-value="inline-block"
-              integrity="sha256-h20CPZ0QyXlBuAw7A+KluUYx/3pK+c7lYEpqLTlxjYQ="
-              crossorigin="anonymous" />
-        <link rel="stylesheet"
-              href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/themes/white/pace-theme-minimal.min.css"
-              asp-fallback-href="~/lib/pace/themes/white/pace-theme-minimal.min.css"
-              asp-fallback-test-class="pace"
-              asp-fallback-test-property="pointer-events"
-              asp-fallback-test-value="none"
-              integrity="sha256-E35gzLnIxEQ1I4i28fiuAR/kqvLZLqcCqvpefyJqjZs="
-              crossorigin="anonymous" />
-        <link rel="stylesheet"
-              href="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.css"
-              asp-fallback-href="~/lib/jquery-toast/jquery.toast.min.css"
-              asp-fallback-test-class="jq-toast-wrap"
-              asp-fallback-test-property="position"
-              asp-fallback-test-value="fixed"
-              integrity="sha256-WolrNTZ9lY0QL5f0/Qi1yw3RGnDLig2HVLYkrshm7Y0="
-              crossorigin="anonymous" />
-        <link rel="stylesheet" href="~/thirdparty/tinyDrawyer/css/tinyDrawer.min.css">
         @RenderSection("ComponentStyles", required: false)
-        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true">
         @RenderSection("Styles", required: false)
     </environment>
 
@@ -124,18 +84,12 @@
     <!-- google font -->
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
 
-    @if (showCookieBanner)
-    {
-        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
-    }
     @await Html.PartialAsync("_TagManagerHead")
 </head>
 <body class="hold-transition skin-ludustack sidebar-mini">
     @await Html.PartialAsync("_TagManagerBody")
     <div id="translatedJavascriptMessages" class="d-none">
-        <span class="msg" data-msg-id="msgNeedLoginToLikeAndComment">@SharedLocalizer["You need to be logged in to be able to Like and Comment on posts."]</span>
         <span class="msg" data-msg-id="msgNotImplementedYet">@SharedLocalizer["Keep calm! This is not implemented yet!"]</span>
-        <span class="msg" data-msg-id="mgsPointsEarned">@SharedLocalizer["You earned 0 points. Awesome!"]</span>
         @RenderSection("TranslatedMessages", required: false)
     </div>
     @if (TempData["Message"] != null)
@@ -157,31 +111,18 @@
         <script src="~/lib/jquery/jquery.js"></script>
         <script src="~/lib/popper.js/umd/popper.js"></script>
         <script src="~/lib/twitter-bootstrap/js/bootstrap.js" defer></script>
-        <script src="~/lib/pace/pace.js"></script>
-        <script src="~/lib/fastclick/fastclick.js"></script>
         <script src="~/lib/limonte-sweetalert/sweetalert2.all.js"></script>
-        <script src="~/lib/jquery-toast/jquery.toast.js"></script>
 
         <script src="~/lib/lazysizes/lazysizes.js"></script>
         <script src="~/lib/lazysizes/plugins/blur-up/ls.blur-up.js"></script>
 
-        <script src="~/js/vanilla.extensions.js" defer></script>
-        <script src="~/js/jquery.extensions.js" defer></script>
         <script src="~/js/shared/alertsystem.js" defer></script>
     </environment>
     <environment exclude="Development">
-        <script src="~/thirdparty/tinyDrawyer/js/tinyDrawer.min.js"></script>
-
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
                 asp-fallback-src="~/lib/jquery/jquery.min.js"
                 asp-fallback-test="window.jQuery"
                 integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
-                crossorigin="anonymous">
-        </script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.sticky/1.0.4/jquery.sticky.min.js"
-                asp-fallback-src="~/lib/jquery.sticky/jquery.sticky.min.js"
-                asp-fallback-test="window.jQuery"
-                integrity="sha384-f6WCX7JLO6ay45iRtjFII0kYlM1G+BB9mxCkCLU5P3zR6lDo819vCP+ER+ORuOJj"
                 crossorigin="anonymous">
         </script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"
@@ -196,33 +137,11 @@
                 integrity="sha256-oKpAiD7qu3bXrWRVxnXLV1h7FlNV+p5YJBIr8LOCFYw="
                 crossorigin="anonymous">
         </script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/pace.min.js"
-                asp-fallback-src="~/lib/pace/pace.min.js"
-                asp-fallback-test="window.Pace"
-                integrity="sha384-5DyzDgtTHw1bbnR1u2aQPxi5+e1KVPsygV5Pioo5W+5ua3sN5AHF05kzM0QfXXqm"
-                crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js"
-                asp-fallback-src="~/lib/fastclick/fastclick.min.js"
-                asp-fallback-test="window.FastClick"
-                integrity="sha256-t6SrqvTQmKoGgi5LOl0AUy+lBRtIvEJ+++pLAsfAjWs="
-                crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/8.11.8/sweetalert2.all.min.js"
                 asp-fallback-src="~/lib/limonte-sweetalert/sweetalert2.all.min.js"
                 asp-fallback-test="window.swal"
                 integrity="sha256-2RS1U6UNZdLS0Bc9z2vsvV4yLIbJNKxyA4mrx5uossk="
                 crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.js"
-                asp-fallback-src="~/lib/jquery-toast/jquery.toast.min.js"
-                asp-fallback-test="window.jQuery"
-                integrity="sha384-Y0HJZYgyXFtR2JeeBfEFYo7+uF9C+Bgn1yr/EtGnl/uc9vJjNN9yi3AX0ZY9tpN4"
-                crossorigin="anonymous" defer></script>
-
-        @*<script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-lazyload/16.1.0/lazyload.min.js"
-                    asp-fallback-src="~/lib/vanilla-lazyload/lazyload.min.js"
-                    asp-fallback-test="window.LazyLoad"
-                    integrity="sha256-boalKphYIGMC4yA22JkH46yHdiBV5/nGNkrsMyIbPkE="
-                    crossorigin="anonymous">
-            </script>*@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.2.2/lazysizes.min.js"
                 asp-fallback-src="~/lib/lazysizes/lazysizes.min.js"
                 asp-fallback-test="window.lazySizes"
@@ -235,17 +154,8 @@
                 integrity="sha256-k3/42TDORKROMX/o7y1d5YMWTMsaCMLLAstACEPWVmo="
                 crossorigin="anonymous">
         </script>
-
-        <script src="~/js/site.min.js" asp-append-version="true" defer></script>
     </environment>
 
-    @await Html.PartialAsync("_FacebookSdk")
-
     @RenderSection("Scripts", required: false)
-
-    @if (showCookieBanner)
-    {
-        <partial name="_CookieConsentPartial" model="consentFeature" />
-    }
 </body>
 </html>
