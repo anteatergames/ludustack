@@ -11,6 +11,6 @@ namespace LuduStack.Domain.Interfaces.Services
 
         Giveaway GetGiveawayById(Guid id);
 
-        List<GiveawayListItemVo> GetCoursesByUserId(Guid userId);
+        List<GiveawayListItemVo> GetGiveawayListByUserId(Guid userId);
     }
 }

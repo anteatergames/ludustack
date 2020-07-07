@@ -64,7 +64,7 @@ namespace LuduStack.Application.Services
         {
             try
             {
-                List<GiveawayListItemVo> courses = giveawayDomainService.GetCoursesByUserId(currentUserId);
+                List<GiveawayListItemVo> courses = giveawayDomainService.GetGiveawayListByUserId(currentUserId);
 
                 return new OperationResultListVo<GiveawayListItemVo>(courses);
             }

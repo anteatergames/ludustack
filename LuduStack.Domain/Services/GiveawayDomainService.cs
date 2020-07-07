@@ -24,9 +24,9 @@ namespace LuduStack.Domain.Services
             return model;
         }
 
-        public List<GiveawayListItemVo> GetCoursesByUserId(Guid userId)
+        public List<GiveawayListItemVo> GetGiveawayListByUserId(Guid userId)
         {
-            List<GiveawayListItemVo> objs = repository.GetGiveawaysByUserId(userId);
+            List<GiveawayListItemVo> objs = repository.GetGiveawayListByUserId(userId);
 
             return objs;
         }

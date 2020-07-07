@@ -32,8 +32,8 @@
 <tr>
     <td><a asp-area="tools" asp-controller="giveaway" asp-action="details" asp-route-id="@item.Id"><span>@item.Name</span></a></td>
     <td><a asp-area="tools" asp-controller="giveaway" asp-action="details" asp-route-id="@item.Id"><span>@item.ParticipantCount</span></a></td>
-    <td>@item.CreateDate</td>
-    <td>@item.Status</td>
+    <td>@item.CreateDate.ToShortDateString()</td>
+    <td>@item.Status.ToString()</td>
     <td class="text-right">
         <div class="btn-group" role="group">
             <a class="btn btn-sm btn-outline-info btn-megaphone my-1" href="#"><i class="fas fa-bullhorn" aria-hidden="true"></i>Promote</a>

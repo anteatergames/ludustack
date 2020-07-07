@@ -16,14 +16,16 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
         {
         }
 
-        public List<GiveawayListItemVo> GetGiveawaysByUserId(Guid userId)
+        public List<GiveawayListItemVo> GetGiveawayListByUserId(Guid userId)
         {
             IQueryable<GiveawayListItemVo> obj = DbSet.AsQueryable().Where(x => x.UserId == userId).Select(x => new GiveawayListItemVo
             {
                 Id = x.Id,
                 Name = x.Name,
                 FeaturedImage = x.FeaturedImage,
-                ParticipantCount = x.Participants.Count
+                ParticipantCount = x.Participants.Count,
+                CreateDate = x.CreateDate,
+                Status = x.Status
             });
 
             return obj.ToList();

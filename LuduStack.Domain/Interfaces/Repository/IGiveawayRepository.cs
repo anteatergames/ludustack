@@ -7,6 +7,6 @@ namespace LuduStack.Domain.Interfaces.Repository
 {
     public interface IGiveawayRepository : IRepository<Giveaway>
     {
-        List<GiveawayListItemVo> GetGiveawaysByUserId(Guid userId);
+        List<GiveawayListItemVo> GetGiveawayListByUserId(Guid userId);
     }
 }
