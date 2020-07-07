@@ -97,7 +97,7 @@ namespace LuduStack.Web.Areas.Tools.Controllers
 
                 if (saveResult.Success)
                 {
-                    string url = Url.Action("details", "giveaway", new { area = "tools", id = vm.Id });
+                    string url = Url.Action("index", "giveaway", new { area = "tools" });
 
                     if (isNew)
                     {
@@ -134,6 +134,26 @@ namespace LuduStack.Web.Areas.Tools.Controllers
                 SetAuthorDetails(model);
 
                 return View("Details", model);
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+
+        [Route("giveaway/{id:guid}/terms")]
+        public IActionResult Terms(Guid id)
+        {
+            OperationResultVo result = giveawayAppService.GetGiveawayById(CurrentUserId, id);
+
+            if (result.Success)
+            {
+                OperationResultVo<GiveawayViewModel> castResult = result as OperationResultVo<GiveawayViewModel>;
+
+                var model = new KeyValuePair<Guid, string>(castResult.Value.Id, castResult.Value.TermsAndConditions);
+
+                return View("Terms", model);
             }
             else
             {

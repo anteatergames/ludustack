@@ -56,12 +56,22 @@
                         <span asp-validation-for="Name" class="text-danger"></span>
                     </div>
                 </div>
+
                 <div class="col-md-12">
                     <div class="form-group">
                         <label asp-for="Description" class="col-form-label"></label>
                         <span asp-description-for="Description" class="col-form-label" />
                         <textarea asp-for="Description" class="form-control" placeholder="@SharedLocalizer["Describe the Giveaway here"]"></textarea>
                         <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label asp-for="TermsAndConditions" class="col-form-label"></label>
+                        <span asp-description-for="TermsAndConditions" class="col-form-label" />
+                        <textarea asp-for="TermsAndConditions" class="form-control" placeholder="@SharedLocalizer["Write here the terms and conditions for this giveaway"]"></textarea>
+                        <span asp-validation-for="TermsAndConditions" class="text-danger"></span>
                     </div>
                 </div>
 

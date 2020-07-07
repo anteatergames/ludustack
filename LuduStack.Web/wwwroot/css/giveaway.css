@@ -2,19 +2,14 @@ html {
     --border-radius: 20px;
 }
 
-.btn {
-    font-size: 1.2rem !important;
-}
-
 .giv-container {
     width: 100%;
-    max-width: 680px;
+    max-width: 720px;
     background-color: #fff;
-    border-radius: 20px;
+    border-radius: var(--border-radius);
     position: relative;
     margin-right: auto;
     margin-left: auto;
-    margin-bottom: 20px;
     -webkit-box-shadow: 0 10px 35px 0 rgba(99,123,173,.2);
     box-shadow: 0 10px 35px 0 rgba(99,123,173,.2);
 }
@@ -24,112 +19,30 @@ html {
         border-top-right-radius: var(--border-radius);
     }
 
-@media (min-width: 681px) {
     .giv-container.animate1 {
-        margin-top: 150px;
         opacity: 0;
         -webkit-animation: giv-container1 1s ease-out forwards;
         animation: giv-container1 1s ease-out forwards;
     }
 
-    @-webkit-keyframes giv-container1 {
-        to {
-            margin-top: 20px;
-            opacity: 1;
-        }
-    }
-
-    @keyframes giv-container1 {
-        to {
-            margin-top: 20px;
-            opacity: 1;
-        }
-    }
-}
-
-@media (max-width: 680px) {
-    .giv-container.animate1 {
-        margin-top: 40px;
-        opacity: 0;
-        -webkit-animation: giv-container1 1s ease-out forwards;
-        animation: giv-container1 1s ease-out forwards;
-    }
-
-    @-webkit-keyframes giv-container1 {
-        to {
-            margin-top: 0;
-            opacity: 1;
-        }
-    }
-
-    @keyframes giv-container1 {
-        to {
-            margin-top: 0;
-            opacity: 1;
-        }
-    }
-}
-
-.giv-container.animate2 {
-    opacity: 0;
-    -webkit-animation: giv-container2 1s ease-out forwards;
-    animation: giv-container2 1s ease-out forwards;
-}
-
-@-webkit-keyframes giv-container2 {
+@-webkit-keyframes giv-container1 {
     to {
-        margin-top: 93px;
         opacity: 1;
     }
 }
 
-@keyframes giv-container2 {
+@keyframes giv-container1 {
     to {
-        margin-top: 93px;
         opacity: 1;
     }
-}
-
-.giv-container.giv-top-sm {
-    opacity: 0;
-    margin-top: 150px;
-    -webkit-animation: giv-container-2 4s ease-out forwards;
-    animation: giv-container-2 4s ease-out forwards;
-}
-
-.giv-container {
-    width: 100%;
-    max-width: 680px;
-    background-color: #fff;
-    border-radius: 20px;
-    position: relative;
-    margin-right: auto;
-    margin-left: auto;
-    margin-bottom: 20px;
-    -webkit-box-shadow: 0 10px 35px 0 rgba(99,123,173,.2);
-    box-shadow: 0 10px 35px 0 rgba(99,123,173,.2);
-}
-
-.giv-feature {
-    overflow: hidden;
-    border-top-left-radius: var(--border-radius);
-    border-top-right-radius: var(--border-radius);
-    position: relative;
-}
-
-.giv-carousel {
-    overflow: hidden;
-    border-top-left-radius: var(--border-radius);
-    border-top-right-radius: var(--border-radius);
-    position: relative;
-}
+}   
 
 .giv-title {
     text-align: center;
     border-radius: 20px;
     margin-top: -40px;
     position: relative;
-    padding: 1.4rem 2rem .7rem;
+    padding: 1rem;
 }
 
 .basic-info {
@@ -152,7 +65,6 @@ html {
 
     .email-input svg {
         left: 12px;
-        top: 13px;
         -ms-flex-item-align: center;
         align-self: center;
         position: absolute;

@@ -31,6 +31,8 @@ namespace LuduStack.Application.ViewModels.Giveaway
         [Required]
         public int WinnerAmount { get; set; }
 
+        public string TermsAndConditions { get; set; }
+
         public List<GiveawayPrizeViewModel> Prizes { get; set; }
 
         public List<GiveawayEntryOptionViewModel> EntryOptions { get; set; }
