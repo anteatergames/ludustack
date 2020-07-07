@@ -118,5 +118,27 @@ namespace LuduStack.Web.Areas.Tools.Controllers
                 return Json(new OperationResultVo(ex.Message));
             }
         }
+
+
+        [Route("giveaway/{id:guid}")]
+        public IActionResult Details(Guid id)
+        {
+            OperationResultVo result = giveawayAppService.GetGiveawayById(CurrentUserId, id);
+
+            if (result.Success)
+            {
+                OperationResultVo<GiveawayViewModel> castRestult = result as OperationResultVo<GiveawayViewModel>;
+
+                GiveawayViewModel model = castRestult.Value;
+
+                SetAuthorDetails(model);
+
+                return View("Details", model);
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 }

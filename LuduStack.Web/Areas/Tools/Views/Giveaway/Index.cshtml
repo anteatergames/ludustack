@@ -53,26 +53,24 @@
         <div id="featuresidebar" class="col-lg-4 col-xl-3 no-gutters">
             @if (!canInteract)
             {
-                <div class="alert-info p-2">
-                    @SharedLocalizer["You must be logged in to manage giveaways"]
-                </div>
-            }
-            else
-            {
-                <div class="feature-box">
-                    <h3>@SharedLocalizer["User Panel"]</h3>
-                    <div class="row">
-                        <div class="col-12">
-                            <p>@SharedLocalizer["Welcome to the LuduStack Giveaway system! Here you can create giveaways to promote your gamedev business and games."]</p>
-                        </div>
-                        <div class="col-12">
-                            <div id="divActions">
-                                <a asp-area="tools" asp-controller="giveaway" asp-action="add" class="btn btn-outline-primary btn-block">@SharedLocalizer["New Giveaway"]</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            }
+<div class="alert-info p-2">
+    @SharedLocalizer["You must be logged in to manage giveaways"]
+</div> }
+else
+{
+<div class="feature-box">
+    <h3>@SharedLocalizer["User Panel"]</h3>
+    <div class="row">
+        <div class="col-12">
+            <p>@SharedLocalizer["Welcome to the LuduStack Giveaway system! Here you can create giveaways to promote your gamedev business and games."]</p>
+        </div>
+        <div class="col-12">
+            <div id="divActions">
+                <a asp-area="tools" asp-controller="giveaway" asp-action="add" class="btn btn-outline-primary btn-block">@SharedLocalizer["New Giveaway"] <i class="fas fa-plus" aria-hidden="true"></i></a>
+            </div>
+        </div>
+    </div>
+</div>      }
         </div>
     </div>
 </div>
