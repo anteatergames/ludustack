@@ -1,13 +1,13 @@
 ﻿@model GiveawayViewModel
 
 @{ Layout = null;
-                var canInteract = User.Identity.IsAuthenticated;
+    var canInteract = User.Identity.IsAuthenticated;
 
-                ViewData["Title"] = SharedLocalizer["{0} Giveaway", (Model.Id == Guid.Empty ? "New" : "Edit")];
+    ViewData["Title"] = SharedLocalizer["{0} Giveaway", (Model.Id == Guid.Empty ? "New" : "Edit")];
 
-                var userGames = ViewBag.UserGames as List<SelectListItem>;
+    var userGames = ViewBag.UserGames as List<SelectListItem>;
 
-                var isNew = Model.Id == Guid.Empty; }
+    var isNew = Model.Id == Guid.Empty; }
 
 <h1 class="sr-only">@ViewData["Title"]</h1>
 
@@ -67,12 +67,29 @@
                         <label asp-for="Status" class="col-form-label"></label>
                         @if (isNew)
                         {
-                            <input asp-for="StatusLocalized" class="form-control" readonly />
+            <input asp-for="StatusLocalized" class="form-control" readonly />
                             <input type="hidden" asp-for="Status" /> }
                         else
                         {
-                            <select asp-for="Status" asp-items="Html.GetEnumSelectList<GiveawayStatus>()" class="form-control" data-placeholder="@SharedLocalizer["Set the giveaway status"]" tabindex="-1" aria-hidden="true"></select>
+            <select asp-for="Status" asp-items="Html.GetEnumSelectList<GiveawayStatus>()" class="form-control" data-placeholder="@SharedLocalizer["Set the giveaway status"]" tabindex="-1" aria-hidden="true"></select>
                             <span asp-validation-for="Status" class="text-danger"></span>}
+                    </div>
+                </div>
+
+
+                <div class="col-12 col-sm-6 col-md-4">
+                    <div class="form-group">
+                        <label asp-for="StartDate" class="col-form-label"></label>
+                        <input asp-for="StartDate" type="text" class="form-control datetimepicker" placeholder="@SharedLocalizer["When this giveway should start"]" />
+                        <span asp-validation-for="StartDate" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-6 col-md-4">
+                    <div class="form-group">
+                        <label asp-for="EndDate" class="col-form-label"></label>
+                        <input asp-for="EndDate" type="text" class="form-control datetimepicker" placeholder="@SharedLocalizer["When this giveway should end"]" />
+                        <span asp-validation-for="EndDate" class="text-danger"></span>
                     </div>
                 </div>
 

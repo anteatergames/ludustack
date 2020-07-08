@@ -46,6 +46,7 @@
 
     function bindAll() {
         bindBtnSaveForm();
+        bindDateTimePicker();
     }
 
     function bindBtnSaveForm() {
@@ -59,6 +60,10 @@
                 submitForm(btn);
             }
         });
+    }
+
+    function bindDateTimePicker() {
+        $('.datetimepicker').flatpickr();
     }
 
     function submitForm(btn, callback) {

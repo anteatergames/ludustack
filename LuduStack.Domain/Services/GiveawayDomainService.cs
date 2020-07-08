@@ -35,7 +35,8 @@ namespace LuduStack.Domain.Services
             Giveaway model = new Giveaway
             {
                 UserId = userId,
-                Status = GiveawayStatus.Draft
+                Status = GiveawayStatus.Draft,
+                StartDate = DateTime.Now.AddHours(1)
             };
 
             return model;
@@ -52,7 +53,14 @@ namespace LuduStack.Domain.Services
         {
             Task<Giveaway> task = Task.Run(async () => await repository.GetById(id));
 
-            return task.Result;
+            var model = task.Result;
+
+            if (model.StartDate == DateTime.MinValue)
+            {
+                model.StartDate = DateTime.Now;
+            }
+
+            return model;
         }
         private static void SetRequiredProperties(Giveaway model)
         {
