@@ -25,6 +25,7 @@
 
 @section Scripts {
     <environment include="Development">
+        <script src="~/js/giveaway/giveawaycommon.js"></script>
         <script src="~/js/giveaway/giveaway.js"></script>
     </environment>
     <environment exclude="Development">
@@ -45,7 +46,7 @@
 
     <div id="containerlist" class="row">
         <div class="col-lg-12 mb-2 px-4">
-            <h1><i class="fa fa-fw fa-language" aria-hidden="true"></i> @ViewData["Title"]</h1>
+            <h1><i class="fas fa-fw fa-ticket-alt" aria-hidden="true"></i> @ViewData["Title"]</h1>
         </div>
         <div class="col-lg-8 col-xl-9 mb-3">
             <div id="divList"></div>
@@ -53,26 +54,24 @@
         <div id="featuresidebar" class="col-lg-4 col-xl-3 no-gutters">
             @if (!canInteract)
             {
-                <div class="alert-info p-2">
-                    @SharedLocalizer["You must be logged in to manage giveaways"]
-                </div>
-            }
-            else
-            {
-                <div class="feature-box">
-                    <h3>@SharedLocalizer["User Panel"]</h3>
-                    <div class="row">
-                        <div class="col-12">
-                            <p>@SharedLocalizer["Welcome to the LuduStack Giveaway system! Here you can create giveaways to promote your gamedev business and games."]</p>
-                        </div>
-                        <div class="col-12">
-                            <div id="divActions">
-                                <a asp-area="tools" asp-controller="giveaway" asp-action="add" class="btn btn-outline-primary btn-block">@SharedLocalizer["New Giveaway"]</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            }
+<div class="alert-info p-2">
+    @SharedLocalizer["You must be logged in to manage giveaways"]
+</div> }
+else
+{
+<div class="feature-box">
+    <h3>@SharedLocalizer["User Panel"]</h3>
+    <div class="row">
+        <div class="col-12">
+            <p>@SharedLocalizer["Welcome to the LuduStack Giveaway system! Here you can create giveaways to promote your gamedev business and games."]</p>
+        </div>
+        <div class="col-12">
+            <div id="divActions">
+                <a asp-area="tools" asp-controller="giveaway" asp-action="add" class="btn btn-outline-primary btn-block">@SharedLocalizer["New Giveaway"] <i class="fas fa-plus" aria-hidden="true"></i></a>
+            </div>
+        </div>
+    </div>
+</div>      }
         </div>
     </div>
 </div>

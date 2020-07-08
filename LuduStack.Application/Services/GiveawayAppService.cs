@@ -64,7 +64,7 @@ namespace LuduStack.Application.Services
         {
             try
             {
-                List<GiveawayListItemVo> courses = giveawayDomainService.GetCoursesByUserId(currentUserId);
+                List<GiveawayListItemVo> courses = giveawayDomainService.GetGiveawayListByUserId(currentUserId);
 
                 return new OperationResultListVo<GiveawayListItemVo>(courses);
             }
@@ -113,6 +113,24 @@ namespace LuduStack.Application.Services
             catch (Exception ex)
             {
                 return new OperationResultVo<Guid>(ex.Message);
+            }
+        }
+
+        public OperationResultVo RemoveGiveaway(Guid currentUserId, Guid id)
+        {
+            try
+            {
+                // validate before
+
+                giveawayDomainService.Remove(id);
+
+                unitOfWork.Commit();
+
+                return new OperationResultVo(true, "That Giveaway is gone now!");
+            }
+            catch (Exception ex)
+            {
+                return new OperationResultVo(ex.Message);
             }
         }
 

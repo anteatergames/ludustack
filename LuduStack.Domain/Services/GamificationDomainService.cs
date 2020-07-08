@@ -211,15 +211,6 @@ namespace LuduStack.Domain.Services
 
             GamificationLevel firstLevel = Task.Run(async () => await gamificationLevelRepository.GetByNumber(1)).Result;
 
-            if (firstLevel == null)
-            {
-                firstLevel = new GamificationLevel
-                {
-                    Number = 1,
-                    XpToAchieve = 99999
-                };
-            }
-
             userGamification = new Gamification
             {
                 CurrentLevelNumber = firstLevel.Number,

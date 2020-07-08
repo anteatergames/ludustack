@@ -8,6 +8,12 @@
     margin-left: 5px;
 }
 
+    .switch.left {
+        float: left;
+        margin-left: 0;
+        margin-right: 5px;
+    }
+
 .switch-div {
     line-height: 38px;
 }

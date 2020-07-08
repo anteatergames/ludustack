@@ -1,0 +1,175 @@
+﻿@model GiveawayViewModel
+@{
+    ViewData["Title"] = SharedLocalizer["Giveaway"];
+    ViewData["Description"] = "tralala";
+    ViewData["Url"] = ViewBag.BaseUrl + Url.Action("details", "localization", new { area = "tools", id = Model.Id });
+    //ViewData["OgImage"] = ViewBag.BaseUrl + "/images/og/oggiveaway.png";
+
+    var isAjax = ViewContext.HttpContext.Request.IsAjaxRequest();
+    var canInteract = User.Identity.IsAuthenticated;
+
+    Layout = "_LayoutNoNavigation";
+}
+
+@section ComponentStyles {
+    <link rel="stylesheet" href="~/css/switch.css">
+    <environment include="Development">
+        <link rel="stylesheet" href="~/css/giveaway.css">
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="~/css/giveaway.min.css" asp-append-version="true">
+    </environment>
+}
+
+@section Scripts {
+    <environment include="Development">
+        <script src="~/js/giveaway/giveawaydetails.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/js/giveaway/giveawaydetails.min.js" asp-append-version="true"></script>
+    </environment>
+}
+
+<section class="container-fluid position-relative">
+    <div id="featurecontainer" class="row justify-content-center">
+        <div class="col-md-12 col-lg-10 px-0 px-md-1">
+            <div class="giv-container animate1 pb-5 mb-2">
+
+                <div id="carouselExampleIndicators" class="carousel slide square-bottom" data-ride="carousel">
+                    <ol class="carousel-indicators">
+                        <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                        <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                        <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                    </ol>
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img class="d-block w-100" src="~/images/photo1.jpg" alt="First slide">
+                        </div>
+                        <div class="carousel-item">
+                            <img class="d-block w-100" src="~/images/photo2.jpg" alt="Second slide">
+                        </div>
+                        <div class="carousel-item">
+                            <img class="d-block w-100" src="~/images/photo3.jpg" alt="Third slide">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="px-3 px-sm-5 px-md-5">
+                    <div class="giv-title">
+                        <h1>@Model.Name</h1>
+                    </div>
+
+                    <div class="hr-title h6 text-uppercase">
+                        <div>
+                            @SharedLocalizer["time left"]
+                        </div>
+                    </div>
+                    <div class="d-flex text-center align-items-center basic-info text-uppercase">
+                        <div class="col-6 col-sm-2 col-md-3 h6 order-2 order-sm-1">@SharedLocalizer["{0} value", "$50"]</div>
+                        <div class="col-12 col-sm-7 col-md-6 order-1 order-sm-2 hr-b-small">
+                            <div class="time-left d-flex justify-content-center" id="countdown">
+                                <div class="time-unity">
+                                    <span id="countdown-days">00</span><br><span class="label">@SharedLocalizer["days"]</span>
+                                </div>
+                                <div>:</div>
+                                <div class="time-unity">
+                                    <span id="countdown-hours">00</span><br><span class="label">@SharedLocalizer["hours"]</span>
+                                </div>
+                                <div>:</div>
+                                <div class="time-unity">
+                                    <span id="countdown-minutes">00</span><br><span class="label">@SharedLocalizer["min"]</span>
+                                </div>
+                                <div>:</div>
+                                <div class="time-unity">
+                                    <span id="countdown-seconds">00</span><br><span class="label">@SharedLocalizer["sec"]</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-sm-2 col-md-3 h6 order-3">@SharedLocalizer["winners: {0}", 2]</div>
+                    </div>
+
+                    <div class="hr-arrow-down rounded-0"></div>
+
+                    <div class="text-center pt-1 pb-0" id="mainSignup">
+                        <h2 class="mt-2 h3">
+                            @SharedLocalizer["Enter with your email address"]
+                        </h2>
+
+                        <form asp-area="tools" asp-controller="giveaway" asp-action="enter" method="post" id="giveaway-signup-form" class="mt-3 mb-3 justify-content-center">
+                            <div class="form-inline justify-content-center">
+                                <div class="email-input">
+                                    <input type="email" class="form-control form-control-lg emailanimate" placeholder="Email" name="email" required="">
+
+                                    <svg class="letter-back" x="0px" y="0px" width="21.6px" height="17.4px" viewBox="0 0 21.6 17.4">
+                                        <path class="st0" d="M17.8,16.7H3.8c-1.7,0-3-1.3-3-3V3.8c0-1.7,1.3-3,3-3h14.1c1.7,0,3,1.3,3,3v9.9C20.8,15.3,19.5,16.7,17.8,16.7z"></path>
+                                        <path class="st0" d="M3.9,3.7l5.6,4.4c0.8,0.6,1.9,0.6,2.7,0l5.6-4.4"></path>
+                                    </svg>
+                                    <svg class="letter-front" x="0px" y="0px" width="21.6px" height="17.4px" viewBox="0 0 21.6 17.4">
+                                        <path class="st0" d="M17.8,16.7H3.8c-1.7,0-3-1.3-3-3V3.8c0-1.7,1.3-3,3-3h14.1c1.7,0,3,1.3,3,3v9.9C20.8,15.3,19.5,16.7,17.8,16.7z"></path>
+                                        <path class="st0" d="M3.9,3.7l5.6,4.4c0.8,0.6,1.9,0.6,2.7,0l5.6-4.4"></path>
+                                        <line class="addressline st0" x1="8.4" y1="10.8" x2="3.9" y2="10.8"></line>
+                                        <line class="addressline st0" x1="10.1" y1="13.4" x2="3.9" y2="13.4"></line>
+                                    </svg>
+                                </div>
+                                <button class="btn btn-success btn-lg btn-arrow text-capitalize">@SharedLocalizer["enter"]</button>
+
+                                <div class="text-muted mt-3 p-2">
+                                    <div class="text-muted p-2">
+                                        <label class="switch left">
+                                            <input id="gdprConsent" type="checkbox" class="success" />
+                                            <span class="slider round"></span>
+                                        </label>
+                                        <label class="col-form-label justify-content-start">@SharedLocalizer["I consent to getting sale, promotion, or marketing email"]*</label>
+                                    </div>
+
+                                    <div class="text-muted p-2">
+                                        <label class="switch left">
+                                            <input id="gdprConsent" type="checkbox" class="success" />
+                                            <span class="slider round"></span>
+                                        </label>
+                                        <label class="col-form-label justify-content-start">@SharedLocalizer["I want to hear about more free giveaways!"]</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <input type="hidden" name="referrer" value="688eyg2">
+                        </form>
+
+                    </div>
+
+                    <div class="hr-top mt-5"></div>
+
+                    <section id="giveaway-description">
+                        <div class="pt-4 pb-5">
+                            @Html.Raw(Model.Description)
+                        </div>
+                    </section>
+                    <div class="p-4 rounded-0 bg-light offered-by-text ">
+                        <div class="text-uppercase d-flex flex-wrap justify-content-center">
+                            <div class="mx-3"><small title="America/Sao_Paulo"><span class="h6">@SharedLocalizer["giveaway timezone: {0}", "-03"]</span></small></div>
+                            <div class="mx-3"><small><span class="h6">@SharedLocalizer["offered by:"]<a href="https://www.ludustack.com" target="_blank" rel="noopener noreferrer">LuduStack</a> </span></small></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<footer>
+    <div class="container pt-2 pb-4 pb-md-5">
+        <div class="row">
+            <div class="col-12 giv-footer">
+                <p>
+                    <small>
+                        Enter sweepstakes and receive exclusive offers from LuduStack.
+                        <br>
+                        Unsubscribe anytime. <a asp-area="tools" asp-controller="giveaway" asp-action="terms" asp-route-id="@Model.Id" target="_blank">Read official rules.</a>
+                    </small>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
