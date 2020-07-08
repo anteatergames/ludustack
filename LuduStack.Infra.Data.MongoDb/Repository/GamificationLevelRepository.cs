@@ -19,6 +19,15 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
 
             GamificationLevel result = await DbSet.Find(filter).FirstOrDefaultAsync();
 
+            if (result == null)
+            {
+                result = new GamificationLevel
+                {
+                    Number = 1,
+                    XpToAchieve = 99999
+                };
+            }
+
             return result;
         }
     }
