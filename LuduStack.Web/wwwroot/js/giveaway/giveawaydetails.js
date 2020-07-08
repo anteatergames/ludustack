@@ -62,7 +62,7 @@
                 if (secondsLeft <= 0) {
                     clearInterval(countdown);
                     return;
-                };
+                }
 
                 displayTimeLeft(secondsLeft);
 
