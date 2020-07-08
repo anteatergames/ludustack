@@ -1,4 +1,5 @@
-﻿using LuduStack.Domain.Interfaces.Repository;
+﻿using LuduStack.Domain.Core.Enums;
+using LuduStack.Domain.Interfaces.Repository;
 using LuduStack.Domain.Interfaces.Services;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
@@ -14,11 +15,27 @@ namespace LuduStack.Domain.Services
         {
         }
 
+
+        public override Guid Add(Giveaway model)
+        {
+            SetRequiredProperties(model);
+
+            return base.Add(model);
+        }
+
+        public override Guid Update(Giveaway model)
+        {
+            SetRequiredProperties(model);
+
+            return base.Update(model);
+        }
+
         public Giveaway GenerateNewGiveaway(Guid userId)
         {
             Giveaway model = new Giveaway
             {
-                UserId = userId
+                UserId = userId,
+                Status = GiveawayStatus.Draft
             };
 
             return model;
@@ -36,6 +53,13 @@ namespace LuduStack.Domain.Services
             Task<Giveaway> task = Task.Run(async () => await repository.GetById(id));
 
             return task.Result;
+        }
+        private static void SetRequiredProperties(Giveaway model)
+        {
+            if (model.Status == 0)
+            {
+                model.Status = GiveawayStatus.Draft;
+            }
         }
     }
 }

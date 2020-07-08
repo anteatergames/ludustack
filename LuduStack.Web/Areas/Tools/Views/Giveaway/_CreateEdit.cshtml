@@ -1,15 +1,13 @@
 ﻿@model GiveawayViewModel
 
-@{
-    Layout = null;
-    var canInteract = User.Identity.IsAuthenticated;
+@{ Layout = null;
+                var canInteract = User.Identity.IsAuthenticated;
 
-    ViewData["Title"] = SharedLocalizer["{0} Giveaway", (Model.Id == Guid.Empty ? "New" : "Edit")];
+                ViewData["Title"] = SharedLocalizer["{0} Giveaway", (Model.Id == Guid.Empty ? "New" : "Edit")];
 
-    var userGames = ViewBag.UserGames as List<SelectListItem>;
+                var userGames = ViewBag.UserGames as List<SelectListItem>;
 
-    var isNew = Model.Id == Guid.Empty;
-}
+                var isNew = Model.Id == Guid.Empty; }
 
 <h1 class="sr-only">@ViewData["Title"]</h1>
 
@@ -25,20 +23,18 @@
         </span>
         @if (!isNew)
         {
-            <div class="box-tools">
-                <div class="btn-group">
-                    <button type="button" class="btn  btn-box-tool" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fas fa-ellipsis-v" aria-hidden="true"></i>
-                    </button>
-                    <div class="dropdown-menu text-capitalize" x-placement="bottom-start" style="position: absolute; transform: translate3d(-67px, 28px, 0px); top: 0px; left: 0px; will-change: transform;">
-                        @if (Model.Permissions.CanDelete)
-                        {
-                            <a class="btnDeleteGiveaway dropdown-item" href="#" data-url="@Url.Action("delete", "giveaway", new { area = "tools", id = Model.Id })" data-confirmationmessage="@SharedLocalizer["Are you sure you want to delete this Giveaway?"]" data-confirmationtitle="@SharedLocalizer["Are you sure?"]" data-confirmationbuttontext="@SharedLocalizer["Yes, delete it!"]" data-cancelbuttontext="@SharedLocalizer["Cancel"]">@SharedLocalizer["delete"]</a>
-                        }
-                    </div>
-                </div>
-            </div>
-        }
+<div class="box-tools">
+    <div class="btn-group">
+        <button type="button" class="btn  btn-box-tool" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-ellipsis-v" aria-hidden="true"></i>
+        </button>
+        <div class="dropdown-menu text-capitalize" x-placement="bottom-start" style="position: absolute; transform: translate3d(-67px, 28px, 0px); top: 0px; left: 0px; will-change: transform;">
+            @if (Model.Permissions.CanDelete)
+            {
+<a class="btnDeleteGiveaway dropdown-item" href="#" data-url="@Url.Action("delete", "giveaway", new { area = "tools", id = Model.Id })" data-confirmationmessage="@SharedLocalizer["Are you sure you want to delete this Giveaway?"]" data-confirmationtitle="@SharedLocalizer["Are you sure?"]" data-confirmationbuttontext="@SharedLocalizer["Yes, delete it!"]" data-cancelbuttontext="@SharedLocalizer["Cancel"]">@SharedLocalizer["delete"]</a>}
+        </div>
+    </div>
+</div>}
     </div>
 
     <div class="box-body p-0 px-md-2">
@@ -63,6 +59,20 @@
                         <span asp-description-for="Description" class="col-form-label" />
                         <textarea asp-for="Description" class="form-control" placeholder="@SharedLocalizer["Describe the Giveaway here"]"></textarea>
                         <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-6 col-md-4">
+                    <div class="form-group">
+                        <label asp-for="Status" class="col-form-label"></label>
+                        @if (isNew)
+                        {
+                            <input asp-for="StatusLocalized" class="form-control" readonly />
+                            <input type="hidden" asp-for="Status" /> }
+                        else
+                        {
+                            <select asp-for="Status" asp-items="Html.GetEnumSelectList<GiveawayStatus>()" class="form-control" data-placeholder="@SharedLocalizer["Set the giveaway status"]" tabindex="-1" aria-hidden="true"></select>
+                            <span asp-validation-for="Status" class="text-danger"></span>}
                     </div>
                 </div>
 

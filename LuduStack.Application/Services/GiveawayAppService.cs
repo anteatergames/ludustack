@@ -116,6 +116,24 @@ namespace LuduStack.Application.Services
             }
         }
 
+        public OperationResultVo RemoveGiveaway(Guid currentUserId, Guid id)
+        {
+            try
+            {
+                // validate before
+
+                giveawayDomainService.Remove(id);
+
+                unitOfWork.Commit();
+
+                return new OperationResultVo(true, "That Giveaway is gone now!");
+            }
+            catch (Exception ex)
+            {
+                return new OperationResultVo(ex.Message);
+            }
+        }
+
         private void SetPermissions(Guid currentUserId, GiveawayViewModel vm)
         {
             vm.Permissions.CanConnect = vm.UserId != currentUserId;

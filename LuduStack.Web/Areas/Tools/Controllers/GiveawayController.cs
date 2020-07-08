@@ -1,5 +1,6 @@
 ﻿using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels.Giveaway;
+using LuduStack.Domain.Core.Extensions;
 using LuduStack.Domain.ValueObjects;
 using LuduStack.Web.Areas.Tools.Controllers.Base;
 using LuduStack.Web.Helpers;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace LuduStack.Web.Areas.Tools.Controllers
@@ -43,6 +45,12 @@ namespace LuduStack.Web.Areas.Tools.Controllers
                 model = new List<GiveawayListItemVo>();
             }
 
+
+            foreach (GiveawayListItemVo item in model)
+            {
+                SetLocalization(item);
+            }
+
             ViewData["ListDescription"] = SharedLocalizer["My Giveaways"].ToString();
 
             return PartialView("_ListGiveaways", model);
@@ -59,6 +67,8 @@ namespace LuduStack.Web.Areas.Tools.Controllers
                 OperationResultVo<GiveawayViewModel> castResult = serviceResult as OperationResultVo<GiveawayViewModel>;
 
                 GiveawayViewModel model = castResult.Value;
+
+                SetLocalization(model);
 
                 return View("CreateEditWrapper", model);
             }
@@ -85,7 +95,7 @@ namespace LuduStack.Web.Areas.Tools.Controllers
         }
 
         [Route("tools/giveaway/save")]
-        public JsonResult SaveCourse(GiveawayViewModel vm)
+        public JsonResult SaveGiveaway(GiveawayViewModel vm)
         {
             bool isNew = vm.Id == Guid.Empty;
 
@@ -119,6 +129,31 @@ namespace LuduStack.Web.Areas.Tools.Controllers
             }
         }
 
+        [Authorize]
+        [HttpDelete("tools/giveaway/{id:guid}")]
+        public IActionResult Delete(Guid id)
+        {
+            try
+            {
+                OperationResultVo saveResult = giveawayAppService.RemoveGiveaway(CurrentUserId, id);
+
+                if (saveResult.Success)
+                {
+                    string url = Url.Action("index", "giveaway", new { area = "tools" });
+
+                    return Json(new OperationResultRedirectVo(saveResult, url));
+                }
+                else
+                {
+                    return Json(new OperationResultVo(false));
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new OperationResultVo(ex.Message));
+            }
+        }
+
 
         [Route("giveaway/{id:guid}")]
         public IActionResult Details(Guid id)
@@ -133,6 +168,8 @@ namespace LuduStack.Web.Areas.Tools.Controllers
 
                 SetAuthorDetails(model);
 
+                SetLocalization(model);
+
                 return View("Details", model);
             }
             else
@@ -140,7 +177,6 @@ namespace LuduStack.Web.Areas.Tools.Controllers
                 return null;
             }
         }
-
 
         [Route("giveaway/{id:guid}/terms")]
         public IActionResult Terms(Guid id)
@@ -158,6 +194,36 @@ namespace LuduStack.Web.Areas.Tools.Controllers
             else
             {
                 return null;
+            }
+        }
+
+
+
+        private void SetLocalization(GiveawayViewModel model)
+        {
+            SetLocalization(model, false);
+        }
+
+        private void SetLocalization(GiveawayListItemVo item)
+        {
+            SetLocalization(item, false);
+        }
+
+        private void SetLocalization(GiveawayViewModel model, bool v)
+        {
+            if (model != null)
+            {
+                DisplayAttribute displayStatus = model.Status.GetAttributeOfType<DisplayAttribute>();
+                model.StatusLocalized = SharedLocalizer[displayStatus != null ? displayStatus.Name : model.Status.ToString()];
+            }
+        }
+
+        private void SetLocalization(GiveawayListItemVo item, bool editing)
+        {
+            if (item != null)
+            {
+                DisplayAttribute displayStatus = item.Status.GetAttributeOfType<DisplayAttribute>();
+                item.StatusLocalized = SharedLocalizer[displayStatus != null ? displayStatus.Name : item.Status.ToString()];
             }
         }
     }

@@ -1,4 +1,5 @@
 ﻿using LuduStack.Domain.Core.Enums;
+using Microsoft.Extensions.Localization;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -24,6 +25,7 @@ namespace LuduStack.Application.ViewModels.Giveaway
 
         [Required]
         public GiveawayStatus Status { get; set; }
+        public string StatusLocalized { get; set; }
 
         [Required]
         public bool MembersOnly { get; set; }

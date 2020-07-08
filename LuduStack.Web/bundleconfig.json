@@ -284,6 +284,7 @@
   {
     "outputFileName": "wwwroot/js/giveaway/giveaway.min.js",
     "inputFiles": [
+      "wwwroot/js/giveaway/giveawaycommon.js",
       "wwwroot/js/giveaway/giveaway.js"
     ]
   },
