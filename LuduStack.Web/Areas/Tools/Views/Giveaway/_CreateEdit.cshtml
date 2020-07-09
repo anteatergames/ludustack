@@ -1,13 +1,17 @@
 ﻿@model GiveawayViewModel
 
-@{ Layout = null;
+@{
+    Layout = null;
     var canInteract = User.Identity.IsAuthenticated;
 
     ViewData["Title"] = SharedLocalizer["{0} Giveaway", (Model.Id == Guid.Empty ? "New" : "Edit")];
 
     var userGames = ViewBag.UserGames as List<SelectListItem>;
 
-    var isNew = Model.Id == Guid.Empty; }
+    var isNew = Model.Id == Guid.Empty;
+
+    var timeZoneList = (IEnumerable<SelectListItem>)ViewBag.TimeZones;
+}
 
 <h1 class="sr-only">@ViewData["Title"]</h1>
 
@@ -44,6 +48,21 @@
             <input type="hidden" asp-for="UserId" />
             <input type="hidden" asp-for="CreateDate" />
             <div class="row">
+
+                <div class="col-12 col-sm-6 col-md-4">
+                    <div class="form-group">
+                        <label asp-for="Status" class="col-form-label"></label>
+                        @if (isNew)
+                        {
+            <input asp-for="StatusLocalized" class="form-control" readonly />
+                            <input type="hidden" asp-for="Status" /> }
+                        else
+                        {
+            <select asp-for="Status" asp-items="Html.GetEnumSelectList<GiveawayStatus>()" class="form-control" data-placeholder="@SharedLocalizer["Set the giveaway status"]" tabindex="-1" aria-hidden="true"></select>
+                            <span asp-validation-for="Status" class="text-danger"></span>}
+                    </div>
+                </div>
+
                 <div class="col-md-12">
                     <div class="form-group">
                         <label asp-for="Name" class="col-form-label"></label>
@@ -62,34 +81,59 @@
                     </div>
                 </div>
 
-                <div class="col-12 col-sm-6 col-md-4">
-                    <div class="form-group">
-                        <label asp-for="Status" class="col-form-label"></label>
-                        @if (isNew)
-                        {
-            <input asp-for="StatusLocalized" class="form-control" readonly />
-                            <input type="hidden" asp-for="Status" /> }
-                        else
-                        {
-            <select asp-for="Status" asp-items="Html.GetEnumSelectList<GiveawayStatus>()" class="form-control" data-placeholder="@SharedLocalizer["Set the giveaway status"]" tabindex="-1" aria-hidden="true"></select>
-                            <span asp-validation-for="Status" class="text-danger"></span>}
-                    </div>
-                </div>
-
 
                 <div class="col-12 col-sm-6 col-md-4">
                     <div class="form-group">
                         <label asp-for="StartDate" class="col-form-label"></label>
-                        <input asp-for="StartDate" type="text" class="form-control datetimepicker" placeholder="@SharedLocalizer["When this giveway should start"]" />
-                        <span asp-validation-for="StartDate" class="text-danger"></span>
+                        <input asp-for="StartDate" class="form-control" placeholder="@SharedLocalizer["When this giveway should start"]" />
                     </div>
                 </div>
 
                 <div class="col-12 col-sm-6 col-md-4">
                     <div class="form-group">
                         <label asp-for="EndDate" class="col-form-label"></label>
-                        <input asp-for="EndDate" type="text" class="form-control datetimepicker" placeholder="@SharedLocalizer["When this giveway should end"]" />
+                        <input asp-for="EndDate" class="form-control" placeholder="@SharedLocalizer["When this giveway should end"]" />
                         <span asp-validation-for="EndDate" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-6 col-md-4">
+                    <div class="form-group">
+                        <label asp-for="TimeZone" class="col-form-label"></label>
+                        <select asp-for="TimeZone" asp-items="timeZoneList" class="form-control"></select>
+                        <span asp-validation-for="TimeZone" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                        <label asp-for="WinnerAmount" class="col-form-label"></label>
+                        <input asp-for="WinnerAmount" class="form-control" placeholder="@SharedLocalizer["How many winners there will be on this giveaway?"]" />
+                        <span asp-validation-for="WinnerAmount" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                        <label asp-for="PrizePriceInDolar" class="col-form-label"></label>
+                        <input asp-for="PrizePriceInDolar" class="form-control" placeholder="@SharedLocalizer["How much (in USD) worth the prize?"]" />
+                        <span asp-validation-for="PrizePriceInDolar" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                        <label asp-for="SponsorName" class="col-form-label"></label>
+                        <input asp-for="SponsorName" class="form-control" placeholder="@SharedLocalizer["Who's offering this giveaway?"]" />
+                        <span asp-validation-for="SponsorName" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                        <label asp-for="SponsorWebsite" class="col-form-label"></label>
+                        <input asp-for="SponsorWebsite" class="form-control" placeholder="@SharedLocalizer["The sponsor website"]" />
+                        <span asp-validation-for="SponsorWebsite" class="text-danger"></span>
                     </div>
                 </div>
 

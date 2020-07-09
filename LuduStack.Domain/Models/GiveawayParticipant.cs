@@ -9,6 +9,10 @@ namespace LuduStack.Domain.Models
 
         public string RefferalCode { get; set; }
 
+        public bool GdprConsent { get; set; }
+
+        public bool WantNotifications { get; set; }
+
         public bool IsWinner { get; set; }
 
         public string SecretReceived { get; set; }

@@ -5,6 +5,7 @@ using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace LuduStack.Domain.Services
@@ -60,6 +61,15 @@ namespace LuduStack.Domain.Services
                 model.StartDate = DateTime.Now;
             }
 
+            var timeZoneOffset = int.Parse(model.TimeZone ?? "0");
+
+            model.StartDate = model.StartDate.AddHours(timeZoneOffset);
+
+            if (model.EndDate.HasValue)
+            {
+                model.EndDate = model.EndDate.Value.AddHours(timeZoneOffset);
+            }
+
             return model;
         }
         private static void SetRequiredProperties(Giveaway model)
@@ -67,6 +77,39 @@ namespace LuduStack.Domain.Services
             if (model.Status == 0)
             {
                 model.Status = GiveawayStatus.Draft;
+            }
+        }
+
+        public DomainActionPerformed AddParticipant(Guid giveawayId, string email, bool gdprConsent, bool wantNotifications)
+        {
+            GiveawayParticipant userParticipation;
+
+            IQueryable<GiveawayParticipant> existing = repository.GetParticipants(giveawayId);
+            bool oneIsMine = existing.Any(x => x.Email == email);
+
+            if (oneIsMine)
+            {
+                userParticipation = existing.First(x => x.Email == email);
+
+                userParticipation.GdprConsent = gdprConsent;
+                userParticipation.WantNotifications = wantNotifications;
+
+                repository.UpdateParticipant(giveawayId, userParticipation);
+
+                return DomainActionPerformed.Update;
+            }
+            else
+            {
+                userParticipation = new GiveawayParticipant
+                {
+                    Email = email,
+                    GdprConsent = gdprConsent,
+                    WantNotifications = wantNotifications
+                };
+
+                repository.AddParticipant(giveawayId, userParticipation);
+
+                return DomainActionPerformed.Create;
             }
         }
     }

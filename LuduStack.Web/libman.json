@@ -85,10 +85,6 @@
     {
       "library": "rangeslider.js@2.3.3",
       "destination": "wwwroot/lib/rangeslider"
-    },
-    {
-      "library": "flatpickr@4.6.3",
-      "destination": "wwwroot/lib/flatpickr"
     }
   ]
 }

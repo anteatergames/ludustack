@@ -11,5 +11,6 @@ namespace LuduStack.Application.Interfaces
         OperationResultVo GetGiveawaysByMe(Guid currentUserId);
         OperationResultVo<Guid> SaveGiveaway(Guid currentUserId, GiveawayViewModel vm);
         OperationResultVo RemoveGiveaway(Guid currentUserId, Guid id);
+        OperationResultVo EnterGiveaway(Guid currentUserId, GiveawayEnterViewModel vm);
     }
 }

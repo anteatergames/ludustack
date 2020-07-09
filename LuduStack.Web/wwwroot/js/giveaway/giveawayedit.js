@@ -46,7 +46,7 @@
 
     function bindAll() {
         bindBtnSaveForm();
-        bindDateTimePicker();
+        //bindDateTimePicker();
     }
 
     function bindBtnSaveForm() {

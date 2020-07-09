@@ -228,3 +228,32 @@ html {
 .carousel-indicators {
     margin-bottom: 40px;
 }
+
+.status-bar-wrapper {
+    height: 90px;
+    text-align: center;
+}
+.status-bar {
+    display: block;
+    background-color: #fff;
+    color: #3d4454;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: .8rem .8rem 0;
+    border-top: 2px solid #e9eff4;
+}
+    .status-bar div {
+        display: inline-block;
+        margin: 0 1rem .8rem;
+    }
+
+    .status-bar .h3 {
+        vertical-align: -.25rem;
+        color: #3ec242;
+    }
+
+.swal2-header {
+    flex: none;
+}

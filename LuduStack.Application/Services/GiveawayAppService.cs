@@ -1,6 +1,7 @@
 ﻿using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels.Giveaway;
 using LuduStack.Domain.Core.Enums;
+using LuduStack.Domain.Core.Extensions;
 using LuduStack.Domain.Interfaces.Services;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
@@ -48,7 +49,7 @@ namespace LuduStack.Application.Services
 
                 SetAuthorDetails(vm);
 
-                SetPermissions(currentUserId, vm);
+                SetViewModelState(currentUserId, vm);
 
                 vm.FeaturedImage = SetFeaturedImage(currentUserId, vm.FeaturedImage, ImageRenderType.Full, Constants.DefaultGiveawayThumbnail);
 
@@ -134,9 +135,66 @@ namespace LuduStack.Application.Services
             }
         }
 
-        private void SetPermissions(Guid currentUserId, GiveawayViewModel vm)
+        public OperationResultVo EnterGiveaway(Guid currentUserId, GiveawayEnterViewModel vm)
+        {
+            try
+            {
+                giveawayDomainService.AddParticipant(vm.GiveawayId, vm.Email, vm.GdprConsent, vm.WantNotifications);
+
+                unitOfWork.Commit();
+
+                return new OperationResultVo(true, "You are in!");
+            }
+            catch (Exception ex)
+            {
+                return new OperationResultVo(ex.Message);
+            }
+        }
+
+        private void SetViewModelState(Guid currentUserId, GiveawayViewModel vm)
         {
             vm.Permissions.CanConnect = vm.UserId != currentUserId;
+
+            vm.StatusMessage = vm.Status.ToDisplayName();
+
+            if (vm.Status == GiveawayStatus.PendingStart && vm.StartDate <= DateTime.Now)
+            {
+                vm.Status = GiveawayStatus.OpenForEntries;
+                vm.StatusMessage = "enter your email address below";
+            }
+
+            if (vm.EndDate.HasValue)
+            {
+                TimeSpan diff;
+
+                if (vm.StartDate >= DateTime.Now)
+                {
+                    diff = (vm.StartDate - DateTime.Now);
+                    vm.Future = true;
+                }
+                else
+                {
+                    diff = (vm.EndDate - DateTime.Now).Value;
+
+                    if (DateTime.Now >= vm.EndDate.Value)
+                    {
+                        vm.Status = GiveawayStatus.PickingWinners;
+                        vm.StatusMessage = "we are picking winners";
+                    }
+                }
+
+                vm.SecondsToEnd = (int)diff.TotalSeconds;
+            }
+            else
+            {
+                vm.StatusMessage = "this giveaway was not started yet";
+            }
+
+            vm.CanCountDown = vm.EndDate.HasValue && (vm.Status == GiveawayStatus.Draft || vm.Status == GiveawayStatus.OpenForEntries);
+
+            vm.ShowTimeZone = !string.IsNullOrWhiteSpace(vm.TimeZone);
+            vm.ShowSponsor = !string.IsNullOrWhiteSpace(vm.SponsorName);
+            vm.SponsorWebsite = string.IsNullOrWhiteSpace(vm.SponsorWebsite) ? "#" : vm.SponsorWebsite;
 
             SetBasePermissions(currentUserId, vm);
         }

@@ -1,0 +1,129 @@
+﻿@model GiveawayDetailsViewModel
+@{
+    ViewData["Title"] = SharedLocalizer["Giveaway"];
+    ViewData["Description"] = "tralala";
+    ViewData["Url"] = ViewBag.BaseUrl + Url.Action("details", "localization", new { area = "tools", id = Model.Id });
+    //ViewData["OgImage"] = ViewBag.BaseUrl + "/images/og/oggiveaway.png";
+
+    var isAjax = ViewContext.HttpContext.Request.IsAjaxRequest();
+    var canInteract = User.Identity.IsAuthenticated;
+
+    Layout = "_LayoutNoNavigation";
+}
+
+@section ComponentStyles {
+    <link rel="stylesheet" href="~/css/switch.css">
+    <environment include="Development">
+        <link rel="stylesheet" href="~/css/giveaway.css">
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="~/css/giveaway.min.css" asp-append-version="true">
+    </environment>
+}
+
+@section Scripts {
+    <environment include="Development">
+        <script src="~/js/shared/fx.js"></script>
+        <script src="~/js/giveaway/giveawaydetails.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/js/giveaway/giveawaydetails.min.js" asp-append-version="true"></script>
+    </environment>
+}
+
+<input asp-for="SecondsToEnd" type="hidden" />
+
+<section class="container-fluid position-relative">
+    <div id="featurecontainer" class="row justify-content-center">
+        <div class="col-md-12 col-lg-10 px-0 px-md-1">
+            <div class="giv-container animate1 pb-5 mb-2">
+
+                <div id="carouselExampleIndicators" class="carousel slide square-bottom" data-ride="carousel">
+                    <ol class="carousel-indicators">
+                        <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                        <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                        <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                    </ol>
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img class="d-block w-100" src="~/images/photo1.jpg" alt="First slide">
+                        </div>
+                        <div class="carousel-item">
+                            <img class="d-block w-100" src="~/images/photo2.jpg" alt="Second slide">
+                        </div>
+                        <div class="carousel-item">
+                            <img class="d-block w-100" src="~/images/photo3.jpg" alt="Third slide">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="px-3 px-sm-5 px-md-5">
+                    <div class="giv-title">
+                        <h1>@Model.Name</h1>
+                    </div>
+
+                    <div class="text-center pt-1 pb-0" id="mainSignup">
+                        <div class="giv-entry-title pt-2 pt-sm-3 pb-0 pb-sm-2 mb-2">
+                            <h1 class="display-5">
+                                <strong>Congratulations!</strong>
+                                <span class="text-thin">You're in!</span>
+                            </h1>
+                            <div class="text-center alert alert-warning d-inline-block m-auto rounded-0" role="alert">
+                                Check your inbox and confirm your email to be eligible to win!
+                                <a href="@ViewData["mailProvider"]" target="_blank">Go to my email!</a>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="hr-arrow-down rounded-0"></div>
+
+                    <section id="giveaway-description">
+                        <div class="pt-4 pb-5">
+                            @Html.Raw(Model.Description)
+                        </div>
+                    </section>
+                    @if (Model.ShowTimeZone || Model.ShowSponsor)
+                    {
+                        <div class="p-4 rounded-0 bg-light offered-by-text ">
+                            <div class="text-uppercase d-flex flex-wrap justify-content-center">
+                                @if (Model.ShowTimeZone)
+                                {
+                                    <div class="mx-3"><small title="America/Sao_Paulo"><span class="h6">@SharedLocalizer["giveaway timezone: {0}", Model.TimeZone]</span></small></div>
+                                }
+                                @if (Model.ShowSponsor)
+                                {
+                                    <div class="mx-3"><small><span class="h6">@SharedLocalizer["offered by:"]<a href="@Model.SponsorWebsite" target="_blank" rel="noopener noreferrer">@Model.SponsorName</a> </span></small></div>
+                                }
+                            </div>
+                        </div>
+                    }
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        <div class="container pt-2 pb-4 pb-md-5">
+            <div class="row">
+                <div class="col-12 giv-footer">
+                    <p>
+                        <small>
+                            Unsubscribe anytime. <a asp-area="tools" asp-controller="giveaway" asp-action="terms" asp-route-id="@Model.Id" target="_blank">Read official rules.</a>
+                        </small>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <div class="status-bar-wrapper">
+        <div class="status-bar mb-0 h6" id="countdown">
+            <div><span class="mr-1 text-uppercase">@SharedLocalizer["your entries"]:</span><span class="h3 mb-0" id="entry-count"><span>99</span></span></div>
+            <div><span class="mr-1">@SharedLocalizer["time left"]:</span><span class="h3 mb-0" id="countdown-days">00</span> <span class="time-uni">d</span> : <span class="h3 mb-0" id="countdown-hours">00</span> <span class="time-uni">h</span> : <span class="h3 mb-0" id="countdown-minutes">00</span> <span class="time-uni">m</span> : <span class="h3 mb-0" id="countdown-seconds">00</span> <span class="time-uni">s</span></div>
+        </div>
+    </div>
+</section>

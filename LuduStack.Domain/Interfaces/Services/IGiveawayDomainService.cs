@@ -1,4 +1,5 @@
-﻿using LuduStack.Domain.Models;
+﻿using LuduStack.Domain.Core.Enums;
+using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
@@ -12,5 +13,7 @@ namespace LuduStack.Domain.Interfaces.Services
         Giveaway GetGiveawayById(Guid id);
 
         List<GiveawayListItemVo> GetGiveawayListByUserId(Guid userId);
+
+        DomainActionPerformed AddParticipant(Guid giveawayId, string email, bool gdprConsent, bool wantNotifications);
     }
 }
