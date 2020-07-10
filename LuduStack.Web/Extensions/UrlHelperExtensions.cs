@@ -1,3 +1,4 @@
+using LuduStack.Web.Areas.Tools.Controllers;
 using LuduStack.Web.Areas.Work.Controllers;
 using LuduStack.Web.Controllers;
 
@@ -29,6 +30,15 @@ namespace Microsoft.AspNetCore.Mvc
                 action: nameof(JobPositionController.Details),
                 controller: "JobPosition",
                 values: new { id },
+                protocol: scheme);
+        }
+
+        public static string GiveawayEmailConfirmationLink(this IUrlHelper urlHelper, string scheme, string id, string referralCode)
+        {
+            return urlHelper.Action(
+                action: nameof(GiveawayController.EmailConfirmation),
+                controller: "Giveaway",
+                values: new { id, referralCode },
                 protocol: scheme);
         }
     }

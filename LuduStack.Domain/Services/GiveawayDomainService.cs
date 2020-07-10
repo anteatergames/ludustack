@@ -80,14 +80,14 @@ namespace LuduStack.Domain.Services
             }
         }
 
-        public DomainActionPerformed AddParticipant(Guid giveawayId, string email, bool gdprConsent, bool wantNotifications)
+        public DomainOperationVo<GiveawayParticipant> AddParticipant(Guid giveawayId, string email, bool gdprConsent, bool wantNotifications, string referalCode, string referrer)
         {
             GiveawayParticipant participant;
 
             IQueryable<GiveawayParticipant> existing = repository.GetParticipants(giveawayId);
-            bool oneIsMine = existing.Any(x => x.Email == email);
+            bool exists = existing.Any(x => x.Email == email);
 
-            if (oneIsMine)
+            if (exists)
             {
                 participant = existing.First(x => x.Email == email);
 
@@ -96,7 +96,7 @@ namespace LuduStack.Domain.Services
 
                 repository.UpdateParticipant(giveawayId, participant);
 
-                return DomainActionPerformed.Update;
+                return new DomainOperationVo<GiveawayParticipant>(DomainActionPerformed.Update, participant);
             }
             else
             {
@@ -113,9 +113,26 @@ namespace LuduStack.Domain.Services
                     Points = 1
                 });
 
+                participant.ReferralCode = referalCode;
+
                 repository.AddParticipant(giveawayId, participant);
 
-                return DomainActionPerformed.Create;
+                if (!string.IsNullOrWhiteSpace(referrer))
+                {
+                    var referrerParticipant = repository.GetParticipantByReferralCode(giveawayId, referrer);
+                    if (referrerParticipant != null)
+                    {
+                        referrerParticipant.Entries.Add(new GiveawayEntry
+                        {
+                            Type = GiveawayEntryType.ReferralCode,
+                            Points = 1
+                        });
+
+                        repository.UpdateParticipant(giveawayId, referrerParticipant);
+                    }
+                }
+
+                return new DomainOperationVo<GiveawayParticipant>(DomainActionPerformed.Create, participant);
             }
         }
 
@@ -124,6 +141,34 @@ namespace LuduStack.Domain.Services
             GiveawayParticipant model = repository.GetParticipantByEmail(giveawayId, email);
 
             return model;
+        }
+
+        public void UpdateParticipantShortUrl(Guid giveawayId, string email, string shortUrl)
+        {
+            var existing = repository.GetParticipantByEmail(giveawayId, email);
+
+            if (existing != null)
+            {
+                existing.ShortUrl = shortUrl;
+
+                repository.UpdateParticipant(giveawayId, existing);
+            }
+        }
+
+        public void ConfirmParticipant(Guid giveawayId, string referralCode)
+        {
+            var existing = repository.GetParticipantByReferralCode(giveawayId, referralCode);
+
+            if (existing != null && !existing.Entries.Any(x => x.Type == GiveawayEntryType.EmailConfirmed))
+            {
+                existing.Entries.Add(new GiveawayEntry
+                {
+                    Type = GiveawayEntryType.EmailConfirmed,
+                    Points = 1
+                });
+
+                repository.UpdateParticipant(giveawayId, existing);
+            }
         }
 
         private static IGiveawayBasicInfo SetDates(IGiveawayBasicInfo model)

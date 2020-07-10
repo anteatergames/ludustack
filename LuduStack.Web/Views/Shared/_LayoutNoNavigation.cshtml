@@ -61,6 +61,7 @@
 
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/twitter-bootstrap/css/bootstrap.css">
+        <link rel="stylesheet" href="~/lib/font-awesome/css/all.css">
         @RenderSection("ComponentStyles", required: false)
         @RenderSection("Styles", required: false)
     </environment>
@@ -71,6 +72,14 @@
               asp-fallback-test-property="position"
               asp-fallback-test-value="absolute"
               integrity="sha256-/ykJw/wDxMa0AQhHDYfuMEwVb4JHMx9h4jD4XvHqVzU=" crossorigin="anonymous">
+        <link rel="stylesheet"
+              href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css"
+              asp-fallback-href="~/lib/font-awesome/css/all.min.css"
+              asp-fallback-test-class="fa"
+              asp-fallback-test-property="display"
+              asp-fallback-test-value="inline-block"
+              integrity="sha256-h20CPZ0QyXlBuAw7A+KluUYx/3pK+c7lYEpqLTlxjYQ="
+              crossorigin="anonymous" />
         @RenderSection("ComponentStyles", required: false)
         @RenderSection("Styles", required: false)
     </environment>

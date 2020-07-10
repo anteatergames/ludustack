@@ -262,42 +262,27 @@ html {
 
 .share-personal-url {
     width: 100%;
-    max-width: 328px;
+    max-width: 360px;
     margin: 0 auto;
     padding: 30px 0;
 }
 
     .share-personal-url .url-place {
-        color: #ffffff;
         width: auto;
-        border-radius: 4px;
-        border: 1px solid #838587;
-        height: 52px;
-        padding-left: 20px;
-        padding-right: 20px;
-        font-size: 16px;
-        color: #838587;
-        line-height: 3.3;
         text-align: left;
     }
 
-        .share-personal-url.url-place .url-input {
-            display: inline-block;
+        .share-personal-url .url-place .url-input {
             white-space: nowrap;
             overflow: hidden !important;
             text-overflow: ellipsis;
-            width: 80%;
+            direction: rtl;
+            text-align: left;
+            padding-right: 45px;
         }
 
         .share-personal-url .url-place .copy-icon {
-            float: right;
-            margin-top: 26px;
-            background: url(../images/copy_icon.png) center center no-repeat;
-            width: 30px;
-            height: 30px;
-            transform: translateY(-50%);
-            cursor: pointer;
-            background-size: 20px;
+            margin-top: -76px;
         }
 
     .share-personal-url .box-info .text-info {

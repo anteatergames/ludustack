@@ -17,6 +17,8 @@ namespace LuduStack.Application.ViewModels.Giveaway
 
 
         #region Extra
+        public bool EmailConfirmed { get; set; }
+
         public bool CanCountDown { get; set; }
 
         public string StatusMessage { get; set; }

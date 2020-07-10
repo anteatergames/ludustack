@@ -70,8 +70,6 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
         {
             participant.Id = Guid.NewGuid();
 
-            participant.ReferalCode = participant.Id.NoHyphen();
-
             FilterDefinition<Giveaway> filter = Builders<Giveaway>.Filter.Where(x => x.Id == giveawayId);
             UpdateDefinition<Giveaway> add = Builders<Giveaway>.Update.AddToSet(c => c.Participants, participant);
 
@@ -87,7 +85,9 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
             UpdateDefinition<Giveaway> update = Builders<Giveaway>.Update
                 .Set(c => c.Participants[-1].Email, participant.Email)
                 .Set(c => c.Participants[-1].GdprConsent, participant.GdprConsent)
-                .Set(c => c.Participants[-1].WantNotifications, participant.WantNotifications);
+                .Set(c => c.Participants[-1].WantNotifications, participant.WantNotifications)
+                .Set(c => c.Participants[-1].ShortUrl, participant.ShortUrl)
+                .Set(c => c.Participants[-1].Entries, participant.Entries);
 
             Context.AddCommand(() => DbSet.UpdateOneAsync(filter, update));
         }
@@ -103,6 +103,13 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
         public GiveawayParticipant GetParticipantByEmail(Guid giveawayId, string email)
         {
             GiveawayParticipant model = DbSet.AsQueryable().Where(x => x.Id == giveawayId).SelectMany(x => x.Participants).FirstOrDefault(x => x.Email.Equals(email));
+
+            return model;
+        }
+
+        public GiveawayParticipant GetParticipantByReferralCode(Guid giveawayId, string referralCode)
+        {
+            GiveawayParticipant model = DbSet.AsQueryable().Where(x => x.Id == giveawayId).SelectMany(x => x.Participants).FirstOrDefault(x => x.ReferralCode.Equals(referralCode));
 
             return model;
         }

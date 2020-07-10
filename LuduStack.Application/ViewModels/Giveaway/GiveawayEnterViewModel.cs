@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Text;
 
 namespace LuduStack.Application.ViewModels.Giveaway
@@ -13,5 +14,7 @@ namespace LuduStack.Application.ViewModels.Giveaway
         public bool GdprConsent { get; set; }
 
         public bool WantNotifications { get; set; }
+
+        public string ReferralCode { get; set; }
     }
 }

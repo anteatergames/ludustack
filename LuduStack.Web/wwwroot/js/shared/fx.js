@@ -2,6 +2,8 @@
     "use strict";
 
     var onlyOnKonami = false;
+    var pattern = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+    var current = 0;
 
     var selectors = {};
     var objs = {};
@@ -20,23 +22,30 @@
     function init() {
         setSelectors();
         cacheObjs();
+
+        bindAll();
     }
 
     function bindAll() {
-        if (onlyOnKonami) {
-            bindKonamiCode();
-        }
     }
+
     function bindKonamiCode() {
-        $window.keydown(function (event) {
-            pointer = konami[pointer] === event.which
-                ? pointer + 1
-                : +(event.which === konami[0]);
-            if (pointer === konami.length) {
-                pointer = 0;
-                poof();
+        document.addEventListener('keydown', keyHandler, false);
+
+        function keyHandler(event) {
+
+            if (pattern.indexOf(event.key) < 0 || event.key !== pattern[current]) {
+                current = 0;
+                return;
             }
-        });
+
+            current++;
+
+            if (pattern.length === current) {
+                current = 0;
+                console.log('Hum... you found me... now I have to kill you.');
+            }
+        };
     }
 
     function countDownClock(number = 100, format = 'seconds') {
@@ -45,11 +54,6 @@
         const hoursElement = d.querySelector('#countdown-hours');
         const minutesElement = d.querySelector('#countdown-minutes');
         const secondsElement = d.querySelector('#countdown-seconds');
-
-        console.log(daysElement);
-        console.log(hoursElement);
-        console.log(minutesElement);
-        console.log(secondsElement);
 
         let countdown;
         if (daysElement !== null && hoursElement !== null && minutesElement !== null && secondsElement !== null) {
@@ -97,8 +101,6 @@
     function startCountDown(selector) {
         var secondsToEnd = document.querySelector(selector);
 
-        console.log(secondsToEnd);
-
         if (secondsToEnd !== null) {
             countDownClock(secondsToEnd.value, 'seconds');
         }
@@ -125,8 +127,6 @@
     }, runFor);
 
     // Settings
-    var konami = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65]
-        , pointer = 0;
 
     var particles = 150
         , spread = 20
@@ -299,7 +299,6 @@
                 , count = 0;
 
             (function addConfetto() {
-
                 if (onlyOnKonami && ++count > particles)
                     return timer = undefined;
 
@@ -341,7 +340,8 @@
     return {
         Init: init,
         StartCountDown: startCountDown,
-        Poof: poof
+        Poof: poof,
+        BindKonamiCode: bindKonamiCode
     };
 }());
 

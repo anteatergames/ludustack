@@ -7,6 +7,7 @@ using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace LuduStack.Application.Services
 {
@@ -14,13 +15,16 @@ namespace LuduStack.Application.Services
     {
         private readonly IGiveawayDomainService giveawayDomainService;
         private readonly IGamificationDomainService gamificationDomainService;
+        private readonly IShortUrlDomainService shortUrlDomainService;
 
         public GiveawayAppService(IProfileBaseAppServiceCommon profileBaseAppServiceCommon
             , IGiveawayDomainService giveawayDomainService
-            , IGamificationDomainService gamificationDomainService) : base(profileBaseAppServiceCommon)
+            , IGamificationDomainService gamificationDomainService
+            , IShortUrlDomainService shortUrlDomainService) : base(profileBaseAppServiceCommon)
         {
             this.giveawayDomainService = giveawayDomainService;
             this.gamificationDomainService = gamificationDomainService;
+            this.shortUrlDomainService = shortUrlDomainService;
         }
 
         public OperationResultVo GenerateNew(Guid currentUserId)
@@ -39,11 +43,11 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo GetGiveawayBasicInfoById(Guid currentUserId, Guid id)
+        public OperationResultVo GetGiveawayBasicInfoById(Guid currentUserId, Guid giveawayId)
         {
             try
             {
-                GiveawayBasicInfo existing = giveawayDomainService.GetGiveawayBasicInfoById(id);
+                GiveawayBasicInfo existing = giveawayDomainService.GetGiveawayBasicInfoById(giveawayId);
 
                 GiveawayViewModel vm = mapper.Map<GiveawayViewModel>(existing);
 
@@ -54,42 +58,6 @@ namespace LuduStack.Application.Services
                 vm.FeaturedImage = SetFeaturedImage(currentUserId, vm.FeaturedImage, ImageRenderType.Full, Constants.DefaultGiveawayThumbnail);
 
                 return new OperationResultVo<GiveawayViewModel>(vm);
-            }
-            catch (Exception ex)
-            {
-                return new OperationResultVo(ex.Message);
-            }
-        }
-
-        public OperationResultVo GetGiveawayParticipantInfo(Guid currentUserId, Guid giveawayId, string email)
-        {
-            try
-            {
-                GiveawayBasicInfo existing = giveawayDomainService.GetGiveawayBasicInfoById(giveawayId);
-
-                if (existing == null)
-                {
-                    return new OperationResultVo(false, "Giveaway not found");
-                }
-
-                GiveawayParticipant participant = giveawayDomainService.GetParticipantByEmail(giveawayId, email);
-
-                if (participant == null)
-                {
-                    return new OperationResultVo(false, "No participant found for that email");
-                }
-
-                GiveawayParticipationViewModel vm = mapper.Map<GiveawayParticipationViewModel>(existing);
-
-                vm.EntryCount = participant.Entries.Count;
-
-                vm.ShareUrl = participant.ReferalCode;
-
-                SetViewModelState(currentUserId, vm);
-
-                vm.FeaturedImage = SetFeaturedImage(currentUserId, vm.FeaturedImage, ImageRenderType.Full, Constants.DefaultGiveawayThumbnail);
-
-                return new OperationResultVo<GiveawayParticipationViewModel>(vm);
             }
             catch (Exception ex)
             {
@@ -153,13 +121,13 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo RemoveGiveaway(Guid currentUserId, Guid id)
+        public OperationResultVo RemoveGiveaway(Guid currentUserId, Guid giveawayId)
         {
             try
             {
                 // validate before
 
-                giveawayDomainService.Remove(id);
+                giveawayDomainService.Remove(giveawayId);
 
                 unitOfWork.Commit();
 
@@ -171,15 +139,88 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo EnterGiveaway(Guid currentUserId, GiveawayEnterViewModel vm)
-        {
+        public OperationResultVo EnterGiveaway(Guid currentUserId, GiveawayEnterViewModel vm, string urlReferralBase)
+        {///
             try
             {
-                giveawayDomainService.AddParticipant(vm.GiveawayId, vm.Email, vm.GdprConsent, vm.WantNotifications);
+                var newReferralCode = Guid.NewGuid().NoHyphen();
+
+                var domainActionPerformed = giveawayDomainService.AddParticipant(vm.GiveawayId, vm.Email, vm.GdprConsent, vm.WantNotifications, newReferralCode, vm.ReferralCode);
 
                 unitOfWork.Commit();
 
-                return new OperationResultVo(true, "You are in!");
+                if (domainActionPerformed.Action == DomainActionPerformed.Create)
+                {
+                    var urlReferral = string.Format("{0}?referralCode={1}", urlReferralBase, newReferralCode);
+
+                    string shortUrl = shortUrlDomainService.Add(urlReferral);
+
+                    if (!string.IsNullOrWhiteSpace(shortUrl))
+                    {
+                        giveawayDomainService.UpdateParticipantShortUrl(vm.GiveawayId, vm.Email, shortUrl);
+
+                        unitOfWork.Commit();
+                    }
+
+                    return new OperationResultVo<string>(newReferralCode, 0, "You are in!");
+                }
+
+                return new OperationResultVo<string>(string.Empty, 0, "You are in!");
+
+            }
+            catch (Exception ex)
+            {
+                return new OperationResultVo(ex.Message);
+            }
+        }
+
+        public OperationResultVo GetGiveawayParticipantInfo(Guid currentUserId, Guid giveawayId, string email)
+        {
+            try
+            {
+                GiveawayBasicInfo existing = giveawayDomainService.GetGiveawayBasicInfoById(giveawayId);
+
+                if (existing == null)
+                {
+                    return new OperationResultVo(false, "Giveaway not found");
+                }
+
+                GiveawayParticipant participant = giveawayDomainService.GetParticipantByEmail(giveawayId, email);
+
+                if (participant == null)
+                {
+                    return new OperationResultVo(false, "No participant found for that email");
+                }
+
+                GiveawayParticipationViewModel vm = mapper.Map<GiveawayParticipationViewModel>(existing);
+
+                SetViewModelState(currentUserId, vm);
+
+                vm.EntryCount = participant.Entries.Sum(x => x.Points);
+
+                vm.ShareUrl = participant.ShortUrl;
+
+                vm.EmailConfirmed = participant.Entries.Any(x => x.Type == GiveawayEntryType.EmailConfirmed);
+
+                vm.FeaturedImage = SetFeaturedImage(currentUserId, vm.FeaturedImage, ImageRenderType.Full, Constants.DefaultGiveawayThumbnail);
+
+                return new OperationResultVo<GiveawayParticipationViewModel>(vm);
+            }
+            catch (Exception ex)
+            {
+                return new OperationResultVo(ex.Message);
+            }
+        }
+
+        public OperationResultVo ConfirmParticipant(Guid currentUserId, Guid giveawayId, string referralCode)
+        {
+            try
+            {
+                giveawayDomainService.ConfirmParticipant(giveawayId, referralCode);
+
+                unitOfWork.Commit();
+
+                return new OperationResultVo(true, "That Giveaway is gone now!");
             }
             catch (Exception ex)
             {

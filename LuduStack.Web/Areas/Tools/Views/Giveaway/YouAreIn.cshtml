@@ -68,11 +68,20 @@
                                 <strong>Congratulations!</strong>
                                 <span class="text-thin">You're in!</span>
                             </h1>
-                            <div class="text-center alert alert-warning d-inline-block m-auto rounded-0" role="alert">
-                                Check your inbox and confirm your email to be eligible to win!
-                                <a href="@ViewData["mailProvider"]" target="_blank">Go to my email!</a>
-                            </div>
-
+                            @if (Model.EmailConfirmed)
+                            {
+                                <div class="text-center alert alert-success d-inline-block m-auto rounded-0 border-0" role="alert">
+                                    @SharedLocalizer["You are all set!"]
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="text-center alert alert-warning d-inline-block m-auto rounded-0 border-0" role="alert">
+                                    @SharedLocalizer["Check your inbox and confirm your email to receive one more entry!"]
+                                    <br />
+                                    <a href="@ViewData["mailProvider"]" target="_blank">Go to my email!</a>
+                                </div>
+                            }
                         </div>
 
                     </div>
@@ -84,8 +93,10 @@
                         <p class="text-muted">Earn 5 entries for each friend who enters</p>
                         <div class="share-personal-url">
                             <div class="url-place">
-                                <span class="url-input" data-url-full="@Model.ShareUrl">xxx</span>
-                                <span class="copy-icon"></span>
+                                <input asp-for="ShareUrl" class="form-control form-control-lg url-input" readonly />
+                                <div class="float-right">
+                                    <button class="btn btn-lg btn-default copy-icon"><i class="far fa-copy" aria-hidden="true"></i></button>
+                                </div>
                             </div>
                         </div>
                     </div>

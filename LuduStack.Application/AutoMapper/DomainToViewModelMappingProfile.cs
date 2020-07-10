@@ -10,6 +10,7 @@ using LuduStack.Application.ViewModels.Giveaway;
 using LuduStack.Application.ViewModels.Jobs;
 using LuduStack.Application.ViewModels.Localization;
 using LuduStack.Application.ViewModels.Search;
+using LuduStack.Application.ViewModels.ShortUrl;
 using LuduStack.Application.ViewModels.Study;
 using LuduStack.Application.ViewModels.Team;
 using LuduStack.Application.ViewModels.User;
@@ -154,6 +155,12 @@ namespace LuduStack.Application.AutoMapper
             CreateMap<GiveawayEntry, GiveawayEntryViewModel>();
 
             #endregion Giveaway
+
+            #region ShortUrl
+
+            CreateMap<ShortUrl, ShortUrlViewModel>();
+
+            #endregion ShortUrl
         }
     }
 }

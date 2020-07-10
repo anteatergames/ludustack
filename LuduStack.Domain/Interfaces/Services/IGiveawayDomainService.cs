@@ -16,8 +16,12 @@ namespace LuduStack.Domain.Interfaces.Services
 
         List<GiveawayListItemVo> GetGiveawayListByUserId(Guid userId);
 
-        DomainActionPerformed AddParticipant(Guid giveawayId, string email, bool gdprConsent, bool wantNotifications);
+        DomainOperationVo<GiveawayParticipant> AddParticipant(Guid giveawayId, string email, bool gdprConsent, bool wantNotifications, string referralCode, string referrer);
 
         GiveawayParticipant GetParticipantByEmail(Guid giveawayId, string email);
+
+        void UpdateParticipantShortUrl(Guid giveawayId, string email, string shortUrl);
+
+        void ConfirmParticipant(Guid giveawayId, string referralCode);
     }
 }

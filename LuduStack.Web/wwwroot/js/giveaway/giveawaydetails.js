@@ -4,6 +4,8 @@
     var selectors = {};
     var objs = {};
 
+    const selection = window.getSelection();
+
     function setSelectors() {
         selectors.canInteract = '#caninteract';
         selectors.urls = '#urls';
@@ -12,7 +14,8 @@
         selectors.form = '#frmEnterGiveaway';
         selectors.emailInput = '#Enter_Email';
         selectors.btnEnter = '#btnEnterGiveaway';
-        selectors.urlInput = '.url-input';
+        selectors.urlInput = '#ShareUrl';
+        selectors.copyIcon = '.copy-icon';
     }
 
     function cacheObjs() {
@@ -35,16 +38,14 @@
 
         if (userIsIn) {
             FX.Poof();
-
-            var referalUrl = objs.urlInput.data('urlFull');
-            console.log(referalUrl);
-            var shortUrl = shortenUrl(referalUrl);
-            console.log(shortUrl);
         }
     }
 
     function bindAll() {
         bindBtnEnter();
+        bindBtnCopy();
+
+        FX.BindKonamiCode();
     }
 
     function bindBtnEnter() {
@@ -65,22 +66,15 @@
         });
     }
 
-    function shortenUrl(url) {
-        $.ajax({
-            url: 'https://goolnk.com/api/v1/shorten',
-            method: 'POST',
-            headers: { 'Access-Control-Allow-Origin': '*' },
-            async: false,
-            crossDomain: true,
-            dataType: "json",
-            data: { url: url }
-        }).done(function (response) {
-            console.log(response);
+    function bindBtnCopy() {
+        objs.container.on('click', selectors.copyIcon, function (e) {
+            e.preventDefault();
+            var btn = $(this);
 
-            return response.result_url;
+            copyToClipboard(selectors.urlInput);
+
+            return false;
         });
-
-        return url;
     }
 
     function submitForm(btn, callback) {
@@ -102,6 +96,16 @@
                 btn.removeClass('disabled');
             }
         });
+    }
+
+    function copyToClipboard(selector) {
+        selection.removeAllRanges();
+
+        var copyText = document.querySelector(selector);
+
+        copyText.select();
+        copyText.setSelectionRange(0, 99999); /*For mobile devices*/
+        document.execCommand("copy");
     }
 
     return {

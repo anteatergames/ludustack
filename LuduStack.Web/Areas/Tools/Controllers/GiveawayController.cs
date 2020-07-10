@@ -2,11 +2,11 @@
 using LuduStack.Application.ViewModels.Giveaway;
 using LuduStack.Domain.Core.Extensions;
 using LuduStack.Domain.ValueObjects;
+using LuduStack.Infra.CrossCutting.Identity.Services;
 using LuduStack.Web.Areas.Tools.Controllers.Base;
 using LuduStack.Web.Enums;
 using LuduStack.Web.Helpers;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
@@ -96,9 +96,9 @@ namespace LuduStack.Web.Areas.Tools.Controllers
 
             model.Description = ContentFormatter.FormatCFormatTextAreaBreaks(model.Description);
 
-            var timeZones = ConstantHelper.TimeZones.ToList();
+            List<SelectListItem> timeZones = ConstantHelper.TimeZones.ToList();
 
-            foreach (var timeZone in timeZones)
+            foreach (SelectListItem timeZone in timeZones)
             {
                 timeZone.Selected = model.TimeZone.Equals(timeZone.Value);
             }
@@ -170,10 +170,10 @@ namespace LuduStack.Web.Areas.Tools.Controllers
 
 
         [Route("giveaway/{id:guid}")]
-        public IActionResult Details(Guid id)
+        public IActionResult Details(Guid id, string referralCode)
         {
 
-            var sessionEmail = GetSessionValue(SessionValues.Email);
+            string sessionEmail = GetSessionValue(SessionValues.Email);
 
             if (!string.IsNullOrWhiteSpace(sessionEmail))
             {
@@ -186,12 +186,13 @@ namespace LuduStack.Web.Areas.Tools.Controllers
             {
                 OperationResultVo<GiveawayViewModel> castRestult = result as OperationResultVo<GiveawayViewModel>;
 
-                var serialized = JsonConvert.SerializeObject(castRestult.Value);
-                var model = JsonConvert.DeserializeObject<GiveawayDetailsViewModel>(serialized);
+                string serialized = JsonConvert.SerializeObject(castRestult.Value);
+                GiveawayDetailsViewModel model = JsonConvert.DeserializeObject<GiveawayDetailsViewModel>(serialized);
 
                 model.Enter = new GiveawayEnterViewModel
                 {
-                    GiveawayId = id
+                    GiveawayId = id,
+                    ReferralCode = referralCode
                 };
 
                 SetAuthorDetails(model);
@@ -202,7 +203,7 @@ namespace LuduStack.Web.Areas.Tools.Controllers
             }
             else
             {
-                return null;
+                return RedirectToAction("index", "giveaway", new { area = "tools" });
             }
         }
 
@@ -215,31 +216,49 @@ namespace LuduStack.Web.Areas.Tools.Controllers
             {
                 OperationResultVo<GiveawayViewModel> castResult = result as OperationResultVo<GiveawayViewModel>;
 
-                var model = new KeyValuePair<Guid, string>(castResult.Value.Id, castResult.Value.TermsAndConditions);
+                KeyValuePair<Guid, string> model = new KeyValuePair<Guid, string>(castResult.Value.Id, castResult.Value.TermsAndConditions);
 
                 return View("Terms", model);
             }
             else
             {
-                return null;
+                return RedirectToAction("details", "giveaway", new { area = "tools", id = id });
             }
         }
 
 
         [HttpPost("tools/giveaway/enter")]
-        public IActionResult Enter(GiveawayEnterViewModel enter)
+        public async Task<IActionResult> Enter(GiveawayEnterViewModel enter)
         {
             try
             {
-                OperationResultVo result = giveawayAppService.EnterGiveaway(CurrentUserId, enter);
+                string urlReferalBase = Url.Action("details", "giveaway", new { area = "tools", id = enter.GiveawayId });
+
+                OperationResultVo result = giveawayAppService.EnterGiveaway(CurrentUserId, enter, urlReferalBase);
 
                 if (result.Success)
                 {
+                    OperationResultVo<string> castRestult = result as OperationResultVo<string>;
+
                     SetSessionValue(SessionValues.Email, enter.Email);
+
+                    OperationResultVo resultGiveawayInfo = giveawayAppService.GetGiveawayBasicInfoById(CurrentUserId, enter.GiveawayId);
+
+                    if (resultGiveawayInfo.Success)
+                    {
+                        OperationResultVo<GiveawayViewModel> castRestultGiveawayInfo = resultGiveawayInfo as OperationResultVo<GiveawayViewModel>;
+
+                        if (!string.IsNullOrWhiteSpace(castRestult.Value))
+                        {
+                            string emailConfirmationUrl = Url.GiveawayEmailConfirmationLink(Request.Scheme, enter.GiveawayId.ToString(), castRestult.Value);
+
+                            await NotificationSender.SendGiveawayEmailConfirmationAsync(enter.Email, emailConfirmationUrl, castRestultGiveawayInfo.Value.Name);
+                        }
+                    }
 
                     string url = Url.Action("youarein", "giveaway", new { area = "tools", id = enter.GiveawayId });
 
-                    NotificationSender.SendTeamNotificationAsync(String.Format("{0} joined the giveaway {1}", enter.Email, enter.GiveawayId.ToString()));
+                    await NotificationSender.SendTeamNotificationAsync(String.Format("{0} joined the giveaway {1}", enter.Email, enter.GiveawayId.ToString()));
 
                     return Json(new OperationResultRedirectVo(result, url));
                 }
@@ -252,10 +271,26 @@ namespace LuduStack.Web.Areas.Tools.Controllers
             }
         }
 
+
+        [Route("giveaway/{id:guid}/emailconfirmation/{referralCode}")]
+        public IActionResult EmailConfirmation(Guid id, string referralCode)
+        {
+            OperationResultVo result = giveawayAppService.ConfirmParticipant(CurrentUserId, id, referralCode);
+
+            if (result.Success)
+            {
+                return RedirectToAction("youarein", "giveaway", new { area = "tools", id = id });
+            }
+            else
+            {
+                return RedirectToAction("details", "giveaway", new { area = "tools", id = id });
+            }
+        }
+
         [Route("giveaway/{id:guid}/youarein")]
         public IActionResult YouAreIn(Guid id)
         {
-            var sessionEmail = GetSessionValue(SessionValues.Email);
+            string sessionEmail = GetSessionValue(SessionValues.Email);
 
             if (string.IsNullOrWhiteSpace(sessionEmail))
             {
@@ -270,17 +305,15 @@ namespace LuduStack.Web.Areas.Tools.Controllers
             {
                 OperationResultVo<GiveawayParticipationViewModel> castRestult = result as OperationResultVo<GiveawayParticipationViewModel>;
 
-                var model = castRestult.Value;
+                GiveawayParticipationViewModel model = castRestult.Value;
 
-                var url = Url.Action("details", "giveaway", new { area = "tools", id = id, referal = model.ShareUrl });
-
-                model.ShareUrl = string.Format("{0}{1}", ViewBag.BaseUrl, url);
+                model.ShareUrl = string.Format("{0}{1}", ViewBag.BaseUrl, model.ShareUrl);
 
                 return View("YouAreIn", model);
             }
             else
             {
-                return null;
+                return RedirectToAction("details", "giveaway", new { area = "tools", id = id });
             }
         }
 
