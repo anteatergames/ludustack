@@ -65,21 +65,15 @@
                     <div class="text-center pt-1 pb-0" id="mainSignup">
                         <div class="giv-entry-title pt-2 pt-sm-3 pb-0 pb-sm-2 mb-2">
                             <h1 class="display-5">
-                                <strong>Congratulations!</strong>
-                                <span class="text-thin">You're in!</span>
+                                <strong>@SharedLocalizer["Congratulations!"]</strong>
+                                <span class="text-thin">@SharedLocalizer["You're in!"]</span>
                             </h1>
-                            @if (Model.EmailConfirmed)
-                            {
-                                <div class="text-center alert alert-success d-inline-block m-auto rounded-0 border-0" role="alert">
-                                    @SharedLocalizer["You are all set!"]
-                                </div>
-                            }
-                            else
+                            @if (!Model.EmailConfirmed)
                             {
                                 <div class="text-center alert alert-warning d-inline-block m-auto rounded-0 border-0" role="alert">
                                     @SharedLocalizer["Check your inbox and confirm your email to receive one more entry!"]
                                     <br />
-                                    <a href="@ViewData["mailProvider"]" target="_blank">Go to my email!</a>
+                                    <a href="@ViewData["mailProvider"]" target="_blank">@SharedLocalizer["Go to my email!"]</a>
                                 </div>
                             }
                         </div>
@@ -89,8 +83,8 @@
                     <div class="hr-arrow-down rounded-0"></div>
 
                     <div class="text-center">
-                        <h3>Share your tracked link</h3>
-                        <p class="text-muted">Earn 5 entries for each friend who enters</p>
+                        <h3>@SharedLocalizer["Share your tracked link"]</h3>
+                        <p class="text-muted">@SharedLocalizer["Earn 1 entry for each friend who enters!"]</p>
                         <div class="share-personal-url">
                             <div class="url-place">
                                 <input asp-for="ShareUrl" class="form-control form-control-lg url-input" readonly />

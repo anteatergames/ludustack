@@ -67,7 +67,10 @@ namespace LuduStack.Domain.Services
 
             var model = task.Result;
 
-            SetDates(model);
+            if (model != null)
+            {
+                SetDates(model);
+            }
 
             return model;
         }

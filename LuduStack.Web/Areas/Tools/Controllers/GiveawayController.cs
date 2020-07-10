@@ -100,7 +100,7 @@ namespace LuduStack.Web.Areas.Tools.Controllers
 
             foreach (SelectListItem timeZone in timeZones)
             {
-                timeZone.Selected = model.TimeZone.Equals(timeZone.Value);
+                timeZone.Selected = !string.IsNullOrWhiteSpace(model.TimeZone) && model.TimeZone.Equals(timeZone.Value);
             }
 
             ViewBag.TimeZones = timeZones;
