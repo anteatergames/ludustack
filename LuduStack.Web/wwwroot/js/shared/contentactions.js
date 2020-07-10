@@ -154,8 +154,6 @@
             var btn = $(element);
             var data = btn.data();
 
-            console.log(index);
-
             if (data.target) {
                 $(btn).off('click');
                 $(btn).on('click', function (e) {

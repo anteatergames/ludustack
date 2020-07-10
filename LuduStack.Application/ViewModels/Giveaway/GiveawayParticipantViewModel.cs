@@ -6,7 +6,7 @@ namespace LuduStack.Application.ViewModels.Giveaway
     {
         public string Email { get; set; }
 
-        public string RefferalCode { get; set; }
+        public string ReferalCode { get; set; }
 
         public bool IsWinner { get; set; }
 

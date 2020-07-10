@@ -1,4 +1,4 @@
-﻿@model GiveawayDetailsViewModel
+﻿@model GiveawayParticipationViewModel
 @{
     ViewData["Title"] = SharedLocalizer["Giveaway"];
     ViewData["Description"] = "tralala";
@@ -79,6 +79,17 @@
 
                     <div class="hr-arrow-down rounded-0"></div>
 
+                    <div class="text-center">
+                        <h3>Share your tracked link</h3>
+                        <p class="text-muted">Earn 5 entries for each friend who enters</p>
+                        <div class="share-personal-url">
+                            <div class="url-place">
+                                <span class="url-input" data-url-full="@Model.ShareUrl">xxx</span>
+                                <span class="copy-icon"></span>
+                            </div>
+                        </div>
+                    </div>
+
                     <section id="giveaway-description">
                         <div class="pt-4 pb-5">
                             @Html.Raw(Model.Description)
@@ -122,7 +133,7 @@
 
     <div class="status-bar-wrapper">
         <div class="status-bar mb-0 h6" id="countdown">
-            <div><span class="mr-1 text-uppercase">@SharedLocalizer["your entries"]:</span><span class="h3 mb-0" id="entry-count"><span>99</span></span></div>
+            <div><span class="mr-1 text-uppercase">@SharedLocalizer["your entries"]:</span><span class="h3 mb-0" id="entry-count"><span>@Model.EntryCount</span></span></div>
             <div><span class="mr-1">@SharedLocalizer["time left"]:</span><span class="h3 mb-0" id="countdown-days">00</span> <span class="time-uni">d</span> : <span class="h3 mb-0" id="countdown-hours">00</span> <span class="time-uni">h</span> : <span class="h3 mb-0" id="countdown-minutes">00</span> <span class="time-uni">m</span> : <span class="h3 mb-0" id="countdown-seconds">00</span> <span class="time-uni">s</span></div>
         </div>
     </div>

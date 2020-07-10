@@ -10,10 +10,14 @@ namespace LuduStack.Domain.Interfaces.Services
     {
         Giveaway GenerateNewGiveaway(Guid userId);
 
+        GiveawayBasicInfo GetGiveawayBasicInfoById(Guid id);
+
         Giveaway GetGiveawayById(Guid id);
 
         List<GiveawayListItemVo> GetGiveawayListByUserId(Guid userId);
 
         DomainActionPerformed AddParticipant(Guid giveawayId, string email, bool gdprConsent, bool wantNotifications);
+
+        GiveawayParticipant GetParticipantByEmail(Guid giveawayId, string email);
     }
 }

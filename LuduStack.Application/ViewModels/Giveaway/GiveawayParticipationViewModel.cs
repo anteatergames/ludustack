@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace LuduStack.Application.ViewModels.Giveaway
 {
-    public class GiveawayViewModel : GiveawayBasicInfoViewModel, IGiveawayScreenViewModel
+    public class GiveawayParticipationViewModel : GiveawayBasicInfoViewModel, IGiveawayScreenViewModel
     {
         public List<GiveawayPrizeViewModel> Prizes { get; set; }
 
@@ -28,6 +28,8 @@ namespace LuduStack.Application.ViewModels.Giveaway
         public bool ShowTimeZone { get; set; }
 
         public bool Future { get; set; }
+
+        public int EntryCount { get; set; }
         #endregion
     }
 }

@@ -12,6 +12,7 @@
         selectors.form = '#frmEnterGiveaway';
         selectors.emailInput = '#Enter_Email';
         selectors.btnEnter = '#btnEnterGiveaway';
+        selectors.urlInput = '.url-input';
     }
 
     function cacheObjs() {
@@ -19,6 +20,7 @@
         objs.urls = $(selectors.urls);
         objs.form = $(selectors.form);
         objs.emailInput = $(selectors.emailInput);
+        objs.urlInput = $(selectors.urlInput);
     }
 
     function init() {
@@ -33,6 +35,11 @@
 
         if (userIsIn) {
             FX.Poof();
+
+            var referalUrl = objs.urlInput.data('urlFull');
+            console.log(referalUrl);
+            var shortUrl = shortenUrl(referalUrl);
+            console.log(shortUrl);
         }
     }
 
@@ -58,6 +65,24 @@
         });
     }
 
+    function shortenUrl(url) {
+        $.ajax({
+            url: 'https://goolnk.com/api/v1/shorten',
+            method: 'POST',
+            headers: { 'Access-Control-Allow-Origin': '*' },
+            async: false,
+            crossDomain: true,
+            dataType: "json",
+            data: { url: url }
+        }).done(function (response) {
+            console.log(response);
+
+            return response.result_url;
+        });
+
+        return url;
+    }
+
     function submitForm(btn, callback) {
         btn.addClass('disabled');
         var url = objs.form.attr('action');
@@ -74,7 +99,7 @@
             }
             else {
                 ALERTSYSTEM.ShowWarningMessage("Unable to join the gvieaway.");
-                btn.removeClass ('disabled');
+                btn.removeClass('disabled');
             }
         });
     }

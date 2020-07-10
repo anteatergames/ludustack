@@ -1,31 +1,39 @@
 ﻿using LuduStack.Domain.Core.Enums;
-using LuduStack.Domain.Core.Models;
-using LuduStack.Domain.Interfaces.Models;
+using Microsoft.Extensions.Localization;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
-namespace LuduStack.Domain.Models
+namespace LuduStack.Application.ViewModels.Giveaway
 {
-    public class Giveaway : Entity, IGiveawayBasicInfo
+    public class GiveawayBasicInfoViewModel : UserGeneratedBaseViewModel
     {
+        [Required]
         public GiveawayStatus Status { get; set; }
 
+        [Required]
         public string Name { get; set; }
 
+        [Required]
         public string Description { get; set; }
 
         public string FeaturedImage { get; set; }
 
         public string CoverImage { get; set; }
 
+        [Required]
         public DateTime StartDate { get; set; }
 
         public DateTime? EndDate { get; set; }
 
         public string TimeZone { get; set; }
 
+        public string StatusLocalized { get; set; }
+
+        [Required]
         public bool MembersOnly { get; set; }
 
+        [Required]
         public int WinnerAmount { get; set; }
 
         public int PrizePriceInDolar { get; set; }
@@ -35,18 +43,5 @@ namespace LuduStack.Domain.Models
         public string SponsorName { get; set; }
 
         public string SponsorWebsite { get; set; }
-
-        public List<GiveawayPrize> Prizes { get; set; }
-
-        public List<GiveawayEntryOption> EntryOptions { get; set; }
-
-        public List<GiveawayParticipant> Participants { get; set; }
-
-        public Giveaway()
-        {
-            Prizes = new List<GiveawayPrize>();
-            EntryOptions = new List<GiveawayEntryOption>();
-            Participants = new List<GiveawayParticipant>();
-        }
     }
 }

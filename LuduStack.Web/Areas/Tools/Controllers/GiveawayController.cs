@@ -6,6 +6,7 @@ using LuduStack.Web.Areas.Tools.Controllers.Base;
 using LuduStack.Web.Enums;
 using LuduStack.Web.Helpers;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
@@ -87,7 +88,7 @@ namespace LuduStack.Web.Areas.Tools.Controllers
         {
             GiveawayViewModel model;
 
-            OperationResultVo serviceResult = giveawayAppService.GetGiveawayById(CurrentUserId, id);
+            OperationResultVo serviceResult = giveawayAppService.GetGiveawayBasicInfoById(CurrentUserId, id);
 
             OperationResultVo<GiveawayViewModel> castResult = serviceResult as OperationResultVo<GiveawayViewModel>;
 
@@ -179,7 +180,7 @@ namespace LuduStack.Web.Areas.Tools.Controllers
                 return RedirectToAction("youarein", "giveaway", new { area = "tools", id = id });
             }
 
-            OperationResultVo result = giveawayAppService.GetGiveawayById(CurrentUserId, id);
+            OperationResultVo result = giveawayAppService.GetGiveawayBasicInfoById(CurrentUserId, id);
 
             if (result.Success)
             {
@@ -208,7 +209,7 @@ namespace LuduStack.Web.Areas.Tools.Controllers
         [Route("giveaway/{id:guid}/terms")]
         public IActionResult Terms(Guid id)
         {
-            OperationResultVo result = giveawayAppService.GetGiveawayById(CurrentUserId, id);
+            OperationResultVo result = giveawayAppService.GetGiveawayBasicInfoById(CurrentUserId, id);
 
             if (result.Success)
             {
@@ -263,18 +264,17 @@ namespace LuduStack.Web.Areas.Tools.Controllers
 
             ViewData["mailProvider"] = String.Format("https://{0}", sessionEmail.Split("@")[1]);
 
-            OperationResultVo result = giveawayAppService.GetGiveawayById(CurrentUserId, id);
+            OperationResultVo result = giveawayAppService.GetGiveawayParticipantInfo(CurrentUserId, id, sessionEmail);
 
             if (result.Success)
             {
-                OperationResultVo<GiveawayViewModel> castRestult = result as OperationResultVo<GiveawayViewModel>;
+                OperationResultVo<GiveawayParticipationViewModel> castRestult = result as OperationResultVo<GiveawayParticipationViewModel>;
 
-                var serialized = JsonConvert.SerializeObject(castRestult.Value);
-                var model = JsonConvert.DeserializeObject<GiveawayDetailsViewModel>(serialized);
+                var model = castRestult.Value;
 
-                SetAuthorDetails(model);
+                var url = Url.Action("details", "giveaway", new { area = "tools", id = id, referal = model.ShareUrl });
 
-                SetLocalization(model);
+                model.ShareUrl = string.Format("{0}{1}", ViewBag.BaseUrl, url);
 
                 return View("YouAreIn", model);
             }

@@ -1,4 +1,5 @@
-﻿using LuduStack.Domain.Interfaces.Repository;
+﻿using LuduStack.Domain.Core.Extensions;
+using LuduStack.Domain.Interfaces.Repository;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
 using LuduStack.Infra.Data.MongoDb.Interfaces;
@@ -15,6 +16,32 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
     {
         public GiveawayRepository(IMongoContext context) : base(context)
         {
+        }
+
+        public Task<GiveawayBasicInfo> GetBasicGiveawayById(Guid id)
+        {
+            var obj = DbSet.AsQueryable().Where(x => x.Id == id).Select(x => new GiveawayBasicInfo
+            {
+                Id = x.Id,
+                UserId = x.UserId,
+                CreateDate = x.CreateDate,
+                Status = x.Status,
+                Name = x.Name,
+                Description = x.Description,
+                FeaturedImage = x.FeaturedImage,
+                CoverImage = x.CoverImage,
+                StartDate = x.StartDate,
+                EndDate = x.EndDate,
+                TimeZone = x.TimeZone,
+                MembersOnly = x.MembersOnly,
+                WinnerAmount = x.WinnerAmount,
+                PrizePriceInDolar = x.PrizePriceInDolar,
+                TermsAndConditions = x.TermsAndConditions,
+                SponsorName = x.SponsorName,
+                SponsorWebsite = x.SponsorWebsite
+            });
+
+            return Task.FromResult(obj.FirstOrDefault());
         }
 
         public List<GiveawayListItemVo> GetGiveawayListByUserId(Guid userId)
@@ -43,6 +70,8 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
         {
             participant.Id = Guid.NewGuid();
 
+            participant.ReferalCode = participant.Id.NoHyphen();
+
             FilterDefinition<Giveaway> filter = Builders<Giveaway>.Filter.Where(x => x.Id == giveawayId);
             UpdateDefinition<Giveaway> add = Builders<Giveaway>.Update.AddToSet(c => c.Participants, participant);
 
@@ -69,6 +98,13 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
             UpdateDefinition<Giveaway> remove = Builders<Giveaway>.Update.PullFilter(c => c.Participants, m => m.Id == participantId);
 
             Context.AddCommand(() => DbSet.UpdateOneAsync(filter, remove));
+        }
+
+        public GiveawayParticipant GetParticipantByEmail(Guid giveawayId, string email)
+        {
+            GiveawayParticipant model = DbSet.AsQueryable().Where(x => x.Id == giveawayId).SelectMany(x => x.Participants).FirstOrDefault(x => x.Email.Equals(email));
+
+            return model;
         }
     }
 }

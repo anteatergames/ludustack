@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Interfaces;
@@ -57,7 +58,7 @@ namespace LuduStack.Application.Services
             return MediaType.Image;
         }
 
-        protected static void SetBasePermissions(Guid currentUserId, UserGeneratedBaseViewModel vm)
+        protected static void SetBasePermissions(Guid currentUserId, IBaseViewModel vm)
         {
             vm.Permissions.CanEdit = vm.UserId == currentUserId;
             vm.Permissions.CanDelete = vm.UserId == currentUserId;

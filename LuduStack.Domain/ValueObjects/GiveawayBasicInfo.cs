@@ -1,4 +1,5 @@
 ﻿using LuduStack.Domain.Core.Enums;
+using LuduStack.Domain.Core.Interfaces;
 using LuduStack.Domain.Core.Models;
 using LuduStack.Domain.Interfaces.Models;
 using System;
@@ -6,8 +7,14 @@ using System.Collections.Generic;
 
 namespace LuduStack.Domain.Models
 {
-    public class Giveaway : Entity, IGiveawayBasicInfo
+    public class GiveawayBasicInfo : IEntity, IGiveawayBasicInfo
     {
+        public Guid Id { get; set; }
+
+        public Guid UserId { get; set; }
+
+        public DateTime CreateDate { get; set; }
+
         public GiveawayStatus Status { get; set; }
 
         public string Name { get; set; }
@@ -35,18 +42,5 @@ namespace LuduStack.Domain.Models
         public string SponsorName { get; set; }
 
         public string SponsorWebsite { get; set; }
-
-        public List<GiveawayPrize> Prizes { get; set; }
-
-        public List<GiveawayEntryOption> EntryOptions { get; set; }
-
-        public List<GiveawayParticipant> Participants { get; set; }
-
-        public Giveaway()
-        {
-            Prizes = new List<GiveawayPrize>();
-            EntryOptions = new List<GiveawayEntryOption>();
-            Participants = new List<GiveawayParticipant>();
-        }
     }
 }

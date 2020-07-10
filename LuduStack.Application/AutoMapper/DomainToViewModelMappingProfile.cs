@@ -146,6 +146,8 @@ namespace LuduStack.Application.AutoMapper
             #region Giveaway
 
             CreateMap<Giveaway, GiveawayViewModel>();
+            CreateMap<GiveawayBasicInfo, GiveawayViewModel>();
+            CreateMap<GiveawayBasicInfo, GiveawayParticipationViewModel>();
             CreateMap<GiveawayPrize, GiveawayPrizeViewModel>();
             CreateMap<GiveawayEntryOption, GiveawayEntryOptionViewModel>();
             CreateMap<GiveawayParticipant, GiveawayParticipantViewModel>();

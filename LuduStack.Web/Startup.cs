@@ -33,6 +33,8 @@ namespace LuduStack.Web
 {
     public class Startup
     {
+        readonly string MyCorsPolicy = "_myCorsPolicy";
+
         public IConfiguration Configuration { get; }
 
         public Startup(IConfiguration configuration)
@@ -86,6 +88,18 @@ namespace LuduStack.Web
             });
 
             services.AddLocalization();
+
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: MyCorsPolicy,
+                                  builder =>
+                                  {
+                                      builder.WithOrigins("https://goolnk.com")
+                                                  .AllowAnyHeader()
+                                                  .AllowAnyMethod();
+                                  });
+            });
 
             services.AddControllersWithViews(options =>
             {
@@ -186,6 +200,8 @@ namespace LuduStack.Web
             });
 
             app.UseRouting();
+
+            app.UseCors(MyCorsPolicy);
 
             app.UseRequestLocalization(options =>
                 options

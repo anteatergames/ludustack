@@ -39,11 +39,11 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo GetGiveawayById(Guid currentUserId, Guid id)
+        public OperationResultVo GetGiveawayBasicInfoById(Guid currentUserId, Guid id)
         {
             try
             {
-                Giveaway existing = giveawayDomainService.GetGiveawayById(id);
+                GiveawayBasicInfo existing = giveawayDomainService.GetGiveawayBasicInfoById(id);
 
                 GiveawayViewModel vm = mapper.Map<GiveawayViewModel>(existing);
 
@@ -54,6 +54,42 @@ namespace LuduStack.Application.Services
                 vm.FeaturedImage = SetFeaturedImage(currentUserId, vm.FeaturedImage, ImageRenderType.Full, Constants.DefaultGiveawayThumbnail);
 
                 return new OperationResultVo<GiveawayViewModel>(vm);
+            }
+            catch (Exception ex)
+            {
+                return new OperationResultVo(ex.Message);
+            }
+        }
+
+        public OperationResultVo GetGiveawayParticipantInfo(Guid currentUserId, Guid giveawayId, string email)
+        {
+            try
+            {
+                GiveawayBasicInfo existing = giveawayDomainService.GetGiveawayBasicInfoById(giveawayId);
+
+                if (existing == null)
+                {
+                    return new OperationResultVo(false, "Giveaway not found");
+                }
+
+                GiveawayParticipant participant = giveawayDomainService.GetParticipantByEmail(giveawayId, email);
+
+                if (participant == null)
+                {
+                    return new OperationResultVo(false, "No participant found for that email");
+                }
+
+                GiveawayParticipationViewModel vm = mapper.Map<GiveawayParticipationViewModel>(existing);
+
+                vm.EntryCount = participant.Entries.Count;
+
+                vm.ShareUrl = participant.ReferalCode;
+
+                SetViewModelState(currentUserId, vm);
+
+                vm.FeaturedImage = SetFeaturedImage(currentUserId, vm.FeaturedImage, ImageRenderType.Full, Constants.DefaultGiveawayThumbnail);
+
+                return new OperationResultVo<GiveawayParticipationViewModel>(vm);
             }
             catch (Exception ex)
             {
@@ -151,7 +187,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        private void SetViewModelState(Guid currentUserId, GiveawayViewModel vm)
+        private void SetViewModelState(Guid currentUserId, IGiveawayScreenViewModel vm)
         {
             vm.Permissions.CanConnect = vm.UserId != currentUserId;
 

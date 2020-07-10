@@ -1,4 +1,5 @@
 ﻿using LuduStack.Domain.Core.Enums;
+using LuduStack.Domain.Interfaces.Models;
 using LuduStack.Domain.Interfaces.Repository;
 using LuduStack.Domain.Interfaces.Services;
 using LuduStack.Domain.Models;
@@ -50,12 +51,83 @@ namespace LuduStack.Domain.Services
             return objs;
         }
 
+        public GiveawayBasicInfo GetGiveawayBasicInfoById(Guid id)
+        {
+            Task<GiveawayBasicInfo> task = Task.Run(async () => await repository.GetBasicGiveawayById(id));
+            var model = task.Result;
+
+            SetDates(model);
+
+            return model;
+        }
+
         public Giveaway GetGiveawayById(Guid id)
         {
             Task<Giveaway> task = Task.Run(async () => await repository.GetById(id));
 
             var model = task.Result;
 
+            SetDates(model);
+
+            return model;
+        }
+
+        private static void SetRequiredProperties(Giveaway model)
+        {
+            if (model.Status == 0)
+            {
+                model.Status = GiveawayStatus.Draft;
+            }
+        }
+
+        public DomainActionPerformed AddParticipant(Guid giveawayId, string email, bool gdprConsent, bool wantNotifications)
+        {
+            GiveawayParticipant participant;
+
+            IQueryable<GiveawayParticipant> existing = repository.GetParticipants(giveawayId);
+            bool oneIsMine = existing.Any(x => x.Email == email);
+
+            if (oneIsMine)
+            {
+                participant = existing.First(x => x.Email == email);
+
+                participant.GdprConsent = gdprConsent;
+                participant.WantNotifications = wantNotifications;
+
+                repository.UpdateParticipant(giveawayId, participant);
+
+                return DomainActionPerformed.Update;
+            }
+            else
+            {
+                participant = new GiveawayParticipant
+                {
+                    Email = email,
+                    GdprConsent = gdprConsent,
+                    WantNotifications = wantNotifications
+                };
+
+                participant.Entries.Add(new GiveawayEntry
+                {
+                    Type = GiveawayEntryType.LoginOrEmail,
+                    Points = 1
+                });
+
+                repository.AddParticipant(giveawayId, participant);
+
+                return DomainActionPerformed.Create;
+            }
+        }
+
+        public GiveawayParticipant GetParticipantByEmail(Guid giveawayId, string email)
+        {
+            GiveawayParticipant model = repository.GetParticipantByEmail(giveawayId, email);
+
+            return model;
+        }
+
+        private static IGiveawayBasicInfo SetDates(IGiveawayBasicInfo model)
+        {
             if (model.StartDate == DateTime.MinValue)
             {
                 model.StartDate = DateTime.Now;
@@ -71,46 +143,6 @@ namespace LuduStack.Domain.Services
             }
 
             return model;
-        }
-        private static void SetRequiredProperties(Giveaway model)
-        {
-            if (model.Status == 0)
-            {
-                model.Status = GiveawayStatus.Draft;
-            }
-        }
-
-        public DomainActionPerformed AddParticipant(Guid giveawayId, string email, bool gdprConsent, bool wantNotifications)
-        {
-            GiveawayParticipant userParticipation;
-
-            IQueryable<GiveawayParticipant> existing = repository.GetParticipants(giveawayId);
-            bool oneIsMine = existing.Any(x => x.Email == email);
-
-            if (oneIsMine)
-            {
-                userParticipation = existing.First(x => x.Email == email);
-
-                userParticipation.GdprConsent = gdprConsent;
-                userParticipation.WantNotifications = wantNotifications;
-
-                repository.UpdateParticipant(giveawayId, userParticipation);
-
-                return DomainActionPerformed.Update;
-            }
-            else
-            {
-                userParticipation = new GiveawayParticipant
-                {
-                    Email = email,
-                    GdprConsent = gdprConsent,
-                    WantNotifications = wantNotifications
-                };
-
-                repository.AddParticipant(giveawayId, userParticipation);
-
-                return DomainActionPerformed.Create;
-            }
         }
     }
 }
