@@ -393,6 +393,31 @@
         });
     }
 
+
+    function postWithConfirmation(btn, callback) {
+        var url = btn.data('url');
+
+        var msgs = MAINMODULE.Common.GetDeleteMessages(btn);
+
+        ALERTSYSTEM.ShowConfirmMessage(msgs.confirmationTitle, msgs.msg, msgs.confirmationButtonText, msgs.cancelButtonText, function () {
+            $.ajax({
+                url: url,
+                type: 'POST'
+            }).done(function (response) {
+                if (response.success) {
+                    if (callback) {
+                        callback(response);
+                    }
+
+                    MAINMODULE.Common.HandleSuccessDefault(response);
+                }
+                else {
+                    ALERTSYSTEM.ShowWarningMessage(response.message);
+                }
+            });
+        });
+    }
+
     return {
         Init: init,
         Layout: {
@@ -408,6 +433,7 @@
             HandleSuccessDefault: handleSuccessDefault,
             TranslatedMessages: translatedMessages,
             DeleteEntity: deleteEntity,
+            PostWithConfirmation: postWithConfirmation,
             DisableButton: disableButton,
             EnableButton: enableButton,
             SetButtonWithError: setButtonWithError,

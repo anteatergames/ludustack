@@ -10,6 +10,10 @@ namespace LuduStack.Application.ViewModels.Giveaway
 
         public string ShortUrl { get; set; }
 
+        public bool GdprConsent { get; set; }
+
+        public bool WantNotifications { get; set; }
+
         public bool IsWinner { get; set; }
 
         public string SecretReceived { get; set; }

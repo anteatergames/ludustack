@@ -289,6 +289,13 @@
     ]
   },
   {
+    "outputFileName": "wwwroot/js/giveaway/giveawaymanage.min.js",
+    "inputFiles": [
+      "wwwroot/js/giveaway/giveawaycommon.js",
+      "wwwroot/js/giveaway/giveawaymanage.js"
+    ]
+  },
+  {
     "outputFileName": "wwwroot/js/giveaway/giveawayedit.min.js",
     "inputFiles": [
       "wwwroot/js/giveaway/giveawaycommon.js",

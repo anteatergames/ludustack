@@ -54,24 +54,20 @@ html {
 }
 
 .email-input {
-    width: auto;
-    height: 100%;
     position: relative;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
-    margin-right: .5rem;
 }
 
-    .email-input svg {
-        left: 12px;
-        -ms-flex-item-align: center;
-        align-self: center;
+    .email-input i {
+        line-height: 50px;
         position: absolute;
+        left: 10px;
     }
 
     .email-input input {
-        padding-left: 40px;
+        padding-left: 30px;
     }
 
     .email-input .letter-front .st0 {

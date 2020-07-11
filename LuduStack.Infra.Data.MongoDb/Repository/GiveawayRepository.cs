@@ -87,6 +87,7 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
                 .Set(c => c.Participants[-1].GdprConsent, participant.GdprConsent)
                 .Set(c => c.Participants[-1].WantNotifications, participant.WantNotifications)
                 .Set(c => c.Participants[-1].ShortUrl, participant.ShortUrl)
+                .Set(c => c.Participants[-1].IsWinner, participant.IsWinner)
                 .Set(c => c.Participants[-1].Entries, participant.Entries);
 
             Context.AddCommand(() => DbSet.UpdateOneAsync(filter, update));
@@ -96,6 +97,14 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
         {
             FilterDefinition<Giveaway> filter = Builders<Giveaway>.Filter.Where(x => x.Id == giveawayId);
             UpdateDefinition<Giveaway> remove = Builders<Giveaway>.Update.PullFilter(c => c.Participants, m => m.Id == participantId);
+
+            Context.AddCommand(() => DbSet.UpdateOneAsync(filter, remove));
+        }
+
+        public void ClearParticipants(Guid giveawayId)
+        {
+            FilterDefinition<Giveaway> filter = Builders<Giveaway>.Filter.Where(x => x.Id == giveawayId);
+            UpdateDefinition<Giveaway> remove = Builders<Giveaway>.Update.PullFilter(c => c.Participants, m => true);
 
             Context.AddCommand(() => DbSet.UpdateOneAsync(filter, remove));
         }

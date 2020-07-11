@@ -31,8 +31,8 @@ else
             @foreach (var item in Model)
             {
 <tr>
-    <td><a asp-area="tools" asp-controller="giveaway" asp-action="details" asp-route-id="@item.Id"><span>@item.Name</span></a></td>
-    <td><a asp-area="tools" asp-controller="giveaway" asp-action="details" asp-route-id="@item.Id"><span>@item.ParticipantCount</span></a></td>
+    <td><a asp-area="tools" asp-controller="giveaway" asp-action="manage" asp-route-id="@item.Id"><span>@item.Name</span></a></td>
+    <td><a asp-area="tools" asp-controller="giveaway" asp-action="manage" asp-route-id="@item.Id"><span>@item.ParticipantCount</span></a></td>
     <td>@item.CreateDate.ToShortDateString()</td>
     <td>@item.StatusLocalized</td>
     <td class="text-right">

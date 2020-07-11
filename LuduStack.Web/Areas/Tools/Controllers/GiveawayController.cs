@@ -169,6 +169,33 @@ namespace LuduStack.Web.Areas.Tools.Controllers
         }
 
 
+        [Authorize]
+        [Route("giveaway/{id:guid}/manage")]
+        public IActionResult Manage(Guid id)
+        {
+            OperationResultVo result = giveawayAppService.GetGiveawayFullById(CurrentUserId, id);
+
+            if (result.Success)
+            {
+                OperationResultVo<GiveawayViewModel> castRestult = result as OperationResultVo<GiveawayViewModel>;
+
+                var model = castRestult.Value;
+
+                SetAuthorDetails(model);
+
+                SetLocalization(model);
+
+                ViewData["giveawayId"] = model.Id;
+
+                return View("Manage", model);
+            }
+            else
+            {
+                return RedirectToAction("index", "giveaway", new { area = "tools" });
+            }
+        }
+
+
         [Route("giveaway/{id:guid}")]
         public IActionResult Details(Guid id, string referralCode)
         {
@@ -318,6 +345,105 @@ namespace LuduStack.Web.Areas.Tools.Controllers
         }
 
 
+        [Authorize]
+        [HttpDelete("tools/giveaway/{giveawayId:guid}/deleteparticipant/{participantId:guid}")]
+        public IActionResult DeleteParticipant(Guid giveawayId, Guid participantId)
+        {
+            try
+            {
+                OperationResultVo saveResult = giveawayAppService.RemoveParticipant(CurrentUserId, giveawayId, participantId);
+
+                if (saveResult.Success)
+                {
+                    string url = Url.Action("manage", "giveaway", new { area = "tools", id = giveawayId });
+
+                    return Json(new OperationResultRedirectVo(saveResult, url));
+                }
+                else
+                {
+                    return Json(new OperationResultVo(false));
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new OperationResultVo(ex.Message));
+            }
+        }
+
+        [Authorize]
+        [HttpDelete("tools/giveaway/{giveawayId:guid}/clearparticipants")]
+        public IActionResult ClearParticipants(Guid giveawayId)
+        {
+            try
+            {
+                OperationResultVo saveResult = giveawayAppService.ClearParticipants(CurrentUserId, giveawayId);
+
+                if (saveResult.Success)
+                {
+                    string url = Url.Action("manage", "giveaway", new { area = "tools", id = giveawayId });
+
+                    return Json(new OperationResultRedirectVo(saveResult, url));
+                }
+                else
+                {
+                    return Json(new OperationResultVo(false));
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new OperationResultVo(ex.Message));
+            }
+        }
+
+        [Authorize]
+        [HttpPost("tools/giveaway/{giveawayId:guid}/picksinglewinner")]
+        public IActionResult PickSingleWinner(Guid giveawayId)
+        {
+            try
+            {
+                OperationResultVo saveResult = giveawayAppService.PickSingleWinner(CurrentUserId, giveawayId);
+
+                if (saveResult.Success)
+                {
+                    string url = Url.Action("manage", "giveaway", new { area = "tools", id = giveawayId });
+
+                    return Json(new OperationResultRedirectVo(saveResult, url));
+                }
+                else
+                {
+                    return Json(new OperationResultVo(false));
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new OperationResultVo(ex.Message));
+            }
+        }
+
+        [Authorize]
+        [HttpPost("tools/giveaway/{giveawayId:guid}/pickallwinners")]
+        public IActionResult PickAllWinners(Guid giveawayId)
+        {
+            try
+            {
+                OperationResultVo saveResult = giveawayAppService.PickAllWinners(CurrentUserId, giveawayId);
+
+                if (saveResult.Success)
+                {
+                    string url = Url.Action("manage", "giveaway", new { area = "tools", id = giveawayId });
+
+                    return Json(new OperationResultRedirectVo(saveResult, url));
+                }
+                else
+                {
+                    return Json(new OperationResultVo(false));
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new OperationResultVo(ex.Message));
+            }
+        }
 
         private void SetLocalization(GiveawayViewModel model)
         {

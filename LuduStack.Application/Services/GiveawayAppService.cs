@@ -43,6 +43,29 @@ namespace LuduStack.Application.Services
             }
         }
 
+
+        public OperationResultVo GetGiveawayFullById(Guid currentUserId, Guid giveawayId)
+        {
+            try
+            {
+                var existing = giveawayDomainService.GetById(giveawayId);
+
+                GiveawayViewModel vm = mapper.Map<GiveawayViewModel>(existing);
+
+                SetAuthorDetails(vm);
+
+                SetViewModelState(currentUserId, vm);
+
+                vm.FeaturedImage = SetFeaturedImage(currentUserId, vm.FeaturedImage, ImageRenderType.Full, Constants.DefaultGiveawayThumbnail);
+
+                return new OperationResultVo<GiveawayViewModel>(vm);
+            }
+            catch (Exception ex)
+            {
+                return new OperationResultVo(ex.Message);
+            }
+        }
+
         public OperationResultVo GetGiveawayBasicInfoById(Guid currentUserId, Guid giveawayId)
         {
             try
@@ -87,7 +110,7 @@ namespace LuduStack.Application.Services
             {
                 Giveaway model;
 
-                Giveaway existing = giveawayDomainService.GetGiveawayById(vm.Id);
+                Giveaway existing = giveawayDomainService.GetById(vm.Id);
                 if (existing != null)
                 {
                     model = mapper.Map(vm, existing);
@@ -140,7 +163,7 @@ namespace LuduStack.Application.Services
         }
 
         public OperationResultVo EnterGiveaway(Guid currentUserId, GiveawayEnterViewModel vm, string urlReferralBase)
-        {///
+        {
             try
             {
                 var newReferralCode = Guid.NewGuid().NoHyphen();
@@ -221,6 +244,70 @@ namespace LuduStack.Application.Services
                 unitOfWork.Commit();
 
                 return new OperationResultVo(true, "That Giveaway is gone now!");
+            }
+            catch (Exception ex)
+            {
+                return new OperationResultVo(ex.Message);
+            }
+        }
+
+        public OperationResultVo RemoveParticipant(Guid currentUserId, Guid giveawayId, Guid participantId)
+        {
+            try
+            {
+                giveawayDomainService.RemoveParticipant(giveawayId, participantId);
+
+                unitOfWork.Commit();
+
+                return new OperationResultVo(true, "That Participant is gone now!");
+            }
+            catch (Exception ex)
+            {
+                return new OperationResultVo(ex.Message);
+            }
+        }
+
+        public OperationResultVo ClearParticipants(Guid currentUserId, Guid giveawayId)
+        {
+            try
+            {
+                giveawayDomainService.ClearParticipants(giveawayId);
+
+                unitOfWork.Commit();
+
+                return new OperationResultVo(true, "All Participants are gone now!");
+            }
+            catch (Exception ex)
+            {
+                return new OperationResultVo(ex.Message);
+            }
+        }
+
+        public OperationResultVo PickSingleWinner(Guid currentUserId, Guid giveawayId)
+        {
+            try
+            {
+                giveawayDomainService.PickSingleWinner(giveawayId);
+
+                unitOfWork.Commit();
+
+                return new OperationResultVo(true, "A single winner has been chosen!");
+            }
+            catch (Exception ex)
+            {
+                return new OperationResultVo(ex.Message);
+            }
+        }
+
+        public OperationResultVo PickAllWinners(Guid currentUserId, Guid giveawayId)
+        {
+            try
+            {
+                giveawayDomainService.PickAllWinners(giveawayId);
+
+                unitOfWork.Commit();
+
+                return new OperationResultVo(true, "All winners were chosen!");
             }
             catch (Exception ex)
             {

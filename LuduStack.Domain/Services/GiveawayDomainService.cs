@@ -51,9 +51,9 @@ namespace LuduStack.Domain.Services
             return objs;
         }
 
-        public GiveawayBasicInfo GetGiveawayBasicInfoById(Guid id)
+        public override Giveaway GetById(Guid id)
         {
-            Task<GiveawayBasicInfo> task = Task.Run(async () => await repository.GetBasicGiveawayById(id));
+            Task<Giveaway> task = Task.Run(async () => await repository.GetById(id));
             var model = task.Result;
 
             SetDates(model);
@@ -61,16 +61,12 @@ namespace LuduStack.Domain.Services
             return model;
         }
 
-        public Giveaway GetGiveawayById(Guid id)
+        public GiveawayBasicInfo GetGiveawayBasicInfoById(Guid id)
         {
-            Task<Giveaway> task = Task.Run(async () => await repository.GetById(id));
-
+            Task<GiveawayBasicInfo> task = Task.Run(async () => await repository.GetBasicGiveawayById(id));
             var model = task.Result;
 
-            if (model != null)
-            {
-                SetDates(model);
-            }
+            SetDates(model);
 
             return model;
         }
@@ -93,9 +89,6 @@ namespace LuduStack.Domain.Services
             if (exists)
             {
                 participant = existing.First(x => x.Email == email);
-
-                participant.GdprConsent = gdprConsent;
-                participant.WantNotifications = wantNotifications;
 
                 repository.UpdateParticipant(giveawayId, participant);
 
@@ -171,6 +164,67 @@ namespace LuduStack.Domain.Services
                 });
 
                 repository.UpdateParticipant(giveawayId, existing);
+            }
+        }
+
+        public void RemoveParticipant(Guid giveawayId, Guid participantId)
+        {
+            repository.RemoveParticipant(giveawayId, participantId);
+        }
+
+        public void ClearParticipants(Guid giveawayId)
+        {
+            repository.ClearParticipants(giveawayId);
+        }
+
+        public void PickSingleWinner(Guid giveawayId)
+        {
+            var nonWinners = repository.GetParticipants(giveawayId).Where(x => !x.IsWinner).ToList();
+
+            if (nonWinners.Any())
+            {
+                Random rand = new Random(DateTime.Now.ToString().GetHashCode());
+
+                int index = rand.Next(0, nonWinners.Count);
+
+                var winner = nonWinners.ElementAt(index);
+
+                winner.IsWinner = true;
+
+                repository.UpdateParticipant(giveawayId, winner);
+            }
+        }
+
+        public void PickAllWinners(Guid giveawayId)
+        {
+            Task<GiveawayBasicInfo> task = Task.Run(async () => await repository.GetBasicGiveawayById(giveawayId));
+
+            task.Wait();
+
+            var basicInfo = task.Result;
+
+            var allParticipants = repository.GetParticipants(giveawayId).ToList();
+            var winners = allParticipants.Where(x => x.IsWinner).ToList();
+            var nonWinners = allParticipants.Where(x => !x.IsWinner).ToList();
+
+            var winnersToSelect = basicInfo.WinnerAmount - winners.Count;
+
+            if (winnersToSelect > 0)
+            {
+                Random rand = new Random(DateTime.Now.ToString().GetHashCode());
+
+                for (int i = 0; i < winnersToSelect; i++)
+                {
+                    int index = rand.Next(0, nonWinners.Count);
+
+                    var winner = nonWinners.ElementAt(index);
+
+                    winner.IsWinner = true;
+
+                    repository.UpdateParticipant(giveawayId, winner);
+
+                    nonWinners.RemoveAt(index);
+                }
             }
         }
 

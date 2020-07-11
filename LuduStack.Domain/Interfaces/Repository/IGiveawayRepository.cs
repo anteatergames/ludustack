@@ -17,5 +17,6 @@ namespace LuduStack.Domain.Interfaces.Repository
         void RemoveParticipant(Guid giveawayId, Guid participantId);
         GiveawayParticipant GetParticipantByEmail(Guid giveawayId, string email);
         GiveawayParticipant GetParticipantByReferralCode(Guid giveawayId, string referrer);
+        void ClearParticipants(Guid giveawayId);
     }
 }
