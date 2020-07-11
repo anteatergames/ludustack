@@ -324,6 +324,10 @@ namespace LuduStack.Application.Services
             if (vm.Status == GiveawayStatus.PendingStart && vm.StartDate <= DateTime.Now)
             {
                 vm.Status = GiveawayStatus.OpenForEntries;
+            }
+
+            if (vm.Status == GiveawayStatus.OpenForEntries)
+            {
                 vm.StatusMessage = "enter your email address below";
             }
 

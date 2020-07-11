@@ -48,6 +48,7 @@
         <div class="col-lg-8 col-xl-9 mb-3">
             <div class="col-lg-12 mb-2 p-0">
                 <a asp-area="tools" asp-controller="giveaway" asp-action="index" class="btn btn-sm btn-default"><i class="fas fa-fw fa-arrow-left" aria-hidden="true"></i></a>
+                <a asp-area="tools" asp-controller="giveaway" asp-action="edit" asp-route-id="@Model.Id" class="btn btn-sm btn-default"><i class="fas fa-fw fa-edit" aria-hidden="true"></i></a>
                 <a asp-area="tools" asp-controller="giveaway" asp-action="details" asp-route-id="@Model.Id" target="_blank" class="btn btn-sm btn-default"><i class="fas fa-fw fa-eye" aria-hidden="true"></i></a>
             </div>
             <div id="divListUsers">
@@ -64,7 +65,10 @@ else
 {
     <div class="feature-box">
         <div class="row">
-            <div class="col-12">
+            <div class="col-12 text-center">
+                <img src="@Model.FeaturedImage" class="img-fluid" />
+            </div>
+            <div class="col-12 col-sm-6 offset-sm-3 col-lg-12 offset-lg-0">
                 <div class="p-1 text-center">
                     <span>@Model.StatusLocalized</span>
                 </div>
@@ -77,7 +81,7 @@ else
                     <span>@SharedLocalizer["winners"]</span> <span class="float-right">@Model.WinnerAmount</span>
                 </div>
             </div>
-            <div class="col-12">
+            <div class="col-12 col-sm-6 offset-sm-3 col-lg-12 offset-lg-0">
                 <div id="divActions">
                     <a id="btnClearParticipants" href="#" class="btn btn-outline-warning btn-block" data-url="@Url.Action("clearparticipants", "giveaway", new { area = "tools", giveawayId = Model.Id })" data-confirmationmessage="@SharedLocalizer["Are you sure you want to delete all Participants?"]" data-confirmationtitle="@SharedLocalizer["Are you sure?"]" data-confirmationbuttontext="@SharedLocalizer["Yes, delete it!"]" data-cancelbuttontext="@SharedLocalizer["Cancel"]">@SharedLocalizer["Clear Participants"] <i class="fas fa-eraser" aria-hidden="true"></i></a>
                     <a id="btnPickAllWinners" href="#" class="btn btn-outline-success btn-block" data-url="@Url.Action("pickallwinners", "giveaway", new { area = "tools", giveawayId = Model.Id })" data-confirmationmessage="@SharedLocalizer["Are you sure you want to pick all the winners for this giveaway?"]" data-confirmationtitle="@SharedLocalizer["The chosen one"]" data-confirmationbuttontext="@SharedLocalizer["Do it!"]" data-cancelbuttontext="@SharedLocalizer["Cancel"]">@SharedLocalizer["Pick All Winners"] <i class="fas fa-trophy" aria-hidden="true"></i></a>

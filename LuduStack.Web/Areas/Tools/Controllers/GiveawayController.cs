@@ -324,7 +324,9 @@ namespace LuduStack.Web.Areas.Tools.Controllers
                 return RedirectToAction("details", "giveaway", new { area = "tools", id = id });
             }
 
-            ViewData["mailProvider"] = String.Format("https://{0}", sessionEmail.Split("@")[1]);
+            var emailSplit = sessionEmail.Split("@");
+
+            ViewData["mailProvider"] = emailSplit.Length > 1 ? String.Format("https://{0}", emailSplit[1]) : "#";
 
             OperationResultVo result = giveawayAppService.GetGiveawayParticipantInfo(CurrentUserId, id, sessionEmail);
 

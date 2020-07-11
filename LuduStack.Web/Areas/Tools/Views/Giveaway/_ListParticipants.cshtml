@@ -12,7 +12,7 @@
 
 <div class="bg-light pt-2">
     <div class="col-12">
-        <h2>@SharedLocalizer[listTitle]</h2>
+        <h2>@SharedLocalizer[listTitle]<span class="float-right">@Model.Count()</span></h2>
     </div>
 
     @if (!Model.Any())
@@ -40,9 +40,9 @@
             {
             <tr>
                 <td class="text-center">@(Html.Raw(item.IsWinner ? @"<i class=""fas fa-fw fa-trophy text-warning aria-hidden=""true""></i>" : string.Empty))</td>
-                <td>@item.Email</td>
-                <td class="text-center"><i class="fas fa-fw @(item.GdprConsent ? "fa-check text-success" : " fa-ban text-danger")" aria-hidden="true"></i></td>
-                <td class="text-center"><i class="fas fa-fw @(item.WantNotifications ? "fa-check text-success" : " fa-ban text-danger")" aria-hidden="true"></i></td>
+                <td>@item.Email@(Html.Raw(item.EmailVerified ? @" <i class=""fas fa-fw fa-check text-muted aria-hidden=""true"" title=""Verified Email""></i>" : string.Empty))</td>
+                <td class="text-center"><i class="@(item.GdprConsent ? "far fa-fw fa-check-circle text-success" : "fas fa-fw fa-ban text-danger")" aria-hidden="true"></i></td>
+                <td class="text-center"><i class="@(item.WantNotifications ? "far fa-fw fa-check-circle text-success" : "fas fa-fw fa-ban text-danger")" aria-hidden="true"></i></td>
                 <td class="text-center">@item.CreateDate.ToShortDateString()</td>
                 <td class="text-center">@item.Entries.Count</td>
                 <td class="text-right">

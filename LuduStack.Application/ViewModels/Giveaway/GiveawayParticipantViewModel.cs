@@ -19,5 +19,9 @@ namespace LuduStack.Application.ViewModels.Giveaway
         public string SecretReceived { get; set; }
 
         public List<GiveawayEntryViewModel> Entries { get; set; }
+
+        #region Extra
+        public bool EmailVerified { get; set; } 
+        #endregion
     }
 }
