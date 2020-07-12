@@ -6,8 +6,7 @@
     var listTitle = ViewData["ListTitle"] == null ? SharedLocalizer["participants"] : (string)ViewData["ListTitle"];
 
 
-    var giveawayId = ViewData["giveawayId"] == null ? string.Empty : ViewData["giveawayId"].ToString();
-}
+    var giveawayId = ViewData["giveawayId"] == null ? string.Empty : ViewData["giveawayId"].ToString(); }
 
 
 <div class="bg-light pt-2">
@@ -17,12 +16,11 @@
 
     @if (!Model.Any())
     {
-        <partial name="_ListNoItems" model="noItemsModel" />
-    }
-            else
-            {
-<div class="col-12 bg-white square-top table-responsive">
-    <table class="table">
+<partial name="_ListNoItems" model="noItemsModel" /> }
+else
+{
+<div class="col-12 bg-white square-top table-responsive pb-1">
+    <table class="table table-hover">
         <caption class="sr-only">@SharedLocalizer["The available giveaways."]</caption>
         <thead>
             <tr>
@@ -38,18 +36,26 @@
         <tbody>
             @foreach (var item in Model)
             {
-            <tr>
-                <td class="text-center">@(Html.Raw(item.IsWinner ? @"<i class=""fas fa-fw fa-trophy text-warning aria-hidden=""true""></i>" : string.Empty))</td>
-                <td>@item.Email@(Html.Raw(item.EmailVerified ? @" <i class=""fas fa-fw fa-check text-muted aria-hidden=""true"" title=""Verified Email""></i>" : string.Empty))</td>
-                <td class="text-center"><i class="@(item.GdprConsent ? "far fa-fw fa-check-circle text-success" : "fas fa-fw fa-ban text-danger")" aria-hidden="true"></i></td>
-                <td class="text-center"><i class="@(item.WantNotifications ? "far fa-fw fa-check-circle text-success" : "fas fa-fw fa-ban text-danger")" aria-hidden="true"></i></td>
-                <td class="text-center">@item.CreateDate.ToShortDateString()</td>
-                <td class="text-center">@item.Entries.Count</td>
-                <td class="text-right">
-                    <button class="btn btn-sm btn-outline-danger btn-participant-delete" data-url="@Url.Action("deleteparticipant", "giveaway", new { area = "tools", giveawayId = giveawayId, participantId = item.Id })" data-confirmationmessage="@SharedLocalizer["Are you sure you want to delete this Participant?"]" data-confirmationtitle="@SharedLocalizer["Are you sure?"]" data-confirmationbuttontext="@SharedLocalizer["Yes, delete it!"]" data-cancelbuttontext="@SharedLocalizer["Cancel"]"><i class="fas fa-fw fa-trash" aria-hidden="true"></i></button>
-                </td>
-            </tr>
-            }
+<tr>
+    <td class="text-center">@(Html.Raw(item.IsWinner ? @"<i class=""fas fa-fw fa-trophy text-warning aria-hidden=""true""></i>" : string.Empty))</td>
+    <td>@item.Email@(Html.Raw(item.EmailVerified ? @" <i class=""fas fa-fw fa-check text-muted aria-hidden=""true"" title=""Verified Email""></i>" : string.Empty))</td>
+    <td class="text-center"><i class="@(item.GdprConsent ? "far fa-fw fa-check-circle text-success" : "fas fa-fw fa-ban text-danger")" aria-hidden="true"></i></td>
+    <td class="text-center"><i class="@(item.WantNotifications ? "far fa-fw fa-check-circle text-success" : "fas fa-fw fa-ban text-danger")" aria-hidden="true"></i></td>
+    <td class="text-center">@item.CreateDate.ToShortDateString()</td>
+    <td class="text-center">@item.Entries.Count</td>
+    <td class="text-right">
+        @if (item.IsWinner)
+        {
+<button class="btn btn-sm btn-participant-declarenotwinner p-0" data-url="@Url.Action("declarenotwinner", "giveaway", new { area = "tools", giveawayId = giveawayId, participantId = item.Id })" data-confirmationmessage="@SharedLocalizer["Are you sure you want to declare {0} not a winner?", item.Email]" data-confirmationtitle="@SharedLocalizer["Are you sure?"]" data-confirmationbuttontext="@SharedLocalizer["Yes, I am sure!"]" data-cancelbuttontext="@SharedLocalizer["Cancel"]" title="@SharedLocalizer["Declare {0} not a winner", item.Email]">
+    <span class="fa-stack">
+        <i class="fas fa-trophy fa-stack-1x"></i>
+        <i class="fas fa-ban fa-stack-2x text-danger"></i>
+    </span>
+</button>}
+        <button class="btn btn-sm btn-outline-danger btn-participant-delete" data-url="@Url.Action("deleteparticipant", "giveaway", new { area = "tools", giveawayId = giveawayId, participantId = item.Id })" data-confirmationmessage="@SharedLocalizer["Are you sure you want to remove {0} from this giveaway?", item.Email]" data-confirmationtitle="@SharedLocalizer["Are you sure?"]" data-confirmationbuttontext="@SharedLocalizer["Yes, delete it!"]" data-cancelbuttontext="@SharedLocalizer["Cancel"]" title="@SharedLocalizer["Remove {0} from this giveaway", item.Email]"><i class="fas fa-fw fa-trash" aria-hidden="true"></i></button>
+    </td>
+</tr>
+}
         </tbody>
     </table>
 </div>}

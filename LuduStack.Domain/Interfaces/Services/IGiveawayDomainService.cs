@@ -19,5 +19,6 @@ namespace LuduStack.Domain.Interfaces.Services
         void ClearParticipants(Guid giveawayId);
         void PickSingleWinner(Guid giveawayId);
         void PickAllWinners(Guid giveawayId);
+        void DeclareNotWinner(Guid giveawayId, Guid participantId);
     }
 }

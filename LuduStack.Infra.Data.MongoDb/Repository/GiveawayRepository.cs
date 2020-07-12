@@ -1,4 +1,5 @@
-﻿using LuduStack.Domain.Core.Extensions;
+﻿using LuduStack.Domain.Core.Enums;
+using LuduStack.Domain.Core.Extensions;
 using LuduStack.Domain.Interfaces.Repository;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
@@ -57,6 +58,13 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
             });
 
             return obj.ToList();
+        }
+        public void UpdateGiveawayStatus(Guid giveawayId, GiveawayStatus newStatus)
+        {
+            FilterDefinition<Giveaway> filter = Builders<Giveaway>.Filter.Where(x => x.Id == giveawayId);
+            UpdateDefinition<Giveaway> add = Builders<Giveaway>.Update.Set(x => x.Status, newStatus);
+
+            Context.AddCommand(() => DbSet.UpdateOneAsync(filter, add));
         }
 
         public IQueryable<GiveawayParticipant> GetParticipants(Guid giveawayId)
@@ -119,6 +127,13 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
         public GiveawayParticipant GetParticipantByReferralCode(Guid giveawayId, string referralCode)
         {
             GiveawayParticipant model = DbSet.AsQueryable().Where(x => x.Id == giveawayId).SelectMany(x => x.Participants).FirstOrDefault(x => x.ReferralCode.Equals(referralCode));
+
+            return model;
+        }
+
+        public GiveawayParticipant GetParticipantById(Guid giveawayId, Guid participantId)
+        {
+            GiveawayParticipant model = DbSet.AsQueryable().Where(x => x.Id == giveawayId).SelectMany(x => x.Participants).FirstOrDefault(x => x.Id == participantId);
 
             return model;
         }

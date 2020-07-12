@@ -315,48 +315,62 @@ namespace LuduStack.Application.Services
             }
         }
 
+        public OperationResultVo DeclareNotWinner(Guid currentUserId, Guid giveawayId, Guid participantId)
+        {
+            try
+            {
+                giveawayDomainService.DeclareNotWinner(giveawayId, participantId);
+
+                unitOfWork.Commit();
+
+                return new OperationResultVo(true, "That Participant is not a winner anymore!");
+            }
+            catch (Exception ex)
+            {
+                return new OperationResultVo(ex.Message);
+            }
+        }
+
         private void SetViewModelState(Guid currentUserId, IGiveawayScreenViewModel vm)
         {
-            vm.Permissions.CanConnect = vm.UserId != currentUserId;
-
-            vm.StatusMessage = vm.Status.ToDisplayName();
+            TimeSpan diff = (vm.StartDate - DateTime.Now);
 
             if (vm.Status == GiveawayStatus.PendingStart && vm.StartDate <= DateTime.Now)
             {
                 vm.Status = GiveawayStatus.OpenForEntries;
             }
-
-            if (vm.Status == GiveawayStatus.OpenForEntries)
+            else if (vm.Status == GiveawayStatus.Draft && vm.StartDate >= DateTime.Now)
             {
-                vm.StatusMessage = "enter your email address below";
+                vm.Status = GiveawayStatus.PendingStart;
+            }
+            else if (vm.Status != GiveawayStatus.Ended && vm.EndDate.HasValue && DateTime.Now >= vm.EndDate.Value)
+            {
+                vm.Status = GiveawayStatus.PickingWinners;
             }
 
-            if (vm.EndDate.HasValue)
+            switch (vm.Status)
             {
-                TimeSpan diff;
-
-                if (vm.StartDate >= DateTime.Now)
-                {
-                    diff = (vm.StartDate - DateTime.Now);
+                case GiveawayStatus.PendingStart:
                     vm.Future = true;
-                }
-                else
-                {
+                    vm.StatusMessage = "This giveaway was not started yet";
+                    break;
+                case GiveawayStatus.OpenForEntries:
+                    vm.StatusMessage = "Enter your email address below";
+                    break;
+                case GiveawayStatus.PickingWinners:
+                    vm.StatusMessage = "We are picking winners";
+                    break;
+                case GiveawayStatus.Ended:
+                    vm.StatusMessage = "Thank you for participating!";
+                    break;
+                case GiveawayStatus.Draft:
+                default:
+                    vm.StatusMessage = vm.Status.ToDisplayName();
                     diff = (vm.EndDate - DateTime.Now).Value;
-
-                    if (DateTime.Now >= vm.EndDate.Value)
-                    {
-                        vm.Status = GiveawayStatus.PickingWinners;
-                        vm.StatusMessage = "we are picking winners";
-                    }
-                }
-
-                vm.SecondsToEnd = (int)diff.TotalSeconds;
+                    break;
             }
-            else
-            {
-                vm.StatusMessage = "this giveaway was not started yet";
-            }
+
+            vm.SecondsToEnd = (int)diff.TotalSeconds;
 
             vm.CanCountDown = vm.EndDate.HasValue && (vm.Status == GiveawayStatus.Draft || vm.Status == GiveawayStatus.OpenForEntries);
 
@@ -364,6 +378,7 @@ namespace LuduStack.Application.Services
             vm.ShowSponsor = !string.IsNullOrWhiteSpace(vm.SponsorName);
             vm.SponsorWebsite = string.IsNullOrWhiteSpace(vm.SponsorWebsite) ? "#" : vm.SponsorWebsite;
 
+            vm.Permissions.CanConnect = vm.UserId != currentUserId;
             SetBasePermissions(currentUserId, vm);
         }
     }

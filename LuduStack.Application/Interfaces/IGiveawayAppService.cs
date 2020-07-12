@@ -19,5 +19,6 @@ namespace LuduStack.Application.Interfaces
         OperationResultVo ClearParticipants(Guid currentUserId, Guid giveawayId);
         OperationResultVo PickSingleWinner(Guid currentUserId, Guid giveawayId);
         OperationResultVo PickAllWinners(Guid currentUserId, Guid giveawayId);
+        OperationResultVo DeclareNotWinner(Guid currentUserId, Guid giveawayId, Guid participantId);
     }
 }

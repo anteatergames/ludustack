@@ -438,6 +438,31 @@ namespace LuduStack.Web.Areas.Tools.Controllers
                 }
                 else
                 {
+                    return Json(new OperationResultVo(false, "Unable to pick winners."));
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new OperationResultVo(ex.Message));
+            }
+        }
+
+        [Authorize]
+        [HttpPost("tools/giveaway/{giveawayId:guid}/declarenotwinner/{participantId:guid}")]
+        public IActionResult DeclareNotWinner(Guid giveawayId, Guid participantId)
+        {
+            try
+            {
+                OperationResultVo saveResult = giveawayAppService.DeclareNotWinner(CurrentUserId, giveawayId, participantId);
+
+                if (saveResult.Success)
+                {
+                    string url = Url.Action("manage", "giveaway", new { area = "tools", id = giveawayId });
+
+                    return Json(new OperationResultRedirectVo(saveResult, url));
+                }
+                else
+                {
                     return Json(new OperationResultVo(false));
                 }
             }

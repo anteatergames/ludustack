@@ -7,6 +7,7 @@ using LuduStack.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
 namespace LuduStack.Domain.Services
@@ -172,6 +173,18 @@ namespace LuduStack.Domain.Services
             repository.RemoveParticipant(giveawayId, participantId);
         }
 
+        public void DeclareNotWinner(Guid giveawayId, Guid participantId)
+        {
+            GiveawayParticipant participant = repository.GetParticipantById(giveawayId, participantId);
+
+            if (participant != null)
+            {
+                participant.IsWinner = false;
+
+                repository.UpdateParticipant(giveawayId, participant);
+            }
+        }
+
         public void ClearParticipants(Guid giveawayId)
         {
             repository.ClearParticipants(giveawayId);
@@ -207,7 +220,20 @@ namespace LuduStack.Domain.Services
             var winners = allParticipants.Where(x => x.IsWinner).ToList();
             var nonWinners = allParticipants.Where(x => !x.IsWinner).ToList();
 
+            var allEntries = (from p in nonWinners
+                             from e in p.Entries
+                             select new
+                             {
+                                 Participant = p,
+                                 Entry = e
+                             }).ToList();
+
             var winnersToSelect = basicInfo.WinnerAmount - winners.Count;
+
+            if (allParticipants.Count < winnersToSelect)
+            {
+                winnersToSelect = allParticipants.Count;
+            }
 
             if (winnersToSelect > 0)
             {
@@ -215,16 +241,21 @@ namespace LuduStack.Domain.Services
 
                 for (int i = 0; i < winnersToSelect; i++)
                 {
-                    int index = rand.Next(0, nonWinners.Count);
+                    int index = rand.Next(0, allEntries.Count);
 
-                    var winner = nonWinners.ElementAt(index);
+                    var winner = allEntries.ElementAt(index).Participant;
 
                     winner.IsWinner = true;
 
                     repository.UpdateParticipant(giveawayId, winner);
 
-                    nonWinners.RemoveAt(index);
+                    allEntries = allEntries.Except(allEntries.Where(x => x.Participant.Id == winner.Id)).ToList();
                 }
+            }
+
+            if (!nonWinners.Any())
+            {
+                repository.UpdateGiveawayStatus(giveawayId, GiveawayStatus.Ended);
             }
         }
 

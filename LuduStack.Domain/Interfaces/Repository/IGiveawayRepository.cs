@@ -1,4 +1,5 @@
-﻿using LuduStack.Domain.Models;
+﻿using LuduStack.Domain.Core.Enums;
+using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
@@ -18,5 +19,7 @@ namespace LuduStack.Domain.Interfaces.Repository
         GiveawayParticipant GetParticipantByEmail(Guid giveawayId, string email);
         GiveawayParticipant GetParticipantByReferralCode(Guid giveawayId, string referrer);
         void ClearParticipants(Guid giveawayId);
+        void UpdateGiveawayStatus(Guid giveawayId, GiveawayStatus newStatus);
+        GiveawayParticipant GetParticipantById(Guid giveawayId, Guid participantId);
     }
 }

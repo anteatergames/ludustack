@@ -10,6 +10,7 @@
         selectors.urls = '#urls';
         selectors.container = '#featurecontainer';
         selectors.btnDeleteParticipant = '.btn-participant-delete';
+        selectors.btnDeclareNotWinner = '.btn-participant-declarenotwinner';
         selectors.btnClearParticipants = '#btnClearParticipants';
         selectors.btnPickSingleWinner = '#btnPickSingleWinner';
         selectors.btnPickAllWinners = '#btnPickAllWinners';
@@ -32,6 +33,7 @@
 
     function bindAll() {
         bindBtnDeleteParticipant();
+        bindBtnDeclareNotWinner();
         bindBtnClearParticipants();
         bindBtnPickSingleWinner();
         bindBtnPickAllWinners();
@@ -44,6 +46,19 @@
 
             if (canInteract) {
                 MAINMODULE.Common.DeleteEntity(btn);
+            }
+
+            return false;
+        });
+    }
+
+    function bindBtnDeclareNotWinner() {
+        objs.container.on('click', selectors.btnDeclareNotWinner, function (e) {
+            e.preventDefault();
+            var btn = $(this);
+
+            if (canInteract) {
+                MAINMODULE.Common.PostWithConfirmation(btn);
             }
 
             return false;
