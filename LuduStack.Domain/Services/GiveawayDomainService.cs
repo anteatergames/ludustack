@@ -67,6 +67,11 @@ namespace LuduStack.Domain.Services
             Task<GiveawayBasicInfo> task = Task.Run(async () => await repository.GetBasicGiveawayById(id));
             var model = task.Result;
 
+            if (model.Status == GiveawayStatus.Ended)
+            {
+                model.Winners = repository.GetParticipants(id).Where(x => x.IsWinner).ToList();
+            }
+
             SetDates(model);
 
             return model;
@@ -221,12 +226,12 @@ namespace LuduStack.Domain.Services
             var nonWinners = allParticipants.Where(x => !x.IsWinner).ToList();
 
             var allEntries = (from p in nonWinners
-                             from e in p.Entries
-                             select new
-                             {
-                                 Participant = p,
-                                 Entry = e
-                             }).ToList();
+                              from e in p.Entries
+                              select new
+                              {
+                                  Participant = p,
+                                  Entry = e
+                              }).ToList();
 
             var winnersToSelect = basicInfo.WinnerAmount - winners.Count;
 
@@ -253,10 +258,7 @@ namespace LuduStack.Domain.Services
                 }
             }
 
-            if (!nonWinners.Any())
-            {
-                repository.UpdateGiveawayStatus(giveawayId, GiveawayStatus.Ended);
-            }
+            repository.UpdateGiveawayStatus(giveawayId, GiveawayStatus.Ended);
         }
 
         private static IGiveawayBasicInfo SetDates(IGiveawayBasicInfo model)

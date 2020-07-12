@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace LuduStack.Application.ViewModels.Giveaway
 {
@@ -21,7 +22,17 @@ namespace LuduStack.Application.ViewModels.Giveaway
         public List<GiveawayEntryViewModel> Entries { get; set; }
 
         #region Extra
-        public bool EmailVerified { get; set; } 
+        public bool EmailVerified { get; set; }
+
+        public string EmailMasked
+        {
+            get
+            {
+                string pattern = @"(?<=[\w]{1})[\w-\._\+%]*(?=[\w]{1}@)";
+                string result = Regex.Replace(Email, pattern, m => new string('*', m.Length));
+                return result;
+            }
+        }
         #endregion
     }
 }

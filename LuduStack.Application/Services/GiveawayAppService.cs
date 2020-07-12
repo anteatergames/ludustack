@@ -74,6 +74,7 @@ namespace LuduStack.Application.Services
 
                 GiveawayViewModel vm = mapper.Map<GiveawayViewModel>(existing);
 
+
                 SetAuthorDetails(vm);
 
                 SetViewModelState(currentUserId, vm);
@@ -355,6 +356,7 @@ namespace LuduStack.Application.Services
                     vm.StatusMessage = "This giveaway was not started yet";
                     break;
                 case GiveawayStatus.OpenForEntries:
+                    diff = (vm.EndDate - DateTime.Now).Value;
                     vm.StatusMessage = "Enter your email address below";
                     break;
                 case GiveawayStatus.PickingWinners:
@@ -365,8 +367,8 @@ namespace LuduStack.Application.Services
                     break;
                 case GiveawayStatus.Draft:
                 default:
-                    vm.StatusMessage = vm.Status.ToDisplayName();
                     diff = (vm.EndDate - DateTime.Now).Value;
+                    vm.StatusMessage = vm.Status.ToDisplayName();
                     break;
             }
 

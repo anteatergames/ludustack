@@ -42,5 +42,7 @@ namespace LuduStack.Domain.Models
         public string SponsorName { get; set; }
 
         public string SponsorWebsite { get; set; }
+
+        public List<GiveawayParticipant> Winners { get; set; }
     }
 }

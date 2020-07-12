@@ -24,6 +24,7 @@
     <environment include="Development">
         <script src="~/js/giveaway/giveawaycommon.js"></script>
         <script src="~/js/giveaway/giveawaymanage.js"></script>
+        <script src="~/js/shared/fx.js"></script>
     </environment>
     <environment exclude="Development">
         <script src="~/js/giveaway/giveawaymanage.min.js" asp-append-version="true"></script>
@@ -33,6 +34,8 @@
 @section TranslatedMessages {
     <span class="msg" data-msg-id="msgUrlPlaceholder">@SharedLocalizer["placeholder message"]</span>
 }
+
+<input asp-for="SecondsToEnd" type="hidden" />
 
 <div id="featurecontainer" class="col-12 container">
     <input type="hidden" id="isajax" value="@isAjax.ToString().ToLower()" />
@@ -61,37 +64,59 @@
         <div id="featuresidebar" class="col-lg-4 col-xl-3 no-gutters">
             @if (!canInteract)
             {
-    <div class="alert-info p-2">
-        @SharedLocalizer["You must be logged in to manage giveaways"]
-    </div> }
+<div class="alert-info p-2">
+    @SharedLocalizer["You must be logged in to manage giveaways"]
+</div> }
 else
 {
-    <div class="feature-box">
-        <div class="row">
-            <div class="col-12 text-center">
-                <img src="@Model.FeaturedImage" class="img-fluid" />
+<div class="feature-box">
+    <div class="row">
+        <div class="col-12 text-center">
+            <img src="@Model.FeaturedImage" class="img-fluid" />
+        </div>
+        <div class="col-12 col-sm-6 offset-sm-3 col-lg-12 offset-lg-0">
+            <div class="p-1 text-center">
+                <span>@Model.StatusLocalized</span>
             </div>
-            <div class="col-12 col-sm-6 offset-sm-3 col-lg-12 offset-lg-0">
-                <div class="p-1 text-center">
-                    <span>@Model.StatusLocalized</span>
+
+            <div class="alert alert-info" role="alert">
+                <span>@SharedLocalizer["Start Date"]:</span> <span class="float-right">@Model.StartDate.ToString()</span>
+                <hr />
+                <span>@SharedLocalizer["End Date"]:</span> <span class="float-right">@Model.EndDate.ToString()</span>
+            </div>
+
+            <div class="text-muted text-sm-center">@SharedLocalizer["ends in"]</div>
+
+            <div class="time-left d-flex justify-content-center" id="countdown">
+                <div class="time-unity">
+                    <span id="countdown-days">00</span><br><span class="label">@SharedLocalizer["days"]</span>
                 </div>
-                <div class="alert alert-info" role="alert">
-                    <span>@SharedLocalizer["Start Date"]:</span> <span class="float-right">@Model.StartDate.ToString()</span>
-                    <hr />
-                    <span>@SharedLocalizer["End Date"]:</span> <span class="float-right">@Model.EndDate.ToString()</span>
+                <div>:</div>
+                <div class="time-unity">
+                    <span id="countdown-hours">00</span><br><span class="label">@SharedLocalizer["hours"]</span>
                 </div>
-                <div class="p-1 px-2 mb-1 border-bottom rounded-0">
-                    <span>@SharedLocalizer["winners"]</span> <span class="float-right">@Model.WinnerAmount</span>
+                <div>:</div>
+                <div class="time-unity">
+                    <span id="countdown-minutes">00</span><br><span class="label">@SharedLocalizer["min"]</span>
+                </div>
+                <div>:</div>
+                <div class="time-unity">
+                    <span id="countdown-seconds">00</span><br><span class="label">@SharedLocalizer["sec"]</span>
                 </div>
             </div>
-            <div class="col-12 col-sm-6 offset-sm-3 col-lg-12 offset-lg-0">
-                <div id="divActions">
-                    <a id="btnPickAllWinners" href="#" class="btn btn-outline-success btn-block" data-url="@Url.Action("pickallwinners", "giveaway", new { area = "tools", giveawayId = Model.Id })" data-confirmationmessage="@SharedLocalizer["Are you sure you want to pick all the winners for this giveaway?"]" data-confirmationtitle="@SharedLocalizer["The chosen one"]" data-confirmationbuttontext="@SharedLocalizer["Do it!"]" data-cancelbuttontext="@SharedLocalizer["Cancel"]">@SharedLocalizer["Pick All Winners"] <i class="fas fa-trophy" aria-hidden="true"></i></a>
-                    <a id="btnPickSingleWinner" href="#" class="btn btn-outline-secondary btn-block" data-url="@Url.Action("picksinglewinner", "giveaway", new { area = "tools", giveawayId = Model.Id })" data-confirmationmessage="@SharedLocalizer["Are you sure you want to pick a single winner for this giveaway?"]" data-confirmationtitle="@SharedLocalizer["The chosen one"]" data-confirmationbuttontext="@SharedLocalizer["Do it!"]" data-cancelbuttontext="@SharedLocalizer["Cancel"]">@SharedLocalizer["Pick Single Winner"] <i class="fas fa-trophy" aria-hidden="true"></i></a>
-                </div>
+
+            <div class="p-1 px-2 mb-1 border-bottom rounded-0">
+                <span>@SharedLocalizer["winners"]</span> <span class="float-right">@Model.WinnerAmount</span>
             </div>
         </div>
-    </div>      }
+        <div class="col-12 col-sm-6 offset-sm-3 col-lg-12 offset-lg-0">
+            <div id="divActions">
+                <a id="btnPickAllWinners" href="#" class="btn btn-outline-success btn-block" data-url="@Url.Action("pickallwinners", "giveaway", new { area = "tools", giveawayId = Model.Id })" data-confirmationmessage="@SharedLocalizer["Are you sure you want to pick all the winners for this giveaway?"]" data-confirmationtitle="@SharedLocalizer["The chosen one"]" data-confirmationbuttontext="@SharedLocalizer["Do it!"]" data-cancelbuttontext="@SharedLocalizer["Cancel"]">@SharedLocalizer["Pick All Winners"] <i class="fas fa-trophy" aria-hidden="true"></i></a>
+                <a id="btnPickSingleWinner" href="#" class="btn btn-outline-secondary btn-block" data-url="@Url.Action("picksinglewinner", "giveaway", new { area = "tools", giveawayId = Model.Id })" data-confirmationmessage="@SharedLocalizer["Are you sure you want to pick a single winner for this giveaway?"]" data-confirmationtitle="@SharedLocalizer["The chosen one"]" data-confirmationbuttontext="@SharedLocalizer["Do it!"]" data-cancelbuttontext="@SharedLocalizer["Cancel"]">@SharedLocalizer["Pick Single Winner"] <i class="fas fa-trophy" aria-hidden="true"></i></a>
+            </div>
+        </div>
+    </div>
+</div>  }
         </div>
     </div>
 </div>

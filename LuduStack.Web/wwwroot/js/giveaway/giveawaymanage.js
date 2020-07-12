@@ -29,6 +29,8 @@
         canInteract = objs.container.find(selectors.canInteract).val();
 
         bindAll();
+
+        FX.StartCountDown('#SecondsToEnd');
     }
 
     function bindAll() {

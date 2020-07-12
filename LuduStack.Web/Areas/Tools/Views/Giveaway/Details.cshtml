@@ -165,18 +165,39 @@
                         }
                     </div>
 
-                    <div class="hr-top mt-5"></div>
 
-                    <section id="giveaway-description">
-                        <div class="pt-4 pb-5">
-                            @Html.Raw(Model.Description)
+                    @if (Model.Status == GiveawayStatus.Ended && Model.Winners.Any())
+                    {
+                        <h5 class="mt-2 h3 text-muted text-sm-center text-uppercase">
+                            @SharedLocalizer["And here are the winners"]:
+                        </h5>
+
+                        <ul class="list-group mb-2">
+                            @foreach (var winner in Model.Winners)
+                            {
+                                <li class="list-group-item">@winner.EmailMasked</li>
+                            }
+                        </ul>
+
+                        <div class="text-muted text-sm-center">
+                            <p>@SharedLocalizer["You will be receiving and email from us about your prize."]</p>
                         </div>
-                    </section>
+                    }
+                    else
+                    {
+                        <div class="hr-top mt-5"></div>
+                        <section id="giveaway-description">
+                            <div class="pt-4 pb-5">
+                                @Html.Raw(Model.Description)
+                            </div>
+                        </section>
+                    }
+
                     @if (Model.ShowTimeZone || Model.ShowSponsor)
                     {
                         <div class="p-4 rounded-0 bg-light offered-by-text ">
                             <div class="text-uppercase d-flex flex-wrap justify-content-center">
-                                @if (Model.ShowTimeZone)
+                                @if (Model.ShowTimeZone && Model.Status != GiveawayStatus.Ended)
                                 {
                                     <div class="mx-3"><small title="America/Sao_Paulo"><span class="h6">@SharedLocalizer["giveaway timezone: {0}", Model.TimeZone]</span></small></div>
                                 }
@@ -201,9 +222,13 @@
             <div class="col-12 giv-footer">
                 <p>
                     <small>
-                        Enter sweepstakes and receive exclusive offers from LuduStack.
+                        @SharedLocalizer["Enter sweepstakes and receive exclusive offers from {0}.", Model.SponsorName]
                         <br>
-                        Unsubscribe anytime. <a asp-area="tools" asp-controller="giveaway" asp-action="terms" asp-route-id="@Model.Id" target="_blank">Read official rules.</a>
+                        @SharedLocalizer["Unsubscribe anytime."]
+                        @if (!string.IsNullOrWhiteSpace(Model.TermsAndConditions))
+                        {
+                            <a asp-area="tools" asp-controller="giveaway" asp-action="terms" asp-route-id="@Model.Id" target="_blank">@SharedLocalizer["Read official rules."]</a>
+                        }
                     </small>
                 </p>
             </div>

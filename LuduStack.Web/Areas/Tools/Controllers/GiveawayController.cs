@@ -199,7 +199,6 @@ namespace LuduStack.Web.Areas.Tools.Controllers
         [Route("giveaway/{id:guid}")]
         public IActionResult Details(Guid id, string referralCode)
         {
-
             string sessionEmail = GetSessionValue(SessionValues.Email);
 
             if (!string.IsNullOrWhiteSpace(sessionEmail))
