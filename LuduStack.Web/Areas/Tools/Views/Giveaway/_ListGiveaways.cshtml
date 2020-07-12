@@ -33,11 +33,11 @@ else
 <tr class="row-clickable">
     <td><a asp-area="tools" asp-controller="giveaway" asp-action="manage" asp-route-id="@item.Id"><span>@item.Name</span></a></td>
     <td><a asp-area="tools" asp-controller="giveaway" asp-action="manage" asp-route-id="@item.Id"><span>@item.ParticipantCount</span></a></td>
-    <td>@item.CreateDate.ToShortDateString()</td>
-    <td>@item.StatusLocalized</td>
+    <td><a asp-area="tools" asp-controller="giveaway" asp-action="manage" asp-route-id="@item.Id">@item.CreateDate.ToShortDateString()</a></td>
+    <td><a asp-area="tools" asp-controller="giveaway" asp-action="manage" asp-route-id="@item.Id">@item.StatusLocalized</a></td>
     <td class="text-right">
         <div class="btn-group" role="group">
-            <button asp-area="tools" asp-controller="giveaway" asp-action="details" asp-route-id="@item.Id" target="_blank" class="btn btn-sm btn-outline-info my-1"><i class="fas fa-fw fa-eye" aria-hidden="true"></i>View</button>
+            <a asp-area="tools" asp-controller="giveaway" asp-action="details" asp-route-id="@item.Id" target="_blank" class="btn btn-sm btn-outline-info my-1"><i class="fas fa-fw fa-eye" aria-hidden="true"></i>View</a>
             <button class="btn btn-sm btn-outline-info dropdown-toggle my-1" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
             <div class="dropdown-menu dropdown-menu-right btn-sm p-1" aria-labelledby="dropdownMenuButton" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(-30px, 38px, 0px);">
                 <a asp-area="tools" asp-controller="giveaway" asp-action="edit" asp-route-id="@item.Id" class="dropdown-item btn-edit py-2"><i class="fas fa-fw fa-edit" aria-hidden="true"></i>Edit</a>

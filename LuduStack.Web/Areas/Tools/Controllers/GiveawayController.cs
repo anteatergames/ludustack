@@ -1,5 +1,6 @@
 ﻿using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels.Giveaway;
+using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Core.Extensions;
 using LuduStack.Domain.ValueObjects;
 using LuduStack.Infra.CrossCutting.Identity.Services;
@@ -199,18 +200,19 @@ namespace LuduStack.Web.Areas.Tools.Controllers
         [Route("giveaway/{id:guid}")]
         public IActionResult Details(Guid id, string referralCode)
         {
-            string sessionEmail = GetSessionValue(SessionValues.Email);
-
-            if (!string.IsNullOrWhiteSpace(sessionEmail))
-            {
-                return RedirectToAction("youarein", "giveaway", new { area = "tools", id = id });
-            }
-
             OperationResultVo result = giveawayAppService.GetGiveawayBasicInfoById(CurrentUserId, id);
+
 
             if (result.Success)
             {
                 OperationResultVo<GiveawayViewModel> castRestult = result as OperationResultVo<GiveawayViewModel>;
+
+                string sessionEmail = GetSessionValue(SessionValues.Email);
+
+                if (!string.IsNullOrWhiteSpace(sessionEmail) && castRestult.Value.Status != GiveawayStatus.Ended)
+                {
+                    return RedirectToAction("youarein", "giveaway", new { area = "tools", id = id });
+                }
 
                 string serialized = JsonConvert.SerializeObject(castRestult.Value);
                 GiveawayDetailsViewModel model = JsonConvert.DeserializeObject<GiveawayDetailsViewModel>(serialized);
@@ -318,20 +320,21 @@ namespace LuduStack.Web.Areas.Tools.Controllers
         {
             string sessionEmail = GetSessionValue(SessionValues.Email);
 
-            if (string.IsNullOrWhiteSpace(sessionEmail))
-            {
-                return RedirectToAction("details", "giveaway", new { area = "tools", id = id });
-            }
-
-            var emailSplit = sessionEmail.Split("@");
-
-            ViewData["mailProvider"] = emailSplit.Length > 1 ? String.Format("https://{0}", emailSplit[1]) : "#";
-
             OperationResultVo result = giveawayAppService.GetGiveawayParticipantInfo(CurrentUserId, id, sessionEmail);
 
             if (result.Success)
             {
                 OperationResultVo<GiveawayParticipationViewModel> castRestult = result as OperationResultVo<GiveawayParticipationViewModel>;
+
+                if (string.IsNullOrWhiteSpace(sessionEmail) || castRestult.Value.Status == GiveawayStatus.Ended)
+                {
+                    return RedirectToAction("details", "giveaway", new { area = "tools", id = id });
+                }
+
+                var emailSplit = sessionEmail.Split("@");
+
+                ViewData["mailProvider"] = emailSplit.Length > 1 ? String.Format("https://{0}", emailSplit[1]) : "#";
+
 
                 GiveawayParticipationViewModel model = castRestult.Value;
 
