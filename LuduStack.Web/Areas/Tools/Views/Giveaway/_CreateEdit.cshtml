@@ -1,17 +1,15 @@
 ﻿@model GiveawayViewModel
 
-@{
-    Layout = null;
-    var canInteract = User.Identity.IsAuthenticated;
+@{ Layout = null;
+                var canInteract = User.Identity.IsAuthenticated;
 
-    ViewData["Title"] = SharedLocalizer["{0} Giveaway", (Model.Id == Guid.Empty ? "New" : "Edit")];
+                ViewData["Title"] = SharedLocalizer["{0} Giveaway", (Model.Id == Guid.Empty ? "New" : "Edit")];
 
-    var userGames = ViewBag.UserGames as List<SelectListItem>;
+                var userGames = ViewBag.UserGames as List<SelectListItem>;
 
-    var isNew = Model.Id == Guid.Empty;
+                var isNew = Model.Id == Guid.Empty;
 
-    var timeZoneList = (IEnumerable<SelectListItem>)ViewBag.TimeZones;
-}
+                var timeZoneList = (IEnumerable<SelectListItem>)ViewBag.TimeZones; }
 
 <h1 class="sr-only">@ViewData["Title"]</h1>
 
@@ -47,9 +45,10 @@
             <input type="hidden" asp-for="Id" />
             <input type="hidden" asp-for="UserId" />
             <input type="hidden" asp-for="CreateDate" />
+            <input type="hidden" asp-for="FeaturedImage" />
             <div class="row">
 
-                <div class="col-12 col-sm-6 col-md-4">
+                <div class="col-md-4">
                     <div class="form-group">
                         <label asp-for="Status" class="col-form-label"></label>
                         @if (isNew)
@@ -63,7 +62,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-12">
+                <div class="col-md-8">
                     <div class="form-group">
                         <label asp-for="Name" class="col-form-label"></label>
                         <span asp-description-for="Name" class="col-form-label" />
@@ -81,6 +80,21 @@
                     </div>
                 </div>
 
+                <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                        <label asp-for="WinnerAmount" class="col-form-label"></label>
+                        <input asp-for="WinnerAmount" class="form-control" placeholder="@SharedLocalizer["How many winners there will be on this giveaway?"]" />
+                        <span asp-validation-for="WinnerAmount" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                        <label asp-for="PrizePriceInDolar" class="col-form-label"></label>
+                        <input asp-for="PrizePriceInDolar" class="form-control" placeholder="@SharedLocalizer["How much (in USD) worth the prize?"]" />
+                        <span asp-validation-for="PrizePriceInDolar" class="text-danger"></span>
+                    </div>
+                </div>
 
                 <div class="col-12 col-sm-6 col-md-4">
                     <div class="form-group">
@@ -107,22 +121,6 @@
 
                 <div class="col-12 col-sm-6">
                     <div class="form-group">
-                        <label asp-for="WinnerAmount" class="col-form-label"></label>
-                        <input asp-for="WinnerAmount" class="form-control" placeholder="@SharedLocalizer["How many winners there will be on this giveaway?"]" />
-                        <span asp-validation-for="WinnerAmount" class="text-danger"></span>
-                    </div>
-                </div>
-
-                <div class="col-12 col-sm-6">
-                    <div class="form-group">
-                        <label asp-for="PrizePriceInDolar" class="col-form-label"></label>
-                        <input asp-for="PrizePriceInDolar" class="form-control" placeholder="@SharedLocalizer["How much (in USD) worth the prize?"]" />
-                        <span asp-validation-for="PrizePriceInDolar" class="text-danger"></span>
-                    </div>
-                </div>
-
-                <div class="col-12 col-sm-6">
-                    <div class="form-group">
                         <label asp-for="SponsorName" class="col-form-label"></label>
                         <input asp-for="SponsorName" class="form-control" placeholder="@SharedLocalizer["Who's offering this giveaway?"]" />
                         <span asp-validation-for="SponsorName" class="text-danger"></span>
@@ -137,7 +135,23 @@
                     </div>
                 </div>
 
-                <div class="col-md-12">
+                <div class="col-12">
+                    <hr class="my-2" />
+                </div>
+
+                <div class="col-md-6 text-center">
+                    <div class="form-group">
+                        <label asp-for="FeaturedImage" class="col-form-label"></label>
+                    </div>
+                    <div class="mx-auto d-block">
+                        <label class="label" data-toggle="tooltip" title="" data-original-title="Change the featured image">
+                            <img class="rounded img-fluid" id="imgFeaturedImage" src="@Model.FeaturedImage" alt="Featured Image">
+                            <input type="file" class="sr-only" id="featuredimage" name="featuredimage" accept="image/*">
+                        </label>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
                     <div class="form-group">
                         <label asp-for="TermsAndConditions" class="col-form-label"></label>
                         <span asp-description-for="TermsAndConditions" class="col-form-label" />
@@ -151,5 +165,27 @@
                 </div>
             </div>
         </form>
+    </div>
+</div>
+
+<div class="modal fade" id="modalCrop" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalLabel">Crop the image</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="img-container p-10">
+                    <img id="image" src="@Model.FeaturedImage" class="img-fluid" alt="@Model.Name">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">@SharedLocalizer["cancel"]</button>
+                <button type="button" class="btn btn-primary" id="crop">@SharedLocalizer["crop"]</button>
+            </div>
+        </div>
     </div>
 </div>

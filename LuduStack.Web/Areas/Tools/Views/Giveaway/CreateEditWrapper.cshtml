@@ -4,15 +4,18 @@
 
 @section ComponentStyles {
     <environment include="Development">
+        <link rel="stylesheet" href="~/lib/cropperjs/cropper.css" />
         <link rel="stylesheet" href="~/css/giveaway.css">
     </environment>
     <environment exclude="Development">
-        <link rel="stylesheet" href="~/css/giveaway.min.css" asp-append-version="true">
+        <link rel="stylesheet" href="~/css/giveawayedit.min.css" asp-append-version="true">
     </environment>
 }
 
 @section Scripts {
     <environment include="Development">
+        <script src="~/lib/cropperjs/cropper.js"></script>
+        <script src="~/js/shared/imagecrop.js"></script>
         <script src="~/js/common-edit.js"></script>
         <script src="~/js/giveaway/giveawaycommon.js"></script>
         <script src="~/js/giveaway/giveawayedit.js"></script>

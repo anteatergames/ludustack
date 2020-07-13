@@ -263,18 +263,21 @@ namespace LuduStack.Domain.Services
 
         private static IGiveawayBasicInfo SetDates(IGiveawayBasicInfo model)
         {
-            if (model.StartDate == DateTime.MinValue)
+            if (model != null)
             {
-                model.StartDate = DateTime.Now;
-            }
+                if (model.StartDate == DateTime.MinValue)
+                {
+                    model.StartDate = DateTime.Now;
+                }
 
-            var timeZoneOffset = int.Parse(model.TimeZone ?? "0");
+                var timeZoneOffset = int.Parse(model.TimeZone ?? "0");
 
-            model.StartDate = model.StartDate.AddHours(timeZoneOffset);
+                model.StartDate = model.StartDate.AddHours(timeZoneOffset);
 
-            if (model.EndDate.HasValue)
-            {
-                model.EndDate = model.EndDate.Value.AddHours(timeZoneOffset);
+                if (model.EndDate.HasValue)
+                {
+                    model.EndDate = model.EndDate.Value.AddHours(timeZoneOffset);
+                }
             }
 
             return model;

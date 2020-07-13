@@ -35,6 +35,8 @@ namespace LuduStack.Application.Services
 
                 GiveawayViewModel newVm = mapper.Map<GiveawayViewModel>(model);
 
+                newVm.FeaturedImage = Constants.DefaultGiveawayThumbnail;
+
                 return new OperationResultVo<GiveawayViewModel>(newVm);
             }
             catch (Exception ex)

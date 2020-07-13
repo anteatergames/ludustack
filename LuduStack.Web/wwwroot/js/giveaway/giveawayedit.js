@@ -3,10 +3,9 @@
 
     var selectors = {};
     var objs = {};
+
     var canInteract = false;
     var isNew = false;
-
-    var propPrefix = 'Plans';
 
     function setSelectors() {
         selectors.controlsidebar = '.control-sidebar';
@@ -14,7 +13,10 @@
         selectors.urls = '#urls';
         selectors.container = '#featurecontainer';
         selectors.form = '#frmGiveawaySave';
+        selectors.userId = '#userId';
         selectors.btnSave = '#btnSaveGiveaway';
+        selectors.modalCrop = '#modalCrop';
+        selectors.inputFeaturedImage = '#FeaturedImage';
     }
 
     function cacheObjs() {
@@ -22,10 +24,13 @@
         objs.container = $(selectors.container);
         objs.urls = $(selectors.urls);
         objs.form = $(selectors.form);
+        objs.userId = $(selectors.userId);
         objs.txtAreaDescription = $(selectors.txtAreaDescription);
         objs.sortablePlanning = document.getElementById(selectors.sortablePlanning);
         objs.divPlans = $(selectors.divPlans);
         objs.divNoItems = $(selectors.divNoItems);
+        objs.modalCrop = $(selectors.modalCrop);
+        objs.inputFeaturedImage = $(selectors.inputFeaturedImage);
     }
 
     function init() {
@@ -46,7 +51,8 @@
 
     function bindAll() {
         bindBtnSaveForm();
-        //bindDateTimePicker();
+
+        IMAGECROP.BindCropper(0, objs.modalCrop);
     }
 
     function bindBtnSaveForm() {
@@ -57,13 +63,16 @@
             if (valid && canInteract) {
                 MAINMODULE.Common.DisableButton(btn);
 
-                submitForm(btn);
+                if (IMAGECROP.Cropped[0]) {
+                    IMAGECROP.UploadCroppedImage(0, objs.inputFeaturedImage, objs.userId.val(),function () {
+                        submitForm(btn);
+                    });
+                }
+                else {
+                    submitForm(btn);
+                }
             }
         });
-    }
-
-    function bindDateTimePicker() {
-        $('.datetimepicker').flatpickr();
     }
 
     function submitForm(btn, callback) {

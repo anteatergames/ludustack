@@ -282,6 +282,13 @@
     ]
   },
   {
+    "outputFileName": "wwwroot/css/giveawayedit.min.css",
+    "inputFiles": [
+      "wwwroot/lib/cropperjs/cropper.css",
+      "wwwroot/css/giveaway.css"
+    ]
+  },
+  {
     "outputFileName": "wwwroot/js/giveaway/giveaway.min.js",
     "inputFiles": [
       "wwwroot/js/giveaway/giveawaycommon.js",
@@ -298,6 +305,9 @@
   {
     "outputFileName": "wwwroot/js/giveaway/giveawayedit.min.js",
     "inputFiles": [
+      "wwwroot/lib/cropperjs/cropper.js",
+      "wwwroot/js/shared/imagecrop.js",
+      "wwwroot/js/shared/common-edit.js",
       "wwwroot/js/giveaway/giveawaycommon.js",
       "wwwroot/js/giveaway/giveawayedit.js"
     ]

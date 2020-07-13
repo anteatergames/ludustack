@@ -74,6 +74,8 @@ namespace LuduStack.Web.Areas.Tools.Controllers
 
                 GiveawayViewModel model = castResult.Value;
 
+                SetTimeZones(model);
+
                 SetLocalization(model);
 
                 return View("CreateEditWrapper", model);
@@ -97,14 +99,7 @@ namespace LuduStack.Web.Areas.Tools.Controllers
 
             model.Description = ContentFormatter.FormatCFormatTextAreaBreaks(model.Description);
 
-            List<SelectListItem> timeZones = ConstantHelper.TimeZones.ToList();
-
-            foreach (SelectListItem timeZone in timeZones)
-            {
-                timeZone.Selected = !string.IsNullOrWhiteSpace(model.TimeZone) && model.TimeZone.Equals(timeZone.Value);
-            }
-
-            ViewBag.TimeZones = timeZones;
+            SetTimeZones(model);
 
             return View("CreateEditWrapper", model);
         }
@@ -500,6 +495,18 @@ namespace LuduStack.Web.Areas.Tools.Controllers
                 DisplayAttribute displayStatus = item.Status.GetAttributeOfType<DisplayAttribute>();
                 item.StatusLocalized = SharedLocalizer[displayStatus != null ? displayStatus.Name : item.Status.ToString()];
             }
+        }
+
+        private void SetTimeZones(GiveawayViewModel model)
+        {
+            List<SelectListItem> timeZones = ConstantHelper.TimeZones.ToList();
+
+            foreach (SelectListItem timeZone in timeZones)
+            {
+                timeZone.Selected = (!string.IsNullOrWhiteSpace(model.TimeZone) && model.TimeZone.Equals(timeZone.Value)) || timeZone.Value.Equals("0");
+            }
+
+            ViewBag.TimeZones = timeZones;
         }
     }
 }
