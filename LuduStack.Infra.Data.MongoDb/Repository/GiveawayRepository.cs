@@ -54,6 +54,8 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
                 FeaturedImage = x.FeaturedImage,
                 ParticipantCount = x.Participants.Count,
                 CreateDate = x.CreateDate,
+                StartDate = x.StartDate,
+                EndDate = x.EndDate,
                 Status = x.Status
             });
 

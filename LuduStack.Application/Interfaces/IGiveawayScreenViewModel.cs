@@ -14,6 +14,7 @@ namespace LuduStack.Application.Interfaces
         bool Future { get; set; }
         int SecondsToEnd { get; set; }
         bool CanCountDown { get; set; }
+        bool CanReceiveEntries { get; set; }
         bool ShowTimeZone { get; set; }
         string TimeZone { get; set; }
         bool ShowSponsor { get; set; }

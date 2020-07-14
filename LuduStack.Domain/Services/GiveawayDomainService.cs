@@ -49,6 +49,11 @@ namespace LuduStack.Domain.Services
         {
             List<GiveawayListItemVo> objs = repository.GetGiveawayListByUserId(userId);
 
+            foreach (var item in objs)
+            {
+                SetDates(item);
+            }
+
             return objs;
         }
 

@@ -336,30 +336,28 @@ namespace LuduStack.Application.Services
 
         private void SetViewModelState(Guid currentUserId, IGiveawayScreenViewModel vm)
         {
-            TimeSpan diff = (vm.StartDate - DateTime.Now);
+            GiveawayStatus effectiveStatus = vm.Status;
+            TimeSpan diff = new TimeSpan();
 
             if (vm.Status == GiveawayStatus.PendingStart && vm.StartDate <= DateTime.Now)
             {
-                vm.Status = GiveawayStatus.OpenForEntries;
+                effectiveStatus = GiveawayStatus.OpenForEntries;
             }
             else if (vm.Status == GiveawayStatus.Draft && vm.StartDate >= DateTime.Now)
             {
-                vm.Status = GiveawayStatus.PendingStart;
+                effectiveStatus = GiveawayStatus.PendingStart;
             }
             else if (vm.Status != GiveawayStatus.Ended && vm.EndDate.HasValue && DateTime.Now >= vm.EndDate.Value)
             {
-                vm.Status = GiveawayStatus.PickingWinners;
+                effectiveStatus = GiveawayStatus.PickingWinners;
             }
 
-            switch (vm.Status)
+            switch (effectiveStatus)
             {
                 case GiveawayStatus.PendingStart:
                     vm.Future = true;
+                    diff = (vm.StartDate - DateTime.Now);
                     vm.StatusMessage = "This giveaway was not started yet";
-                    break;
-                case GiveawayStatus.OpenForEntries:
-                    diff = (vm.EndDate - DateTime.Now).Value;
-                    vm.StatusMessage = "Enter your email address below";
                     break;
                 case GiveawayStatus.PickingWinners:
                     vm.StatusMessage = "We are picking winners";
@@ -368,15 +366,28 @@ namespace LuduStack.Application.Services
                     vm.StatusMessage = "Thank you for participating!";
                     break;
                 case GiveawayStatus.Draft:
+                case GiveawayStatus.OpenForEntries:
                 default:
-                    diff = (vm.EndDate - DateTime.Now).Value;
-                    vm.StatusMessage = vm.Status.ToDisplayName();
+                    vm.StatusMessage = "Enter your email address below";
                     break;
+            }
+
+
+            if (vm.EndDate.HasValue && effectiveStatus != GiveawayStatus.PickingWinners && effectiveStatus != GiveawayStatus.Ended)
+            {
+                vm.Future = effectiveStatus == GiveawayStatus.PendingStart;
+                diff = vm.EndDate.HasValue ? (vm.EndDate - DateTime.Now).Value : new TimeSpan();
+            }
+
+            if (effectiveStatus != GiveawayStatus.Draft)
+            {
+                vm.Status = effectiveStatus;
             }
 
             vm.SecondsToEnd = (int)diff.TotalSeconds;
 
-            vm.CanCountDown = vm.EndDate.HasValue && (vm.Status == GiveawayStatus.Draft || vm.Status == GiveawayStatus.OpenForEntries);
+            vm.CanCountDown = vm.SecondsToEnd > 0;
+            vm.CanReceiveEntries = vm.Status == GiveawayStatus.Draft || vm.Status == GiveawayStatus.OpenForEntries;
 
             vm.ShowTimeZone = !string.IsNullOrWhiteSpace(vm.TimeZone);
             vm.ShowSponsor = !string.IsNullOrWhiteSpace(vm.SponsorName);

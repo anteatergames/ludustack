@@ -10,7 +10,6 @@
     ViewData["Title"] = SharedLocalizer["Giveaway"];
     ViewData["Description"] = SharedLocalizer["Manage Viral Giveaways"];
     ViewData["Url"] = ViewBag.BaseUrl + Url.Action("index", "giveaway", new { area = "tools" });
-    //ViewData["OgImage"] = ViewBag.BaseUrl + "/images/og/oggiveaway.png";
 }
 
 @section ComponentStyles {
@@ -41,37 +40,21 @@
     <input type="hidden" id="isajax" value="@isAjax.ToString().ToLower()" />
     <input type="hidden" id="caninteract" value="@canInteract.ToString().ToLower()" />
     <input type="hidden" id="urls" value="urls"
-           data-url-list="@Url.Action("listbyme", "giveaway", new { area = "tools" })"
-           data-url-mine="@Url.Action("listmine", "giveaway", new { area = "tools" })" />
+            data-url-list="@Url.Action("listbyme", "giveaway", new { area = "tools" })"
+            data-url-mine="@Url.Action("listmine", "giveaway", new { area = "tools" })" />
 
     <div id="containerlist" class="row">
-        <div class="col-lg-12 mb-2 px-4">
+        <div class="col-12 mb-2">
             <h1><i class="fas fa-fw fa-ticket-alt" aria-hidden="true"></i> @ViewData["Title"]</h1>
         </div>
-        <div class="col-lg-8 col-xl-9 mb-3">
-            <div id="divList"></div>
-        </div>
-        <div id="featuresidebar" class="col-lg-4 col-xl-3 no-gutters">
-            @if (!canInteract)
+        <div class="col-12 mb-3">
+            @if (canInteract)
             {
-<div class="alert-info p-2">
-    @SharedLocalizer["You must be logged in to manage giveaways"]
-</div> }
-else
-{
-<div class="feature-box">
-    <h3>@SharedLocalizer["User Panel"]</h3>
-    <div class="row">
-        <div class="col-12">
-            <p>@SharedLocalizer["Welcome to the LuduStack Giveaway system! Here you can create giveaways to promote your gamedev business and games."]</p>
-        </div>
-        <div class="col-12">
-            <div id="divActions">
-                <a asp-area="tools" asp-controller="giveaway" asp-action="add" class="btn btn-outline-primary btn-block">@SharedLocalizer["New Giveaway"] <i class="fas fa-plus" aria-hidden="true"></i></a>
-            </div>
-        </div>
-    </div>
-</div>      }
+                <div class="col-lg-12 mb-2 p-0 text-right">
+                    <a asp-area="tools" asp-controller="giveaway" asp-action="add" class="btn btn-success">@SharedLocalizer["New Giveaway"] <i class="fas fa-plus" aria-hidden="true"></i></a>
+                </div>
+            }
+            <div id="divList"></div>
         </div>
     </div>
 </div>

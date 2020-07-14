@@ -45,6 +45,16 @@ html {
     padding: 1rem;
 }
 
+    .giv-title.ended {
+        background-color: #3d4454;
+        color: #fff;
+        padding: 0;
+        top: -5px;
+        min-height: 45px;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+
 .basic-info {
     -webkit-box-pack: center;
     -ms-flex-pack: center;
@@ -99,7 +109,7 @@ html {
 }
 
 .hr-title {
-    background-image: url(/images/hr.svg);
+    background-image: url(/images/giveaway/hr.svg);
     background-repeat: repeat-x;
     background-size: auto 2px;
     background-position-y: 7px;
@@ -113,7 +123,7 @@ html {
     }
 
 .hr-arrow-down {
-    background-image: url(/images/hr.svg);
+    background-image: url(/images/giveaway/hr.svg);
     background-repeat: repeat-x;
     background-size: auto 2px;
     background-position-y: 0;
@@ -132,13 +142,13 @@ html {
         display: block;
         width: 60px;
         height: 23px;
-        background-image: url(/images/hr-down.svg);
+        background-image: url(/images/giveaway/hr-down.svg);
         background-repeat: no-repeat;
         top: -2px;
     }
 
 .hr-plain, .hr-top {
-    background-image: url(/images/hr.svg);
+    background-image: url(/images/giveaway/hr.svg);
     background-repeat: repeat-x;
     background-size: auto 2px;
     background-position-y: 0;
@@ -161,7 +171,7 @@ html {
         display: block;
         width: 56px;
         height: 31px;
-        background-image: url(/images/hr-top.svg);
+        background-image: url(/images/giveaway/hr-top.svg);
         background-repeat: no-repeat;
         top: -27px;
     }

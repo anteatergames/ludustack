@@ -22,6 +22,8 @@ namespace LuduStack.Application.ViewModels.Giveaway
         #region Extra
         public bool CanCountDown { get; set; }
 
+        public bool CanReceiveEntries { get; set; }
+
         public string StatusMessage { get; set; }
 
         public int SecondsToEnd { get; set; }

@@ -9,6 +9,8 @@
     function setSelectors() {
         selectors.canInteract = '#caninteract';
         selectors.urls = '#urls';
+        selectors.secondsToEnd = '#SecondsToEnd';
+        selectors.status = '#Status';
         selectors.container = '#featurecontainer';
         selectors.containerList = '#containerlist';
         selectors.form = '#frmEnterGiveaway';
@@ -21,6 +23,7 @@
     function cacheObjs() {
         objs.container = $(selectors.container);
         objs.urls = $(selectors.urls);
+        objs.status = $(selectors.status);
         objs.form = $(selectors.form);
         objs.emailInput = $(selectors.emailInput);
         objs.urlInput = $(selectors.urlInput);
@@ -32,9 +35,9 @@
 
         bindAll();
 
-        FX.StartCountDown('#SecondsToEnd');
+        FX.StartCountDown(selectors.secondsToEnd);
 
-        var userIsIn = $(selectors.emailInput).length === 0;
+        var userIsIn = $(selectors.emailInput).length === 0 && (objs.status.val() === 'OpenForEntries' || objs.status.val() === 'Ended');
 
         if (userIsIn) {
             FX.Poof();

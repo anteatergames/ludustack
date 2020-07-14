@@ -13,6 +13,7 @@
 
 @section ComponentStyles {
     <link rel="stylesheet" href="~/css/switch.css">
+    <link rel="stylesheet" href="~/css/ribbon.css">
     <environment include="Development">
         <link rel="stylesheet" href="~/css/giveaway.css">
     </environment>
@@ -32,12 +33,24 @@
 }
 
 <input asp-for="SecondsToEnd" type="hidden" />
+<input asp-for="Status" type="hidden" />
 
 <section class="container-fluid position-relative">
     <div id="featurecontainer" class="row justify-content-center">
         <div class="col-md-12 col-lg-10 px-0 px-md-1">
             <div class="giv-container animate1 pb-5 mb-2">
-
+                @if (Model.Status == GiveawayStatus.Draft)
+                {
+                    <div id="ribbon-container" class="blue">
+                        <span>@SharedLocalizer[Model.Status.ToString()]</span>
+                    </div>
+                }
+                else if (Model.Status == GiveawayStatus.Ended)
+                {
+                    <div id="ribbon-container">
+                        <span>@SharedLocalizer[Model.Status.ToString()]</span>
+                    </div>
+                }
                 <div id="carouselExampleIndicators" class="carousel slide square-bottom" data-ride="carousel">
                     <ol class="carousel-indicators">
                         <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
@@ -58,11 +71,11 @@
                 </div>
 
                 <div class="px-3 px-sm-5 px-md-5">
-                    <div class="giv-title">
-                        <h1>@Model.Name</h1>
+                    <div class="giv-title @(Model.Status == GiveawayStatus.Ended ? "ended" : string.Empty)">
+                        <h1 @(Model.Status == GiveawayStatus.Ended ? "class=h2" : string.Empty)>@Model.Name</h1>
                     </div>
 
-                    @if (Model.Status != GiveawayStatus.Ended)
+                    @if (Model.Status != GiveawayStatus.Ended && Model.CanCountDown)
                     {
                         <div class="hr-title h6 text-uppercase">
                             <div>
@@ -78,47 +91,46 @@
                         </div>
 
                         <div class="d-flex text-center align-items-center basic-info text-uppercase">
-                            @if (Model.CanCountDown)
-                            {
-                                <div class="col-6 col-sm-2 col-md-3 h6 order-2 order-sm-1">@SharedLocalizer["${0} value", Model.PrizePriceInDolar]</div>
-                                <div class="col-12 col-sm-7 col-md-6 order-1 order-sm-2 hr-b-small">
-                                    <div class="time-left d-flex justify-content-center" id="countdown">
-                                        <div class="time-unity">
-                                            <span id="countdown-days">00</span><br><span class="label">@SharedLocalizer["days"]</span>
-                                        </div>
-                                        <div>:</div>
-                                        <div class="time-unity">
-                                            <span id="countdown-hours">00</span><br><span class="label">@SharedLocalizer["hours"]</span>
-                                        </div>
-                                        <div>:</div>
-                                        <div class="time-unity">
-                                            <span id="countdown-minutes">00</span><br><span class="label">@SharedLocalizer["min"]</span>
-                                        </div>
-                                        <div>:</div>
-                                        <div class="time-unity">
-                                            <span id="countdown-seconds">00</span><br><span class="label">@SharedLocalizer["sec"]</span>
-                                        </div>
+                            <div class="col-6 col-sm-2 col-md-3 h6 order-2 order-sm-1">@SharedLocalizer["${0} value", Model.PrizePriceInDolar]</div>
+                            <div class="col-12 col-sm-7 col-md-6 order-1 order-sm-2 hr-b-small">
+                                <div class="time-left d-flex justify-content-center" id="countdown">
+                                    <div class="time-unity">
+                                        <span id="countdown-days">00</span><br><span class="label">@SharedLocalizer["days"]</span>
+                                    </div>
+                                    <div>:</div>
+                                    <div class="time-unity">
+                                        <span id="countdown-hours">00</span><br><span class="label">@SharedLocalizer["hours"]</span>
+                                    </div>
+                                    <div>:</div>
+                                    <div class="time-unity">
+                                        <span id="countdown-minutes">00</span><br><span class="label">@SharedLocalizer["min"]</span>
+                                    </div>
+                                    <div>:</div>
+                                    <div class="time-unity">
+                                        <span id="countdown-seconds">00</span><br><span class="label">@SharedLocalizer["sec"]</span>
                                     </div>
                                 </div>
-                                <div class="col-6 col-sm-2 col-md-3 h6 order-3">@SharedLocalizer["winners: {0}", Model.WinnerAmount]</div>
-                            }
-                            else
-                            {
-                                <div class="hr-b-small">
-                                    <div class="time-left d-flex justify-content-center">
-                                        <div class="time-unity">
-                                            <span>@SharedLocalizer["time is up"]</span>
-                                            <span class="label">&nbsp;</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            }
+                            </div>
+                            <div class="col-6 col-sm-2 col-md-3 h6 order-3">@SharedLocalizer["winners: {0}", Model.WinnerAmount]</div>
                         </div>
+
+                        @if (Model.SecondsToEnd == 0)
+                        {
+                            <div class="hr-b-small">
+                                <div class="time-left d-flex justify-content-center">
+                                    <div class="time-unity">
+                                        <span>@SharedLocalizer["time is up"]</span>
+                                        <span class="label">&nbsp;</span>
+                                    </div>
+                                </div>
+                            </div>
+                        }
                     }
 
                     <div class="hr-arrow-down rounded-0"></div>
                     <div class="text-center pt-1 pb-0" id="mainSignup">
-                        @if (Model.CanCountDown)
+
+                        @if (Model.CanReceiveEntries)
                         {
                             <h2 class="mt-2 h3">
                                 @SharedLocalizer[Model.StatusMessage]
