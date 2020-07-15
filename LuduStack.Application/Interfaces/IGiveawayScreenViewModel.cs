@@ -20,5 +20,7 @@ namespace LuduStack.Application.Interfaces
         bool ShowSponsor { get; set; }
         string SponsorName { get; set; }
         string SponsorWebsite { get; set; }
+        string Images { get; set; }
+        List<string> ImageList { get; set; }
     }
 }

@@ -53,20 +53,18 @@
                 }
                 <div id="carouselExampleIndicators" class="carousel slide square-bottom" data-ride="carousel">
                     <ol class="carousel-indicators">
-                        <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-                        <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-                        <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                        @for (int i = 0; i < Model.ImageList.Count; i++)
+                        {
+                            <li data-target="#carouselExampleIndicators" data-slide-to="@i" @(i == 0 ? "class=active" : string.Empty)></li>
+                        }
                     </ol>
                     <div class="carousel-inner">
-                        <div class="carousel-item active">
-                            <img class="d-block w-100" src="~/images/photo1.jpg" alt="First slide">
-                        </div>
-                        <div class="carousel-item">
-                            <img class="d-block w-100" src="~/images/photo2.jpg" alt="Second slide">
-                        </div>
-                        <div class="carousel-item">
-                            <img class="d-block w-100" src="~/images/photo3.jpg" alt="Third slide">
-                        </div>
+                        @for (int i = 0; i < Model.ImageList.Count; i++)
+                        {
+                            <div class="carousel-item@(i == 0 ? " active" : string.Empty)">
+                                <img class="d-block w-100" src="@Model.ImageList[i]" alt="@Model.ImageList[i]">
+                            </div>
+                        }
                     </div>
                 </div>
 

@@ -34,6 +34,8 @@ namespace LuduStack.Application.ViewModels.Giveaway
         public bool Future { get; set; }
 
         public int EntryCount { get; set; }
+
+        public List<string> ImageList { get;  set; }
         #endregion
     }
 }

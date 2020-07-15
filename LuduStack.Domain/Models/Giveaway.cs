@@ -14,9 +14,7 @@ namespace LuduStack.Domain.Models
 
         public string Description { get; set; }
 
-        public string FeaturedImage { get; set; }
-
-        public string CoverImage { get; set; }
+        public string Images { get; set; }
 
         public DateTime StartDate { get; set; }
 

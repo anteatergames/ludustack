@@ -20,7 +20,7 @@ namespace LuduStack.Domain.ValueObjects
 
         public GiveawayStatus Status { get; set; }
 
-        public string FeaturedImage { get; set; }
+        public string Images { get; set; }
 
         public string Description { get; set; }
 

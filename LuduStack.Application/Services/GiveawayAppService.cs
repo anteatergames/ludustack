@@ -1,4 +1,5 @@
-﻿using LuduStack.Application.Interfaces;
+﻿using LuduStack.Application.Formatters;
+using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels.Giveaway;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Core.Extensions;
@@ -35,7 +36,7 @@ namespace LuduStack.Application.Services
 
                 GiveawayViewModel newVm = mapper.Map<GiveawayViewModel>(model);
 
-                newVm.FeaturedImage = Constants.DefaultGiveawayThumbnail;
+                //newVm.FeaturedImage = Constants.DefaultGiveawayThumbnail;
 
                 return new OperationResultVo<GiveawayViewModel>(newVm);
             }
@@ -58,7 +59,7 @@ namespace LuduStack.Application.Services
 
                 SetViewModelState(currentUserId, vm);
 
-                vm.FeaturedImage = SetFeaturedImage(currentUserId, vm.FeaturedImage, ImageRenderType.Full, Constants.DefaultGiveawayThumbnail);
+                SetImages(vm);
 
                 return new OperationResultVo<GiveawayViewModel>(vm);
             }
@@ -81,7 +82,7 @@ namespace LuduStack.Application.Services
 
                 SetViewModelState(currentUserId, vm);
 
-                vm.FeaturedImage = SetFeaturedImage(currentUserId, vm.FeaturedImage, ImageRenderType.Full, Constants.DefaultGiveawayThumbnail);
+                SetImages(vm);
 
                 return new OperationResultVo<GiveawayViewModel>(vm);
             }
@@ -122,6 +123,8 @@ namespace LuduStack.Application.Services
                 {
                     model = mapper.Map<Giveaway>(vm);
                 }
+
+                model.Images = model.Images.Replace(Constants.DefaultGiveawayThumbnail, string.Empty).Trim('|');
 
                 if (vm.Id == Guid.Empty)
                 {
@@ -228,7 +231,7 @@ namespace LuduStack.Application.Services
 
                 vm.EmailConfirmed = participant.Entries.Any(x => x.Type == GiveawayEntryType.EmailConfirmed);
 
-                vm.FeaturedImage = SetFeaturedImage(currentUserId, vm.FeaturedImage, ImageRenderType.Full, Constants.DefaultGiveawayThumbnail);
+                SetImages(vm);
 
                 return new OperationResultVo<GiveawayParticipationViewModel>(vm);
             }
@@ -374,6 +377,26 @@ namespace LuduStack.Application.Services
 
             vm.Permissions.CanConnect = vm.UserId != currentUserId;
             SetBasePermissions(currentUserId, vm);
+        }
+
+        private static void SetImages(IGiveawayScreenViewModel vm)
+        {
+            if (!string.IsNullOrWhiteSpace(vm.Images))
+            {
+                vm.ImageList = vm.Images.Split('|').ToList();
+
+                for (int i = 0; i < vm.ImageList.Count; i++)
+                {
+                    vm.ImageList[i] = UrlFormatter.Image(vm.UserId, ImageType.FeaturedImage, vm.ImageList[i], 720, 0);
+                }
+            }
+            else
+            {
+                vm.ImageList = new List<string>
+                {
+                    Constants.DefaultGiveawayThumbnail
+                };
+            }
         }
     }
 }

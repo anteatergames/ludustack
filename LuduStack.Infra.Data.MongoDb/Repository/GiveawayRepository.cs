@@ -29,8 +29,7 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
                 Status = x.Status,
                 Name = x.Name,
                 Description = x.Description,
-                FeaturedImage = x.FeaturedImage,
-                CoverImage = x.CoverImage,
+                Images = x.Images,
                 StartDate = x.StartDate,
                 EndDate = x.EndDate,
                 TimeZone = x.TimeZone,
@@ -51,7 +50,7 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
             {
                 Id = x.Id,
                 Name = x.Name,
-                FeaturedImage = x.FeaturedImage,
+                Images = x.Images,
                 ParticipantCount = x.Participants.Count,
                 CreateDate = x.CreateDate,
                 StartDate = x.StartDate,

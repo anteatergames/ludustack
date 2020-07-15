@@ -4,23 +4,36 @@
 
 @section ComponentStyles {
     <environment include="Development">
-        <link rel="stylesheet" href="~/lib/cropperjs/cropper.css" />
+        <link rel="stylesheet" href="~/lib/dropzone/dropzone.css" />
         <link rel="stylesheet" href="~/css/giveaway.css">
     </environment>
     <environment exclude="Development">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.7.0/dropzone.min.css"
+              asp-fallback-href="~/lib/dropzone/min/dropzone.min.css"
+              asp-fallback-test-class="dropzone"
+              asp-fallback-test-property="box-sizing"
+              asp-fallback-test-value="border-box"
+              integrity="sha256-NkyhTCRnLQ7iMv7F3TQWjVq25kLnjhbKEVPqGJBcCUg="
+              crossorigin="anonymous">
         <link rel="stylesheet" href="~/css/giveawayedit.min.css" asp-append-version="true">
     </environment>
 }
 
 @section Scripts {
     <environment include="Development">
-        <script src="~/lib/cropperjs/cropper.js"></script>
-        <script src="~/js/shared/imagecrop.js"></script>
+        <script src="~/lib/dropzone/dropzone.js"></script>
+        <script src="~/js/shared/imagemanipulation.js"></script>
         <script src="~/js/common-edit.js"></script>
         <script src="~/js/giveaway/giveawaycommon.js"></script>
         <script src="~/js/giveaway/giveawayedit.js"></script>
     </environment>
     <environment exclude="Development">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.7.0/dropzone.min.js"
+                asp-fallback-src="~/lib/dropzone/min/dropzone.min.js"
+                asp-fallback-test="window.Dropzone"
+                integrity="sha256-OG/103wXh6XINV06JTPspzNgKNa/jnP1LjPP5Y3XQDY="
+                crossorigin="anonymous">
+        </script>
         <script src="~/js/giveaway/giveawayedit.min.js" asp-append-version="true"></script>
     </environment>
 

@@ -1,4 +1,4 @@
-﻿var IMAGECROP = (function () {
+﻿var IMAGEMANIPULAION = (function () {
     "use strict";
 
     var cropped = [];
@@ -6,8 +6,10 @@
     var canvas = [];
     var initialUrl = [];
 
+    var dropzones = [];
+
     function init() {
-        console.log('imagecrop init');
+        console.log('IMAGEMANIPULAION init');
     }
 
     function bindCropper(index, modalCrop) {
@@ -103,17 +105,41 @@
         }
     }
 
+    function instantiateDropZone(index, el) {
+        if (dropzones[index]) {
+            dropzones[index].destroy();
+            dropzones[index] = null;
+        }
+
+        dropzones[index] = new Dropzone(el, {
+            url: '/storage/uploadcontentimage',
+            paramName: 'upload',
+            addRemoveLinks: true,
+            autoProcessQueue: false,
+            maxFiles: 5,
+            parallelUploads: 10,
+            resizeWidth: 720
+        });
+    }
+
+    function getDropZone(index) {
+        return dropzones[index];
+    }
 
     return {
         Init: init,
         Cropped: cropped,
         BindCropper: bindCropper,
-        UploadCroppedImage: uploadCroppedImage
+        UploadCroppedImage: uploadCroppedImage,
+        Dropzone: {
+            Initialize: instantiateDropZone,
+            Get: getDropZone
+        }
     };
 }());
 
 
 
 $(function () {
-    IMAGECROP.Init();
+    IMAGEMANIPULAION.Init();
 });

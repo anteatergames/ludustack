@@ -306,7 +306,7 @@
     "outputFileName": "wwwroot/js/giveaway/giveawayedit.min.js",
     "inputFiles": [
       "wwwroot/lib/cropperjs/cropper.js",
-      "wwwroot/js/shared/imagecrop.js",
+      "wwwroot/js/shared/imagemanipulation.js",
       "wwwroot/js/shared/common-edit.js",
       "wwwroot/js/giveaway/giveawaycommon.js",
       "wwwroot/js/giveaway/giveawayedit.js"

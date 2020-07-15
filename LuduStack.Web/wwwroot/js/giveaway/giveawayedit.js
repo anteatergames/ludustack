@@ -15,8 +15,8 @@
         selectors.form = '#frmGiveawaySave';
         selectors.userId = '#userId';
         selectors.btnSave = '#btnSaveGiveaway';
-        selectors.modalCrop = '#modalCrop';
-        selectors.inputFeaturedImage = '#FeaturedImage';
+        selectors.inputImages = '#Images';
+        selectors.dropzoneImages = '#dropzoneImages';
     }
 
     function cacheObjs() {
@@ -29,8 +29,7 @@
         objs.sortablePlanning = document.getElementById(selectors.sortablePlanning);
         objs.divPlans = $(selectors.divPlans);
         objs.divNoItems = $(selectors.divNoItems);
-        objs.modalCrop = $(selectors.modalCrop);
-        objs.inputFeaturedImage = $(selectors.inputFeaturedImage);
+        objs.inputImages = $(selectors.inputImages);
     }
 
     function init() {
@@ -52,7 +51,7 @@
     function bindAll() {
         bindBtnSaveForm();
 
-        IMAGECROP.BindCropper(0, objs.modalCrop);
+        IMAGEMANIPULAION.Dropzone.Initialize(0, selectors.dropzoneImages);
     }
 
     function bindBtnSaveForm() {
@@ -63,30 +62,51 @@
             if (valid && canInteract) {
                 MAINMODULE.Common.DisableButton(btn);
 
-                if (IMAGECROP.Cropped[0]) {
-                    IMAGECROP.UploadCroppedImage(0, objs.inputFeaturedImage, objs.userId.val(),function () {
-                        submitForm(btn);
-                    });
+                if (!IMAGEMANIPULAION.Dropzone.Get(0) || IMAGEMANIPULAION.Dropzone.Get(0).getQueuedFiles().length === 0) {
+                    submitForm(btn);
                 }
                 else {
-                    submitForm(btn);
+                    IMAGEMANIPULAION.Dropzone.Get(0).processQueue();
+
+                    var success = false;
+
+                    IMAGEMANIPULAION.Dropzone.Get(0).on("success", function (file) {
+                        var response = JSON.parse(file.xhr.response);
+                        if (response.uploaded) {
+                            success = true;
+                            objs.inputImages.val(objs.inputImages.val() + '|' + response.url);
+                        }
+                        else {
+                            if (response.error) {
+                                ALERTSYSTEM.ShowWarningMessage(response.error);
+                            }
+                        }
+                    });
+
+                    IMAGEMANIPULAION.Dropzone.Get(0).on("queuecomplete", function (file) {
+                        if (success === true) {
+                            submitForm(btn).done(function (response) {
+                                console.log('done');
+
+                                IMAGEMANIPULAION.Dropzone.Initialize(0, selectors.dropzoneImages);
+                            });
+
+                            console.log(file);
+                        }
+                    });
                 }
             }
         });
     }
 
-    function submitForm(btn, callback) {
+    function submitForm(btn) {
         var url = objs.form.attr('action');
 
         var data = objs.form.serializeObject();
 
-        $.post(url, data).done(function (response) {
+        return $.post(url, data).done(function (response) {
             if (response.success === true) {
                 MAINMODULE.Common.PostSaveCallback(response, btn);
-
-                if (callback) {
-                    callback();
-                }
 
                 ALERTSYSTEM.ShowSuccessMessage("Awesome!", function (isConfirm) {
                     window.location = response.url;
@@ -106,3 +126,5 @@
 $(function () {
     GIVEAWAYEDIT.Init();
 });
+
+Dropzone.autoDiscover = false;
