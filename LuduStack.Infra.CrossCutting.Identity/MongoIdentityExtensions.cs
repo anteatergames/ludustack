@@ -67,10 +67,6 @@ namespace LuduStack.Infra.CrossCutting.Identity
             services.AddTransient<IUserStore<TUser>>(x => new UserStore<TUser, TRole>(userCollection, roleCollection, x.GetService<ILookupNormalizer>()));
             services.AddTransient<IRoleStore<TRole>>(x => new RoleStore<TRole>(roleCollection));
 
-            Task<System.Collections.Generic.List<TUser>> all = userCollection.All();
-
-            all.Wait();
-
             return builder;
         }
     }

@@ -339,11 +339,11 @@ namespace LuduStack.Application.Services
             GiveawayStatus effectiveStatus = vm.Status;
             TimeSpan diff = new TimeSpan();
 
-            if (vm.Status == GiveawayStatus.PendingStart && vm.StartDate <= DateTime.Now)
+            if ((vm.Status == GiveawayStatus.Draft || vm.Status == GiveawayStatus.PendingStart) && vm.StartDate <= DateTime.Now)
             {
                 effectiveStatus = GiveawayStatus.OpenForEntries;
             }
-            else if (vm.Status == GiveawayStatus.Draft && vm.StartDate >= DateTime.Now)
+            else if ((vm.Status == GiveawayStatus.Draft || vm.Status == GiveawayStatus.OpenForEntries) && vm.StartDate >= DateTime.Now)
             {
                 effectiveStatus = GiveawayStatus.PendingStart;
             }
