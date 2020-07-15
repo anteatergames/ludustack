@@ -41,6 +41,7 @@ namespace LuduStack.Domain.ValueObjects
         public string SponsorWebsite { get; set; }
 
         public int ParticipantCount { get; set; }
+
         public string StatusLocalized { get; set; }
     }
 }

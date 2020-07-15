@@ -7,7 +7,6 @@ using LuduStack.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
 namespace LuduStack.Domain.Services
@@ -49,7 +48,7 @@ namespace LuduStack.Domain.Services
         {
             List<GiveawayListItemVo> objs = repository.GetGiveawayListByUserId(userId);
 
-            foreach (var item in objs)
+            foreach (GiveawayListItemVo item in objs)
             {
                 SetDates(item);
             }
@@ -60,7 +59,7 @@ namespace LuduStack.Domain.Services
         public override Giveaway GetById(Guid id)
         {
             Task<Giveaway> task = Task.Run(async () => await repository.GetById(id));
-            var model = task.Result;
+            Giveaway model = task.Result;
 
             SetDates(model);
 
@@ -70,7 +69,7 @@ namespace LuduStack.Domain.Services
         public GiveawayBasicInfo GetGiveawayBasicInfoById(Guid id)
         {
             Task<GiveawayBasicInfo> task = Task.Run(async () => await repository.GetBasicGiveawayById(id));
-            var model = task.Result;
+            GiveawayBasicInfo model = task.Result;
 
             if (model.Status == GiveawayStatus.Ended)
             {
@@ -126,7 +125,7 @@ namespace LuduStack.Domain.Services
 
                 if (!string.IsNullOrWhiteSpace(referrer))
                 {
-                    var referrerParticipant = repository.GetParticipantByReferralCode(giveawayId, referrer);
+                    GiveawayParticipant referrerParticipant = repository.GetParticipantByReferralCode(giveawayId, referrer);
                     if (referrerParticipant != null)
                     {
                         referrerParticipant.Entries.Add(new GiveawayEntry
@@ -152,7 +151,7 @@ namespace LuduStack.Domain.Services
 
         public void UpdateParticipantShortUrl(Guid giveawayId, string email, string shortUrl)
         {
-            var existing = repository.GetParticipantByEmail(giveawayId, email);
+            GiveawayParticipant existing = repository.GetParticipantByEmail(giveawayId, email);
 
             if (existing != null)
             {
@@ -164,7 +163,7 @@ namespace LuduStack.Domain.Services
 
         public void ConfirmParticipant(Guid giveawayId, string referralCode)
         {
-            var existing = repository.GetParticipantByReferralCode(giveawayId, referralCode);
+            GiveawayParticipant existing = repository.GetParticipantByReferralCode(giveawayId, referralCode);
 
             if (existing != null && !existing.Entries.Any(x => x.Type == GiveawayEntryType.EmailConfirmed))
             {
@@ -202,7 +201,7 @@ namespace LuduStack.Domain.Services
 
         public void PickSingleWinner(Guid giveawayId)
         {
-            var nonWinners = repository.GetParticipants(giveawayId).Where(x => !x.IsWinner).ToList();
+            List<GiveawayParticipant> nonWinners = repository.GetParticipants(giveawayId).Where(x => !x.IsWinner).ToList();
 
             if (nonWinners.Any())
             {
@@ -210,7 +209,7 @@ namespace LuduStack.Domain.Services
 
                 int index = rand.Next(0, nonWinners.Count);
 
-                var winner = nonWinners.ElementAt(index);
+                GiveawayParticipant winner = nonWinners.ElementAt(index);
 
                 winner.IsWinner = true;
 
@@ -224,11 +223,11 @@ namespace LuduStack.Domain.Services
 
             task.Wait();
 
-            var basicInfo = task.Result;
+            GiveawayBasicInfo basicInfo = task.Result;
 
-            var allParticipants = repository.GetParticipants(giveawayId).ToList();
-            var winners = allParticipants.Where(x => x.IsWinner).ToList();
-            var nonWinners = allParticipants.Where(x => !x.IsWinner).ToList();
+            List<GiveawayParticipant> allParticipants = repository.GetParticipants(giveawayId).ToList();
+            List<GiveawayParticipant> winners = allParticipants.Where(x => x.IsWinner).ToList();
+            List<GiveawayParticipant> nonWinners = allParticipants.Where(x => !x.IsWinner).ToList();
 
             var allEntries = (from p in nonWinners
                               from e in p.Entries
@@ -238,7 +237,7 @@ namespace LuduStack.Domain.Services
                                   Entry = e
                               }).ToList();
 
-            var winnersToSelect = basicInfo.WinnerAmount - winners.Count;
+            int winnersToSelect = basicInfo.WinnerAmount - winners.Count;
 
             if (allParticipants.Count < winnersToSelect)
             {
@@ -253,7 +252,7 @@ namespace LuduStack.Domain.Services
                 {
                     int index = rand.Next(0, allEntries.Count);
 
-                    var winner = allEntries.ElementAt(index).Participant;
+                    GiveawayParticipant winner = allEntries.ElementAt(index).Participant;
 
                     winner.IsWinner = true;
 
@@ -270,12 +269,32 @@ namespace LuduStack.Domain.Services
         {
             if (model != null)
             {
+                GiveawayStatus effectiveStatus = model.Status;
+
+                if ((model.Status == GiveawayStatus.Draft || model.Status == GiveawayStatus.PendingStart) && model.StartDate <= DateTime.Now)
+                {
+                    effectiveStatus = GiveawayStatus.OpenForEntries;
+                }
+                else if ((model.Status == GiveawayStatus.Draft || model.Status == GiveawayStatus.OpenForEntries) && model.StartDate >= DateTime.Now)
+                {
+                    effectiveStatus = GiveawayStatus.PendingStart;
+                }
+                else if (model.Status != GiveawayStatus.Ended && model.EndDate.HasValue && DateTime.Now >= model.EndDate.Value)
+                {
+                    effectiveStatus = GiveawayStatus.PickingWinners;
+                }
+
+                if (effectiveStatus != GiveawayStatus.Draft)
+                {
+                    model.Status = effectiveStatus;
+                }
+
                 if (model.StartDate == DateTime.MinValue)
                 {
                     model.StartDate = DateTime.Now;
                 }
 
-                var timeZoneOffset = int.Parse(model.TimeZone ?? "0");
+                int timeZoneOffset = int.Parse(model.TimeZone ?? "0");
 
                 model.StartDate = model.StartDate.AddHours(timeZoneOffset);
 

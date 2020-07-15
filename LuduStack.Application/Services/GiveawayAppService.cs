@@ -95,9 +95,9 @@ namespace LuduStack.Application.Services
         {
             try
             {
-                List<GiveawayListItemVo> courses = giveawayDomainService.GetGiveawayListByUserId(currentUserId);
+                List<GiveawayListItemVo> giveaways = giveawayDomainService.GetGiveawayListByUserId(currentUserId);
 
-                return new OperationResultListVo<GiveawayListItemVo>(courses);
+                return new OperationResultListVo<GiveawayListItemVo>(giveaways);
             }
             catch (Exception ex)
             {
@@ -336,27 +336,16 @@ namespace LuduStack.Application.Services
 
         private void SetViewModelState(Guid currentUserId, IGiveawayScreenViewModel vm)
         {
-            GiveawayStatus effectiveStatus = vm.Status;
-            TimeSpan diff = new TimeSpan();
+            TimeSpan diff =  vm.EndDate.HasValue ? (vm.EndDate - DateTime.Now).Value : (vm.StartDate - DateTime.Now);
 
-            if ((vm.Status == GiveawayStatus.Draft || vm.Status == GiveawayStatus.PendingStart) && vm.StartDate <= DateTime.Now)
-            {
-                effectiveStatus = GiveawayStatus.OpenForEntries;
-            }
-            else if ((vm.Status == GiveawayStatus.Draft || vm.Status == GiveawayStatus.OpenForEntries) && vm.StartDate >= DateTime.Now)
-            {
-                effectiveStatus = GiveawayStatus.PendingStart;
-            }
-            else if (vm.Status != GiveawayStatus.Ended && vm.EndDate.HasValue && DateTime.Now >= vm.EndDate.Value)
-            {
-                effectiveStatus = GiveawayStatus.PickingWinners;
-            }
+            vm.SecondsToEnd = (int)diff.TotalSeconds;
 
-            switch (effectiveStatus)
+            vm.CanCountDown = vm.SecondsToEnd > 0;
+
+            switch (vm.Status)
             {
                 case GiveawayStatus.PendingStart:
                     vm.Future = true;
-                    diff = (vm.StartDate - DateTime.Now);
                     vm.StatusMessage = "This giveaway was not started yet";
                     break;
                 case GiveawayStatus.PickingWinners:
@@ -372,22 +361,12 @@ namespace LuduStack.Application.Services
                     break;
             }
 
-
-            if (vm.EndDate.HasValue && effectiveStatus != GiveawayStatus.PickingWinners && effectiveStatus != GiveawayStatus.Ended)
+            if (vm.EndDate.HasValue && vm.Status != GiveawayStatus.PickingWinners && vm.Status != GiveawayStatus.Ended)
             {
-                vm.Future = effectiveStatus == GiveawayStatus.PendingStart;
-                diff = vm.EndDate.HasValue ? (vm.EndDate - DateTime.Now).Value : new TimeSpan();
+                vm.Future = vm.Status == GiveawayStatus.PendingStart;
             }
 
-            if (effectiveStatus != GiveawayStatus.Draft)
-            {
-                vm.Status = effectiveStatus;
-            }
-
-            vm.SecondsToEnd = (int)diff.TotalSeconds;
-
-            vm.CanCountDown = vm.SecondsToEnd > 0;
-            vm.CanReceiveEntries = vm.Status == GiveawayStatus.Draft || vm.Status == GiveawayStatus.OpenForEntries;
+            vm.CanReceiveEntries = vm.Status == GiveawayStatus.OpenForEntries;
 
             vm.ShowTimeZone = !string.IsNullOrWhiteSpace(vm.TimeZone);
             vm.ShowSponsor = !string.IsNullOrWhiteSpace(vm.SponsorName);
