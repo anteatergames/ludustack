@@ -428,6 +428,17 @@ namespace LuduStack.Application.Services
             {
                 vm.FeaturedImage = UrlFormatter.Image(vm.UserId, ImageType.FeaturedImage, vm.FeaturedImage, 720, 0);
             }
+            else
+            {
+                if (vm.ImageList != null && vm.ImageList.Any())
+                {
+                    vm.FeaturedImage = UrlFormatter.Image(vm.UserId, ImageType.FeaturedImage, vm.ImageList.First(), 720, 0); 
+                }
+                else
+                {
+                    vm.FeaturedImage = UrlFormatter.Image(vm.UserId, ImageType.FeaturedImage, Constants.DefaultGiveawayThumbnail, 720, 0);
+                }
+            }
         }
 
         private static void FormatImagesToSave(IGiveawayBasicInfo model)

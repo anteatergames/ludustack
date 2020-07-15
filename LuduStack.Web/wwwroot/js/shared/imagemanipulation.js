@@ -118,11 +118,12 @@
             url: '/storage/uploadcontentimage',
             paramName: 'upload',
             addRemoveLinks: true,
-            autoProcessQueue: false,
+            autoProcessQueue: true,
             maxFiles: imagesToUploadCount,
             parallelUploads: 2,
             resizeWidth: 720,
             resizeMethod: 'crop'
+            //transformFile: transformFile
         });
 
         dropzones[index].on("processing", function () {
@@ -135,12 +136,8 @@
             }
         });
 
-        dropzones[index].on("queuecomplete", function () {
-            console.log('done from imagemanipulation');
-            dropzones[index].options.autoProcessQueue = false;
-        });
-
         dropzones[index].on('addedfile', function (file) {
+            imagesToUploadCount = dropzones[index].options.maxFiles;
             if (this.files.length > imagesToUploadCount) {
                 this.removeFile(this.files[this.files.length - 1]);
                 if (imagesToUploadCount === 0) {
@@ -154,7 +151,29 @@
                 }
             }
         });
+
+        dropzones[index].on("complete", function (file) {
+            dropzones[index].removeFile(file);
+        });
     }
+
+    function transformFile(file, done) {
+
+        console.log(file);
+
+        console.log(done);
+
+        var editor = document.createElement('div');
+        editor.style.position = 'fixed';
+        editor.style.left = 0;
+        editor.style.right = 0;
+        editor.style.top = 0;
+        editor.style.bottom = 0;
+        editor.style.zIndex = 9999;
+        editor.style.backgroundColor = '#000';
+        document.body.appendChild(editor);
+    }
+
 
     function getDropZone(index) {
         return dropzones[index];

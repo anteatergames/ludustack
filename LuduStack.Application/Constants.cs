@@ -106,6 +106,14 @@
             }
         }
 
+        public static string DefaultImagePlaceholder
+        {
+            get
+            {
+                return string.Format("{0},q_auto/v1/xpto", DefaultCloudinaryPath);
+            }
+        }
+
         public static string DefaultLuduStackPath
         {
             get
