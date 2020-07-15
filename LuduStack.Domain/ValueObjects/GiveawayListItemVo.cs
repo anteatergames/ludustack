@@ -1,6 +1,7 @@
 ﻿using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Interfaces.Models;
 using System;
+using System.Collections.Generic;
 
 namespace LuduStack.Domain.ValueObjects
 {
@@ -20,7 +21,9 @@ namespace LuduStack.Domain.ValueObjects
 
         public GiveawayStatus Status { get; set; }
 
-        public string Images { get; set; }
+        public string FeaturedImage { get; set; }
+
+        public List<string> ImageList { get; set; }
 
         public string Description { get; set; }
 

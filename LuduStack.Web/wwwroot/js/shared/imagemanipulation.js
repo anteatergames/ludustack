@@ -7,6 +7,7 @@
     var initialUrl = [];
 
     var dropzones = [];
+    var random = [];
 
     function init() {
         console.log('IMAGEMANIPULAION init');
@@ -105,20 +106,53 @@
         }
     }
 
-    function instantiateDropZone(index, el) {
+    function instantiateDropZone(index, imagesToUploadCount, el, r) {
         if (dropzones[index]) {
             dropzones[index].destroy();
             dropzones[index] = null;
         }
+
+        random[index] = r;
 
         dropzones[index] = new Dropzone(el, {
             url: '/storage/uploadcontentimage',
             paramName: 'upload',
             addRemoveLinks: true,
             autoProcessQueue: false,
-            maxFiles: 5,
-            parallelUploads: 10,
-            resizeWidth: 720
+            maxFiles: imagesToUploadCount,
+            parallelUploads: 2,
+            resizeWidth: 720,
+            resizeMethod: 'crop'
+        });
+
+        dropzones[index].on("processing", function () {
+            this.options.autoProcessQueue = true;
+        });
+
+        dropzones[index].on("sending", function (file, xhr, formData) {
+            if (random[index]) {
+                formData.append("randomName", random[index]);
+            }
+        });
+
+        dropzones[index].on("queuecomplete", function () {
+            console.log('done from imagemanipulation');
+            dropzones[index].options.autoProcessQueue = false;
+        });
+
+        dropzones[index].on('addedfile', function (file) {
+            if (this.files.length > imagesToUploadCount) {
+                this.removeFile(this.files[this.files.length - 1]);
+                if (imagesToUploadCount === 0) {
+                    ALERTSYSTEM.ShowWarningMessage(`You cannot upload more images.`);
+                }
+                if (imagesToUploadCount === 1) {
+                    ALERTSYSTEM.ShowWarningMessage(`You can only add ${imagesToUploadCount} more file.`);
+                }
+                else {
+                    ALERTSYSTEM.ShowWarningMessage(`You can only add ${imagesToUploadCount} more files.`);
+                }
+            }
         });
     }
 

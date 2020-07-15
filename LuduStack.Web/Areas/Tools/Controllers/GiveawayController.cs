@@ -91,7 +91,7 @@ namespace LuduStack.Web.Areas.Tools.Controllers
         {
             GiveawayViewModel model;
 
-            OperationResultVo serviceResult = giveawayAppService.GetGiveawayBasicInfoById(CurrentUserId, id);
+            OperationResultVo serviceResult = giveawayAppService.GetForEdit(CurrentUserId, id);
 
             OperationResultVo<GiveawayViewModel> castResult = serviceResult as OperationResultVo<GiveawayViewModel>;
 
@@ -117,11 +117,10 @@ namespace LuduStack.Web.Areas.Tools.Controllers
 
                 if (saveResult.Success)
                 {
-                    string url = Url.Action("index", "giveaway", new { area = "tools" });
+                    string url = Url.Action("edit", "giveaway", new { area = "tools", id = vm.Id, pointsEarned = saveResult.PointsEarned });
 
                     if (isNew)
                     {
-                        url = Url.Action("edit", "giveaway", new { area = "tools", id = vm.Id, pointsEarned = saveResult.PointsEarned });
 
                         NotificationSender.SendTeamNotificationAsync("New Giveaway created!");
                     }
@@ -169,7 +168,7 @@ namespace LuduStack.Web.Areas.Tools.Controllers
         [Route("giveaway/{id:guid}/manage")]
         public IActionResult Manage(Guid id)
         {
-            OperationResultVo result = giveawayAppService.GetGiveawayFullById(CurrentUserId, id);
+            OperationResultVo result = giveawayAppService.GetGiveawayForManagement(CurrentUserId, id);
 
             if (result.Success)
             {
@@ -195,7 +194,7 @@ namespace LuduStack.Web.Areas.Tools.Controllers
         [Route("giveaway/{id:guid}")]
         public IActionResult Details(Guid id, string referralCode)
         {
-            OperationResultVo result = giveawayAppService.GetGiveawayBasicInfoById(CurrentUserId, id);
+            OperationResultVo result = giveawayAppService.GetForDetails(CurrentUserId, id);
 
 
             if (result.Success)
@@ -233,7 +232,7 @@ namespace LuduStack.Web.Areas.Tools.Controllers
         [Route("giveaway/{id:guid}/terms")]
         public IActionResult Terms(Guid id)
         {
-            OperationResultVo result = giveawayAppService.GetGiveawayBasicInfoById(CurrentUserId, id);
+            OperationResultVo result = giveawayAppService.GetForEdit(CurrentUserId, id);
 
             if (result.Success)
             {
@@ -265,7 +264,7 @@ namespace LuduStack.Web.Areas.Tools.Controllers
 
                     SetSessionValue(SessionValues.Email, enter.Email);
 
-                    OperationResultVo resultGiveawayInfo = giveawayAppService.GetGiveawayBasicInfoById(CurrentUserId, enter.GiveawayId);
+                    OperationResultVo resultGiveawayInfo = giveawayAppService.GetForEdit(CurrentUserId, enter.GiveawayId);
 
                     if (resultGiveawayInfo.Success)
                     {

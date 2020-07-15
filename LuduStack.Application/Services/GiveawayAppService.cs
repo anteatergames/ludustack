@@ -3,6 +3,7 @@ using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels.Giveaway;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Core.Extensions;
+using LuduStack.Domain.Interfaces.Models;
 using LuduStack.Domain.Interfaces.Services;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
@@ -47,7 +48,7 @@ namespace LuduStack.Application.Services
         }
 
 
-        public OperationResultVo GetGiveawayFullById(Guid currentUserId, Guid giveawayId)
+        public OperationResultVo GetGiveawayForManagement(Guid currentUserId, Guid giveawayId)
         {
             try
             {
@@ -59,7 +60,7 @@ namespace LuduStack.Application.Services
 
                 SetViewModelState(currentUserId, vm);
 
-                SetImages(vm);
+                SetImagesToShow(vm, false);
 
                 return new OperationResultVo<GiveawayViewModel>(vm);
             }
@@ -69,7 +70,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo GetGiveawayBasicInfoById(Guid currentUserId, Guid giveawayId)
+        public OperationResultVo GetForEdit(Guid currentUserId, Guid giveawayId)
         {
             try
             {
@@ -77,12 +78,33 @@ namespace LuduStack.Application.Services
 
                 GiveawayViewModel vm = mapper.Map<GiveawayViewModel>(existing);
 
+                SetAuthorDetails(vm);
+
+                SetViewModelState(currentUserId, vm);
+
+                SetImagesToShow(vm, true);
+
+                return new OperationResultVo<GiveawayViewModel>(vm);
+            }
+            catch (Exception ex)
+            {
+                return new OperationResultVo(ex.Message);
+            }
+        }
+
+        public OperationResultVo GetForDetails(Guid currentUserId, Guid giveawayId)
+        {
+            try
+            {
+                GiveawayBasicInfo existing = giveawayDomainService.GetGiveawayBasicInfoById(giveawayId);
+
+                GiveawayViewModel vm = mapper.Map<GiveawayViewModel>(existing);
 
                 SetAuthorDetails(vm);
 
                 SetViewModelState(currentUserId, vm);
 
-                SetImages(vm);
+                SetImagesToShow(vm, false);
 
                 return new OperationResultVo<GiveawayViewModel>(vm);
             }
@@ -124,7 +146,7 @@ namespace LuduStack.Application.Services
                     model = mapper.Map<Giveaway>(vm);
                 }
 
-                model.Images = model.Images.Replace(Constants.DefaultGiveawayThumbnail, string.Empty).Trim('|');
+                FormatImagesToSave(model);
 
                 if (vm.Id == Guid.Empty)
                 {
@@ -231,7 +253,7 @@ namespace LuduStack.Application.Services
 
                 vm.EmailConfirmed = participant.Entries.Any(x => x.Type == GiveawayEntryType.EmailConfirmed);
 
-                SetImages(vm);
+                SetImagesToShow(vm, false);
 
                 return new OperationResultVo<GiveawayParticipationViewModel>(vm);
             }
@@ -339,7 +361,7 @@ namespace LuduStack.Application.Services
 
         private void SetViewModelState(Guid currentUserId, IGiveawayScreenViewModel vm)
         {
-            TimeSpan diff =  vm.EndDate.HasValue ? (vm.EndDate - DateTime.Now).Value : (vm.StartDate - DateTime.Now);
+            TimeSpan diff = vm.EndDate.HasValue ? (vm.EndDate - DateTime.Now).Value : (vm.StartDate - DateTime.Now);
 
             vm.SecondsToEnd = (int)diff.TotalSeconds;
 
@@ -379,23 +401,51 @@ namespace LuduStack.Application.Services
             SetBasePermissions(currentUserId, vm);
         }
 
-        private static void SetImages(IGiveawayScreenViewModel vm)
+        private static void SetImagesToShow(IGiveawayScreenViewModel vm, bool editing)
         {
-            if (!string.IsNullOrWhiteSpace(vm.Images))
-            {
-                vm.ImageList = vm.Images.Split('|').ToList();
+            var newList = new List<string>();
 
-                for (int i = 0; i < vm.ImageList.Count; i++)
+            var originalList = vm.ImageList;
+            var originalListCount = originalList != null && originalList.Any() ? originalList.Count : 1;
+
+            var maxIterations = (editing ? 5 : originalListCount);
+
+            for (int i = 0; i < maxIterations; i++)
+            {
+                if (originalList != null && originalList.Any() && i < originalListCount && originalList.ElementAt(i) != null)
                 {
-                    vm.ImageList[i] = UrlFormatter.Image(vm.UserId, ImageType.FeaturedImage, vm.ImageList[i], 720, 0);
+                    newList.Add(UrlFormatter.Image(vm.UserId, ImageType.FeaturedImage, originalList.ElementAt(i), 720, 0));
+                }
+                else
+                {
+                    newList.Add(Constants.DefaultGiveawayThumbnail);
                 }
             }
-            else
+
+            vm.ImageList = newList;
+
+            if (!editing && !string.IsNullOrWhiteSpace(vm.FeaturedImage))
             {
-                vm.ImageList = new List<string>
+                vm.FeaturedImage = UrlFormatter.Image(vm.UserId, ImageType.FeaturedImage, vm.FeaturedImage, 720, 0);
+            }
+        }
+
+        private static void FormatImagesToSave(IGiveawayBasicInfo model)
+        {
+            var newImageList = new List<string>();
+            for (int i = 0; i < model.ImageList.Count; i++)
+            {
+                if (!model.ImageList.ElementAt(i).Contains(Constants.DefaultGiveawayThumbnail))
                 {
-                    Constants.DefaultGiveawayThumbnail
-                };
+                    string newValue = model.ImageList.ElementAt(i).Split('/').LastOrDefault();
+                    newImageList.Add(newValue);
+                }
+            }
+            model.ImageList = newImageList;
+
+            if (!string.IsNullOrWhiteSpace(model.FeaturedImage))
+            {
+                model.FeaturedImage = model.FeaturedImage.Split('/').LastOrDefault(); 
             }
         }
     }

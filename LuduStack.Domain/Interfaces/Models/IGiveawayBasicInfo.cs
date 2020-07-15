@@ -19,7 +19,9 @@ namespace LuduStack.Domain.Interfaces.Models
 
         string Description { get; set; }
 
-        string Images { get; set; }
+        string FeaturedImage { get; set; }
+
+        public List<string> ImageList { get; set; }
 
         DateTime StartDate { get; set; }
 

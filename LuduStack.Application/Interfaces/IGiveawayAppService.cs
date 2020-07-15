@@ -7,8 +7,9 @@ namespace LuduStack.Application.Interfaces
     public interface IGiveawayAppService
     {
         OperationResultVo GenerateNew(Guid currentUserId);
-        OperationResultVo GetGiveawayFullById(Guid currentUserId, Guid giveawayId);
-        OperationResultVo GetGiveawayBasicInfoById(Guid currentUserId, Guid giveawayId);
+        OperationResultVo GetGiveawayForManagement(Guid currentUserId, Guid id);
+        OperationResultVo GetForEdit(Guid currentUserId, Guid giveawayId);
+        OperationResultVo GetForDetails(Guid currentUserId, Guid id);
         OperationResultVo GetGiveawayParticipantInfo(Guid currentUserId, Guid giveawayId, string email);
         OperationResultVo GetGiveawaysByMe(Guid currentUserId);
         OperationResultVo<Guid> SaveGiveaway(Guid currentUserId, GiveawayViewModel vm);

@@ -17,7 +17,10 @@ namespace LuduStack.Application.ViewModels.Giveaway
         [Required]
         public string Description { get; set; }
 
-        public string Images { get; set; }
+        public string FeaturedImage { get; set; }
+
+        [Display(Name="Images to show")]
+        public List<string> ImageList { get; set; }
 
         [Required]
         public DateTime StartDate { get; set; }

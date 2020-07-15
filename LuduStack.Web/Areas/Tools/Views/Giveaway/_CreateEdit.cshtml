@@ -45,7 +45,7 @@
             <input type="hidden" asp-for="Id" />
             <input type="hidden" asp-for="UserId" />
             <input type="hidden" asp-for="CreateDate" />
-            <input type="hidden" asp-for="Images" />
+            <input type="hidden" asp-for="FeaturedImage" />
             <div class="row">
 
                 <div class="col-md-4">
@@ -139,16 +139,29 @@
                     <hr class="my-2" />
                 </div>
 
-                <div class="col-md-6 text-center">
+                <div class="col-12">
                     <div class="form-group">
-                        <label asp-for="Images" class="col-form-label"></label>
-                        <div class="row mb-2">
-                            @foreach (var image in Model.ImageList)
+                        <label asp-for="TermsAndConditions" class="col-form-label"></label>
+                        <span asp-description-for="TermsAndConditions" class="col-form-label" />
+                        <textarea asp-for="TermsAndConditions" class="form-control" rows="10" placeholder="@SharedLocalizer["Write here the terms and conditions for this giveaway"]"></textarea>
+                        <span asp-validation-for="TermsAndConditions" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-12 text-center">
+                    <div class="form-group">
+                        <label asp-for="ImageList" class="col-form-label"></label>
+                        <div class="row mb-2 px-3 imagelist">
+                            @for (int i = 0; i < Model.ImageList.Count; i++)
                             {
-                                <div class="col">
-                                    <img src="@image" class="img-fluid" />
-                                </div>
-                            }
+                                var image = Model.ImageList[i];
+
+                <div class="col px-1">
+                    <img src="@image" class="img-fluid imagelistitem@(image.Contains(Constants.DefaultGiveawayThumbnail) ? " default" : String.Empty)" width="720" height="360" data-placeholder="@Constants.DefaultGiveawayThumbnail" />
+                    <input asp-for="ImageList[i]" type="hidden" class="imagelistitem@(image.Contains(Constants.DefaultGiveawayThumbnail) ? " default" : String.Empty)" />
+                    <button class="btn btn-sm btn-outline-danger btn-image-delete@(image.Contains(Constants.DefaultGiveawayThumbnail) ? " d-none" : String.Empty)"><i class="fas fa-trash" aria-hidden="true"></i></button>
+                    <div class="featuredlabel d-none"><span class="px-2 pb-1">@SharedLocalizer["featured"]</span></div>
+                </div>}
                         </div>
                         <div id="dropzoneImages" class="dropzone">
                             <div class="dz-message needsclick">
@@ -161,18 +174,7 @@
                     </div>
                 </div>
 
-
-
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label asp-for="TermsAndConditions" class="col-form-label"></label>
-                        <span asp-description-for="TermsAndConditions" class="col-form-label" />
-                        <textarea asp-for="TermsAndConditions" class="form-control" placeholder="@SharedLocalizer["Write here the terms and conditions for this giveaway"]"></textarea>
-                        <span asp-validation-for="TermsAndConditions" class="text-danger"></span>
-                    </div>
-                </div>
-
-                <div class="col-12 col-lg-6 offset-lg-6 col-xl-4 offset-xl-8 mt-1">
+                <div class="col-12 col-lg-6 offset-lg-6 col-xl-4 offset-xl-8 mt-1 mb-2">
                     <button type="button" id="btnSaveGiveaway" class="btn btn-lg btn-primary btn-block" data-error-msg="<i class='fas fa-exclamation-circle' aria-hidden='true'></i> @SharedLocalizer["Something is missing!"]"><i class="fas fa-save" aria-hidden="true"></i> @SharedLocalizer["Save Giveaway"]</button>
                 </div>
             </div>

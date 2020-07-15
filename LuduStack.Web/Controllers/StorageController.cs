@@ -256,7 +256,7 @@ namespace LuduStack.Web.Controllers
 
         [HttpPost]
         [Route("uploadcontentimage")]
-        public IActionResult UploadContentImage(IFormFile upload)
+        public IActionResult UploadContentImage(IFormFile upload, bool randomName)
         {
             try
             {
@@ -272,7 +272,16 @@ namespace LuduStack.Web.Controllers
 
                         string extension = GetFileExtension(upload);
 
-                        string filename = DateTime.Now.ToString("yyyyMMddHHmmss") + "." + extension;
+                        string filename = DateTime.Now.ToString("yyyyMMddHHmmss");
+
+                        if (randomName)
+                        {
+                            Random rand = new Random(Guid.NewGuid().ToString().GetHashCode());
+
+                            filename += "-" + rand.Next().ToString();
+                        }
+
+                        filename += "." + extension;
 
                         imageUrl = base.UploadContentImage(CurrentUserId, filename, fileBytes);
                     }

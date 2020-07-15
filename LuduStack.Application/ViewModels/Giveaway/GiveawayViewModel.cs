@@ -33,7 +33,6 @@ namespace LuduStack.Application.ViewModels.Giveaway
         public bool ShowTimeZone { get; set; }
 
         public bool Future { get; set; }
-        public List<string> ImageList { get; set; }
         #endregion
     }
 }

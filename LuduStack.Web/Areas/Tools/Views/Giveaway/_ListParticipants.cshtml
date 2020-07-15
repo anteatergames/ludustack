@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<GiveawayParticipantViewModel>
 
 @{ Layout = null;
-    var noItemsModel = new ListNoItemsViewModel("fas fa-dizzy", "What? You don't have Giveaways!");
+    var noItemsModel = new ListNoItemsViewModel("fas fa-sad-cry", "No one entered your giveaway... yet!", false);
 
     var listTitle = ViewData["ListTitle"] == null ? SharedLocalizer["participants"] : (string)ViewData["ListTitle"];
 
