@@ -122,7 +122,8 @@
             maxFiles: imagesToUploadCount,
             parallelUploads: 2,
             resizeWidth: 720,
-            resizeMethod: 'crop'
+            resizeMethod: 'crop',
+            acceptedFiles: 'image/*'
             //transformFile: transformFile
         });
 
@@ -138,12 +139,16 @@
 
         dropzones[index].on('addedfile', function (file) {
             imagesToUploadCount = dropzones[index].options.maxFiles;
-            if (this.files.length > imagesToUploadCount) {
+
+            if (file.type.indexOf('image') < 0) {
+                ALERTSYSTEM.ShowWarningMessage(`You can only upload images!`);
+            }
+            else if (this.files.length > imagesToUploadCount) {
                 this.removeFile(this.files[this.files.length - 1]);
                 if (imagesToUploadCount === 0) {
                     ALERTSYSTEM.ShowWarningMessage(`You cannot upload more images.`);
                 }
-                if (imagesToUploadCount === 1) {
+                else if (imagesToUploadCount === 1) {
                     ALERTSYSTEM.ShowWarningMessage(`You can only add ${imagesToUploadCount} more file.`);
                 }
                 else {
