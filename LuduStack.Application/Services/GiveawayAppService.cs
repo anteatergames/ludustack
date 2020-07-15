@@ -10,6 +10,7 @@ using LuduStack.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 
 namespace LuduStack.Application.Services
 {
@@ -424,6 +425,7 @@ namespace LuduStack.Application.Services
 
             vm.ImageList = newList;
 
+            var firstIsPlaceholder = vm.ImageList?.First().Equals(Constants.DefaultGiveawayThumbnail) ?? false;
 
             if (!string.IsNullOrWhiteSpace(vm.FeaturedImage))
             {
@@ -431,13 +433,16 @@ namespace LuduStack.Application.Services
                 {
                     var imageInTheList = vm.ImageList.FirstOrDefault(x => x.Contains(vm.FeaturedImage));
                     var index = vm.ImageList.IndexOf(imageInTheList);
-                    vm.ImageList.RemoveAt(index);
-                    vm.ImageList.Insert(0, imageInTheList);
+                    if (index >= 0)
+                    {
+                        vm.ImageList.RemoveAt(index);
+                        vm.ImageList.Insert(0, imageInTheList); 
+                    }
 
                     vm.FeaturedImage = UrlFormatter.Image(vm.UserId, ImageType.FeaturedImage, vm.FeaturedImage, 720, 0);
                 }
             }
-            else if (vm.ImageList != null && vm.ImageList.Any())
+            else if (vm.ImageList != null && vm.ImageList.Any() && !firstIsPlaceholder)
             {
                 vm.FeaturedImage = UrlFormatter.Image(vm.UserId, ImageType.FeaturedImage, vm.ImageList.First(), 720, 0);
             }
@@ -445,7 +450,6 @@ namespace LuduStack.Application.Services
             {
                 vm.FeaturedImage = UrlFormatter.Image(vm.UserId, ImageType.FeaturedImage, Constants.DefaultGiveawayThumbnail, 720, 0);
             }
-
         }
 
         private static void FormatImagesToSave(IGiveawayBasicInfo model)

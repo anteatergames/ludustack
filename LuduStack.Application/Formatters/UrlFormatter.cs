@@ -130,9 +130,9 @@ namespace LuduStack.Application.Formatters
 
         public static string Image(Guid userId, ImageType type, string fileName, bool responsive, int width, int quality, string defaultImage)
         {
-            if (Constants.DefaultGameThumbnail.Contains(fileName))
+            if (Constants.DefaultGameThumbnail.Contains(fileName) || Constants.DefaultGiveawayThumbnail.Contains(fileName))
             {
-                return Constants.DefaultGameThumbnail;
+                return fileName;
             }
 
             string url = CdnCommon(userId, fileName, responsive, width, quality, defaultImage);

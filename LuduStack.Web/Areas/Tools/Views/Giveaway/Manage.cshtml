@@ -85,25 +85,28 @@ else
                 <span>@SharedLocalizer["End Date"]:</span> <span class="float-right">@Model.EndDate.ToString()</span>
             </div>
 
-            <div class="text-muted text-sm-center">@SharedLocalizer["ends in"]</div>
+            @if (Model.SecondsToEnd > 0)
+            {
+                <div class="text-muted text-sm-center">@SharedLocalizer[Model.Future ? "starts in" : "ends in"]</div>
 
-            <div class="time-left d-flex justify-content-center" id="countdown">
-                <div class="time-unity">
-                    <span id="countdown-days">00</span><br><span class="label">@SharedLocalizer["days"]</span>
+                <div class="time-left d-flex justify-content-center" id="countdown">
+                    <div class="time-unity">
+                        <span id="countdown-days">00</span><br><span class="label">@SharedLocalizer["days"]</span>
+                    </div>
+                    <div>:</div>
+                    <div class="time-unity">
+                        <span id="countdown-hours">00</span><br><span class="label">@SharedLocalizer["hours"]</span>
+                    </div>
+                    <div>:</div>
+                    <div class="time-unity">
+                        <span id="countdown-minutes">00</span><br><span class="label">@SharedLocalizer["min"]</span>
+                    </div>
+                    <div>:</div>
+                    <div class="time-unity">
+                        <span id="countdown-seconds">00</span><br><span class="label">@SharedLocalizer["sec"]</span>
+                    </div>
                 </div>
-                <div>:</div>
-                <div class="time-unity">
-                    <span id="countdown-hours">00</span><br><span class="label">@SharedLocalizer["hours"]</span>
-                </div>
-                <div>:</div>
-                <div class="time-unity">
-                    <span id="countdown-minutes">00</span><br><span class="label">@SharedLocalizer["min"]</span>
-                </div>
-                <div>:</div>
-                <div class="time-unity">
-                    <span id="countdown-seconds">00</span><br><span class="label">@SharedLocalizer["sec"]</span>
-                </div>
-            </div>
+            }
 
             <div class="p-1 px-2 mb-1 border-bottom rounded-0">
                 <span>@SharedLocalizer["winners"]</span> <span class="float-right">@Model.WinnerAmount</span>
