@@ -123,7 +123,6 @@
 
     function bindDropZoneSuccess() {
         IMAGEMANIPULAION.Dropzone.Get(0).on("success", function (file) {
-            console.log('done from giveawayedit 1');
             var response = JSON.parse(file.xhr.response);
             if (response.uploaded) {
                 var newUrl = objs.urls.data('urlImage').replace(/xpto/g, objs.userId.val());
@@ -189,8 +188,6 @@
 
         freeSlot.val(imageUrl);
         freeSlot.removeClass('default');
-
-        console.log(freeSlot);
 
         var img = freeSlot.parent().find('img');
         img.attr('src', imageUrl);

@@ -37,7 +37,7 @@ namespace LuduStack.Application.Services
 
                 GiveawayViewModel newVm = mapper.Map<GiveawayViewModel>(model);
 
-                //newVm.FeaturedImage = Constants.DefaultGiveawayThumbnail;
+                SetImagesToShow(newVm, true);
 
                 return new OperationResultVo<GiveawayViewModel>(newVm);
             }
@@ -424,21 +424,28 @@ namespace LuduStack.Application.Services
 
             vm.ImageList = newList;
 
-            if (!editing && !string.IsNullOrWhiteSpace(vm.FeaturedImage))
+
+            if (!string.IsNullOrWhiteSpace(vm.FeaturedImage))
             {
-                vm.FeaturedImage = UrlFormatter.Image(vm.UserId, ImageType.FeaturedImage, vm.FeaturedImage, 720, 0);
+                if (!editing)
+                {
+                    var imageInTheList = vm.ImageList.FirstOrDefault(x => x.Contains(vm.FeaturedImage));
+                    var index = vm.ImageList.IndexOf(imageInTheList);
+                    vm.ImageList.RemoveAt(index);
+                    vm.ImageList.Insert(0, imageInTheList);
+
+                    vm.FeaturedImage = UrlFormatter.Image(vm.UserId, ImageType.FeaturedImage, vm.FeaturedImage, 720, 0);
+                }
+            }
+            else if (vm.ImageList != null && vm.ImageList.Any())
+            {
+                vm.FeaturedImage = UrlFormatter.Image(vm.UserId, ImageType.FeaturedImage, vm.ImageList.First(), 720, 0);
             }
             else
             {
-                if (vm.ImageList != null && vm.ImageList.Any())
-                {
-                    vm.FeaturedImage = UrlFormatter.Image(vm.UserId, ImageType.FeaturedImage, vm.ImageList.First(), 720, 0); 
-                }
-                else
-                {
-                    vm.FeaturedImage = UrlFormatter.Image(vm.UserId, ImageType.FeaturedImage, Constants.DefaultGiveawayThumbnail, 720, 0);
-                }
+                vm.FeaturedImage = UrlFormatter.Image(vm.UserId, ImageType.FeaturedImage, Constants.DefaultGiveawayThumbnail, 720, 0);
             }
+
         }
 
         private static void FormatImagesToSave(IGiveawayBasicInfo model)
@@ -456,7 +463,7 @@ namespace LuduStack.Application.Services
 
             if (!string.IsNullOrWhiteSpace(model.FeaturedImage))
             {
-                model.FeaturedImage = model.FeaturedImage.Split('/').LastOrDefault(); 
+                model.FeaturedImage = model.FeaturedImage.Split('/').LastOrDefault();
             }
         }
     }
