@@ -33,6 +33,7 @@
 
     function setSelectors() {
         selectors.notificationsMenu = "#notificationsMenu";
+        selectors.locale = '#locale';
         selectors.spanMessage = "#spanMessage";
         selectors.translatedJavascriptMessages = "#translatedJavascriptMessages";
         selectors.sharePopup = '.share-popup';
@@ -41,6 +42,7 @@
 
     function cacheObjects() {
         objs.notificationsMenu = $(selectors.notificationsMenu);
+        objs.locale = $(selectors.locale);
         objs.spanMessage = $(selectors.spanMessage);
         objs.translatedJavascriptMessages = $(selectors.translatedJavascriptMessages);
     }
@@ -326,9 +328,7 @@
             idList = listObj;
 
             if (idList.indexOf('#') !== 0) {
-                console.log(idList);
                 idList = '#' + idList;
-                console.log(idList);
             }
         }
 
@@ -418,8 +418,17 @@
         });
     }
 
+    function getLocale() {
+        if (!objs.locale) {
+            objs.locale = $(selectors.locale);
+        }
+
+        return objs.locale.val();
+    }
+
     return {
         Init: init,
+        GetLocale: getLocale,
         Layout: {
             SetStickyElement: setStickyElement
         },

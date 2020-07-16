@@ -131,6 +131,7 @@
     @await Html.PartialAsync("_TagManagerHead")
 </head>
 <body class="hold-transition skin-ludustack sidebar-mini">
+    <input type="hidden" id="locale" value="@ViewBag.Locale" />
     @await Html.PartialAsync("_TagManagerBody")
     <div id="translatedJavascriptMessages" class="d-none">
         <span class="msg" data-msg-id="msgNeedLoginToLikeAndComment">@SharedLocalizer["You need to be logged in to be able to Like and Comment on posts."]</span>

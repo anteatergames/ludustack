@@ -85,6 +85,14 @@
     {
       "library": "rangeslider.js@2.3.3",
       "destination": "wwwroot/lib/rangeslider"
+    },
+    {
+      "library": "moment.js@2.27.0",
+      "destination": "wwwroot/lib/moment"
+    },
+    {
+      "library": "tempusdominus-bootstrap-4@5.1.2",
+      "destination": "wwwroot/lib/tempusdominus"
     }
   ]
 }

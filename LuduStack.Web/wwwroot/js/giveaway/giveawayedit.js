@@ -11,6 +11,13 @@
 
     var allImagesUploaded = false;
 
+    var datetimePickerIcons = {
+        time: "fa fa-clock",
+        date: "fa fa-calendar",
+        up: "fa fa-arrow-up",
+        down: "fa fa-arrow-down"
+    }
+
     function setSelectors() {
         selectors.controlsidebar = '.control-sidebar';
         selectors.canInteract = '#caninteract';
@@ -18,6 +25,9 @@
         selectors.container = '#featurecontainer';
         selectors.form = '#frmGiveawaySave';
         selectors.userId = '#UserId';
+        selectors.startDate = 'input#StartDate';
+        selectors.endDate = 'input#EndDate';
+        selectors.btnClearEndDate = '#btnClearEndDate';
         selectors.btnSave = '#btnSaveGiveaway';
         selectors.dropzoneImages = '#dropzoneImages';
         selectors.inputImageListItem = 'input.imagelistitem';
@@ -33,6 +43,9 @@
         objs.urls = $(selectors.urls);
         objs.form = $(selectors.form);
         objs.userId = $(selectors.userId);
+        objs.startDate = $(selectors.startDate);
+        objs.endDate = $(selectors.endDate);
+        objs.btnClearEndDate = $(selectors.btnClearEndDate);
         objs.txtAreaDescription = $(selectors.txtAreaDescription);
         objs.sortablePlanning = document.getElementById(selectors.sortablePlanning);
         objs.divPlans = $(selectors.divPlans);
@@ -77,6 +90,7 @@
     }
 
     function bindAll() {
+        bindDateTimePickers();
         bindImageClick();
         bindImageDeleteClick();
         bindBtnSaveForm();
@@ -84,6 +98,63 @@
         IMAGEMANIPULAION.Dropzone.Initialize(0, imagesToUploadCount, selectors.dropzoneImages, true);
 
         bindDropZoneSuccess();
+    }
+
+    function bindDateTimePickers() {
+        var defaultLocale = MAINMODULE.GetLocale() || window.navigator.userLanguage || window.navigator.language;
+
+        var startDateOptions = {
+            icons: datetimePickerIcons,
+            locale: defaultLocale,
+            sideBySide: true
+        };
+
+        var endDateOptions = {
+            icons: datetimePickerIcons,
+            locale: defaultLocale,
+            sideBySide: true
+        };
+
+        var sd = moment(objs.startDate.val(), 'L', defaultLocale);
+        startDateOptions.date = sd;
+
+        objs.startDate.keypress(function (e) {
+            e.preventDefault();
+            ALERTSYSTEM.Toastr.ShowInfo('You need to select the date using<br>the button on the side.');
+        }).datetimepicker(startDateOptions);
+        
+        objs.startDate.datetimepicker('defaultDate', sd);
+
+        var ed = sd.clone().add(1, 'hours');
+        if (objs.endDate.val()) {
+            endDateOptions.date = moment(objs.endDate.val(), 'L', defaultLocale);
+        }
+        else {
+            endDateOptions.minDate = ed;
+        }
+
+        objs.endDate.keypress(function (e) {
+            e.preventDefault();
+            ALERTSYSTEM.Toastr.ShowInfo('You need to select the date using<br>the button on the side.');
+        }).datetimepicker(endDateOptions);
+
+        if (objs.endDate.val()) {
+            ed = moment(objs.endDate.val(), 'L', defaultLocale);
+            endDateOptions.minDate = ed;
+            objs.endDate.datetimepicker(endDateOptions);
+        }
+
+        objs.startDate.on("change.datetimepicker", function (e) {
+            objs.endDate.datetimepicker('minDate', e.date.clone().add(1, 'hours'));
+        });
+
+        objs.container.on('click', selectors.btnClearEndDate, function (e) {
+            e.preventDefault();
+
+            objs.endDate.val('');
+
+            return false;
+        });
     }
 
     function bindImageClick() {

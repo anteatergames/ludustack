@@ -99,16 +99,31 @@
                 </div>
 
                 <div class="col-12 col-sm-6 col-md-4">
+
                     <div class="form-group">
                         <label asp-for="StartDate" class="col-form-label"></label>
-                        <input asp-for="StartDate" class="form-control" placeholder="@SharedLocalizer["When this giveway should start"]" />
+                        <div class="input-group">
+                            <input asp-for="StartDate" type="text" class="form-control datetimepicker-input" data-target="#StartDate" aria-describedby="startDateAddon" placeholder="@SharedLocalizer["When this giveway should start"]" />
+                            <div class="input-group-append" data-target="#StartDate" data-toggle="datetimepicker" title="@SharedLocalizer["Select the start date."]">
+                                <span class="input-group-text" id="startDateAddon"><i class="far fa-calendar-alt" aria-hidden="true"></i></span>
+                            </div>
+                        </div>
+                        <span asp-validation-for="StartDate" class="text-danger"></span>
                     </div>
                 </div>
 
                 <div class="col-12 col-sm-6 col-md-4">
                     <div class="form-group">
                         <label asp-for="EndDate" class="col-form-label"></label>
-                        <input asp-for="EndDate" class="form-control" placeholder="@SharedLocalizer["When this giveway should end"]" />
+                        <div class="input-group">
+                            <input asp-for="EndDate" type="text" class="form-control datetimepicker-input" data-target="#EndDate" aria-describedby="endDateAddon" placeholder="@SharedLocalizer["When this giveway should end"]" />
+                            <div class="input-group-append" data-target="#EndDate" data-toggle="datetimepicker" title="@SharedLocalizer["Select the end date."]">
+                                <span class="input-group-text" id="endDateAddon"><i class="far fa-calendar-alt" aria-hidden="true"></i></span>
+                            </div>
+                            <div class="input-group-append" title="@SharedLocalizer["Clear the end date."]">
+                                <button class="input-group-text" id="btnClearEndDate"><i class="fas fa-times" aria-hidden="true"></i></button>
+                            </div>
+                        </div>
                         <span asp-validation-for="EndDate" class="text-danger"></span>
                     </div>
                 </div>

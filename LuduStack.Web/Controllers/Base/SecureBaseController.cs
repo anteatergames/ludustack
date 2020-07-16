@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -58,6 +59,7 @@ namespace LuduStack.Web.Controllers.Base
                 ViewBag.CurrentUserId = CurrentUserId;
                 ViewBag.Username = username ?? Constants.DefaultUsername;
                 ViewBag.ProfileImage = UrlFormatter.ProfileImage(CurrentUserId);
+                ViewBag.Locale = GetAspNetCultureCookie();
             }
         }
 
@@ -188,7 +190,23 @@ namespace LuduStack.Web.Controllers.Base
 
         protected void SetAspNetCultureCookie(RequestCulture culture)
         {
+            ViewBag.Locale = culture;
+
             SetCookieValue(CookieRequestCultureProvider.DefaultCookieName, CookieRequestCultureProvider.MakeCookieValue(culture), 365);
+        }
+
+        protected string GetAspNetCultureCookie()
+        {
+            var cookieValue = GetCookieValue(CookieRequestCultureProvider.DefaultCookieName);
+
+            var cookie = CookieRequestCultureProvider.ParseCookieValue(cookieValue);
+
+            if (cookie == null || !cookie.Cultures.Any())
+            {
+                return "en-US";
+            }
+
+            return cookie.Cultures.First().Value;
         }
 
         #region Upload Management
@@ -293,6 +311,13 @@ namespace LuduStack.Web.Controllers.Base
         protected string GetCookieValue(SessionValues key)
         {
             string value = CookieMgrService.Get(key.ToString());
+
+            return value;
+        }
+
+        private string GetCookieValue(string key)
+        {
+            string value = CookieMgrService.Get(key);
 
             return value;
         }

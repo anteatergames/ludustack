@@ -39,7 +39,7 @@ namespace LuduStack.Domain.Services
             {
                 UserId = userId,
                 Status = GiveawayStatus.Draft,
-                StartDate = DateTime.Now.AddHours(1)
+                StartDate = DateTime.Now.Date.AddDays(1)
             };
 
             return model;
