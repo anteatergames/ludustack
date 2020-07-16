@@ -7,54 +7,93 @@
         Layout = null;
     }
 
-    ViewData["Title"] = SharedLocalizer["Giveaway"];
+    ViewData["Title"] = SharedLocalizer["Giveaways"];
     ViewData["Description"] = SharedLocalizer["Manage Viral Giveaways"];
     ViewData["Url"] = ViewBag.BaseUrl + Url.Action("index", "giveaway", new { area = "tools" });
 }
 
 @section ComponentStyles {
     <environment include="Development">
-        <link rel="stylesheet" href="~/css/_feature.css">
-        <link rel="stylesheet" href="~/css/giveaway.css">
+        <link rel="stylesheet" href="~/css/ribbon.css">
     </environment>
     <environment exclude="Development">
-        <link rel="stylesheet" href="~/css/giveaway.min.css" asp-append-version="true">
+        <link rel="stylesheet" href="~/css/ribbon.min.css">
     </environment>
 }
 
 @section Scripts {
-    <environment include="Development">
-        <script src="~/js/giveaway/giveawaycommon.js"></script>
-        <script src="~/js/giveaway/giveaway.js"></script>
-    </environment>
-    <environment exclude="Development">
-        <script src="~/js/giveaway/giveaway.min.js" asp-append-version="true"></script>
-    </environment>
+    <script>
+        $(document).ready(function () {
+            setTimeout(function () {
+                $('.ribbon').addClass('active');
+            }, 100);
+        });
+    </script>
 }
 
-@section TranslatedMessages {
-    <span class="msg" data-msg-id="msgUrlPlaceholder">@SharedLocalizer["placeholder message"]</span>
-}
+<div class="alert alert-warning rounded-0 border-0 text-center">@SharedLocalizer["You need to be logged-in to use the giveaway tool."] <a asp-area="" asp-controller="account" asp-action="login" class="text-uppercase">@SharedLocalizer["click here"]</a> @SharedLocalizer["to log in."]</div>
 
-<div id="featurecontainer" class="col-12 container">
-    <input type="hidden" id="isajax" value="@isAjax.ToString().ToLower()" />
-    <input type="hidden" id="caninteract" value="@canInteract.ToString().ToLower()" />
-    <input type="hidden" id="urls" value="urls"
-            data-url-list="@Url.Action("listbyme", "giveaway", new { area = "tools" })"
-            data-url-mine="@Url.Action("listmine", "giveaway", new { area = "tools" })" />
+<div class="col-12 p-0">
+    <div class="ribbon">
+        <div class="medallion"></div>
 
-    <div id="containerlist" class="row">
-        <div class="col-12 mb-2">
-            <h1><i class="fas fa-fw fa-ticket-alt" aria-hidden="true"></i> @ViewData["Title"]</h1>
+        <div class="ribbon-1">
+            <span class="inner">
+                <span class="fadeLeft text-uppercase">LUDUSTACK</span>
+            </span>
         </div>
-        <div class="col-12 mb-3">
-            @if (canInteract)
-            {
-                <div class="col-lg-12 mb-2 p-0 text-right">
-                    <a asp-area="tools" asp-controller="giveaway" asp-action="add" class="btn btn-success">@SharedLocalizer["New Giveaway"] <i class="fas fa-plus" aria-hidden="true"></i></a>
-                </div>
-            }
-            <div id="divList"></div>
+
+        <div class="ribbon-2">
+            <span class="inner">
+                <span class="fadeRight text-uppercase">@SharedLocalizer["giveaways"]</span>
+            </span>
+        </div>
+
+        <div class="ribbon-3">
+            <span class="inner">
+                <span class="fadeLeft">@SharedLocalizer["Get more players for your games!"]</span>
+            </span>
+        </div>
+
+        <div class="ball fadeIn">
+            <span class="ball-text">
+                <strong class="text-uppercase">@SharedLocalizer["free"]</strong>
+                @SharedLocalizer["for users"]
+            </span>
         </div>
     </div>
 </div>
+
+
+<section class="pt-5 pb-5">
+    <div class="container">
+        <div class="row align-items-center justify-content-center">
+            <div class="col-12 col-md-6   mt-4 mt-md-0 order-md-1 order-2 p-5">
+                <img alt="image" class="img-fluid" src="~/images/giveaway/brand.svg">
+            </div>
+            <div class="col-12 col-md-4 order-1 order-md-2">
+                <h2>@SharedLocalizer["No Branding"]</h2>
+                <p class="text-h3 mt-3">@SharedLocalizer["Your giveaways will not show our brand. Just upload an image with your own logo and you are good to go!"]</p>
+            </div>
+        </div>
+        <div class="row align-items-center justify-content-center">
+            <div class="col-12 col-md-4 offset-md-1 ">
+                <h2>@SharedLocalizer["Email Confirmation"]</h2>
+                <p class="text-h3 mt-3">@SharedLocalizer["We send an email to the participant for confirmation so you can see who is real and who is not."]</p>
+
+            </div>
+            <div class="col-12 col-md-6   mt-4 mt-md-0 p-5">
+                <img alt="image" class="img-fluid" src="~/images/giveaway/mail.svg">
+            </div>
+        </div>
+        <div class="row align-items-center justify-content-center">
+            <div class="col-12 col-md-6   mt-4 mt-md-0 order-md-1 order-2 p-5">
+                <img alt="image" class="img-fluid" src="~/images/giveaway/expand.svg">
+            </div>
+            <div class="col-12 col-md-4 order-1 order-md-2">
+                <h2>@SharedLocalizer["Expand your reach"]</h2>
+                <p class="text-h3 mt-3">@SharedLocalizer["Go viral with your potential players sharing their own custom links to increase chances of winning."]</p>
+            </div>
+        </div>
+    </div>
+</section>

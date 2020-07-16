@@ -109,7 +109,9 @@
     }
 
     function loadNotifications() {
-        MAINMODULE.Ajax.LoadHtml("/home/notifications", objs.notificationsMenu);
+        if (objs.notificationsMenu.length > 0) {
+            MAINMODULE.Ajax.LoadHtml("/home/notifications", objs.notificationsMenu);
+        }
     }
 
     function handlePointsEarned(response) {
@@ -332,22 +334,23 @@
             }
         }
 
-        if (idList === undefined) {
+        if (idList === undefined || idList === null) {
             return Promise.resolve();
         }
+        else {
+            document.querySelector(idList).innerHTML = MAINMODULE.Default.SpinnerTop;
 
-        document.querySelector(idList).innerHTML = MAINMODULE.Default.SpinnerTop;
+            const promise = await getHtml(url)
+                .then(function (body) {
+                    document.querySelector(idList).innerHTML = body;
 
-        const promise = await getHtml(url)
-            .then(function (body) {
-                document.querySelector(idList).innerHTML = body;
+                    //lazyLoadInstance.update();
 
-                //lazyLoadInstance.update();
+                    return body;
+                });
 
-                return body;
-            });
-
-        return promise;
+            return promise;
+        }
     }
 
     function callBackendAction(url, callback) {

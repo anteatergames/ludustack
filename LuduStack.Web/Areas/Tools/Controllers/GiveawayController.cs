@@ -30,7 +30,14 @@ namespace LuduStack.Web.Areas.Tools.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            if (User.Identity.IsAuthenticated)
+            {
+                return View("Dashboard");
+            }
+            else
+            {
+                return View();
+            }
         }
 
         [Route("tools/giveaway/listbyme")]

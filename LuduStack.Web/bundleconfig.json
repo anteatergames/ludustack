@@ -289,6 +289,12 @@
     ]
   },
   {
+    "outputFileName": "wwwroot/css/ribbon.min.css",
+    "inputFiles": [
+      "wwwroot/css/ribbon.css"
+    ]
+  },
+  {
     "outputFileName": "wwwroot/js/giveaway/giveaway.min.js",
     "inputFiles": [
       "wwwroot/js/giveaway/giveawaycommon.js",
