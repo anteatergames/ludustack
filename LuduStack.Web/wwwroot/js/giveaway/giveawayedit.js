@@ -95,7 +95,7 @@
         bindImageDeleteClick();
         bindBtnSaveForm();
 
-        IMAGEMANIPULAION.Dropzone.Initialize(0, imagesToUploadCount, selectors.dropzoneImages, true);
+        IMAGEMANIPULAION.Dropzone.Initialize(0, imagesToUploadCount, selectors.dropzoneImages, true, 'giveaway');
 
         bindDropZoneSuccess();
     }

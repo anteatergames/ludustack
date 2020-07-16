@@ -213,9 +213,9 @@ namespace LuduStack.Web.Controllers.Base
 
         #region Main Methods
 
-        private string UploadImage(Guid userId, string imageType, string filename, byte[] fileBytes)
+        private string UploadImage(Guid userId, string imageType, string filename, byte[] fileBytes, params string[] tags)
         {
-            Task<string> op = ImageStorageService.StoreImageAsync(userId.ToString(), imageType.ToLower() + "_" + filename, fileBytes);
+            Task<string> op = ImageStorageService.StoreImageAsync(userId.ToString(), imageType.ToLower() + "_" + filename, fileBytes, tags);
             op.Wait();
 
             if (!op.IsCompletedSuccessfully)
@@ -260,32 +260,32 @@ namespace LuduStack.Web.Controllers.Base
 
         #endregion Main Methods
 
-        protected string UploadImage(Guid userId, ImageType container, string filename, byte[] fileBytes)
+        protected string UploadImage(Guid userId, ImageType container, string filename, byte[] fileBytes, params string[] tags)
         {
             string containerName = container.ToString().ToLower();
 
-            return UploadImage(userId, containerName, filename, fileBytes);
+            return UploadImage(userId, containerName, filename, fileBytes, tags);
         }
 
-        protected string UploadGameImage(Guid userId, ImageType type, string filename, byte[] fileBytes)
+        protected string UploadGameImage(Guid userId, ImageType type, string filename, byte[] fileBytes, params string[] tags)
         {
-            string result = UploadImage(userId, type.ToString().ToLower(), filename, fileBytes);
+            string result = UploadImage(userId, type.ToString().ToLower(), filename, fileBytes, tags);
 
             return result;
         }
 
-        protected string UploadContentImage(Guid userId, string filename, byte[] fileBytes)
+        protected string UploadContentImage(Guid userId, string filename, byte[] fileBytes, params string[] tags)
         {
             string type = ImageType.ContentImage.ToString().ToLower();
-            string result = UploadImage(userId, type, filename, fileBytes);
+            string result = UploadImage(userId, type, filename, fileBytes, tags);
 
             return result;
         }
 
-        protected string UploadFeaturedImage(Guid userId, string filename, byte[] fileBytes)
+        protected string UploadFeaturedImage(Guid userId, string filename, byte[] fileBytes, params string[] tags)
         {
             string type = ImageType.FeaturedImage.ToString().ToLower();
-            string result = UploadImage(userId, type, filename, fileBytes);
+            string result = UploadImage(userId, type, filename, fileBytes, tags);
 
             return result;
         }

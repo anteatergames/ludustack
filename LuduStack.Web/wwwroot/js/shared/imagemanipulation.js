@@ -106,7 +106,7 @@
         }
     }
 
-    function instantiateDropZone(index, imagesToUploadCount, el, r) {
+    function instantiateDropZone(index, imagesToUploadCount, el, r, tag) {
         if (dropzones[index]) {
             dropzones[index].destroy();
             dropzones[index] = null;
@@ -134,6 +134,9 @@
         dropzones[index].on("sending", function (file, xhr, formData) {
             if (random[index]) {
                 formData.append("randomName", random[index]);
+            }
+            if (tag) {
+                formData.append("tag", tag);
             }
         });
 

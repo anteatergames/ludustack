@@ -20,6 +20,8 @@ namespace LuduStack.Web.Controllers
         private readonly IHttpContextAccessor httpContextAccessor;
         private readonly ILogger logger;
 
+        string envName;
+
         public StorageController(IWebHostEnvironment hostingEnvironment
             , IHttpContextAccessor httpContextAccessor
             , ILogger<StorageController> logger)
@@ -27,6 +29,8 @@ namespace LuduStack.Web.Controllers
             this.hostingEnvironment = hostingEnvironment;
             this.httpContextAccessor = httpContextAccessor;
             this.logger = logger;
+
+            envName = string.Format("env-{0}", hostingEnvironment.EnvironmentName);
         }
 
         [ResponseCache(CacheProfileName = "Never")]
@@ -116,7 +120,7 @@ namespace LuduStack.Web.Controllers
 
                         string filename = userId + "_Personal";
 
-                        imageUrl = base.UploadImage(userId, ImageType.ProfileImage, filename, fileBytes);
+                        imageUrl = base.UploadImage(userId, ImageType.ProfileImage, filename, fileBytes, envName);
                     }
                 }
 
@@ -158,7 +162,7 @@ namespace LuduStack.Web.Controllers
 
                         string filename = profileId.ToString();
 
-                        imageUrl = base.UploadImage(userId, ImageType.ProfileCover, filename, fileBytes);
+                        imageUrl = base.UploadImage(userId, ImageType.ProfileCover, filename, fileBytes, envName);
                     }
                 }
 
@@ -218,7 +222,7 @@ namespace LuduStack.Web.Controllers
 
                         string filename = DateTime.Now.ToString("yyyyMMddHHmmss") + "." + extension;
 
-                        imageUrl = base.UploadGameImage(userId, type, filename, fileBytes);
+                        imageUrl = base.UploadGameImage(userId, type, filename, fileBytes, envName);
                     }
                 }
 
@@ -256,7 +260,7 @@ namespace LuduStack.Web.Controllers
 
         [HttpPost]
         [Route("uploadcontentimage")]
-        public IActionResult UploadContentImage(IFormFile upload, bool randomName)
+        public IActionResult UploadContentImage(IFormFile upload, bool randomName, string tag)
         {
             try
             {
@@ -283,7 +287,7 @@ namespace LuduStack.Web.Controllers
 
                         filename += "." + extension;
 
-                        imageUrl = base.UploadContentImage(CurrentUserId, filename, fileBytes);
+                        imageUrl = base.UploadContentImage(CurrentUserId, filename, fileBytes, envName, tag);
                     }
                 }
 
@@ -326,7 +330,7 @@ namespace LuduStack.Web.Controllers
 
                         string filename = DateTime.Now.ToString("yyyyMMddHHmmss") + "." + extension;
 
-                        imageUrl = base.UploadContentImage(CurrentUserId, filename, fileBytes);
+                        imageUrl = base.UploadContentImage(CurrentUserId, filename, fileBytes, envName);
                     }
                 }
 
@@ -374,7 +378,7 @@ namespace LuduStack.Web.Controllers
                             userId = CurrentUserId;
                         }
 
-                        imageUrl = base.UploadFeaturedImage(userId, filename, fileBytes);
+                        imageUrl = base.UploadFeaturedImage(userId, filename, fileBytes, envName);
                     }
                 }
 
