@@ -31,7 +31,7 @@
     </script>
 }
 
-<div class="alert alert-warning rounded-0 border-0 text-center">@SharedLocalizer["You need to be logged-in to use the giveaway tool."] <a asp-area="" asp-controller="account" asp-action="login" class="text-uppercase">@SharedLocalizer["click here"]</a> @SharedLocalizer["to log in."]</div>
+<div class="alert alert-warning rounded-0 border-0 text-center">@SharedLocalizer["You need to be logged-in to use the giveaway tool."] <a asp-area="" asp-controller="account" asp-action="login" asp-route-returnUrl="@Url.Action("index", "giveaway", new { area = "tools" })" class="text-uppercase">@SharedLocalizer["click here"]</a> @SharedLocalizer["to log in."]</div>
 
 <div class="col-12 p-0">
     <div class="ribbon">
