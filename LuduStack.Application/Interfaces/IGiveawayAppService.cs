@@ -13,7 +13,7 @@ namespace LuduStack.Application.Interfaces
         OperationResultVo GetGiveawayParticipantInfo(Guid currentUserId, Guid giveawayId, string email);
         OperationResultVo GetGiveawaysByMe(Guid currentUserId);
         OperationResultVo<Guid> SaveGiveaway(Guid currentUserId, GiveawayViewModel vm);
-        OperationResultVo RemoveGiveaway(Guid currentUserId, Guid giveawayId);
+        OperationResultVo DeleteGiveaway(Guid currentUserId, Guid giveawayId);
         OperationResultVo EnterGiveaway(Guid currentUserId, GiveawayEnterViewModel vm, string urlReferralBase);
         OperationResultVo ConfirmParticipant(Guid currentUserId, Guid giveawayId, string referralCode);
         OperationResultVo RemoveParticipant(Guid currentUserId, Guid giveawayId, Guid participantId);
@@ -21,5 +21,6 @@ namespace LuduStack.Application.Interfaces
         OperationResultVo PickSingleWinner(Guid currentUserId, Guid giveawayId);
         OperationResultVo PickAllWinners(Guid currentUserId, Guid giveawayId);
         OperationResultVo DeclareNotWinner(Guid currentUserId, Guid giveawayId, Guid participantId);
+        OperationResultVo DuplicateGiveaway(Guid currentUserId, Guid giveawayId);
     }
 }

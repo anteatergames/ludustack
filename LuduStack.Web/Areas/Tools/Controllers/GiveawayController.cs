@@ -28,10 +28,14 @@ namespace LuduStack.Web.Areas.Tools.Controllers
             this.giveawayAppService = giveawayAppService;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string msg)
         {
             if (User.Identity.IsAuthenticated)
             {
+                if (!string.IsNullOrWhiteSpace(msg))
+                {
+                    TempData["Message"] = SharedLocalizer[msg]; 
+                }
                 return View("Dashboard");
             }
             else
@@ -147,17 +151,24 @@ namespace LuduStack.Web.Areas.Tools.Controllers
 
         [Authorize]
         [HttpDelete("tools/giveaway/{id:guid}")]
-        public IActionResult Delete(Guid id)
+        public IActionResult Delete(Guid id, bool edit)
         {
             try
             {
-                OperationResultVo saveResult = giveawayAppService.RemoveGiveaway(CurrentUserId, id);
+                OperationResultVo deleteResult = giveawayAppService.DeleteGiveaway(CurrentUserId, id);
 
-                if (saveResult.Success)
+                if (deleteResult.Success)
                 {
-                    string url = Url.Action("index", "giveaway", new { area = "tools" });
+                    if (edit)
+                    {
 
-                    return Json(new OperationResultRedirectVo(saveResult, url));
+                        string url = Url.Action("index", "giveaway", new { area = "tools", msg = deleteResult.Message });
+                        deleteResult.Message = null;
+
+                        return Json(new OperationResultRedirectVo(deleteResult, url));
+                    }
+
+                    return Json(deleteResult);
                 }
                 else
                 {
@@ -170,6 +181,37 @@ namespace LuduStack.Web.Areas.Tools.Controllers
             }
         }
 
+        [Authorize]
+        [HttpPost("tools/giveaway/{giveawayId:guid}/duplicate")]
+        public IActionResult Duplicate(Guid giveawayId, bool edit)
+        {
+            try
+            {
+                OperationResultVo duplicateResult = giveawayAppService.DuplicateGiveaway(CurrentUserId, giveawayId);
+
+                if (duplicateResult.Success)
+                {
+                    if (edit)
+                    {
+                        OperationResultVo<Guid> castRestult = duplicateResult as OperationResultVo<Guid>;
+
+                        string url = Url.Action("edit", "giveaway", new { area = "tools", id = castRestult.Value });
+
+                        return Json(new OperationResultRedirectVo(castRestult, url));
+                    }
+
+                    return Json(duplicateResult);
+                }
+                else
+                {
+                    return Json(new OperationResultVo(false));
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new OperationResultVo(ex.Message));
+            }
+        }
 
         [Authorize]
         [Route("giveaway/{id:guid}/manage")]

@@ -76,6 +76,7 @@
         var msg = objs.spanMessage.text();
         if (msg !== undefined && msg.length > 0) {
             ALERTSYSTEM.Toastr.ShowWarning(msg);
+            history.replaceState({}, null, window.location.href.split('?')[0]);
         }
     }
 
@@ -383,11 +384,11 @@
                 type: 'DELETE'
             }).done(function (response) {
                 if (response.success) {
+                    MAINMODULE.Common.HandleSuccessDefault(response);
+
                     if (callback) {
                         callback(response);
                     }
-
-                    MAINMODULE.Common.HandleSuccessDefault(response);
                 }
                 else {
                     ALERTSYSTEM.ShowWarningMessage(response.message);
@@ -408,16 +409,37 @@
                 type: 'POST'
             }).done(function (response) {
                 if (response.success) {
+                    MAINMODULE.Common.HandleSuccessDefault(response);
+
                     if (callback) {
                         callback(response);
                     }
-
-                    MAINMODULE.Common.HandleSuccessDefault(response);
                 }
                 else {
                     ALERTSYSTEM.ShowWarningMessage(response.message);
                 }
             });
+        });
+    }
+
+
+    function postWithoutConfirmation(btn, callback) {
+        var url = btn.data('url');
+
+        $.ajax({
+            url: url,
+            type: 'POST'
+        }).done(function (response) {
+            if (response.success) {
+                MAINMODULE.Common.HandleSuccessDefault(response);
+
+                if (callback) {
+                    callback(response);
+                }
+            }
+            else {
+                ALERTSYSTEM.ShowWarningMessage(response.message);
+            }
         });
     }
 
@@ -446,6 +468,7 @@
             TranslatedMessages: translatedMessages,
             DeleteEntity: deleteEntity,
             PostWithConfirmation: postWithConfirmation,
+            PostWithoutConfirmation: postWithoutConfirmation,
             DisableButton: disableButton,
             EnableButton: enableButton,
             SetButtonWithError: setButtonWithError,

@@ -1,4 +1,5 @@
 ﻿using LuduStack.Domain.Core.Enums;
+using LuduStack.Domain.Core.Extensions;
 using LuduStack.Domain.Interfaces.Models;
 using LuduStack.Domain.Interfaces.Repository;
 using LuduStack.Domain.Interfaces.Services;
@@ -7,6 +8,7 @@ using LuduStack.Domain.ValueObjects;
 using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -82,12 +84,27 @@ namespace LuduStack.Domain.Services
             return model;
         }
 
-        private static void SetRequiredProperties(Giveaway model)
+        public Giveaway Duplicate(Guid giveawayId)
         {
-            if (model.Status == 0)
-            {
-                model.Status = GiveawayStatus.Draft;
-            }
+            Task<Giveaway> task = Task.Run(async () => await repository.GetById(giveawayId));
+            Giveaway model = task.Result;
+
+            var copy = model.Copy();
+
+            copy.Id = Guid.Empty;
+
+            copy.Name = string.Format("{0} (Copy {1})", copy.Name, DateTime.Now.ToString("yyyyMMddhhmmss"));
+
+            copy.Status = GiveawayStatus.Draft;
+
+            copy.StartDate = DateTime.Today.AddDays(1);
+            copy.EndDate = copy.StartDate.AddDays(1);
+
+            copy.Participants = new List<GiveawayParticipant>();
+
+            repository.Add(copy);
+
+            return copy;
         }
 
         public DomainOperationVo<GiveawayParticipant> AddParticipant(Guid giveawayId, string email, bool gdprConsent, bool wantNotifications, string referalCode, string referrer)
@@ -306,6 +323,14 @@ namespace LuduStack.Domain.Services
             }
 
             return model;
+        }
+
+        private static void SetRequiredProperties(Giveaway model)
+        {
+            if (model.Status == 0)
+            {
+                model.Status = GiveawayStatus.Draft;
+            }
         }
     }
 }

@@ -35,6 +35,7 @@
         selectors.btnImageDelete = '.btn-image-delete';
         selectors.featuredLabel = '.featuredlabel';
         selectors.featuredImage = '#FeaturedImage';
+        selectors.btnDuplicate = '.btn-giveaway-duplicate';
     }
 
     function cacheObjs() {
@@ -81,6 +82,7 @@
         $.map(objs.imageListItem, function (obj, index) {
             var $this = $(obj);
             var src = $this.attr('src');
+
             var x = src.indexOf(objs.featuredImage.val());
 
             if (x > -1) {
@@ -90,6 +92,7 @@
     }
 
     function bindAll() {
+        bindDuplicateGiveaway();
         bindDateTimePickers();
         bindImageClick();
         bindImageDeleteClick();
@@ -98,6 +101,18 @@
         IMAGEMANIPULAION.Dropzone.Initialize(0, imagesToUploadCount, selectors.dropzoneImages, true, 'giveaway');
 
         bindDropZoneSuccess();
+    }
+
+    function bindDuplicateGiveaway() {
+        objs.container.on('click', selectors.btnDuplicate, function (e) {
+            e.preventDefault();
+
+            var btn = $(this);
+
+            MAINMODULE.Common.PostWithoutConfirmation(btn);
+
+            return false;
+        });
     }
 
     function bindDateTimePickers() {
@@ -264,6 +279,10 @@
         img.attr('src', imageUrl);
         img.removeClass('default');
 
+        if (img.hasClass('featured')) {
+            objs.featuredImage.val(img.attr('src'));
+        }
+
         var btnDelete = freeSlot.parent().find(selectors.btnImageDelete);
         btnDelete.removeClass('d-none');
     }
@@ -308,7 +327,7 @@
         objs.imageListItem.removeClass('featured');
         objs.featuredLabel.addClass('d-none');
 
-        if (!img.hasClass('featured') && !img.hasClass('default')) {
+        if (!img.hasClass('featured')) {
             img.addClass('featured');
             var label = img.parent().find('.featuredlabel');
             label.removeClass('d-none');

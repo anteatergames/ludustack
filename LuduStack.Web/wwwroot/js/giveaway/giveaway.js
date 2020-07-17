@@ -4,12 +4,15 @@
     var selectors = {};
     var objs = {};
 
+    var urlGiveaways;
+
     function setSelectors() {
         selectors.canInteract = '#caninteract';
         selectors.urls = '#urls';
         selectors.container = '#featurecontainer';
         selectors.containerList = '#containerlist';
         selectors.list = '#divList';
+        selectors.btnDuplicate = '.btn-giveaway-duplicate';
     }
 
     function cacheObjs() {
@@ -26,15 +29,41 @@
 
         bindAll();
 
-        var url = objs.urls.data('urlList');
-        loadItems(url);
+        urlGiveaways = objs.urls.data('urlList');
+
+        loadItems(urlGiveaways);
+
+        GIVEAWAYCOMMON.Callback.DeleteEntity = deleteCallback;
     }
 
     function bindAll() {
+        bindDuplicateGiveaway();
+    }
+
+    function bindDuplicateGiveaway() {
+        objs.container.on('click', selectors.btnDuplicate, function (e) {
+            e.preventDefault();
+
+            var btn = $(this);
+
+            MAINMODULE.Common.PostWithoutConfirmation(btn, function (response) {
+                if (response.success) {
+                    loadItems(urlGiveaways);
+                }
+            });
+
+            return false;
+        });
     }
 
     function loadItems(url) {
         MAINMODULE.Ajax.LoadHtml(url, objs.list);
+    }
+
+    function deleteCallback(response) {
+        if (response.success) {
+            loadItems(urlGiveaways);
+        }
     }
 
     return {

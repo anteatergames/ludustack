@@ -2,6 +2,7 @@
 using LuduStack.Domain.Interfaces.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace LuduStack.Domain.ValueObjects
 {

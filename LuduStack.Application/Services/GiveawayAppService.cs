@@ -173,7 +173,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo RemoveGiveaway(Guid currentUserId, Guid giveawayId)
+        public OperationResultVo DeleteGiveaway(Guid currentUserId, Guid giveawayId)
         {
             try
             {
@@ -184,6 +184,22 @@ namespace LuduStack.Application.Services
                 unitOfWork.Commit();
 
                 return new OperationResultVo(true, "That Giveaway is gone now!");
+            }
+            catch (Exception ex)
+            {
+                return new OperationResultVo(ex.Message);
+            }
+        }
+
+        public OperationResultVo DuplicateGiveaway(Guid currentUserId, Guid giveawayId)
+        {
+            try
+            {
+                var newGiveaway = giveawayDomainService.Duplicate(giveawayId);
+
+                unitOfWork.Commit();
+
+                return new OperationResultVo<Guid>(newGiveaway.Id, 0, "Giveaway duplicated");
             }
             catch (Exception ex)
             {
