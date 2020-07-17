@@ -79,7 +79,7 @@ namespace LuduStack.Infra.Data.MongoDb.Repository.Base
 
         public virtual int CountDirectly(Expression<Func<TEntity, bool>> where)
         {
-            long count =  DbSet.CountDocuments(where);
+            long count = DbSet.CountDocuments(where);
 
             return (int)count;
         }

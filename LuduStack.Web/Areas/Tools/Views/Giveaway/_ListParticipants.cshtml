@@ -5,9 +5,7 @@
 
     var listTitle = ViewData["ListTitle"] == null ? SharedLocalizer["participants"] : (string)ViewData["ListTitle"];
 
-
     var giveawayId = ViewData["giveawayId"] == null ? string.Empty : ViewData["giveawayId"].ToString(); }
-
 
 <div class="bg-light pt-2">
     <div class="col-12">
@@ -54,8 +52,7 @@ else
 </button>}
         <button class="btn btn-sm btn-outline-danger btn-participant-delete" data-url="@Url.Action("deleteparticipant", "giveaway", new { area = "tools", giveawayId = giveawayId, participantId = item.Id })" data-confirmationmessage="@SharedLocalizer["Are you sure you want to remove {0} from this giveaway?", item.Email]" data-confirmationtitle="@SharedLocalizer["Are you sure?"]" data-confirmationbuttontext="@SharedLocalizer["Yes, delete it!"]" data-cancelbuttontext="@SharedLocalizer["Cancel"]" title="@SharedLocalizer["Remove {0} from this giveaway", item.Email]"><i class="fas fa-fw fa-trash" aria-hidden="true"></i></button>
     </td>
-</tr>
-}
+</tr>}
         </tbody>
     </table>
 </div>}

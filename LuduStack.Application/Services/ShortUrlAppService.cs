@@ -8,7 +8,6 @@ using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace LuduStack.Application.Services
 {
@@ -155,7 +154,7 @@ namespace LuduStack.Application.Services
                     unitOfWork.Commit();
                 }
 
-                return new OperationResultVo<string>(shortUrl.OriginalUrl, 0);
+                return new OperationResultVo<string>(shortUrl?.OriginalUrl, 0);
             }
             catch (Exception ex)
             {

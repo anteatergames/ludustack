@@ -1,5 +1,4 @@
-﻿@{
-    //ViewData["ControlSidebarTitle"] = ViewData["Title"];
+﻿@{ //ViewData["ControlSidebarTitle"] = ViewData["Title"];
     //ViewData["ControlSidebarUrl"] = Url.Action("Index", "JobPosition", new { area = "Work" });
 
     var isAjax = ViewContext.HttpContext.Request.IsAjaxRequest();
@@ -14,8 +13,7 @@
     ViewData["Title"] = SharedLocalizer["Localization"];
     ViewData["Description"] = SharedLocalizer["Help other gamedevs to translate their games."];
     ViewData["Url"] = ViewBag.BaseUrl + Url.Action("index", "localization", new { area = "tools" });
-    ViewData["OgImage"] = ViewBag.BaseUrl + "/images/og/oglocalization.png";
-}
+    ViewData["OgImage"] = ViewBag.BaseUrl + "/images/og/oglocalization.png"; }
 
 @section ComponentStyles {
     <environment include="Development">
@@ -60,37 +58,33 @@
         <div id="featuresidebar" class="col-lg-4 col-xl-3 no-gutters">
             @if (!canInteract)
             {
-                <div class="alert-info p-2">
-                    @SharedLocalizer["You must be logged in to work on translations."]
-                </div>
-            }
-            else
+<div class="alert-info p-2">
+    @SharedLocalizer["You must be logged in to work on translations."]
+</div> }
+else
+{
+<div class="feature-box">
+    <h3>@SharedLocalizer["User Panel"]</h3>
+    <div class="row">
+        <div class="col-12">
+            <p>@SharedLocalizer["Welcome to the LuduStack Translation! Here you can request help from other users to translate the texts for your game or help others translating theirs."]</p>
+        </div>
+        <div class="col-12">
+            @if (canInteract && canRequest)
             {
-                <div class="feature-box">
-                    <h3>@SharedLocalizer["User Panel"]</h3>
-                    <div class="row">
-                        <div class="col-12">
-                            <p>@SharedLocalizer["Welcome to the LuduStack Translation! Here you can request help from other users to translate the texts for your game or help others translating theirs."]</p>
-                        </div>
-                        <div class="col-12">
-                            @if (canInteract && canRequest)
-                            {
-                                <div id="divActions">
-                                    <a asp-area="tools" asp-controller="localization" asp-action="new" class="btn btn-outline-primary btn-block">@SharedLocalizer["New Translation"]</a>
-                                </div>
-                            }
-                            else
-                            {
-                                <div class="alert alert-info">@SharedLocalizer["All your games are being translated."]</div>
-                            }
-                            <div class="mt-2">
-                                <h4>@SharedLocalizer["My Projects"]:</h4>
-                                <div id="divMyProjects" class="mt-1 p-1"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            }
+<div id="divActions">
+    <a asp-area="tools" asp-controller="localization" asp-action="new" class="btn btn-outline-primary btn-block">@SharedLocalizer["New Translation"]</a>
+</div> }
+else
+{
+<div class="alert alert-info">@SharedLocalizer["All your games are being translated."]</div>}
+            <div class="mt-2">
+                <h4>@SharedLocalizer["My Projects"]:</h4>
+                <div id="divMyProjects" class="mt-1 p-1"></div>
+            </div>
+        </div>
+    </div>
+</div>      }
         </div>
     </div>
 </div>

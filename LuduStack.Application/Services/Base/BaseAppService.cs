@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using LuduStack.Application.Interfaces;
-using LuduStack.Application.ViewModels;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Interfaces;
 using LuduStack.Domain.Interfaces.Infrastructure;

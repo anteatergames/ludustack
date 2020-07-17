@@ -42,7 +42,7 @@ namespace LuduStack.Web.Controllers
 
         private readonly IWebHostEnvironment hostingEnvironment;
 
-        string envName;
+        private string envName;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,

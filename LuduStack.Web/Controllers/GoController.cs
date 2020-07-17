@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LuduStack.Web.Controllers
 {
-
     public class GoController : BaseController
     {
         private readonly IShortUrlAppService shortUrlAppService;

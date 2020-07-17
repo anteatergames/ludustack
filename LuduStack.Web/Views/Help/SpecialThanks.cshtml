@@ -1,5 +1,4 @@
-﻿@{
-    Layout = "~/Views/Help/_HelpLayout.cshtml";
+﻿@{ Layout = "~/Views/Help/_HelpLayout.cshtml";
     ViewData["Title"] = SharedLocalizer["special thanks"].Value.ToUpper();
     ViewData["Description"] = SharedLocalizer["We want to thank everyone that at some point helped us. Thank you all! You are awesome!"];
     ViewData["Url"] = ViewBag.BaseUrl + Url.Action("specialthanks", "help", new { area = string.Empty });
@@ -7,8 +6,7 @@
     ViewData["OgImageWidth"] = 1200;
     ViewData["OgImageHeight"] = 630;
 
-    ViewData["HelpActive"] = "specialthanks";
-}
+    ViewData["HelpActive"] = "specialthanks"; }
 
 <h3 class="text-capitalize">
     @SharedLocalizer["people"]

@@ -1,10 +1,5 @@
 ﻿using LuduStack.Application.Interfaces;
-using LuduStack.Domain.Core.Enums;
-using Microsoft.Extensions.Localization;
-using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
 
 namespace LuduStack.Application.ViewModels.Giveaway
 {
@@ -18,8 +13,8 @@ namespace LuduStack.Application.ViewModels.Giveaway
 
         public List<GiveawayParticipantViewModel> Winners { get; set; }
 
-
         #region Extra
+
         public bool CanCountDown { get; set; }
 
         public bool CanReceiveEntries { get; set; }
@@ -33,6 +28,7 @@ namespace LuduStack.Application.ViewModels.Giveaway
         public bool ShowTimeZone { get; set; }
 
         public bool Future { get; set; }
-        #endregion
+
+        #endregion Extra
     }
 }

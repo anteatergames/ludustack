@@ -34,7 +34,7 @@ namespace LuduStack.Web.Areas.Tools.Controllers
             {
                 if (!string.IsNullOrWhiteSpace(msg))
                 {
-                    TempData["Message"] = SharedLocalizer[msg]; 
+                    TempData["Message"] = SharedLocalizer[msg];
                 }
                 return View("Dashboard");
             }
@@ -61,7 +61,6 @@ namespace LuduStack.Web.Areas.Tools.Controllers
             {
                 model = new List<GiveawayListItemVo>();
             }
-
 
             foreach (GiveawayListItemVo item in model)
             {
@@ -132,7 +131,6 @@ namespace LuduStack.Web.Areas.Tools.Controllers
 
                     if (isNew)
                     {
-
                         NotificationSender.SendTeamNotificationAsync("New Giveaway created!");
                     }
 
@@ -161,7 +159,6 @@ namespace LuduStack.Web.Areas.Tools.Controllers
                 {
                     if (edit)
                     {
-
                         string url = Url.Action("index", "giveaway", new { area = "tools", msg = deleteResult.Message });
                         deleteResult.Message = null;
 
@@ -239,12 +236,10 @@ namespace LuduStack.Web.Areas.Tools.Controllers
             }
         }
 
-
         [Route("giveaway/{id:guid}")]
         public IActionResult Details(Guid id, string referralCode)
         {
             OperationResultVo result = giveawayAppService.GetForDetails(CurrentUserId, id);
-
 
             if (result.Success)
             {
@@ -297,7 +292,6 @@ namespace LuduStack.Web.Areas.Tools.Controllers
             }
         }
 
-
         [HttpPost("tools/giveaway/enter")]
         public async Task<IActionResult> Enter(GiveawayEnterViewModel enter)
         {
@@ -342,7 +336,6 @@ namespace LuduStack.Web.Areas.Tools.Controllers
             }
         }
 
-
         [Route("giveaway/{id:guid}/emailconfirmation/{referralCode}")]
         public IActionResult EmailConfirmation(Guid id, string referralCode)
         {
@@ -378,7 +371,6 @@ namespace LuduStack.Web.Areas.Tools.Controllers
 
                 ViewData["mailProvider"] = emailSplit.Length > 1 ? String.Format("https://{0}", emailSplit[1]) : "#";
 
-
                 GiveawayParticipationViewModel model = castRestult.Value;
 
                 model.ShareUrl = string.Format("{0}{1}", ViewBag.BaseUrl, model.ShareUrl);
@@ -390,7 +382,6 @@ namespace LuduStack.Web.Areas.Tools.Controllers
                 return RedirectToAction("details", "giveaway", new { area = "tools", id = id });
             }
         }
-
 
         [Authorize]
         [HttpDelete("tools/giveaway/{giveawayId:guid}/deleteparticipant/{participantId:guid}")]

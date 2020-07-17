@@ -5,10 +5,8 @@ using LuduStack.Domain.Interfaces.Repository;
 using LuduStack.Domain.Interfaces.Services;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
-using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -19,7 +17,6 @@ namespace LuduStack.Domain.Services
         public GiveawayDomainService(IGiveawayRepository repository) : base(repository)
         {
         }
-
 
         public override Guid Add(Giveaway model)
         {

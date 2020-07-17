@@ -1,6 +1,5 @@
 ﻿using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Core.Interfaces;
-using LuduStack.Domain.Core.Models;
 using LuduStack.Domain.Interfaces.Models;
 using System;
 using System.Collections.Generic;

@@ -77,7 +77,6 @@
         MAINMODULE.Common.BindPopOvers();
     }
 
-
     function initFeaturedImage() {
         $.map(objs.imageListItem, function (obj, index) {
             var $this = $(obj);
@@ -137,7 +136,7 @@
             e.preventDefault();
             ALERTSYSTEM.Toastr.ShowInfo('You need to select the date using<br>the button on the side.');
         }).datetimepicker(startDateOptions);
-        
+
         objs.startDate.datetimepicker('defaultDate', sd);
 
         var ed = sd.clone().add(1, 'hours');

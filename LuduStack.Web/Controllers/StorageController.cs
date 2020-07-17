@@ -20,7 +20,7 @@ namespace LuduStack.Web.Controllers
         private readonly IHttpContextAccessor httpContextAccessor;
         private readonly ILogger logger;
 
-        string envName;
+        private string envName;
 
         public StorageController(IWebHostEnvironment hostingEnvironment
             , IHttpContextAccessor httpContextAccessor

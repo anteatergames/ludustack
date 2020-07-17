@@ -1,7 +1,6 @@
 ﻿@model CourseViewModel
 
-@{
-    Layout = null;
+@{ Layout = null;
 
     var isNew = Model.Id == Guid.Empty;
 
@@ -9,8 +8,7 @@
 
     ViewData["Title"] = SharedLocalizer["{0} Course", (isNew ? "New" : "Edit")];
 
-    var workTypes = Html.GetEnumSelectList<WorkType>();
-}
+    var workTypes = Html.GetEnumSelectList<WorkType>(); }
 
 <div id="featurecontainer" class="col">
     <h1 class="sr-only">@ViewData["Title"]</h1>
@@ -28,22 +26,20 @@
 
             @if (!isNew)
             {
-                <div class="box-tools">
-                    <div class="btn-group">
-                        <button type="button" class="btn  btn-box-tool" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fas fa-ellipsis-v" aria-hidden="true"></i>
-                        </button>
-                        <div class="dropdown-menu text-capitalize" x-placement="bottom-start" style="position: absolute; transform: translate3d(-67px, 28px, 0px); top: 0px; left: 0px; will-change: transform;">
-                            <a asp-area="learn" asp-controller="course" asp-action="details" asp-route-id="@Model.Id" class="dropdown-item">@SharedLocalizer["details"]</a>
+<div class="box-tools">
+    <div class="btn-group">
+        <button type="button" class="btn  btn-box-tool" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-ellipsis-v" aria-hidden="true"></i>
+        </button>
+        <div class="dropdown-menu text-capitalize" x-placement="bottom-start" style="position: absolute; transform: translate3d(-67px, 28px, 0px); top: 0px; left: 0px; will-change: transform;">
+            <a asp-area="learn" asp-controller="course" asp-action="details" asp-route-id="@Model.Id" class="dropdown-item">@SharedLocalizer["details"]</a>
 
-                            @if (Model.Permissions.CanDelete)
-                            {
-                                <a class="btn-course-delete dropdown-item" href="#" data-url="@Url.Action("delete", "course", new { area = "learn", id = Model.Id })" data-confirmationmessage="@SharedLocalizer["Are you sure you want to delete this Course?"]" data-confirmationtitle="@SharedLocalizer["Are you sure?"]" data-confirmationbuttontext="@SharedLocalizer["Yes, delete it!"]" data-cancelbuttontext="@SharedLocalizer["Cancel"]">@SharedLocalizer["delete"]</a>
-                            }
-                        </div>
-                    </div>
-                </div>
-            }
+            @if (Model.Permissions.CanDelete)
+            {
+<a class="btn-course-delete dropdown-item" href="#" data-url="@Url.Action("delete", "course", new { area = "learn", id = Model.Id })" data-confirmationmessage="@SharedLocalizer["Are you sure you want to delete this Course?"]" data-confirmationtitle="@SharedLocalizer["Are you sure?"]" data-confirmationbuttontext="@SharedLocalizer["Yes, delete it!"]" data-cancelbuttontext="@SharedLocalizer["Cancel"]">@SharedLocalizer["delete"]</a>}
+        </div>
+    </div>
+</div>      }
         </div>
 
         <div class="box-body p-0 px-md-2">
@@ -85,24 +81,23 @@
 
             @if (!isNew)
             {
-                <hr />
+<hr />
 
                 <div class="col-12 text-center">
                     <h2 class="text-uppercase">Study Plans (<span id="planCounter">...</span>)</h2>
                 </div>
 
-                <div id="divPlans"></div>
+                                <div id="divPlans"></div>
 
-                <div class="row mb-2">
-                    <div class="col-6 text-center">
-                        <button type="button" id="btn-course-plan-add" class="btn btn-sm btn-success"><i class="fas fa-plus" aria-hidden="true"></i> Add plan</button>
-                    </div>
+                                                <div class="row mb-2">
+                                                    <div class="col-6 text-center">
+                                                        <button type="button" id="btn-course-plan-add" class="btn btn-sm btn-success"><i class="fas fa-plus" aria-hidden="true"></i> Add plan</button>
+                                                    </div>
 
-                    <div class="col-6 col-lg-6 col-xl-4 offset-xl-2">
-                        <button type="button" id="btn-course-plans-save" class="btn btn-sm btn-secondary btn-block"><i class="fas fa-save" aria-hidden="true"></i> Save Plans</button>
-                    </div>
-                </div>
-            }
+                                                    <div class="col-6 col-lg-6 col-xl-4 offset-xl-2">
+                                                        <button type="button" id="btn-course-plans-save" class="btn btn-sm btn-secondary btn-block"><i class="fas fa-save" aria-hidden="true"></i> Save Plans</button>
+                                                    </div>
+                                                </div>}
         </div>
     </div>
 </div>

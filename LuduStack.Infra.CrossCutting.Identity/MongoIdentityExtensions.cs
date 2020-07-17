@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
 using System;
-using System.Threading.Tasks;
 
 namespace LuduStack.Infra.CrossCutting.Identity
 {

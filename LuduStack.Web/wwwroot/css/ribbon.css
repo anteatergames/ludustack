@@ -95,9 +95,6 @@
             border-top: 15px solid #004a70;
         }
 
-
-
-
 /*animated ribbon*/
 .ribbon * {
     box-sizing: border-box;
@@ -112,9 +109,9 @@
     letter-spacing: 1px;
 }
 
-.ribbon.absolute {
-    position: absolute;
-}
+    .ribbon.absolute {
+        position: absolute;
+    }
 
     .ribbon [class*="ribbon-"] {
         margin: 74px auto 0;

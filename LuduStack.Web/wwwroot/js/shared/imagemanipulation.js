@@ -166,7 +166,6 @@
     }
 
     function transformFile(file, done) {
-
         console.log(file);
 
         console.log(done);
@@ -181,7 +180,6 @@
         editor.style.backgroundColor = '#000';
         document.body.appendChild(editor);
     }
-
 
     function getDropZone(index) {
         return dropzones[index];
@@ -198,8 +196,6 @@
         }
     };
 }());
-
-
 
 $(function () {
     IMAGEMANIPULAION.Init();

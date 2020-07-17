@@ -16,50 +16,47 @@
 
     @if (!Model.Any())
     {
-        <partial name="_ListNoItems" model="noItemsModel" />
-    }
-    else
-    {
-    <div class="col-12 bg-white square-top table-responsive pb-1">
-        <table class="table table-hover">
-            <caption class="sr-only">@SharedLocalizer["The available giveaways."]</caption>
-            <thead>
-                <tr class="text-capitalize">
-                    <th scope="col">@SharedLocalizer["name"]</th>
-                    <th scope="col" title="@SharedLocalizer["participants"]"><i class="fas fa-fw fa-user" aria-hidden="true"></i></th>
-                    <th scope="col">@SharedLocalizer["starts"]</th>
-                    <th scope="col">@SharedLocalizer["ends"]</th>
-                    <th scope="col">@SharedLocalizer["status"]</th>
-                    <th scope="col" class="text-right">@SharedLocalizer["actions"]</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                <tr class="row-clickable">
-                    <td><a asp-area="tools" asp-controller="giveaway" asp-action="manage" asp-route-id="@item.Id"><span>@item.Name</span></a></td>
-                    <td><a asp-area="tools" asp-controller="giveaway" asp-action="manage" asp-route-id="@item.Id"><span>@item.ParticipantCount</span></a></td>
-                    <td><a asp-area="tools" asp-controller="giveaway" asp-action="manage" asp-route-id="@item.Id" title="@item.StartDate.ToString()">@item.StartDate.ToShortDateString()</a></td>
-                    <td><a asp-area="tools" asp-controller="giveaway" asp-action="manage" asp-route-id="@item.Id" title="@(item.EndDate.HasValue ? item.EndDate.Value.ToString() : SharedLocalizer["not defined"])">@(item.EndDate.HasValue ? item.EndDate.Value.ToShortDateString() : SharedLocalizer["not defined"])</a></td>
-                    <td><a asp-area="tools" asp-controller="giveaway" asp-action="manage" asp-route-id="@item.Id">@item.StatusLocalized</a></td>
-                    <td class="text-right">
-                        @if (canInteract)
-                        {
-                <div class="btn-group" role="group">
-                    <a asp-area="tools" asp-controller="giveaway" asp-action="details" asp-route-id="@item.Id" target="_blank" class="btn btn-sm btn-outline-info my-1"><i class="fas fa-fw fa-eye" aria-hidden="true"></i>View</a>
-                    <button class="btn btn-sm btn-outline-info dropdown-toggle my-1" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
-                    <div class="dropdown-menu dropdown-menu-right btn-sm p-1" aria-labelledby="dropdownMenuButton" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(-30px, 38px, 0px);">
-                        <a asp-area="tools" asp-controller="giveaway" asp-action="edit" asp-route-id="@item.Id" class="dropdown-item btn-edit py-2"><i class="fas fa-fw fa-edit" aria-hidden="true"></i>Edit</a>
-                        <a asp-area="tools" asp-controller="giveaway" asp-action="manage" asp-route-id="@item.Id" class="dropdown-item btn-edit py-2"><i class="fas fa-fw fa-cog" aria-hidden="true"></i>Manage</a>
-                        <a class="dropdown-item btn-duplicate py-2 btn-giveaway-duplicate" href="#" data-url="@Url.Action("duplicate", "giveaway", new { area = "tools", giveawayId = item.Id })"><i class="fas fa-fw fa-copy" aria-hidden="true"></i>Duplicate</a>
-                        <a class="dropdown-item text-danger btn-trash py-2 btn-giveaway-delete" href="#" data-url="@Url.Action("delete", "giveaway", new { area = "tools", id = item.Id })" data-confirmationmessage="@SharedLocalizer["Are you sure you want to delete this Giveaway?"]" data-confirmationtitle="@SharedLocalizer["Are you sure?"]" data-confirmationbuttontext="@SharedLocalizer["Yes, delete it!"]" data-cancelbuttontext="@SharedLocalizer["Cancel"]"><i class="fas fa-fw fa-trash-alt" aria-hidden="true"></i>Delete</a>
-                    </div>
-                </div>}
-                    </td>
-                </tr>
-                }
-            </tbody>
-        </table>
+<partial name="_ListNoItems" model="noItemsModel" /> }
+            else
+            {
+<div class="col-12 bg-white square-top table-responsive pb-1">
+    <table class="table table-hover">
+        <caption class="sr-only">@SharedLocalizer["The available giveaways."]</caption>
+        <thead>
+            <tr class="text-capitalize">
+                <th scope="col">@SharedLocalizer["name"]</th>
+                <th scope="col" title="@SharedLocalizer["participants"]"><i class="fas fa-fw fa-user" aria-hidden="true"></i></th>
+                <th scope="col">@SharedLocalizer["starts"]</th>
+                <th scope="col">@SharedLocalizer["ends"]</th>
+                <th scope="col">@SharedLocalizer["status"]</th>
+                <th scope="col" class="text-right">@SharedLocalizer["actions"]</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+<tr class="row-clickable">
+    <td><a asp-area="tools" asp-controller="giveaway" asp-action="manage" asp-route-id="@item.Id"><span>@item.Name</span></a></td>
+    <td><a asp-area="tools" asp-controller="giveaway" asp-action="manage" asp-route-id="@item.Id"><span>@item.ParticipantCount</span></a></td>
+    <td><a asp-area="tools" asp-controller="giveaway" asp-action="manage" asp-route-id="@item.Id" title="@item.StartDate.ToString()">@item.StartDate.ToShortDateString()</a></td>
+    <td><a asp-area="tools" asp-controller="giveaway" asp-action="manage" asp-route-id="@item.Id" title="@(item.EndDate.HasValue ? item.EndDate.Value.ToString() : SharedLocalizer["not defined"])">@(item.EndDate.HasValue ? item.EndDate.Value.ToShortDateString() : SharedLocalizer["not defined"])</a></td>
+    <td><a asp-area="tools" asp-controller="giveaway" asp-action="manage" asp-route-id="@item.Id">@item.StatusLocalized</a></td>
+    <td class="text-right">
+        @if (canInteract)
+        {
+<div class="btn-group" role="group">
+    <a asp-area="tools" asp-controller="giveaway" asp-action="details" asp-route-id="@item.Id" target="_blank" class="btn btn-sm btn-outline-info my-1"><i class="fas fa-fw fa-eye" aria-hidden="true"></i>View</a>
+    <button class="btn btn-sm btn-outline-info dropdown-toggle my-1" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+    <div class="dropdown-menu dropdown-menu-right btn-sm p-1" aria-labelledby="dropdownMenuButton" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(-30px, 38px, 0px);">
+        <a asp-area="tools" asp-controller="giveaway" asp-action="edit" asp-route-id="@item.Id" class="dropdown-item btn-edit py-2"><i class="fas fa-fw fa-edit" aria-hidden="true"></i>Edit</a>
+        <a asp-area="tools" asp-controller="giveaway" asp-action="manage" asp-route-id="@item.Id" class="dropdown-item btn-edit py-2"><i class="fas fa-fw fa-cog" aria-hidden="true"></i>Manage</a>
+        <a class="dropdown-item btn-duplicate py-2 btn-giveaway-duplicate" href="#" data-url="@Url.Action("duplicate", "giveaway", new { area = "tools", giveawayId = item.Id })"><i class="fas fa-fw fa-copy" aria-hidden="true"></i>Duplicate</a>
+        <a class="dropdown-item text-danger btn-trash py-2 btn-giveaway-delete" href="#" data-url="@Url.Action("delete", "giveaway", new { area = "tools", id = item.Id })" data-confirmationmessage="@SharedLocalizer["Are you sure you want to delete this Giveaway?"]" data-confirmationtitle="@SharedLocalizer["Are you sure?"]" data-confirmationbuttontext="@SharedLocalizer["Yes, delete it!"]" data-cancelbuttontext="@SharedLocalizer["Cancel"]"><i class="fas fa-fw fa-trash-alt" aria-hidden="true"></i>Delete</a>
     </div>
-    }
+</div>}
+    </td>
+</tr>                }
+        </tbody>
+    </table>
+</div>}
 </div>

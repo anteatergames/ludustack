@@ -22,6 +22,7 @@ namespace LuduStack.Application.ViewModels.Giveaway
         public List<GiveawayEntryViewModel> Entries { get; set; }
 
         #region Extra
+
         public bool EmailVerified { get; set; }
 
         public string EmailMasked
@@ -33,6 +34,7 @@ namespace LuduStack.Application.ViewModels.Giveaway
                 return result;
             }
         }
-        #endregion
+
+        #endregion Extra
     }
 }

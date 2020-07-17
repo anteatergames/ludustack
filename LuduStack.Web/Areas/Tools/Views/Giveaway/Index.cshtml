@@ -1,16 +1,14 @@
-﻿@{
-    var isAjax = ViewContext.HttpContext.Request.IsAjaxRequest();
-    var canInteract = User.Identity.IsAuthenticated;
+﻿@{ var isAjax = ViewContext.HttpContext.Request.IsAjaxRequest();
+                var canInteract = User.Identity.IsAuthenticated;
 
-    if (isAjax)
-    {
-        Layout = null;
-    }
+                if (isAjax)
+                {
+                    Layout = null;
+                }
 
-    ViewData["Title"] = SharedLocalizer["Giveaways"];
-    ViewData["Description"] = SharedLocalizer["Manage Viral Giveaways"];
-    ViewData["Url"] = ViewBag.BaseUrl + Url.Action("index", "giveaway", new { area = "tools" });
-}
+                ViewData["Title"] = SharedLocalizer["Giveaways"];
+                ViewData["Description"] = SharedLocalizer["Manage Viral Giveaways"];
+                ViewData["Url"] = ViewBag.BaseUrl + Url.Action("index", "giveaway", new { area = "tools" }); }
 
 @section ComponentStyles {
     <environment include="Development">
@@ -22,13 +20,11 @@
 }
 
 @section Scripts {
-    <script>
-        $(document).ready(function () {
+    <script>$(document).ready(function () {
             setTimeout(function () {
                 $('.ribbon').addClass('active');
             }, 100);
-        });
-    </script>
+        });</script>
 }
 
 <div class="alert alert-warning rounded-0 border-0 text-center">@SharedLocalizer["You need to be logged-in to use the giveaway tool."] <a asp-area="" asp-controller="account" asp-action="login" asp-route-returnUrl="@Url.Action("index", "giveaway", new { area = "tools" })" class="text-uppercase">@SharedLocalizer["click here"]</a> @SharedLocalizer["to log in."]</div>
@@ -64,7 +60,6 @@
     </div>
 </div>
 
-
 <section class="pt-5 pb-5">
     <div class="container">
         <div class="row align-items-center justify-content-center">
@@ -80,7 +75,6 @@
             <div class="col-12 col-md-4 offset-md-1 ">
                 <h2>@SharedLocalizer["Email Confirmation"]</h2>
                 <p class="text-h3 mt-3">@SharedLocalizer["We send an email to the participant for confirmation so you can see who is real and who is not."]</p>
-
             </div>
             <div class="col-12 col-md-6   mt-4 mt-md-0 p-5">
                 <img alt="image" class="img-fluid" src="~/images/giveaway/mail.svg">

@@ -18,7 +18,6 @@ using LuduStack.Application.ViewModels.UserPreferences;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
-using NPOI.SS.Formula.Functions;
 using System.Linq;
 
 namespace LuduStack.Application.AutoMapper

@@ -33,7 +33,6 @@
         document.addEventListener('keydown', keyHandler, false);
 
         function keyHandler(event) {
-
             if (pattern.indexOf(event.key) < 0 || event.key !== pattern[current]) {
                 current = 0;
                 return;
@@ -86,7 +85,6 @@
                 }
 
                 displayTimeLeft(secondsLeft);
-
             }, 1000);
         }
 
@@ -104,7 +102,6 @@
         if (secondsToEnd !== null) {
             countDownClock(secondsToEnd.value, 'seconds');
         }
-
     }
 
     // confetti
@@ -184,18 +181,26 @@
 
             // Find where dart lies
             for (i = 0, l = domain.length, measure = 0; i < l; i += 2) {
-                a = domain[i], b = domain[i + 1], interval = b - a;
+                a = domain[i];
+                b = domain[i + 1];
+                interval = b - a;
+
                 if (dart < measure + interval) {
                     spline.push(dart += a - measure);
                     break;
                 }
                 measure += interval;
             }
-            c = dart - radius, d = dart + radius;
+
+            c = dart - radius;
+            d = dart + radius;
 
             // Update the domain
             for (i = domain.length - 1; i > 0; i -= 2) {
-                l = i - 1, a = domain[l], b = domain[i];
+                l = i - 1;
+                a = domain[l];
+                b = domain[i];
+
                 // c---d          c---d  Do nothing
                 //   c-----d  c-----d    Move interior
                 //   c--------------d    Delete interval
@@ -309,8 +314,7 @@
                     container.appendChild(confetto.outer);
                     timer = setTimeout(addConfetto, spread * random());
                 }
-            })(0);
-
+            })();
 
             // Start the loop
             var prev = undefined;

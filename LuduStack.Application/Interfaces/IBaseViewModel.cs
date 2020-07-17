@@ -1,7 +1,5 @@
-﻿using LuduStack.Domain.Core.Interfaces;
-using LuduStack.Domain.Interfaces.Models;
+﻿using LuduStack.Domain.Interfaces.Models;
 using LuduStack.Domain.ValueObjects;
-using System;
 
 namespace LuduStack.Application.Interfaces
 {

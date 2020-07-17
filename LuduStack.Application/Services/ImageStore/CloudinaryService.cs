@@ -13,11 +13,6 @@ namespace LuduStack.Application.Services
         {
         }
 
-        public async Task<string> StoreImageAsync(string container, string fileName, byte[] image)
-        {
-            return await StoreImageAsync(container, fileName, image);
-        }
-
         public async Task<string> StoreImageAsync(string container, string fileName, byte[] image, params string[] tags)
         {
             Cloudinary cloudinary = new Cloudinary();

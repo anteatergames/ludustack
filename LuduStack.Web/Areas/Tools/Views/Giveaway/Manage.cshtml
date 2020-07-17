@@ -72,7 +72,7 @@ else
 <div class="feature-box">
     <div class="row">
         <div class="col-12 text-center">
-            <img src="@Model.FeaturedImage" class="img-fluid" />
+            <img src="@Model.FeaturedImage" alt="@SharedLocalizer["featured image"]" class="img-fluid" />
         </div>
         <div class="col-12 col-sm-6 offset-sm-3 col-lg-12 offset-lg-0">
             <div class="p-1 text-center">
@@ -87,26 +87,25 @@ else
 
             @if (Model.SecondsToEnd > 0)
             {
-                <div class="text-muted text-sm-center">@SharedLocalizer[Model.Future ? "starts in" : "ends in"]</div>
+<div class="text-muted text-sm-center">@SharedLocalizer[Model.Future ? "starts in" : "ends in"]</div>
 
-                <div class="time-left d-flex justify-content-center" id="countdown">
-                    <div class="time-unity">
-                        <span id="countdown-days">00</span><br><span class="label">@SharedLocalizer["days"]</span>
-                    </div>
-                    <div>:</div>
-                    <div class="time-unity">
-                        <span id="countdown-hours">00</span><br><span class="label">@SharedLocalizer["hours"]</span>
-                    </div>
-                    <div>:</div>
-                    <div class="time-unity">
-                        <span id="countdown-minutes">00</span><br><span class="label">@SharedLocalizer["min"]</span>
-                    </div>
-                    <div>:</div>
-                    <div class="time-unity">
-                        <span id="countdown-seconds">00</span><br><span class="label">@SharedLocalizer["sec"]</span>
-                    </div>
-                </div>
-            }
+                    <div class="time-left d-flex justify-content-center" id="countdown">
+                        <div class="time-unity">
+                            <span id="countdown-days">00</span><br><span class="label">@SharedLocalizer["days"]</span>
+                        </div>
+                        <div>:</div>
+                        <div class="time-unity">
+                            <span id="countdown-hours">00</span><br><span class="label">@SharedLocalizer["hours"]</span>
+                        </div>
+                        <div>:</div>
+                        <div class="time-unity">
+                            <span id="countdown-minutes">00</span><br><span class="label">@SharedLocalizer["min"]</span>
+                        </div>
+                        <div>:</div>
+                        <div class="time-unity">
+                            <span id="countdown-seconds">00</span><br><span class="label">@SharedLocalizer["sec"]</span>
+                        </div>
+                    </div>}
 
             <div class="p-1 px-2 mb-1 border-bottom rounded-0">
                 <span>@SharedLocalizer["winners"]</span> <span class="float-right">@Model.WinnerAmount</span>
@@ -119,7 +118,7 @@ else
             </div>
         </div>
     </div>
-</div>  }
+</div>      }
         </div>
     </div>
 </div>

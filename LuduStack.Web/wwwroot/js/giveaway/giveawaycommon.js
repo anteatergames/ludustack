@@ -51,7 +51,8 @@
         CanInteract: canInteract,
         Callback: {
             DeleteEntity: function () {
-                console.log('empty GIVEAWAYCOMMON.Callback.Delete'); }
+                console.log('empty GIVEAWAYCOMMON.Callback.Delete');
+            }
         }
     };
 }());

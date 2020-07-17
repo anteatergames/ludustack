@@ -1,7 +1,6 @@
 ﻿using CountryData;
 using LuduStack.Application.Formatters;
 using LuduStack.Application.Interfaces;
-using LuduStack.Application.ViewModels;
 using LuduStack.Application.ViewModels.Game;
 using LuduStack.Application.ViewModels.User;
 using LuduStack.Domain.Core.Enums;

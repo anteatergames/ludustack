@@ -10,7 +10,6 @@ using LuduStack.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Metadata;
 
 namespace LuduStack.Application.Services
 {
@@ -47,7 +46,6 @@ namespace LuduStack.Application.Services
                 return new OperationResultVo(ex.Message);
             }
         }
-
 
         public OperationResultVo GetGiveawayForManagement(Guid currentUserId, Guid giveawayId)
         {
@@ -234,7 +232,6 @@ namespace LuduStack.Application.Services
                 }
 
                 return new OperationResultVo<string>(string.Empty, 0, "You are in!");
-
             }
             catch (Exception ex)
             {
@@ -390,12 +387,15 @@ namespace LuduStack.Application.Services
                     vm.Future = true;
                     vm.StatusMessage = "This giveaway was not started yet";
                     break;
+
                 case GiveawayStatus.PickingWinners:
                     vm.StatusMessage = "We are picking winners";
                     break;
+
                 case GiveawayStatus.Ended:
                     vm.StatusMessage = "Thank you for participating!";
                     break;
+
                 case GiveawayStatus.Draft:
                 case GiveawayStatus.OpenForEntries:
                 default:
@@ -452,7 +452,7 @@ namespace LuduStack.Application.Services
                     if (index >= 0)
                     {
                         vm.ImageList.RemoveAt(index);
-                        vm.ImageList.Insert(0, imageInTheList); 
+                        vm.ImageList.Insert(0, imageInTheList);
                     }
 
                     vm.FeaturedImage = UrlFormatter.Image(vm.UserId, ImageType.FeaturedImage, vm.FeaturedImage, 720, 0);

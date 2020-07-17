@@ -192,7 +192,6 @@ html {
     background-color: #fff;
 }
 
-
 .carousel-inner {
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
@@ -217,7 +216,6 @@ html {
         font-weight: 500;
         opacity: .5;
     }
-
 
 .offered-by-text, .offered-by-title {
     display: block;
@@ -302,8 +300,6 @@ html {
         margin: 0 auto;
     }
 
-
-
 .imagelist .btn-image-delete {
     position: absolute;
     right: 15px;
@@ -318,6 +314,7 @@ html {
 .imagelist div:last-child {
     padding-right: 0 !important;
 }
+
     .imagelist div:last-child .btn-image-delete {
         right: 10px;
     }
@@ -327,12 +324,12 @@ html {
     margin-top: -25px;
 }
 
-.imagelist .featuredlabel span {
-    color: var(--white);
-    background-color: var(--orange);
-    border-top-right-radius: 10px !important;
-    border-top-left-radius: 10px !important;
-}
+    .imagelist .featuredlabel span {
+        color: var(--white);
+        background-color: var(--orange);
+        border-top-right-radius: 10px !important;
+        border-top-left-radius: 10px !important;
+    }
 
 img.imagelistitem {
     object-fit: cover;

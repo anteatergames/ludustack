@@ -1551,6 +1551,7 @@ button.btn.dropdown-toggle::after, .wysihtml5-toolbar .btn.dropdown-toggle::afte
         white-space: nowrap;
     }
 }
+
 @media (min-width: 768px) {
     .table-responsive {
         overflow: inherit;

@@ -18,7 +18,6 @@ namespace LuduStack.Web
             get
             {
                 return JsonSerializer.Deserialize<IEnumerable<SelectListItem>>(Constants.TimeZones);
-
             }
         }
     }

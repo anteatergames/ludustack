@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace LuduStack.Application.ViewModels.ShortUrl
+﻿namespace LuduStack.Application.ViewModels.ShortUrl
 {
     public class ShortUrlViewModel : BaseViewModel
     {

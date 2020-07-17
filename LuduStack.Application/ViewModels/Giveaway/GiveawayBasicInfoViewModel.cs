@@ -1,5 +1,4 @@
 ﻿using LuduStack.Domain.Core.Enums;
-using Microsoft.Extensions.Localization;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -19,7 +18,7 @@ namespace LuduStack.Application.ViewModels.Giveaway
 
         public string FeaturedImage { get; set; }
 
-        [Display(Name="Images to show")]
+        [Display(Name = "Images to show")]
         public List<string> ImageList { get; set; }
 
         [Required]

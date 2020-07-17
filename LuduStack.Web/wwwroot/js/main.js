@@ -335,7 +335,7 @@
             }
         }
 
-        if (idList === undefined || idList === null) {
+        if (!idList) {
             return Promise.resolve();
         }
         else {
@@ -397,7 +397,6 @@
         });
     }
 
-
     function postWithConfirmation(btn, callback) {
         var url = btn.data('url');
 
@@ -421,7 +420,6 @@
             });
         });
     }
-
 
     function postWithoutConfirmation(btn, callback) {
         var url = btn.data('url');

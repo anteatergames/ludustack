@@ -1,7 +1,4 @@
 ﻿using LuduStack.Domain.Core.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace LuduStack.Domain.Models
 {

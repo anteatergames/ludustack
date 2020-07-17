@@ -1,12 +1,10 @@
 ﻿@model CourseViewModel
-@{
-    Layout = null;
+@{ Layout = null;
     var isAjax = ViewContext.HttpContext.Request.IsAjaxRequest();
 
     var canInteract = User.Identity.IsAuthenticated;
 
-    var backUrl = ViewData["BackUrl"] ?? Url.Action("index", "study", new { area = "learn" });
-}
+    var backUrl = ViewData["BackUrl"] ?? Url.Action("index", "study", new { area = "learn" }); }
 
 <div id="featurecontainer" class="col">
     <h1 class="sr-only">@ViewData["Title"]</h1>
@@ -29,8 +27,7 @@
 
                         @if (Model.Permissions.CanDelete)
                         {
-                            <a class="btn-course-delete dropdown-item" href="#" data-url="@Url.Action("delete", "course", new { area = "learn", id = Model.Id })" data-confirmationmessage="@SharedLocalizer["Are you sure you want to delete this Translation Project?"]" data-confirmationtitle="@SharedLocalizer["Are you sure?"]" data-confirmationbuttontext="@SharedLocalizer["Yes, delete it!"]" data-cancelbuttontext="@SharedLocalizer["Cancel"]">@SharedLocalizer["delete"]</a>
-                        }
+            <a class="btn-course-delete dropdown-item" href="#" data-url="@Url.Action("delete", "course", new { area = "learn", id = Model.Id })" data-confirmationmessage="@SharedLocalizer["Are you sure you want to delete this Translation Project?"]" data-confirmationtitle="@SharedLocalizer["Are you sure?"]" data-confirmationbuttontext="@SharedLocalizer["Yes, delete it!"]" data-cancelbuttontext="@SharedLocalizer["Cancel"]">@SharedLocalizer["delete"]</a>}
                     </div>
                 </div>
             </div>
@@ -48,22 +45,20 @@
 
                         @if (!string.IsNullOrWhiteSpace(Model.Name))
                         {
-                            <div class="box-body">
-                                <div class="box-description">
+            <div class="box-body">
+                <div class="box-description">
 
-                                    @if (!string.IsNullOrWhiteSpace(Model.Name))
-                                    {
-                                        <div class="row text-truncate">
-                                            <div class="col-12">
-                                                <a asp-area="learn" asp-controller="course" asp-action="details" asp-route-id="@Model.Id">
-                                                    <span class="box-description-text">@Model.Name</span>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    }
-                                </div>
-                            </div>
-                        }
+                    @if (!string.IsNullOrWhiteSpace(Model.Name))
+                    {
+    <div class="row text-truncate">
+        <div class="col-12">
+            <a asp-area="learn" asp-controller="course" asp-action="details" asp-route-id="@Model.Id">
+                <span class="box-description-text">@Model.Name</span>
+            </a>
+        </div>
+    </div>}
+                </div>
+            </div>}
                     </div>
                 </div>
 
@@ -94,12 +89,11 @@
                         <div class="col-12">
                             @foreach (var skill in Model.SkillSet)
                             {
-                                <div class="d-inline-flex mb-1">
-                                    <div class="border bg-dark text-white p-1">
-                                        <span>@SharedLocalizer[skill.ToDisplayName()]</span>
-                                    </div>
-                                </div>
-                            }
+                <div class="d-inline-flex mb-1">
+                    <div class="border bg-dark text-white p-1">
+                        <span>@SharedLocalizer[skill.ToDisplayName()]</span>
+                    </div>
+                </div>}
                         </div>
                     </div>
 
@@ -109,13 +103,11 @@
                             {
                                 if (Model.Permissions.CanConnect)
                                 {
-                                    <button type="button" id="btnEnroll" class="btn btn-primary btn-lg btn-block" data-url="@Url.Action("enroll", "course", new { area = "learn", courseId = Model.Id })">@SharedLocalizer["Enroll"]</button>
-                                }
-                                else
-                                {
-                                    <button type="button" id="btnLeaveCourse" class="btn btn-primary btn-lg btn-block" data-url="@Url.Action("leave", "course", new { area = "learn", courseId = Model.Id })">@SharedLocalizer["Leave Course"]</button>
-                                }
-                            }
+                <button type="button" id="btnEnroll" class="btn btn-primary btn-lg btn-block" data-url="@Url.Action("enroll", "course", new { area = "learn", courseId = Model.Id })">@SharedLocalizer["Enroll"]</button> }
+            else
+            {
+<button type="button" id="btnLeaveCourse" class="btn btn-primary btn-lg btn-block" data-url="@Url.Action("leave", "course", new { area = "learn", courseId = Model.Id })">@SharedLocalizer["Leave Course"]</button>}
+}
                         </div>
                     </div>
                 </div>

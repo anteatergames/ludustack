@@ -17,7 +17,7 @@ namespace LuduStack.Web.Helpers
             //group 1 figure class="xxxx">
             //group 2 oembed start
             //group 3 <img src="
-            //group 5 
+            //group 5
             //group 6 abre parenteses
             //group 7 indica url já formatada
             //group 8 url

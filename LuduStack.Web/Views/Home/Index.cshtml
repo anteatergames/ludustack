@@ -1,5 +1,4 @@
-﻿@{
-    ViewData["Title"] = null;
+﻿@{ ViewData["Title"] = null;
     ViewData["CanonicalUrl"] = "https://www.ludustack.com/";
 
     var postModel = ViewBag.PostFromHome as PostFromHomeViewModel;
@@ -7,8 +6,7 @@
     var joinUsViewModel = new HomeSquareViewModel("account", "login", "bg-purple", "far fa-3x fa-smile", SharedLocalizer["Join us!"]);
     var confirmEmailViewModel = new HomeSquareViewModel("member", "preferences", "index", "bg-green", "fas fa-check", SharedLocalizer["Confirm your email!"]);
 
-    var emailConfirmed = bool.Parse((string)(ViewData["emailConfirmed"] ?? "False"));
-}
+    var emailConfirmed = bool.Parse((string)(ViewData["emailConfirmed"] ?? "False")); }
 
 @section Styles {
     <environment include="Development">
@@ -48,8 +46,7 @@
                 asp-fallback-src="~/lib/dropzone/min/dropzone.min.js"
                 asp-fallback-test="window.Dropzone"
                 integrity="sha256-OG/103wXh6XINV06JTPspzNgKNa/jnP1LjPP5Y3XQDY="
-                crossorigin="anonymous">
-        </script>
+                crossorigin="anonymous"></script>
 
         <script src="~/js/home/home.min.js" asp-append-version="true"></script>
     </environment>
@@ -84,17 +81,15 @@
                 {
                     if (!emailConfirmed)
                     {
-                        <div class="col-12">
-                            <partial name="_HomeRectangle" model="confirmEmailViewModel" />
-                        </div>
-                    }
-                }
-                else
-                {
-                    <div class="col-12 d-none d-xl-block">
-                        <partial name="_HomeSquare" model="joinUsViewModel" />
-                    </div>
-                }
+    <div class="col-12">
+        <partial name="_HomeRectangle" model="confirmEmailViewModel" />
+    </div> }
+}
+else
+{
+<div class="col-12 d-none d-xl-block">
+    <partial name="_HomeSquare" model="joinUsViewModel" />
+</div>}
                 <div class="col-12 d-none d-lg-block">
                     <div id="divCounters"></div>
                 </div>
@@ -107,8 +102,7 @@
 
             @if (User.Identity.IsAuthenticated)
             {
-                @await Html.PartialAsync("_PostFromHome", ViewBag.PostFromHome as PostFromHomeViewModel)
-            }
+@await Html.PartialAsync("_PostFromHome", ViewBag.PostFromHome as PostFromHomeViewModel)}
 
             <div class="row">
                 <div class="col-12">
@@ -127,19 +121,18 @@
                 </div>
                 @if (postModel.DefaultLanguage == SupportedLanguage.Portuguese)
                 {
-                    <div class="col-12 d-xl-none">
-                        <div class="flex-square clickable rectangle bg-patreon">
-                            <div class="flex-square-inner">
-                                <a href="https://apoia.se/indievisible" target="_blank" rel="noopener noreferrer">
-                                    <div class="flex-square-inner-content text-white">
-                                        <div><i class="fas fa-3x fa-dollar-sign" aria-hidden="true"></i></div>
-                                        <div>@SharedLocalizer["apoie"]</div>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
+    <div class="col-12 d-xl-none">
+        <div class="flex-square clickable rectangle bg-patreon">
+            <div class="flex-square-inner">
+                <a href="https://apoia.se/indievisible" target="_blank" rel="noopener noreferrer">
+                    <div class="flex-square-inner-content text-white">
+                        <div><i class="fas fa-3x fa-dollar-sign" aria-hidden="true"></i></div>
+                        <div>@SharedLocalizer["apoie"]</div>
                     </div>
-                }
+                </a>
+            </div>
+        </div>
+    </div>}
 
                 <div class="col-12 mt-1 no-gutters">
                     <partial name="_TagList" model="@ViewData["Genres"]" />

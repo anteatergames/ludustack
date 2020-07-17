@@ -1,5 +1,4 @@
 ﻿using LuduStack.Domain.Core.Enums;
-using LuduStack.Domain.Core.Extensions;
 using LuduStack.Domain.Interfaces.Repository;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
@@ -61,6 +60,7 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
 
             return obj.ToList();
         }
+
         public void UpdateGiveawayStatus(Guid giveawayId, GiveawayStatus newStatus)
         {
             FilterDefinition<Giveaway> filter = Builders<Giveaway>.Filter.Where(x => x.Id == giveawayId);

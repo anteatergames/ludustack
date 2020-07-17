@@ -1,5 +1,4 @@
-﻿@{
-    var isAjax = ViewContext.HttpContext.Request.IsAjaxRequest();
+﻿@{ var isAjax = ViewContext.HttpContext.Request.IsAjaxRequest();
     var canInteract = User.Identity.IsAuthenticated;
 
     if (isAjax)
@@ -9,8 +8,7 @@
 
     ViewData["Title"] = SharedLocalizer["Giveaway"];
     ViewData["Description"] = SharedLocalizer["Manage Viral Giveaways"];
-    ViewData["Url"] = ViewBag.BaseUrl + Url.Action("index", "giveaway", new { area = "tools" });
-}
+    ViewData["Url"] = ViewBag.BaseUrl + Url.Action("index", "giveaway", new { area = "tools" }); }
 
 @section ComponentStyles {
     <environment include="Development">
@@ -40,8 +38,8 @@
     <input type="hidden" id="isajax" value="@isAjax.ToString().ToLower()" />
     <input type="hidden" id="caninteract" value="@canInteract.ToString().ToLower()" />
     <input type="hidden" id="urls" value="urls"
-            data-url-list="@Url.Action("listbyme", "giveaway", new { area = "tools" })"
-            data-url-mine="@Url.Action("listmine", "giveaway", new { area = "tools" })" />
+           data-url-list="@Url.Action("listbyme", "giveaway", new { area = "tools" })"
+           data-url-mine="@Url.Action("listmine", "giveaway", new { area = "tools" })" />
 
     <div id="containerlist" class="row">
         <div class="col-12 mb-2">
@@ -50,10 +48,9 @@
         <div class="col-12 mb-3">
             @if (canInteract)
             {
-                <div class="col-lg-12 mb-2 p-0 text-right">
-                    <a asp-area="tools" asp-controller="giveaway" asp-action="add" class="btn btn-success">@SharedLocalizer["New Giveaway"] <i class="fas fa-plus" aria-hidden="true"></i></a>
-                </div>
-            }
+<div class="col-lg-12 mb-2 p-0 text-right">
+    <a asp-area="tools" asp-controller="giveaway" asp-action="add" class="btn btn-success">@SharedLocalizer["New Giveaway"] <i class="fas fa-plus" aria-hidden="true"></i></a>
+</div>      }
             <div id="divList"></div>
         </div>
     </div>

@@ -38,8 +38,7 @@
                 asp-fallback-src="~/lib/dropzone/min/dropzone.min.js"
                 asp-fallback-test="window.Dropzone"
                 integrity="sha256-OG/103wXh6XINV06JTPspzNgKNa/jnP1LjPP5Y3XQDY="
-                crossorigin="anonymous">
-        </script>
+                crossorigin="anonymous"></script>
         <script src="~/js/giveaway/giveawayedit.min.js" asp-append-version="true"></script>
     </environment>
 
@@ -48,7 +47,7 @@
 
 <input type="hidden" id="urls" value="urls"
        data-url-terms="@Url.Action("getterms", "localization", new { area = "tools" })"
-       data-url-terms-save="@Url.Action("saveterms", "localization", new { area = "tools" })"       
+       data-url-terms-save="@Url.Action("saveterms", "localization", new { area = "tools" })"
        data-url-image="@Constants.DefaultImagePlaceholder" />
 
 <section class="content container">

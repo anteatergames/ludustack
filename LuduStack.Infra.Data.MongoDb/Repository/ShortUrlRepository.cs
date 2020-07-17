@@ -2,9 +2,6 @@
 using LuduStack.Domain.Models;
 using LuduStack.Infra.Data.MongoDb.Interfaces;
 using LuduStack.Infra.Data.MongoDb.Repository.Base;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace LuduStack.Infra.Data.MongoDb.Repository
 {
