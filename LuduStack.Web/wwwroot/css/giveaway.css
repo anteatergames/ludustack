@@ -4,6 +4,8 @@ html {
 
 .carousel-inner {
     max-height: 360px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
 }
 
 .giv-container {
@@ -46,7 +48,7 @@ html {
     border-radius: 20px;
     margin-top: -40px;
     position: relative;
-    padding: 1rem;
+    padding: 1.4rem 2rem .7rem;
 }
 
     .giv-title.ended {
@@ -180,21 +182,8 @@ html {
         top: -27px;
     }
 
-.giv-title {
-    text-align: center;
-    border-radius: 20px;
-    margin-top: -40px;
-    position: relative;
-    padding: 1.4rem 2rem .7rem;
-}
-
 .giv-carousel-control button.active, .giv-title {
     background-color: #fff;
-}
-
-.carousel-inner {
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
 }
 
 .time-left {

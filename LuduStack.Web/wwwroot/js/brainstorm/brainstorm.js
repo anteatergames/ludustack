@@ -64,7 +64,7 @@
 
             $.post(url, data).done(function (response) {
                 if (response.success === true) {
-                    ALERTSYSTEM.ShowSuccessMessage("Awesome!", function (isConfirm) {
+                    ALERTSYSTEM.ShowSuccessMessage("Awesome!", function () {
                         window.location = response.url;
                     });
                 }
@@ -138,7 +138,7 @@
 
                 return $.post(url, { votingItemId: id, voteValue: vote }).then(function (response) {
                     if (response.success === true) {
-                        ALERTSYSTEM.ShowSuccessMessage("Awesome!", function (isConfirm) {
+                        ALERTSYSTEM.ShowSuccessMessage("Awesome!", function () {
                             location.reload();
                         });
                     }
@@ -195,7 +195,7 @@
                     callback();
                 }
 
-                ALERTSYSTEM.ShowSuccessMessage("Awesome!", function (isConfirm) {
+                ALERTSYSTEM.ShowSuccessMessage("Awesome!", function () {
                     window.location = response.url;
                 });
             }

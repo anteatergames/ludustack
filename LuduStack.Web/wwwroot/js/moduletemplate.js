@@ -121,7 +121,7 @@
                     callback();
                 }
 
-                ALERTSYSTEM.ShowSuccessMessage("Awesome!", function (isConfirm) {
+                ALERTSYSTEM.ShowSuccessMessage("Awesome!", function () {
                     window.location = response.url;
                 });
             }

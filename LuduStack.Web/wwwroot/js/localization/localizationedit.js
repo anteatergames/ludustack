@@ -329,8 +329,8 @@
     function resetTranslationStatus() {
         var entryInputs = objs.container.find(selectors.entryInput);
 
-        entryInputs.each(function (index, element) {
-            $(element).data('translated', false);
+        entryInputs.each(function () {
+            $(this).data('translated', false);
         });
 
         $(selectors.entryAuthors).html('');
@@ -401,8 +401,8 @@
                 formData.append("projectId", id);
 
                 var i = 0;
-                columns.each(function (index, element) {
-                    var ddl = $(element);
+                columns.each(function () {
+                    var ddl = $(this);
                     var column = ddl.data('column');
                     var language = ddl.val();
                     if (column !== undefined && language !== undefined && language.length > 0) {

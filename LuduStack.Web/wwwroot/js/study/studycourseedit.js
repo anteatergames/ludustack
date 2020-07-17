@@ -171,8 +171,8 @@
     }
 
     const initRangeSlider = (context) => {
-        $(selectors.rangeSlider, context).each(function (index, element) {
-            var slider = $(element);
+        $(selectors.rangeSlider, context).each(function () {
+            var slider = $(this);
             var handle;
 
             slider.rangeslider({
@@ -212,7 +212,7 @@
                     callback();
                 }
 
-                ALERTSYSTEM.ShowSuccessMessage("Awesome!", function (isConfirm) {
+                ALERTSYSTEM.ShowSuccessMessage("Awesome!", function () {
                     window.location = response.url;
                 });
             }

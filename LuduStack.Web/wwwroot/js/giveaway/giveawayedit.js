@@ -254,9 +254,7 @@
 
                     IMAGEMANIPULAION.Dropzone.Get(0).on("queuecomplete", function (file) {
                         if (allImagesUploaded === true) {
-                            submitForm(btn).done(function (response) {
-                                console.log('done from giveawayedit');
-
+                            submitForm(btn).done(function () {
                                 IMAGEMANIPULAION.Dropzone.Initialize(0, imagesToUploadCount, selectors.dropzoneImages, true);
                             });
 
@@ -288,7 +286,7 @@
 
     function calculateImagesToUpload() {
         imagesToUploadCount = 0;
-        objs.imageListItem.each(function (index, element) {
+        objs.imageListItem.each(function () {
             var img = $(this);
             var placeholder = img.data('placeholder');
             var src = img.attr('src');
@@ -312,7 +310,7 @@
             if (response.success === true) {
                 MAINMODULE.Common.PostSaveCallback(response, btn);
 
-                ALERTSYSTEM.ShowSuccessMessage("Awesome!", function (isConfirm) {
+                ALERTSYSTEM.ShowSuccessMessage("Awesome!", function () {
                     window.location = response.url;
                 });
             }

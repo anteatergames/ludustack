@@ -64,7 +64,7 @@
         });
     }
     function loadTranslatedMessages() {
-        objs.translatedJavascriptMessages.find('.msg').each(function (index, element) {
+        objs.translatedJavascriptMessages.find('.msg').each(function () {
             var msgId = $(this).data('msgId');
             var text = $(this).text();
 
@@ -182,10 +182,10 @@
         var idPreffix = propPreffix + "_0__";
         var namePreffix = propPreffix + "[0].";
 
-        objContainer.find(itemSelector).each(function (index, element) {
+        objContainer.find(itemSelector).each(function () {
             var item = $(this);
 
-            item.find(':input').each(function (index2, element2) {
+            item.find(':input').each(function () {
                 var inputId = $(this).attr('id');
                 var inputName = $(this).attr('name');
 
@@ -285,15 +285,15 @@
 
     function bindPopOvers(multiple) {
         if (multiple) {
-            $("[data-toggle='popover']").each(function (index, element) {
-                var data = $(element).data();
+            $("[data-toggle='popover']").each(function () {
+                var data = $(this).data();
                 if (data.target) {
                     var contentElementId = data.target;
                     var contentHtml = $(contentElementId).html().trim();
                     data.content = contentHtml;
                 }
 
-                $(element).popover({ html: true });
+                $(this).popover({ html: true });
             });
         } else {
             $("[data-toggle='popover']").popover({ html: true });

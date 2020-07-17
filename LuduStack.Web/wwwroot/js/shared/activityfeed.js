@@ -119,8 +119,6 @@ var ACTIVITYFEED = (function () {
             if (callback) {
                 callback();
             }
-
-            //lazyLoadInstance.update();
         });
     }
 
@@ -137,25 +135,24 @@ var ACTIVITYFEED = (function () {
 
             var oembeds = $('oembed');
 
-            oembeds.each(function (index, element) {
-                var wrapper = $(element).closest('.videoWrapper');
+            oembeds.each(function () {
+                var wrapper = $(this).closest('.videoWrapper');
 
                 if (wrapper.hasClass('loaded')) {
                     return;
                 }
                 else {
-                    $(element).find('embed').hide();
+                    $(this).find('embed').hide();
                     var w = wrapper.width();
                     var h = w * 9 / 16;
 
-                    embedo.load(element, element.innerHTML, {
+                    embedo.load(this, this.innerHTML, {
                         width: w,
                         height: h,
                         centerize: true,
                         strict: false
                     })
-                        .done(function (xpto) {
-                            //$(element).find('embed').addClass('embed-responsive').show();
+                        .done(function () {
                             wrapper.addClass('loaded');
                         });
                 }

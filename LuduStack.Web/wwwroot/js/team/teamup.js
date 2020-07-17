@@ -377,8 +377,8 @@
         var newMemberObj = $(selectors.teamMemberTemplate).first().clone();
 
         var existingUserIds = [];
-        $(selectors.teamMemberUserId).each(function (index, element) {
-            existingUserIds.push(element.value);
+        $(selectors.teamMemberUserId).each(function () {
+            existingUserIds.push(this.value);
         });
 
         var alreadyAdded = existingUserIds.indexOf(data.id) > -1;
