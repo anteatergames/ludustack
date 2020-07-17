@@ -8,7 +8,7 @@ html {
     border-bottom-right-radius: 0;
 }
 
-.giv-container {
+.giveaway-container, .terms-container {
     width: 100%;
     max-width: 720px;
     background-color: #fff;
@@ -20,24 +20,33 @@ html {
     box-shadow: 0 10px 35px 0 rgba(99,123,173,.2);
 }
 
-    .giv-container div {
+    .giveaway-container div {
         border-top-left-radius: var(--border-radius);
         border-top-right-radius: var(--border-radius);
     }
 
-    .giv-container.animate1 {
+    .giveaway-container.animate1 {
         opacity: 0;
-        -webkit-animation: giv-container1 1s ease-out forwards;
-        animation: giv-container1 1s ease-out forwards;
+        -webkit-animation: giveaway-container1 1s ease-out forwards;
+        animation: giveaway-container1 1s ease-out forwards;
     }
 
-@-webkit-keyframes giv-container1 {
+.terms-container {
+    min-height: 300px;
+}
+
+.terms-container .terms-actions {
+    position:absolute;
+    bottom: 20px;
+}
+
+@-webkit-keyframes giveaway-container1 {
     to {
         opacity: 1;
     }
 }
 
-@keyframes giv-container1 {
+@keyframes giveaway-container1 {
     to {
         opacity: 1;
     }

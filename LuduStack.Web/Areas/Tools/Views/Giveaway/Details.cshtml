@@ -35,10 +35,18 @@
 <input asp-for="SecondsToEnd" type="hidden" />
 <input asp-for="Status" type="hidden" />
 
-<section class="container-fluid position-relative">
-    <div id="featurecontainer" class="row justify-content-center">
-        <div class="col-md-12 col-lg-10 px-0 px-md-1">
-            <div class="giv-container animate1 pb-5 mb-2">
+<div id="featurecontainer" class="row justify-content-center">
+    <section class="container-fluid position-relative">
+        <div class="col-md-12 px-0 px-md-1">
+            <div class="terms-container animate1 mb-2 d-none">
+                <div class="p-5">
+                    <p>@Html.Raw(Model.TermsAndConditions)</p>
+                </div>
+                <div class="terms-actions col-12">
+                    <button class="btn btn-info btn-lg btn-block btn-terms">@SharedLocalizer["close"]</button>
+                </div>
+            </div>
+            <div class="giveaway-container animate1 pb-5 mb-2">
                 @if (Model.Status == GiveawayStatus.Draft)
                 {
                     <div id="ribbon-container" class="blue">
@@ -89,7 +97,10 @@
                         </div>
 
                         <div class="d-flex text-center align-items-center basic-info text-uppercase">
-                            <div class="col-6 col-sm-2 col-md-3 h6 order-2 order-sm-1">@SharedLocalizer["${0} value", Model.PrizePriceInDolar]</div>
+                            @if (Model.PrizePriceInDolar > 0)
+                            {
+                                <div class="col-6 col-sm-2 col-md-3 h6 order-2 order-sm-1">@SharedLocalizer["${0} value", Model.PrizePriceInDolar]</div>
+                            }
                             <div class="col-12 col-sm-7 col-md-6 order-1 order-sm-2 hr-b-small">
                                 <div class="time-left d-flex justify-content-center" id="countdown">
                                     <div class="time-unity">
@@ -109,7 +120,10 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-6 col-sm-2 col-md-3 h6 order-3">@SharedLocalizer["winners: {0}", Model.WinnerAmount]</div>
+                            @if (Model.WinnerAmount > 0)
+                            {
+                                <div class="col-6 col-sm-2 col-md-3 h6 order-3">@SharedLocalizer["winners: {0}", Model.WinnerAmount]</div>
+                            }
                         </div>
 
                         @if (Model.SecondsToEnd == 0)
@@ -220,25 +234,28 @@
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<footer>
-    <div class="container pt-2 pb-4 pb-md-5">
-        <div class="row">
-            <div class="col-12 giv-footer">
-                <p>
-                    <small>
-                        @SharedLocalizer["Enter sweepstakes and receive exclusive offers from {0}.", Model.SponsorName]
-                        <br>
-                        @SharedLocalizer["Unsubscribe anytime."]
-                        @if (!string.IsNullOrWhiteSpace(Model.TermsAndConditions))
-                        {
-                            <a asp-area="tools" asp-controller="giveaway" asp-action="terms" asp-route-id="@Model.Id" target="_blank">@SharedLocalizer["Read official rules."]</a>
-                        }
-                    </small>
-                </p>
+    <footer class="container-fluid position-relative">
+        <div class="col-md-12 px-0 px-md-1">
+            <div class="row">
+                <div class="col-12 giv-footer">
+                    <p>
+                        <small>
+                            @if (!string.IsNullOrWhiteSpace(Model.SponsorName))
+                            {
+                                <span>@SharedLocalizer["Enter sweepstakes and receive exclusive offers from {0}.", Model.SponsorName]</span>
+                            }
+                            <br>
+                            @SharedLocalizer["Unsubscribe anytime."]
+                            @if (!string.IsNullOrWhiteSpace(Model.TermsAndConditions))
+                            {
+                                <a href="#" class="btn-terms">@SharedLocalizer["Read official rules."]</a>
+                            }
+                        </small>
+                    </p>
+                </div>
             </div>
         </div>
-    </div>
-</footer>
+    </footer>
+</div>

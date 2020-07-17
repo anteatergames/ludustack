@@ -12,21 +12,28 @@
         selectors.secondsToEnd = '#SecondsToEnd';
         selectors.status = '#Status';
         selectors.container = '#featurecontainer';
+        selectors.giveawayContainer = '.giveaway-container';
+        selectors.termsContainer = '.terms-container';
         selectors.containerList = '#containerlist';
         selectors.form = '#frmEnterGiveaway';
         selectors.emailInput = '#Enter_Email';
         selectors.btnEnter = '#btnEnterGiveaway';
+        selectors.btnShowTerms = '.btn-terms';
         selectors.urlInput = '#ShareUrl';
         selectors.copyIcon = '.copy-icon';
+        selectors.footer = 'footer';
     }
 
     function cacheObjs() {
         objs.container = $(selectors.container);
+        objs.giveawayContainer = $(selectors.giveawayContainer);
+        objs.termsContainer = $(selectors.termsContainer);
         objs.urls = $(selectors.urls);
         objs.status = $(selectors.status);
         objs.form = $(selectors.form);
         objs.emailInput = $(selectors.emailInput);
         objs.urlInput = $(selectors.urlInput);
+        objs.footer = $(selectors.footer);
     }
 
     function init() {
@@ -46,6 +53,7 @@
 
     function bindAll() {
         bindBtnEnter();
+        bindBtnShowTerms();
         bindBtnCopy();
 
         FX.BindKonamiCode();
@@ -63,6 +71,26 @@
             }
             else {
                 ALERTSYSTEM.ShowWarningMessage("You must type your email to participate!");
+            }
+
+            return false;
+        });
+    }
+
+    function bindBtnShowTerms() {
+        objs.container.on('click', selectors.btnShowTerms, function (e) {
+            e.preventDefault();
+            var btn = $(this);
+
+            if (objs.giveawayContainer.hasClass('d-none')) {
+                objs.termsContainer.addClass('d-none');
+                objs.giveawayContainer.removeClass('d-none');
+                objs.footer.removeClass('d-none');
+            }
+            else {
+                objs.termsContainer.removeClass('d-none');
+                objs.giveawayContainer.addClass('d-none');
+                objs.footer.addClass('d-none')
             }
 
             return false;
