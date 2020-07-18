@@ -69,6 +69,10 @@ namespace LuduStack.Web.ViewComponents
                 else
                 {
                     item.Content = ContentFormatter.FormatContentToShow(item.Content);
+                    if (item.FeaturedMediaType == MediaType.Youtube)
+                    {
+                        item.FeaturedImageLquip = ContentFormatter.GetYoutubeVideoId(item.FeaturedImage);
+                    }
                 }
 
                 foreach (CommentViewModel comment in item.Comments)

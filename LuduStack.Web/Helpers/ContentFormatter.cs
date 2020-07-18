@@ -1,5 +1,6 @@
 ﻿using LuduStack.Domain.Core.Enums;
 using System;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
 
@@ -109,6 +110,25 @@ namespace LuduStack.Web.Helpers
                 default:
                     return "Check this out!";
             }
+        }
+
+        public static string GetYoutubeVideoId(string url)
+        {
+            var uri = new Uri(url);
+            var query = HttpUtility.ParseQueryString(uri.Query);
+
+            var videoId = string.Empty;
+
+            if (query.AllKeys.Contains("v"))
+            {
+                videoId = query["v"];
+            }
+            else
+            {
+                videoId = uri.Segments.Last();
+            }
+
+            return videoId;
         }
     }
 }

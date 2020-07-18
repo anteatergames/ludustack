@@ -202,3 +202,65 @@ img.grayscale {
     right: -5px;
     z-index: 1000;
 }
+
+
+/*video play start*/
+/* Just a parent container for the videos */
+.videoWrapper {
+    margin: 0 auto;
+}
+/* Individual video container */
+.video-thumbnail {
+    position: relative;
+    max-width: 700px;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+    .video-thumbnail .placeholder {
+        max-width: 700px;
+        width: 100%;
+    }
+
+    .video-thumbnail .play-btn {
+        position: absolute;
+        max-width: 700px;
+        width: 100px;
+        height: 100px;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        line-height: 1; /* needed if using Bootstrap */
+        text-align: center;
+        color: #eaeaea;
+        background-color: rgba(255,255,255,.4);
+        border-radius: 50px;
+        transition: all .2s ease;
+    }
+
+    .video-thumbnail:hover .play-btn,
+    .video-thumbnail:focus .play-btn {
+        color: #000;
+        background-color: rgba(255,255,255,.8);
+        cursor: pointer;
+    }
+
+.play-btn::after {
+    display: inline-block;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    /*
+  Define the font family, weight, and icon
+  */
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    font-size: 60px;
+    content: "\f04b";
+    /* positioning tweaks */
+    padding-top: 20px;
+    padding-left: 10px;
+}
+
+/*video play end*/
