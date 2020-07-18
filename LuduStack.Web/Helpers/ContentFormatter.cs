@@ -62,7 +62,7 @@ namespace LuduStack.Web.Helpers
                     newText = String.Format("({0})", newText);
                 }
 
-                string templateUrlCkEditor = String.Format("<a href=\"{0}\">.+</a>", url);
+                string templateUrlCkEditor = String.Format("<a href=\"{0}\" rel=\"noopener\">.+</a>", url);
 
                 bool isAlreadyUrl = Regex.IsMatch(content, templateUrlCkEditor);
 

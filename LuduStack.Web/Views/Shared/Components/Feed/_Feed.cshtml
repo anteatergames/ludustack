@@ -17,7 +17,7 @@
 
                 @if (!String.IsNullOrWhiteSpace(item.Url))
                 {
-                    <a href="@item.Url" class="contenturl">
+                    <a href="@item.Url" class="contenturl" aria-label="@item.CreateDate.ToString()">
                         <span class="description">@item.CreateDate.ToString()</span>
                     </a>
                 }
@@ -79,7 +79,7 @@
                                 <oembed></oembed>
                                 <div class="video-thumbnail">
                                     <div class="play-btn"></div>
-                                    <img class="img-fluid w-100 placeholder oembedimg lazyload" data-src="https://img.youtube.com/vi/@(item.FeaturedImageLquip)/mqdefault.jpg" />
+                                    <img class="img-fluid w-100 placeholder oembedimg lazyload" data-src="https://img.youtube.com/vi/@(item.FeaturedImageLquip)/mqdefault.jpg" alt="Youtube Video" />
                                 </div>
                             </div>
                         }
