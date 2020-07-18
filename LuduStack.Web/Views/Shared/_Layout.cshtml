@@ -315,8 +315,8 @@
         <script src="~/lib/limonte-sweetalert/sweetalert2.all.js"></script>
         <script src="~/lib/jquery-toast/jquery.toast.js"></script>
 
-        <script src="~/lib/lazysizes/lazysizes.js"></script>
-        <script src="~/lib/lazysizes/plugins/blur-up/ls.blur-up.js"></script>
+        <script src="~/lib/lazysizes/lazysizes.js" defer></script>
+        <script src="~/lib/lazysizes/plugins/blur-up/ls.blur-up.js" defer></script>
 
         <script src="~/js/vanilla.extensions.js" defer></script>
         <script src="~/js/jquery.extensions.js" defer></script>
@@ -382,13 +382,13 @@
                 asp-fallback-src="~/lib/lazysizes/lazysizes.min.js"
                 asp-fallback-test="window.lazySizes"
                 integrity="sha256-+2SfyuYhd9/mPmcIHdzrgwtc4fBaQYTpu7fYesS49OU="
-                crossorigin="anonymous">
+                crossorigin="anonymous"  defer>
         </script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.2.2/plugins/blur-up/ls.blur-up.min.js"
                 asp-fallback-src="~/lib/lazysizes/plugins/blur-up/ls.blur-up.min.js"
                 asp-fallback-test="window.lazySizes"
                 integrity="sha256-k3/42TDORKROMX/o7y1d5YMWTMsaCMLLAstACEPWVmo="
-                crossorigin="anonymous">
+                crossorigin="anonymous"  defer>
         </script>
 
         <script src="~/js/site.min.js" asp-append-version="true" defer></script>
