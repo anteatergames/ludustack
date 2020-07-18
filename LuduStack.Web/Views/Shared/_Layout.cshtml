@@ -200,7 +200,7 @@
                     <form asp-controller="search" asp-action="index" method="get" class="search-form">
                         <div class="input-group">
                             <div class="input-group-prepend">
-                                <button class="input-group-text" id="btn-search">
+                                <button class="input-group-text" id="btn-search" aria-label="Search Button">
                                     <i class="fa fa-search" aria-hidden="true"></i>
                                 </button>
                             </div>
@@ -306,8 +306,8 @@
         <script src="~/lib/fastclick/fastclick.js"></script>
         <script src="~/lib/limonte-sweetalert/sweetalert2.all.js"></script>
 
-        <script src="~/lib/lazysizes/lazysizes.js" defer></script>
-        <script src="~/lib/lazysizes/plugins/blur-up/ls.blur-up.js" defer></script>
+        <script src="~/lib/lazysizes/lazysizes.js" async></script>
+        <script src="~/lib/lazysizes/plugins/blur-up/ls.blur-up.js" async></script>
 
         <script src="~/js/vanilla.extensions.js" defer></script>
         <script src="~/js/jquery.extensions.js" defer></script>
@@ -359,11 +359,11 @@
                 crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.2.2/lazysizes.min.js"
                 integrity="sha256-+2SfyuYhd9/mPmcIHdzrgwtc4fBaQYTpu7fYesS49OU="
-                crossorigin="anonymous" defer>
+                crossorigin="anonymous" async>
         </script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.2.2/plugins/blur-up/ls.blur-up.min.js"
                 integrity="sha256-k3/42TDORKROMX/o7y1d5YMWTMsaCMLLAstACEPWVmo="
-                crossorigin="anonymous" defer>
+                crossorigin="anonymous" async>
         </script>
 
         <script src="~/js/site.min.js" asp-append-version="true" defer></script>

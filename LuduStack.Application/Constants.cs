@@ -74,6 +74,14 @@
             }
         }
 
+        public static string DefaultFeaturedImageLquip
+        {
+            get
+            {
+                return "/images/placeholders/featuredimagelquip.jpg";
+            }
+        }
+
         public static string DefaultImagePath
         {
             get

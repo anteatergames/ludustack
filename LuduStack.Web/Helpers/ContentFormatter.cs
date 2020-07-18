@@ -54,7 +54,7 @@ namespace LuduStack.Web.Helpers
                 }
                 else
                 {
-                    newText = string.Format(@"<a href=""{0}"" target=""_blank"" style=""font-weight:500"">{0}</a>", url);
+                    newText = string.Format(@"<a href=""{0}"" target=""_blank"" style=""font-weight:500"" rel=""noopener"">{0}</a>", url);
                 }
 
                 if (!string.IsNullOrWhiteSpace(openParenthesis) && !string.IsNullOrWhiteSpace(closeParenthesis))
@@ -62,7 +62,7 @@ namespace LuduStack.Web.Helpers
                     newText = String.Format("({0})", newText);
                 }
 
-                string templateUrlCkEditor = String.Format("<a href=\"{0}\" rel=\"noopener\">.+</a>", url);
+                string templateUrlCkEditor = String.Format("<a href=\"{0}\">.+</a>", url);
 
                 bool isAlreadyUrl = Regex.IsMatch(content, templateUrlCkEditor);
 

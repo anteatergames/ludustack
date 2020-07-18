@@ -1,4 +1,6 @@
-﻿using LuduStack.Application.Interfaces;
+﻿using LuduStack.Application;
+using LuduStack.Application.Helpers;
+using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels;
 using LuduStack.Application.ViewModels.Content;
 using LuduStack.Application.ViewModels.Jobs;
@@ -70,7 +72,8 @@ namespace LuduStack.Web.ViewComponents
                     item.Content = ContentFormatter.FormatContentToShow(item.Content);
                     if (item.FeaturedMediaType == MediaType.Youtube)
                     {
-                        item.FeaturedImageLquip = ContentFormatter.GetYoutubeVideoId(item.FeaturedImage);
+                        item.FeaturedImageResponsive = ContentFormatter.GetYoutubeVideoId(item.FeaturedImage);
+                        item.FeaturedImageLquip = ContentHelper.SetFeaturedImage(Guid.Empty, Constants.DefaultFeaturedImageLquip, ImageRenderType.LowQuality);
                     }
                 }
 
