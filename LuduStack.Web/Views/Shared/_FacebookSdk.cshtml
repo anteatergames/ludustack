@@ -4,14 +4,20 @@
 
 <script>
     $(document).ready(function () {
-        $.ajaxSetup({ cache: true });
-        $.getScript('https://connect.facebook.net/en_US/sdk.js', function () {
-            FB.init({
-                appId: $('meta[property="fb:app_id"]').attr('content'),
-                version: 'v5.0',
-                autoLogAppEvents: true,
-                xfbml: true
-            });
+        $.ajax({
+            url: 'https://connect.facebook.net/en_US/sdk.js',
+            dataType: 'script',
+            cache: true,
+            success: function (script, textStatus, jqXHR) {
+                FB.init(
+                    {
+                        appId: $('meta[property="fb:app_id"]').attr('content'),
+                        version: 'v2.8',
+                        autoLogAppEvents: true,
+                        xfbml: true
+                    }
+                );
+            }
         });
     });
 </script>
