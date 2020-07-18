@@ -53,8 +53,7 @@ namespace LuduStack.Web.ViewComponents
 
             List<UserContentViewModel> model = _userContentAppService.GetActivityFeed(vm).ToList();
 
-            ApplicationUser user = await UserManager.FindByIdAsync(CurrentUserId.ToString());
-            bool userIsAdmin = user != null && await UserManager.IsInRoleAsync(user, Roles.Administrator.ToString());
+            bool userIsAdmin = User.Identity.IsAuthenticated && User.IsInRole(Roles.Administrator.ToString());
 
             foreach (UserContentViewModel item in model)
             {
