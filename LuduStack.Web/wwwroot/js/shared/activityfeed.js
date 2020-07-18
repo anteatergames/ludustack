@@ -27,6 +27,7 @@ var ACTIVITYFEED = (function () {
         selectorText.btnDeletePost = '.btnDeletePost';
         selectors.btnInteractionShare = '.btn-interaction-share';
         selectors.sharePopup = '.share-popup';
+        selectors.videoClickArea = '.video-thumbnail';
 
         bindAll();
     }
@@ -83,7 +84,7 @@ var ACTIVITYFEED = (function () {
     }
 
     function bindOEmbedClick() {
-        $('body').on('click', '.video-wrap', function (e) {
+        $('body').on('click', selectors.videoClickArea, function (e) {
             e.preventDefault();
 
             loadSingleOembed(this);
@@ -127,12 +128,23 @@ var ACTIVITYFEED = (function () {
             }
 
             CONTENTACTIONS.BindShareContent();
-            //loadOembeds();
-
             if (callback) {
                 callback();
             }
         });
+    }
+
+    function initializeEmbed(){
+        if (!embedo) {
+            embedo = new Embedo({
+                youtube: true,
+                facebook: {
+                    appId: $('meta[property="fb:app_id"]').attr('content'), // Enable facebook SDK
+                    version: 'v3.2',
+                    width: "100%"
+                }
+            });
+        }
     }
 
     function loadSingleOembed(element) {
@@ -141,19 +153,8 @@ var ACTIVITYFEED = (function () {
         var oembed = wrapper.find('oembed');
         var videoUrl = wrapper.data('url');
 
-        console.log(videoUrl);
-        console.log(oembed.get(0));
-
         if (typeof Embedo === 'function') {
-            var embedo = new Embedo({
-                youtube: true,
-                facebook: {
-                    appId: $('meta[property="fb:app_id"]').attr('content'), // Enable facebook SDK
-                    version: 'v3.2',
-                    width: "100%"
-                }
-            });
-            console.log(wrapper);
+            initializeEmbed();
 
             if (wrapper.hasClass('loaded')) {
                 return;
@@ -174,45 +175,6 @@ var ACTIVITYFEED = (function () {
                         wrapper.addClass('loaded');
                     });
             }
-        }
-    }
-
-    function loadOembeds() {
-        console.log(oembeds.length);
-        if (typeof Embedo === 'function') {
-            embedo = new Embedo({
-                youtube: true,
-                facebook: {
-                    appId: $('meta[property="fb:app_id"]').attr('content'), // Enable facebook SDK
-                    version: 'v3.2',
-                    width: "100%"
-                }
-            });
-
-            var oembeds = $('oembed');
-
-            //oembeds.each(function () {
-            //    var wrapper = $(this).closest('.videoWrapper');
-
-            //    if (wrapper.hasClass('loaded')) {
-            //        return;
-            //    }
-            //    else {
-            //        $(this).find('embed').hide();
-            //        var w = wrapper.width();
-            //        var h = w * 9 / 16;
-
-            //        embedo.load(this, this.innerHTML, {
-            //            width: w,
-            //            height: h,
-            //            centerize: true,
-            //            strict: false
-            //        })
-            //            .done(function () {
-            //                wrapper.addClass('loaded');
-            //            });
-            //    }
-            //});
         }
     }
 
