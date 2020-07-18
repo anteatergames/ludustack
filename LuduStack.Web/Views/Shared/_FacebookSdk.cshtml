@@ -2,14 +2,16 @@
     Layout = null;
 }
 
-<script defer>
-    window.fbAsyncInit = function () {
-        FB.init({
-            appId: $('meta[property="fb:app_id"]').attr('content'),
-            autoLogAppEvents: true,
-            xfbml: true,
-            version: 'v5.0'
+<script>
+    $(document).ready(function () {
+        $.ajaxSetup({ cache: true });
+        $.getScript('https://connect.facebook.net/en_US/sdk.js', function () {
+            FB.init({
+                appId: $('meta[property="fb:app_id"]').attr('content'),
+                version: 'v5.0',
+                autoLogAppEvents: true,
+                xfbml: true
+            });
         });
-    };
+    });
 </script>
-<scrip src="https://connect.facebook.net/en_US/sdk.js" defer></scrip>
