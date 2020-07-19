@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace LuduStack.Application.ViewModels.Giveaway
 {
@@ -6,6 +7,8 @@ namespace LuduStack.Application.ViewModels.Giveaway
     {
         public Guid GiveawayId { get; set; }
 
+        [EmailAddress(ErrorMessage = "You must provide a valid email.")]
+        [Required(ErrorMessage = "You must provide an email.")]
         public string Email { get; set; }
 
         public bool GdprConsent { get; set; }

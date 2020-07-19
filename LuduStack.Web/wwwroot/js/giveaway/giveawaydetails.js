@@ -6,6 +6,9 @@
 
     const selection = window.getSelection();
 
+    var spinnerBtn = '<span class="spinner-border" role="status" aria-hidden="true"></span>';
+    var saveBtnOriginalText = '';
+
     function setSelectors() {
         selectors.canInteract = '#caninteract';
         selectors.urls = '#urls';
@@ -64,13 +67,10 @@
             e.preventDefault();
             var btn = $(this);
 
-            var valid = objs.emailInput.val().length > 0;
+            var valid = objs.form.valid();;
 
             if (valid) {
                 submitForm(btn);
-            }
-            else {
-                ALERTSYSTEM.ShowWarningMessage("You must type your email to participate!");
             }
 
             return false;
@@ -109,11 +109,11 @@
     }
 
     function submitForm(btn, callback) {
-        btn.addClass('disabled');
         var url = objs.form.attr('action');
 
         var data = objs.form.serialize();
 
+        disableButton(btn);
         $.post(url, data).done(function (response) {
             if (response.success === true) {
                 if (callback) {
@@ -123,10 +123,23 @@
                 window.location = response.url;
             }
             else {
-                ALERTSYSTEM.ShowWarningMessage("Unable to join the gvieaway.");
-                btn.removeClass('disabled');
+                if (response.message) {
+                    ALERTSYSTEM.ShowWarningMessage(response.message);
+                }
+                enableButton(btn);
             }
         });
+    }
+
+    function disableButton(btn) {
+        btn.addClass('disabled');
+        saveBtnOriginalText = btn.html();
+        btn.html(spinnerBtn);
+    }
+
+    function enableButton(btn) {
+        btn.html(saveBtnOriginalText);
+        btn.removeClass('disabled');
     }
 
     function copyToClipboard(selector) {
