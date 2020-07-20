@@ -34,11 +34,18 @@
 <input asp-for="SecondsToEnd" type="hidden" />
 <input asp-for="Status" type="hidden" />
 
-<section class="container-fluid position-relative">
-    <div id="featurecontainer" class="row justify-content-center">
-        <div class="col-md-12 col-lg-10 px-0 px-md-1">
+<div id="featurecontainer" class="row justify-content-center">
+    <section class="container-fluid position-relative">
+        <div class="col-md-12 px-0 px-md-1">
+            <div class="terms-container animate1 mb-2 d-none">
+                <div class="p-5">
+                    <p>@Html.Raw(Model.TermsAndConditions)</p>
+                </div>
+                <div class="terms-actions col-12">
+                    <button class="btn btn-info btn-lg btn-block btn-terms">@SharedLocalizer["close"]</button>
+                </div>
+            </div>
             <div class="giveaway-container animate1 pb-5 mb-2">
-
                 <div id="carouselExampleIndicators" class="carousel slide square-bottom" data-ride="carousel">
                     <ol class="carousel-indicators">
                         <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
@@ -118,7 +125,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 
     <footer>
         <div class="container pt-2 pb-4 pb-md-5">
@@ -126,18 +133,22 @@
                 <div class="col-12 giv-footer">
                     <p>
                         <small>
-                            Unsubscribe anytime. <a asp-area="tools" asp-controller="giveaway" asp-action="terms" asp-route-id="@Model.Id" target="_blank">Read official rules.</a>
+                            @SharedLocalizer["Unsubscribe anytime."]
+                            @if (!string.IsNullOrWhiteSpace(Model.TermsAndConditions))
+                            {
+                                <a href="#" class="btn-terms">@SharedLocalizer["Read official rules."]</a>
+                            }
                         </small>
                     </p>
                 </div>
             </div>
         </div>
     </footer>
+</div>
 
-    <div class="status-bar-wrapper">
-        <div class="status-bar mb-0 h6" id="countdown">
-            <div><span class="mr-1 text-uppercase">@SharedLocalizer["your entries"]:</span><span class="h3 mb-0" id="entry-count"><span>@Model.EntryCount</span></span></div>
-            <div><span class="mr-1">@SharedLocalizer["time left"]:</span><span class="h3 mb-0" id="countdown-days">00</span> <span class="time-uni">d</span> : <span class="h3 mb-0" id="countdown-hours">00</span> <span class="time-uni">h</span> : <span class="h3 mb-0" id="countdown-minutes">00</span> <span class="time-uni">m</span> : <span class="h3 mb-0" id="countdown-seconds">00</span> <span class="time-uni">s</span></div>
-        </div>
+<div class="status-bar-wrapper">
+    <div class="status-bar mb-0 h6" id="countdown">
+        <div><span class="mr-1 text-uppercase">@SharedLocalizer["your entries"]:</span><span class="h3 mb-0" id="entry-count"><span>@Model.EntryCount</span></span></div>
+        <div><span class="mr-1">@SharedLocalizer["time left"]:</span><span class="h3 mb-0" id="countdown-days">00</span> <span class="time-uni">d</span> : <span class="h3 mb-0" id="countdown-hours">00</span> <span class="time-uni">h</span> : <span class="h3 mb-0" id="countdown-minutes">00</span> <span class="time-uni">m</span> : <span class="h3 mb-0" id="countdown-seconds">00</span> <span class="time-uni">s</span></div>
     </div>
-</section>
+</div>
