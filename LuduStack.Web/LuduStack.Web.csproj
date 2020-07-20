@@ -272,6 +272,7 @@
   <ItemGroup>
     <Folder Include="wwwroot\images\badges\" />
     <Folder Include="wwwroot\lib\" />
+    <Folder Include="wwwroot\fonts\" />
   </ItemGroup>
 
   <ItemGroup>
