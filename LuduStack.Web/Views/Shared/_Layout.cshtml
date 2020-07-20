@@ -156,7 +156,7 @@
 
     @if (showCookieBanner)
     {
-        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent/3.1.1/cookieconsent.min.css" integrity="sha512-LQ97camar/lOliT/MqjcQs5kWgy6Qz/cCRzzRzUCfv0fotsCTC9ZHXaPQmJV8Xu/PVALfJZ7BDezl5lW3/qBxg==" crossorigin="anonymous" />
     }
     @await Html.PartialAsync("_TagManagerHead")
 </head>
@@ -284,7 +284,7 @@
     </div>
 
     <!--[if lt IE 11]>
-        <script src="https://cdn.jsdelivr.net/npm/promise-polyfill"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/promise-polyfill/8.1.3/polyfill.min.js" integrity="sha512-jVOsf4v+eYZr+IkABBHh0mBbBn4BZn6t0W6yah9aKXgHK0tw++HH2yX8XObYImtg+B2Cytx/X3fFkiPums57BQ==" crossorigin="anonymous"></script>
     <![endif]-->
 
     <environment include="Development">
