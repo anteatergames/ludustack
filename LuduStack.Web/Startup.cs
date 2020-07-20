@@ -28,6 +28,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using WebEssentials.AspNetCore.Pwa;
 
 namespace LuduStack.Web
 {
@@ -118,7 +119,7 @@ namespace LuduStack.Web
 
             services.AddMemoryCache();
 
-            services.AddProgressiveWebApp();
+            services.AddProgressiveWebApp(new PwaOptions { EnableCspNonce = false });
 
             services.AddTransient<ICookieMgrService, CookieMgrService>();
 
