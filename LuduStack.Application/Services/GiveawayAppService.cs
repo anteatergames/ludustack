@@ -7,6 +7,7 @@ using LuduStack.Domain.Interfaces.Models;
 using LuduStack.Domain.Interfaces.Services;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
+using NPOI.HSSF.Record;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -51,7 +52,7 @@ namespace LuduStack.Application.Services
         {
             try
             {
-                var existing = giveawayDomainService.GetById(giveawayId);
+                Giveaway existing = giveawayDomainService.GetById(giveawayId);
 
                 GiveawayViewModel vm = mapper.Map<GiveawayViewModel>(existing);
 
@@ -193,7 +194,7 @@ namespace LuduStack.Application.Services
         {
             try
             {
-                var newGiveaway = giveawayDomainService.Duplicate(giveawayId);
+                Giveaway newGiveaway = giveawayDomainService.Duplicate(giveawayId);
 
                 unitOfWork.Commit();
 
@@ -209,15 +210,15 @@ namespace LuduStack.Application.Services
         {
             try
             {
-                var newReferralCode = Guid.NewGuid().NoHyphen();
+                string newReferralCode = Guid.NewGuid().NoHyphen();
 
-                var domainActionPerformed = giveawayDomainService.AddParticipant(vm.GiveawayId, vm.Email, vm.GdprConsent, vm.WantNotifications, newReferralCode, vm.ReferralCode);
+                DomainOperationVo<GiveawayParticipant> domainActionPerformed = giveawayDomainService.AddParticipant(vm.GiveawayId, vm.Email, vm.GdprConsent, vm.WantNotifications, newReferralCode, vm.ReferralCode);
 
                 unitOfWork.Commit();
 
                 if (domainActionPerformed.Action == DomainActionPerformed.Create)
                 {
-                    var urlReferral = string.Format("{0}?referralCode={1}", urlReferralBase, newReferralCode);
+                    string urlReferral = string.Format("{0}?referralCode={1}", urlReferralBase, newReferralCode);
 
                     string shortUrl = shortUrlDomainService.Add(urlReferral);
 
@@ -232,6 +233,27 @@ namespace LuduStack.Application.Services
                 }
 
                 return new OperationResultVo<string>(string.Empty, 0, "You are in!");
+            }
+            catch (Exception ex)
+            {
+                return new OperationResultVo(ex.Message);
+            }
+        }
+
+        public OperationResultVo DailyEntry(Guid currentUserId, Guid giveawayId, Guid participantId)
+        {
+            try
+            {
+                DomainOperationVo<int> domainOperation = giveawayDomainService.DailyEntry(giveawayId, participantId);
+
+                if (domainOperation.Action == DomainActionPerformed.None)
+                {
+                    return new OperationResultVo(false, "You already have one entry for today!<br>Come back tomorrow for more!");
+                }
+
+                unitOfWork.Commit();
+
+                return new OperationResultVo<int>(domainOperation.Entity, "You got one more entry for today!<br>Come back tomorrow for more!");
             }
             catch (Exception ex)
             {
@@ -268,6 +290,10 @@ namespace LuduStack.Application.Services
                 vm.EmailConfirmed = participant.Entries.Any(x => x.Type == GiveawayEntryType.EmailConfirmed);
 
                 SetImagesToShow(vm, false);
+
+                SetEntryOptions(vm, participant);
+
+                vm.ParticipantId = participant.Id;
 
                 return new OperationResultVo<GiveawayParticipationViewModel>(vm);
             }
@@ -420,12 +446,12 @@ namespace LuduStack.Application.Services
 
         private static void SetImagesToShow(IGiveawayScreenViewModel vm, bool editing)
         {
-            var newList = new List<string>();
+            List<string> newList = new List<string>();
 
-            var originalList = vm.ImageList;
-            var originalListCount = originalList != null && originalList.Any() ? originalList.Count : 1;
+            List<string> originalList = vm.ImageList;
+            int originalListCount = originalList != null && originalList.Any() ? originalList.Count : 1;
 
-            var maxIterations = (editing ? 5 : originalListCount);
+            int maxIterations = (editing ? 5 : originalListCount);
 
             for (int i = 0; i < maxIterations; i++)
             {
@@ -441,14 +467,14 @@ namespace LuduStack.Application.Services
 
             vm.ImageList = newList;
 
-            var firstIsPlaceholder = vm.ImageList?.First().Equals(Constants.DefaultGiveawayThumbnail) ?? false;
+            bool firstIsPlaceholder = vm.ImageList?.First().Equals(Constants.DefaultGiveawayThumbnail) ?? false;
 
             if (!string.IsNullOrWhiteSpace(vm.FeaturedImage))
             {
                 if (!editing)
                 {
-                    var imageInTheList = vm.ImageList.FirstOrDefault(x => x.Contains(vm.FeaturedImage));
-                    var index = vm.ImageList.IndexOf(imageInTheList);
+                    string imageInTheList = vm.ImageList.FirstOrDefault(x => x.Contains(vm.FeaturedImage));
+                    int index = vm.ImageList.IndexOf(imageInTheList);
                     if (index >= 0)
                     {
                         vm.ImageList.RemoveAt(index);
@@ -470,7 +496,7 @@ namespace LuduStack.Application.Services
 
         private static void FormatImagesToSave(IGiveawayBasicInfo model)
         {
-            var newImageList = new List<string>();
+            List<string> newImageList = new List<string>();
             for (int i = 0; i < model.ImageList.Count; i++)
             {
                 if (!model.ImageList.ElementAt(i).Contains(Constants.DefaultGiveawayThumbnail))
@@ -484,6 +510,53 @@ namespace LuduStack.Application.Services
             if (!string.IsNullOrWhiteSpace(model.FeaturedImage))
             {
                 model.FeaturedImage = model.FeaturedImage.Split('/').LastOrDefault();
+            }
+        }
+
+        private void SetEntryOptions(GiveawayParticipationViewModel vm, GiveawayParticipant participant)
+        {
+            Dictionary<GiveawayEntryType, int> groupedEntries = participant.Entries.GroupBy(x => x.Type).Select(x => new { EntryType = x.Key, EntryCount = x.Sum(y => y.Points) }).ToDictionary(x => x.EntryType, y => y.EntryCount);
+
+            List<GiveawayEntryType> entryOptionsList = Enum.GetValues(typeof(GiveawayEntryType)).Cast<GiveawayEntryType>().ToList();
+
+            foreach (GiveawayEntryType entryType in entryOptionsList)
+            {
+                KeyValuePair<GiveawayEntryType, int> entrySum = groupedEntries.FirstOrDefault(x => x.Key == entryType);
+
+                GiveawayEntryOptionViewModel existing = vm.EntryOptions.FirstOrDefault(x => x.Type == entryType);
+                if (existing != null)
+                {
+                    existing.Type = entryType;
+                    existing.Points = entrySum.Value;
+                    existing.IsMandatory = IsOptionMandatory(participant, entrySum);
+                }
+                else
+                {
+                    vm.EntryOptions.Add(new GiveawayEntryOptionViewModel
+                    {
+                        Type = entryType,
+                        Name = entryType.ToUiInfo().Display,
+                        Points = entrySum.Value,
+                        IsMandatory = IsOptionMandatory(participant, entrySum)
+                    });
+                }
+            }
+        }
+
+        private bool IsOptionMandatory(GiveawayParticipant participant, KeyValuePair<GiveawayEntryType, int> entrySum)
+        {
+            switch (entrySum.Key)
+            {
+                case GiveawayEntryType.LoginOrEmail:
+                    return true;
+                case GiveawayEntryType.EmailConfirmed:
+                    return entrySum.Value > 0;
+                case GiveawayEntryType.ReferralCode:
+                    return entrySum.Value > 0;
+                case GiveawayEntryType.Daily:
+                    return participant.Entries.Any(x => x.Type == GiveawayEntryType.Daily && x.Date.ToLocalTime().Date == DateTime.Today.ToLocalTime().Date); ;
+                default:
+                    return false;
             }
         }
     }

@@ -17,6 +17,8 @@ namespace LuduStack.Domain.Interfaces.Services
 
         DomainOperationVo<GiveawayParticipant> AddParticipant(Guid giveawayId, string email, bool gdprConsent, bool wantNotifications, string referralCode, string referrer);
 
+        DomainOperationVo<int> DailyEntry(Guid giveawayId, Guid participantId);
+
         GiveawayParticipant GetParticipantByEmail(Guid giveawayId, string email);
 
         void UpdateParticipantShortUrl(Guid giveawayId, string email, string shortUrl);

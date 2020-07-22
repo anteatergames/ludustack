@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Xml.Linq;
 
 namespace LuduStack.Domain.Core.Attributes
 {
@@ -10,5 +11,6 @@ namespace LuduStack.Domain.Core.Attributes
         public string Culture { get; set; }
         public string Description { get; set; }
         public string Display { get; set; }
+        public bool AllowMultiple { get; set; }
     }
 }

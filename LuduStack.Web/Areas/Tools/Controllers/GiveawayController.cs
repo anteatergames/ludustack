@@ -1,4 +1,5 @@
-﻿using LuduStack.Application.Interfaces;
+﻿using CloudinaryDotNet;
+using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels.Giveaway;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Core.Extensions;
@@ -375,6 +376,8 @@ namespace LuduStack.Web.Areas.Tools.Controllers
 
                 model.ShareUrl = string.Format("{0}{1}", ViewBag.BaseUrl, model.ShareUrl);
 
+                SetEntryOptions(model, id);
+
                 return View("YouAreIn", model);
             }
             else
@@ -508,6 +511,21 @@ namespace LuduStack.Web.Areas.Tools.Controllers
             }
         }
 
+        [HttpPost("tools/giveaway/{giveawayId:guid}/dailyentry/{participantId:guid}")]
+        public IActionResult DailyEntry(Guid giveawayId, Guid participantId)
+        {
+            try
+            {
+                OperationResultVo saveResult = giveawayAppService.DailyEntry(CurrentUserId, giveawayId, participantId);
+
+                return Json(saveResult);
+            }
+            catch (Exception ex)
+            {
+                return Json(new OperationResultVo(ex.Message));
+            }
+        }
+
         private void SetLocalization(GiveawayViewModel model)
         {
             SetLocalization(model, false);
@@ -546,6 +564,21 @@ namespace LuduStack.Web.Areas.Tools.Controllers
             }
 
             ViewBag.TimeZones = timeZones;
+        }
+
+        private void SetEntryOptions(GiveawayParticipationViewModel model, Guid giveawayId)
+        {
+            foreach (var item in model.EntryOptions)
+            {
+                switch (item.Type)
+                {
+                    case GiveawayEntryType.Daily:
+                        item.Url = Url.Action("dailyentry", "giveaway", new { area = "tools", giveawayId = giveawayId, participantId = model.ParticipantId });
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
     }
 }

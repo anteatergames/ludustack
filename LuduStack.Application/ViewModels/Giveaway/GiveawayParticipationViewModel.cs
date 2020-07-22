@@ -1,4 +1,5 @@
 ﻿using LuduStack.Application.Interfaces;
+using System;
 using System.Collections.Generic;
 
 namespace LuduStack.Application.ViewModels.Giveaway
@@ -32,7 +33,13 @@ namespace LuduStack.Application.ViewModels.Giveaway
         public int EntryCount { get; set; }
 
         public List<string> ImageList { get; set; }
+        public Guid ParticipantId { get; internal set; }
 
         #endregion Extra
+
+        public GiveawayParticipationViewModel()
+        {
+            EntryOptions = new List<GiveawayEntryOptionViewModel>();
+        }
     }
 }

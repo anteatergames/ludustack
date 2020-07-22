@@ -101,6 +101,43 @@
                             </div>
                         </div>
                     </div>
+                    <section id="extraentries">
+                        <div>
+                            @for (int i = 0; i < Model.EntryOptions.Count; i++)
+                            {
+                                var entryOption = Model.EntryOptions.ElementAt(i);
+
+                                if (entryOption.IsMandatory)
+                                {
+                                    <div class="entryoption checked rounded-0 row@(i == 0 ? " border-top" : string.Empty) border-bottom">
+                                        <div class="col py-2">
+                                            @entryOption.Name
+                                        </div>
+                                        <div class="btn-points rounded-0">
+                                            @entryOption.Points
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="entryoption rounded-0 row@(i == 0 ? " border-top" : string.Empty) border-bottom">
+                                        <div class="col">
+                                            <a href="#" data-url="@entryOption.Url" id="@(string.Format("btn-{0}", entryOption.Type.ToString().ToLower()))">
+                                                <div class="col py-2 px-0">
+                                                    @entryOption.Name
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <div class="btn-points rounded-0">
+                                            @entryOption.Points
+                                        </div>
+                                    </div>
+                                }
+                                <input type="hidden" value="@entryOption.IsMandatory.ToString()" />
+                                <input type="hidden" value="@entryOption.AllowMultiple.ToString()" />
+                            }
+                        </div>
+                    </section>
 
                     <section id="giveaway-description">
                         <div class="pt-4 pb-5">
@@ -117,7 +154,14 @@
                                 }
                                 @if (Model.ShowSponsor)
                                 {
-                                    <div class="mx-3"><small><span class="h6">@SharedLocalizer["offered by:"]<a href="@Model.SponsorWebsite" target="_blank" rel="noopener noreferrer">@Model.SponsorName</a> </span></small></div>
+                                    if (!string.IsNullOrWhiteSpace(Model.SponsorWebsite) || Model.SponsorWebsite.Equals("#"))
+                                    {
+                                        <div class="mx-3"><small><span class="h6">@SharedLocalizer["offered by:"] @Model.SponsorName</span></small></div>
+                                    }
+                                    else
+                                    {
+                                        <div class="mx-3"><small><span class="h6">@SharedLocalizer["offered by:"] <a href="@Model.SponsorWebsite" target="_blank" rel="noopener noreferrer">@Model.SponsorName</a> </span></small></div>
+                                    }
                                 }
                             </div>
                         </div>
@@ -148,7 +192,7 @@
 
 <div class="status-bar-wrapper">
     <div class="status-bar mb-0 h6" id="countdown">
-        <div><span class="mr-1 text-uppercase">@SharedLocalizer["your entries"]:</span><span class="h3 mb-0" id="entry-count"><span>@Model.EntryCount</span></span></div>
+        <div><span class="mr-1 text-uppercase">@SharedLocalizer["your entries"]:</span><span class="h3 mb-0" id="entry-count" data-count="@Model.EntryCount">@Model.EntryCount</span></div>
         <div><span class="mr-1">@SharedLocalizer["time left"]:</span><span class="h3 mb-0" id="countdown-days">00</span> <span class="time-uni">d</span> : <span class="h3 mb-0" id="countdown-hours">00</span> <span class="time-uni">h</span> : <span class="h3 mb-0" id="countdown-minutes">00</span> <span class="time-uni">m</span> : <span class="h3 mb-0" id="countdown-seconds">00</span> <span class="time-uni">s</span></div>
     </div>
 </div>

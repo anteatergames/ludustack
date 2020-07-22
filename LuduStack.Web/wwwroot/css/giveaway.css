@@ -35,10 +35,10 @@ html {
     min-height: 300px;
 }
 
-.terms-container .terms-actions {
-    position:absolute;
-    bottom: 20px;
-}
+    .terms-container .terms-actions {
+        position: absolute;
+        bottom: 20px;
+    }
 
 @-webkit-keyframes giveaway-container1 {
     to {
@@ -342,3 +342,66 @@ img.imagelistitem {
         -webkit-box-shadow: 0 5px 5px 0 rgba(99,123,173,.2);
         box-shadow: 0 5px 5px 0 rgba(99,123,173,.2);
     }
+
+
+.entryoption:hover {
+    background-color: var(--light);
+}
+
+.entryoption:before {
+    margin-top: 0.5rem !important;
+    content: "";
+    border-radius: 5px;
+    left: 5px;
+    height: 1.6rem;
+    width: 1.6rem;
+    border: 2px solid #e9eff4;
+    top: .6rem;
+    background-color: #fff;
+}
+
+.entryoption.checked:before {
+    background-color: var(--success);
+    border: 2px solid var(--success);
+    background-image: url(/images/giveaway/icon-check.svg);
+    background-size: 65%;
+    background-repeat: no-repeat;
+    background-position: 50%;
+    color: #3ebdd4;
+}
+
+.entryoption .btn-points {
+    padding-top: 0.5rem !important;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    background-color: var(--success);
+    color: var(--white);
+    z-index: 2;
+    position: relative;
+}
+
+.entryoption a {
+    color: var(--dark);
+}
+
+    .entryoption a:hover {
+        color: var(--success);
+        text-decoration: none;
+    }
+
+.entryoption .btn-points:before {
+    content: "";
+    height: 25px;
+    width: 25px;
+    background: inherit;
+    border: inherit;
+    border-left-color: transparent;
+    border-bottom-color: transparent;
+    border-radius: 0 !important;
+    transform: rotate(225deg);
+    position: absolute;
+    left: -14px;
+    padding: 14px;
+    margin-top: -2px;
+    z-index: -1;
+}

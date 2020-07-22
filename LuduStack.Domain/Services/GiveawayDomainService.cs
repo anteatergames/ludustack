@@ -157,6 +157,34 @@ namespace LuduStack.Domain.Services
             }
         }
 
+        public DomainOperationVo<int> DailyEntry(Guid giveawayId, Guid participantId)
+        {
+            var existing = repository.GetParticipantById(giveawayId, participantId);
+            if (existing == null)
+            {
+                return new DomainOperationVo<int>(DomainActionPerformed.None, 0);
+            }
+
+            var entryAlreadyExists = existing.Entries.Any(x => x.Type == GiveawayEntryType.Daily && x.Date.ToLocalTime().Date == DateTime.Today.ToLocalTime().Date);;
+
+            if (entryAlreadyExists)
+            {
+                return new DomainOperationVo<int>(DomainActionPerformed.None, 0);
+            }
+
+            existing.Entries.Add(new GiveawayEntry {
+                Date = DateTime.Now,
+                Type = GiveawayEntryType.Daily,
+                Points = 1
+            });
+
+            repository.UpdateParticipant(giveawayId, existing);
+
+            var countDailyEntries = existing.Entries.Where(x => x.Type == GiveawayEntryType.Daily).Sum(x => x.Points);
+
+            return new DomainOperationVo<int>(DomainActionPerformed.Create, countDailyEntries);
+        }
+
         public GiveawayParticipant GetParticipantByEmail(Guid giveawayId, string email)
         {
             GiveawayParticipant model = repository.GetParticipantByEmail(giveawayId, email);

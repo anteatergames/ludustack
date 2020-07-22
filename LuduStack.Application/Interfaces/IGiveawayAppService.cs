@@ -24,6 +24,8 @@ namespace LuduStack.Application.Interfaces
 
         OperationResultVo EnterGiveaway(Guid currentUserId, GiveawayEnterViewModel vm, string urlReferralBase);
 
+        OperationResultVo DailyEntry(Guid currentUserId, Guid giveawayId, Guid participantId);
+
         OperationResultVo ConfirmParticipant(Guid currentUserId, Guid giveawayId, string referralCode);
 
         OperationResultVo RemoveParticipant(Guid currentUserId, Guid giveawayId, Guid participantId);
