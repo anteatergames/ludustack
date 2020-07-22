@@ -405,3 +405,12 @@ img.imagelistitem {
     margin-top: -2px;
     z-index: -1;
 }
+
+.entryoption .btn-points .badge {
+    position: absolute;
+    left: -28px;
+    top: 7px;
+    height: 25px;
+    width: 25px;
+    line-height: 14px;
+}

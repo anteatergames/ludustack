@@ -128,13 +128,11 @@
                                                 </div>
                                             </a>
                                         </div>
-                                        <div class="btn-points rounded-0">
-                                            @entryOption.Points
+                                        <div class="btn-points rounded-0" data-count="@entryOption.Points">
+                                            @entryOption.Points <span class="badge btn btn-info btn-outline-light p-1 rounded-circle">+1</span>
                                         </div>
                                     </div>
                                 }
-                                <input type="hidden" value="@entryOption.IsMandatory.ToString()" />
-                                <input type="hidden" value="@entryOption.AllowMultiple.ToString()" />
                             }
                         </div>
                     </section>
