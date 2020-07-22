@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = null;
+    ViewData["Title"] = ConstantHelper.DefaultTitle;
     ViewData["CanonicalUrl"] = "https://www.ludustack.com/";
 
     var postModel = ViewBag.PostFromHome as PostFromHomeViewModel;
@@ -76,7 +76,7 @@
 <section class="content container">
     <div class="row mt-0 mt-md-10 no-gutters px-0 px-lg-10">
 
-        <h1 class="sr-only">LUDUSTACK - Home</h1>
+        <h1 class="sr-only">@ViewData["Title"]</h1>
 
         <div class="col-xl-2">
             <div class="row">
@@ -115,6 +115,7 @@
                     <environment include="Development"><div class="text-center position-absolute w-100 text-white" style="z-index:9999;top:-25px;padding-right: 30px;">dev</div></environment>
                     <environment include="Staging"><div class="text-center position-absolute w-100 text-white" style="z-index:9999;top:-25px;padding-right: 30px;">staging</div></environment>
 
+                    <h2 class="sr-only">@SharedLocalizer["Activity Feed"]</h2>
                     <div id="divActivityFeed"></div>
                 </div>
             </div>
