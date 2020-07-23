@@ -1,14 +1,14 @@
 ﻿@model IEnumerable<GiveawayParticipantViewModel>
 
 @{ Layout = null;
-    var noItemsModel = new ListNoItemsViewModel("fas fa-sad-cry", "No one entered your giveaway... yet!", false);
+    var noItemsModel = new ListNoItemsViewModel("fas fa-sad-cry", "Boo... No one entered your giveaway... yet!", false);
 
     var listTitle = ViewData["ListTitle"] == null ? SharedLocalizer["participants"] : (string)ViewData["ListTitle"];
 
     var giveawayId = ViewData["giveawayId"] == null ? string.Empty : ViewData["giveawayId"].ToString(); }
 
 <div class="bg-light pt-2">
-    <div class="col-12">
+    <div class="col-12 text-capitalize">
         <h2>@SharedLocalizer[listTitle]<span class="float-right">@Model.Count()</span></h2>
     </div>
 
@@ -19,16 +19,16 @@ else
 {
 <div class="col-12 bg-white square-top table-responsive pb-1">
     <table class="table table-hover">
-        <caption class="sr-only">@SharedLocalizer["The available giveaways."]</caption>
+        <caption class="sr-only">@SharedLocalizer["This giveaway participants"]</caption>
         <thead>
-            <tr>
+            <tr class="text-uppercase">
                 <th scope="col" class="text-center">&nbsp;</th>
-                <th scope="col">@SharedLocalizer["Email"]</th>
+                <th scope="col">@SharedLocalizer["email"]</th>
                 <th scope="col" class="text-center">@SharedLocalizer["GDPR"]</th>
-                <th scope="col" class="text-center">@SharedLocalizer["Notifications"]</th>
-                <th scope="col" class="text-center">@SharedLocalizer["Joined"]</th>
-                <th scope="col" class="text-center">@SharedLocalizer["Entries"]</th>
-                <th scope="col" class="text-right">@SharedLocalizer["Actions"]</th>
+                <th scope="col" class="text-center">@SharedLocalizer["notifications"]</th>
+                <th scope="col" class="text-center">@SharedLocalizer["joined"]</th>
+                <th scope="col" class="text-center">@SharedLocalizer["entries"]</th>
+                <th scope="col" class="text-right">@SharedLocalizer["actions"]</th>
             </tr>
         </thead>
         <tbody>
@@ -36,7 +36,7 @@ else
             {
 <tr>
     <td class="text-center">@(Html.Raw(item.IsWinner ? @"<i class=""fas fa-fw fa-trophy text-warning aria-hidden=""true""></i>" : string.Empty))</td>
-    <td>@item.Email@(Html.Raw(item.EmailVerified ? @" <i class=""fas fa-fw fa-check text-muted aria-hidden=""true"" title=""Verified Email""></i>" : string.Empty))</td>
+    <td>@item.Email@(Html.Raw(item.EmailVerified ? String.Format(@" <i class=""fas fa-fw fa-check text-muted aria-hidden=""true"" title=""{0}""></i>", SharedLocalizer["Verified Email"]) : string.Empty))</td>
     <td class="text-center"><i class="@(item.GdprConsent ? "far fa-fw fa-check-circle text-success" : "fas fa-fw fa-ban text-danger")" aria-hidden="true"></i></td>
     <td class="text-center"><i class="@(item.WantNotifications ? "far fa-fw fa-check-circle text-success" : "fas fa-fw fa-ban text-danger")" aria-hidden="true"></i></td>
     <td class="text-center">@item.CreateDate.ToShortDateString()</td>

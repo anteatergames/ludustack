@@ -87,9 +87,9 @@ else
 
             @if (Model.SecondsToEnd > 0)
             {
-<div class="text-muted text-sm-center">@SharedLocalizer[Model.Future ? "starts in" : "ends in"]</div>
+<div class="text-muted text-sm-center text-capitalize">@SharedLocalizer[Model.Future ? "starts in" : "ends in"]</div>
 
-                    <div class="time-left d-flex justify-content-center" id="countdown">
+                    <div class="time-left d-flex justify-content-center text-uppercase" id="countdown">
                         <div class="time-unity">
                             <span id="countdown-days">00</span><br><span class="label">@SharedLocalizer["days"]</span>
                         </div>
@@ -107,13 +107,13 @@ else
                         </div>
                     </div>}
 
-            <div class="p-1 px-2 mb-1 border-bottom rounded-0">
+            <div class="p-1 px-2 mb-1 border-bottom rounded-0 text-uppercase">
                 <span>@SharedLocalizer["winners"]</span> <span class="float-right">@Model.WinnerAmount</span>
             </div>
         </div>
         <div class="col-12 col-sm-6 offset-sm-3 col-lg-12 offset-lg-0">
             <div id="divActions">
-                <a id="btnPickAllWinners" href="#" class="btn btn-outline-success btn-block" data-url="@Url.Action("pickallwinners", "giveaway", new { area = "tools", giveawayId = Model.Id })" data-confirmationmessage="@SharedLocalizer["Are you sure you want to pick all the winners for this giveaway?"]" data-confirmationtitle="@SharedLocalizer["The chosen one"]" data-confirmationbuttontext="@SharedLocalizer["Do it!"]" data-cancelbuttontext="@SharedLocalizer["Cancel"]">@SharedLocalizer["Pick All Winners"] <i class="fas fa-trophy" aria-hidden="true"></i></a>
+                <a id="btnPickAllWinners" href="#" class="btn btn-outline-success btn-block" data-url="@Url.Action("pickallwinners", "giveaway", new { area = "tools", giveawayId = Model.Id })" data-confirmationmessage="@SharedLocalizer["Are you sure you want to pick all the winners for this giveaway?"]" data-confirmationtitle="@SharedLocalizer["The chosen ones"]" data-confirmationbuttontext="@SharedLocalizer["Do it!"]" data-cancelbuttontext="@SharedLocalizer["Cancel"]">@SharedLocalizer["Pick All Winners"] <i class="fas fa-trophy" aria-hidden="true"></i></a>
                 <a id="btnPickSingleWinner" href="#" class="btn btn-outline-secondary btn-block" data-url="@Url.Action("picksinglewinner", "giveaway", new { area = "tools", giveawayId = Model.Id })" data-confirmationmessage="@SharedLocalizer["Are you sure you want to pick a single winner for this giveaway?"]" data-confirmationtitle="@SharedLocalizer["The chosen one"]" data-confirmationbuttontext="@SharedLocalizer["Do it!"]" data-cancelbuttontext="@SharedLocalizer["Cancel"]">@SharedLocalizer["Pick Single Winner"] <i class="fas fa-trophy" aria-hidden="true"></i></a>
             </div>
         </div>

@@ -15,7 +15,5 @@ namespace LuduStack.Application.ViewModels.Giveaway
         public int Points { get; set; }
 
         public bool IsMandatory { get; set; }
-
-        public bool AllowMultiple { get; set; }
     }
 }

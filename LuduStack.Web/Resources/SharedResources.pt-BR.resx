@@ -2077,4 +2077,484 @@
     <value>características</value>
     <comment>Generic</comment>
   </data>
+  <data name="Are you sure you want to delete this Giveaway?" xml:space="preserve">
+    <value>Tem certeza que quer excluir este Sorteio?</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="Clear the end date." xml:space="preserve">
+    <value>Limpar a data final.</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="End Date" xml:space="preserve">
+    <value>Fim</value>
+    <comment>Generic</comment>
+  </data>
+  <data name="Ended" xml:space="preserve">
+    <value>Finalizado</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="featured" xml:space="preserve">
+    <value>destacado</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="Images to show" xml:space="preserve">
+    <value>Imagens para mostrar</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="Open for Entries" xml:space="preserve">
+    <value>Aberto para Participar</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="Pending Start" xml:space="preserve">
+    <value>Pendente Início</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="Picking Winners" xml:space="preserve">
+    <value>Selecionando Vencedores</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="Prize Price in Dolar" xml:space="preserve">
+    <value>Valor dos prêmios</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="Select the end date." xml:space="preserve">
+    <value>Selecione a data final.</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="Select the start date." xml:space="preserve">
+    <value>Selecione a data de início.</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="Sponsor Name" xml:space="preserve">
+    <value>Patrocinador</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="Sponsor Website" xml:space="preserve">
+    <value>Site do Patrocinador</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="Start Date" xml:space="preserve">
+    <value>Início</value>
+    <comment>Generic</comment>
+  </data>
+  <data name="Time Zone" xml:space="preserve">
+    <value>Fuso horário</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="Winner Amount" xml:space="preserve">
+    <value>Ganhadores</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="You are {0} a Giveaway" xml:space="preserve">
+    <value>Você está {0} um Sorteio</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="${0} value" xml:space="preserve">
+    <value>${0} valor</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="A single winner has been chosen!" xml:space="preserve">
+    <value>Um vencedor foi escolhido!</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="actions" xml:space="preserve">
+    <value>ações</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="All Participants are gone now!" xml:space="preserve">
+    <value>Todos os Participantes já eram!</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="All winners were chosen!" xml:space="preserve">
+    <value>Todos os vencedores foram escolhidos!</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="And here are the winners" xml:space="preserve">
+    <value>E aqui estão os vencedores</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="Are you sure you want to declare {0} not a winner?" xml:space="preserve">
+    <value>Tem certeza que quer declarar que {0} não é um vencedor?</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="Are you sure you want to pick a single winner for this giveaway?" xml:space="preserve">
+    <value>Tem certeza que quer sortear um vencedor para este sorteio?</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="Are you sure you want to pick all the winners for this giveaway?" xml:space="preserve">
+    <value>Tem certeza que quer sortear os vencedores deste sorteio?</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="Are you sure you want to remove all Participants?" xml:space="preserve">
+    <value>Tem certeza que quer remover todos os Participantes?</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="Are you sure you want to remove {0} from this giveaway?" xml:space="preserve">
+    <value>Tem certeza que quer remover {0} deste sorteio?</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="Back to dashboard" xml:space="preserve">
+    <value>Voltar para a dashboard</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="Boo... No one entered your giveaway... yet!" xml:space="preserve">
+    <value>Buá... Ninguém entrou no seu sorteio... ainda!</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="Check your inbox and confirm your email to receive one more entry!" xml:space="preserve">
+    <value>Verifique sua caixa postal e confirme seu email para ganhar mais um bilhete!</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="click here" xml:space="preserve">
+    <value>clique aqui</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="close" xml:space="preserve">
+    <value>fechar</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="Congratulations!" xml:space="preserve">
+    <value>Parabéns!</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="Daily Entry" xml:space="preserve">
+    <value>Bilhete diário</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="days" xml:space="preserve">
+    <value>dias</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="Declare {0} not a winner" xml:space="preserve">
+    <value>Declarar que {0} não é um vencedor</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="Do it!" xml:space="preserve">
+    <value>Manda ver!</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="duplicate" xml:space="preserve">
+    <value>duplicar</value>
+    <comment>Generic</comment>
+  </data>
+  <data name="Earn 1 entry for each friend who enters!" xml:space="preserve">
+    <value>Ganhe 1 bilhete para cada amigo que entrar!</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="Edit this giveaway" xml:space="preserve">
+    <value>Editar este sorteio</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="email" xml:space="preserve">
+    <value>email</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="Email Confirmation" xml:space="preserve">
+    <value>Confirmação de email</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="Email confirmed" xml:space="preserve">
+    <value>Email confirmado</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="ends" xml:space="preserve">
+    <value>termina em</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="ends in" xml:space="preserve">
+    <value>termina em</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="enter" xml:space="preserve">
+    <value>entrar</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="Enter sweepstakes and receive exclusive offers from {0}." xml:space="preserve">
+    <value>Participe de concursos e receba ofertas exclusivas de {0}</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="Enter your email address below:" xml:space="preserve">
+    <value>Digite seu email abaixo:</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="Entered" xml:space="preserve">
+    <value>Participando</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="entries" xml:space="preserve">
+    <value>bilhetes</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="Expand your reach" xml:space="preserve">
+    <value>Expanda seu alcance</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="for users" xml:space="preserve">
+    <value>para usuários</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="free" xml:space="preserve">
+    <value>grátis</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="Get more players for your games!" xml:space="preserve">
+    <value>Ganhe mais jogadores para seus jogos!</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="Giveaway" xml:space="preserve">
+    <value>Sorteio</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="Giveaway duplicated!" xml:space="preserve">
+    <value>Sorteio duplicado!</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="Giveaway not found!" xml:space="preserve">
+    <value>Sorteio não encontrado!</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="giveaway timezone: {0}" xml:space="preserve">
+    <value>fuso horário do sorteio: {0}</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="giveaways" xml:space="preserve">
+    <value>sorteios</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="Go to my email!" xml:space="preserve">
+    <value>Vá para meu email!</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="Go viral with your potential players sharing their own custom links to increase chances of winning." xml:space="preserve">
+    <value>Viralize entre seus jogadores em potencial compartilhando seus próprios links rastreados para aumentar as chances de ganhar.</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="hours" xml:space="preserve">
+    <value>horas</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="I consent to getting sale, promotion, or marketing email" xml:space="preserve">
+    <value>Eu concordo em receber emails sobre vendas, promoções ou marketing</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="I want to hear about more free giveaways!" xml:space="preserve">
+    <value>Eu quero ser avisado sobre mais sorteios!</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="joined" xml:space="preserve">
+    <value>entrou</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="manage" xml:space="preserve">
+    <value>gerenciar</value>
+    <comment>Generic</comment>
+  </data>
+  <data name="Manage Viral Giveaways" xml:space="preserve">
+    <value>Gerencie Sorteios virais</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="min" xml:space="preserve">
+    <value>min</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="My Giveaways" xml:space="preserve">
+    <value>Meus Sorteios</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="New Giveaway" xml:space="preserve">
+    <value>Novo Sorteio</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="No Branding" xml:space="preserve">
+    <value>Sem "branding"</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="No participant found for that email!" xml:space="preserve">
+    <value>Nenhum participante encontrado para este email!</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="not defined" xml:space="preserve">
+    <value>não definido</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="notifications" xml:space="preserve">
+    <value>notificações</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="offered by:" xml:space="preserve">
+    <value>oferecido por:</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="participants" xml:space="preserve">
+    <value>participantes</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="Pick All Winners" xml:space="preserve">
+    <value>Sortear vencedores</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="Pick Single Winner" xml:space="preserve">
+    <value>Sortear um vencedor</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="Read official rules." xml:space="preserve">
+    <value>Leia o regulamento.</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="Referral code" xml:space="preserve">
+    <value>Indicação</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="Remove all Participants" xml:space="preserve">
+    <value>Remover todos os Participantes</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="Remove {0} from this giveaway" xml:space="preserve">
+    <value>Remover {0} deste sorteio</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="sec" xml:space="preserve">
+    <value>seg</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="Share your tracked link" xml:space="preserve">
+    <value>Compartilhe seu link rastreado</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="starts" xml:space="preserve">
+    <value>começa em</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="starts in" xml:space="preserve">
+    <value>começa em</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="Tell us about the Giveaway." xml:space="preserve">
+    <value>Conte mais sobre o Sorteio.</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="Thank you for participating!" xml:space="preserve">
+    <value>Obrigado por participar!</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="That Giveaway is gone now!" xml:space="preserve">
+    <value>Aquele Sorteio já era!</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="That Participant is gone now!" xml:space="preserve">
+    <value>Aquele Participante já era!</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="That Participant is not a winner anymore!" xml:space="preserve">
+    <value>Esse Participante não é mais um ganhador!</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="The available Giveaways." xml:space="preserve">
+    <value>Os Sorteios disponíveis.</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="The chosen one" xml:space="preserve">
+    <value>O escohido</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="The chosen ones" xml:space="preserve">
+    <value>Os escolhidos</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="This giveaway participants" xml:space="preserve">
+    <value>Os participantes deste sorteio</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="This giveaway was not started yet!" xml:space="preserve">
+    <value>Esse sorteio não começou ainda!</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="time left" xml:space="preserve">
+    <value>tempo restante</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="time to start" xml:space="preserve">
+    <value>tempo para começar</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="to log in." xml:space="preserve">
+    <value>para entrar.</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="Unsubscribe anytime." xml:space="preserve">
+    <value>Descadastre-se quando quiser.</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="Verified Email" xml:space="preserve">
+    <value>Email Verificado</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="view" xml:space="preserve">
+    <value>visualizar</value>
+    <comment>Generic</comment>
+  </data>
+  <data name="View this giveaway" xml:space="preserve">
+    <value>Visualizar este sorteio</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="We are picking winners!" xml:space="preserve">
+    <value>Estamos selecionando os vencedores!</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="We send an email to the participant for confirmation so you can see who is real and who is not." xml:space="preserve">
+    <value>Nós enviamos um email de confirmação para o participante para que você possa identificar quem é real e quem não é.</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="winners" xml:space="preserve">
+    <value>vencedores</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="winners: {0}" xml:space="preserve">
+    <value>vencedores: {0}</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="You already have one entry for today!&lt;br&gt;Come back tomorrow for more!" xml:space="preserve">
+    <value>Você já pegou o bilhete de hoje"&lt;br&gt;Volte amanhã pra mais!</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="You are in!" xml:space="preserve">
+    <value>Você tá dentro!</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="You don't have any Giveaway!" xml:space="preserve">
+    <value>Você não tem nenhum Sorteio!</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="You got one more entry for today!&lt;br&gt;Come back tomorrow for more!" xml:space="preserve">
+    <value>Você ganhou mais um bilhete hoje"&lt;br&gt;Volte amanhã pra mais!</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="You must be logged in to manage giveaways" xml:space="preserve">
+    <value>Você deve estar autenticado para gerenciar sorteios</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="You need to be logged-in to use the giveaway tool." xml:space="preserve">
+    <value>Você precisa estar logado para usar a ferramenta de sorteios.</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="You will be receiving and email from us about your prize." xml:space="preserve">
+    <value>Você vai receber um email nosso sobre seu prêmio.</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="You're in!" xml:space="preserve">
+    <value>Você tá dentro!</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="your entries" xml:space="preserve">
+    <value>seus bilhetes</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="Your giveaways will not show our brand. Just upload an image with your own logo and you are good to go!" xml:space="preserve">
+    <value>Seus sorteios não mostrarão nossa marca. Apenas faça upload de uma imagem com seu próprio logo e você está pronto!</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="{0} - Management" xml:space="preserve">
+    <value>{0} - Gestão</value>
+    <comment>Giveaway</comment>
+  </data>
 </root>

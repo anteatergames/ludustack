@@ -198,7 +198,7 @@ namespace LuduStack.Application.Services
 
                 unitOfWork.Commit();
 
-                return new OperationResultVo<Guid>(newGiveaway.Id, 0, "Giveaway duplicated");
+                return new OperationResultVo<Guid>(newGiveaway.Id, 0, "Giveaway duplicated!");
             }
             catch (Exception ex)
             {
@@ -269,14 +269,14 @@ namespace LuduStack.Application.Services
 
                 if (existing == null)
                 {
-                    return new OperationResultVo(false, "Giveaway not found");
+                    return new OperationResultVo(false, "Giveaway not found!");
                 }
 
                 GiveawayParticipant participant = giveawayDomainService.GetParticipantByEmail(giveawayId, email);
 
                 if (participant == null)
                 {
-                    return new OperationResultVo(false, "No participant found for that email");
+                    return new OperationResultVo(false, "No participant found for that email!");
                 }
 
                 GiveawayParticipationViewModel vm = mapper.Map<GiveawayParticipationViewModel>(existing);
@@ -411,11 +411,11 @@ namespace LuduStack.Application.Services
             {
                 case GiveawayStatus.PendingStart:
                     vm.Future = true;
-                    vm.StatusMessage = "This giveaway was not started yet";
+                    vm.StatusMessage = "This giveaway was not started yet!";
                     break;
 
                 case GiveawayStatus.PickingWinners:
-                    vm.StatusMessage = "We are picking winners";
+                    vm.StatusMessage = "We are picking winners!";
                     break;
 
                 case GiveawayStatus.Ended:
@@ -425,7 +425,7 @@ namespace LuduStack.Application.Services
                 case GiveawayStatus.Draft:
                 case GiveawayStatus.OpenForEntries:
                 default:
-                    vm.StatusMessage = "Enter your email address below";
+                    vm.StatusMessage = "Enter your email address below:";
                     break;
             }
 

@@ -5,16 +5,16 @@ namespace LuduStack.Domain.Core.Enums
 {
     public enum GiveawayEntryType
     {
-        [UiInfo(Display = "Entered", AllowMultiple = false)]
+        [UiInfo(Display = "Entered")]
         LoginOrEmail = 1,
 
-        [UiInfo(Display = "Email confirmed", AllowMultiple = false)]
+        [UiInfo(Display = "Email confirmed")]
         EmailConfirmed = 2,
 
-        [UiInfo(Display = "Referral code", AllowMultiple = false)]
+        [UiInfo(Display = "Referral code")]
         ReferralCode = 3,
 
-        [UiInfo(Display = "Daily Entry", AllowMultiple = true )]
+        [UiInfo(Display = "Daily Entry")]
         Daily = 4
     }
 }
