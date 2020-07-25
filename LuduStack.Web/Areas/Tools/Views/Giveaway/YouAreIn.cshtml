@@ -41,14 +41,16 @@
     <span class="msg" data-msg-id="msgUrlCopied">@SharedLocalizer["URL copied to the clipboard."]</span>
     <span class="msg" data-msg-id="msgEmailConfirmedClick">@SharedLocalizer["We sent you an email with instructions on how to confirm."]</span>
     <span class="msg" data-msg-id="msgReferralCodeClick">@SharedLocalizer["Just share your tracked link to earn 1 entry for each friend who enters too."]</span>
-    <span class="msg" data-msg-id="msgFacebookShareAlreadyClicked">@SharedLocalizer["You already shared this on Facebook"]</span>
+    <span class="msg" data-msg-id="msgFacebookShareAlreadyClicked">@SharedLocalizer["You already shared this on Facebook!"]</span>
+    <span class="msg" data-msg-id="msgTwitterShareAlreadyClicked">@SharedLocalizer["You already tweeted this!"]</span>
     <span class="msg" data-msg-id="msgFacebookShareResponse">@SharedLocalizer["You will receive +1 entry for each Facebook Friend who participates."]</span>
 }
 
 <input asp-for="SecondsToEnd" type="hidden" />
 <input asp-for="Status" type="hidden" />
+<input asp-for="Name" type="hidden" />
 
-<div id="featurecontainer" class="row justify-content-center">
+<div id="featurecontainer" class="justify-content-center">
     <section class="container-fluid position-relative">
         <div class="row">
             <div class="col-md-12 px-0 px-md-1">

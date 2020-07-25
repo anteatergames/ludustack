@@ -554,7 +554,7 @@ namespace LuduStack.Application.Services
                     vm.EntryOptions.Add(new GiveawayEntryOptionViewModel
                     {
                         Type = entryType,
-                        Name = entryType.ToUiInfo().Display,
+                        Name = entryType.ToUiInfo().Description,
                         Points = entrySum.Value,
                         IsMandatory = IsOptionMandatory(participant, entrySum)
                     });
@@ -576,6 +576,8 @@ namespace LuduStack.Application.Services
                     return participant.Entries.Any(x => x.Type == GiveawayEntryType.Daily && x.Date.ToLocalTime().Date == DateTime.Today.ToLocalTime().Date);
                 case GiveawayEntryType.FacebookShare:
                     return participant.Entries.Any(x => x.Type == GiveawayEntryType.FacebookShare);
+                case GiveawayEntryType.TwitterShare:
+                    return participant.Entries.Any(x => x.Type == GiveawayEntryType.TwitterShare);
                 default:
                     return false;
             }

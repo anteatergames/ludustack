@@ -2573,12 +2573,16 @@
     <value>A gente te enviou um email com instruções para confirmar.</value>
     <comment>Giveaway</comment>
   </data>
-  <data name="You already shared this on Facebook" xml:space="preserve">
-    <value>Você já compartilhou isso no Facebook</value>
+  <data name="You already shared this on Facebook!" xml:space="preserve">
+    <value>Você já compartilhou isso no Facebook!</value>
     <comment>Giveaway</comment>
   </data>
   <data name="You will receive +1 entry for each Facebook Friend who participates" xml:space="preserve">
     <value>Você recebará mais 1 bilhete para cada amigo do Facebook que participar.</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="You already tweeted this!" xml:space="preserve">
+    <value>Você já tuitou isso!</value>
     <comment>Giveaway</comment>
   </data>
 </root>

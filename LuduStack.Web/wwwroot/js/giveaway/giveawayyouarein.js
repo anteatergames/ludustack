@@ -7,8 +7,10 @@
     const selection = window.getSelection();
 
     var sharedOnFacebook = false;
+    var sharedOnTwitter = false;
 
     function setSelectors() {
+        selectors.name = '#Name';
         selectors.status = '#Status';
         selectors.container = '#featurecontainer';
         selectors.urlInput = '#ShareUrl';
@@ -17,13 +19,15 @@
         selectors.entryoption = '.entryoption';
         selectors.btnPoints = '.btn-points';
         selectors.entryCount = '#entry-count';
-        selectors.btnFacebookShare = '#btn-facebookshare';
         selectors.btnEmailConfirmed = '#btn-emailconfirmed';
         selectors.btnReferralCode = '#btn-referralcode';
+        selectors.btnFacebookShare = '#btn-facebookshare';
+        selectors.btnTwitterShare = '#btn-twittershare';
     }
 
     function cacheObjs() {
         objs.container = $(selectors.container);
+        objs.name = $(selectors.name);
         objs.status = $(selectors.status);
         objs.urlInput = $(selectors.urlInput);
         objs.entryCount = $(selectors.entryCount);
@@ -52,6 +56,8 @@
         bindBtnDaily();
 
         bindBtnFacebookShare();
+
+        bindBtnTwitterShare();
 
         FX.BindKonamiCode();
     }
@@ -130,6 +136,23 @@
         });
     }
 
+    function bindBtnTwitterShare() {
+        objs.container.on('click', selectors.btnTwitterShare, function (e) {
+            e.preventDefault();
+            var btn = $(this);
+
+            if (!sharedOnTwitter) {
+                twitterShare(objs.name.val(), objs.urlInput.val());
+                sharedOnTwitter = true;
+            }
+            else {
+                ALERTSYSTEM.ShowWarningMessage(MESSAGES.Translation['msgTwitterShareAlreadyClicked']);
+            }
+
+            return false;
+        });
+    }
+
     function registerNewEntry(btn, points) {
         if (!points || points === 0) {
             points = 1;
@@ -170,6 +193,16 @@
                 ALERTSYSTEM.Toastr.ShowInfo(MESSAGES.Translation['msgFacebookShareResponse'])
             }
         });
+    }
+
+    function twitterShare(text, url) {
+        url += '?source=TwitterShare';
+        console.log(url);
+
+        url = 'https://www.twitter.com/intent/tweet?text=' + text + ': ' + url;
+
+        console.log(url);
+        window.open(url);
     }
 
     return {
