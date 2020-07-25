@@ -340,7 +340,16 @@
     "outputFileName": "wwwroot/js/giveaway/giveawaydetails.min.js",
     "inputFiles": [
       "wwwroot/js/shared/fx.js",
+      "wwwroot/js/giveaway/giveawayparticipantcommon.js",
       "wwwroot/js/giveaway/giveawaydetails.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/giveaway/giveawayyouarein.min.js",
+    "inputFiles": [
+      "wwwroot/js/shared/fx.js",
+      "wwwroot/js/giveaway/giveawayparticipantcommon.js",
+      "wwwroot/js/giveaway/giveawayyouarein.js"
     ]
   }
 ]

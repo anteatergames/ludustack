@@ -1,4 +1,5 @@
-﻿using LuduStack.Domain.Interfaces.Repository;
+﻿using LuduStack.Domain.Core.Enums;
+using LuduStack.Domain.Interfaces.Repository;
 using LuduStack.Domain.Interfaces.Services;
 using LuduStack.Domain.Models;
 using System;
@@ -25,7 +26,7 @@ namespace LuduStack.Domain.Services
             return newToken;
         }
 
-        public string Add(string urlReferal)
+        public string Add(string urlReferal, ShortUrlDestinationType type)
         {
             var newToken = Encode(5);
 
@@ -33,7 +34,8 @@ namespace LuduStack.Domain.Services
             {
                 OriginalUrl = urlReferal,
                 Token = newToken,
-                NewUrl = string.Format("{0}{1}", BASEURL, newToken)
+                NewUrl = string.Format("{0}{1}", BASEURL, newToken),
+                DestinationType = type
             };
 
             while (repository.CountDirectly(x => x.Token.Equals(newToken)) > 1)

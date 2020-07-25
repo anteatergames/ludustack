@@ -281,4 +281,16 @@
     </Content>
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Remove="wwwroot\js\giveaway\giveawayyouarein.min.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\js\giveaway\giveawayyouarein.min.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\js\giveaway\giveawayyouarein.min.js" />
+  </ItemGroup>
+
 </Project>

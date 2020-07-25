@@ -319,12 +319,12 @@ namespace LuduStack.Web.Areas.Tools.Controllers
                             string emailConfirmationUrl = Url.GiveawayEmailConfirmationLink(Request.Scheme, enter.GiveawayId.ToString(), castRestult.Value);
 
                             await NotificationSender.SendGiveawayEmailConfirmationAsync(enter.Email, emailConfirmationUrl, castRestultGiveawayInfo.Value.Name);
+
+                            await NotificationSender.SendTeamNotificationAsync(String.Format("{0} joined the giveaway {1}", enter.Email, castRestultGiveawayInfo.Value.Name));
                         }
                     }
 
                     string url = Url.Action("youarein", "giveaway", new { area = "tools", id = enter.GiveawayId });
-
-                    await NotificationSender.SendTeamNotificationAsync(String.Format("{0} joined the giveaway {1}", enter.Email, enter.GiveawayId.ToString()));
 
                     return Json(new OperationResultRedirectVo(result, url));
                 }

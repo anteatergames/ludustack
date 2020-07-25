@@ -15,6 +15,9 @@ namespace LuduStack.Domain.Core.Enums
         ReferralCode = 3,
 
         [UiInfo(Display = "Daily Entry")]
-        Daily = 4
+        Daily = 4,
+
+        [UiInfo(Display = "Facebook Share")]
+        FacebookShare = 5
     }
 }

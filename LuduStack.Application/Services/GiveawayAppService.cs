@@ -220,7 +220,7 @@ namespace LuduStack.Application.Services
                 {
                     string urlReferral = string.Format("{0}?referralCode={1}", urlReferralBase, newReferralCode);
 
-                    string shortUrl = shortUrlDomainService.Add(urlReferral);
+                    string shortUrl = shortUrlDomainService.Add(urlReferral, ShortUrlDestinationType.Giveaway);
 
                     if (!string.IsNullOrWhiteSpace(shortUrl))
                     {

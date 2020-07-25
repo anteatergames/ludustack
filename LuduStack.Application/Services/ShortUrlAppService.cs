@@ -154,7 +154,7 @@ namespace LuduStack.Application.Services
                     unitOfWork.Commit();
                 }
 
-                return new OperationResultVo<string>(shortUrl?.OriginalUrl, 0);
+                return new OperationResultVo<ShortUrl>(shortUrl, 0);
             }
             catch (Exception ex)
             {

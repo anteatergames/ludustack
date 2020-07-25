@@ -24,11 +24,15 @@
 @section Scripts {
     <environment include="Development">
         <script src="~/js/shared/fx.js"></script>
-        <script src="~/js/giveaway/giveawaydetails.js"></script>
+        <script src="~/js/giveaway/giveawayparticipantcommon.js"></script>
+        <script src="~/js/giveaway/giveawayyouarein.js"></script>
     </environment>
     <environment exclude="Development">
-        <script src="~/js/giveaway/giveawaydetails.min.js" asp-append-version="true"></script>
+        <script src="~/js/giveaway/giveawayyouarein.min.js" asp-append-version="true"></script>
     </environment>
+
+
+    @await Html.PartialAsync("_FacebookSdk")
 }
 
 <input asp-for="SecondsToEnd" type="hidden" />
@@ -122,7 +126,7 @@
                                 {
                                     <div class="entryoption rounded-0 row@(i == 0 ? " border-top" : string.Empty) border-bottom">
                                         <div class="col">
-                                            <a href="#" data-url="@entryOption.Url" id="@(string.Format("btn-{0}", entryOption.Type.ToString().ToLower()))">
+                                            <a href="#" data-url="@entryOption.Url" id="@(string.Format("btn-{0}", entryOption.Type.ToString().ToLower()))" data-points="@entryOption.Points">
                                                 <div class="col py-2 px-0">
                                                     @SharedLocalizer[entryOption.Name]
                                                 </div>

@@ -1,7 +1,7 @@
 ﻿@model GiveawayDetailsViewModel
 @{
     ViewData["Title"] = SharedLocalizer["Giveaway"];
-    ViewData["Description"] = "tralala";
+    ViewData["Description"] = Model.Name;
     ViewData["Url"] = ViewBag.BaseUrl + Url.Action("details", "localization", new { area = "tools", id = Model.Id });
     //ViewData["OgImage"] = ViewBag.BaseUrl + "/images/og/oggiveaway.png";
 
@@ -25,6 +25,7 @@
 @section Scripts {
     <environment include="Development">
         <script src="~/js/shared/fx.js"></script>
+        <script src="~/js/giveaway/giveawayparticipantcommon.js"></script>
         <script src="~/js/giveaway/giveawaydetails.js"></script>
     </environment>
     <environment exclude="Development">
