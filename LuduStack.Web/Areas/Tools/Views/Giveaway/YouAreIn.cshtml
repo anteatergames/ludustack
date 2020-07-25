@@ -24,6 +24,7 @@
 @section Scripts {
     <environment include="Development">
         <script src="~/js/shared/fx.js"></script>
+        <script src="~/js/shared/messages.js"></script>
         <script src="~/js/giveaway/giveawayparticipantcommon.js"></script>
         <script src="~/js/giveaway/giveawayyouarein.js"></script>
     </environment>
@@ -33,6 +34,15 @@
 
 
     @await Html.PartialAsync("_FacebookSdk")
+}
+
+
+@section TranslatedMessages {
+    <span class="msg" data-msg-id="msgUrlCopied">@SharedLocalizer["URL copied to the clipboard."]</span>
+    <span class="msg" data-msg-id="msgEmailConfirmedClick">@SharedLocalizer["We sent you an email with instructions on how to confirm."]</span>
+    <span class="msg" data-msg-id="msgReferralCodeClick">@SharedLocalizer["Just share your tracked link to earn 1 entry for each friend who enters too."]</span>
+    <span class="msg" data-msg-id="msgFacebookShareAlreadyClicked">@SharedLocalizer["You already shared this on Facebook"]</span>
+    <span class="msg" data-msg-id="msgFacebookShareResponse">@SharedLocalizer["You will receive +1 entry for each Facebook Friend who participates."]</span>
 }
 
 <input asp-for="SecondsToEnd" type="hidden" />

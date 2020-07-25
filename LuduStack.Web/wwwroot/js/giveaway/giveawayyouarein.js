@@ -63,7 +63,7 @@
 
             copyToClipboard(selectors.urlInput);
 
-            ALERTSYSTEM.Toastr.ShowInfo("URL copied to the clipboard.")
+            ALERTSYSTEM.Toastr.ShowInfo(MESSAGES.Translation['msgUrlCopied'])
 
             return false;
         });
@@ -73,7 +73,7 @@
         objs.container.on('click', selectors.btnEmailConfirmed, function (e) {
             e.preventDefault();
 
-            ALERTSYSTEM.ShowWarningMessage("We sent you an email with instructions on how to confirm.");
+            ALERTSYSTEM.ShowWarningMessage(MESSAGES.Translation['msgEmailConfirmedClick']);
 
             return false;
         });
@@ -83,7 +83,7 @@
         objs.container.on('click', selectors.btnReferralCode, function (e) {
             e.preventDefault();
 
-            ALERTSYSTEM.ShowWarningMessage("Just share your tracked link to earn 1 entry for each friend who enters too.");
+            ALERTSYSTEM.ShowWarningMessage(MESSAGES.Translation['msgReferralCodeClick']);
 
             return false;
         });
@@ -123,7 +123,7 @@
                 sharedOnFacebook = true;
             }
             else {
-                ALERTSYSTEM.ShowWarningMessage("You already shared this on Facebook");
+                ALERTSYSTEM.ShowWarningMessage(MESSAGES.Translation['msgFacebookShareAlreadyClicked']);
             }
 
             return false;
@@ -167,7 +167,7 @@
         }, function (response) {
             if (response) {
                 checkEntry(btn);
-                ALERTSYSTEM.Toastr.ShowInfo("You will receive +1 entry if some one comes from your shared link.")
+                ALERTSYSTEM.Toastr.ShowInfo(MESSAGES.Translation['msgFacebookShareResponse'])
             }
         });
     }

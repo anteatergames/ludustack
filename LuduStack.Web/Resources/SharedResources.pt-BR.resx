@@ -2561,4 +2561,24 @@
     <value>Compartilhamento no Facebook</value>
     <comment>Giveaway</comment>
   </data>
+  <data name="Just share your tracked link to earn 1 entry for each friend who enters too." xml:space="preserve">
+    <value>Compartilhe seu link rastreado para ganhar 1 bilhete para cada amigo que entrar também.</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="URL copied to the clipboard." xml:space="preserve">
+    <value>URL copiada para a área de transferência.</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="We sent you an email with instructions on how to confirm." xml:space="preserve">
+    <value>A gente te enviou um email com instruções para confirmar.</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="You already shared this on Facebook" xml:space="preserve">
+    <value>Você já compartilhou isso no Facebook</value>
+    <comment>Giveaway</comment>
+  </data>
+  <data name="You will receive +1 entry for each Facebook Friend who participates" xml:space="preserve">
+    <value>Você recebará mais 1 bilhete para cada amigo do Facebook que participar.</value>
+    <comment>Giveaway</comment>
+  </data>
 </root>
