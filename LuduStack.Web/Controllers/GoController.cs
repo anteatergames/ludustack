@@ -23,23 +23,11 @@ namespace LuduStack.Web.Controllers
 
             if (result.Success)
             {
-                OperationResultVo<ShortUrl> castRestult = result as OperationResultVo<ShortUrl>;
+                OperationResultVo<string> castRestult = result as OperationResultVo<string>;
 
-                var url = castRestult.Value?.OriginalUrl;
+                var url = castRestult.Value;
 
                 url = PrepareUrl(url, referral);
-
-                switch (castRestult.Value.DestinationType)
-                {
-                    case Domain.Core.Enums.ShortUrlDestinationType.Giveaway:
-                        ViewData["Title"] = SharedLocalizer["Giveaways"];
-                        ViewData["Description"] = SharedLocalizer["Win Prizes!"];
-                        //ViewData["OgImage"] = ;
-                        break;
-                    case Domain.Core.Enums.ShortUrlDestinationType.Undefined:
-                    default:
-                        break;
-                }
 
                 return Redirect(url);
             }

@@ -1,9 +1,9 @@
 ﻿@model GiveawayDetailsViewModel
 @{
-    ViewData["Title"] = SharedLocalizer["Giveaway"];
-    ViewData["Description"] = Model.Name;
+    ViewData["Title"] = Model.Name;
+    ViewData["Description"] = Model.Description;
     ViewData["Url"] = ViewBag.BaseUrl + Url.Action("details", "giveaway", new { area = "tools", id = Model.Id });
-    //ViewData["OgImage"] = ViewBag.BaseUrl + "/images/og/oggiveaway.png";
+    ViewData["OgImage"] = ViewBag.BaseUrl + "/images/og/oggiveaway.png";
 
     var isAjax = ViewContext.HttpContext.Request.IsAjaxRequest();
     var canInteract = User.Identity.IsAuthenticated;
