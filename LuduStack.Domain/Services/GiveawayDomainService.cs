@@ -192,6 +192,13 @@ namespace LuduStack.Domain.Services
             return model;
         }
 
+        public bool CheckParticipantByEmail(Guid giveawayId, string email)
+        {
+            var guid = repository.CheckParticipantByEmail(giveawayId, email);
+
+            return guid != default(Guid);
+        }
+
         public void UpdateParticipantShortUrl(Guid giveawayId, string email, string shortUrl)
         {
             GiveawayParticipant existing = repository.GetParticipantByEmail(giveawayId, email);

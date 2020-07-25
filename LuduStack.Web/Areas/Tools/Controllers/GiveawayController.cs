@@ -250,7 +250,12 @@ namespace LuduStack.Web.Areas.Tools.Controllers
 
                 if (!string.IsNullOrWhiteSpace(sessionEmail) && castRestult.Value.Status != GiveawayStatus.Ended)
                 {
-                    return RedirectToAction("youarein", "giveaway", new { area = "tools", id = id });
+                    var checkParticipant = giveawayAppService.CheckParticipant(CurrentUserId, id, sessionEmail);
+
+                    if (checkParticipant.Success)
+                    {
+                        return RedirectToAction("youarein", "giveaway", new { area = "tools", id = id }); 
+                    }
                 }
 
                 string serialized = JsonConvert.SerializeObject(castRestult.Value);

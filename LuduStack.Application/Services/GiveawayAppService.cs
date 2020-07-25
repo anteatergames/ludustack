@@ -206,6 +206,25 @@ namespace LuduStack.Application.Services
             }
         }
 
+        public OperationResultVo CheckParticipant(Guid currentUserId, Guid giveawayId, string sessionEmail)
+        {
+            try
+            {
+                var exists = giveawayDomainService.CheckParticipantByEmail(giveawayId, sessionEmail);
+
+                if (!exists)
+                {
+                    return new OperationResultVo("No Participant found with that email");
+                }
+
+                return new OperationResultVo(true);
+            }
+            catch (Exception ex)
+            {
+                return new OperationResultVo(ex.Message);
+            }
+        }
+
         public OperationResultVo EnterGiveaway(Guid currentUserId, GiveawayEnterViewModel vm, string urlReferralBase)
         {
             try

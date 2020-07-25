@@ -20,6 +20,8 @@ namespace LuduStack.Domain.Interfaces.Services
 
         DomainOperationVo<int> DailyEntry(Guid giveawayId, Guid participantId);
 
+        bool CheckParticipantByEmail(Guid giveawayId, string email);
+
         GiveawayParticipant GetParticipantByEmail(Guid giveawayId, string email);
 
         void UpdateParticipantShortUrl(Guid giveawayId, string email, string shortUrl);
