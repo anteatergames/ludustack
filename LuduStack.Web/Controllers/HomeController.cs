@@ -328,10 +328,17 @@ namespace LuduStack.Web.Controllers
 
             model.Items.Add(GenerateTimeLineItem(new DateTime(2020, 06, 01), "fas fa-rocket", "secondary", "June 2020", "New name!", "Now we are called LUDUSTACK! The one stop place for game developers."));
 
+            model.Items.Add(GenerateTimeLineItem(new DateTime(2020, 07, 01), "fas fa-fw fa-ticket-alt", "success", "July 2020", "It is time for sweepstakes!", "You can now run your own giveaways!", new List<string>() {
+                    "GDPR compliant",
+                    "Email confirmation",
+                    "Tracked link sharing for more chances to win",
+                    "Daily entries"
+            }));
+
             // Future
             model.Items.Add(GenerateTimeLineItem(new DateTime(2020, 11, 01), "fas fa-bug", "danger", "November 2020", "Open Beta", "At this point, we hope to have a consistent beta tester base so we can polish the platform and fix every possible bug tha shows up."));
 
-            model.Items.Add(GenerateTimeLineItem(new DateTime(2021, 01, 01), "fas fa-star", "success", "January 2021", "Launch day!", "This is the scheduled launch day. On this day, all the core features will be implented."));
+            model.Items.Add(GenerateTimeLineItem(new DateTime(2021, 01, 01), "fas fa-star", "success", "January 2021", "Launch day!", "This is the scheduled launch day. On this day, all the core features will be implemented."));
 
             model.Items = model.Items.OrderBy(x => x.Date).ToList();
             return model;
