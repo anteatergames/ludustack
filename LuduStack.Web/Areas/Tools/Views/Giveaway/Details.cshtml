@@ -2,7 +2,7 @@
 @{
     ViewData["Title"] = SharedLocalizer["Giveaway"];
     ViewData["Description"] = Model.Name;
-    ViewData["Url"] = ViewBag.BaseUrl + Url.Action("details", "localization", new { area = "tools", id = Model.Id });
+    ViewData["Url"] = ViewBag.BaseUrl + Url.Action("details", "giveaway", new { area = "tools", id = Model.Id });
     //ViewData["OgImage"] = ViewBag.BaseUrl + "/images/og/oggiveaway.png";
 
     var isAjax = ViewContext.HttpContext.Request.IsAjaxRequest();
