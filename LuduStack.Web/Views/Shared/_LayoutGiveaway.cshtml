@@ -6,7 +6,7 @@
 @inject IOptions<ConfigOptions> ConfigOptions
 
 @{
-    var title = string.IsNullOrWhiteSpace(ViewData["Title"]?.ToString()) ? ConstantHelper.DefaultTitle : ViewData["Title"] + " - " + ConstantHelper.DefaultTitle;
+    var title = string.IsNullOrWhiteSpace(ViewData["Title"]?.ToString()) ? ConstantHelper.DefaultTitle : ViewData["Title"];
     string userId = UserManager.GetUserId(User);
 
     var consentFeature = Context.Features.Get<ITrackingConsentFeature>();
@@ -106,7 +106,7 @@
         <span id="spanMessage" class="d-none">@TempData["Message"]</span>
     }
 
-    <div id="contentwrapper" class="mt-3">
+    <div id="contentwrapper" class="mt-0 mt-sm-3">
         @RenderBody()
     </div>
 

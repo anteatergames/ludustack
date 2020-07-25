@@ -238,7 +238,7 @@ namespace LuduStack.Web.Areas.Tools.Controllers
         }
 
         [Route("giveaway/{id:guid}")]
-        public IActionResult Details(Guid id, string referralCode)
+        public IActionResult Details(Guid id, string referralCode, string source)
         {
             OperationResultVo result = giveawayAppService.GetForDetails(CurrentUserId, id);
 
@@ -256,10 +256,12 @@ namespace LuduStack.Web.Areas.Tools.Controllers
                 string serialized = JsonConvert.SerializeObject(castRestult.Value);
                 GiveawayDetailsViewModel model = JsonConvert.DeserializeObject<GiveawayDetailsViewModel>(serialized);
 
+                GiveawayEntryType entryType;
                 model.Enter = new GiveawayEnterViewModel
                 {
                     GiveawayId = id,
-                    ReferralCode = referralCode
+                    ReferralCode = referralCode,
+                    EntryType = Enum.TryParse(source, out entryType) ? entryType : new GiveawayEntryType?()
                 };
 
                 SetAuthorDetails(model);
@@ -271,25 +273,6 @@ namespace LuduStack.Web.Areas.Tools.Controllers
             else
             {
                 return RedirectToAction("index", "giveaway", new { area = "tools" });
-            }
-        }
-
-        [Route("giveaway/{id:guid}/terms")]
-        public IActionResult Terms(Guid id)
-        {
-            OperationResultVo result = giveawayAppService.GetForEdit(CurrentUserId, id);
-
-            if (result.Success)
-            {
-                OperationResultVo<GiveawayViewModel> castResult = result as OperationResultVo<GiveawayViewModel>;
-
-                KeyValuePair<Guid, string> model = new KeyValuePair<Guid, string>(castResult.Value.Id, castResult.Value.TermsAndConditions);
-
-                return View("Terms", model);
-            }
-            else
-            {
-                return RedirectToAction("details", "giveaway", new { area = "tools", id = id });
             }
         }
 

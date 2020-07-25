@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LuduStack.Domain.Core.Enums;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace LuduStack.Application.ViewModels.Giveaway
@@ -16,5 +17,7 @@ namespace LuduStack.Application.ViewModels.Giveaway
         public bool WantNotifications { get; set; }
 
         public string ReferralCode { get; set; }
+
+        public GiveawayEntryType? EntryType { get; set; }
     }
 }

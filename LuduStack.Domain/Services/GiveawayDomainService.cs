@@ -104,7 +104,7 @@ namespace LuduStack.Domain.Services
             return copy;
         }
 
-        public DomainOperationVo<GiveawayParticipant> AddParticipant(Guid giveawayId, string email, bool gdprConsent, bool wantNotifications, string referalCode, string referrer)
+        public DomainOperationVo<GiveawayParticipant> AddParticipant(Guid giveawayId, string email, bool gdprConsent, bool wantNotifications, string referalCode, string referrer, GiveawayEntryType? entryType)
         {
             GiveawayParticipant participant;
 
@@ -145,7 +145,7 @@ namespace LuduStack.Domain.Services
                     {
                         referrerParticipant.Entries.Add(new GiveawayEntry
                         {
-                            Type = GiveawayEntryType.ReferralCode,
+                            Type = entryType ?? GiveawayEntryType.ReferralCode,
                             Points = 1
                         });
 

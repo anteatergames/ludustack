@@ -18,6 +18,8 @@
         selectors.btnPoints = '.btn-points';
         selectors.entryCount = '#entry-count';
         selectors.btnFacebookShare = '#btn-facebookshare';
+        selectors.btnEmailConfirmed = '#btn-emailconfirmed';
+        selectors.btnReferralCode = '#btn-referralcode';
     }
 
     function cacheObjs() {
@@ -43,6 +45,10 @@
     function bindAll() {
         bindBtnCopy();
 
+        bindBtnEmailConfirmed();
+
+        bindBtnReferralCode();
+
         bindBtnDaily();
 
         bindBtnFacebookShare();
@@ -58,6 +64,26 @@
             copyToClipboard(selectors.urlInput);
 
             ALERTSYSTEM.Toastr.ShowInfo("URL copied to the clipboard.")
+
+            return false;
+        });
+    }
+
+    function bindBtnEmailConfirmed() {
+        objs.container.on('click', selectors.btnEmailConfirmed, function (e) {
+            e.preventDefault();
+
+            ALERTSYSTEM.ShowWarningMessage("We sent you an email with instructions on how to confirm.");
+
+            return false;
+        });
+    }
+
+    function bindBtnReferralCode() {
+        objs.container.on('click', selectors.btnReferralCode, function (e) {
+            e.preventDefault();
+
+            ALERTSYSTEM.ShowWarningMessage("Just share your tracked link to earn 1 entry for each friend who enters too.");
 
             return false;
         });
@@ -134,7 +160,7 @@
     }
 
     function facebookShare(btn, url) {
-        url += '/fb';
+        url += '?source=FacebookShare';
         FB.ui({
             method: 'share',
             href: url

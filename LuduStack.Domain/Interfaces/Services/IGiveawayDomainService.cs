@@ -1,4 +1,5 @@
-﻿using LuduStack.Domain.Models;
+﻿using LuduStack.Domain.Core.Enums;
+using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,7 @@ namespace LuduStack.Domain.Interfaces.Services
 
         Giveaway Duplicate(Guid giveawayId);
 
-        DomainOperationVo<GiveawayParticipant> AddParticipant(Guid giveawayId, string email, bool gdprConsent, bool wantNotifications, string referralCode, string referrer);
+        DomainOperationVo<GiveawayParticipant> AddParticipant(Guid giveawayId, string email, bool gdprConsent, bool wantNotifications, string referralCode, string referrer, GiveawayEntryType? entryType);
 
         DomainOperationVo<int> DailyEntry(Guid giveawayId, Guid participantId);
 

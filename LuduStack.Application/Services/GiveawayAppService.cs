@@ -210,15 +210,15 @@ namespace LuduStack.Application.Services
         {
             try
             {
-                string newReferralCode = Guid.NewGuid().NoHyphen();
+                string myCode = Guid.NewGuid().NoHyphen();
 
-                DomainOperationVo<GiveawayParticipant> domainActionPerformed = giveawayDomainService.AddParticipant(vm.GiveawayId, vm.Email, vm.GdprConsent, vm.WantNotifications, newReferralCode, vm.ReferralCode);
+                DomainOperationVo<GiveawayParticipant> domainActionPerformed = giveawayDomainService.AddParticipant(vm.GiveawayId, vm.Email, vm.GdprConsent, vm.WantNotifications, myCode, vm.ReferralCode, vm.EntryType);
 
                 unitOfWork.Commit();
 
                 if (domainActionPerformed.Action == DomainActionPerformed.Create)
                 {
-                    string urlReferral = string.Format("{0}?referralCode={1}", urlReferralBase, newReferralCode);
+                    string urlReferral = string.Format("{0}?referralCode={1}", urlReferralBase, myCode);
 
                     string shortUrl = shortUrlDomainService.Add(urlReferral, ShortUrlDestinationType.Giveaway);
 
@@ -229,7 +229,7 @@ namespace LuduStack.Application.Services
                         unitOfWork.Commit();
                     }
 
-                    return new OperationResultVo<string>(newReferralCode, 0, "You are in!");
+                    return new OperationResultVo<string>(myCode, 0, "You are in!");
                 }
 
                 return new OperationResultVo<string>(string.Empty, 0, "You are in!");
@@ -552,9 +552,11 @@ namespace LuduStack.Application.Services
                 case GiveawayEntryType.EmailConfirmed:
                     return entrySum.Value > 0;
                 case GiveawayEntryType.ReferralCode:
-                    return entrySum.Value > 0;
+                    return participant.Entries.Any(x => x.Type == GiveawayEntryType.ReferralCode);
                 case GiveawayEntryType.Daily:
-                    return participant.Entries.Any(x => x.Type == GiveawayEntryType.Daily && x.Date.ToLocalTime().Date == DateTime.Today.ToLocalTime().Date); ;
+                    return participant.Entries.Any(x => x.Type == GiveawayEntryType.Daily && x.Date.ToLocalTime().Date == DateTime.Today.ToLocalTime().Date);
+                case GiveawayEntryType.FacebookShare:
+                    return participant.Entries.Any(x => x.Type == GiveawayEntryType.FacebookShare);
                 default:
                     return false;
             }

@@ -16,8 +16,8 @@ namespace LuduStack.Web.Controllers
             this.shortUrlAppService = shortUrlAppService;
         }
 
-        [Route("go/{token}/{referral?}")]
-        public IActionResult Go(string token, string referral)
+        [Route("go/{token}")]
+        public IActionResult Go(string token, string source)
         {
             OperationResultVo result = shortUrlAppService.GetFullUrlByToken(token);
 
@@ -27,7 +27,7 @@ namespace LuduStack.Web.Controllers
 
                 var url = castRestult.Value;
 
-                url = PrepareUrl(url, referral);
+                url = PrepareUrl(url, source);
 
                 return Redirect(url);
             }
@@ -37,23 +37,23 @@ namespace LuduStack.Web.Controllers
             }
         }
 
-        private string PrepareUrl(string url, string referral)
+        private string PrepareUrl(string url, string source)
         {
-            if (string.IsNullOrWhiteSpace(referral))
+            if (string.IsNullOrWhiteSpace(source))
             {
                 return url;
             }
 
             if (url.Contains("?"))
             {
-                url += "&r=";
+                url += "&source=";
             }
             else
             {
-                url += "?r=";
+                url += "?source=";
             }
 
-            url += referral;
+            url += source;
 
             return url;
         }

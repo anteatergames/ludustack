@@ -105,9 +105,6 @@
     <Content Update="Areas\Tools\Views\Giveaway\YouAreIn.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Areas\Tools\Views\Giveaway\Terms.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
     <Content Update="Areas\Tools\Views\Giveaway\Details.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

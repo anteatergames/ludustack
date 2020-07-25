@@ -2557,4 +2557,8 @@
     <value>{0} - Gestão</value>
     <comment>Giveaway</comment>
   </data>
+  <data name="Facebook Share" xml:space="preserve">
+    <value>Compartilhamento no Facebook</value>
+    <comment>Giveaway</comment>
+  </data>
 </root>
