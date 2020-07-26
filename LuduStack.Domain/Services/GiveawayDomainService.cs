@@ -319,6 +319,20 @@ namespace LuduStack.Domain.Services
         {
             if (model != null)
             {
+                if (model.StartDate == DateTime.MinValue)
+                {
+                    model.StartDate = DateTime.Now;
+                }
+
+                //int timeZoneOffset = int.Parse(model.TimeZone ?? "0");
+
+                model.StartDate = model.StartDate.ToLocalTime();//.AddHours(timeZoneOffset);
+
+                if (model.EndDate.HasValue)
+                {
+                    model.EndDate = model.EndDate.Value.ToLocalTime();//.AddHours(timeZoneOffset);
+                }
+
                 GiveawayStatus effectiveStatus = model.Status;
 
                 if ((model.Status == GiveawayStatus.Draft || model.Status == GiveawayStatus.PendingStart) && model.StartDate <= DateTime.Now)
@@ -337,20 +351,6 @@ namespace LuduStack.Domain.Services
                 if (effectiveStatus != GiveawayStatus.Draft)
                 {
                     model.Status = effectiveStatus;
-                }
-
-                if (model.StartDate == DateTime.MinValue)
-                {
-                    model.StartDate = DateTime.Now;
-                }
-
-                int timeZoneOffset = int.Parse(model.TimeZone ?? "0");
-
-                model.StartDate = model.StartDate.AddHours(timeZoneOffset);
-
-                if (model.EndDate.HasValue)
-                {
-                    model.EndDate = model.EndDate.Value.AddHours(timeZoneOffset);
                 }
             }
 

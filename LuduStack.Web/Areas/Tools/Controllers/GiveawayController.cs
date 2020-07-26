@@ -85,7 +85,7 @@ namespace LuduStack.Web.Areas.Tools.Controllers
 
                 GiveawayViewModel model = castResult.Value;
 
-                SetTimeZones(model);
+                SetTimeZoneDropdown(model);
 
                 SetLocalization(model);
 
@@ -110,7 +110,7 @@ namespace LuduStack.Web.Areas.Tools.Controllers
 
             model.Description = ContentFormatter.FormatCFormatTextAreaBreaks(model.Description);
 
-            SetTimeZones(model);
+            SetTimeZoneDropdown(model);
 
             return View("CreateEditWrapper", model);
         }
@@ -542,7 +542,7 @@ namespace LuduStack.Web.Areas.Tools.Controllers
             }
         }
 
-        private void SetTimeZones(GiveawayViewModel model)
+        private void SetTimeZoneDropdown(GiveawayViewModel model)
         {
             List<SelectListItem> timeZones = ConstantHelper.TimeZones.ToList();
 

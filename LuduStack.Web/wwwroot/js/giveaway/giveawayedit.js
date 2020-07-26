@@ -117,19 +117,22 @@
     function bindDateTimePickers() {
         var defaultLocale = MAINMODULE.GetLocale() || window.navigator.userLanguage || window.navigator.language;
 
+        var locale = moment.locale(defaultLocale);
+
         var startDateOptions = {
             icons: datetimePickerIcons,
-            locale: defaultLocale,
+            locale: locale,
             sideBySide: true
         };
 
         var endDateOptions = {
             icons: datetimePickerIcons,
-            locale: defaultLocale,
+            locale: locale,
             sideBySide: true
         };
 
-        var sd = moment(objs.startDate.val(), 'L', defaultLocale);
+        var sd = moment(objs.startDate.val(), 'L LT');
+        var ed = sd.clone().add(1, 'd');
         startDateOptions.date = sd;
 
         objs.startDate.keypress(function (e) {
@@ -138,10 +141,8 @@
         }).datetimepicker(startDateOptions);
 
         objs.startDate.datetimepicker('defaultDate', sd);
-
-        var ed = sd.clone().add(1, 'hours');
         if (objs.endDate.val()) {
-            endDateOptions.date = moment(objs.endDate.val(), 'L', defaultLocale);
+            endDateOptions.date = moment(objs.endDate.val(), 'L LT');
         }
         else {
             endDateOptions.minDate = ed;
@@ -153,7 +154,7 @@
         }).datetimepicker(endDateOptions);
 
         if (objs.endDate.val()) {
-            ed = moment(objs.endDate.val(), 'L', defaultLocale);
+            ed = moment(objs.endDate.val(), 'L LT');
             endDateOptions.minDate = ed;
             objs.endDate.datetimepicker(endDateOptions);
         }

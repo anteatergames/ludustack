@@ -2585,4 +2585,8 @@
     <value>Você já tuitou isso!</value>
     <comment>Giveaway</comment>
   </data>
+  <data name="Share on Twitter" xml:space="preserve">
+    <value>Tuíte isso</value>
+    <comment>Giveaway</comment>
+  </data>
 </root>
