@@ -14,6 +14,7 @@
         selectors.btnClearParticipants = '#btnClearParticipants';
         selectors.btnPickSingleWinner = '#btnPickSingleWinner';
         selectors.btnPickAllWinners = '#btnPickAllWinners';
+        selectors.btnExportParticipantList = '#btnExportParticipantList';
     }
 
     function cacheObjs() {
@@ -39,6 +40,20 @@
         bindBtnClearParticipants();
         bindBtnPickSingleWinner();
         bindBtnPickAllWinners();
+        bindBtnExportParticipantList();
+    }
+
+    function bindBtnExportParticipantList() {
+        objs.container.on('click', selectors.btnExportParticipantList, function (e) {
+            e.preventDefault();
+            var btn = $(this);
+
+            if (canInteract) {
+                EXPORTHELPER.TableToExcel('tblParticipantsExport', 'Participants');
+            }
+
+            return false;
+        });
     }
 
     function bindBtnDeleteParticipant() {

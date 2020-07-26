@@ -22,6 +22,7 @@
 
 @section Scripts {
     <environment include="Development">
+        <script src="~/js/shared/exporthelper.js"></script>
         <script src="~/js/giveaway/giveawaycommon.js"></script>
         <script src="~/js/giveaway/giveawaymanage.js"></script>
         <script src="~/js/shared/fx.js"></script>
@@ -53,6 +54,7 @@
                 <a asp-area="tools" asp-controller="giveaway" asp-action="index" class="btn btn-sm btn-default" title="@SharedLocalizer["Back to dashboard"]"><i class="fas fa-fw fa-arrow-left" aria-hidden="true"></i></a>
                 <a asp-area="tools" asp-controller="giveaway" asp-action="edit" asp-route-id="@Model.Id" class="btn btn-sm btn-default" title="@SharedLocalizer["Edit this giveaway"]"><i class="fas fa-fw fa-edit" aria-hidden="true"></i></a>
                 <a asp-area="tools" asp-controller="giveaway" asp-action="details" asp-route-id="@Model.Id" target="_blank" class="btn btn-sm btn-default" title="@SharedLocalizer["View this giveaway"]"><i class="fas fa-fw fa-eye" aria-hidden="true"></i></a>
+                <a id="btnExportParticipantList" href="#" class="btn btn-sm btn-outline-primary" title="@SharedLocalizer["Export participant list"]"><i class="fas fa-fw fa-download" aria-hidden="true"></i></a>
                 <span class="float-right">
                     <a id="btnClearParticipants" href="#" class="btn btn-sm btn-outline-danger" data-url="@Url.Action("clearparticipants", "giveaway", new { area = "tools", giveawayId = Model.Id })" data-confirmationmessage="@SharedLocalizer["Are you sure you want to remove all Participants?"]" data-confirmationtitle="@SharedLocalizer["Are you sure?"]" data-confirmationbuttontext="@SharedLocalizer["Yes, delete it!"]" data-cancelbuttontext="@SharedLocalizer["Cancel"]" title="@SharedLocalizer["Remove all Participants"]"><i class="fas fa-eraser" aria-hidden="true"></i></a>
                 </span>
