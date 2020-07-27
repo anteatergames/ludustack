@@ -6,7 +6,8 @@
 @inject IOptions<ConfigOptions> ConfigOptions
 
 @{
-    var title = string.IsNullOrWhiteSpace(ViewData["Title"]?.ToString()) ? ConstantHelper.DefaultTitle : ViewData["Title"] + " - " + ConstantHelper.DefaultTitle;
+    var childTitle = ViewData["Title"]?.ToString();
+    var title = string.IsNullOrWhiteSpace(childTitle) || childTitle.Equals(ConstantHelper.DefaultTitle) ? ConstantHelper.DefaultTitle : ViewData["Title"] + " - " + ConstantHelper.DefaultTitle;
     string userId = UserManager.GetUserId(User);
 
     var consentFeature = Context.Features.Get<ITrackingConsentFeature>();
