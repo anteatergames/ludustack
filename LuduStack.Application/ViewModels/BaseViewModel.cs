@@ -1,10 +1,11 @@
-﻿using LuduStack.Domain.Core.Interfaces;
+﻿using LuduStack.Application.Interfaces;
+using LuduStack.Domain.Core.Interfaces;
 using LuduStack.Domain.ValueObjects;
 using System;
 
 namespace LuduStack.Application.ViewModels
 {
-    public abstract class BaseViewModel : IEntity
+    public abstract class BaseViewModel : IEntity, IBaseViewModel
     {
         public Guid Id { get; set; }
 

@@ -2,13 +2,10 @@
 
 @inject SignInManager<ApplicationUser> SignInManager
 
-@{
-
-    ViewData["Title"] = Model.Title;
+@{ ViewData["Title"] = Model.Title;
     ViewData["Description"] = Model.Description;
     ViewData["Url"] = ViewBag.BaseUrl + Url.Action("details", "game", new { id = Model.Id });
-    ViewData["OgImage"] = Model.ThumbnailUrl;
-}
+    ViewData["OgImage"] = Model.ThumbnailUrl; }
 
 @section Styles {
     <environment include="Development">
@@ -104,10 +101,9 @@
                 <div class="user-profile-cover-topright">
                     @if (Model.Permissions.CanEdit)
                     {
-                        <div class="btn-group">
-                            <a asp-controller="game" asp-action="edit" asp-route-id="@Model.Id" class="btn btn-default bg-transparent">@SharedLocalizer["Edit Game"]</a>
-                        </div>
-                    }
+        <div class="btn-group">
+            <a asp-controller="game" asp-action="edit" asp-route-id="@Model.Id" class="btn btn-default bg-transparent">@SharedLocalizer["Edit Game"]</a>
+        </div>}
                 </div>
             </div>
 
@@ -134,29 +130,28 @@
                 </div>
                 @if (SignInManager.IsSignedIn(User))
                 {
-                    <div class="col-12 col-lg-8 offset-lg-2 mb-2">
-                        <div class="row text-right mt-4 mb-3">
-                            <div class="col-4">
-                                <button type="button" id="btn-game-follow" class="btn btn-lg btn-block btn-outline-primary @(Model.CurrentUserFollowing ? "bg-blue follow-following" : string.Empty)" data-id="@Model.Id">
-                                    <i class="fa fa-eye" aria-hidden="true">&nbsp;</i>
-                                    <span class="d-none d-md-inline">@SharedLocalizer["Follow"]</span>
-                                </button>
-                            </div>
-                            <div class="col-4">
-                                <button type="button" id="btn-game-like" class="btn btn-lg btn-block btn-outline-danger @(Model.CurrentUserLiked ? "bg-red like-liked" : string.Empty)" data-id="@Model.Id">
-                                    <i class="fa fa-heart" aria-hidden="true">&nbsp;</i>
-                                    <span class="d-none d-md-inline">@SharedLocalizer["I love it"]</span>
-                                </button>
-                            </div>
-                            <div class="col-4">
-                                <a asp-protocol="@ViewData["protocol"]" asp-host="@ViewData["host"]" asp-area="" asp-controller="game" asp-action="details" asp-route-id="@Model.Id" id="btn-game-share" class="btn btn-lg btn-block btn-default">
-                                    <i class="fa fa-share" aria-hidden="true">&nbsp;</i>
-                                    <span class="d-none d-md-inline">@SharedLocalizer["Share"]</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                }
+    <div class="col-12 col-lg-8 offset-lg-2 mb-2">
+        <div class="row text-right mt-4 mb-3">
+            <div class="col-4">
+                <button type="button" id="btn-game-follow" class="btn btn-lg btn-block btn-outline-primary @(Model.CurrentUserFollowing ? "bg-blue follow-following" : string.Empty)" data-id="@Model.Id">
+                    <i class="fa fa-eye" aria-hidden="true">&nbsp;</i>
+                    <span class="d-none d-md-inline">@SharedLocalizer["Follow"]</span>
+                </button>
+            </div>
+            <div class="col-4">
+                <button type="button" id="btn-game-like" class="btn btn-lg btn-block btn-outline-danger @(Model.CurrentUserLiked ? "bg-red like-liked" : string.Empty)" data-id="@Model.Id">
+                    <i class="fa fa-heart" aria-hidden="true">&nbsp;</i>
+                    <span class="d-none d-md-inline">@SharedLocalizer["I love it"]</span>
+                </button>
+            </div>
+            <div class="col-4">
+                <a asp-protocol="@ViewData["protocol"]" asp-host="@ViewData["host"]" asp-area="" asp-controller="game" asp-action="details" asp-route-id="@Model.Id" id="btn-game-share" class="btn btn-lg btn-block btn-default">
+                    <i class="fa fa-share" aria-hidden="true">&nbsp;</i>
+                    <span class="d-none d-md-inline">@SharedLocalizer["Share"]</span>
+                </a>
+            </div>
+        </div>
+    </div>}
             </div>
         </div>
 
@@ -171,10 +166,9 @@
                                 <div class="col-12 game-external-links text-center">
                                     @foreach (var item in Model.ExternalLinks.Where(x => !x.IsStore && (x.Type == ExternalLinkType.General || x.Type == ExternalLinkType.ProfileAndGame)))
                                     {
-                                        <a href="@item.Value" target="_blank" class="mt-1 btn rounded-circle btn-social-icon @(item.ColorClass)">
-                                            <i class="@item.IconClass" aria-hidden="true"></i>
-                                        </a>
-                                    }
+                        <a href="@item.Value" target="_blank" class="mt-1 btn rounded-circle btn-social-icon @(item.ColorClass)">
+                            <i class="@item.IconClass" aria-hidden="true"></i>
+                        </a>}
                                 </div>
                                 <div class="col-12">
                                     <partial name="_GameInfoPanel" model="Model" />
@@ -193,10 +187,9 @@
                     <div class="col-12 mb-2 text-center d-lg-none">
                         @foreach (var item in Model.ExternalLinks.Where(x => !x.IsStore && (x.Type == ExternalLinkType.General || x.Type == ExternalLinkType.ProfileAndGame)))
                         {
-                            <a href="@item.Value" target="_blank" class="mt-1 btn rounded-circle btn-social-icon @(item.ColorClass)">
-                                <i class="@item.IconClass" aria-hidden="true"></i>
-                            </a>
-                        }
+            <a href="@item.Value" target="_blank" class="mt-1 btn rounded-circle btn-social-icon @(item.ColorClass)">
+                <i class="@item.IconClass" aria-hidden="true"></i>
+            </a>}
                     </div>
                     <div class="nav-tabs-custom">
                         <ul class="nav nav-tabs text-capitalize">
@@ -209,8 +202,7 @@
                                 <div class="tabtoolbar mt-2 mb-2">
                                     @if (Model.Permissions.CanPostActivity)
                                     {
-                                        <a asp-area="" asp-controller="content" asp-action="add" asp-route-gameId="@Model.Id" class="btn btn-success">Add Content</a>
-                                    }
+                        <a asp-area="" asp-controller="content" asp-action="add" asp-route-gameId="@Model.Id" class="btn btn-success">Add Content</a>}
                                 </div>
                                 <div class="tab-pane" id="tabactivity">
                                     <div id="divActivityFeed"></div>
@@ -221,15 +213,14 @@
                                 <div class="row">
                                     @if (!string.IsNullOrEmpty(Model.Description))
                                     {
-                                        <div class="col-12">
-                                            <h6 class="col-form-label text-capitalize">
-                                                @SharedLocalizer["Description"]
-                                            </h6>
-                                            <div class="p-2 bg-white">
-                                                @Model.Description
-                                            </div>
-                                        </div>
-                                    }
+                        <div class="col-12">
+                            <h6 class="col-form-label text-capitalize">
+                                @SharedLocalizer["Description"]
+                            </h6>
+                            <div class="p-2 bg-white">
+                                @Model.Description
+                            </div>
+                        </div>}
 
                                     <div class="col-12">
                                         <h6 class="col-form-label text-capitalize">
@@ -239,25 +230,22 @@
                                             <div class="col-12 px-5">
                                                 @if (Model.Characteristics == null || Model.Characteristics.All(x => !x.Available))
                                                 {
-                                                    <span>@SharedLocalizer[GameCharacteristcs.NotInformed.ToUiInfo().Display]</span>
-                                                }
-                                                else
-                                                {
-                                                    <div class="row">
-                                                        @foreach (var characteristics in Model.Characteristics)
-                                                        {
-                                                            if (characteristics.Available)
-                                                            {
-                                                                <div class="col-12 col-md-6 mb-1">
-                                                                    <div class="border bg-dark text-white p-1">
-                                                                        <span class="btn border p-1 rounded-circle btn-icon-sm bg-label" title="@characteristics.Characteristic.ToUiInfo().Display"><i class="fas fa-@(characteristics.Characteristic.ToUiInfo().Class)" aria-hidden="true"></i></span>
-                                                                        <span>@SharedLocalizer[characteristics.Characteristic.ToUiInfo().Display]</span>
-                                                                    </div>
-                                                                </div>
-                                                            }
-                                                        }
-                                                    </div>
-                                                }
+                                    <span>@SharedLocalizer[GameCharacteristcs.NotInformed.ToUiInfo().Display]</span> }
+                                else
+                                {
+                    <div class="row">
+                        @foreach (var characteristics in Model.Characteristics)
+                        {
+                            if (characteristics.Available)
+                            {
+        <div class="col-12 col-md-6 mb-1">
+            <div class="border bg-dark text-white p-1">
+                <span class="btn border p-1 rounded-circle btn-icon-sm bg-label" title="@characteristics.Characteristic.ToUiInfo().Display"><i class="fas fa-@(characteristics.Characteristic.ToUiInfo().Class)" aria-hidden="true"></i></span>
+                <span>@SharedLocalizer[characteristics.Characteristic.ToUiInfo().Display]</span>
+            </div>
+        </div>}
+}
+                    </div>}
                                             </div>
                                         </div>
                                     </div>
@@ -271,21 +259,20 @@
 
                                     @if (Model.LocalizationPercentage.HasValue)
                                     {
-                                        <div class="col-12 mt-3">
-                                            <h6 class="text-capitalize">
-                                                @SharedLocalizer["Localization"]
-                                            </h6>
+                        <div class="col-12 mt-3">
+                            <h6 class="text-capitalize">
+                                @SharedLocalizer["Localization"]
+                            </h6>
 
-                                            <div class="bg-white p-2">
-                                                <p>@SharedLocalizer["This game is using the localization tool. Belo you can see the translation progress."]</p>
-                                                <a asp-area="tools" asp-controller="localization" asp-action="details" asp-route-id="@Model.LocalizationId" title="@SharedLocalizer["Help this one!"]">
-                                                    <div class="translation-progress-chart text-center">
-                                                        <partial name="_DonutPercentageChart" model="new DonutChartViewModel(Model.LocalizationPercentage.Value)" />
-                                                    </div>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    }
+                            <div class="bg-white p-2">
+                                <p>@SharedLocalizer["This game is using the localization tool. Belo you can see the translation progress."]</p>
+                                <a asp-area="tools" asp-controller="localization" asp-action="details" asp-route-id="@Model.LocalizationId" title="@SharedLocalizer["Help this one!"]">
+                                    <div class="translation-progress-chart text-center">
+                                        <partial name="_DonutPercentageChart" model="new DonutChartViewModel(Model.LocalizationPercentage.Value)" />
+                                    </div>
+                                </a>
+                            </div>
+                        </div>}
                                 </div>
 
                                 <div class="col-12 d-block d-lg-none bg-white">

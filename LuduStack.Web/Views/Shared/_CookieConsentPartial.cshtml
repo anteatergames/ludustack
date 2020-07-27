@@ -8,28 +8,10 @@
 
 @if (showCookieBanner)
 {
-    <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false"></script>
-    <script>
-        window.cookieconsent.initialise({
-            cookie: {
-                name: '@cookieString'
-            },
-            palette: {
-                popup: {
-                    background: "#3c404d",
-                    text: "#d6d6d6"
-                },
-                button: {
-                    background: "#8bed4f"
-                }
-            },
-            theme: "classic",
-            position: "bottom-left",
-            content: {
-                message: '@SharedLocalizer["Ok, we use cookies, right? Don't worry, it is just to improve your experience here."]',
-                link: '@SharedLocalizer["Learn more"]',
-                href: 'https://www.ludustack.com/privacy/'
-            }
-        });
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent/3.1.1/cookieconsent.min.js"
+            integrity="sha512-yXXqOFjdjHNH1GND+1EO0jbvvebABpzGKD66djnUfiKlYME5HGMUJHoCaeE4D5PTG2YsSJf6dwqyUUvQvS0vaA=="
+            crossorigin="anonymous">
     </script>
+    <script src="~/js/cookieconsent.min.js"></script>
+    <script>initializeCookieConsent('@SharedLocalizer["Ok, we use cookies, right? Don't worry, it is just to improve your experience here."]', '@SharedLocalizer["Learn more"]', 'https://www.ludustack.com/privacy/');</script>
 }

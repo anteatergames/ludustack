@@ -1,13 +1,15 @@
 ﻿@model GiveawayViewModel
 
 @{ Layout = null;
-                var canInteract = User.Identity.IsAuthenticated;
+    var canInteract = User.Identity.IsAuthenticated;
 
-                ViewData["Title"] = SharedLocalizer["{0} Giveaway", (Model.Id == Guid.Empty ? "New" : "Edit")];
+    ViewData["Title"] = SharedLocalizer["{0} Giveaway", (Model.Id == Guid.Empty ? "New" : "Edit")];
 
-                var userGames = ViewBag.UserGames as List<SelectListItem>;
+    var userGames = ViewBag.UserGames as List<SelectListItem>;
 
-                var isNew = Model.Id == Guid.Empty; }
+    var isNew = Model.Id == Guid.Empty;
+
+    var timeZoneList = (IEnumerable<SelectListItem>)ViewBag.TimeZones; }
 
 <h1 class="sr-only">@ViewData["Title"]</h1>
 
@@ -31,7 +33,10 @@
         <div class="dropdown-menu text-capitalize" x-placement="bottom-start" style="position: absolute; transform: translate3d(-67px, 28px, 0px); top: 0px; left: 0px; will-change: transform;">
             @if (Model.Permissions.CanDelete)
             {
-<a class="btnDeleteGiveaway dropdown-item" href="#" data-url="@Url.Action("delete", "giveaway", new { area = "tools", id = Model.Id })" data-confirmationmessage="@SharedLocalizer["Are you sure you want to delete this Giveaway?"]" data-confirmationtitle="@SharedLocalizer["Are you sure?"]" data-confirmationbuttontext="@SharedLocalizer["Yes, delete it!"]" data-cancelbuttontext="@SharedLocalizer["Cancel"]">@SharedLocalizer["delete"]</a>}
+<a class="dropdown-item" asp-area="tools" asp-controller="giveaway" asp-action="manage" asp-route-id="@Model.Id">@SharedLocalizer["manage"]</a>
+                    <a class="dropdown-item" asp-area="tools" asp-controller="giveaway" asp-action="details" asp-route-id="@Model.Id" target="_blank">@SharedLocalizer["view"]</a>
+                                        <a class="dropdown-item btn-giveaway-duplicate" href="#" data-url="@Url.Action("duplicate", "giveaway", new { area = "tools", giveawayId = Model.Id, edit = true })">@SharedLocalizer["duplicate"]</a>
+                                                            <a class="dropdown-item btn-giveaway-delete" href="#" data-url="@Url.Action("delete", "giveaway", new { area = "tools", id = Model.Id, edit = true })" data-confirmationmessage="@SharedLocalizer["Are you sure you want to delete this Giveaway?"]" data-confirmationtitle="@SharedLocalizer["Are you sure?"]" data-confirmationbuttontext="@SharedLocalizer["Yes, delete it!"]" data-cancelbuttontext="@SharedLocalizer["Cancel"]">@SharedLocalizer["delete"]</a>}
         </div>
     </div>
 </div>}
@@ -43,8 +48,24 @@
             <input type="hidden" asp-for="Id" />
             <input type="hidden" asp-for="UserId" />
             <input type="hidden" asp-for="CreateDate" />
+            <input type="hidden" asp-for="FeaturedImage" />
             <div class="row">
-                <div class="col-md-12">
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="Status" class="col-form-label"></label>
+                        @if (isNew)
+                        {
+            <input asp-for="StatusLocalized" class="form-control" readonly />
+                            <input type="hidden" asp-for="Status" /> }
+                        else
+                        {
+            <select asp-for="Status" asp-items="Html.GetEnumSelectList<GiveawayStatus>()" class="form-control" data-placeholder="@SharedLocalizer["Set the giveaway status"]" tabindex="-1" aria-hidden="true"></select>
+                            <span asp-validation-for="Status" class="text-danger"></span>}
+                    </div>
+                </div>
+
+                <div class="col-md-8">
                     <div class="form-group">
                         <label asp-for="Name" class="col-form-label"></label>
                         <span asp-description-for="Name" class="col-form-label" />
@@ -62,31 +83,117 @@
                     </div>
                 </div>
 
-                <div class="col-12 col-sm-6 col-md-4">
+                <div class="col-12 col-sm-6">
                     <div class="form-group">
-                        <label asp-for="Status" class="col-form-label"></label>
-                        @if (isNew)
-                        {
-                            <input asp-for="StatusLocalized" class="form-control" readonly />
-                            <input type="hidden" asp-for="Status" /> }
-                        else
-                        {
-                            <select asp-for="Status" asp-items="Html.GetEnumSelectList<GiveawayStatus>()" class="form-control" data-placeholder="@SharedLocalizer["Set the giveaway status"]" tabindex="-1" aria-hidden="true"></select>
-                            <span asp-validation-for="Status" class="text-danger"></span>}
+                        <label asp-for="WinnerAmount" class="col-form-label"></label>
+                        <input asp-for="WinnerAmount" class="form-control" placeholder="@SharedLocalizer["How many winners there will be on this giveaway?"]" />
+                        <span asp-validation-for="WinnerAmount" class="text-danger"></span>
                     </div>
                 </div>
 
-                <div class="col-md-12">
+                <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                        <label asp-for="PrizePriceInDolar" class="col-form-label"></label>
+                        <input asp-for="PrizePriceInDolar" class="form-control" placeholder="@SharedLocalizer["How much (in USD) worth the prize?"]" />
+                        <span asp-validation-for="PrizePriceInDolar" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-6 col-md-4">
+
+                    <div class="form-group">
+                        <label asp-for="StartDate" class="col-form-label"></label>
+                        <div class="input-group">
+                            <input asp-for="StartDate" type="text" class="form-control datetimepicker-input" data-target="#StartDate" aria-describedby="startDateAddon" placeholder="@SharedLocalizer["When this giveway should start"]" />
+                            <div class="input-group-append" data-target="#StartDate" data-toggle="datetimepicker" title="@SharedLocalizer["Select the start date."]">
+                                <span class="input-group-text" id="startDateAddon"><i class="far fa-calendar-alt" aria-hidden="true"></i></span>
+                            </div>
+                        </div>
+                        <span asp-validation-for="StartDate" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-6 col-md-4">
+                    <div class="form-group">
+                        <label asp-for="EndDate" class="col-form-label"></label>
+                        <div class="input-group">
+                            <input asp-for="EndDate" type="text" class="form-control datetimepicker-input" data-target="#EndDate" aria-describedby="endDateAddon" placeholder="@SharedLocalizer["When this giveway should end"]" />
+                            <div class="input-group-append" data-target="#EndDate" data-toggle="datetimepicker" title="@SharedLocalizer["Select the end date."]">
+                                <span class="input-group-text" id="endDateAddon"><i class="far fa-calendar-alt" aria-hidden="true"></i></span>
+                            </div>
+                            <div class="input-group-append" title="@SharedLocalizer["Clear the end date."]">
+                                <button class="input-group-text" id="btnClearEndDate"><i class="fas fa-times" aria-hidden="true"></i></button>
+                            </div>
+                        </div>
+                        <span asp-validation-for="EndDate" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-6 col-md-4">
+                    <div class="form-group">
+                        <label asp-for="TimeZone" class="col-form-label"></label>
+                        <select asp-for="TimeZone" asp-items="timeZoneList" class="form-control"></select>
+                        <span asp-validation-for="TimeZone" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                        <label asp-for="SponsorName" class="col-form-label"></label>
+                        <input asp-for="SponsorName" class="form-control" placeholder="@SharedLocalizer["Who's offering this giveaway?"]" />
+                        <span asp-validation-for="SponsorName" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                        <label asp-for="SponsorWebsite" class="col-form-label"></label>
+                        <input asp-for="SponsorWebsite" class="form-control" placeholder="@SharedLocalizer["The sponsor website"]" />
+                        <span asp-validation-for="SponsorWebsite" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <hr class="my-2" />
+                </div>
+
+                <div class="col-12">
                     <div class="form-group">
                         <label asp-for="TermsAndConditions" class="col-form-label"></label>
                         <span asp-description-for="TermsAndConditions" class="col-form-label" />
-                        <textarea asp-for="TermsAndConditions" class="form-control" placeholder="@SharedLocalizer["Write here the terms and conditions for this giveaway"]"></textarea>
+                        <textarea asp-for="TermsAndConditions" class="form-control" rows="10" placeholder="@SharedLocalizer["Write here the terms and conditions for this giveaway"]"></textarea>
                         <span asp-validation-for="TermsAndConditions" class="text-danger"></span>
                     </div>
                 </div>
 
-                <div class="col-12 col-lg-6 offset-lg-6 col-xl-4 offset-xl-8 mt-1">
-                    <button type="button" id="btnSaveGiveaway" class="btn btn-lg btn-primary btn-block" data-error-msg="<i class='fas fa-exclamation-circle' aria-hidden='true'></i> @SharedLocalizer["Something is missing!"]"><i class="fas fa-save" aria-hidden="true"></i> @SharedLocalizer["Save Giveaway"]</button>
+                <div class="col-12 text-center">
+                    <div class="form-group">
+                        <label asp-for="ImageList" class="col-form-label"></label>
+                        <div class="row mb-2 px-3 imagelist">
+                            @for (int i = 0; i < Model.ImageList.Count; i++)
+                            {
+                                var image = Model.ImageList[i];
+
+                <div class="col px-1">
+                    <img src="@image" class="img-fluid imagelistitem@(image.Contains(Constants.DefaultGiveawayThumbnail) ? " default" : String.Empty)" width="720" height="360" data-placeholder="@Constants.DefaultGiveawayThumbnail" />
+                    <input asp-for="ImageList[i]" type="hidden" class="imagelistitem@(image.Contains(Constants.DefaultGiveawayThumbnail) ? " default" : String.Empty)" />
+                    <button class="btn btn-sm btn-outline-danger btn-image-delete@(image.Contains(Constants.DefaultGiveawayThumbnail) ? " d-none" : String.Empty)"><i class="fas fa-trash" aria-hidden="true"></i></button>
+                    <div class="featuredlabel d-none"><span class="px-2 pb-1">@SharedLocalizer["featured"]</span></div>
+                </div>}
+                        </div>
+                        <div id="dropzoneImages" class="dropzone">
+                            <div class="dz-message needsclick">
+                                @SharedLocalizer["Drop files here or click to upload."]<br>
+                                <span class="note needsclick">
+                                    (@SharedLocalizer["only image files"])
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-lg-6 offset-lg-6 col-xl-4 offset-xl-8 mt-1 mb-2">
+                    <button type="button" id="btnSaveGiveaway" class="btn btn-lg btn-primary btn-block" data-error-msg="<i class='fas fa-exclamation-circle' aria-hidden='true'></i> @SharedLocalizer["Something is missing!"]"><i class="fas fa-save" aria-hidden="true"></i> @SharedLocalizer["Save"]</button>
                 </div>
             </div>
         </form>

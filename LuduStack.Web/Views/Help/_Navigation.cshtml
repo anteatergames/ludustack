@@ -1,8 +1,6 @@
-﻿@{
-    Layout = null;
+﻿@{ Layout = null;
 
-    var activeTab = ViewData["HelpActive"] == null ? "none" : (string)ViewData["HelpActive"];
-}
+    var activeTab = ViewData["HelpActive"] == null ? "none" : (string)ViewData["HelpActive"]; }
 
     <ul class="list-group text-capitalize">
         <li class="list-group-item shadow@(activeTab.Equals("start") ? " active" : string.Empty)"><a asp-area="" asp-controller="help" asp-action="start">@SharedLocalizer["start"]</a></li>

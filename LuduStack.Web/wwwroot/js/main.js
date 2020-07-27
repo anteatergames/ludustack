@@ -33,6 +33,7 @@
 
     function setSelectors() {
         selectors.notificationsMenu = "#notificationsMenu";
+        selectors.locale = '#locale';
         selectors.spanMessage = "#spanMessage";
         selectors.translatedJavascriptMessages = "#translatedJavascriptMessages";
         selectors.sharePopup = '.share-popup';
@@ -41,6 +42,7 @@
 
     function cacheObjects() {
         objs.notificationsMenu = $(selectors.notificationsMenu);
+        objs.locale = $(selectors.locale);
         objs.spanMessage = $(selectors.spanMessage);
         objs.translatedJavascriptMessages = $(selectors.translatedJavascriptMessages);
     }
@@ -62,7 +64,7 @@
         });
     }
     function loadTranslatedMessages() {
-        objs.translatedJavascriptMessages.find('.msg').each(function (index, element) {
+        objs.translatedJavascriptMessages.find('.msg').each(function () {
             var msgId = $(this).data('msgId');
             var text = $(this).text();
 
@@ -74,6 +76,7 @@
         var msg = objs.spanMessage.text();
         if (msg !== undefined && msg.length > 0) {
             ALERTSYSTEM.Toastr.ShowWarning(msg);
+            history.replaceState({}, null, window.location.href.split('?')[0]);
         }
     }
 
@@ -107,7 +110,9 @@
     }
 
     function loadNotifications() {
-        MAINMODULE.Ajax.LoadHtml("/home/notifications", objs.notificationsMenu);
+        if (objs.notificationsMenu.length > 0) {
+            MAINMODULE.Ajax.LoadHtml("/home/notifications", objs.notificationsMenu);
+        }
     }
 
     function handlePointsEarned(response) {
@@ -177,10 +182,10 @@
         var idPreffix = propPreffix + "_0__";
         var namePreffix = propPreffix + "[0].";
 
-        objContainer.find(itemSelector).each(function (index, element) {
+        objContainer.find(itemSelector).each(function () {
             var item = $(this);
 
-            item.find(':input').each(function (index2, element2) {
+            item.find(':input').each(function () {
                 var inputId = $(this).attr('id');
                 var inputName = $(this).attr('name');
 
@@ -280,15 +285,15 @@
 
     function bindPopOvers(multiple) {
         if (multiple) {
-            $("[data-toggle='popover']").each(function (index, element) {
-                var data = $(element).data();
+            $("[data-toggle='popover']").each(function () {
+                var data = $(this).data();
                 if (data.target) {
                     var contentElementId = data.target;
                     var contentHtml = $(contentElementId).html().trim();
                     data.content = contentHtml;
                 }
 
-                $(element).popover({ html: true });
+                $(this).popover({ html: true });
             });
         } else {
             $("[data-toggle='popover']").popover({ html: true });
@@ -326,28 +331,27 @@
             idList = listObj;
 
             if (idList.indexOf('#') !== 0) {
-                console.log(idList);
                 idList = '#' + idList;
-                console.log(idList);
             }
         }
 
-        if (idList === undefined) {
+        if (!idList) {
             return Promise.resolve();
         }
+        else {
+            document.querySelector(idList).innerHTML = MAINMODULE.Default.SpinnerTop;
 
-        document.querySelector(idList).innerHTML = MAINMODULE.Default.SpinnerTop;
+            const promise = await getHtml(url)
+                .then(function (body) {
+                    document.querySelector(idList).innerHTML = body;
 
-        const promise = await getHtml(url)
-            .then(function (body) {
-                document.querySelector(idList).innerHTML = body;
+                    //lazyLoadInstance.update();
 
-                //lazyLoadInstance.update();
+                    return body;
+                });
 
-                return body;
-            });
-
-        return promise;
+            return promise;
+        }
     }
 
     function callBackendAction(url, callback) {
@@ -380,11 +384,11 @@
                 type: 'DELETE'
             }).done(function (response) {
                 if (response.success) {
+                    MAINMODULE.Common.HandleSuccessDefault(response);
+
                     if (callback) {
                         callback(response);
                     }
-
-                    MAINMODULE.Common.HandleSuccessDefault(response);
                 }
                 else {
                     ALERTSYSTEM.ShowWarningMessage(response.message);
@@ -393,8 +397,61 @@
         });
     }
 
+    function postWithConfirmation(btn, callback) {
+        var url = btn.data('url');
+
+        var msgs = MAINMODULE.Common.GetDeleteMessages(btn);
+
+        ALERTSYSTEM.ShowConfirmMessage(msgs.confirmationTitle, msgs.msg, msgs.confirmationButtonText, msgs.cancelButtonText, function () {
+            $.ajax({
+                url: url,
+                type: 'POST'
+            }).done(function (response) {
+                if (response.success) {
+                    MAINMODULE.Common.HandleSuccessDefault(response);
+
+                    if (callback) {
+                        callback(response);
+                    }
+                }
+                else {
+                    ALERTSYSTEM.ShowWarningMessage(response.message);
+                }
+            });
+        });
+    }
+
+    function postWithoutConfirmation(btn, callback) {
+        var url = btn.data('url');
+
+        $.ajax({
+            url: url,
+            type: 'POST'
+        }).done(function (response) {
+            if (response.success) {
+                MAINMODULE.Common.HandleSuccessDefault(response);
+
+                if (callback) {
+                    callback(response);
+                }
+            }
+            else {
+                ALERTSYSTEM.ShowWarningMessage(response.message);
+            }
+        });
+    }
+
+    function getLocale() {
+        if (!objs.locale) {
+            objs.locale = $(selectors.locale);
+        }
+
+        return objs.locale.val();
+    }
+
     return {
         Init: init,
+        GetLocale: getLocale,
         Layout: {
             SetStickyElement: setStickyElement
         },
@@ -408,6 +465,8 @@
             HandleSuccessDefault: handleSuccessDefault,
             TranslatedMessages: translatedMessages,
             DeleteEntity: deleteEntity,
+            PostWithConfirmation: postWithConfirmation,
+            PostWithoutConfirmation: postWithoutConfirmation,
             DisableButton: disableButton,
             EnableButton: enableButton,
             SetButtonWithError: setButtonWithError,

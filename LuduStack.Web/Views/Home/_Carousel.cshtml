@@ -13,7 +13,7 @@
         }
     </ol>
     <!-- Wrapper for slides -->
-    <div class="carousel-inner" role="listbox">
+    <div class="carousel-inner" role="listbox" aria-label="Carousel">
         @for (int i = 0; i < Model.Items.Count; i++)
         {
             var classActive = i == 0 ? "active" : string.Empty;
@@ -33,7 +33,7 @@
                 {
                     <a asp-area="" asp-controller="content" asp-action="details" asp-route-id="@Model.Items.ElementAt(i).UserContentId">
                         <div class="carousel-caption">
-                            <h3>@Model.Items.ElementAt(i).Title</h3>
+                            <h2>@Model.Items.ElementAt(i).Title</h2>
                             <p>@Model.Items.ElementAt(i).Introduction</p>
                         </div>
                     </a>
@@ -42,7 +42,7 @@
                 {
                     <a href="#">
                         <div class="carousel-caption">
-                            <h3>@Model.Items.ElementAt(i).Title</h3>
+                            <h2>@Model.Items.ElementAt(i).Title</h2>
                             <p>@Model.Items.ElementAt(i).Introduction</p>
                         </div>
                     </a>

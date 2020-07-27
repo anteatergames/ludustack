@@ -51,6 +51,22 @@ namespace LuduStack.Infra.CrossCutting.Identity.Services
             return notificationSender.SendEmailAsync(email, "d-e9b748bc725c48b18f00b3d1cc88c790", request);
         }
 
+        public static Task SendGiveawayEmailConfirmationAsync(this INotificationSender notificationSender, string email, string link, string giveawayName)
+        {
+            EmailSendRequest request = new EmailSendRequest
+            {
+                Subject = string.Format("{0} - Email Verification", giveawayName),
+                ActionUrl = link,
+                ActionText = "Confirm your email",
+                Greeting = "Hi there,",
+                TextBeforeAction = string.Format("You just entered a giveaway ({0}). Now you need to confirm your email.", giveawayName),
+                TextAfterAction = "After confirmation you receive an extra entry.",
+                ByeText = "See you there!."
+            };
+
+            return notificationSender.SendEmailAsync(email, "d-e9b748bc725c48b18f00b3d1cc88c790", request);
+        }
+
         public class EmailSendRequest
         {
             public string Subject { get; set; }

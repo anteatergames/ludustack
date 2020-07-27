@@ -102,7 +102,7 @@
     <Content Update="Areas\Tools\Views\Giveaway\CreateEditWrapper.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Areas\Tools\Views\Giveaway\Terms.cshtml">
+    <Content Update="Areas\Tools\Views\Giveaway\YouAreIn.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Areas\Tools\Views\Giveaway\Details.cshtml">
@@ -269,12 +269,25 @@
   <ItemGroup>
     <Folder Include="wwwroot\images\badges\" />
     <Folder Include="wwwroot\lib\" />
+    <Folder Include="wwwroot\fonts\" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="wwwroot\.well-known\**">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="wwwroot\js\giveaway\giveawayyouarein.min.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\js\giveaway\giveawayyouarein.min.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\js\giveaway\giveawayyouarein.min.js" />
   </ItemGroup>
 
 </Project>

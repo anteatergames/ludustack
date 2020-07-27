@@ -13,7 +13,7 @@ namespace LuduStack.Application.Services
         {
         }
 
-        public async Task<string> StoreImageAsync(string container, string fileName, byte[] image)
+        public async Task<string> StoreImageAsync(string container, string fileName, byte[] image, params string[] tags)
         {
             Cloudinary cloudinary = new Cloudinary();
 
@@ -29,6 +29,11 @@ namespace LuduStack.Application.Services
                 File = new FileDescription(fileName, stream),
                 Invalidate = true
             };
+
+            if (tags != null && tags.Length > 0)
+            {
+                uploadParams.Tags = string.Join(',', tags).ToLower();
+            }
 
             await cloudinary.UploadAsync(uploadParams);
 

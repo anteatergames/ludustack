@@ -42,6 +42,16 @@ namespace LuduStack.Infra.Data.MongoDb.Repository.Base
             Context.AddCommand(() => DbSet.InsertOneAsync(obj));
         }
 
+        public virtual void AddDirectly(TEntity obj)
+        {
+            if (obj.CreateDate == DateTime.MinValue)
+            {
+                obj.CreateDate = DateTime.Now;
+            }
+
+            var task = DbSet.InsertOneAsync(obj);
+        }
+
         public virtual async Task<TEntity> GetById(Guid id)
         {
             IAsyncCursor<TEntity> data = await DbSet.FindAsync(Builders<TEntity>.Filter.Eq("_id", id));
@@ -67,6 +77,13 @@ namespace LuduStack.Infra.Data.MongoDb.Repository.Base
             return (int)count;
         }
 
+        public virtual int CountDirectly(Expression<Func<TEntity, bool>> where)
+        {
+            long count = DbSet.CountDocuments(where);
+
+            return (int)count;
+        }
+
         public virtual async Task<IEnumerable<TEntity>> GetAll()
         {
             IAsyncCursor<TEntity> all = await DbSet.FindAsync(Builders<TEntity>.Filter.Empty);
@@ -81,6 +98,15 @@ namespace LuduStack.Infra.Data.MongoDb.Repository.Base
             FilterDefinition<TEntity> filter = Builders<TEntity>.Filter.Eq(x => x.Id, obj.Id);
 
             Context.AddCommand(() => DbSet.ReplaceOneAsync(filter, obj));
+        }
+
+        public virtual void UpdateDirectly(TEntity obj)
+        {
+            obj.LastUpdateDate = DateTime.Now;
+
+            FilterDefinition<TEntity> filter = Builders<TEntity>.Filter.Eq(x => x.Id, obj.Id);
+
+            DbSet.ReplaceOneAsync(filter, obj);
         }
 
         public virtual void Remove(Guid id)

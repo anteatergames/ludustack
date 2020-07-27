@@ -16,6 +16,8 @@ var ACTIVITYFEED = (function () {
     var oldestGuid;
     var oldestDate;
 
+    var embedo;
+
     function init(divActivityFeed, type, id) {
         feedType = type;
         feedId = id;
@@ -25,6 +27,7 @@ var ACTIVITYFEED = (function () {
         selectorText.btnDeletePost = '.btnDeletePost';
         selectors.btnInteractionShare = '.btn-interaction-share';
         selectors.sharePopup = '.share-popup';
+        selectors.videoClickArea = '.video-thumbnail';
 
         bindAll();
     }
@@ -32,6 +35,7 @@ var ACTIVITYFEED = (function () {
     function bindAll() {
         bindMorePosts();
         bindDeletePost();
+        bindOEmbedClick();
     }
 
     function bindMorePosts() {
@@ -79,6 +83,16 @@ var ACTIVITYFEED = (function () {
         });
     }
 
+    function bindOEmbedClick() {
+        $('body').on('click', selectors.videoClickArea, function (e) {
+            e.preventDefault();
+
+            loadSingleOembed(this);
+
+            return false;
+        });
+    }
+
     function loadActivityFeed(first, callback) {
         if (first !== false) {
             selectors.divActivityFeed.append(MAINMODULE.Default.Spinner);
@@ -114,19 +128,15 @@ var ACTIVITYFEED = (function () {
             }
 
             CONTENTACTIONS.BindShareContent();
-            loadOembeds();
-
             if (callback) {
                 callback();
             }
-
-            //lazyLoadInstance.update();
         });
     }
 
-    function loadOembeds() {
-        if (typeof Embedo === 'function') {
-            var embedo = new Embedo({
+    function initializeEmbed(){
+        if (!embedo) {
+            embedo = new Embedo({
                 youtube: true,
                 facebook: {
                     appId: $('meta[property="fb:app_id"]').attr('content'), // Enable facebook SDK
@@ -134,32 +144,37 @@ var ACTIVITYFEED = (function () {
                     width: "100%"
                 }
             });
+        }
+    }
 
-            var oembeds = $('oembed');
+    function loadSingleOembed(element) {
+        var obj = $(element);
+        var wrapper = obj.closest('.videoWrapper');
+        var oembed = wrapper.find('oembed');
+        var videoUrl = wrapper.data('url');
 
-            oembeds.each(function (index, element) {
-                var wrapper = $(element).closest('.videoWrapper');
+        if (typeof Embedo === 'function') {
+            initializeEmbed();
 
-                if (wrapper.hasClass('loaded')) {
-                    return;
-                }
-                else {
-                    $(element).find('embed').hide();
-                    var w = wrapper.width();
-                    var h = w * 9 / 16;
+            if (wrapper.hasClass('loaded')) {
+                return;
+            }
+            else {
+                obj.hide();
 
-                    embedo.load(element, element.innerHTML, {
-                        width: w,
-                        height: h,
-                        centerize: true,
-                        strict: false
-                    })
-                        .done(function (xpto) {
-                            //$(element).find('embed').addClass('embed-responsive').show();
-                            wrapper.addClass('loaded');
-                        });
-                }
-            });
+                var w = wrapper.width();
+                var h = w * 9 / 16;
+
+                embedo.load(oembed.get(0), videoUrl, {
+                    width: w,
+                    height: h,
+                    centerize: true,
+                    strict: false
+                })
+                    .done(function () {
+                        wrapper.addClass('loaded');
+                    });
+            }
         }
     }
 

@@ -31,27 +31,22 @@
 
 @section Scripts {
     <environment include="Development">
-        <script src="~/lib/embedo/embedo.js"></script>
-        <script src="~/lib/dropzone/dropzone.js"></script>
-        <script src="~/js/shared/contentactions.js"></script>
-        <script src="~/js/shared/polls.js"></script>
-        <script src="~/js/shared/activityfeed.js"></script>
-        <script src="~/js/home/home.js"></script>
+        <script src="~/lib/embedo/embedo.js" defer></script>
+        <script src="~/lib/dropzone/dropzone.js" defer></script>
+        <script src="~/js/shared/contentactions.js" defer></script>
+        <script src="~/js/shared/polls.js" defer></script>
+        <script src="~/js/shared/activityfeed.js" defer></script>
+        <script src="~/js/home/home.js" defer></script>
     </environment>
     <environment exclude="Development">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/embedo/1.13.0/embedo.min.js"
-                asp-fallback-src="~/lib/embedo/embedo.min.js"
-                asp-fallback-test="window.Embedo"
                 integrity="sha256-iV1+ZN2IJ5wgrZujdohJeFjfuJlKTLTrAIqFJ5ptftE="
-                crossorigin="anonymous"></script>
+                crossorigin="anonymous" defer></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.7.0/dropzone.min.js"
-                asp-fallback-src="~/lib/dropzone/min/dropzone.min.js"
-                asp-fallback-test="window.Dropzone"
                 integrity="sha256-OG/103wXh6XINV06JTPspzNgKNa/jnP1LjPP5Y3XQDY="
-                crossorigin="anonymous">
-        </script>
+                crossorigin="anonymous" defer></script>
 
-        <script src="~/js/home/home.min.js" asp-append-version="true"></script>
+        <script src="~/js/home/home.min.js" asp-append-version="true" defer></script>
     </environment>
 
     <script type="application/ld+json">
@@ -86,15 +81,13 @@
                     {
                         <div class="col-12">
                             <partial name="_HomeRectangle" model="confirmEmailViewModel" />
-                        </div>
-                    }
+                        </div> }
                 }
                 else
                 {
                     <div class="col-12 d-none d-xl-block">
                         <partial name="_HomeSquare" model="joinUsViewModel" />
-                    </div>
-                }
+                    </div>}
                 <div class="col-12 d-none d-lg-block">
                     <div id="divCounters"></div>
                 </div>
@@ -107,8 +100,7 @@
 
             @if (User.Identity.IsAuthenticated)
             {
-                @await Html.PartialAsync("_PostFromHome", ViewBag.PostFromHome as PostFromHomeViewModel)
-            }
+                @await Html.PartialAsync("_PostFromHome", ViewBag.PostFromHome as PostFromHomeViewModel)}
 
             <div class="row">
                 <div class="col-12">
@@ -139,8 +131,7 @@
                                 </a>
                             </div>
                         </div>
-                    </div>
-                }
+                    </div>}
 
                 <div class="col-12 mt-1 no-gutters">
                     <partial name="_TagList" model="@ViewData["Genres"]" />

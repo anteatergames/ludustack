@@ -99,8 +99,8 @@
             var showTranslated = filter === 'All' || filter === 'Translated';
             var showUntranslated = filter === 'All' || filter === 'Untranslated';
 
-            inputs.each(function (index, element) {
-                var input = $(element);
+            inputs.each(function () {
+                var input = $(this);
                 var translated = input.data('translated');
 
                 if ((translated && showTranslated) || (!translated && showUntranslated)) {
@@ -300,8 +300,8 @@
     function resetTranslationStatus() {
         var entryInputs = objs.container.find(selectors.entryInput);
 
-        entryInputs.each(function (index, element) {
-            $(element).data('translated', false);
+        entryInputs.each(function () {
+            $(this).data('translated', false);
         });
 
         $(selectors.entryAuthors).html('');

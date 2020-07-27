@@ -267,3 +267,5 @@ __pycache__/
 **/Properties/PublishProfiles/*
 /LuduStack.Web/Properties/serviceDependencies*.json
 **/wwwroot/js/**/*.min.js
+**/wwwroot/css/**/*.min.css
+**/wwwroot/css/*.min.css

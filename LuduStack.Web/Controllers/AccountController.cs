@@ -42,6 +42,8 @@ namespace LuduStack.Web.Controllers
 
         private readonly IWebHostEnvironment hostingEnvironment;
 
+        private string envName;
+
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
@@ -54,6 +56,8 @@ namespace LuduStack.Web.Controllers
             this.profileAppService = profileAppService;
             _logger = logger;
             this.hostingEnvironment = hostingEnvironment;
+
+            envName = string.Format("env-{0}", hostingEnvironment.EnvironmentName);
         }
 
         [TempData]
@@ -756,7 +760,7 @@ namespace LuduStack.Web.Controllers
                 string filename = userId + "_" + ProfileType.Personal.ToString();
                 thumbnailBytes = await httpClient.GetByteArrayAsync(pictureUrl);
 
-                imageUrl = base.UploadImage(new Guid(userId), ImageType.ProfileImage, filename, thumbnailBytes);
+                imageUrl = base.UploadImage(new Guid(userId), ImageType.ProfileImage, filename, thumbnailBytes, envName);
             }
 
             if (string.IsNullOrWhiteSpace(imageUrl))
@@ -794,7 +798,7 @@ namespace LuduStack.Web.Controllers
 
             fileName = fileName.Split('.').First();
 
-            base.UploadImage(userId, ImageType.ProfileImage, fileName, bytes);
+            base.UploadImage(userId, ImageType.ProfileImage, fileName, bytes, envName);
         }
 
         private static string SelectName(ExternalLoginInfo info)

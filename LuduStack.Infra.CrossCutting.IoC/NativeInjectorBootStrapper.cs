@@ -147,6 +147,14 @@ namespace LuduStack.Infra.CrossCutting.IoC
 
             #endregion Giveaway
 
+            #region ShortUrl
+
+            services.AddScoped<IShortUrlAppService, ShortUrlAppService>();
+            services.AddScoped<IShortUrlDomainService, ShortUrlDomainService>();
+            services.AddScoped<IShortUrlRepository, ShortUrlRepository>();
+
+            #endregion ShortUrl
+
             #region Common
 
             services.AddScoped<IProfileBaseAppServiceCommon, ProfileBaseAppServiceCommon>();

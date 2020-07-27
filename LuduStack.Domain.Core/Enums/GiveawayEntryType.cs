@@ -1,28 +1,26 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using LuduStack.Domain.Core.Attributes;
+using System.ComponentModel.DataAnnotations;
 
 namespace LuduStack.Domain.Core.Enums
 {
     public enum GiveawayEntryType
     {
-        [Display(Name = "Login or email")]
+        [UiInfo(Display = "Participating", Description = "Participating")]
         LoginOrEmail = 1,
 
-        [Display(Name = "Facebook login")]
-        FacebookLogin = 2,
+        [UiInfo(Display = "Email confirmation", Description = "Email confirmed")]
+        EmailConfirmed = 2,
 
-        [Display(Name = "Facebook visit")]
-        FacebookVisit = 3,
+        [UiInfo(Display = "Referral code", Description = "Referral code")]
+        ReferralCode = 3,
 
-        [Display(Name = "Facebook share")]
-        FacebookShare = 4,
+        [UiInfo(Display = "Daily Entry", Description = "Daily Entry")]
+        Daily = 4,
 
-        [Display(Name = "Twitter login")]
-        TwitterLogin = 5,
+        [UiInfo(Display = "Facebook Share", Description = "Share on Facebook")]
+        FacebookShare = 5,
 
-        [Display(Name = "Twitter follow")]
-        TwitterFollow = 6,
-
-        [Display(Name = "Send tweet")]
-        SendTweet = 7
+        [UiInfo(Display = "Twitter Share", Description = "Share on Twitter")]
+        TwitterShare = 6
     }
 }

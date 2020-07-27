@@ -1,5 +1,6 @@
 ﻿using LuduStack.Domain.Core.Enums;
 using System;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
 
@@ -17,7 +18,7 @@ namespace LuduStack.Web.Helpers
             //group 1 figure class="xxxx">
             //group 2 oembed start
             //group 3 <img src="
-            //group 5 
+            //group 5
             //group 6 abre parenteses
             //group 7 indica url já formatada
             //group 8 url
@@ -53,7 +54,7 @@ namespace LuduStack.Web.Helpers
                 }
                 else
                 {
-                    newText = string.Format(@"<a href=""{0}"" target=""_blank"" style=""font-weight:500"">{0}</a>", url);
+                    newText = string.Format(@"<a href=""{0}"" target=""_blank"" style=""font-weight:500"" rel=""noopener"">{0}</a>", url);
                 }
 
                 if (!string.IsNullOrWhiteSpace(openParenthesis) && !string.IsNullOrWhiteSpace(closeParenthesis))
@@ -109,6 +110,25 @@ namespace LuduStack.Web.Helpers
                 default:
                     return "Check this out!";
             }
+        }
+
+        public static string GetYoutubeVideoId(string url)
+        {
+            var uri = new Uri(url);
+            var query = HttpUtility.ParseQueryString(uri.Query);
+
+            var videoId = string.Empty;
+
+            if (query.AllKeys.Contains("v"))
+            {
+                videoId = query["v"];
+            }
+            else
+            {
+                videoId = uri.Segments.Last();
+            }
+
+            return videoId;
         }
     }
 }

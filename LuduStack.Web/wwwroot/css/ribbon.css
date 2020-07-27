@@ -1,0 +1,370 @@
+﻿@import "https://fonts.googleapis.com/css?family=Oswald:400,700";
+
+#ribbon-container {
+    position: absolute;
+    top: 15px;
+    right: -15px;
+    overflow: visible; /* so we can see the pseudo-elements we're going to add to the anchor */
+    font-size: 18px; /* font-size and line-height must be equal so we can account for the height of the banner */
+    line-height: 18px;
+    z-index: 50;
+}
+
+    #ribbon-container:before {
+        content: "";
+        height: 0;
+        width: 0;
+        display: block;
+        position: absolute;
+        top: 3px;
+        left: 0;
+        border-top: 29px solid rgba(0, 0, 0, .3); /* These 4 border properties create the first part of our drop-shadow */
+        border-bottom: 29px solid rgba(0, 0, 0, .3);
+        border-right: 29px solid rgba(0, 0, 0, .3);
+        border-left: 29px solid transparent;
+    }
+
+    #ribbon-container:after { /* This adds the second part of our dropshadow */
+        content: "";
+        height: 3px;
+        background: rgba(0, 0, 0, .3);
+        display: block;
+        position: absolute;
+        bottom: -3px;
+        left: 58px;
+        right: 3px;
+    }
+
+    #ribbon-container span {
+        display: block;
+        padding: 20px;
+        position: relative; /* allows us to position our pseudo-elements properly */
+        background: var(--red);
+        overflow: visible;
+        height: 58px;
+        margin-left: 29px;
+        color: #fff;
+        text-decoration: none;
+    }
+
+        #ribbon-container span:after { /* this creates the "folded" part of our ribbon */
+            content: "";
+            height: 0;
+            width: 0;
+            display: block;
+            position: absolute;
+            bottom: -15px;
+            right: 0;
+            border-top: 15px solid #650505;
+            border-right: 15px solid transparent;
+        }
+
+        #ribbon-container span:before { /* this creates the "forked" part of our ribbon */
+            content: "";
+            height: 0;
+            width: 0;
+            display: block;
+            position: absolute;
+            top: 0;
+            left: -29px;
+            border-top: 29px solid var(--red);
+            border-bottom: 29px solid var(--red);
+            border-right: 29px solid transparent;
+            border-left: 29px solid transparent;
+        }
+
+        #ribbon-container span a:hover {
+            background: #009ff1;
+        }
+
+            #ribbon-container span a:hover:before { /* this makes sure that the "forked" part of the ribbon changes color with the anchor on :hover */
+                border-top: 29px solid #009ff1;
+                border-bottom: 29px solid #009ff1;
+            }
+
+    #ribbon-container.blue span {
+        background: var(--blue);
+    }
+
+        #ribbon-container.blue span:before {
+            border-top: 29px solid var(--blue);
+            border-bottom: 29px solid var(--blue);
+        }
+
+        #ribbon-container.blue span:after {
+            border-top: 15px solid #004a70;
+        }
+
+/*animated ribbon*/
+.ribbon * {
+    box-sizing: border-box;
+}
+
+.ribbon {
+    top: 0;
+    left: 0;
+    margin: 0 auto;
+    right: 0;
+    font-family: 'Oswald', sans-serif;
+    letter-spacing: 1px;
+}
+
+    .ribbon.absolute {
+        position: absolute;
+    }
+
+    .ribbon [class*="ribbon-"] {
+        margin: 74px auto 0;
+        -webkit-transform-origin: 50% 50%;
+        transform-origin: 50% 50%;
+        -webkit-transform: rotate(-8.5deg);
+        transform: rotate(-8.5deg);
+        position: relative;
+        z-index: 4;
+        width: 287px;
+        height: 56px;
+    }
+
+        .ribbon [class*="ribbon-"] .inner {
+            background: #003468;
+            color: #fff;
+            text-transform: uppercase;
+            text-align: center;
+            display: block;
+            width: 0;
+            height: 100%;
+            padding: 11px 0;
+            font-size: 1.5em;
+            text-shadow: 3px 3px 1px #001b47;
+            position: relative;
+            z-index: 2;
+            -webkit-transform: skewX(-9deg);
+            transform: skewX(-9deg);
+            -webkit-transition: width .12s ease-in-out;
+            transition: width .12s ease-in-out;
+        }
+
+        .ribbon [class*="ribbon-"]:before {
+            content: '';
+            -webkit-transform-origin: 0 0;
+            transform-origin: 0 0;
+            -webkit-transform: rotate(-17.25deg) skewX(-9deg) translateX(158px);
+            transform: rotate(-17.25deg) skewX(-9deg) translateX(158px);
+            display: block;
+            width: 0;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 4px;
+            background: #001b47;
+            z-index: -1;
+            -webkit-transition: all .12s ease-in-out .7s;
+            transition: all .12s ease-in-out .7s;
+        }
+
+    .ribbon .ribbon-1 .inner {
+        letter-spacing: 19px;
+        font-weight: 700;
+    }
+
+    .ribbon.active .inner {
+        width: 100%;
+    }
+
+    .ribbon.active .ribbon-1 .inner {
+        -webkit-transition-delay: .82s;
+        transition-delay: .82s;
+    }
+
+    .ribbon.active .ribbon-1:before {
+        width: 158px;
+        -webkit-transform: rotate(-17.25deg) skewX(-9deg) translateX(0);
+        transform: rotate(-17.25deg) skewX(-9deg) translateX(0);
+    }
+
+    .ribbon .ribbon-2 {
+        z-index: 3;
+        font-size: 45px;
+        width: 451px;
+        height: 137px;
+        margin-top: 22px;
+    }
+
+        .ribbon .ribbon-2 .inner {
+            padding: 19px 0;
+        }
+
+            .ribbon .ribbon-2 .inner:before, .ribbon .ribbon-2 .inner:after {
+                content: '';
+                position: absolute;
+                top: 14px;
+                left: 14px;
+                right: 14px;
+                bottom: 14px;
+                background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeYAAAALCAYAAACqPi4nAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyhpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMDE0IDc5LjE1Njc5NywgMjAxNC8wOC8yMC0wOTo1MzowMiAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTQgKE1hY2ludG9zaCkiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6NjEyM0FFRTU0NUUzMTFFNTlDMjdDMEJDMDFCNjlGNDkiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6NjEyM0FFRTY0NUUzMTFFNTlDMjdDMEJDMDFCNjlGNDkiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDpEOUZEM0I5NDQ1QkQxMUU1OUMyN0MwQkMwMUI2OUY0OSIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo2MTIzQUVFNDQ1RTMxMUU1OUMyN0MwQkMwMUI2OUY0OSIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/Pm3y348AAAIOSURBVHja7JvhboIwEMfbOZgyQF9h2cPtrfZ8+7APU0RQt7FrciQ3QqHodFT+v+RCc9ikHtX/tUe1GjFVVc3okij/0GRL5ScrT8edkt15OG4zv2cejvuRLPBw3BFZ6OG452y+8UC28HDcAc/xa/FN9k72RvaqSfzMH/EL2RPZMwcyFRMh4YkcKwAAAGC6GAHNyHZke7I1Wcm2Zp+5t+F2Trbltku/TGv9pQeuYGuxTjmjSISAS99CCHwt6l2+JfeNOaMN8PwBAAAMkSgWxIKF7oOvRYdQ5tx26kei+XmNL6JHG+Gqaop1yAIe8hZD7VuJbYc2X73ltuJ7kfAtMZcBAOAqWFeJ3N62CGXp2o9E83grgdJTnymUAEixluIfcVIQdPjq+knM91PhS/hztW+O3yUAYMSi2be6PHn7lkTzgBBDmMeaBEixbtbwkx6frVTQ5sNzBeB22DiuLvu2b8u2fiSae4QYwgwunwDcK3sN31bXt5UKusoHEaINJk524urSafuWRLNEiCHMAAxNAmQNv6+u3ywV9JUPZKlghmiDgeS2VaJyfznIJrBGNAuEGECYwZQTAHNGOVXudX1ZFnApH6RiBwFcnp0QynNWl60CS6KZI8QAwgzA7SQBlzgCGCp/jgUWLUJ5zuryl8CSaG4xywCAMAMw1iTgr44AmutBnfdykBHNDE8FgP/lR4ABABGzGigi55YSAAAAAElFTkSuQmCC") center bottom no-repeat;
+                background-size: 100%;
+                opacity: 0;
+                -webkit-transition: opacity .3s ease-in-out 1.86s;
+                transition: opacity .3s ease-in-out 1.86s;
+            }
+
+            .ribbon .ribbon-2 .inner:before {
+                -webkit-transform-origin: 50% 50%;
+                transform-origin: 50% 50%;
+                -webkit-transform: rotate(180deg);
+                transform: rotate(180deg);
+            }
+
+        .ribbon .ribbon-2:before {
+            width: 0;
+            left: 11px;
+            -webkit-transform: rotate(-10.25deg) skewX(-9deg) translateX(451px);
+            transform: rotate(-10.25deg) skewX(-9deg) translateX(451px);
+            height: 47px;
+            -webkit-transition-delay: .94s;
+            transition-delay: .94s;
+        }
+
+    .ribbon.active .ribbon-2 .inner {
+        -webkit-transition-delay: 1.06s;
+        transition-delay: 1.06s;
+    }
+
+        .ribbon.active .ribbon-2 .inner:before, .ribbon.active .ribbon-2 .inner:after {
+            opacity: 1;
+        }
+
+    .ribbon.active .ribbon-2:before {
+        width: 376px;
+        -webkit-transform: rotate(-10.25deg) skewX(-9deg) translateX(0);
+        transform: rotate(-10.25deg) skewX(-9deg) translateX(0);
+    }
+
+    .ribbon .ribbon-3 {
+        z-index: 2;
+        font-size: 9px;
+        width: 326px;
+        height: 55px;
+        margin-top: 24px;
+    }
+
+        .ribbon .ribbon-3 .inner {
+            color: #e8a713;
+            padding: 19px 0;
+        }
+
+        .ribbon .ribbon-3:before {
+            width: 0;
+            height: 47px;
+            left: 11px;
+            -webkit-transform: rotate(-10.25deg) skewX(-9deg) translateX(387px);
+            transform: rotate(-10.25deg) skewX(-9deg) translateX(387px);
+            -webkit-transition-delay: 1.18s;
+            transition-delay: 1.18s;
+        }
+
+        .ribbon .ribbon-3:after {
+            content: '';
+            -webkit-transform-origin: 100% 100%;
+            transform-origin: 100% 100%;
+            -webkit-transform: rotate(-15.3deg) skewX(9deg) translateX(72px);
+            transform: rotate(-15.3deg) skewX(9deg) translateX(72px);
+            display: block;
+            width: 0;
+            height: 45px;
+            position: absolute;
+            bottom: 0;
+            right: 4px;
+            background: #001b47;
+            z-index: -1;
+            -webkit-transition-delay: 1.42s;
+            transition-delay: 1.42s;
+        }
+
+    .ribbon.active .ribbon-3 .inner {
+        -webkit-transition-delay: 1.3s;
+        transition-delay: 1.3s;
+    }
+
+    .ribbon.active .ribbon-3:before {
+        width: 387px;
+        -webkit-transform: rotate(-10.25deg) skewX(-9deg) translateX(0);
+        transform: rotate(-10.25deg) skewX(-9deg) translateX(0);
+    }
+
+    .ribbon.active .ribbon-3:after {
+        width: 56px;
+        -webkit-transform: rotate(-15.3deg) skewX(9deg) translateX(0);
+        transform: rotate(-15.3deg) skewX(9deg) translateX(0);
+    }
+
+    .ribbon .ball {
+        width: 190px;
+        height: 190px;
+        background: #e8a713;
+        border-radius: 95px;
+        padding: 85px 20px 0;
+        text-align: center;
+        color: #001b47;
+        border: 10px solid #001b47;
+        margin: -87px auto 0;
+        position: relative;
+        left: 18px;
+        z-index: 1;
+        -webkit-transform-origin: 50% 50%;
+        transform-origin: 50% 50%;
+        -webkit-transform: rotate(-8.5deg);
+        transform: rotate(-8.5deg);
+    }
+
+        .ribbon .ball .ball-text {
+            font-size: 12px;
+            line-height: 1.2;
+            text-align: center;
+            display: block;
+            width: 119px;
+        }
+
+            .ribbon .ball .ball-text strong {
+                font-size: 39px;
+                font-style: italic;
+                display: block;
+                margin: 0 auto;
+            }
+
+    .ribbon .fadeLeft {
+        opacity: 0;
+        -webkit-transform: translateX(-100%);
+        transform: translateX(-100%);
+        -webkit-transition: all .3s ease-in-out 1.56s;
+        transition: all .3s ease-in-out 1.56s;
+        display: block;
+    }
+
+    .ribbon .fadeRight {
+        opacity: 0;
+        -webkit-transform: translateX(100%);
+        transform: translateX(100%);
+        -webkit-transition: all .3s ease-in-out 1.56s;
+        transition: all .3s ease-in-out 1.56s;
+        display: block;
+    }
+
+    .ribbon .fadeIn {
+        opacity: 0;
+        -webkit-transition: all .3s ease-in-out 1.42s;
+        transition: all .3s ease-in-out 1.42s;
+        display: block;
+    }
+
+    .ribbon.active .fadeLeft,
+    .ribbon.active .fadeRight {
+        opacity: 1;
+        -webkit-transform: translateX(0);
+        transform: translateX(0);
+    }
+
+    .ribbon.active .fadeIn {
+        opacity: 1;
+    }
+/*animated ribbon*/

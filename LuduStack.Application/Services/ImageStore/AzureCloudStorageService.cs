@@ -16,7 +16,7 @@ namespace LuduStack.Application.Services
             _config = config;
         }
 
-        public async Task<string> StoreImageAsync(string container, string fileName, byte[] image)
+        public async Task<string> StoreImageAsync(string container, string fileName, byte[] image, params string[] tags)
         {
             string storageConnectionString = _config["Storage:ConnectionString"];
 

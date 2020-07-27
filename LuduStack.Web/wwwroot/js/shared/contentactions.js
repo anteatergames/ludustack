@@ -150,11 +150,9 @@
     }
 
     function bindShareContent() {
-        $(selectors.btnInteractionShare).each(function (index, element) {
-            var btn = $(element);
+        $(selectors.btnInteractionShare).each(function () {
+            var btn = $(this);
             var data = btn.data();
-
-            console.log(index);
 
             if (data.target) {
                 $(btn).off('click');

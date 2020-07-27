@@ -2,6 +2,24 @@
 // More info at https://go.microsoft.com/fwlink/?LinkId=808241
 [
   {
+    "outputFileName": "wwwroot/js/cookieconsent.min.js",
+    "inputFiles": [
+      "wwwroot/js/cookieconsent.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/tagmanager.min.js",
+    "inputFiles": [
+      "wwwroot/js/tagmanager.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/facebooksdk.min.js",
+    "inputFiles": [
+      "wwwroot/js/facebooksdk.js"
+    ]
+  },
+  {
     "outputFileName": "wwwroot/css/site.min.css",
     // An array of relative input file paths. Globbing patterns supported
     "inputFiles": [
@@ -282,6 +300,19 @@
     ]
   },
   {
+    "outputFileName": "wwwroot/css/giveawayedit.min.css",
+    "inputFiles": [
+      "wwwroot/lib/cropperjs/cropper.css",
+      "wwwroot/css/giveaway.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/ribbon.min.css",
+    "inputFiles": [
+      "wwwroot/css/ribbon.css"
+    ]
+  },
+  {
     "outputFileName": "wwwroot/js/giveaway/giveaway.min.js",
     "inputFiles": [
       "wwwroot/js/giveaway/giveawaycommon.js",
@@ -289,8 +320,19 @@
     ]
   },
   {
+    "outputFileName": "wwwroot/js/giveaway/giveawaymanage.min.js",
+    "inputFiles": [
+      "wwwroot/js/shared/exporthelper.js",
+      "wwwroot/js/giveaway/giveawaycommon.js",
+      "wwwroot/js/giveaway/giveawaymanage.js"
+    ]
+  },
+  {
     "outputFileName": "wwwroot/js/giveaway/giveawayedit.min.js",
     "inputFiles": [
+      "wwwroot/lib/cropperjs/cropper.js",
+      "wwwroot/js/shared/imagemanipulation.js",
+      "wwwroot/js/shared/common-edit.js",
       "wwwroot/js/giveaway/giveawaycommon.js",
       "wwwroot/js/giveaway/giveawayedit.js"
     ]
@@ -298,7 +340,19 @@
   {
     "outputFileName": "wwwroot/js/giveaway/giveawaydetails.min.js",
     "inputFiles": [
+      "wwwroot/js/shared/fx.js",
+      "wwwroot/js/shared/messages.js",
+      "wwwroot/js/giveaway/giveawayparticipantcommon.js",
       "wwwroot/js/giveaway/giveawaydetails.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/giveaway/giveawayyouarein.min.js",
+    "inputFiles": [
+      "wwwroot/js/shared/fx.js",
+      "wwwroot/js/shared/messages.js",
+      "wwwroot/js/giveaway/giveawayparticipantcommon.js",
+      "wwwroot/js/giveaway/giveawayyouarein.js"
     ]
   }
 ]

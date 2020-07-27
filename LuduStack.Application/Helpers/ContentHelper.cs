@@ -8,11 +8,7 @@ namespace LuduStack.Application.Helpers
     {
         public static string SetFeaturedImage(Guid userId, string featuredImage, ImageRenderType type)
         {
-            if (string.IsNullOrWhiteSpace(featuredImage) || featuredImage.Equals(Constants.DefaultFeaturedImage))
-            {
-                return Constants.DefaultFeaturedImage;
-            }
-            else
+            if (!string.IsNullOrWhiteSpace(featuredImage) && !featuredImage.Contains("/images/placeholders/"))
             {
                 switch (type)
                 {
@@ -26,6 +22,10 @@ namespace LuduStack.Application.Helpers
                     default:
                         return UrlFormatter.Image(userId, ImageType.FeaturedImage, featuredImage);
                 }
+            }
+            else
+            {
+                return featuredImage;
             }
         }
     }

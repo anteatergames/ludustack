@@ -73,7 +73,7 @@
             var pollVoteCount = pollWrapper.find('.poll-vote-count');
             var allOptions = poll.children('li');
 
-            $(allOptions).each(function (index, element) {
+            $(allOptions).each(function () {
                 var li = $(this);
                 li.removeClass('voted').addClass('notvoted');
                 var percBack2 = li.children('span.perc-back');

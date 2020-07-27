@@ -39,7 +39,7 @@
             var btn = $(this);
 
             if (canInteract) {
-                MAINMODULE.Common.DeleteEntity(btn);
+                MAINMODULE.Common.DeleteEntity(btn, GIVEAWAYCOMMON.Callback.DeleteEntity);
             }
 
             return false;
@@ -48,7 +48,12 @@
 
     return {
         Init: init,
-        CanInteract: canInteract
+        CanInteract: canInteract,
+        Callback: {
+            DeleteEntity: function () {
+                console.log('empty GIVEAWAYCOMMON.Callback.Delete');
+            }
+        }
     };
 }());
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Xml.Linq;
 
 namespace LuduStack.Domain.Core.Attributes
 {

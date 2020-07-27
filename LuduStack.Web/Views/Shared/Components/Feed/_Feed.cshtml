@@ -17,7 +17,7 @@
 
                 @if (!String.IsNullOrWhiteSpace(item.Url))
                 {
-                    <a href="@item.Url" class="contenturl">
+                    <a href="@item.Url" class="contenturl" aria-label="@item.CreateDate.ToString()">
                         <span class="description">@item.CreateDate.ToString()</span>
                     </a>
                 }
@@ -75,7 +75,13 @@
                     <a asp-area="" asp-controller="content" asp-action="details" asp-route-id="@item.Id">
                         @if (item.FeaturedMediaType == MediaType.Youtube)
                         {
-                            <div class="videoWrapper"><oembed>@item.FeaturedImage</oembed></div>
+                            <div class="videoWrapper" data-url="@item.FeaturedImage">
+                                <oembed></oembed>
+                                <div class="video-thumbnail">
+                                    <div class="play-btn"></div>
+                                    <img class="img-fluid w-100 placeholder oembedimg lazyload blur-up" src="@item.FeaturedImageLquip" data-src="https://img.youtube.com/vi/@(item.FeaturedImageResponsive)/mqdefault.jpg" alt="Youtube Video" />
+                                </div>
+                            </div>
                         }
                         else if (item.FeaturedMediaType == MediaType.Video)
                         {

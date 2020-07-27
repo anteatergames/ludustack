@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -58,6 +59,7 @@ namespace LuduStack.Web.Controllers.Base
                 ViewBag.CurrentUserId = CurrentUserId;
                 ViewBag.Username = username ?? Constants.DefaultUsername;
                 ViewBag.ProfileImage = UrlFormatter.ProfileImage(CurrentUserId);
+                ViewBag.Locale = GetAspNetCultureCookie();
             }
         }
 
@@ -188,16 +190,32 @@ namespace LuduStack.Web.Controllers.Base
 
         protected void SetAspNetCultureCookie(RequestCulture culture)
         {
+            ViewBag.Locale = culture;
+
             SetCookieValue(CookieRequestCultureProvider.DefaultCookieName, CookieRequestCultureProvider.MakeCookieValue(culture), 365);
+        }
+
+        protected string GetAspNetCultureCookie()
+        {
+            var cookieValue = GetCookieValue(CookieRequestCultureProvider.DefaultCookieName);
+
+            var cookie = CookieRequestCultureProvider.ParseCookieValue(cookieValue);
+
+            if (cookie == null || !cookie.Cultures.Any())
+            {
+                return "en-US";
+            }
+
+            return cookie.Cultures.First().Value;
         }
 
         #region Upload Management
 
         #region Main Methods
 
-        private string UploadImage(Guid userId, string imageType, string filename, byte[] fileBytes)
+        private string UploadImage(Guid userId, string imageType, string filename, byte[] fileBytes, params string[] tags)
         {
-            Task<string> op = ImageStorageService.StoreImageAsync(userId.ToString(), imageType.ToLower() + "_" + filename, fileBytes);
+            Task<string> op = ImageStorageService.StoreImageAsync(userId.ToString(), imageType.ToLower() + "_" + filename, fileBytes, tags);
             op.Wait();
 
             if (!op.IsCompletedSuccessfully)
@@ -242,32 +260,32 @@ namespace LuduStack.Web.Controllers.Base
 
         #endregion Main Methods
 
-        protected string UploadImage(Guid userId, ImageType container, string filename, byte[] fileBytes)
+        protected string UploadImage(Guid userId, ImageType container, string filename, byte[] fileBytes, params string[] tags)
         {
             string containerName = container.ToString().ToLower();
 
-            return UploadImage(userId, containerName, filename, fileBytes);
+            return UploadImage(userId, containerName, filename, fileBytes, tags);
         }
 
-        protected string UploadGameImage(Guid userId, ImageType type, string filename, byte[] fileBytes)
+        protected string UploadGameImage(Guid userId, ImageType type, string filename, byte[] fileBytes, params string[] tags)
         {
-            string result = UploadImage(userId, type.ToString().ToLower(), filename, fileBytes);
+            string result = UploadImage(userId, type.ToString().ToLower(), filename, fileBytes, tags);
 
             return result;
         }
 
-        protected string UploadContentImage(Guid userId, string filename, byte[] fileBytes)
+        protected string UploadContentImage(Guid userId, string filename, byte[] fileBytes, params string[] tags)
         {
             string type = ImageType.ContentImage.ToString().ToLower();
-            string result = UploadImage(userId, type, filename, fileBytes);
+            string result = UploadImage(userId, type, filename, fileBytes, tags);
 
             return result;
         }
 
-        protected string UploadFeaturedImage(Guid userId, string filename, byte[] fileBytes)
+        protected string UploadFeaturedImage(Guid userId, string filename, byte[] fileBytes, params string[] tags)
         {
             string type = ImageType.FeaturedImage.ToString().ToLower();
-            string result = UploadImage(userId, type, filename, fileBytes);
+            string result = UploadImage(userId, type, filename, fileBytes, tags);
 
             return result;
         }
@@ -293,6 +311,13 @@ namespace LuduStack.Web.Controllers.Base
         protected string GetCookieValue(SessionValues key)
         {
             string value = CookieMgrService.Get(key.ToString());
+
+            return value;
+        }
+
+        private string GetCookieValue(string key)
+        {
+            string value = CookieMgrService.Get(key);
 
             return value;
         }

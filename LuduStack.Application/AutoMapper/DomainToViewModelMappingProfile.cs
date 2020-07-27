@@ -10,10 +10,12 @@ using LuduStack.Application.ViewModels.Giveaway;
 using LuduStack.Application.ViewModels.Jobs;
 using LuduStack.Application.ViewModels.Localization;
 using LuduStack.Application.ViewModels.Search;
+using LuduStack.Application.ViewModels.ShortUrl;
 using LuduStack.Application.ViewModels.Study;
 using LuduStack.Application.ViewModels.Team;
 using LuduStack.Application.ViewModels.User;
 using LuduStack.Application.ViewModels.UserPreferences;
+using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
 using System.Linq;
@@ -146,12 +148,21 @@ namespace LuduStack.Application.AutoMapper
             #region Giveaway
 
             CreateMap<Giveaway, GiveawayViewModel>();
+            CreateMap<GiveawayBasicInfo, GiveawayViewModel>();
+            CreateMap<GiveawayBasicInfo, GiveawayParticipationViewModel>();
             CreateMap<GiveawayPrize, GiveawayPrizeViewModel>();
             CreateMap<GiveawayEntryOption, GiveawayEntryOptionViewModel>();
-            CreateMap<GiveawayParticipant, GiveawayParticipantViewModel>();
+            CreateMap<GiveawayParticipant, GiveawayParticipantViewModel>()
+                .ForMember(dest => dest.EmailVerified, opt => opt.MapFrom(src => src.Entries.Any(x => x.Type == GiveawayEntryType.EmailConfirmed)));
             CreateMap<GiveawayEntry, GiveawayEntryViewModel>();
 
             #endregion Giveaway
+
+            #region ShortUrl
+
+            CreateMap<ShortUrl, ShortUrlViewModel>();
+
+            #endregion ShortUrl
         }
     }
 }

@@ -2,7 +2,13 @@ html {
     --border-radius: 20px;
 }
 
-.giv-container {
+.carousel-inner {
+    max-height: 360px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.giveaway-container, .terms-container {
     width: 100%;
     max-width: 720px;
     background-color: #fff;
@@ -14,36 +20,55 @@ html {
     box-shadow: 0 10px 35px 0 rgba(99,123,173,.2);
 }
 
-    .giv-container div {
+    .giveaway-container div {
         border-top-left-radius: var(--border-radius);
         border-top-right-radius: var(--border-radius);
     }
 
-    .giv-container.animate1 {
+    .giveaway-container.animate1 {
         opacity: 0;
-        -webkit-animation: giv-container1 1s ease-out forwards;
-        animation: giv-container1 1s ease-out forwards;
+        -webkit-animation: giveaway-container1 1s ease-out forwards;
+        animation: giveaway-container1 1s ease-out forwards;
     }
 
-@-webkit-keyframes giv-container1 {
+.terms-container {
+    min-height: 300px;
+}
+
+    .terms-container .terms-actions {
+        position: absolute;
+        bottom: 20px;
+    }
+
+@-webkit-keyframes giveaway-container1 {
     to {
         opacity: 1;
     }
 }
 
-@keyframes giv-container1 {
+@keyframes giveaway-container1 {
     to {
         opacity: 1;
     }
-}   
+}
 
 .giv-title {
     text-align: center;
     border-radius: 20px;
     margin-top: -40px;
     position: relative;
-    padding: 1rem;
+    padding: 1.4rem 2rem .7rem;
 }
+
+    .giv-title.ended {
+        background-color: #3d4454;
+        color: #fff;
+        padding: 0;
+        top: -5px;
+        min-height: 45px;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+    }
 
 .basic-info {
     -webkit-box-pack: center;
@@ -54,24 +79,20 @@ html {
 }
 
 .email-input {
-    width: auto;
-    height: 100%;
     position: relative;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
-    margin-right: .5rem;
 }
 
-    .email-input svg {
-        left: 12px;
-        -ms-flex-item-align: center;
-        align-self: center;
+    .email-input i {
+        line-height: 50px;
         position: absolute;
+        left: 10px;
     }
 
     .email-input input {
-        padding-left: 40px;
+        padding-left: 30px;
     }
 
     .email-input .letter-front .st0 {
@@ -103,7 +124,7 @@ html {
 }
 
 .hr-title {
-    background-image: url(/images/hr.svg);
+    background-image: url(/images/giveaway/hr.svg);
     background-repeat: repeat-x;
     background-size: auto 2px;
     background-position-y: 7px;
@@ -117,7 +138,7 @@ html {
     }
 
 .hr-arrow-down {
-    background-image: url(/images/hr.svg);
+    background-image: url(/images/giveaway/hr.svg);
     background-repeat: repeat-x;
     background-size: auto 2px;
     background-position-y: 0;
@@ -136,13 +157,13 @@ html {
         display: block;
         width: 60px;
         height: 23px;
-        background-image: url(/images/hr-down.svg);
+        background-image: url(/images/giveaway/hr-down.svg);
         background-repeat: no-repeat;
         top: -2px;
     }
 
 .hr-plain, .hr-top {
-    background-image: url(/images/hr.svg);
+    background-image: url(/images/giveaway/hr.svg);
     background-repeat: repeat-x;
     background-size: auto 2px;
     background-position-y: 0;
@@ -165,27 +186,13 @@ html {
         display: block;
         width: 56px;
         height: 31px;
-        background-image: url(/images/hr-top.svg);
+        background-image: url(/images/giveaway/hr-top.svg);
         background-repeat: no-repeat;
         top: -27px;
     }
 
-.giv-title {
-    text-align: center;
-    border-radius: 20px;
-    margin-top: -40px;
-    position: relative;
-    padding: 1.4rem 2rem .7rem;
-}
-
 .giv-carousel-control button.active, .giv-title {
     background-color: #fff;
-}
-
-
-.carousel-inner {
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
 }
 
 .time-left {
@@ -208,7 +215,6 @@ html {
         opacity: .5;
     }
 
-
 .offered-by-text, .offered-by-title {
     display: block;
     margin: auto;
@@ -227,4 +233,184 @@ html {
 
 .carousel-indicators {
     margin-bottom: 40px;
+}
+
+.status-bar-wrapper {
+    height: 90px;
+    text-align: center;
+}
+
+.status-bar {
+    display: block;
+    background-color: #fff;
+    color: #3d4454;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: .8rem .8rem 0;
+    border-top: 2px solid #e9eff4;
+}
+
+    .status-bar div {
+        display: inline-block;
+        margin: 0 1rem .8rem;
+    }
+
+    .status-bar .h3 {
+        vertical-align: -.25rem;
+        color: #3ec242;
+    }
+
+.swal2-header {
+    flex: none;
+}
+
+.share-personal-url {
+    width: 100%;
+    max-width: 392px;
+    margin: 0 auto;
+    padding: 30px 0;
+}
+
+    .share-personal-url .url-place {
+        width: auto;
+        text-align: left;
+    }
+
+        .share-personal-url .url-place .url-input {
+            white-space: nowrap;
+            overflow: hidden !important;
+            text-overflow: ellipsis;
+            direction: rtl;
+            text-align: left;
+            padding-right: 45px;
+        }
+
+        .share-personal-url .url-place .copy-icon {
+            margin-top: -76px;
+        }
+
+    .share-personal-url .box-info .text-info {
+        font-size: 16px;
+        line-height: 28px;
+        padding-bottom: 10px;
+        margin: 0 auto;
+    }
+
+.imagelist .btn-image-delete {
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    box-shadow: 0 0 3px var(--white);
+}
+
+.imagelist div:first-child {
+    padding-left: 0 !important;
+}
+
+.imagelist div:last-child {
+    padding-right: 0 !important;
+}
+
+    .imagelist div:last-child .btn-image-delete {
+        right: 10px;
+    }
+
+.imagelist .featuredlabel {
+    position: relative;
+    margin-top: -25px;
+}
+
+    .imagelist .featuredlabel span {
+        color: var(--white);
+        background-color: var(--orange);
+        border-top-right-radius: 10px !important;
+        border-top-left-radius: 10px !important;
+    }
+
+img.imagelistitem {
+    object-fit: cover;
+    max-height: 100px;
+    border-radius: 10px;
+    border: 2px solid var(--light);
+}
+
+    img.imagelistitem.featured {
+        border: 2px solid var(--orange);
+        -moz-box-shadow: 0 5px 5px 0 rgba(99,123,173,.2);
+        -webkit-box-shadow: 0 5px 5px 0 rgba(99,123,173,.2);
+        box-shadow: 0 5px 5px 0 rgba(99,123,173,.2);
+    }
+
+
+.entryoption:hover {
+    background-color: var(--light);
+}
+
+.entryoption:before {
+    margin-top: 0.5rem !important;
+    content: "";
+    border-radius: 5px;
+    left: 5px;
+    height: 1.6rem;
+    width: 1.6rem;
+    border: 2px solid #e9eff4;
+    top: .6rem;
+    background-color: #fff;
+}
+
+.entryoption.checked:before {
+    background-color: var(--success);
+    border: 2px solid var(--success);
+    background-image: url(/images/giveaway/icon-check.svg);
+    background-size: 65%;
+    background-repeat: no-repeat;
+    background-position: 50%;
+    color: #3ebdd4;
+}
+
+.entryoption .btn-points {
+    padding-top: 0.5rem !important;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    background-color: var(--success);
+    color: var(--white);
+    z-index: 2;
+    position: relative;
+}
+
+.entryoption a {
+    color: var(--dark);
+}
+
+    .entryoption a:hover {
+        color: var(--success);
+        text-decoration: none;
+    }
+
+.entryoption .btn-points:before {
+    content: "";
+    height: 25px;
+    width: 25px;
+    background: inherit;
+    border: inherit;
+    border-left-color: transparent;
+    border-bottom-color: transparent;
+    border-radius: 0 !important;
+    transform: rotate(225deg);
+    position: absolute;
+    left: -14px;
+    padding: 14px;
+    margin-top: -2px;
+    z-index: -1;
+}
+
+.entryoption .btn-points .badge {
+    position: absolute;
+    left: -28px;
+    top: 7px;
+    height: 25px;
+    width: 25px;
+    line-height: 14px;
 }

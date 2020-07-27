@@ -1552,9 +1552,22 @@ button.btn.dropdown-toggle::after, .wysihtml5-toolbar .btn.dropdown-toggle::afte
     }
 }
 
+@media (min-width: 768px) {
+    .table-responsive {
+        overflow: inherit;
+    }
+}
+
+.table tr.row-clickable td a {
+    display: block;
+}
+
 .table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
     border-top: 1px solid #f4f4f4;
-    padding: 10px;
+    padding: 0;
+    padding-left:5px;
+    padding-right:5px;
+    line-height: 40px;
 }
 
 .table > thead > tr > th {
@@ -1905,7 +1918,7 @@ button.btn.dropdown-toggle::after, .wysihtml5-toolbar .btn.dropdown-toggle::afte
 }
 
 .user-block .description {
-    color: #999;
+    color: #888;
     font-size: 13px;
 }
 

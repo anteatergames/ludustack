@@ -44,12 +44,15 @@ namespace LuduStack.Web.Middlewares
                 { "storage", "*" },
                 { "user", "*" },
                 { "test", "*" },
+                { "go", "*" },
 
                 { "*", "new" },
+                { "*", "add" },
                 { "*", "help" },
 
                 { "*", "edit" },
                 { "*", "delete" },
+                { "*", "save" },
 
                 { "account", "lockout" },
                 { "account", "externallogin" },
@@ -111,7 +114,26 @@ namespace LuduStack.Web.Middlewares
                 { "localization", "exportxml" },
                 { "localization", "exportcontributors" },
                 { "localization", "review" },
-                { "localization", "getterms" }
+                { "localization", "getterms" },
+
+                { "course", "list" },
+                { "course", "listbyme" },
+                { "course", "listmine" },
+                { "course", "addcourse" },
+                { "course", "savecourse" },
+                { "course", "details" },
+                { "course", "listplans" },
+                { "course", "listplansforedit" },
+                { "study", "listmymentors" },
+                { "study", "listmystudents" },
+
+                { "giveaway", "savegiveaway" },
+                { "giveaway", "listbyme" },
+                { "giveaway", "details" },
+                { "giveaway", "youarein" },
+                { "giveaway", "manage" },
+                { "giveaway", "emailconfirmation" },
+                { "giveaway", "terms" },
             };
         }
 

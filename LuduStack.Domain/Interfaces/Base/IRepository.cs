@@ -11,6 +11,8 @@ namespace LuduStack.Domain.Interfaces
     {
         void Add(TEntity obj);
 
+        void AddDirectly(TEntity obj);
+
         Task<TEntity> GetById(Guid id);
 
         Task<IEnumerable<TEntity>> GetByUserId(Guid id);
@@ -19,6 +21,8 @@ namespace LuduStack.Domain.Interfaces
 
         Task<int> Count(Expression<Func<TEntity, bool>> where);
 
+        int CountDirectly(Expression<Func<TEntity, bool>> where);
+
         IQueryable<TEntity> Get();
 
         IQueryable<TEntity> Get(Expression<Func<TEntity, bool>> where);
@@ -26,6 +30,8 @@ namespace LuduStack.Domain.Interfaces
         Task<IEnumerable<TEntity>> GetAll();
 
         void Update(TEntity obj);
+
+        void UpdateDirectly(TEntity obj);
 
         void Remove(Guid id);
     }
