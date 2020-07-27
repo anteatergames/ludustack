@@ -47,7 +47,7 @@
             e.preventDefault();
             var btn = $(this);
 
-            var valid = objs.form.valid();;
+            var valid = objs.form.valid();
 
             if (valid) {
                 submitForm(btn);

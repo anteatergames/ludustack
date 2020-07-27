@@ -44,7 +44,7 @@
                 current = 0;
                 console.log('Hum... you found me... now I have to kill you.');
             }
-        };
+        }
     }
 
     function countDownClock(number = 100, format = 'seconds') {
