@@ -161,10 +161,10 @@
                         {
                             <div class="p-4 rounded-0 bg-light offered-by-text ">
                                 <div class="text-uppercase d-flex flex-wrap justify-content-center">
-                                    @if (Model.ShowTimeZone)
+                                    @*@if (Model.ShowTimeZone)
                                     {
-                                        <div class="mx-3"><small title="America/Sao_Paulo"><span class="h6">@SharedLocalizer["giveaway timezone: {0}", Model.TimeZone]</span></small></div>
-                                    }
+                                        <div class="mx-3"><small title="America/Sao_Paulo"><span class="h6">@SharedLocalizer["giveaway timezone: UTC {0}", Model.TimeZone]</span></small></div>
+                                    }*@
                                     @if (Model.ShowSponsor)
                                     {
                                         if (!string.IsNullOrWhiteSpace(Model.SponsorWebsite) || Model.SponsorWebsite.Equals("#"))

@@ -1,4 +1,5 @@
-﻿using LuduStack.Application.Formatters;
+﻿using CloudinaryDotNet.Actions;
+using LuduStack.Application.Formatters;
 using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels.Giveaway;
 using LuduStack.Domain.Core.Enums;
@@ -526,9 +527,13 @@ namespace LuduStack.Application.Services
             }
             model.ImageList = newImageList;
 
-            if (!string.IsNullOrWhiteSpace(model.FeaturedImage))
+            if (!string.IsNullOrWhiteSpace(model.FeaturedImage) && !(model.FeaturedImage.Contains(Constants.DefaultGiveawayThumbnail) || Constants.DefaultGiveawayThumbnail.Contains(model.FeaturedImage)))
             {
                 model.FeaturedImage = model.FeaturedImage.Split('/').LastOrDefault();
+            }
+            else
+            {
+                model.FeaturedImage = null;
             }
         }
 
