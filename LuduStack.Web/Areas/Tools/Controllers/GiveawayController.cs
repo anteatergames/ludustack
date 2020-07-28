@@ -45,6 +45,7 @@ namespace LuduStack.Web.Areas.Tools.Controllers
             }
         }
 
+        [Authorize]
         [Route("tools/giveaway/listbyme")]
         public PartialViewResult ListByMe()
         {
@@ -97,6 +98,7 @@ namespace LuduStack.Web.Areas.Tools.Controllers
             }
         }
 
+        [Authorize]
         [Route("tools/giveaway/edit/{id:guid}")]
         public ViewResult Edit(Guid id)
         {
@@ -115,6 +117,7 @@ namespace LuduStack.Web.Areas.Tools.Controllers
             return View("CreateEditWrapper", model);
         }
 
+        [Authorize]
         [Route("tools/giveaway/save")]
         public JsonResult SaveGiveaway(GiveawayViewModel vm)
         {
