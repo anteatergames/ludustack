@@ -1,7 +1,8 @@
 ﻿@model MvcRegisterViewModel
 @{
     ViewData["Title"] = SharedLocalizer["Register"];
-    ViewData["CanonicalUrl"] = "https://www.ludustack.com/account/register/";
+    ViewData["Description"] = String.Format("{0} - {1}", SharedLocalizer["Register"], ConstantHelper.DefaultTitle);
+    ViewData["CanonicalUrl"] = ViewBag.BaseUrl + Url.Action("register", "account");
     Layout = "~/Views/Shared/_LayoutLoginRegister.cshtml";
 }
 
