@@ -421,7 +421,7 @@ namespace LuduStack.Application.Services
 
         private void SetViewModelState(Guid currentUserId, IGiveawayScreenViewModel vm)
         {
-            TimeSpan diff = vm.EndDate.HasValue ? (vm.EndDate - DateTime.Now).Value : (vm.StartDate - DateTime.Now);
+            TimeSpan diff = vm.EndDate.HasValue && vm.StartDate <= DateTime.Now.ToLocalTime() ? (vm.EndDate - DateTime.Now.ToLocalTime()).Value : (vm.StartDate - DateTime.Now.ToLocalTime());
 
             vm.SecondsToEnd = (int)diff.TotalSeconds;
 
