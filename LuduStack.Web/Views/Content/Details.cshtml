@@ -1,7 +1,7 @@
 ﻿@model UserContentViewModel
 @{
     ViewData["Title"] = Model.Title;
-    ViewData["Description"] = Model.Introduction.Contains(SharedLocalizer["Content posted on"]) ? SharedLocalizer["Content posted on"] + " " + Model.CreateDate.ToString() : Model.Introduction;
+    ViewData["Description"] = Model.Introduction.Contains(SharedLocalizer["Content posted on"]) ? SharedLocalizer["Content posted on"] + " " + Model.CreateDate.ToString() : String.Format("{0} - {1}", Model.Title, Model.Introduction);
     ViewData["Url"] = ViewBag.BaseUrl + Url.Action("details", "content", new { id = Model.Id });
     ViewData["OgImage"] = Model.FeaturedImage;
 }

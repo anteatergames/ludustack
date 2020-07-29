@@ -1,9 +1,17 @@
 ﻿@{
 
     ViewData["Title"] = SharedLocalizer["Search"];
-    ViewData["Description"] = SharedLocalizer["Search for posts or other items on the platform."];
 
     var q = (string)ViewData["term"];
+    if (string.IsNullOrWhiteSpace(q))
+    {
+        ViewData["Description"] = SharedLocalizer["Search for posts or other items on the platform."];
+    }
+    else
+    {
+        ViewData["Description"] = SharedLocalizer["Search for posts or other items on the platform with the text \"{0}\"", q];
+    }
+
     var noItemsModel = new ListNoItemsViewModel("fas fa-exclamation-triangle", "You searched nothing! Literally nothing!");
 }
 

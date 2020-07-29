@@ -1,4 +1,5 @@
-﻿@{ var isAjax = ViewContext.HttpContext.Request.IsAjaxRequest();
+﻿@{
+    var isAjax = ViewContext.HttpContext.Request.IsAjaxRequest();
     var canInteract = User.Identity.IsAuthenticated;
 
     if (isAjax)
@@ -9,12 +10,13 @@
     var studyProfile = (StudyProfile)Enum.Parse(typeof(StudyProfile), (string)ViewData["studyProfile"]);
     var backUrl = Url.Action("index", "study", new { area = "learn" });
 
-    //ViewData["Description"] = SharedLocalizer["Study gamedev or mentor students."];
     //ViewData["Url"] = ViewBag.BaseUrl + Url.Action("index", "study", new { area = "learn" });
     //ViewData["OgImage"] = ViewBag.BaseUrl + "/images/og/ogstudy.png";
     //ViewData["OgImageWidth"] = 1200;
     //ViewData["OgImageHeight"] = 630;
-    ViewData["Title"] = SharedLocalizer["Explore Courses"]; }
+    ViewData["Title"] = SharedLocalizer["Explore Courses"];
+    ViewData["Description"] = SharedLocalizer["Find the perfect course for you. Choose what you want to learn, read the course reviews and improve your skills."];
+}
 
 @section ComponentStyles {
     <environment include="Development">

@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = Model.Name;
+    ViewData["Description"] = SharedLocalizer["{0}, assemble!", Model.Name];
     var isAjax = ViewContext.HttpContext.Request.IsAjaxRequest();
 }
 
