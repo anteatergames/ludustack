@@ -1,13 +1,15 @@
 ﻿@model LocalizationViewModel
-@{ ViewData["Title"] = SharedLocalizer["Translate for {0}", Model.Game.Title];
-    ViewData["Description"] = "tralala";
+@{
+    ViewData["Title"] = SharedLocalizer["Translate for {0}", Model.Game.Title];
+    ViewData["Description"] = ViewData["Title"];
     ViewData["Url"] = ViewBag.BaseUrl + Url.Action("details", "localization", new { area = "tools", id = Model.Id });
     ViewData["OgImage"] = ViewBag.BaseUrl + "/images/og/oglocalization.png";
 
     Model.Game.Title = string.Empty;
 
     var isAjax = ViewContext.HttpContext.Request.IsAjaxRequest();
-    var canInteract = User.Identity.IsAuthenticated; }
+    var canInteract = User.Identity.IsAuthenticated;
+}
 
 @section ComponentStyles {
     <environment include="Development">
