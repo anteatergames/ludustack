@@ -1,10 +1,11 @@
 [
+  
   {
     "relation": [ "delegate_permission/common.handle_all_urls" ],
     "target": {
       "namespace": "android_app",
-      "package_name": "xyz.appmaker.xtfyrq",
-      "sha256_cert_fingerprints": [ "55:C8:A7:31:69:2D:DA:30:CF:F1:5F:A8:C1:E4:42:17:F2:6A:80:0D:F3:4D:40:99:BA:37:5A:3F:8A:E0:5E:70" ]
+      "package_name": "com.ludustack.www.twa",
+      "sha256_cert_fingerprints": [ "EB:71:2D:F7:20:D6:D6:BF:80:5E:76:C9:35:80:8D:34:5E:38:8F:57:30:ED:95:55:3A:83:44:EC:EE:7F:17:83" ]
     }
   }
 ]
