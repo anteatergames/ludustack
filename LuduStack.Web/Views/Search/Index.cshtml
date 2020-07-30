@@ -1,8 +1,8 @@
 ﻿@{
-
-    ViewData["Title"] = SharedLocalizer["Search"];
-
     var q = (string)ViewData["term"];
+
+    ViewData["Title"] = string.IsNullOrWhiteSpace(q) ? SharedLocalizer["Search"] : SharedLocalizer["Searching for \"{0}\"", q];
+
     if (string.IsNullOrWhiteSpace(q))
     {
         ViewData["Description"] = SharedLocalizer["Search for posts or other items on the platform."];
@@ -24,7 +24,7 @@
 else
 {
     <h1>@SharedLocalizer["Searching for \"{0}\"", q]</h1>
-    <input type="hidden" id="q" value="@q" />
+    <input type="hidden" class="searchTerm" value="@q" />
 
     <div class="col-12">
         <h2>@SharedLocalizer["Posts"]</h2>
