@@ -4,6 +4,8 @@
 @inject UserManager<ApplicationUser> UserManager
 
 @{
+
+    var q = (string)ViewData["term"];
     string id = UserManager.GetUserId(User);
 }
 
@@ -32,7 +34,7 @@
             <form asp-controller="search" asp-action="index" method="get" class="sidebar-form">
                 <div class="input-group">
                     <label for="q" aria-label="@SharedLocalizer["Search"]" class="sr-only"></label>
-                    <input type="text" id="q" name="q" aria-label="@SharedLocalizer["Search"]" class="form-control" placeholder="@SharedLocalizer["Search"]...">
+                    <input type="text" name="q" aria-label="@SharedLocalizer["Search"]" class="form-control searchTerm" placeholder="@SharedLocalizer["Search"]..." value="@q">
                     <span class="input-group-btn">
                         <button type="submit" id="search-btn" class="btn btn-flat" aria-label="@SharedLocalizer["Search"]">
                             <i class="fa fa-search" aria-hidden="true"></i>

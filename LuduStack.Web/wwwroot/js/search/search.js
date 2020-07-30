@@ -11,7 +11,7 @@
     }
 
     function cacheSelectors() {
-        selectors.term = $('#q');
+        selectors.term = $('.searchTerm');
         selectors.divSearchPosts = $('#divSearchPosts');
     }
 
