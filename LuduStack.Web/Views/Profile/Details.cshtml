@@ -7,7 +7,7 @@
 
 @{
     ViewData["Title"] = Model.Name;
-    ViewData["Description"] = Model.Bio;
+    ViewData["Description"] = String.Format("{0} - {1}", Model.Name, Model.Bio);
     string currentUserId = UserManager.GetUserId(User);
     var userId = Guid.Parse(ViewContext.RouteData.Values["id"].ToString());
 

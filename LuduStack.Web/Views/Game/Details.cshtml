@@ -3,7 +3,7 @@
 @inject SignInManager<ApplicationUser> SignInManager
 
 @{
-    ViewData["Title"] = Model.Title;
+    ViewData["Title"] = String.Format("{0} by {1}", Model.Title, Model.AuthorName ?? "unknown user");
     ViewData["Description"] = string.IsNullOrWhiteSpace(Model.Description) ? String.Format("{0} - {1}", Model.Title, ConstantHelper.DefaultDescription) : String.Format("{0} - {1}", Model.Title, Model.Description);
     ViewData["Url"] = ViewBag.BaseUrl + Url.Action("details", "game", new { id = Model.Id });
     ViewData["CanonicalUrl"] = ViewData["Url"];
