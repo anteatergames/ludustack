@@ -7,7 +7,16 @@
 
 @{
     var childTitle = ViewData["Title"]?.ToString();
-    var title = string.IsNullOrWhiteSpace(childTitle) || childTitle.Equals(ConstantHelper.DefaultTitle) ? ConstantHelper.DefaultTitle : ViewData["Title"] + " - " + ConstantHelper.DefaultTitle;
+    var title = string.IsNullOrWhiteSpace(childTitle) || childTitle.Equals(ConstantHelper.DefaultTitle) ? ConstantHelper.DefaultTitle : ViewData["Title"].ToString();
+    if (title.Length < 20)
+    {
+        title = string.Format("{0} - {1}", title, ConstantHelper.SiteName);
+    }
+    else if (title.Length > 50)
+    {
+        title = title.Replace(ConstantHelper.DefaultTitle, ConstantHelper.SiteName);
+    }
+
     string userId = UserManager.GetUserId(User);
 
     var consentFeature = Context.Features.Get<ITrackingConsentFeature>();
