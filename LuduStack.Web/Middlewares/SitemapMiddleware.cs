@@ -240,7 +240,14 @@ namespace LuduStack.Web.Middlewares
                     string methodName = actionName.Equals("index") ? string.Empty : actionName;
                     if (string.IsNullOrWhiteSpace(methodName))
                     {
-                        sitemapContent += string.Format("<loc>{0}/{1}/</loc>", _rootUrl.Trim('/'), controllerName.Trim('/'));
+                        if (controllerName.Equals("home") && actionName.Equals("index"))
+                        {
+                            sitemapContent += string.Format("<loc>{0}/</loc>", _rootUrl.Trim('/'));
+                        }
+                        else
+                        {
+                            sitemapContent += string.Format("<loc>{0}/{1}/</loc>", _rootUrl.Trim('/'), controllerName.Trim('/'));
+                        }
                     }
                     else
                     {
