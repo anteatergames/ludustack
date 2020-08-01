@@ -323,6 +323,7 @@
     "outputFileName": "wwwroot/js/giveaway/giveawaymanage.min.js",
     "inputFiles": [
       "wwwroot/js/shared/exporthelper.js",
+      "wwwroot/js/shared/fx.js",
       "wwwroot/js/giveaway/giveawaycommon.js",
       "wwwroot/js/giveaway/giveawaymanage.js"
     ]
