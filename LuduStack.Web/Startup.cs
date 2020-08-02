@@ -177,6 +177,13 @@ namespace LuduStack.Web
             provider.Mappings[".webmanifest"] = "application/manifest+json";
             provider.Mappings[".vtt"] = "text/vtt";
 
+            RewriteOptions rewriteOptions = new RewriteOptions()
+                .AddRedirectToHttps()
+                .Add(new NonWwwRule())
+                .AddRedirectToWwwPermanent();
+
+            app.UseRewriter(rewriteOptions);
+
             app.UseStaticFiles(new StaticFileOptions()
             {
                 ContentTypeProvider = provider,
@@ -202,13 +209,6 @@ namespace LuduStack.Web
             app.UseAuthorization();
 
             app.UseSession();
-
-            RewriteOptions rewriteOptions = new RewriteOptions()
-                .AddRedirectToHttps()
-                .Add(new NonWwwRule())
-                .AddRedirectToWwwPermanent();
-
-            app.UseRewriter(rewriteOptions);
 
             app.UseSitemapMiddleware();
 
