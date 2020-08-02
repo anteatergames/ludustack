@@ -508,6 +508,10 @@ html {
     background-color: #f96854 !important;
 }
 
+.bg-paypal {
+    background-color: #00457C !important;
+}
+
 .btn-patreon {
     color: var(--color-white) !important;
     background-color: #f96854 !important;
