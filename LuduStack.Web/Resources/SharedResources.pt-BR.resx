@@ -185,10 +185,6 @@
     <value>senha</value>
     <comment>Generic</comment>
   </data>
-  <data name="Portfolio" xml:space="preserve">
-    <value>Portifólio</value>
-    <comment>Menu</comment>
-  </data>
   <data name="profile" xml:space="preserve">
     <value>perfil</value>
     <comment>Menu</comment>
@@ -221,10 +217,6 @@
     <value>Começar</value>
     <comment>Menu</comment>
   </data>
-  <data name="Studios" xml:space="preserve">
-    <value>Estúdios</value>
-    <comment>Menu</comment>
-  </data>
   <data name="Team up" xml:space="preserve">
     <value>Enturmar</value>
     <comment>Menu</comment>
@@ -243,10 +235,6 @@
   </data>
   <data name="Tools" xml:space="preserve">
     <value>Ferramentas</value>
-    <comment>Menu</comment>
-  </data>
-  <data name="Translation Tool" xml:space="preserve">
-    <value>Tradução</value>
     <comment>Menu</comment>
   </data>
   <data name="UserName" xml:space="preserve">
@@ -556,10 +544,6 @@
   <data name="Log in using your Microsoft account" xml:space="preserve">
     <value>Entre com sua conta Microsoft</value>
     <comment>Login and Register Pages</comment>
-  </data>
-  <data name="News" xml:space="preserve">
-    <value>Notícias</value>
-    <comment>Menu</comment>
   </data>
   <data name="Writer tool" xml:space="preserve">
     <value>Writer tool</value>
@@ -1877,7 +1861,7 @@
     <value>Criar um novo time (você pode editar depois)</value>
     <comment>Game</comment>
   </data>
-  <data name="editting" xml:space="preserve">
+  <data name="editing" xml:space="preserve">
     <value>editando</value>
     <comment>Translation</comment>
   </data>
@@ -1911,10 +1895,6 @@
   </data>
   <data name="overall" xml:space="preserve">
     <value>geral</value>
-    <comment>Translation</comment>
-  </data>
-  <data name="Localization Progress" xml:space="preserve">
-    <value>Progresso da Tradução</value>
     <comment>Translation</comment>
   </data>
   <data name="Translation Stats for {0}" xml:space="preserve">
@@ -1975,10 +1955,6 @@
   </data>
   <data name="translated" xml:space="preserve">
     <value>traduzidos</value>
-    <comment>Translation</comment>
-  </data>
-  <data name="Localization Filter" xml:space="preserve">
-    <value>Filtro de Tradução</value>
     <comment>Translation</comment>
   </data>
   <data name="untranslated" xml:space="preserve">
@@ -2275,10 +2251,6 @@
   </data>
   <data name="Enter your email address below:" xml:space="preserve">
     <value>Digite seu email abaixo:</value>
-    <comment>Giveaway</comment>
-  </data>
-  <data name="Entered" xml:space="preserve">
-    <value>Participando</value>
     <comment>Giveaway</comment>
   </data>
   <data name="entries" xml:space="preserve">
