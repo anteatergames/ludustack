@@ -1,5 +1,4 @@
 ﻿using LuduStack.Domain.Core.Attributes;
-using System.ComponentModel.DataAnnotations;
 
 namespace LuduStack.Domain.Core.Enums
 {

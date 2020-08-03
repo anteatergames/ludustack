@@ -1,6 +1,8 @@
 ﻿@model StudyCourseListItemVo
 
-@{ Layout = null; }
+@{
+    Layout = null;
+}
 
 <a asp-area="learn" asp-controller="course" asp-action="details" asp-route-id="@Model.Id" asp-route-backUrl="@ViewData["BackUrl"]">
     <div class="box p-0 bg-white hover">
@@ -10,16 +12,18 @@
                 <div class="box-body">
                     @if (!string.IsNullOrWhiteSpace(Model.Name))
                     {
-        <div class="box-description">
+                        <div class="box-description">
 
-            @if (!string.IsNullOrWhiteSpace(Model.Name))
-            {
-<div class="row text-truncate">
-    <div class="col-12">
-        <span class="box-description-text">@Model.Name</span>
-    </div>
-</div>}
-        </div>}
+                            @if (!string.IsNullOrWhiteSpace(Model.Name))
+                            {
+                                <div class="row text-truncate">
+                                    <div class="col-12">
+                                        <span class="box-description-text">@Model.Name</span>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
 
                     <div class="float-right">
                         <div class="bg-aqua p-1">

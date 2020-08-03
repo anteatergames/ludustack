@@ -128,7 +128,7 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
 
         public Guid CheckParticipantByEmail(Guid giveawayId, string email)
         {
-            var guid = DbSet.AsQueryable().Where(x => x.Id == giveawayId).SelectMany(x => x.Participants).Where(x => x.Email.Equals(email)).Select(x=> x.Id).FirstOrDefault();
+            var guid = DbSet.AsQueryable().Where(x => x.Id == giveawayId).SelectMany(x => x.Participants).Where(x => x.Email.Equals(email)).Select(x => x.Id).FirstOrDefault();
 
             return guid;
         }

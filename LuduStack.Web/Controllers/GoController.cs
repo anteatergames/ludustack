@@ -1,9 +1,7 @@
 ﻿using LuduStack.Application.Interfaces;
-using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
 using LuduStack.Web.Controllers.Base;
 using Microsoft.AspNetCore.Mvc;
-using System;
 
 namespace LuduStack.Web.Controllers
 {

@@ -343,7 +343,6 @@ img.imagelistitem {
         box-shadow: 0 5px 5px 0 rgba(99,123,173,.2);
     }
 
-
 .entryoption:hover {
     background-color: var(--light);
 }

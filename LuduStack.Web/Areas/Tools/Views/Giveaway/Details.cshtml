@@ -231,9 +231,9 @@
                             <div class="p-4 rounded-0 bg-light offered-by-text ">
                                 <div class="text-uppercase d-flex flex-wrap justify-content-center">
                                     @*@if (Model.ShowTimeZone && Model.Status != GiveawayStatus.Ended)
-                                    {
-                                        <div class="mx-3"><small title="America/Sao_Paulo"><span class="h6">@SharedLocalizer["giveaway timezone:UTC {0}", Model.TimeZone]</span></small></div>
-                                    }*@
+                                        {
+                                            <div class="mx-3"><small title="America/Sao_Paulo"><span class="h6">@SharedLocalizer["giveaway timezone:UTC {0}", Model.TimeZone]</span></small></div>
+                                        }*@
                                     @if (Model.ShowSponsor)
                                     {
                                         <div class="mx-3"><small><span class="h6">@SharedLocalizer["offered by:"]<a href="@Model.SponsorWebsite" target="_blank" rel="noopener noreferrer">@Model.SponsorName</a> </span></small></div>

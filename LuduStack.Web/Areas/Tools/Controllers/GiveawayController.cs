@@ -1,5 +1,4 @@
-﻿using CloudinaryDotNet;
-using LuduStack.Application.Interfaces;
+﻿using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels.Giveaway;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Core.Extensions;
@@ -257,7 +256,7 @@ namespace LuduStack.Web.Areas.Tools.Controllers
 
                     if (checkParticipant.Success)
                     {
-                        return RedirectToAction("youarein", "giveaway", new { area = "tools", id = id }); 
+                        return RedirectToAction("youarein", "giveaway", new { area = "tools", id = id });
                     }
                 }
 
@@ -566,6 +565,7 @@ namespace LuduStack.Web.Areas.Tools.Controllers
                     case GiveawayEntryType.Daily:
                         item.Url = Url.Action("dailyentry", "giveaway", new { area = "tools", giveawayId = giveawayId, participantId = model.ParticipantId });
                         break;
+
                     default:
                         break;
                 }

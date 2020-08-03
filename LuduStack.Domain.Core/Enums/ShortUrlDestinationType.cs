@@ -6,6 +6,7 @@ namespace LuduStack.Domain.Core.Enums
     {
         [Display(Name = "Undefined")]
         Undefined = 0,
+
         [Display(Name = "Giveaway")]
         Giveaway = 1
     }

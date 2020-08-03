@@ -1,14 +1,16 @@
-﻿@{ var isAjax = ViewContext.HttpContext.Request.IsAjaxRequest();
-                var canInteract = User.Identity.IsAuthenticated;
+﻿@{
+    var isAjax = ViewContext.HttpContext.Request.IsAjaxRequest();
+    var canInteract = User.Identity.IsAuthenticated;
 
-                if (isAjax)
-                {
-                    Layout = null;
-                }
+    if (isAjax)
+    {
+        Layout = null;
+    }
 
-                ViewData["Title"] = SharedLocalizer["Giveaways"];
-                ViewData["Description"] = SharedLocalizer["Manage Viral Giveaways"];
-                ViewData["Url"] = ViewBag.BaseUrl + Url.Action("index", "giveaway", new { area = "tools" }); }
+    ViewData["Title"] = SharedLocalizer["Giveaways"];
+    ViewData["Description"] = SharedLocalizer["Manage Viral Giveaways"];
+    ViewData["Url"] = ViewBag.BaseUrl + Url.Action("index", "giveaway", new { area = "tools" });
+}
 
 @section ComponentStyles {
     <environment include="Development">
@@ -20,7 +22,8 @@
 }
 
 @section Scripts {
-    <script>$(document).ready(function () {
+    <script>
+        $(document).ready(function () {
             setTimeout(function () {
                 $('.ribbon').addClass('active');
             }, 100);

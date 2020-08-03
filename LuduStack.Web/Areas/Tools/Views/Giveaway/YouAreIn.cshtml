@@ -32,10 +32,8 @@
         <script src="~/js/giveaway/giveawayyouarein.min.js" asp-append-version="true"></script>
     </environment>
 
-
     @await Html.PartialAsync("_FacebookSdk")
 }
-
 
 @section TranslatedMessages {
     <span class="msg" data-msg-id="msgUrlCopied">@SharedLocalizer["URL copied to the clipboard."]</span>
