@@ -134,7 +134,7 @@ var ACTIVITYFEED = (function () {
         });
     }
 
-    function initializeEmbed(){
+    function initializeEmbed() {
         if (!embedo) {
             embedo = new Embedo({
                 youtube: true,

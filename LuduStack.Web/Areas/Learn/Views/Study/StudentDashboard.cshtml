@@ -1,4 +1,5 @@
-﻿@{ var isAjax = ViewContext.HttpContext.Request.IsAjaxRequest();
+﻿@{
+    var isAjax = ViewContext.HttpContext.Request.IsAjaxRequest();
     var canInteract = User.Identity.IsAuthenticated;
 
     if (isAjax)
@@ -13,7 +14,8 @@
     ViewData["Url"] = ViewBag.BaseUrl + Url.Action("index", "study", new { area = "learn" });
     ViewData["OgImage"] = ViewBag.BaseUrl + "/images/og/ogstudy.png";
     ViewData["OgImageWidth"] = 1200;
-    ViewData["OgImageHeight"] = 630; }
+    ViewData["OgImageHeight"] = 630;
+}
 
 @section ComponentStyles {
     <environment include="Development">
@@ -57,29 +59,32 @@
         <div id="featuresidebar" class="col-lg-4 col-xl-3 no-gutters">
             @if (!canInteract)
             {
-<div class="alert-info p-2">
-    @SharedLocalizer["You must be logged in to study."]
-</div> }
-else
-{
-<div class="feature-box">
-    <h3>@SharedLocalizer["User Panel"]</h3>
-    <div class="row">
-        <div class="col-12">
-            <p>@SharedLocalizer["Welcome to the LuduStack Study Platform! Here you manage your student path, find new courses to enroll."]</p>
-        </div>
-        <div class="col-12">
-            @if (canInteract)
+                <div class="alert-info p-2">
+                    @SharedLocalizer["You must be logged in to study."]
+                </div>
+            }
+            else
             {
-<div id="divActions">
-    <a asp-area="learn" asp-controller="study" asp-action="explorecourses" class="btn btn-outline-primary btn-block">@SharedLocalizer["Find a course"]</a>
-</div> }
-else
-{
-<div class="alert alert-info">@SharedLocalizer["You must be logged in to be able to do something here."]</div>}
-        </div>
-    </div>
-</div>      }
+                <div class="feature-box">
+                    <h3>@SharedLocalizer["User Panel"]</h3>
+                    <div class="row">
+                        <div class="col-12">
+                            <p>@SharedLocalizer["Welcome to the LuduStack Study Platform! Here you manage your student path, find new courses to enroll."]</p>
+                        </div>
+                        <div class="col-12">
+                            @if (canInteract)
+                            {
+                                <div id="divActions">
+                                    <a asp-area="learn" asp-controller="study" asp-action="explorecourses" class="btn btn-outline-primary btn-block">@SharedLocalizer["Find a course"]</a>
+                                </div> }
+                            else
+                            {
+                                <div class="alert alert-info">@SharedLocalizer["You must be logged in to be able to do something here."]</div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
         </div>
     </div>
 </div>

@@ -7,7 +7,8 @@
 
     var noItemsModel = new ListNoItemsViewModel("fas fa-dizzy", "You don't have any Giveaway!");
 
-    var description = ViewData["ListDescription"] == null ? SharedLocalizer["giveaways"] : (string)ViewData["ListDescription"]; }
+    var description = ViewData["ListDescription"] == null ? SharedLocalizer["giveaways"] : (string)ViewData["ListDescription"];
+}
 
 <div class="bg-light pt-2">
     <div class="col-12">
@@ -16,7 +17,8 @@
 
     @if (!Model.Any())
     {
-        <partial name="_ListNoItems" model="noItemsModel" /> }
+        <partial name="_ListNoItems" model="noItemsModel" />
+    }
     else
     {
         <div class="col-12 bg-white square-top table-responsive pb-1">
@@ -53,11 +55,13 @@
                                             <a class="dropdown-item btn-duplicate py-2 btn-giveaway-duplicate" href="#" data-url="@Url.Action("duplicate", "giveaway", new { area = "tools", giveawayId = item.Id })"><i class="fas fa-fw fa-copy" aria-hidden="true"></i> @SharedLocalizer["duplicate"]</a>
                                             <a class="dropdown-item text-danger btn-trash py-2 btn-giveaway-delete" href="#" data-url="@Url.Action("delete", "giveaway", new { area = "tools", id = item.Id })" data-confirmationmessage="@SharedLocalizer["Are you sure you want to delete this Giveaway?"]" data-confirmationtitle="@SharedLocalizer["Are you sure?"]" data-confirmationbuttontext="@SharedLocalizer["Yes, delete it!"]" data-cancelbuttontext="@SharedLocalizer["Cancel"]"><i class="fas fa-fw fa-trash-alt" aria-hidden="true"></i> @SharedLocalizer["delete"]</a>
                                         </div>
-                                    </div>}
+                                    </div>
+                                }
                             </td>
                         </tr>
-           }
+                    }
                 </tbody>
             </table>
-        </div>}
+        </div>
+    }
 </div>

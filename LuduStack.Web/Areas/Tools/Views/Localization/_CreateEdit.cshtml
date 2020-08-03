@@ -1,6 +1,7 @@
 ﻿@model LocalizationViewModel
 
-@{ Layout = null;
+@{
+    Layout = null;
     var canInteract = User.Identity.IsAuthenticated;
 
     ViewData["Title"] = SharedLocalizer["{0} Translation Project", (Model.Id == Guid.Empty ? "New" : "Edit")];
@@ -9,7 +10,8 @@
 
     var languages = Html.GetEnumSelectList<SupportedLanguage>().Where(x => x.Text != Model.PrimaryLanguage.ToString());
 
-    var isNew = Model.Id == Guid.Empty; }
+    var isNew = Model.Id == Guid.Empty;
+}
 
 <h1 class="sr-only">@ViewData["Title"]</h1>
 
@@ -25,25 +27,27 @@
         </span>
         @if (!isNew)
         {
-<div class="box-tools">
-    <div class="btn-group">
-        <button type="button" class="btn  btn-box-tool" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="fas fa-ellipsis-v" aria-hidden="true"></i>
-        </button>
-        <div class="dropdown-menu text-capitalize" x-placement="bottom-start" style="position: absolute; transform: translate3d(-67px, 28px, 0px); top: 0px; left: 0px; will-change: transform;">
-            <a asp-area="tools" asp-controller="localization" asp-action="translate" asp-route-id="@Model.Id" class="dropdown-item">@SharedLocalizer["translate"]</a>
-            <a asp-area="tools" asp-controller="localization" asp-action="details" asp-route-id="@Model.Id" class="dropdown-item">@SharedLocalizer["details"]</a>
-            @if (Model.Permissions.CanEdit)
-            {
-<a asp-area="tools" asp-controller="localization" asp-action="export" asp-route-id="@Model.Id" class="dropdown-item">@SharedLocalizer["export"]</a>
-                    <a asp-area="tools" asp-controller="localization" asp-action="review" asp-route-id="@Model.Id" class="dropdown-item">@SharedLocalizer["review"]</a>}
+            <div class="box-tools">
+                <div class="btn-group">
+                    <button type="button" class="btn  btn-box-tool" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-ellipsis-v" aria-hidden="true"></i>
+                    </button>
+                    <div class="dropdown-menu text-capitalize" x-placement="bottom-start" style="position: absolute; transform: translate3d(-67px, 28px, 0px); top: 0px; left: 0px; will-change: transform;">
+                        <a asp-area="tools" asp-controller="localization" asp-action="translate" asp-route-id="@Model.Id" class="dropdown-item">@SharedLocalizer["translate"]</a>
+                        <a asp-area="tools" asp-controller="localization" asp-action="details" asp-route-id="@Model.Id" class="dropdown-item">@SharedLocalizer["details"]</a>
+                        @if (Model.Permissions.CanEdit)
+                        {
+                            <a asp-area="tools" asp-controller="localization" asp-action="export" asp-route-id="@Model.Id" class="dropdown-item">@SharedLocalizer["export"]</a>
+                            <a asp-area="tools" asp-controller="localization" asp-action="review" asp-route-id="@Model.Id" class="dropdown-item">@SharedLocalizer["review"]</a>}
 
-            @if (Model.Permissions.CanDelete)
-            {
-<a class="btnDeleteTranslationProject dropdown-item" href="#" data-url="@Url.Action("delete", "localization", new { area = "tools", id = Model.Id })" data-confirmationmessage="@SharedLocalizer["Are you sure you want to delete this Translation Project?"]" data-confirmationtitle="@SharedLocalizer["Are you sure?"]" data-confirmationbuttontext="@SharedLocalizer["Yes, delete it!"]" data-cancelbuttontext="@SharedLocalizer["Cancel"]">@SharedLocalizer["delete"]</a>}
-        </div>
-    </div>
-</div>}
+                        @if (Model.Permissions.CanDelete)
+                        {
+                            <a class="btnDeleteTranslationProject dropdown-item" href="#" data-url="@Url.Action("delete", "localization", new { area = "tools", id = Model.Id })" data-confirmationmessage="@SharedLocalizer["Are you sure you want to delete this Translation Project?"]" data-confirmationtitle="@SharedLocalizer["Are you sure?"]" data-confirmationbuttontext="@SharedLocalizer["Yes, delete it!"]" data-cancelbuttontext="@SharedLocalizer["Cancel"]">@SharedLocalizer["delete"]</a>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
     </div>
 
     <div class="box-body p-0 px-md-2">
@@ -57,22 +61,24 @@
                     <div class="form-group">
                         @if (Model.Id != Guid.Empty)
                         {
-            <label class="col-form-label text-capitalize">@SharedLocalizer["game"]</label>
+                            <label class="col-form-label text-capitalize">@SharedLocalizer["game"]</label>
                             <span class="col-form-label">
                                 <i class="fas fa-exclamation-circle" data-container="body" data-toggle="popover" data-trigger="hover" data-placement="top" data-content="@SharedLocalizer["You can't change the game. If this game is not the correct one, you'll need to recreate the translation project."]" aria-hidden="true"></i>
                             </span>
-                                            <label class="form-control bg-gray">@Model.Game.Title</label>
-                                                            <input type="hidden" asp-for="Game.Id" /> }
-                                                        else
-                                                        {
-                                            <label class="col-form-label text-capitalize">@SharedLocalizer["game"]</label>
-                                                            <span class="col-form-label">
-                                                                <i class="fas fa-exclamation-circle" data-container="body" data-toggle="popover" data-trigger="hover" data-placement="top" data-html="true" data-content="@SharedLocalizer["Select the game that you want help to translate.<br />You won't be able to change this later."]" aria-hidden="true"></i>
-                                                            </span>
-                                                                            <select asp-for="Game.Id" asp-items="@userGames" class="form-control select2">
-                                                                                <option selected="selected" value="">@SharedLocalizer["Select"]</option>
-                                                                            </select>
-                                                                                            <span asp-validation-for="Game.Id" class="text-danger"></span>}
+                            <label class="form-control bg-gray">@Model.Game.Title</label>
+                            <input type="hidden" asp-for="Game.Id" />
+                        }
+                        else
+                        {
+                            <label class="col-form-label text-capitalize">@SharedLocalizer["game"]</label>
+                            <span class="col-form-label">
+                                <i class="fas fa-exclamation-circle" data-container="body" data-toggle="popover" data-trigger="hover" data-placement="top" data-html="true" data-content="@SharedLocalizer["Select the game that you want help to translate.<br />You won't be able to change this later."]" aria-hidden="true"></i>
+                            </span>
+                            <select asp-for="Game.Id" asp-items="@userGames" class="form-control select2">
+                                <option selected="selected" value="">@SharedLocalizer["Select"]</option>
+                            </select>
+                            <span asp-validation-for="Game.Id" class="text-danger"></span>
+                        }
                     </div>
                 </div>
 
@@ -82,18 +88,20 @@
 
                         @if (Model.Id != Guid.Empty)
                         {
-            <span class="col-form-label">
-                <i class="fas fa-exclamation-circle" data-container="body" data-toggle="popover" data-trigger="hover" data-placement="top" data-content="@SharedLocalizer["You can't change the langage. If this language is not the correct one, you'll need to recreate the translation project."]" aria-hidden="true"></i>
-            </span>
+                            <span class="col-form-label">
+                                <i class="fas fa-exclamation-circle" data-container="body" data-toggle="popover" data-trigger="hover" data-placement="top" data-content="@SharedLocalizer["You can't change the langage. If this language is not the correct one, you'll need to recreate the translation project."]" aria-hidden="true"></i>
+                            </span>
                             <label class="form-control bg-gray">@SharedLocalizer[Model.PrimaryLanguage.ToDisplayName()]</label>
-                                            <input type="hidden" asp-for="PrimaryLanguage" /> }
-                                        else
-                                        {
+                            <input type="hidden" asp-for="PrimaryLanguage" />
+                        }
+                        else
+                        {
                             <span class="col-form-label">
                                 <i class="fas fa-exclamation-circle" data-container="body" data-toggle="popover" data-trigger="hover" data-placement="top" data-html="true" data-content="@SharedLocalizer["Select the language that you are writing your terms.<br />You won't be able to change this later."]" aria-hidden="true"></i>
                             </span>
-                                            <select asp-for="PrimaryLanguage" asp-items="Html.GetEnumSelectList<SupportedLanguage>()" class="form-control select2" data-placeholder="@SharedLocalizer["Set the primary language"]" tabindex="-1" aria-hidden="true"></select>
-                                                            <span asp-validation-for="PrimaryLanguage" class="text-danger"></span>}
+                            <select asp-for="PrimaryLanguage" asp-items="Html.GetEnumSelectList<SupportedLanguage>()" class="form-control select2" data-placeholder="@SharedLocalizer["Set the primary language"]" tabindex="-1" aria-hidden="true"></select>
+                            <span asp-validation-for="PrimaryLanguage" class="text-danger"></span>
+                        }
                     </div>
                 </div>
 
@@ -113,83 +121,84 @@
 
         @if (Model.Id != Guid.Empty)
         {
-<div class="row">
-    <div class="col-12">
-        <hr />
-        <h2 class="text-capitalize">@SharedLocalizer["terms"] (<span id="termCounter">@Model.Terms.Count</span>)</h2>
-    </div>
-    <div class="col-12 text-center">
-        <h3 class="text-uppercase">
-            @SharedLocalizer["Option 1: Upload File"]
-            <i class="fas fa-exclamation-circle" data-container="body" data-toggle="popover" data-trigger="hover" data-placement="top" data-content="@SharedLocalizer["Here you can upload a XLSX file with: <br /> - headers on the first row;<br /> - the term on the first column; <br /> - The primary language values on the second column; <br /><br />  Optionally, you can add up to 4 additional languages up to the 6th column."]" aria-hidden="true"></i>
-        </h3>
-    </div>
-    <div class="col-12 col-md-4">
-        <div id="divUploadTerms" class="dropzone" data-url="@Url.Action("uploadterms", "localization", new { Area = "tools", projectId = Model.Id })">
-            <div class="dz-message needsclick">
-                @SharedLocalizer["Drop a xlsx file here or click to upload."]<br>
-                <span class="note needsclick text-uppercase">
-                    (@SharedLocalizer["xlsx only!"])
-                </span>
-            </div>
-        </div>
-    </div>
-    <div class="col-12 col-md-8">
-        <div class="row">
-            <div class="col-12 col-sm-6 col-lg-4">
-                <label class="col-form-label text-uppercase">@SharedLocalizer["Column {0}", 1]</label>
-                <label class="form-control form-control-sm bg-light">@SharedLocalizer["Key"]</label>
-            </div>
-            <div class="col-12 col-sm-6 col-lg-4">
-                <label class="col-form-label text-uppercase">@SharedLocalizer["Column {0}", 2]</label>
-                <label class="form-control form-control-sm bg-light">@SharedLocalizer["Primary Language"]</label>
-            </div>
-            <div class="col-12 col-sm-6 col-lg-4">
-                <label class="col-form-label text-uppercase">@SharedLocalizer["Column {0}", 3]</label>
-                @Html.DropDownList("UploadColumn3", languages, SharedLocalizer["Nothing"], new { @class = "form-control  form-control-sm ddlcolumn", data_column = 3 })
-            </div>
-            <div class="col-12 col-sm-6 col-lg-4">
-                <label class="col-form-label text-uppercase">@SharedLocalizer["Column {0}", 4]</label>
-                @Html.DropDownList("UploadColumn4", languages, SharedLocalizer["Nothing"], new { @class = "form-control form-control-sm ddlcolumn", data_column = 4 })
-            </div>
-            <div class="col-12 col-sm-6 col-lg-4">
-                <label class="col-form-label text-uppercase">@SharedLocalizer["Column {0}", 5]</label>
-                @Html.DropDownList("UploadColumn5", languages, SharedLocalizer["Nothing"], new { @class = "form-control form-control-sm ddlcolumn", data_column = 5 })
-            </div>
-            <div class="col-12 col-sm-6 col-lg-4">
-                <label class="col-form-label text-uppercase">@SharedLocalizer["Column {0}", 6]</label>
-                @Html.DropDownList("UploadColumn6", languages, SharedLocalizer["Nothing"], new { @class = "form-control form-control-sm ddlcolumn", data_column = 6 })
-            </div>
-        </div>
-    </div>
-
-    <div class="col-12 col-lg-6 offset-lg-6 col-xl-4 offset-xl-8 mt-1">
-        <button type="button" id="btnUploadTerms" class="btn btn-lg btn-warning btn-block" data-project-id="@Model.Id"><i class="fas fa-upload" aria-hidden="true"></i> @SharedLocalizer["Upload file"]</button>
-    </div>
-</div>
-
-                <div class="row">
-                    <div class="col-12">
-                        <hr />
-                        <div id="divManualTerms" class="border-bottom mb-2 pb-1 bg-white sticky">
-                            <div class="row">
-                                <div class="col-12 text-center">
-                                    <h3 class="text-uppercase">@SharedLocalizer["Option 2: Add terms manually"]</h3>
-                                </div>
-                                <div class="col-6 text-center">
-                                    <button type="button" class="btn btn-sm btn-success" id="btn-translation-term-add"><i class="fas fa-plus" aria-hidden="true"></i> @SharedLocalizer["Add term"]</button>
-                                </div>
-
-                                <div class="col-6 col-lg-6 col-xl-4 offset-xl-2">
-                                    <button type="button" id="btnSaveTerms" class="btn btn-sm btn-secondary btn-block"><i class="fas fa-save" aria-hidden="true"></i> @SharedLocalizer["Save All Terms"]</button>
-                                </div>
-                            </div>
+            <div class="row">
+                <div class="col-12">
+                    <hr />
+                    <h2 class="text-capitalize">@SharedLocalizer["terms"] (<span id="termCounter">@Model.Terms.Count</span>)</h2>
+                </div>
+                <div class="col-12 text-center">
+                    <h3 class="text-uppercase">
+                        @SharedLocalizer["Option 1: Upload File"]
+                        <i class="fas fa-exclamation-circle" data-container="body" data-toggle="popover" data-trigger="hover" data-placement="top" data-content="@SharedLocalizer["Here you can upload a XLSX file with: <br /> - headers on the first row;<br /> - the term on the first column; <br /> - The primary language values on the second column; <br /><br />  Optionally, you can add up to 4 additional languages up to the 6th column."]" aria-hidden="true"></i>
+                    </h3>
+                </div>
+                <div class="col-12 col-md-4">
+                    <div id="divUploadTerms" class="dropzone" data-url="@Url.Action("uploadterms", "localization", new { Area = "tools", projectId = Model.Id })">
+                        <div class="dz-message needsclick">
+                            @SharedLocalizer["Drop a xlsx file here or click to upload."]<br>
+                            <span class="note needsclick text-uppercase">
+                                (@SharedLocalizer["xlsx only!"])
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-8">
+                    <div class="row">
+                        <div class="col-12 col-sm-6 col-lg-4">
+                            <label class="col-form-label text-uppercase">@SharedLocalizer["Column {0}", 1]</label>
+                            <label class="form-control form-control-sm bg-light">@SharedLocalizer["Key"]</label>
+                        </div>
+                        <div class="col-12 col-sm-6 col-lg-4">
+                            <label class="col-form-label text-uppercase">@SharedLocalizer["Column {0}", 2]</label>
+                            <label class="form-control form-control-sm bg-light">@SharedLocalizer["Primary Language"]</label>
+                        </div>
+                        <div class="col-12 col-sm-6 col-lg-4">
+                            <label class="col-form-label text-uppercase">@SharedLocalizer["Column {0}", 3]</label>
+                            @Html.DropDownList("UploadColumn3", languages, SharedLocalizer["Nothing"], new { @class = "form-control  form-control-sm ddlcolumn", data_column = 3 })
+                        </div>
+                        <div class="col-12 col-sm-6 col-lg-4">
+                            <label class="col-form-label text-uppercase">@SharedLocalizer["Column {0}", 4]</label>
+                            @Html.DropDownList("UploadColumn4", languages, SharedLocalizer["Nothing"], new { @class = "form-control form-control-sm ddlcolumn", data_column = 4 })
+                        </div>
+                        <div class="col-12 col-sm-6 col-lg-4">
+                            <label class="col-form-label text-uppercase">@SharedLocalizer["Column {0}", 5]</label>
+                            @Html.DropDownList("UploadColumn5", languages, SharedLocalizer["Nothing"], new { @class = "form-control form-control-sm ddlcolumn", data_column = 5 })
+                        </div>
+                        <div class="col-12 col-sm-6 col-lg-4">
+                            <label class="col-form-label text-uppercase">@SharedLocalizer["Column {0}", 6]</label>
+                            @Html.DropDownList("UploadColumn6", languages, SharedLocalizer["Nothing"], new { @class = "form-control form-control-sm ddlcolumn", data_column = 6 })
                         </div>
                     </div>
                 </div>
 
-                                <div id="divTerms" class=" col-12 p-0 mt-2">
-                                </div>}
+                <div class="col-12 col-lg-6 offset-lg-6 col-xl-4 offset-xl-8 mt-1">
+                    <button type="button" id="btnUploadTerms" class="btn btn-lg btn-warning btn-block" data-project-id="@Model.Id"><i class="fas fa-upload" aria-hidden="true"></i> @SharedLocalizer["Upload file"]</button>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <hr />
+                    <div id="divManualTerms" class="border-bottom mb-2 pb-1 bg-white sticky">
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <h3 class="text-uppercase">@SharedLocalizer["Option 2: Add terms manually"]</h3>
+                            </div>
+                            <div class="col-6 text-center">
+                                <button type="button" class="btn btn-sm btn-success" id="btn-translation-term-add"><i class="fas fa-plus" aria-hidden="true"></i> @SharedLocalizer["Add term"]</button>
+                            </div>
+
+                            <div class="col-6 col-lg-6 col-xl-4 offset-xl-2">
+                                <button type="button" id="btnSaveTerms" class="btn btn-sm btn-secondary btn-block"><i class="fas fa-save" aria-hidden="true"></i> @SharedLocalizer["Save All Terms"]</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="divTerms" class=" col-12 p-0 mt-2">
+            </div>
+        }
     </div>
 </div>
 

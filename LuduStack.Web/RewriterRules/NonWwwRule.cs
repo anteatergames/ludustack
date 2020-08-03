@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Rewrite;
-using NPOI.OpenXml4Net.OPC.Internal;
 
 namespace LuduStack.Web.RewriterRules
 {

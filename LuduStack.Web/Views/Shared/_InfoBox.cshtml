@@ -2,7 +2,7 @@
     <div class="box p-3 bg-white">
         <div class="row">
             <div class="col-6 text-capitalize text-nowrap">
-                <h4>@SharedLocalizer["platform"]</h4>
+                <span class="h5">@SharedLocalizer["platform"]</span>
                 <ul class="list-unstyled">
                     <li><a asp-area="" asp-controller="help" asp-action="about">@SharedLocalizer["about"]</a></li>
                     <li><a asp-area="" asp-controller="home" asp-action="timeline">@SharedLocalizer["timeline"]</a></li>
@@ -14,7 +14,7 @@
                 </ul>
             </div>
             <div class="col-6 text-capitalize border-left rounded-0">
-                <h4>@SharedLocalizer["interacting"]</h4>
+                <span class="h5">@SharedLocalizer["interacting"]</span>
                 <ul class="list-unstyled">
                     <li><a asp-area="" asp-controller="help" asp-action="start">@SharedLocalizer["help"]</a></li>
                     <li><a asp-area="gamification" asp-controller="userbadge" asp-action="help">@SharedLocalizer["badges"]</a></li>

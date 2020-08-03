@@ -1,11 +1,13 @@
 ﻿@model IEnumerable<GiveawayParticipantViewModel>
 
-@{ Layout = null;
+@{
+    Layout = null;
     var noItemsModel = new ListNoItemsViewModel("fas fa-sad-cry", "Boo... No one entered your giveaway... yet!", false);
 
     var listTitle = ViewData["ListTitle"] == null ? SharedLocalizer["participants"] : (string)ViewData["ListTitle"];
 
-    var giveawayId = ViewData["giveawayId"] == null ? string.Empty : ViewData["giveawayId"].ToString(); }
+    var giveawayId = ViewData["giveawayId"] == null ? string.Empty : ViewData["giveawayId"].ToString();
+}
 
 <div class="bg-light pt-2">
     <div class="col-12 text-capitalize">
@@ -14,7 +16,8 @@
 
     @if (!Model.Any())
     {
-        <partial name="_ListNoItems" model="noItemsModel" /> }
+        <partial name="_ListNoItems" model="noItemsModel" />
+    }
     else
     {
         <div class="col-12 bg-white square-top table-responsive pb-1">
@@ -49,14 +52,16 @@
                                             <i class="fas fa-trophy fa-stack-1x"></i>
                                             <i class="fas fa-ban fa-stack-2x text-danger"></i>
                                         </span>
-                                    </button>}
+                                    </button>
+                                }
                                 <button class="btn btn-sm btn-outline-danger btn-participant-delete" data-url="@Url.Action("deleteparticipant", "giveaway", new { area = "tools", giveawayId = giveawayId, participantId = item.Id })" data-confirmationmessage="@SharedLocalizer["Are you sure you want to remove {0} from this giveaway?", item.Email]" data-confirmationtitle="@SharedLocalizer["Are you sure?"]" data-confirmationbuttontext="@SharedLocalizer["Yes, delete it!"]" data-cancelbuttontext="@SharedLocalizer["Cancel"]" title="@SharedLocalizer["Remove {0} from this giveaway", item.Email]"><i class="fas fa-fw fa-trash" aria-hidden="true"></i></button>
                             </td>
                         </tr>
-}
+                    }
                 </tbody>
             </table>
-        </div>}
+        </div>
+    }
 </div>
 
 <div class="d-none">
@@ -75,16 +80,16 @@
         <tbody>
             @foreach (var item in Model)
             {
-            <tr>
-                <td class="text-center">@(item.IsWinner ? "x" : string.Empty)</td>
-                <td>@item.Email</td>
-                <td>@(item.EmailVerified ? "x" : string.Empty)</td>
-                <td class="text-center">@(item.GdprConsent ? "x" : string.Empty)</td>
-                <td class="text-center">@(item.WantNotifications ? "x" : string.Empty)</td>
-                <td class="text-center">@item.CreateDate.ToShortDateString()</td>
-                <td class="text-center">@item.Entries.Count</td>
-            </tr>
-}
+                <tr>
+                    <td class="text-center">@(item.IsWinner ? "x" : string.Empty)</td>
+                    <td>@item.Email</td>
+                    <td>@(item.EmailVerified ? "x" : string.Empty)</td>
+                    <td class="text-center">@(item.GdprConsent ? "x" : string.Empty)</td>
+                    <td class="text-center">@(item.WantNotifications ? "x" : string.Empty)</td>
+                    <td class="text-center">@item.CreateDate.ToShortDateString()</td>
+                    <td class="text-center">@item.Entries.Count</td>
+                </tr>
+            }
         </tbody>
     </table>
 </div>

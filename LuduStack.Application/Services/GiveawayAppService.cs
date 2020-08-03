@@ -1,5 +1,4 @@
-﻿using CloudinaryDotNet.Actions;
-using LuduStack.Application.Formatters;
+﻿using LuduStack.Application.Formatters;
 using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels.Giveaway;
 using LuduStack.Domain.Core.Enums;
@@ -8,7 +7,6 @@ using LuduStack.Domain.Interfaces.Models;
 using LuduStack.Domain.Interfaces.Services;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
-using NPOI.HSSF.Record;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -573,16 +571,22 @@ namespace LuduStack.Application.Services
             {
                 case GiveawayEntryType.LoginOrEmail:
                     return true;
+
                 case GiveawayEntryType.EmailConfirmed:
                     return entrySum.Value > 0;
+
                 case GiveawayEntryType.ReferralCode:
                     return participant.Entries.Any(x => x.Type == GiveawayEntryType.ReferralCode);
+
                 case GiveawayEntryType.Daily:
                     return participant.Entries.Any(x => x.Type == GiveawayEntryType.Daily && x.Date.ToLocalTime().Date == DateTime.Today.ToLocalTime().Date);
+
                 case GiveawayEntryType.FacebookShare:
                     return participant.Entries.Any(x => x.Type == GiveawayEntryType.FacebookShare);
+
                 case GiveawayEntryType.TwitterShare:
                     return participant.Entries.Any(x => x.Type == GiveawayEntryType.TwitterShare);
+
                 default:
                     return false;
             }
