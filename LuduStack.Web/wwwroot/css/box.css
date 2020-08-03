@@ -188,7 +188,6 @@
 
 .box-body {
     padding: 10px;
-    border-radius: 0 0 5px 5px;
 }
 
 .no-header .box-body {
@@ -198,14 +197,6 @@
 
 .box-body > .table {
     margin-bottom: 0;
-}
-
-.box-body .box-pane {
-    border-radius: 0 0 0 3px;
-}
-
-.box-body .box-pane-right {
-    border-radius: 0 0 3px;
 }
 
 .box-footer {

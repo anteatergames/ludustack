@@ -47,6 +47,10 @@
 Body :		Poppins, sans-serif;
 -------------------------------------------------------------------*/
 
+html {
+    --border-radius:  8px;
+}
+
 body {
     overflow-y: auto;
     background-color: #dedada;
@@ -70,7 +74,7 @@ body {
     }
 
 div {
-    border-radius: 8px;
+    border-radius: var(--border-radius);
 }
 
 .main-header .logo, .user-panel {
@@ -370,7 +374,7 @@ a:active, a:focus, a:hover {
         border-bottom: 1px solid #f4f4f4;
         color: #333;
         font-size: 14px;
-        border-radius: 4px 4px 0 0;
+        border-radius: var(--border-radius) var(--border-radius) 0 0;
     }
 
     .navbar-nav > .notifications-menu > .dropdown-menu > li.footer > a {
@@ -380,7 +384,7 @@ a:active, a:focus, a:hover {
         color: rgba(0, 0, 0, .5);
         text-align: center;
         border-top: 1px solid rgba(0, 0, 0, .1);
-        border-radius: 0 0 4px 4px;
+        border-radius: 0 0 var(--border-radius) var(--border-radius);
         line-height: 20px;
         display: block;
     }
@@ -554,7 +558,7 @@ select:-webkit-autofill:focus {
             color: #263238;
             margin-bottom: 10px;
             border: 0;
-            border-radius: 4px 0 0 4px;
+            border-radius: var(--border-radius) 0 0 var(--border-radius);
             padding: 5px;
         }
 
@@ -1369,7 +1373,7 @@ button.btn.dropdown-toggle::after, .wysihtml5-toolbar .btn.dropdown-toggle::afte
 
 .nav-tabs-custom {
     margin-bottom: 20px;
-    border-radius: 3px;
+    border-radius: var(--border-radius);
 }
 
     .nav-tabs-custom > .nav-tabs {
@@ -1645,7 +1649,7 @@ button.btn.dropdown-toggle::after, .wysihtml5-toolbar .btn.dropdown-toggle::afte
 /*modal*/
 
 .modal-content {
-    /*border-radius: 0;*/
+    border-radius: var(--border-radius);
     -webkit-box-shadow: 0 2px 3px rgba(0, 0, 0, .125);
     box-shadow: 0 2px 3px rgba(0, 0, 0, .125);
     border: 0;
