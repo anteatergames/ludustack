@@ -8,7 +8,12 @@
 @{
     var childTitle = ViewData["Title"]?.ToString();
     var title = string.IsNullOrWhiteSpace(childTitle) || childTitle.Equals(ConstantHelper.DefaultTitle) ? ConstantHelper.DefaultTitle : ViewData["Title"].ToString();
-    if (title.Length < 20)
+
+    if (title.Length <= 5)
+    {
+        title = string.Format("{0} - {1}", title, ConstantHelper.DefaultTitle);
+    }
+    else if (title.Length < 20)
     {
         title = string.Format("{0} - {1}", title, ConstantHelper.SiteName);
     }
@@ -42,7 +47,7 @@
 
     @if (ViewData["CanonicalUrl"] != null)
     {
-    <link rel="canonical" href="@ViewData["CanonicalUrl"]" />
+        <link rel="canonical" href="@ViewData["CanonicalUrl"]" />
     }
 
     <meta property="og:type" content="website" />
@@ -63,6 +68,10 @@
 
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
     <link rel="preconnect" href="https://img.youtube.com">
+    <link rel="preload" href="/fonts/poppins-v11-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="/fonts/poppins-v11-latin-300.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="/lib/font-awesome/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="/lib/font-awesome/webfonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin>
 
     <link rel="alternate" href="https://www.ludustack.com/?culture=pt-BR" hreflang="pt-br" />
     <link rel="alternate" href="https://www.ludustack.com/?culture=en" hreflang="en" />
