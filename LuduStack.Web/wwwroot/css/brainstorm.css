@@ -16,7 +16,6 @@
     margin-top: 10px;
     padding: 10px;
     min-height: 140px;
-    border-radius: 0.25rem;
 }
 
     .brainstorm-item.list-item {
@@ -83,5 +82,4 @@
     min-height: 50px;
     background-color: white;
     padding: 5px;
-    border-radius: 0.25rem;
 }

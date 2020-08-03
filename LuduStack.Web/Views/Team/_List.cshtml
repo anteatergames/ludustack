@@ -12,6 +12,8 @@ else
 {
     @foreach (var team in Model)
     {
-        <partial name="_TeamListItem" model="team" />
+        <div class="box  bg-white">
+            <partial name="_TeamListItem" model="team" />
+        </div>
     }
 }
