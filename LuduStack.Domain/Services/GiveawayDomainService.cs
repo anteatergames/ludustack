@@ -165,7 +165,7 @@ namespace LuduStack.Domain.Services
                 return new DomainOperationVo<int>(DomainActionPerformed.None, 0);
             }
 
-            var entryAlreadyExists = existing.Entries.Any(x => x.Type == GiveawayEntryType.Daily && x.Date.ToLocalTime().Date == DateTime.Today.ToLocalTime().Date); ;
+            var entryAlreadyExists = existing.Entries.Any(x => x.Type == GiveawayEntryType.Daily && x.Date.ToLocalTime().Date == DateTime.Today.ToLocalTime().Date);
 
             if (entryAlreadyExists)
             {
