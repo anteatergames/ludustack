@@ -6,7 +6,7 @@ namespace LuduStack.Application.ViewModels.Game
 {
     public class GameBaseViewModel : BaseViewModel, IGameCardBasic
     {
-        [Required(ErrorMessage = "Wich game are you seeking help for?")]
+        [Required(ErrorMessage = "Which game are you seeking help for?")]
         [Display(Name = "Game")]
         public new Guid Id { get; set; }
 

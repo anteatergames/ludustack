@@ -27,6 +27,17 @@ steps:
         configPath: '.releaserc'
         cwd: '$(Build.Repository.LocalPath)'
         versionOverwrite: 'semantic-release@17'
+    
+    - task: gittagloader@1
+      inputs:
+        filter: 'Latest'
+        lines: '100'
+    
+    - task: Bash@3
+      displayName: Echo Tag
+      inputs:
+        targetType: 'inline'
+        script: 'echo "##vso[task.setvariable variable=testvar;]$(Tag.Label)"'
 
     - task: DotNetCoreCLI@2
       displayName: Restore Packages

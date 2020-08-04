@@ -242,7 +242,7 @@ namespace LuduStack.Web.Controllers
                     "Cache management"
                 }));
 
-            model.Items.Add(GenerateTimeLineItem(new DateTime(2019, 02, 01), "fas fa-globe", "success", "Febuary 2019", "Some tweaks", "LuduStack is for everyone!", new List<string>() {
+            model.Items.Add(GenerateTimeLineItem(new DateTime(2019, 02, 01), "fas fa-globe", "success", "February 2019", "Some tweaks", "LuduStack is for everyone!", new List<string>() {
                     "Image size descriptions",
                     "Accessibility improvements",
                     "Images on CDN"
