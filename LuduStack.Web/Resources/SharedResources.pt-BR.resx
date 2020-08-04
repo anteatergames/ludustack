@@ -1619,7 +1619,7 @@
   </data>
   <data name="editing" xml:space="preserve">
     <value>editando</value>
-    <comment>Generic</comment>
+    <comment>Translation</comment>
   </data>
   <data name="from" xml:space="preserve">
     <value>de</value>
@@ -1861,15 +1861,11 @@
     <value>Criar um novo time (você pode editar depois)</value>
     <comment>Game</comment>
   </data>
-  <data name="editing" xml:space="preserve">
-    <value>editando</value>
-    <comment>Translation</comment>
-  </data>
   <data name="That Translation Project is gone now!" xml:space="preserve">
     <value>Esse projeto de tradução já era!</value>
     <comment>Translation</comment>
   </data>
-  <data name="Wich game are you seeking help for?" xml:space="preserve">
+  <data name="Which game are you seeking help for?" xml:space="preserve">
     <value>Para qual jogo você quer ajuda?</value>
     <comment>Translation</comment>
   </data>
