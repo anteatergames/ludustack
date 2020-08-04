@@ -18,6 +18,7 @@ variables:
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
   artifactName: 'ludustackweb'
+  isMain: $[eq(variables['Build.SourceBranch'], 'refs/heads/master')]
 
 steps:
     - task: freestyle@0
@@ -32,12 +33,18 @@ steps:
       inputs:
         filter: 'Latest'
         lines: '100'
+      condition: and(succeeded(), eq(variables.isMain, true))
     
-    - task: Bash@3
+    - bash: |
+        echo "Latest Tag Found: $(Tag.Label)"
       displayName: Echo Tag
-      inputs:
-        targetType: 'inline'
-        script: 'echo "##vso[task.setvariable variable=testvar;]$(Tag.Label)"'
+      condition: and(succeeded(), eq(variables.isMain, true))
+    
+    - bash: |
+        echo "##vso[build.updatebuildnumber]$(Tag.Label)"
+      name: SetReleaseBuildNumber
+      displayName: Set Release Build Number
+      condition: and(succeeded(), eq(variables.isMain, true))
 
     - task: DotNetCoreCLI@2
       displayName: Restore Packages
