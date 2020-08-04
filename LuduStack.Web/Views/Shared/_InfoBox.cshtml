@@ -1,4 +1,11 @@
-﻿<div id="infobox" class="col-12 px-1">
+﻿@{
+    Layout = null;
+    var version = ViewBag.BuildNumber?.ToString();
+
+    version = version.StartsWith("v") ? version : String.Format("v{0}", version);
+}
+
+<div id="infobox" class="col-12 px-1">
     <div class="box p-3 bg-white">
         <div class="row">
             <div class="col-6 text-capitalize text-nowrap">
@@ -29,8 +36,8 @@
                         <i class="fab fa-facebook-f" aria-hidden="true"></i>
                     </a>
                     @*<a href="https://www.twitter.com/programad" target="_blank" class="mt-1 btn rounded-circle btn-social-icon btn-twitter" rel="noopener noreferrer">
-                            <i class="fab fa-twitter" aria-hidden="true"></i>
-                        </a>*@
+                        <i class="fab fa-twitter" aria-hidden="true"></i>
+                    </a>*@
                     <a href="https://discord.gg/X5Z8dTH" target="_blank" class="mt-1 btn rounded-circle btn-social-icon btn-discord" rel="noopener noreferrer" aria-label="Discord Server">
                         <i class="fab fa-discord" aria-hidden="true"></i>
                     </a>
@@ -46,8 +53,11 @@
             </div>
         </div>
 
-        <div class="col-12 text-center">
-            <a href="#"><small>v@(ViewBag.BuildNumber)</small></a>
-        </div>
+        @if (!string.IsNullOrWhiteSpace(version))
+        {
+            <div class="col-12 text-center">
+                <a href="#"><small>@version</small></a>
+            </div>
+        }
     </div>
 </div>
