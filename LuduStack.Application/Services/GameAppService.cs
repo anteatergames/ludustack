@@ -112,6 +112,11 @@ namespace LuduStack.Application.Services
 
                 FilCharacteristics(vm);
 
+                if (Constants.DefaultGameThumbnail.Contains(vm.ThumbnailUrl) || vm.ThumbnailUrl.Contains(Constants.DefaultGameThumbnail))
+                {
+                    vm.ThumbnailUrl = Constants.DefaultGameThumbnail;
+                }
+
                 return new OperationResultVo<GameViewModel>(vm);
             }
             catch (Exception ex)
