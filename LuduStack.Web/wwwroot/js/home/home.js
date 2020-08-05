@@ -437,8 +437,21 @@
         }
 
         if (isXl) {
-            MAINMODULE.Layout.SetStickyElement('#stickyLeft');
+            MAINMODULE.Layout.SetStickyElement('#stickyLeft', 60, '#leftColumn');
         }
+
+        window.addEventListener('resize', function (e) {
+            $('#stickyLeft').sticky('update');
+            isLg = window.matchMedia('screen and (min-width: 992px)').matches;
+            isXl = window.matchMedia('screen and (min-width: 1200px)').matches;
+
+            if (isXl) {
+                MAINMODULE.Layout.SetStickyElement('#stickyLeft', 60, '#leftColumn');
+            }
+            else {
+                $('#stickyLeft').unstick();
+            }
+        });
     }
 
     return {

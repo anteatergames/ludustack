@@ -73,26 +73,27 @@
 
         <h1 class="sr-only">@ViewData["Title"]</h1>
 
-        <div class="col-xl-2">
-            <div class="row">
-                @if (User.Identity.IsAuthenticated)
+        <div id="leftColumn" class="col-xl-2">
+            @if (User.Identity.IsAuthenticated)
+            {
+                if (!emailConfirmed)
                 {
-                    if (!emailConfirmed)
-                    {
-                        <div class="col-12">
-                            <partial name="_HomeRectangle" model="confirmEmailViewModel" />
-                        </div> }
-                }
-                else
-                {
-                    <div class="col-12 d-none d-xl-block">
-                        <partial name="_HomeSquare" model="joinUsViewModel" />
+                    <div class="col-12 p-0">
+                        <partial name="_HomeRectangle" model="confirmEmailViewModel" />
                     </div>
                 }
-                <div id="stickyLeft" class="col-12 d-none d-lg-block">
+            }
+            else
+            {
+                <div class="col-12 p-0 d-none d-xl-block">
+                    <partial name="_HomeSquare" model="joinUsViewModel" />
+                </div>
+            }
+            <div id="stickyLeft" class="no-gutters">
+                <div class="col-12 d-none d-lg-block">
                     <div id="divCounters"></div>
 
-                    <div class="col-12 d-sm-none d-xl-block">
+                    <div class="col-12 p-0 d-sm-none d-xl-block">
                         <partial name="_PayPalButton" model="@("donate")" />
                     </div>
                 </div>
@@ -129,7 +130,7 @@
                 </div>
 
                 <div class="col-12 d-sm-block d-xl-none">
-                    <div class="col-12 p-3">
+                    <div class="col-12 mt-2 px-1">
                         <partial name="_PayPalButton" model="@("donate")" />
                     </div>
                 </div>
