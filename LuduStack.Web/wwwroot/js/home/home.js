@@ -437,7 +437,7 @@
         }
 
         if (isXl) {
-            MAINMODULE.Layout.SetStickyElement('#divCounters');
+            MAINMODULE.Layout.SetStickyElement('#stickyLeft');
         }
     }
 

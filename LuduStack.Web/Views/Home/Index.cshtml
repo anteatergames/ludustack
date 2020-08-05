@@ -87,13 +87,14 @@
                 {
                     <div class="col-12 d-none d-xl-block">
                         <partial name="_HomeSquare" model="joinUsViewModel" />
-                    </div>}
-                <div class="col-12 d-none d-lg-block">
+                    </div>
+                }
+                <div id="stickyLeft" class="col-12 d-none d-lg-block">
                     <div id="divCounters"></div>
-                </div>
 
-                <div class="col-12 d-sm-none d-xl-block">
-                    <partial name="_PayPalButton" model="@("donate")"/>
+                    <div class="col-12 d-sm-none d-xl-block">
+                        <partial name="_PayPalButton" model="@("donate")" />
+                    </div>
                 </div>
             </div>
         </div>
@@ -128,7 +129,9 @@
                 </div>
 
                 <div class="col-12 d-sm-block d-xl-none">
-                    <partial name="_PayPalButton" model="@("donate")" />
+                    <div class="col-12 p-3">
+                        <partial name="_PayPalButton" model="@("donate")" />
+                    </div>
                 </div>
 
                 <div class="col-12 mt-1">
