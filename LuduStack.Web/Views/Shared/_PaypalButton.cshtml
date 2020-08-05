@@ -1,0 +1,16 @@
+﻿@model string
+@{
+    Layout = null;
+    var text = string.IsNullOrWhiteSpace(Model) ? "paypal" : SharedLocalizer[Model];
+}
+
+<div class="flex-square clickable rectangle bg-paypal">
+    <div class="flex-square-inner">
+        <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=KAVZ6SVJUX3W6&source=url" target="_blank" rel="noopener noreferrer">
+            <div class="flex-square-inner-content text-white">
+                <div><i class="fab fa-3x fa-paypal" aria-hidden="true"></i></div>
+                <div>@text</div>
+            </div>
+        </a>
+    </div>
+</div>
