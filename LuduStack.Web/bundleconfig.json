@@ -355,5 +355,26 @@
       "wwwroot/js/giveaway/giveawayparticipantcommon.js",
       "wwwroot/js/giveaway/giveawayyouarein.js"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/css/gamificationlevel.min.css",
+    "inputFiles": [
+      "wwwroot/css/gamificationlevel.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/gamificationlevel/gamificationlevel.min.js",
+    "inputFiles": [
+      "wwwroot/js/gamificationlevel/gamificationlevelcommon.js",
+      "wwwroot/js/gamificationlevel/gamificationlevel.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/gamificationlevel/gamificationleveledit.min.js",
+    "inputFiles": [
+      "wwwroot/js/shared/common-edit.js",
+      "wwwroot/js/gamificationlevel/gamificationlevelcommon.js",
+      "wwwroot/js/gamificationlevel/gamificationleveledit.js"
+    ]
   }
 ]

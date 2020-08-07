@@ -15,7 +15,7 @@ namespace LuduStack.Application.Services
     {
         private readonly IShortUrlDomainService shortUrlDomainService;
 
-        public ShortUrlAppService(IMapper mapper, IUnitOfWork unitOfWork, ICacheService cacheService, IShortUrlDomainService shortUrlDomainService) : base(mapper, unitOfWork, cacheService)
+        public ShortUrlAppService(IBaseAppServiceCommon baseAppServiceCommon, IShortUrlDomainService shortUrlDomainService) : base(baseAppServiceCommon)
         {
             this.shortUrlDomainService = shortUrlDomainService;
         }

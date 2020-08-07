@@ -45,15 +45,15 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.0.1" />
-    <PackageReference Include="BuildBundlerMinifier" Version="3.2.447" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="3.1.5" />
+    <PackageReference Include="BuildBundlerMinifier" Version="3.2.449" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="3.1.6" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="3.1.6" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" Version="3.1.6" />
     
     <PackageReference Include="Microsoft.AspNetCore.Rewrite" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="3.1.6" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.8" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.3" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" PrivateAssets="All" />
     <PackageReference Include="Microsoft.Web.LibraryManager.Build" Version="2.1.76" />
     <PackageReference Include="WebEssentials.AspNetCore.PWA" Version="1.0.65" />
   </ItemGroup>
@@ -97,6 +97,9 @@
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Areas\Staff\Views\FeaturedContent\_List.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Areas\Staff\Views\GamificationLevel\CreateEditWrapper.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Areas\Tools\Views\Giveaway\CreateEditWrapper.cshtml">

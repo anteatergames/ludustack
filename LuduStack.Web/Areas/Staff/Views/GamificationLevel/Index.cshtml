@@ -1,0 +1,59 @@
+﻿@{
+    var isAjax = ViewContext.HttpContext.Request.IsAjaxRequest();
+    var canInteract = User.Identity.IsAuthenticated;
+
+    if (isAjax)
+    {
+        Layout = null;
+    }
+
+    ViewData["Title"] = SharedLocalizer["Gamification Levels"];
+    ViewData["Description"] = SharedLocalizer["Manage gamification levels"];
+    ViewData["Url"] = ViewBag.BaseUrl + Url.Action("index", "gamificationlevel", new { area = "tools" });
+}
+
+@section ComponentStyles {
+    <environment include="Development">
+        <link rel="stylesheet" href="~/css/_feature.css">
+        <link rel="stylesheet" href="~/css/gamificationlevel.css">
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="~/css/gamificationlevel.min.css" asp-append-version="true">
+    </environment>
+}
+
+@section Scripts {
+    <environment include="Development">
+        <script src="~/js/gamificationlevel/gamificationlevelcommon.js"></script>
+        <script src="~/js/gamificationlevel/gamificationlevel.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/js/gamificationlevel/gamificationlevel.min.js" asp-append-version="true"></script>
+    </environment>
+}
+
+@section TranslatedMessages {
+    <span class="msg" data-msg-id="msgUrlPlaceholder">@SharedLocalizer["placeholder message"]</span>
+}
+
+<div id="featurecontainer" class="col-12 container">
+    <input type="hidden" id="isajax" value="@isAjax.ToString().ToLower()" />
+    <input type="hidden" id="caninteract" value="@canInteract.ToString().ToLower()" />
+    <input type="hidden" id="urls" value="urls"
+           data-url-list="@Url.Action("list", "gamificationlevel", new { area = "staff" })"/>
+
+    <div id="containerlist" class="row">
+        <div class="col-12 mb-2 text-uppercase">
+            <h1><i class="fas fa-fw fa-trophy" aria-hidden="true"></i> @ViewData["Title"]</h1>
+        </div>
+        <div class="col-12 mb-3">
+            @if (canInteract)
+            {
+                <div class="col-lg-12 mb-2 p-0 text-right">
+                    <a asp-area="staff" asp-controller="gamificationlevel" asp-action="add" class="btn btn-success">@SharedLocalizer["New Level"] <i class="fas fa-plus" aria-hidden="true"></i></a>
+                </div>
+            }
+            <div id="divList"></div>
+        </div>
+    </div>
+</div>

@@ -24,6 +24,13 @@ namespace LuduStack.Application.Services
             this.cacheService = cacheService;
         }
 
+        protected BaseAppService(IBaseAppServiceCommon baseAppServiceCommon)
+        {
+            mapper = baseAppServiceCommon.Mapper;
+            unitOfWork = baseAppServiceCommon.UnitOfWork;
+            cacheService = baseAppServiceCommon.CacheService;
+        }
+
         protected MediaType GetMediaType(string featuredImage)
         {
             if (string.IsNullOrWhiteSpace(featuredImage))

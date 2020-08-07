@@ -17,10 +17,7 @@ namespace LuduStack.Application.Services
     {
         private readonly IUserPreferencesDomainService userPreferencesDomainService;
 
-        public UserPreferencesAppService(IMapper mapper
-            , IUnitOfWork unitOfWork
-            , ICacheService cacheService
-            , IUserPreferencesDomainService userPreferencesDomainService) : base(mapper, unitOfWork, cacheService)
+        public UserPreferencesAppService(IBaseAppServiceCommon baseAppServiceCommon, IUserPreferencesDomainService userPreferencesDomainService) : base(baseAppServiceCommon)
         {
             this.userPreferencesDomainService = userPreferencesDomainService;
         }

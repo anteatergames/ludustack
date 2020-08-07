@@ -23,11 +23,9 @@ namespace LuduStack.Application.Services
         private readonly IFeaturedContentDomainService featuredContentDomainService;
         private readonly IUserContentDomainService userContentDomainService;
 
-        public FeaturedContentAppService(IMapper mapper
-            , IUnitOfWork unitOfWork
-            , ICacheService cacheService
+        public FeaturedContentAppService(IBaseAppServiceCommon baseAppServiceCommon
             , IFeaturedContentDomainService featuredContentDomainService
-            , IUserContentDomainService userContentDomainService) : base(mapper, unitOfWork, cacheService)
+            , IUserContentDomainService userContentDomainService) : base(baseAppServiceCommon)
         {
             this.featuredContentDomainService = featuredContentDomainService;
             this.userContentDomainService = userContentDomainService;
