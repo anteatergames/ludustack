@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using LuduStack.Application.Interfaces;
+﻿using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels.Gamification;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.ValueObjects;
 using LuduStack.Infra.CrossCutting.Identity.Models;
 using LuduStack.Web.Areas.Staff.Controllers.Base;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace LuduStack.Web.Areas.Staff.Controllers
 {
@@ -50,7 +50,7 @@ namespace LuduStack.Web.Areas.Staff.Controllers
                 model = new List<GamificationLevelViewModel>();
             }
 
-            foreach (var item in model)
+            foreach (GamificationLevelViewModel item in model)
             {
                 await SetPermissions(item);
             }
@@ -59,7 +59,6 @@ namespace LuduStack.Web.Areas.Staff.Controllers
 
             return PartialView("_ListGamificationLevels", model);
         }
-
 
         [Route("add")]
         public async Task<IActionResult> Add()
@@ -102,7 +101,7 @@ namespace LuduStack.Web.Areas.Staff.Controllers
 
             try
             {
-                var validate = await gamificationLevelAppService.ValidateXp(CurrentUserId, xpToAchieve, id);
+                OperationResultVo validate = await gamificationLevelAppService.ValidateXp(CurrentUserId, xpToAchieve, id);
 
                 return Json(validate.Success);
             }
@@ -146,7 +145,6 @@ namespace LuduStack.Web.Areas.Staff.Controllers
                 return Json(new OperationResultVo(ex.Message));
             }
         }
-
 
         [HttpDelete("{id:guid}")]
         public IActionResult Delete(Guid id, bool edit)

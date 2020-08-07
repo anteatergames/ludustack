@@ -16,7 +16,5 @@ namespace LuduStack.Application.Interfaces
         OperationResultVo Remove(Guid currentUserId, Guid id);
 
         OperationResultVo<Guid> Save(Guid currentUserId, TViewModel viewModel);
-
-
     }
 }
