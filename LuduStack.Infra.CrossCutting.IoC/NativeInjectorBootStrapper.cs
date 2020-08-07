@@ -84,7 +84,9 @@ namespace LuduStack.Infra.CrossCutting.IoC
             #region Gamification
 
             services.AddScoped<IGamificationAppService, GamificationAppService>();
+            services.AddScoped<IGamificationLevelAppService, GamificationLevelAppService>();
             services.AddScoped<IGamificationDomainService, GamificationDomainService>();
+            services.AddScoped<IGamificationLevelDomainService, GamificationLevelDomainService>();
             services.AddScoped<IGamificationRepository, GamificationRepository>();
             services.AddScoped<IGamificationActionRepository, GamificationActionRepository>();
             services.AddScoped<IGamificationLevelRepository, GamificationLevelRepository>();
@@ -157,6 +159,7 @@ namespace LuduStack.Infra.CrossCutting.IoC
 
             #region Common
 
+            services.AddScoped<IBaseAppServiceCommon, BaseAppServiceCommon>();
             services.AddScoped<IProfileBaseAppServiceCommon, ProfileBaseAppServiceCommon>();
 
             #endregion Common

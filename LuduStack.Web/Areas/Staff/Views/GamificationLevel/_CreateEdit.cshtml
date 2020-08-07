@@ -1,0 +1,87 @@
+﻿@model GamificationLevelViewModel
+
+@{
+    Layout = null;
+    var canInteract = User.Identity.IsAuthenticated;
+
+    ViewData["Title"] = SharedLocalizer["{0} Gamification Level", (Model.Id == Guid.Empty ? "New" : "Edit")];
+
+    var userGames = ViewBag.UserGames as List<SelectListItem>;
+
+    var isNew = Model.Id == Guid.Empty;
+
+    var timeZoneList = (IEnumerable<SelectListItem>)ViewBag.TimeZones;
+}
+
+<h1 class="sr-only">@ViewData["Title"]</h1>
+
+<div class="box bg-white">
+
+    <div class="box-header with-border">
+        <div class="float-left mr-3">
+            <a asp-area="staff" asp-controller="gamificationlevel" asp-action="index" class="btn btn-default"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
+        </div>
+        <h3 class="card-title">@SharedLocalizer["You are {0} a Gamification Level", (Model.Id == Guid.Empty ? SharedLocalizer["creating"] : SharedLocalizer["editing"])]</h3>
+        <span class="card-subtitle">
+            @SharedLocalizer["Tell us about the Gamification Level."]
+        </span>
+        @if (!isNew)
+        {
+            <div class="box-tools">
+                <div class="btn-group">
+                    <button type="button" class="btn  btn-box-tool" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-ellipsis-v" aria-hidden="true"></i>
+                    </button>
+                    <div class="dropdown-menu text-capitalize" x-placement="bottom-start" style="position: absolute; transform: translate3d(-67px, 28px, 0px); top: 0px; left: 0px; will-change: transform;">
+                        @if (Model.Permissions.CanDelete)
+                        {
+                            <a class="dropdown-item btn-entity-delete" href="#" data-url="@Url.Action("delete", "gamificationlevel", new { area = "staff", id = Model.Id, edit = true })" data-confirmationmessage="@SharedLocalizer["Are you sure you want to delete this Gamification Level?"]" data-confirmationtitle="@SharedLocalizer["Are you sure?"]" data-confirmationbuttontext="@SharedLocalizer["Yes, delete it!"]" data-cancelbuttontext="@SharedLocalizer["Cancel"]">@SharedLocalizer["delete"]</a>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="box-body p-0 px-md-2">
+        <form id="frmSave" asp-area="staff" asp-controller="gamificationlevel" asp-action="save" method="post">
+            <input type="hidden" id="caninteract" value="@canInteract.ToString().ToLower()" />
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="UserId" />
+            <input type="hidden" asp-for="CreateDate" />
+            <div class="row">
+
+                <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                        <label asp-for="Number" class="col-form-label"></label>
+                        <span asp-description-for="Number" class="col-form-label" />
+                        <input asp-for="Number" class="form-control" placeholder="@SharedLocalizer["What is the number for this Gamification Level?"]" readonly />
+                        <span asp-validation-for="Number" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                        <label asp-for="XpToAchieve" class="col-form-label"></label>
+                        <span asp-description-for="Number" class="col-form-label" />
+                        <input asp-for="XpToAchieve" class="form-control" placeholder="@SharedLocalizer["How many XP the user must have to go to the next level?"]" />
+                        <span asp-validation-for="XpToAchieve" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label asp-for="Name" class="col-form-label"></label>
+                        <span asp-description-for="Name" class="col-form-label" />
+                        <input asp-for="Name" class="form-control" placeholder="@SharedLocalizer["Type the Gamification Level name here"]" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-12 col-lg-6 offset-lg-6 col-xl-4 offset-xl-8 mt-1 mb-2">
+                    <button type="button" id="btnSave" class="btn btn-lg btn-primary btn-block" data-error-msg="<i class='fas fa-exclamation-circle' aria-hidden='true'></i> @SharedLocalizer["Something is missing!"]"><i class="fas fa-save" aria-hidden="true"></i> @SharedLocalizer["Save"]</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

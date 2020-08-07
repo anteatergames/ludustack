@@ -1,6 +1,8 @@
 ﻿@model GiveawayViewModel
-@{ var isAjax = ViewContext.HttpContext.Request.IsAjaxRequest();
-    var canInteract = User.Identity.IsAuthenticated; }
+@{
+    var isAjax = ViewContext.HttpContext.Request.IsAjaxRequest();
+    var canInteract = User.Identity.IsAuthenticated;
+}
 
 @section ComponentStyles {
     <environment include="Development">
@@ -46,8 +48,6 @@
 }
 
 <input type="hidden" id="urls" value="urls"
-       data-url-terms="@Url.Action("getterms", "localization", new { area = "tools" })"
-       data-url-terms-save="@Url.Action("saveterms", "localization", new { area = "tools" })"
        data-url-image="@Constants.DefaultImagePlaceholder" />
 
 <section class="content container">

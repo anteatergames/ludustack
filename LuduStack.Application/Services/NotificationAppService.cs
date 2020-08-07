@@ -17,10 +17,7 @@ namespace LuduStack.Application.Services
     {
         private readonly INotificationDomainService notificationDomainService;
 
-        public NotificationAppService(IMapper mapper
-            , IUnitOfWork unitOfWork
-            , ICacheService cacheService
-            , INotificationDomainService notificationDomainService) : base(mapper, unitOfWork, cacheService)
+        public NotificationAppService(IBaseAppServiceCommon baseAppServiceCommon, INotificationDomainService notificationDomainService) : base(baseAppServiceCommon)
         {
             this.notificationDomainService = notificationDomainService;
         }

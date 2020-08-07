@@ -1,6 +1,8 @@
 ﻿@model LocalizationViewModel
-@{ var isAjax = ViewContext.HttpContext.Request.IsAjaxRequest();
-    var canInteract = User.Identity.IsAuthenticated; }
+@{
+    var isAjax = ViewContext.HttpContext.Request.IsAjaxRequest();
+    var canInteract = User.Identity.IsAuthenticated;
+}
 
 @section ComponentStyles {
     <environment include="Development">

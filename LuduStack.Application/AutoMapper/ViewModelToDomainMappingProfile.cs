@@ -83,6 +83,7 @@ namespace LuduStack.Application.AutoMapper
             #region Gamification
 
             CreateMap<UserBadgeViewModel, Domain.Models.UserBadge>();
+            CreateMap<GamificationLevelViewModel, Domain.Models.GamificationLevel>();
 
             #endregion Gamification
 
