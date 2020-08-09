@@ -49,7 +49,7 @@
         pickingGenreInterval = setInterval(changeGenre, interval);
 
         stopGenreInterval = setInterval(stopPigkingGenre, stopInterval);
-    };
+    }
 
     function changeGenre() {
         selectors.genre.textContent = genre[firstGenre];
@@ -62,14 +62,14 @@
         clearInterval(stopGenreInterval);
 
         genreReady = true;
-    };
+    }
 
     function randomAction() {
         selectors.action.classList.add("picking");
         pickingActionInterval = setInterval(changeAction, interval);
 
         stopActionInterval = setInterval(stopPigkingAction, stopInterval);
-    };
+    }
 
     function changeAction() {
         selectors.action.textContent = action[firstAction];
@@ -82,14 +82,14 @@
         clearInterval(stopActionInterval);
 
         actionReady = true;
-    };
+    }
 
     function randomThings() {
         selectors.things.classList.add("picking");
         pickingThingsInterval = setInterval(changeThings, interval);
 
         stopThingsInterval = setInterval(stopPigkingThings, stopInterval);
-    };
+    }
 
     function changeThings() {
         selectors.things.textContent = things[firstThing];
@@ -102,14 +102,14 @@
         clearInterval(stopThingsInterval);
 
         thingsReady = true;
-    };
+    }
 
     function randomGoals() {
         selectors.goals.classList.add("picking");
         pickingGoalsInterval = setInterval(changeGoals, interval);
 
         stopGoalsInterval = setInterval(stopPigkingGoals, stopInterval);
-    };
+    }
 
     function changeGoals() {
         selectors.goals.textContent = goals[firstGoal];
@@ -122,7 +122,7 @@
         clearInterval(stopGoalsInterval);
 
         goalsReady = true;
-    };
+    }
 
     function init() {
         setSelectors();
