@@ -340,7 +340,6 @@ namespace LuduStack.Web.Controllers
                     "Daily entries"
             }));
 
-
             model.Items.Add(GenerateTimeLineItem(new DateTime(2020, 08, 01), "fas fa-dice", "primary", "August 2020", "New Ideas!", "Random Game Idea added to the front page to overcome your creative block!"));
 
             // Future
