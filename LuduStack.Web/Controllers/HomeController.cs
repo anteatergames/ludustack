@@ -85,6 +85,11 @@ namespace LuduStack.Web.Controllers
             return ViewComponent("Counters", new { qtd = 3 });
         }
 
+        public IActionResult GameIdea()
+        {
+            return ViewComponent("GameIdea");
+        }
+
         public IActionResult Notifications()
         {
             return ViewComponent("Notification", new { qtd = 5 });

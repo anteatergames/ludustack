@@ -16,6 +16,7 @@
 
     function setSelectors() {
         selectors.divCounters = '#divCounters';
+        selectors.divGameIdea = '#divGameIdea';
         selectors.divLatestGames = '#divLatestGames';
         selectors.divActivityFeed = '#divActivityFeed';
         selectors.divPostGame = 'div#divPostGame';
@@ -54,6 +55,8 @@
         bindAll();
 
         loadCounters();
+
+        loadGameIdea();
 
         loadLatestGames();
 
@@ -407,6 +410,12 @@
 
     function loadCounters() {
         MAINMODULE.Ajax.LoadHtml("/home/counters", selectors.divCounters);
+    }
+
+    function loadGameIdea() {
+        MAINMODULE.Ajax.LoadHtml("/home/gameidea", selectors.divGameIdea).then(() => {
+            GAMEIDEA.Init();
+        });
     }
 
     function loadLatestGames() {

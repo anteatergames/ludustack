@@ -58,6 +58,7 @@
       "wwwroot/js/shared/contentactions.js",
       "wwwroot/js/shared/polls.js",
       "wwwroot/js/shared/activityfeed.js",
+      "wwwroot/js/shared/gameidea.js",
       "wwwroot/js/home/home.js"
     ]
   },
@@ -375,6 +376,12 @@
       "wwwroot/js/shared/common-edit.js",
       "wwwroot/js/gamificationlevel/gamificationlevelcommon.js",
       "wwwroot/js/gamificationlevel/gamificationleveledit.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/gameidea.min.css",
+    "inputFiles": [
+      "wwwroot/css/gameidea.css"
     ]
   }
 ]
