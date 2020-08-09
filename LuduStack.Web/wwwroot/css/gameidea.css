@@ -1,0 +1,83 @@
+﻿.gameidea {
+    margin: 0;
+    height: 100%;
+    font-family: 'Chelsea Market', sans-serif;
+    background: radial-gradient(circle, rgba(191,208,53,1) 0%, rgba(82,146,150,1) 100%);
+    color: #FFF;
+    font-size: 1em;
+}
+
+    .gameidea .title {
+        color: rgba(50, 60, 60, 0.6);
+        font-weight: 400;
+        font-size: 12px;
+        text-align: center;
+        letter-spacing: 4px;
+    }
+
+    .gameidea a, .gameidea a:hover {
+        color: #fff;
+    }
+
+    .gameidea .game-idea-element {
+        opacity: 1;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: inline-block;
+        position: relative;
+    }
+
+    .gameidea .game-idea-genre {
+        color: rgba(255, 255, 255, 0.6);
+    }
+
+    .gameidea .game-idea-action {
+        color: rgba(255, 205, 255, 0.95);
+    }
+
+    .gameidea .game-idea-things {
+        color: rgba(160, 210, 255, 0.9);
+    }
+
+    .gameidea .game-idea-goals {
+        color: rgba(105, 255, 205, 0.8);
+    }
+
+    .gameidea .game-idea-element.picking {
+        text-shadow: 0 4px 4px rgba(255, 255, 255, 0.2), 0 6px 6px rgba(255, 255, 255, 0.4), 0 8px 18px rgba(255, 255, 255, 0.8), 0 22px 18px rgba(255, 255, 255, 0.5), 0 -4px 4px rgba(255, 255, 255, 0.2), 0 -6px 6px rgba(255, 255, 255, 0.4), 0 -8px 18px rgba(255, 255, 255, 0.8), 0 -22px 18px rgba(255, 255, 255, 0.5);
+        color: rgba(255, 255, 255, 0.2);
+        top: 12px;
+        animation: mov 0.12s infinite;
+    }
+
+@keyframes in {
+    0% {
+        transform: translateY(-30px);
+    }
+
+    50% {
+        transform: translateY(-15px);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
+}
+
+
+@keyframes mov {
+    0% {
+        transform: translateY(-30px);
+        opacity: 0;
+    }
+
+    50% {
+        transform: translateY(-15px);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(25px);
+        opacity: 0;
+    }
+}

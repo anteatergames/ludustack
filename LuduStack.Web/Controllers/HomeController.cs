@@ -85,6 +85,11 @@ namespace LuduStack.Web.Controllers
             return ViewComponent("Counters", new { qtd = 3 });
         }
 
+        public IActionResult GameIdea()
+        {
+            return ViewComponent("GameIdea");
+        }
+
         public IActionResult Notifications()
         {
             return ViewComponent("Notification", new { qtd = 5 });
@@ -334,6 +339,8 @@ namespace LuduStack.Web.Controllers
                     "Tracked link sharing for more chances to win",
                     "Daily entries"
             }));
+
+            model.Items.Add(GenerateTimeLineItem(new DateTime(2020, 08, 01), "fas fa-dice", "primary", "August 2020", "New Ideas!", "Random Game Idea added to the front page to overcome your creative block!"));
 
             // Future
             model.Items.Add(GenerateTimeLineItem(new DateTime(2020, 11, 01), "fas fa-bug", "danger", "November 2020", "Open Beta", "At this point, we hope to have a consistent beta tester base so we can polish the platform and fix every possible bug tha shows up."));

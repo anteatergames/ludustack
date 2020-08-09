@@ -36,6 +36,7 @@
         <script src="~/js/shared/contentactions.js" defer></script>
         <script src="~/js/shared/polls.js" defer></script>
         <script src="~/js/shared/activityfeed.js" defer></script>
+        <script src="~/js/shared/gameidea.js" defer></script>
         <script src="~/js/home/home.js" defer></script>
     </environment>
     <environment exclude="Development">
@@ -96,6 +97,8 @@
                     <div class="col-12 p-0 d-sm-none d-xl-block">
                         <partial name="_PayPalButton" model="@("donate")" />
                     </div>
+
+                    <div id="divGameIdea" class="mb-2"></div>
                 </div>
             </div>
         </div>
