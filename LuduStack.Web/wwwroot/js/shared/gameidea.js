@@ -1,8 +1,4 @@
-﻿
-
-
-
-var GAMEIDEA = (function () {
+﻿var GAMEIDEA = (function () {
     "use strict";
 
     var selectors = {};
@@ -11,29 +7,32 @@ var GAMEIDEA = (function () {
     var interval = 120;
     var stopInterval = 1200;
 
+    var genreReady = false,
+        actionReady = false,
+        thingsReady = false,
+        goalsReady = false,
+        firstGenre = 0,
+        firstAction = 0,
+        firstThing = 0,
+        firstGoal = 0,
+        pickingGenreInterval = 0,
+        stopGenreInterval = 0,
+        pickingActionInterval = 0,
+        stopActionInterval = 0,
+        pickingThingsInterval = 0,
+        stopThingsInterval = 0,
+        pickingGoalsInterval = 0,
+        stopGoalsInterval = 0;
+
     var genre = ["An action game", "An arcade game", "A top-down game", "An adventure game", "A strategy game", "RTS game", "A turn-based strategy game", "A role-playing game", "A platformer game", "A puzzle game", "A visual novel", "A social media game", "A mobile game", "A browser game", "An indie game", "An experimental game", "A student project", "An artsy game"];
-    var allGenres = genre.length;
-    var firstGenre = 0;
 
     var action = ['go to war with', 'wage war on', 'unite', 'lead', 'build', 'destroy', 'conquer', 'invade', 'colonize', 'discover', 'explore', 'trade with', 'lead the rebels in', 'make peace with', 'investigate', 'rename', 'collect gold from', 'collect crystals from', 'mine ore from', 'align', 'click on', 'match', 'throw', 'toss', 'fire pellets at', 'control', 'touch', 'stack', 'guess', 'memorize', 'rotate', 'swap', 'slide', 'avoid', 'drag and drop', 'tickle', 'race', 'challenge', 'collect', 'draw', 'unlock', 'cook', 'break', 'solve puzzles involving', 'collect', 'juggle'];
-    var allActions = action.length;
-    var firstAction = 0;
 
     var things = ['countries', 'nations', 'dragons', 'castles', 'cities', 'strongholds', 'towers', 'dungeons', 'citadels', 'kingdoms', 'unknown worlds', 'other worlds', 'parallel worlds', 'other dimensions', 'alien worlds', 'heaven', 'hell', 'mythological places', 'historical places', 'islands', 'sanctuaries', 'temples', 'ruins', 'factories', 'caves', 'gems', 'diamonds', 'gold nuggets', 'bricks', 'bubbles', 'squares', 'triangles', 'treasure', 'blobs', 'kitchen appliances', 'nondescript fruits', 'animals', 'birds', 'baby animals', 'farm animals', 'exotic fruits', 'sentient plants', 'your friends', 'shapes', 'jewels', 'letters', 'words', 'numbers', 'tokens', 'coins', 'eggs', 'hats', 'candy', 'chocolate', 'shoes', 'clothing items', 'princesses', 'blocks', 'cubes', 'asteroids', 'stars', 'balls', 'spheres', 'magnets', 'riddles'];
-    var allThings = things.length;
-    var firstThing = 0;
 
     var goals = ['to win', 'for glory', 'in the name of love', 'to live forever', 'to become the ruler of the world', 'to form an invincible empire', 'to win points', 'to reach the highscore', 'to unlock bonus items', 'to earn tokens', 'to unlock the next level'];
-    var allGoals = goals.length;
-    var firstGoal = 0;
-
-    var pickingGenreInterval = 0, stopGenreInterval = 0;
-    var pickingActionInterval = 0, stopActionInterval = 0;
-    var pickingThingsInterval = 0, stopThingsInterval = 0;
-    var pickingGoalsInterval = 0, stopGoalsInterval = 0;
 
     function setSelectors() {
-        selectors.container = '#divGameIdea';
         selectors.btnGenerateGameIdea = '#btnGenerateGameIdea';
         selectors.genre = document.querySelector('.game-idea-genre');
         selectors.action = document.querySelector('.game-idea-action');
@@ -42,7 +41,7 @@ var GAMEIDEA = (function () {
     }
 
     function cacheObjs() {
-        objs.container = $(selectors.container);
+        objs.btnGenerateGameIdea = document.querySelector(selectors.btnGenerateGameIdea);
     }
 
     function randomGenre() {
@@ -54,13 +53,15 @@ var GAMEIDEA = (function () {
 
     function changeGenre() {
         selectors.genre.textContent = genre[firstGenre];
-        firstGenre = (firstGenre + 1) % allGenres;
+        firstGenre = (firstGenre + 1) % genre.length;
     }
 
     function stopPigkingGenre() {
         selectors.genre.classList.remove("picking");
         clearInterval(pickingGenreInterval);
         clearInterval(stopGenreInterval);
+
+        genreReady = true;
     };
 
     function randomAction() {
@@ -72,13 +73,15 @@ var GAMEIDEA = (function () {
 
     function changeAction() {
         selectors.action.textContent = action[firstAction];
-        firstAction = (firstAction + 1) % allActions;
+        firstAction = (firstAction + 1) % action.length;
     }
 
     function stopPigkingAction() {
         selectors.action.classList.remove("picking");
         clearInterval(pickingActionInterval);
         clearInterval(stopActionInterval);
+
+        actionReady = true;
     };
 
     function randomThings() {
@@ -90,13 +93,15 @@ var GAMEIDEA = (function () {
 
     function changeThings() {
         selectors.things.textContent = things[firstThing];
-        firstThing = (firstThing + 1) % allThings;
+        firstThing = (firstThing + 1) % things.length;
     }
 
     function stopPigkingThings() {
         selectors.things.classList.remove("picking");
         clearInterval(pickingThingsInterval);
         clearInterval(stopThingsInterval);
+
+        thingsReady = true;
     };
 
     function randomGoals() {
@@ -108,13 +113,15 @@ var GAMEIDEA = (function () {
 
     function changeGoals() {
         selectors.goals.textContent = goals[firstGoal];
-        firstGoal = (firstGoal + 1) % allGoals;
+        firstGoal = (firstGoal + 1) % goals.length;
     }
 
     function stopPigkingGoals() {
         selectors.goals.classList.remove("picking");
         clearInterval(pickingGoalsInterval);
         clearInterval(stopGoalsInterval);
+
+        goalsReady = true;
     };
 
     function init() {
@@ -131,10 +138,17 @@ var GAMEIDEA = (function () {
     }
 
     function bindGenerateClick() {
-        objs.container.on('click', selectors.btnGenerateGameIdea, function (e) {
+        objs.btnGenerateGameIdea.addEventListener('click', function (e) {
             e.preventDefault();
 
-            pick();
+            if (genreReady === true && actionReady === true && thingsReady === true && goalsReady === true) {
+                genreReady = false;
+                actionReady = false;
+                thingsReady = false;
+                goalsReady = false;
+
+                pick();
+            }
 
             return false;
         });
