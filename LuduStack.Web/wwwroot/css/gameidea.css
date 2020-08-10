@@ -1,11 +1,48 @@
 ﻿.gameidea {
     margin: 0;
-    height: 100%;
-    font-family: 'Chelsea Market', sans-serif;
-    background: radial-gradient(circle, rgba(191,208,53,1) 0%, rgba(82,146,150,1) 100%);
-    color: #FFF;
     font-size: 1em;
+    font-family: 'Chelsea Market', sans-serif;
 }
+
+    .gameidea.gradient {
+        color: #FFF;
+        background: radial-gradient(circle, rgba(191,208,53,1) 0%, rgba(82,146,150,1) 100%);
+    }
+
+    .gameidea .generatebutton {
+        background-color: rgba(191,208,53, 1);
+        border-radius: 50%;
+        height: 150px;
+        width: 150px;
+        border: 3px solid #fff;
+        color: #fff;
+    }
+
+        .gameidea .generatebutton:hover {
+            color: #252523;
+            background-color: rgba(160, 210, 255, 1);
+            border: 5px solid rgba(82,146,150,1);
+        }
+
+    .gameidea .slot {
+        background-color: #fff;
+        border: 5px solid #222;
+        border-radius: 20px;
+        min-height: 128px;
+        position: relative;
+    }
+
+
+    .gameidea .slot .game-idea-element {
+        position: relative;
+        height: 50%;
+        margin: auto;
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+    }
 
     .gameidea .title {
         color: rgba(50, 60, 60, 0.6);
@@ -21,14 +58,16 @@
 
     .gameidea .game-idea-element {
         opacity: 1;
-        cursor: pointer;
         transition: all 0.2s ease;
         display: inline-block;
-        position: relative;
+    }
+
+    .gameidea.big .game-idea-element {
+        font-size: 1.5em;
     }
 
     .gameidea .game-idea-genre {
-        color: rgba(255, 255, 255, 0.6);
+        color: rgba(191,208,53,0.6);
     }
 
     .gameidea .game-idea-action {
@@ -44,8 +83,10 @@
     }
 
     .gameidea .game-idea-element.picking {
-        text-shadow: 0 4px 4px rgba(255, 255, 255, 0.2), 0 6px 6px rgba(255, 255, 255, 0.4), 0 8px 18px rgba(255, 255, 255, 0.8), 0 22px 18px rgba(255, 255, 255, 0.5), 0 -4px 4px rgba(255, 255, 255, 0.2), 0 -6px 6px rgba(255, 255, 255, 0.4), 0 -8px 18px rgba(255, 255, 255, 0.8), 0 -22px 18px rgba(255, 255, 255, 0.5);
-        color: rgba(255, 255, 255, 0.2);
+        /*text-shadow: 0 4px 4px rgba(255, 255, 255, 0.2), 0 6px 6px rgba(255, 255, 255, 0.4), 0 8px 18px rgba(255, 255, 255, 0.8), 0 22px 18px rgba(255, 255, 255, 0.5), 0 -4px 4px rgba(255, 255, 255, 0.2), 0 -6px 6px rgba(255, 255, 255, 0.4), 0 -8px 18px rgba(255, 255, 255, 0.8), 0 -22px 18px rgba(255, 255, 255, 0.5);*/
+        text-shadow: 0 4px 4px rgba(191,208,53, 0.2), 0 6px 6px rgba(191,208,53, 0.4), 0 8px 18px rgba(191,208,53, 0.8), 0 22px 18px rgba(191, 208, 53, 0.5), 0 -4px 4px rgba(191, 208, 53, 0.2), 0 -6px 6px rgba(191, 208, 53, 0.4), 0 -8px 18px rgba(191, 208, 53, 0.8), 0 -22px 18px rgba(191, 208, 53, 0.5);
+        cursor: pointer;
+        color: rgba(191,208,53, 0.2);
         top: 12px;
         animation: mov 0.12s infinite;
     }
