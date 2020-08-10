@@ -42,11 +42,10 @@
     <span class="msg" data-msg-id="msgUrlPlaceholder">@SharedLocalizer["placeholder message"]</span>
 }
 
-<h1 class="sr-only">@SharedLocalizer["game idea generator"]</h1>
-
 <div id="featurecontainer" class="col-12 py-3 container bg-light">
     <input type="hidden" id="isajax" value="@isAjax.ToString().ToLower()" />
     <input type="hidden" id="caninteract" value="@canInteract.ToString().ToLower()" />
+    <input type="hidden" id="gameIdeaStandalone" value="true" />
 
     <div class="row">
         <div class="col-12 mb-2">

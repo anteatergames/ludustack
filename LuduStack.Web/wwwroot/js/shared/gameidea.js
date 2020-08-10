@@ -42,32 +42,39 @@
     var rules = ['avoid enemies', 'limited inventory', 'cant thing twice', 'one life only', 'must not be seen', 'cant touch the floor'];
 
     function setSelectors() {
+        selectors.gameIdeaStandalone = '#gameIdeaStandalone';
         selectors.btnGenerateGameIdea = '#btnGenerateGameIdea';
-        selectors.genre = document.querySelector('.game-idea-genre');
-        selectors.action = document.querySelector('.game-idea-action');
-        selectors.things = document.querySelector('.game-idea-things');
-        selectors.goals = document.querySelector('.game-idea-goals');
-        selectors.rules = document.querySelector('.game-idea-rules');
+        selectors.genre = '.game-idea-genre';
+        selectors.action = '.game-idea-action';
+        selectors.things = '.game-idea-things';
+        selectors.goals = '.game-idea-goals';
+        selectors.rules = '.game-idea-rules';
     }
 
     function cacheObjs() {
+        objs.gameIdeaStandalone = document.querySelector(selectors.gameIdeaStandalone);
         objs.btnGenerateGameIdea = document.querySelector(selectors.btnGenerateGameIdea);
+        objs.genre = document.querySelector(selectors.genre);
+        objs.action = document.querySelector(selectors.action);
+        objs.things = document.querySelector(selectors.things);
+        objs.goals = document.querySelector(selectors.goals);
+        objs.rules = document.querySelector(selectors.rules);
     }
 
     function randomGenre() {
-        selectors.genre.classList.add("picking");
+        objs.genre.classList.add("picking");
         pickingGenreInterval = setInterval(changeGenre, interval);
 
         stopGenreInterval = setInterval(stopPigkingGenre, stopInterval);
     }
 
     function changeGenre() {
-        selectors.genre.textContent = genre[firstGenre];
+        objs.genre.textContent = genre[firstGenre];
         firstGenre = (firstGenre + 1) % genre.length;
     }
 
     function stopPigkingGenre() {
-        selectors.genre.classList.remove("picking");
+        objs.genre.classList.remove("picking");
         clearInterval(pickingGenreInterval);
         clearInterval(stopGenreInterval);
 
@@ -75,19 +82,19 @@
     }
 
     function randomAction() {
-        selectors.action.classList.add("picking");
+        objs.action.classList.add("picking");
         pickingActionInterval = setInterval(changeAction, interval);
 
         stopActionInterval = setInterval(stopPigkingAction, stopInterval);
     }
 
     function changeAction() {
-        selectors.action.textContent = action[firstAction];
+        objs.action.textContent = action[firstAction];
         firstAction = (firstAction + 1) % action.length;
     }
 
     function stopPigkingAction() {
-        selectors.action.classList.remove("picking");
+        objs.action.classList.remove("picking");
         clearInterval(pickingActionInterval);
         clearInterval(stopActionInterval);
 
@@ -95,19 +102,19 @@
     }
 
     function randomThings() {
-        selectors.things.classList.add("picking");
+        objs.things.classList.add("picking");
         pickingThingsInterval = setInterval(changeThings, interval);
 
         stopThingsInterval = setInterval(stopPigkingThings, stopInterval);
     }
 
     function changeThings() {
-        selectors.things.textContent = things[firstThing];
+        objs.things.textContent = things[firstThing];
         firstThing = (firstThing + 1) % things.length;
     }
 
     function stopPigkingThings() {
-        selectors.things.classList.remove("picking");
+        objs.things.classList.remove("picking");
         clearInterval(pickingThingsInterval);
         clearInterval(stopThingsInterval);
 
@@ -115,19 +122,19 @@
     }
 
     function randomGoals() {
-        selectors.goals.classList.add("picking");
+        objs.goals.classList.add("picking");
         pickingGoalsInterval = setInterval(changeGoals, interval);
 
         stopGoalsInterval = setInterval(stopPigkingGoals, stopInterval);
     }
 
     function changeGoals() {
-        selectors.goals.textContent = goals[firstGoal];
+        objs.goals.textContent = goals[firstGoal];
         firstGoal = (firstGoal + 1) % goals.length;
     }
 
     function stopPigkingGoals() {
-        selectors.goals.classList.remove("picking");
+        objs.goals.classList.remove("picking");
         clearInterval(pickingGoalsInterval);
         clearInterval(stopGoalsInterval);
 
@@ -135,19 +142,19 @@
     }
 
     function randomRules() {
-        selectors.rules.classList.add("picking");
+        objs.rules.classList.add("picking");
         pickingRulesInterval = setInterval(changeRules, interval);
 
         stopRulesInterval = setInterval(stopPigkingRules, stopInterval);
     }
 
     function changeRules() {
-        selectors.rules.textContent = rules[firstRule];
+        objs.rules.textContent = rules[firstRule];
         firstRule = (firstRule + 1) % rules.length;
     }
 
     function stopPigkingRules() {
-        selectors.rules.classList.remove("picking");
+        objs.rules.classList.remove("picking");
         clearInterval(pickingRulesInterval);
         clearInterval(stopRulesInterval);
 
@@ -160,8 +167,10 @@
 
         bindAll();
 
-        clickSound = new Audio("/sounds/click.mp3");
-        slotsSound = new Audio("/sounds/gameideagenerator.mp3");
+        if (objs.gameIdeaStandalone) {
+            clickSound = new Audio("/sounds/click.mp3");
+            slotsSound = new Audio("/sounds/gameideagenerator.mp3");
+        }
 
         playSlotsSound();
 
@@ -176,14 +185,14 @@
         objs.btnGenerateGameIdea.addEventListener('click', function (e) {
             e.preventDefault();
 
+            playClickSound();
+
             if (genreReady === true && actionReady === true && thingsReady === true && goalsReady === true) {
                 genreReady = false;
                 actionReady = false;
                 thingsReady = false;
                 goalsReady = false;
                 rulesReady = false;
-
-                clickSound.play();
 
                 setTimeout(playSlotsSound, 300);
 
@@ -195,7 +204,15 @@
     }
 
     function playSlotsSound() {
-        slotsSound.play();
+        if (objs.gameIdeaStandalone) {
+            slotsSound.play();
+        }
+    }
+
+    function playClickSound() {
+        if (objs.gameIdeaStandalone) {
+            clickSound.play();
+        }
     }
 
     function pick() {
@@ -203,7 +220,10 @@
         randomAction();
         randomThings();
         randomGoals();
-        randomRules();
+
+        if (objs.rules) {
+            randomRules();
+        }
     }
 
     return {
