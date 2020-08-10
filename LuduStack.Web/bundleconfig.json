@@ -385,9 +385,9 @@
     ]
   },
   {
-    "outputFileName": "wwwroot/shared/gameidea.min.js",
+    "outputFileName": "wwwroot/js/shared/gameidea.min.js",
     "inputFiles": [
-      "wwwroot/shared/gameidea.js"
+      "wwwroot/js/shared/gameidea.js"
     ]
   }
 ]
