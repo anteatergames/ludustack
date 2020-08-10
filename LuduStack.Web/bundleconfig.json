@@ -383,5 +383,11 @@
     "inputFiles": [
       "wwwroot/css/gameidea.css"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/shared/gameidea.min.js",
+    "inputFiles": [
+      "wwwroot/shared/gameidea.js"
+    ]
   }
 ]

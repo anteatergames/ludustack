@@ -4,6 +4,9 @@
     var selectors = {};
     var objs = {};
 
+    var clickSound;
+    var slotsSound;
+
     var interval = 120;
     var stopInterval = 1200;
 
@@ -11,10 +14,12 @@
         actionReady = false,
         thingsReady = false,
         goalsReady = false,
+        rulesReady = false,
         firstGenre = 0,
         firstAction = 0,
         firstThing = 0,
         firstGoal = 0,
+        firstRule = 0,
         pickingGenreInterval = 0,
         stopGenreInterval = 0,
         pickingActionInterval = 0,
@@ -22,15 +27,19 @@
         pickingThingsInterval = 0,
         stopThingsInterval = 0,
         pickingGoalsInterval = 0,
-        stopGoalsInterval = 0;
+        stopGoalsInterval = 0,
+        pickingRulesInterval = 0,
+        stopRulesInterval = 0;
 
-    var genre = ["An action game", "An arcade game", "A top-down game", "An adventure game", "A strategy game", "RTS game", "A turn-based strategy game", "A role-playing game", "A platformer game", "A puzzle game", "A visual novel", "A social media game", "A mobile game", "A browser game", "An indie game", "An experimental game", "A student project", "An artsy game"];
+    var genre = ['action', 'arcade', 'educational', 'top-down', 'adventure', 'strategy', 'RTS', 'turn-based strategy', 'role-playing', 'platformer', 'puzzle', 'visual novel', 'social media', 'mobile', 'browser', 'indie', 'experimental', 'student project', 'artsy'];
 
-    var action = ['go to war with', 'wage war on', 'unite', 'lead', 'build', 'destroy', 'conquer', 'invade', 'colonize', 'discover', 'explore', 'trade with', 'lead the rebels in', 'make peace with', 'investigate', 'rename', 'collect gold from', 'collect crystals from', 'mine ore from', 'align', 'click on', 'match', 'throw', 'toss', 'fire pellets at', 'control', 'touch', 'stack', 'guess', 'memorize', 'rotate', 'swap', 'slide', 'avoid', 'drag and drop', 'tickle', 'race', 'challenge', 'collect', 'draw', 'unlock', 'cook', 'break', 'solve puzzles involving', 'collect', 'juggle'];
+    var action = ['escape', 'go to war with', 'wage war on', 'unite', 'lead', 'build', 'destroy', 'conquer', 'invade', 'colonize', 'discover', 'explore', 'trade with', 'lead the rebels in', 'make peace with', 'investigate', 'rename', 'collect gold from', 'collect crystals from', 'mine ore from', 'align', 'click on', 'match', 'throw', 'toss', 'fire pellets at', 'control', 'touch', 'stack', 'guess', 'memorize', 'rotate', 'swap', 'slide', 'avoid', 'drag and drop', 'tickle', 'race', 'challenge', 'collect', 'draw', 'unlock', 'cook', 'break', 'solve puzzles involving', 'collect', 'juggle'];
 
     var things = ['countries', 'nations', 'dragons', 'castles', 'cities', 'strongholds', 'towers', 'dungeons', 'citadels', 'kingdoms', 'unknown worlds', 'other worlds', 'parallel worlds', 'other dimensions', 'alien worlds', 'heaven', 'hell', 'mythological places', 'historical places', 'islands', 'sanctuaries', 'temples', 'ruins', 'factories', 'caves', 'gems', 'diamonds', 'gold nuggets', 'bricks', 'bubbles', 'squares', 'triangles', 'treasure', 'blobs', 'kitchen appliances', 'nondescript fruits', 'animals', 'birds', 'baby animals', 'farm animals', 'exotic fruits', 'sentient plants', 'your friends', 'shapes', 'jewels', 'letters', 'words', 'numbers', 'tokens', 'coins', 'eggs', 'hats', 'candy', 'chocolate', 'shoes', 'clothing items', 'princesses', 'blocks', 'cubes', 'asteroids', 'stars', 'balls', 'spheres', 'magnets', 'riddles'];
 
-    var goals = ['to win', 'for glory', 'in the name of love', 'to live forever', 'to become the ruler of the world', 'to form an invincible empire', 'to win points', 'to reach the highscore', 'to unlock bonus items', 'to earn tokens', 'to unlock the next level'];
+    var goals = ['to win', 'for glory', 'in the name of love', 'to live forever', 'to rule the world', 'to form an empire', 'to win points', 'to reach the highscore', 'to unlock bonus items', 'to earn tokens', 'to unlock the next level'];
+
+    var rules = ['avoid enemies', 'limited inventory', 'cant thing twice', 'one life only', 'must not be seen', 'cant touch the floor'];
 
     function setSelectors() {
         selectors.btnGenerateGameIdea = '#btnGenerateGameIdea';
@@ -38,6 +47,7 @@
         selectors.action = document.querySelector('.game-idea-action');
         selectors.things = document.querySelector('.game-idea-things');
         selectors.goals = document.querySelector('.game-idea-goals');
+        selectors.rules = document.querySelector('.game-idea-rules');
     }
 
     function cacheObjs() {
@@ -124,11 +134,36 @@
         goalsReady = true;
     }
 
+    function randomRules() {
+        selectors.rules.classList.add("picking");
+        pickingRulesInterval = setInterval(changeRules, interval);
+
+        stopRulesInterval = setInterval(stopPigkingRules, stopInterval);
+    }
+
+    function changeRules() {
+        selectors.rules.textContent = rules[firstRule];
+        firstRule = (firstRule + 1) % rules.length;
+    }
+
+    function stopPigkingRules() {
+        selectors.rules.classList.remove("picking");
+        clearInterval(pickingRulesInterval);
+        clearInterval(stopRulesInterval);
+
+        rulesReady = true;
+    }
+
     function init() {
         setSelectors();
         cacheObjs();
 
         bindAll();
+
+        clickSound = new Audio("/sounds/click.mp3");
+        slotsSound = new Audio("/sounds/gameideagenerator.mp3");
+
+        playSlotsSound();
 
         pick();
     }
@@ -146,6 +181,11 @@
                 actionReady = false;
                 thingsReady = false;
                 goalsReady = false;
+                rulesReady = false;
+
+                clickSound.play();
+
+                setTimeout(playSlotsSound, 300);
 
                 pick();
             }
@@ -154,11 +194,16 @@
         });
     }
 
+    function playSlotsSound() {
+        slotsSound.play();
+    }
+
     function pick() {
         randomGenre();
         randomAction();
         randomThings();
         randomGoals();
+        randomRules();
     }
 
     return {
