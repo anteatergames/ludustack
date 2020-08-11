@@ -242,9 +242,9 @@
                     str = res.join(" ");
                 }
             }
-
-            return str;
         }
+
+        return str;
     }
 
     return {
