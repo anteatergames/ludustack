@@ -1,5 +1,6 @@
 ﻿html {
     --border-color: #252523;
+    --genre-color: rgba(191,208,53,1);
 }
 
 .gameidea {
@@ -23,18 +24,18 @@
     }
 
     .gameidea .generatebutton {
-        background-color: rgba(191,208,53, 1);
-        border: 5px solid var(--border-color);
+        color: #252523;
+        background-color: rgba(160, 210, 255, 1);
+        border: 5px solid rgba(82,146,150,1);
         border-radius: 50%;
         height: 150px;
         width: 150px;
-        color: #fff;
     }
 
         .gameidea .generatebutton:hover {
-            color: #252523;
-            background-color: rgba(160, 210, 255, 1);
-            border: 5px solid rgba(82,146,150,1);
+            color: #fff;
+            background-color: rgba(191,208,53, 1);
+            border: 5px solid var(--border-color);
         }
 
     .gameidea .slot {
@@ -47,7 +48,6 @@
 
 
         .gameidea .slot .game-idea-element {
-            position: relative;
             height: 50%;
             margin: auto;
             position: absolute;
@@ -79,7 +79,7 @@
     }
 
     .gameidea.big .game-idea-element {
-        font-size: 1.5em;
+        font-size: 2em;
     }
 
     .gameidea .game-idea-genre {
@@ -98,13 +98,36 @@
         color: rgba(105, 255, 205, 0.8);
     }
 
+    .gameidea .game-idea-rules {
+        color: rgba(50, 60, 60, 0.6);
+    }
+
     .gameidea .game-idea-element.picking {
-        /*text-shadow: 0 4px 4px rgba(255, 255, 255, 0.2), 0 6px 6px rgba(255, 255, 255, 0.4), 0 8px 18px rgba(255, 255, 255, 0.8), 0 22px 18px rgba(255, 255, 255, 0.5), 0 -4px 4px rgba(255, 255, 255, 0.2), 0 -6px 6px rgba(255, 255, 255, 0.4), 0 -8px 18px rgba(255, 255, 255, 0.8), 0 -22px 18px rgba(255, 255, 255, 0.5);*/
-        text-shadow: 0 4px 4px rgba(191,208,53, 0.2), 0 6px 6px rgba(191,208,53, 0.4), 0 8px 18px rgba(191,208,53, 0.8), 0 22px 18px rgba(191, 208, 53, 0.5), 0 -4px 4px rgba(191, 208, 53, 0.2), 0 -6px 6px rgba(191, 208, 53, 0.4), 0 -8px 18px rgba(191, 208, 53, 0.8), 0 -22px 18px rgba(191, 208, 53, 0.5);
+        text-shadow: 0 4px 4px rgba(255, 255, 255, 0.2), 0 6px 6px rgba(255, 255, 255, 0.4), 0 8px 18px rgba(255, 255, 255, 0.8), 0 22px 18px rgba(255, 255, 255, 0.5), 0 -4px 4px rgba(255, 255, 255, 0.2), 0 -6px 6px rgba(255, 255, 255, 0.4), 0 -8px 18px rgba(255, 255, 255, 0.8), 0 -22px 18px rgba(255, 255, 255, 0.5);
         cursor: pointer;
         color: rgba(191,208,53, 0.2);
         top: 12px;
         animation: mov 0.12s infinite;
+    }
+
+    .gameidea .game-idea-element.game-idea-genre.picking {
+        text-shadow: 0 4px 4px rgba(191, 208, 53, 0.2), 0 6px 6px rgba(191, 208, 53, 0.4), 0 8px 18px rgba(191, 208, 53, 0.8), 0 22px 18px rgba(191, 208, 53, 0.5), 0 -4px 4px rgba(191, 208, 53, 0.2), 0 -6px 6px rgba(191, 208, 53, 0.4), 0 -8px 18px rgba(191, 208, 53, 0.8), 0 -22px 18px rgba(191, 208, 53, 0.5);
+    }
+
+    .gameidea .game-idea-element.game-idea-action.picking {
+        text-shadow: 0 4px 4px rgba(255, 205, 255, 0.2), 0 6px 6px rgba(255, 205, 255, 0.4), 0 8px 18px rgba(255, 205, 255, 0.8), 0 22px 18px rgba(255, 205, 255, 0.5), 0 -4px 4px rgba(255, 205, 255, 0.2), 0 -6px 6px rgba(255, 205, 255, 0.4), 0 -8px 18px rgba(255, 205, 255, 0.8), 0 -22px 18px rgba(255, 205, 255, 0.5);
+    }
+
+    .gameidea .game-idea-element.game-idea-things.picking {
+        text-shadow: 0 4px 4px rgba(160, 210, 255, 0.2), 0 6px 6px rgba(160, 210, 255, 0.4), 0 8px 18px rgba(160, 210, 255, 0.8), 0 22px 18px rgba(160, 210, 255, 0.5), 0 -4px 4px rgba(160, 210, 255, 0.2), 0 -6px 6px rgba(160, 210, 255, 0.4), 0 -8px 18px rgba(160, 210, 255, 0.8), 0 -22px 18px rgba(160, 210, 255, 0.5);
+    }
+
+    .gameidea .game-idea-element.game-idea-goals.picking {
+        text-shadow: 0 4px 4px rgba(105, 255, 205, 0.2), 0 6px 6px rgba(105, 255, 205, 0.4), 0 8px 18px rgba(105, 255, 205, 0.8), 0 22px 18px rgba(105, 255, 205, 0.5), 0 -4px 4px rgba(105, 255, 205, 0.2), 0 -6px 6px rgba(105, 255, 205, 0.4), 0 -8px 18px rgba(105, 255, 205, 0.8), 0 -22px 18px rgba(105, 255, 205, 0.5);
+    }
+
+    .gameidea .game-idea-element.game-idea-rules.picking {
+        text-shadow: 0 4px 4px rgba(50, 60, 60, 0.2), 0 6px 6px rgba(50, 60, 60, 0.4), 0 8px 18px rgba(50, 60, 60, 0.8), 0 22px 18px rgba(50, 60, 60, 0.5), 0 -4px 4px rgba(50, 60, 60, 0.2), 0 -6px 6px rgba(50, 60, 60, 0.4), 0 -8px 18px rgba(50, 60, 60, 0.8), 0 -22px 18px rgba(50, 60, 60, 0.5);
     }
 
 @keyframes in {
