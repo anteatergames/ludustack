@@ -7,7 +7,7 @@
         Layout = null;
     }
 
-    ViewData["Title"] = SharedLocalizer["Game Idea Generator"];
+    ViewData["Title"] = SharedLocalizer["Creativity Machine"];
     ViewData["Description"] = SharedLocalizer["Generate random game ideas."];
     ViewData["Url"] = ViewBag.BaseUrl + Url.Action("index", "gameidea", new { area = "tools" });
 }
@@ -56,8 +56,12 @@
             <p>@SharedLocalizer["Need an idea for a game? Here is where your problems end. Press the button below to generate an awesome brand new idea for you to work on."]</p>
         </div>
 
-        <div class="col-12 mb-3 px-0">
+        <div class="col-12 mb-4 px-0">
             <partial name="_IdeaGenerator" />
+        </div>
+
+        <div class="col-12 text-center">
+            <span class="rounded-0 border-0">@SharedLocalizer["If you like this tool, consider joining our community by"] <a asp-area="" asp-controller="account" asp-action="register" asp-route-returnUrl="@Url.Action("index", "gameidea", new { area = "tools" })" class="text-uppercase">@SharedLocalizer["clicking here"]</a>.</span>
         </div>
     </div>
 </div>

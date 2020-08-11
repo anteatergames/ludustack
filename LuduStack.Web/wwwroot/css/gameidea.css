@@ -1,20 +1,33 @@
-﻿.gameidea {
+﻿html {
+    --border-color: #252523;
+}
+
+.gameidea {
     margin: 0;
     font-size: 1em;
     font-family: 'Chelsea Market', sans-serif;
 }
+
+    .gameidea span, .gameidea h2 {
+        color: #fff;
+        font-family: 'Chelsea Market', sans-serif;
+    }
 
     .gameidea.gradient {
         color: #FFF;
         background: radial-gradient(circle, rgba(191,208,53,1) 0%, rgba(82,146,150,1) 100%);
     }
 
+    .gameidea.big .generatebutton {
+        font-size: 1.5em;
+    }
+
     .gameidea .generatebutton {
         background-color: rgba(191,208,53, 1);
+        border: 5px solid var(--border-color);
         border-radius: 50%;
         height: 150px;
         width: 150px;
-        border: 3px solid #fff;
         color: #fff;
     }
 
@@ -26,31 +39,34 @@
 
     .gameidea .slot {
         background-color: #fff;
-        border: 5px solid #222;
+        border: 5px solid var(--border-color);
         border-radius: 20px;
         min-height: 128px;
         position: relative;
     }
 
 
-    .gameidea .slot .game-idea-element {
-        position: relative;
-        height: 50%;
-        margin: auto;
-        position: absolute;
-        top: 0;
-        left: 0;
-        bottom: 0;
-        right: 0;
-    }
+        .gameidea .slot .game-idea-element {
+            position: relative;
+            height: 50%;
+            margin: auto;
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+        }
 
     .gameidea .title {
-        color: rgba(50, 60, 60, 0.6);
         font-weight: 400;
         font-size: 12px;
         text-align: center;
         letter-spacing: 4px;
     }
+
+        .gameidea .title span {
+            color: rgba(50, 60, 60, 0.6);
+        }
 
     .gameidea a, .gameidea a:hover {
         color: #fff;
