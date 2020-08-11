@@ -282,7 +282,6 @@
     }
 
     function setVerticalPosition(el) {
-        console.log(el.textContent + ' - ' + el.innerHTML.length);
         if (el.textContent.length > 13) {
             el.style.top = "-32px";
         }
