@@ -71,9 +71,12 @@
     function changeGenre() {
         objs.genre.textContent = cleanElement(genre[firstGenre]);
         firstGenre = (firstGenre + 1) % genre.length;
+
+        setVerticalPosition(objs.genre);
     }
 
     function stopPigkingGenre() {
+
         objs.genre.classList.remove("picking");
         clearInterval(pickingGenreInterval);
         clearInterval(stopGenreInterval);
@@ -91,9 +94,12 @@
     function changeAction() {
         objs.action.textContent = cleanElement(action[firstAction]);
         firstAction = (firstAction + 1) % action.length;
+
+        setVerticalPosition(objs.action);
     }
 
     function stopPigkingAction() {
+
         objs.action.classList.remove("picking");
         clearInterval(pickingActionInterval);
         clearInterval(stopActionInterval);
@@ -111,9 +117,12 @@
     function changeThings() {
         objs.things.textContent = cleanElement(things[firstThing]);
         firstThing = (firstThing + 1) % things.length;
+
+        setVerticalPosition(objs.things);
     }
 
     function stopPigkingThings() {
+
         objs.things.classList.remove("picking");
         clearInterval(pickingThingsInterval);
         clearInterval(stopThingsInterval);
@@ -131,9 +140,12 @@
     function changeGoals() {
         objs.goals.textContent = cleanElement(goals[firstGoal]);
         firstGoal = (firstGoal + 1) % goals.length;
+
+        setVerticalPosition(objs.goals);
     }
 
     function stopPigkingGoals() {
+
         objs.goals.classList.remove("picking");
         clearInterval(pickingGoalsInterval);
         clearInterval(stopGoalsInterval);
@@ -151,9 +163,12 @@
     function changeRules() {
         objs.rules.textContent = cleanElement(rules[firstRule]);
         firstRule = (firstRule + 1) % rules.length;
+
+        setVerticalPosition(objs.rules);
     }
 
     function stopPigkingRules() {
+
         objs.rules.classList.remove("picking");
         clearInterval(pickingRulesInterval);
         clearInterval(stopRulesInterval);
@@ -264,6 +279,16 @@
         }
 
         return array;
+    }
+
+    function setVerticalPosition(el) {
+        console.log(el.textContent + ' - ' + el.innerHTML.length);
+        if (el.textContent.length > 13) {
+            el.style.top = "-32px";
+        }
+        else {
+            el.style.top = "10px";
+        }
     }
 
     return {

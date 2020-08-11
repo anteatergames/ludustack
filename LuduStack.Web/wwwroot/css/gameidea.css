@@ -51,10 +51,11 @@
             height: 50%;
             margin: auto;
             position: absolute;
-            top: 0;
+            top: 10px;
             left: 0;
             bottom: 0;
             right: 0;
+            width: 98%;
         }
 
     .gameidea .title {
@@ -83,23 +84,23 @@
     }
 
     .gameidea .game-idea-genre {
-        color: rgba(191,208,53,0.6);
+        color: rgba(191, 208, 53, 1);
     }
 
     .gameidea .game-idea-action {
-        color: rgba(255, 205, 255, 0.95);
+        color: rgba(255, 205, 255, 1);
     }
 
     .gameidea .game-idea-things {
-        color: rgba(160, 210, 255, 0.9);
+        color: rgba(160, 210, 255, 1);
     }
 
     .gameidea .game-idea-goals {
-        color: rgba(105, 255, 205, 0.8);
+        color: rgba(105, 255, 205, 1);
     }
 
     .gameidea .game-idea-rules {
-        color: rgba(50, 60, 60, 0.6);
+        color: rgba(50, 60, 60, 1);
     }
 
     .gameidea .game-idea-element.picking {
