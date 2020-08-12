@@ -31,7 +31,7 @@
         pickingRulesInterval = 0,
         stopRulesInterval = 0;
 
-    var genre = ['dungeon crawler', 'racing', 'action', 'arcade', 'educational', 'top-down', 'adventure', 'strategy', 'rts', 'turn-based strategy', 'role-playing', 'platformer', 'puzzle', 'visual novel', 'social media', 'mobile', 'browser', 'fighting', 'experimental', 'artsy', 'open world', 'tycoon', 'one touch'];
+    var genre = ['dungeon crawler', 'racing', 'action', 'arcade', 'educational', 'top-down', 'adventure', 'strategy', 'rts', 'turn-based strategy', 'role-playing', 'platformer', 'puzzle', 'visual novel', 'social media', 'mobile', 'browser', 'fighting', 'artsy', 'open world', 'tycoon', 'one touch'];
 
     var action = ['break dance', 'skate', 'craft', 'lick', 'shoot at', 'play notes', 'grow', 'bounce', 'escape', 'rescue', 'go to war with', 'wage war on', 'unite', 'lead', 'build', 'destroy', 'conquer', 'invade', 'colonize', 'discover', 'explore', 'trade with', 'lead the rebels in', 'make peace with', 'investigate', 'rename', 'collect gold from', 'collect crystals from', 'mine ore from', 'align', 'click on', 'match', 'throw', 'toss', 'fire pellets at', 'control', 'touch', 'stack', 'guess', 'memorize', 'rotate', 'swap', 'slide', 'avoid', 'drag and drop', 'tickle', 'race', 'challenge', 'collect', 'draw', 'unlock', 'cook', 'break', 'solve puzzles involving', 'collect', 'juggle'];
 
@@ -282,11 +282,24 @@
     }
 
     function setVerticalPosition(el) {
-        if (el.textContent.length > 13) {
-            el.style.top = "-32px";
-        }
-        else {
-            el.style.top = "10px";
+        el.style.top = "10px";
+
+        var hasThinLetter = el.textContent.indexOf('i') > 0 || el.textContent.indexOf('l') > 0;
+        var hasSpace = el.textContent.indexOf(' ') > 0;
+        var hasDash = el.textContent.indexOf('-') > 0;
+        var spaceCount = (el.textContent.split(" ").length - 1) + (el.textContent.split("-").length - 1);
+        var hasToBreak = (hasSpace || hasDash) && spaceCount > 0 && el.textContent.length > 10 && el.offsetWidth <= 210;
+
+        if (hasToBreak) {
+            if (spaceCount > 3 && el.textContent.length > 19 || spaceCount < 3 && el.textContent.length > 21) {
+                el.style.top = "-70px";
+            }
+            else if (spaceCount === 1 && el.textContent.length === 13 && !hasThinLetter || el.textContent.length > 13 || el.offsetWidth <= 170) {
+                el.style.top = "-25px";
+            }
+            else {
+                el.style.top = "10px";
+            }
         }
     }
 
