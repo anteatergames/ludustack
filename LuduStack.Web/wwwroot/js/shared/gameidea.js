@@ -35,11 +35,11 @@
 
     var action = ['break dance', 'skate', 'craft', 'lick', 'shoot at', 'play notes', 'grow', 'bounce', 'escape', 'rescue', 'go to war with', 'wage war on', 'unite', 'lead', 'build', 'destroy', 'conquer', 'invade', 'colonize', 'discover', 'explore', 'trade with', 'lead the rebels in', 'make peace with', 'investigate', 'rename', 'collect gold from', 'collect crystals from', 'mine ore from', 'align', 'click on', 'match', 'throw', 'toss', 'fire pellets at', 'control', 'touch', 'stack', 'guess', 'memorize', 'rotate', 'swap', 'slide', 'avoid', 'drag and drop', 'tickle', 'race', 'challenge', 'collect', 'draw', 'unlock', 'cook', 'break', 'solve puzzles involving', 'collect', 'juggle'];
 
-    var things = ['rusty pipes', 'life', 'dead people', 'tanks', 'punk androids', 'bikes', 'origami', 'walls', 'website', 'farm', 'ancient history', 'turtles', 'music notes', 'jigsaw pieces', 'robots', 'water', 'politician', 'colors', 'yo momma', 'countries', 'nations', 'dragons', 'castles', 'cities', 'strongholds', 'towers', 'dungeons', 'citadels', 'kingdoms', 'bombs', 'unknown worlds', 'other worlds', 'parallel worlds', 'other dimensions', 'alien worlds', 'heaven', 'hell', 'mythological places', 'historical places', 'islands', 'sanctuaries', 'temples', 'ruins', 'factories', 'caves', 'gems', 'diamonds', 'gold nuggets', 'bricks', 'bubbles', 'squares', 'triangles', 'treasure', 'blobs', 'kitchen appliances', 'nondescript fruits', 'animals', 'birds', 'baby animals', 'farm animals', 'exotic fruits', 'sentient plants', 'your friends', 'shapes', 'jewels', 'letters', 'words', 'numbers', 'tokens', 'coins', 'eggs', 'hats', 'candy', 'chocolate', 'shoes', 'clothing items', 'princesses', 'blocks', 'cubes', 'asteroids', 'stars', 'balls', 'spheres', 'magnets', 'riddles'];
+    var things = ['lasers', 'rusty pipes', 'life', 'dead people', 'tanks', 'punk androids', 'bikes', 'origami', 'walls', 'website', 'farm', 'ancient history', 'turtles', 'music notes', 'jigsaw pieces', 'robots', 'water', 'politician', 'colors', 'yo momma', 'countries', 'nations', 'dragons', 'castles', 'cities', 'strongholds', 'towers', 'dungeons', 'citadels', 'kingdoms', 'bombs', 'unknown worlds', 'other worlds', 'parallel worlds', 'other dimensions', 'alien worlds', 'heaven', 'hell', 'mythological places', 'historical places', 'islands', 'sanctuaries', 'temples', 'ruins', 'factories', 'caves', 'gems', 'diamonds', 'gold nuggets', 'bricks', 'bubbles', 'squares', 'triangles', 'treasure', 'blobs', 'kitchen appliances', 'nondescript fruits', 'animals', 'birds', 'baby animals', 'farm animals', 'exotic fruits', 'sentient plants', 'your friends', 'shapes', 'jewels', 'letters', 'words', 'numbers', 'tokens', 'coins', 'eggs', 'hats', 'candy', 'chocolate', 'shoes', 'clothing items', 'princesses', 'blocks', 'cubes', 'asteroids', 'stars', 'balls', 'spheres', 'magnets', 'riddles'];
 
     var goals = ['survive', 'to win', 'for glory', 'in the name of love', 'to live forever', 'to rule the world', 'to form an empire', 'to win points', 'to reach the highscore', 'to unlock bonus items', 'to earn tokens', 'to unlock the next level', 'to become president'];
 
-    var rules = ['avoid enemies', 'limited inventory', 'can\'t use twice', 'cannot avoid', 'must fly', 'one life only', 'must not be seen', 'can\'t touch the floor', 'limited time', 'must wait', 'can\'t breath', 'object is radioactive', 'the end is near', 'no gravity', 'naked'];
+    var rules = ['avoid enemies', 'limited inventory', 'can\'t use twice', 'cannot avoid', 'must fly', 'one life only', 'must not be seen', 'can\'t touch the floor', 'limited time', 'must wait', 'can\'t breath', 'object is radioactive', 'the end is near', 'no gravity', 'naked', 'limited ammo', 'must dig', 'can\'t lose', 'can\'t regenerate', 'health is depleating', 'can\'t jump'];
 
     function setSelectors() {
         selectors.gameIdeaStandalone = '#gameIdeaStandalone';
@@ -284,22 +284,23 @@
     function setVerticalPosition(el) {
         el.style.top = "10px";
 
-        var hasThinLetter = el.textContent.indexOf('i') > 0 || el.textContent.indexOf('l') > 0;
-        var hasSpace = el.textContent.indexOf(' ') > 0;
-        var hasDash = el.textContent.indexOf('-') > 0;
-        var spaceCount = (el.textContent.split(" ").length - 1) + (el.textContent.split("-").length - 1);
-        var hasToBreak = (hasSpace || hasDash) && spaceCount > 0 && el.textContent.length > 10 && el.offsetWidth <= 210;
+        var breakpointLow = 173;
 
-        if (hasToBreak) {
-            if (spaceCount > 3 && el.textContent.length > 19 || spaceCount < 3 && el.textContent.length > 21) {
-                el.style.top = "-70px";
-            }
-            else if (spaceCount === 1 && el.textContent.length === 13 && !hasThinLetter || el.textContent.length > 13 || el.offsetWidth <= 170) {
-                el.style.top = "-25px";
-            }
-            else {
-                el.style.top = "10px";
-            }
+        var thinLetterCount = el.textContent.split("i").length - 1 + el.textContent.split("l").length - 1 + el.textContent.split("'").length - 1 + el.textContent.split("t").length - 1 + el.textContent.split("f").length - 1 + el.textContent.split("s").length - 1;
+        var largeLetterCount = el.textContent.split("m").length - 1;
+
+        var factor = el.textContent.length - thinLetterCount + (thinLetterCount / 2) - largeLetterCount + (largeLetterCount * 1.5);
+
+        var ratio = el.offsetWidth / factor;
+
+        if (el.offsetWidth < breakpointLow && el.textContent.length > 18 && (el.textContent.length < 21 && ratio.toFixed(2) < 10.3 || el.textContent.length > 20 && ratio.toFixed(2) < 9.1)) {
+            el.style.top = "-70px";
+        }
+        else if (el.textContent.length > 9 && ratio.toFixed(2) < (el.textContent.length > breakpointLow ? 17.75 : 17.1)) {
+            el.style.top = "-25px";
+        }
+        else {
+            el.style.top = "10px";
         }
     }
 

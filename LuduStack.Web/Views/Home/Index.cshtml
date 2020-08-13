@@ -109,13 +109,14 @@
 
             @if (User.Identity.IsAuthenticated)
             {
-                @await Html.PartialAsync("_PostFromHome", ViewBag.PostFromHome as PostFromHomeViewModel)}
+                @await Html.PartialAsync("_PostFromHome", ViewBag.PostFromHome as PostFromHomeViewModel)
+            }
+
+            <environment include="Development"><div class="text-center position-absolute w-100 text-white" style="z-index:9999;top:-28px;padding-right: 30px;">dev</div></environment>
+            <environment include="Staging"><div class="text-center position-absolute w-100 text-white" style="z-index:9999;top:-28px;padding-right: 30px;">staging</div></environment>
 
             <div class="row">
                 <div class="col-12">
-                    <environment include="Development"><div class="text-center position-absolute w-100 text-white" style="z-index:9999;top:-25px;padding-right: 30px;">dev</div></environment>
-                    <environment include="Staging"><div class="text-center position-absolute w-100 text-white" style="z-index:9999;top:-25px;padding-right: 30px;">staging</div></environment>
-
                     <h2 class="sr-only">@SharedLocalizer["Activity Feed"]</h2>
                     <div id="divActivityFeed"></div>
                 </div>

@@ -59,10 +59,6 @@
     }
 
 @media (max-width:575px) {
-    #divToolbar button, #divListTeams, #divListTeams div, #teamsidebar div {
-        border-radius: 0;
-    }
-
     .team-member img.avatar {
         width: 64px;
         height: 64px;
