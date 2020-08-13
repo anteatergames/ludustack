@@ -110,7 +110,15 @@
     }
 
     function bindSelect2() {
-        $('#divMembeManagement select.select2').each(function () {
+        $('#divMemberManagement select.select2').each(function () {
+            if ($(this).data('select2') === undefined) {
+                $(this).select2({
+                    width: 'element'
+                });
+            }
+        });
+
+        $('#divApplication select.select2').each(function () {
             if ($(this).data('select2') === undefined) {
                 $(this).select2({
                     width: 'element'

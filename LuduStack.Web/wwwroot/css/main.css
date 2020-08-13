@@ -10,7 +10,7 @@
         padding-right: 0 !important;
     }
 
-    section.content > div, div.carousel, div.carousel-inner, #divActivityFeed div.box {
+    section.content > div, div.carousel, div.carousel-inner, #divActivityFeed div.box, .commentmodal .modal, .commentmodal .modal-dialog, .commentmodal .modal-content, .commentmodal .modal-header, .commentmodal .modal-footer {
         border-radius: 0 !important;
     }
 
