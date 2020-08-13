@@ -44,7 +44,12 @@
         border-radius: 20px;
         min-height: 128px;
         position: relative;
+        cursor: pointer;
     }
+
+        .gameidea .slot:hover {
+            border: 5px solid rgba(82,146,150,1);
+        }
 
 
         .gameidea .slot .game-idea-element {

@@ -33,9 +33,9 @@
 
     var genre = ['battle royale', 'dungeon crawler', 'racing', 'action', 'arcade', 'educational', 'top-down', 'adventure', 'strategy', 'rts', 'turn-based strategy', 'role-playing', 'platformer', 'puzzle', 'visual novel', 'social media', 'mobile', 'browser', 'fighting', 'artsy', 'open world', 'tycoon', 'one touch'];
 
-    var action = ['climb', 'break dance', 'skate', 'craft', 'lick', 'shoot at', 'play notes', 'grow', 'bounce', 'escape', 'rescue', 'go to war with', 'wage war on', 'unite', 'lead', 'build', 'destroy', 'conquer', 'invade', 'colonize', 'discover', 'explore', 'trade with', 'lead the rebels in', 'make peace with', 'investigate', 'rename', 'collect gold from', 'collect crystals from', 'mine ore from', 'align', 'click on', 'match', 'throw', 'toss', 'fire pellets at', 'control', 'touch', 'stack', 'guess', 'memorize', 'rotate', 'swap', 'slide', 'avoid', 'drag and drop', 'tickle', 'race', 'challenge', 'collect', 'draw', 'unlock', 'cook', 'break', 'solve puzzles involving', 'collect', 'juggle'];
+    var action = ['hunt', 'climb', 'break dance', 'skate', 'craft', 'lick', 'shoot at', 'play notes', 'grow', 'bounce', 'escape', 'rescue', 'go to war with', 'wage war on', 'unite', 'lead', 'build', 'destroy', 'conquer', 'invade', 'colonize', 'discover', 'explore', 'trade with', 'lead the rebels in', 'make peace with', 'investigate', 'rename', 'collect gold from', 'collect crystals from', 'mine ore from', 'align', 'click on', 'match', 'throw', 'toss', 'fire pellets at', 'control', 'touch', 'stack', 'guess', 'memorize', 'rotate', 'swap', 'slide', 'avoid', 'drag and drop', 'tickle', 'race', 'challenge', 'collect', 'draw', 'unlock', 'cook', 'break', 'solve puzzles involving', 'collect', 'juggle'];
 
-    var things = ['rings', 'lasers', 'rusty pipes', 'life', 'dead people', 'tanks', 'punky androids', 'bikes', 'origami', 'walls', 'website', 'farm', 'ancient history', 'turtles', 'music notes', 'jigsaw pieces', 'robots', 'water', 'politician', 'colors', 'yo momma', 'countries', 'nations', 'dragons', 'castles', 'cities', 'strongholds', 'towers', 'dungeons', 'citadels', 'kingdoms', 'bombs', 'unknown worlds', 'other worlds', 'parallel worlds', 'other dimensions', 'alien worlds', 'heaven', 'hell', 'mythological places', 'historical places', 'islands', 'sanctuaries', 'temples', 'ruins', 'factories', 'caves', 'gems', 'diamonds', 'gold nuggets', 'bricks', 'bubbles', 'squares', 'triangles', 'treasure', 'blobs', 'kitchen appliances', 'nondescript fruits', 'animals', 'birds', 'baby animals', 'farm animals', 'exotic fruits', 'sentient plants', 'your friends', 'shapes', 'jewels', 'letters', 'words', 'numbers', 'tokens', 'coins', 'eggs', 'hats', 'candy', 'chocolate', 'shoes', 'clothing items', 'princesses', 'blocks', 'cubes', 'asteroids', 'stars', 'balls', 'spheres', 'magnets', 'riddles'];
+    var things = ['ghosts', 'rings', 'lasers', 'rusty pipes', 'life', 'dead people', 'tanks', 'punky androids', 'bikes', 'origami', 'walls', 'website', 'farm', 'ancient history', 'turtles', 'music notes', 'jigsaw pieces', 'robots', 'water', 'politician', 'colors', 'yo momma', 'countries', 'nations', 'dragons', 'castles', 'cities', 'strongholds', 'towers', 'dungeons', 'citadels', 'kingdoms', 'bombs', 'unknown worlds', 'other worlds', 'parallel worlds', 'other dimensions', 'alien worlds', 'heaven', 'hell', 'mythological places', 'historical places', 'islands', 'sanctuaries', 'temples', 'ruins', 'factories', 'caves', 'gems', 'diamonds', 'gold nuggets', 'bricks', 'bubbles', 'squares', 'triangles', 'treasure', 'blobs', 'kitchen appliances', 'nondescript fruits', 'animals', 'birds', 'baby animals', 'farm animals', 'exotic fruits', 'sentient plants', 'your friends', 'shapes', 'jewels', 'letters', 'words', 'numbers', 'tokens', 'coins', 'eggs', 'hats', 'candy', 'chocolate', 'shoes', 'clothing items', 'princesses', 'blocks', 'cubes', 'asteroids', 'stars', 'balls', 'spheres', 'magnets', 'riddles'];
 
     var goals = ['to survive', 'to win', 'for glory', 'in the name of love', 'to live forever', 'to rule the world', 'to form an empire', 'to win points', 'to reach the highscore', 'to unlock bonus items', 'to earn tokens', 'to unlock the next level', 'to become president', 'to earn discounts', 'to make your name', 'to pass exam', 'to never stop', 'to uncage a friend', 'to find the banana', 'to cook a meal'];
 
@@ -45,6 +45,11 @@
     function setSelectors() {
         selectors.gameIdeaStandalone = '#gameIdeaStandalone';
         selectors.btnGenerateGameIdea = '#btnGenerateGameIdea';
+        selectors.btnSlotGenre = '.btn-slot-genre';
+        selectors.btnSlotAction = '.btn-slot-action';
+        selectors.btnSlotThings = '.btn-slot-things';
+        selectors.btnSlotGoals = '.btn-slot-goals';
+        selectors.btnSlotRules = '.btn-slot-rules';
         selectors.genre = '.game-idea-genre';
         selectors.action = '.game-idea-action';
         selectors.things = '.game-idea-things';
@@ -55,6 +60,11 @@
     function cacheObjs() {
         objs.gameIdeaStandalone = document.querySelector(selectors.gameIdeaStandalone);
         objs.btnGenerateGameIdea = document.querySelector(selectors.btnGenerateGameIdea);
+        objs.btnSlotGenre = document.querySelector(selectors.btnSlotGenre);
+        objs.btnSlotAction = document.querySelector(selectors.btnSlotAction);
+        objs.btnSlotThings = document.querySelector(selectors.btnSlotThings);
+        objs.btnSlotGoals = document.querySelector(selectors.btnSlotGoals);
+        objs.btnSlotRules = document.querySelector(selectors.btnSlotRules);
         objs.genre = document.querySelector(selectors.genre);
         objs.action = document.querySelector(selectors.action);
         objs.things = document.querySelector(selectors.things);
@@ -195,6 +205,11 @@
 
     function bindAll() {
         bindGenerateClick();
+        bindSlotGenreClick();
+        bindSlotActionClick();
+        bindSlotThingClick();
+        bindSlotGoalClick();
+        bindSlotRuleClick();
     }
 
     function bindGenerateClick() {
@@ -203,7 +218,11 @@
 
             playClickSound();
 
-            if (genreReady === true && actionReady === true && thingsReady === true && goalsReady === true) {
+            if (!objs.gameIdeaStandalone) {
+                rulesReady = true;
+            }
+
+            if (genreReady === true && actionReady === true && thingsReady === true && goalsReady === true && rulesReady === true) {
                 genreReady = false;
                 actionReady = false;
                 thingsReady = false;
@@ -217,6 +236,106 @@
 
             return false;
         });
+    }
+
+    function bindSlotGenreClick() {
+        if (objs.btnSlotGenre) {
+            objs.btnSlotGenre.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                playClickSound();
+
+                if (genreReady === true) {
+                    genreReady = false;
+
+                    setTimeout(playSlotsSound, 300);
+
+                    pickGenre();
+                }
+
+                return false;
+            });
+        }
+    }
+
+    function bindSlotActionClick() {
+        if (objs.btnSlotAction) {
+            objs.btnSlotAction.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                playClickSound();
+
+                if (actionReady === true) {
+                    actionReady = false;
+
+                    setTimeout(playSlotsSound, 300);
+
+                    pickAction();
+                }
+
+                return false;
+            });
+        }
+    }
+
+    function bindSlotThingClick() {
+        if (objs.btnSlotThings) {
+            objs.btnSlotThings.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                playClickSound();
+
+                if (thingsReady === true) {
+                    thingsReady = false;
+
+                    setTimeout(playSlotsSound, 300);
+
+                    pickThing();
+                }
+
+                return false;
+            });
+        }
+    }
+
+    function bindSlotGoalClick() {
+        if (objs.btnSlotGoals) {
+            objs.btnSlotGoals.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                playClickSound();
+
+                if (goalsReady === true) {
+                    goalsReady = false;
+
+                    setTimeout(playSlotsSound, 300);
+
+                    pickGoal();
+                }
+
+                return false;
+            });
+        }
+    }
+
+    function bindSlotRuleClick() {
+        if (objs.btnSlotRules) {
+            objs.btnSlotRules.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                playClickSound();
+
+                if (rulesReady === true) {
+                    rulesReady = false;
+
+                    setTimeout(playSlotsSound, 300);
+
+                    pickRule();
+                }
+
+                return false;
+            });
+        }
     }
 
     function playSlotsSound() {
@@ -236,7 +355,10 @@
         action = shuffle(action);
         things = shuffle(things);
         goals = shuffle(goals);
-        rules = shuffle(rules);
+
+        if (objs.rules) {
+            rules = shuffle(rules);
+        }
 
         randomGenre();
         randomAction();
@@ -244,6 +366,41 @@
         randomGoals();
 
         if (objs.rules) {
+            randomRules();
+        }
+    }
+
+    function pickGenre() {
+        if (objs.genre) {
+            genre = shuffle(genre);
+            randomGenre();
+        }
+    }
+
+    function pickAction() {
+        if (objs.action) {
+            action = shuffle(action);
+            randomAction();
+        }
+    }
+
+    function pickThing() {
+        if (objs.things) {
+            things = shuffle(things);
+            randomThings();
+        }
+    }
+
+    function pickGoal() {
+        if (objs.goals) {
+            goals = shuffle(goals);
+            randomGoals();
+        }
+    }
+
+    function pickRule() {
+        if (objs.rules) {
+            rules = shuffle(rules);
             randomRules();
         }
     }
