@@ -31,15 +31,16 @@
         pickingRulesInterval = 0,
         stopRulesInterval = 0;
 
-    var genre = ['dungeon crawler', 'racing', 'action', 'arcade', 'educational', 'top-down', 'adventure', 'strategy', 'rts', 'turn-based strategy', 'role-playing', 'platformer', 'puzzle', 'visual novel', 'social media', 'mobile', 'browser', 'fighting', 'artsy', 'open world', 'tycoon', 'one touch'];
+    var genre = ['battle royale', 'dungeon crawler', 'racing', 'action', 'arcade', 'educational', 'top-down', 'adventure', 'strategy', 'rts', 'turn-based strategy', 'role-playing', 'platformer', 'puzzle', 'visual novel', 'social media', 'mobile', 'browser', 'fighting', 'artsy', 'open world', 'tycoon', 'one touch'];
 
-    var action = ['break dance', 'skate', 'craft', 'lick', 'shoot at', 'play notes', 'grow', 'bounce', 'escape', 'rescue', 'go to war with', 'wage war on', 'unite', 'lead', 'build', 'destroy', 'conquer', 'invade', 'colonize', 'discover', 'explore', 'trade with', 'lead the rebels in', 'make peace with', 'investigate', 'rename', 'collect gold from', 'collect crystals from', 'mine ore from', 'align', 'click on', 'match', 'throw', 'toss', 'fire pellets at', 'control', 'touch', 'stack', 'guess', 'memorize', 'rotate', 'swap', 'slide', 'avoid', 'drag and drop', 'tickle', 'race', 'challenge', 'collect', 'draw', 'unlock', 'cook', 'break', 'solve puzzles involving', 'collect', 'juggle'];
+    var action = ['climb', 'break dance', 'skate', 'craft', 'lick', 'shoot at', 'play notes', 'grow', 'bounce', 'escape', 'rescue', 'go to war with', 'wage war on', 'unite', 'lead', 'build', 'destroy', 'conquer', 'invade', 'colonize', 'discover', 'explore', 'trade with', 'lead the rebels in', 'make peace with', 'investigate', 'rename', 'collect gold from', 'collect crystals from', 'mine ore from', 'align', 'click on', 'match', 'throw', 'toss', 'fire pellets at', 'control', 'touch', 'stack', 'guess', 'memorize', 'rotate', 'swap', 'slide', 'avoid', 'drag and drop', 'tickle', 'race', 'challenge', 'collect', 'draw', 'unlock', 'cook', 'break', 'solve puzzles involving', 'collect', 'juggle'];
 
-    var things = ['lasers', 'rusty pipes', 'life', 'dead people', 'tanks', 'punk androids', 'bikes', 'origami', 'walls', 'website', 'farm', 'ancient history', 'turtles', 'music notes', 'jigsaw pieces', 'robots', 'water', 'politician', 'colors', 'yo momma', 'countries', 'nations', 'dragons', 'castles', 'cities', 'strongholds', 'towers', 'dungeons', 'citadels', 'kingdoms', 'bombs', 'unknown worlds', 'other worlds', 'parallel worlds', 'other dimensions', 'alien worlds', 'heaven', 'hell', 'mythological places', 'historical places', 'islands', 'sanctuaries', 'temples', 'ruins', 'factories', 'caves', 'gems', 'diamonds', 'gold nuggets', 'bricks', 'bubbles', 'squares', 'triangles', 'treasure', 'blobs', 'kitchen appliances', 'nondescript fruits', 'animals', 'birds', 'baby animals', 'farm animals', 'exotic fruits', 'sentient plants', 'your friends', 'shapes', 'jewels', 'letters', 'words', 'numbers', 'tokens', 'coins', 'eggs', 'hats', 'candy', 'chocolate', 'shoes', 'clothing items', 'princesses', 'blocks', 'cubes', 'asteroids', 'stars', 'balls', 'spheres', 'magnets', 'riddles'];
+    var things = ['rings', 'lasers', 'rusty pipes', 'life', 'dead people', 'tanks', 'punky androids', 'bikes', 'origami', 'walls', 'website', 'farm', 'ancient history', 'turtles', 'music notes', 'jigsaw pieces', 'robots', 'water', 'politician', 'colors', 'yo momma', 'countries', 'nations', 'dragons', 'castles', 'cities', 'strongholds', 'towers', 'dungeons', 'citadels', 'kingdoms', 'bombs', 'unknown worlds', 'other worlds', 'parallel worlds', 'other dimensions', 'alien worlds', 'heaven', 'hell', 'mythological places', 'historical places', 'islands', 'sanctuaries', 'temples', 'ruins', 'factories', 'caves', 'gems', 'diamonds', 'gold nuggets', 'bricks', 'bubbles', 'squares', 'triangles', 'treasure', 'blobs', 'kitchen appliances', 'nondescript fruits', 'animals', 'birds', 'baby animals', 'farm animals', 'exotic fruits', 'sentient plants', 'your friends', 'shapes', 'jewels', 'letters', 'words', 'numbers', 'tokens', 'coins', 'eggs', 'hats', 'candy', 'chocolate', 'shoes', 'clothing items', 'princesses', 'blocks', 'cubes', 'asteroids', 'stars', 'balls', 'spheres', 'magnets', 'riddles'];
 
-    var goals = ['survive', 'to win', 'for glory', 'in the name of love', 'to live forever', 'to rule the world', 'to form an empire', 'to win points', 'to reach the highscore', 'to unlock bonus items', 'to earn tokens', 'to unlock the next level', 'to become president'];
+    var goals = ['to survive', 'to win', 'for glory', 'in the name of love', 'to live forever', 'to rule the world', 'to form an empire', 'to win points', 'to reach the highscore', 'to unlock bonus items', 'to earn tokens', 'to unlock the next level', 'to become president', 'to earn discounts', 'to make your name', 'to pass exam', 'to never stop', 'to uncage a friend', 'to find the banana', 'to cook a meal'];
 
-    var rules = ['avoid enemies', 'limited inventory', 'can\'t use twice', 'cannot avoid', 'must fly', 'one life only', 'must not be seen', 'can\'t touch the floor', 'limited time', 'must wait', 'can\'t breath', 'object is radioactive', 'the end is near', 'no gravity', 'naked', 'limited ammo', 'must dig', 'can\'t lose', 'can\'t regenerate', 'health is depleating', 'can\'t jump'];
+    var rules = ['avoid enemies', 'limited inventory', 'can\'t use twice', 'cannot avoid', 'must fly', 'one life only', 'must not be seen', 'can\'t touch the floor', 'limited time', 'must wait', 'can\'t breath', 'object is radioactive', 'the end is near', 'no gravity', 'naked', 'limited ammo', 'must dig', 'can\'t lose', 'can\'t regenerate', 'health is depleating', 'can\'t jump', 'silently'];
+
 
     function setSelectors() {
         selectors.gameIdeaStandalone = '#gameIdeaStandalone';
@@ -189,12 +190,6 @@
 
         playSlotsSound();
 
-        shuffle(genre);
-        shuffle(action);
-        shuffle(things);
-        shuffle(goals);
-        shuffle(rules);
-
         pick();
     }
 
@@ -237,6 +232,12 @@
     }
 
     function pick() {
+        genre = shuffle(genre);
+        action = shuffle(action);
+        things = shuffle(things);
+        goals = shuffle(goals);
+        rules = shuffle(rules);
+
         randomGenre();
         randomAction();
         randomThings();
@@ -282,25 +283,15 @@
     }
 
     function setVerticalPosition(el) {
-        el.style.top = "10px";
-
-        var breakpointLow = 173;
-
-        var thinLetterCount = el.textContent.split("i").length - 1 + el.textContent.split("l").length - 1 + el.textContent.split("'").length - 1 + el.textContent.split("t").length - 1 + el.textContent.split("f").length - 1 + el.textContent.split("s").length - 1;
-        var largeLetterCount = el.textContent.split("m").length - 1;
-
-        var factor = el.textContent.length - thinLetterCount + (thinLetterCount / 2) - largeLetterCount + (largeLetterCount * 1.5);
-
-        var ratio = el.offsetWidth / factor;
-
-        if (el.offsetWidth < breakpointLow && el.textContent.length > 18 && (el.textContent.length < 21 && ratio.toFixed(2) < 10.3 || el.textContent.length > 20 && ratio.toFixed(2) < 9.1)) {
-            el.style.top = "-70px";
+        el.style.top = "34px";
+        if (el.offsetHeight > 120) {
+            el.style.top = "-5px";
         }
-        else if (el.textContent.length > 9 && ratio.toFixed(2) < (el.textContent.length > breakpointLow ? 17.75 : 17.1)) {
-            el.style.top = "-25px";
+        else if (el.offsetHeight < 75) {
+            el.style.top = "34px";
         }
         else {
-            el.style.top = "10px";
+            el.style.top = "14px";
         }
     }
 
