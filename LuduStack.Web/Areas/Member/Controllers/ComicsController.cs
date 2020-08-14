@@ -39,7 +39,7 @@ namespace LuduStack.Web.Areas.Member.Controllers
             }
         }
 
-
+        [AllowAnonymous]
         [Route("{id:guid}")]
         public IActionResult Details(Guid id, string referralCode, string source)
         {
