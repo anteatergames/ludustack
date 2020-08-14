@@ -389,5 +389,27 @@
     "inputFiles": [
       "wwwroot/js/shared/gameidea.js"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/css/comics.min.css",
+    "inputFiles": [
+      "wwwroot/css/_feature.css",
+      "wwwroot/css/comics.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/comics/comicsdashboard.min.js",
+    "inputFiles": [
+      "wwwroot/js/comics/comicscommon.js",
+      "wwwroot/js/comics/comicsdashboard.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/giveaway/giveawayedit.min.js",
+    "inputFiles": [
+      "wwwroot/js/shared/common-edit.js",
+      "wwwroot/js/comics/comicscommon.js",
+      "wwwroot/js/comics/comicsedit.js"
+    ]
   }
 ]

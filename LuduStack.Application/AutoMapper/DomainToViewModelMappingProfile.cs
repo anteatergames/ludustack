@@ -2,6 +2,7 @@
 using LuduStack.Application.AutoMapper.Resolvers;
 using LuduStack.Application.ViewModels;
 using LuduStack.Application.ViewModels.Brainstorm;
+using LuduStack.Application.ViewModels.Comics;
 using LuduStack.Application.ViewModels.Content;
 using LuduStack.Application.ViewModels.FeaturedContent;
 using LuduStack.Application.ViewModels.Game;
@@ -163,6 +164,14 @@ namespace LuduStack.Application.AutoMapper
             CreateMap<ShortUrl, ShortUrlViewModel>();
 
             #endregion ShortUrl
+
+
+
+            #region Comics
+            CreateMap<UserContent, ComicStripViewModel>()
+                    .ForMember(x => x.Likes, opt => opt.MapFrom(x => x.Likes.Select(y => y.UserId)))
+                    .ForMember(x => x.LikeCount, opt => opt.MapFrom(x => x.Likes.Count)); 
+            #endregion
         }
     }
 }

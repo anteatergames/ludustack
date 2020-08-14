@@ -7,11 +7,13 @@ namespace LuduStack.Domain.Models
 {
     public class UserContent : Entity
     {
-        public string AuthorName { get; set; }
-
-        public string AuthorPicture { get; set; }
+        public DateTime PublishDate { get; set; }
 
         public string FeaturedImage { get; set; }
+
+        public int? IssueNumber { get; set; }
+
+        public Guid? SeriesId { get; set; }
 
         public string Title { get; set; }
 

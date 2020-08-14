@@ -6,6 +6,7 @@
         Idea = 2,
         TeamCreation = 3,
         JobPosition = 4,
-        Translation = 5
+        Translation = 5,
+        ComicStrip = 6
     }
 }

@@ -31,6 +31,11 @@
             <div class="box-tools">
                 @if (item.Permissions.CanDelete || item.Permissions.CanEdit)
                 {
+                    var editUrl = Url.Action("edit", "content", new { area = "", id = item.Id });
+                    @if (item.UserContentType == UserContentType.ComicStrip)
+                    {
+                        editUrl = Url.Action("edit", "comics", new { area = "member", id = item.Id });
+                    }
                     <div class="btn-group">
                         <button type="button" class="btn  btn-box-tool" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fas fa-ellipsis-v" aria-hidden="true"></i>
@@ -38,7 +43,7 @@
                         <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(-67px, 28px, 0px); top: 0px; left: 0px; will-change: transform;">
                             @if (item.Permissions.CanEdit)
                             {
-                                <a class="btnEditPost dropdown-item text-capitalize" asp-area="" asp-controller="content" asp-action="edit" asp-route-id="@item.Id">@SharedLocalizer["edit"]</a>
+                                <a class="btnEditPost dropdown-item text-capitalize" href="@editUrl">@SharedLocalizer["edit"]</a>
                             }
                             @if (item.Permissions.CanDelete)
                             {
@@ -71,8 +76,14 @@
 
             @if (item.HasFeaturedImage)
             {
+                var url = Url.Action("details", "content", new { area = string.Empty, id = item.Id });
+
                 <div class="col-12 text-center overflow-hidden rounded-0 featuredimage @item.FeaturedMediaType">
-                    <a asp-area="" asp-controller="content" asp-action="details" asp-route-id="@item.Id">
+                    @if (item.UserContentType == UserContentType.ComicStrip)
+                    {
+                        url = Url.Action("details", "comics", new { area = "member", id = item.Id });
+                    }
+                    <a href="@url">
                         @if (item.FeaturedMediaType == MediaType.Youtube)
                         {
                             <div class="videoWrapper" data-url="@item.FeaturedImage">

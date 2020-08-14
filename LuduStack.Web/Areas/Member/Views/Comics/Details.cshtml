@@ -1,0 +1,93 @@
+﻿@model ComicStripViewModel
+@{
+    ViewData["Title"] = Model.Title;
+    ViewData["Description"] = Model.Content.Contains(SharedLocalizer["Content posted on"]) ? SharedLocalizer["Content posted on"] + " " + Model.CreateDate.ToString() : String.Format("{0} - {1}", Model.Title, Model.Content);
+    ViewData["Url"] = ViewBag.BaseUrl + Url.Action("details", "content", new { id = Model.Id });
+    ViewData["OgImage"] = Model.FeaturedImage;
+}
+
+@section Styles {
+    <environment include="Development">
+        <link rel="stylesheet" href="~/css/polls.css" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="~/css/contentdetails.min.css" asp-append-version="true" />
+    </environment>
+}
+
+@section Scripts {
+
+    <environment include="Development">
+        <script src="~/js/shared/polls.js"></script>
+        <script src="~/js/shared/contentactions.js"></script>
+        <script src="~/js/content/contentdetails.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/js/content/contentdetails.min.js" asp-append-version="true"></script>
+    </environment>
+
+    <script type="application/ld+json">
+        {
+        "@@context":"http://schema.org",
+        "@@type":"SocialMediaPosting",
+        "@@id":"@(ViewData["Url"])",
+        "headline":"@(JavaScriptEncoder.Default.Encode(Model.Title))",
+        "image": "@(ViewBag.BaseUrl + Model.FeaturedImage)",
+        "datePublished": "@Model.CreateDate.ToString("yyyy-MM-dd")",
+        "issueNumber": "@Model.IssueNumber",
+        "author":{
+        "@@type":"Person",
+        "name":"@Model.AuthorName",
+        "url":"@(ViewBag.BaseUrl + "/profile/" + Model.UserId)"
+        },
+        "sharedContent":{
+        "@@type":"WebPage",
+        "headline":"@(JavaScriptEncoder.Default.Encode(Model.Content))",
+        "url":"@(ViewData["Url"])",
+        "image": "@Model.FeaturedImage",
+        "author":{
+        "@@type":"Person",
+        "name":"@Model.AuthorName"
+        }
+        }
+        }
+    </script>
+}
+
+<section class="content container">
+    <div class="box box-content p-0 bg-white">
+        <h1 data-language="@Model.Language" class="float-left sr-only">
+            @Model.Title
+        </h1>
+
+        <div class="box-body p-0 text-center overflow-hidden square-bottom">
+            <img data-src="@Model.FeaturedImage" src="@Model.FeaturedImageLquip" class="img-fluid lazyload blur-up" style="width:100%" alt="@(String.IsNullOrWhiteSpace(Model.Title) ? Model.Content : Model.Title)" />
+        </div>
+
+        <div class="box-body">
+            <div class="row">
+                <div class="col-12 col-md-6">
+                    <div class="user-block">
+                        <a asp-area="" asp-controller="profile" asp-action="details" asp-route-id="@Model.UserId">
+                            <img class="rounded-circle" src="@Model.AuthorPicture" alt="This is @Model.AuthorName">
+                        </a>
+                        <a asp-area="" asp-controller="profile" asp-action="details" asp-route-id="@Model.UserId">
+                            <span class="username">@Model.AuthorName</span>
+                        </a>
+                        <a asp-area="" asp-controller="content" asp-action="details" asp-route-id="@Model.Id">
+                            <span class="description">@Model.CreateDate.ToString()</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr />
+
+        <div class="box-body">
+            @Html.Raw(Model.Content)
+        </div>
+
+        <partial name="_CommentSection" model="Model" />
+    </div>
+</section>

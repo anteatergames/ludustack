@@ -157,6 +157,12 @@ namespace LuduStack.Infra.CrossCutting.IoC
 
             #endregion ShortUrl
 
+            #region Comics
+
+            services.AddScoped<IComicsAppService, ComicsAppService>();
+
+            #endregion Comics
+
             #region Common
 
             services.AddScoped<IBaseAppServiceCommon, BaseAppServiceCommon>();

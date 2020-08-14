@@ -29,5 +29,7 @@ namespace LuduStack.Domain.Interfaces.Services
         bool CheckIfCommentExists<T>(Expression<Func<UserContentComment, bool>> where);
 
         void Comment(UserContentComment model);
+
+        List<ComicsListItemVo> GetComicsListByUserId(Guid currentUserId);
     }
 }

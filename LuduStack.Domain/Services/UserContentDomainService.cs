@@ -139,5 +139,24 @@ namespace LuduStack.Domain.Services
         {
             Task.Run(async () => await repository.RemoveLike(currentUserId, userContentId));
         }
+
+        #region Comics
+        public List<ComicsListItemVo> GetComicsListByUserId(Guid currentUserId)
+        {
+            var allModels = repository.Get().Where(x => x.UserContentType == UserContentType.ComicStrip)
+                .Select(x => new ComicsListItemVo
+                {
+                    Id = x.Id,
+                    IssueNumber = x.IssueNumber.HasValue ? x.IssueNumber.Value : 0,
+                    Title = x.Title,
+                    Content = x.Introduction,
+                    FeaturedImage = x.FeaturedImage,
+                    CreateDate = x.CreateDate
+                });
+
+
+            return allModels.ToList();
+        }
+        #endregion Comics
     }
 }

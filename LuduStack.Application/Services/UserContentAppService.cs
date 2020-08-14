@@ -91,16 +91,17 @@ namespace LuduStack.Application.Services
                 UserContent model = userContentDomainService.GetById(id);
 
                 UserProfile authorProfile = GetCachedProfileByUserId(model.UserId);
+
+                UserContentViewModel vm = mapper.Map<UserContentViewModel>(model);
+
                 if (authorProfile == null)
                 {
-                    model.AuthorName = Constants.UnknownSoul;
+                    vm.AuthorName = Constants.UnknownSoul;
                 }
                 else
                 {
-                    model.AuthorName = authorProfile.Name;
+                    vm.AuthorName = authorProfile.Name;
                 }
-
-                UserContentViewModel vm = mapper.Map<UserContentViewModel>(model);
 
                 vm.HasFeaturedImage = !string.IsNullOrWhiteSpace(vm.FeaturedImage) && !vm.FeaturedImage.Contains(Constants.DefaultFeaturedImage);
 
@@ -183,6 +184,11 @@ namespace LuduStack.Application.Services
                 else
                 {
                     model = mapper.Map<UserContent>(viewModel);
+                }
+
+                if (model.PublishDate == DateTime.MinValue)
+                {
+                    model.PublishDate = model.CreateDate;
                 }
 
                 if (isNew)
