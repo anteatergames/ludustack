@@ -252,6 +252,3 @@
 $(function () {
     COMICSEDIT.Init();
 });
-
-
-Dropzone.autoDiscover = false;

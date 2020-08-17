@@ -2,7 +2,7 @@
 @{
     ViewData["Title"] = Model.Title;
     ViewData["Description"] = Model.Content.Contains(SharedLocalizer["Content posted on"]) ? SharedLocalizer["Content posted on"] + " " + Model.CreateDate.ToString() : String.Format("{0} - {1}", Model.Title, Model.Content);
-    ViewData["Url"] = ViewBag.BaseUrl + Url.Action("details", "content", new { id = Model.Id });
+    ViewData["Url"] = ViewBag.BaseUrl + Url.Action("details", "comics", new { area = "member", id = Model.Id });
     ViewData["OgImage"] = Model.FeaturedImage;
 }
 

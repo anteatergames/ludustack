@@ -31,7 +31,6 @@
 
     function bindChangeLanguage() {
         objs.container.on('click', selectors.btnLanguage, function (e) {
-            console.log('clicked');
             e.preventDefault();
 
             var btn = $(this);
