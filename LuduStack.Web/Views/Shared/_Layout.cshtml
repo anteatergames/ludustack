@@ -724,6 +724,10 @@
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+    <script>
+        var isAdmin = @isAdmin;
+    </script>
+
     @await Html.PartialAsync("_TagManagerHead")
 </head>
 <body class="hold-transition skin-ludustack sidebar-mini">
@@ -927,7 +931,6 @@
 
     <script>
         tinyDrawer();
-        var isAdmin = @isAdmin;
     </script>
 
     @await Html.PartialAsync("_FacebookSdk")
