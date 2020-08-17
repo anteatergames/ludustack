@@ -4,6 +4,17 @@
     var isAdmin = ViewData["user_is_admin"];
 }
 
+@section Scripts {
+    <environment exclude="Development">
+        @if (isAdmin != null)
+        {
+            <script>
+            ga('set', 'dimension1', '@isAdmin');
+            </script>
+        }
+    </environment>
+}
+
 <div class="col-12">
     <div class="row">
         <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 p-2">
@@ -46,10 +57,3 @@
         </div>
     </div>
 </div>
-
-@if (isAdmin != null)
-{
-    <script>
-            ga('set', 'dimension1', '@isAdmin');
-    </script>
-}

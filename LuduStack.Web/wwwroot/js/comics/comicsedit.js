@@ -199,15 +199,16 @@
             sideBySide: true
         };
 
-        var sd = moment(objs.publishDate.val(), 'L LT');
-        publishDateOptions.date = sd;
+        var pd = moment(objs.publishDate.val(), 'L LT');
+        console.log(pd);
+        publishDateOptions.date = pd;
 
         objs.publishDate.keypress(function (e) {
             e.preventDefault();
             ALERTSYSTEM.Toastr.ShowInfo('You need to select the date using<br>the button on the side.');
         }).datetimepicker(publishDateOptions);
 
-        objs.publishDate.datetimepicker('defaultDate', sd);
+        objs.publishDate.datetimepicker('defaultDate', pd);
     }
 
     function bindBtnSaveForm() {
