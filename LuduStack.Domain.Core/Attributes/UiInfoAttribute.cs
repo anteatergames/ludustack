@@ -7,7 +7,7 @@ namespace LuduStack.Domain.Core.Attributes
     {
         public int Order { get; set; }
         public string Class { get; set; }
-        public string Culture { get; set; }
+        public string Locale { get; set; }
         public string Description { get; set; }
         public string Display { get; set; }
     }
