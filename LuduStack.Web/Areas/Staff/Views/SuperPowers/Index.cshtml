@@ -9,7 +9,9 @@
         @if (isAdmin != null)
         {
             <script>
-            ga('set', 'dimension1', '@isAdmin');
+                ga(function () {
+                    ga('set', 'dimension1', '@isAdmin');
+                });
             </script>
         }
     </environment>
