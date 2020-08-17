@@ -107,7 +107,7 @@
 
         for (i = 0; i < images.length; i++) {
             croppers.push(new Cropper(images[i], {
-                aspectRatio: 16 / 9,
+                aspectRatio: 40 / 21,
                 viewMode: 3,
                 autoCropArea: 1,
                 zoomOnWheel: false
