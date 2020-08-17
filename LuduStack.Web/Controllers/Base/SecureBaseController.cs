@@ -52,6 +52,13 @@ namespace LuduStack.Web.Controllers.Base
                 string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 CurrentUserId = new Guid(userId);
 
+                var userIsAdmin = User.FindFirst(x => x.Type == ClaimTypes.Role && x.Value.Equals(Roles.Administrator.ToString()));
+
+                if (userIsAdmin != null)
+                {
+                    ViewData["user_is_admin"] = "true";
+                }
+
                 string username = User.FindFirstValue(ClaimTypes.Name);
 
                 SetProfileOnSession(CurrentUserId, username);

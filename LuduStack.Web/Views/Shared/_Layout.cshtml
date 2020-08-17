@@ -24,6 +24,8 @@
 
     string userId = UserManager.GetUserId(User);
 
+    var isAdmin = (ViewData["user_is_admin"]?.ToString() ?? "false").ToLower();
+
     var consentFeature = Context.Features.Get<ITrackingConsentFeature>();
     var showCookieBanner = !consentFeature?.CanTrack ?? false;
 }
@@ -925,11 +927,13 @@
 
     <script>
         tinyDrawer();
+        var isAdmin = @isAdmin;
     </script>
 
     @await Html.PartialAsync("_FacebookSdk")
 
     @RenderSection("Scripts", required: false)
+
 
     @if (showCookieBanner)
     {

@@ -1,20 +1,5 @@
 ﻿@{
     ViewData["Title"] = "Super Powers!";
-
-    var isAdmin = ViewData["user_is_admin"];
-}
-
-@section Scripts {
-    <environment exclude="Development">
-        @if (isAdmin != null)
-        {
-            <script>
-                ga(function () {
-                    ga('set', 'dimension1', '@isAdmin');
-                });
-            </script>
-        }
-    </environment>
 }
 
 <div class="col-12">

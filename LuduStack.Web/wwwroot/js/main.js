@@ -29,6 +29,8 @@
         $('[data-toggle="tooltip"]').tooltip();
 
         showMessage();
+
+        console.log(isAdmin);
     }
 
     function setSelectors() {
