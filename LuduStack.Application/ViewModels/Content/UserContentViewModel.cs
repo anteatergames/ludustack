@@ -1,6 +1,7 @@
 ﻿using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels.Poll;
 using LuduStack.Domain.Core.Enums;
+using LuduStack.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -17,7 +18,8 @@ namespace LuduStack.Application.ViewModels.Content
         public string FeaturedImageLquip { get; set; }
 
         [Display(Name = "Images")]
-        public List<string> Images { get; set; }
+
+        public List<ImageListItemVo> Images { get; set; }
 
         [StringLength(128)]
         [Display(Name = "Title")]

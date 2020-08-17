@@ -6,8 +6,11 @@ using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Interfaces.Services;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
+using Microsoft.AspNetCore.Mvc.Routing;
+using NPOI.SS.Formula.Functions;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace LuduStack.Application.Services
 {
@@ -77,7 +80,7 @@ namespace LuduStack.Application.Services
                     model = mapper.Map<UserContent>(vm);
                 }
 
-                //FormatImagesToSave(model);
+                FormatImagesToSave(model);
 
                 if (vm.Id == Guid.Empty)
                 {
@@ -115,9 +118,20 @@ namespace LuduStack.Application.Services
                     UserId = currentUserId,
                     SeriesId = currentUserId,
                     PublishDate = DateTime.Now,
-                    FeaturedImage = Constants.DefaultComicStripPlaceholder,
                     Language = SupportedLanguage.English
                 };
+
+                newVm.Images.Add(new ImageListItemVo
+                {
+                    Language = newVm.Language,
+                    Image = Constants.DefaultComicStripPlaceholder
+                });
+
+                newVm.Images.Add(new ImageListItemVo
+                {
+                    Language = SupportedLanguage.Portuguese,
+                    Image = Constants.DefaultComicStripPlaceholder
+                });
 
                 return new OperationResultVo<ComicStripViewModel>(newVm);
             }
@@ -188,10 +202,62 @@ namespace LuduStack.Application.Services
             SetBasePermissions(currentUserId, vm);
         }
 
-        private void SetImagesToShow(ComicStripViewModel vm, bool v)
+
+        private void FormatImagesToSave(UserContent model)
+        {
+            var except = model.Images.Where(x => x.Image.Contains(Constants.DefaultComicStripPlaceholder) || Constants.DefaultComicStripPlaceholder.Contains(x.Image));
+            model.Images = model.Images.Except(except).ToList();
+        }
+
+        private void SetImagesToShow(ComicStripViewModel vm, bool editing)
         {
             vm.FeaturedImage = ContentHelper.SetFeaturedImage(vm.UserId, vm.FeaturedImage, ImageRenderType.Full);
             vm.FeaturedImageLquip = ContentHelper.SetFeaturedImage(vm.UserId, vm.FeaturedImage, ImageRenderType.LowQuality);
+
+            foreach (var image in vm.Images)
+            {
+                image.Image = ContentHelper.SetFeaturedImage(vm.UserId, image.Image, ImageRenderType.Full);
+                image.ImageResponsive = ContentHelper.SetFeaturedImage(vm.UserId, image.Image, ImageRenderType.Responsive);
+                image.ImageLquip = ContentHelper.SetFeaturedImage(vm.UserId, image.Image, ImageRenderType.LowQuality);
+            }
+
+            if (editing)
+            {
+                if (!vm.Images.Any(x => x.Language == SupportedLanguage.English))
+                {
+                    vm.Images.Add(new ImageListItemVo
+                    {
+                        Language = SupportedLanguage.English,
+                        Image = Constants.DefaultComicStripPlaceholder
+                    });
+                }
+
+                if (!vm.Images.Any(x => x.Language == SupportedLanguage.Portuguese))
+                {
+                    vm.Images.Add(new ImageListItemVo
+                    {
+                        Language = SupportedLanguage.Portuguese,
+                        Image = Constants.DefaultComicStripPlaceholder
+                    });
+                }
+            }
+            else
+            {
+                var selectedFeaturedImage = vm.FeaturedImage;
+
+                if (vm.Images.Any(x => x.Language == vm.Language))
+                {
+                    selectedFeaturedImage = vm.Images.FirstOrDefault(x => x.Language == vm.Language)?.Image;
+                }
+                else if (vm.Images.Any())
+                {
+                    selectedFeaturedImage = vm.Images.FirstOrDefault()?.Image;
+                }
+
+                vm.FeaturedImage = ContentHelper.SetFeaturedImage(vm.UserId, selectedFeaturedImage, ImageRenderType.Full);
+                vm.FeaturedImageResponsive = ContentHelper.SetFeaturedImage(vm.UserId, selectedFeaturedImage, ImageRenderType.Responsive);
+                vm.FeaturedImageLquip = ContentHelper.SetFeaturedImage(vm.UserId, selectedFeaturedImage, ImageRenderType.LowQuality);
+            }
         }
     }
 }

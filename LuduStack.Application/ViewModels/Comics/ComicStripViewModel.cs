@@ -1,6 +1,7 @@
 ﻿using LuduStack.Application.Interfaces;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Interfaces.Models;
+using LuduStack.Domain.ValueObjects;
 using Org.BouncyCastle.Bcpg;
 using System;
 using System.Collections.Generic;
@@ -30,6 +31,10 @@ namespace LuduStack.Application.ViewModels.Comics
 
         public string FeaturedImageLquip { get; set; }
 
+        public string FeaturedImageResponsive { get; set; }
+
+        public List<ImageListItemVo> Images { get; set; }
+
         public SupportedLanguage Language { get; set; }
 
         public List<Guid> Likes { get; set; }
@@ -47,6 +52,7 @@ namespace LuduStack.Application.ViewModels.Comics
         public ComicStripViewModel()
         {
             UserContentType = UserContentType.ComicStrip;
+            Images = new List<ImageListItemVo>();
         }
     }
 }

@@ -8,22 +8,20 @@
 
 @section Styles {
     <environment include="Development">
-        <link rel="stylesheet" href="~/css/polls.css" />
     </environment>
     <environment exclude="Development">
-        <link rel="stylesheet" href="~/css/contentdetails.min.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/css/comics.min.css" asp-append-version="true" />
     </environment>
 }
 
 @section Scripts {
 
     <environment include="Development">
-        <script src="~/js/shared/polls.js"></script>
         <script src="~/js/shared/contentactions.js"></script>
-        <script src="~/js/content/contentdetails.js"></script>
+        <script src="~/js/comics/comicsdetails.js"></script>
     </environment>
     <environment exclude="Development">
-        <script src="~/js/content/contentdetails.min.js" asp-append-version="true"></script>
+        <script src="~/js/comics/comicsdetails.min.js" asp-append-version="true"></script>
     </environment>
 
     <script type="application/ld+json">
@@ -60,9 +58,28 @@
             @Model.Title
         </h1>
 
-        <div class="box-body p-0 text-center overflow-hidden square-bottom">
-            <img data-src="@Model.FeaturedImage" src="@Model.FeaturedImageLquip" class="img-fluid lazyload blur-up" style="width:100%" alt="@(String.IsNullOrWhiteSpace(Model.Title) ? Model.Content : Model.Title)" />
-        </div>
+        @if (Model.Images.Count > 1)
+        {
+            <div class="col-12 px-0 pt-1 text-center">
+                <div class="btn-group btn-group-sm btn-group-toggle" role="group" aria-label="Basic example">
+                    @for (int i = 0; i < Model.Images.Count; i++)
+                    {
+                        var image = Model.Images.ElementAt(i);
+
+                        <button class="btn btn-outline-info btn-changelanguage" data-target="@(String.Format("img-{0}", image.Language.ToString().ToLower()))">@SharedLocalizer[image.Language.ToDisplayName()]</button>
+                    }
+                </div>
+            </div>
+        }
+
+        @for (int i = 0; i < Model.Images.Count; i++)
+        {
+            var image = Model.Images.ElementAt(i);
+
+            <div class="box-body text-center overflow-hidden square-bottom px-0 img-multilanguage@(image.Image.Equals(Model.FeaturedImage) ? string.Empty : " d-none") @(String.Format("img-{0}", image.Language.ToString().ToLower()))">
+                <img data-src="@image.Image" src="@image.ImageLquip" class="img-fluid lazyload blur-up" style="width:100%" alt="@(String.IsNullOrWhiteSpace(Model.Title) ? Model.Content : Model.Title)" />
+            </div>
+        }
 
         <div class="box-body">
             <div class="row">
@@ -74,7 +91,7 @@
                         <a asp-area="" asp-controller="profile" asp-action="details" asp-route-id="@Model.UserId">
                             <span class="username">@Model.AuthorName</span>
                         </a>
-                        <a asp-area="" asp-controller="content" asp-action="details" asp-route-id="@Model.Id">
+                        <a asp-area="member" asp-controller="comics" asp-action="details" asp-route-id="@Model.Id">
                             <span class="description">@Model.CreateDate.ToString()</span>
                         </a>
                     </div>

@@ -296,8 +296,6 @@ namespace LuduStack.Application.Services
 
                     item.IsArticle = !string.IsNullOrWhiteSpace(item.Title) && !string.IsNullOrWhiteSpace(item.Introduction);
 
-                    item.HasFeaturedImage = !string.IsNullOrWhiteSpace(item.FeaturedImage) && !item.FeaturedImage.Contains(Constants.DefaultFeaturedImage);
-
                     item.FeaturedMediaType = GetMediaType(item.FeaturedImage);
                     if (item.FeaturedMediaType == MediaType.Youtube)
                     {
@@ -306,10 +304,10 @@ namespace LuduStack.Application.Services
 
                     if (item.FeaturedMediaType != MediaType.Youtube)
                     {
-                        item.FeaturedImage = ContentHelper.SetFeaturedImage(item.UserId, item.FeaturedImage, ImageRenderType.Full);
-                        item.FeaturedImageResponsive = ContentHelper.SetFeaturedImage(item.UserId, item.FeaturedImage, ImageRenderType.Responsive);
-                        item.FeaturedImageLquip = ContentHelper.SetFeaturedImage(item.UserId, item.FeaturedImage, ImageRenderType.LowQuality);
+                        SetFeaturedImage(item);
                     }
+
+                    item.HasFeaturedImage = !string.IsNullOrWhiteSpace(item.FeaturedImage) && !item.FeaturedImage.Contains(Constants.DefaultFeaturedImage);
 
                     item.LikeCount = item.Likes.Count;
 
@@ -326,7 +324,7 @@ namespace LuduStack.Application.Services
             }
             catch (Exception ex)
             {
-                string msg = $"Unable to save get the Activity Feed.";
+                string msg = $"Unable to get the Activity Feed.";
                 logger.Log(LogLevel.Error, ex, msg);
                 throw;
             }
@@ -497,6 +495,24 @@ namespace LuduStack.Application.Services
             {
                 return new OperationResultVo(ex.Message);
             }
+        }
+
+        private static void SetFeaturedImage(UserContentViewModel item)
+        {
+            var selectedFeaturedImage = item.FeaturedImage;
+
+            if (string.IsNullOrWhiteSpace(item.FeaturedImage) && item.Images.Any(x => x.Language == item.Language))
+            {
+                selectedFeaturedImage = item.Images.FirstOrDefault(x => x.Language == item.Language)?.Image;
+            }
+            else if (string.IsNullOrWhiteSpace(item.FeaturedImage) && item.Images.Any())
+            {
+                selectedFeaturedImage = item.Images.FirstOrDefault()?.Image;
+            }
+
+            item.FeaturedImage = ContentHelper.SetFeaturedImage(item.UserId, selectedFeaturedImage, ImageRenderType.Full);
+            item.FeaturedImageResponsive = ContentHelper.SetFeaturedImage(item.UserId, selectedFeaturedImage, ImageRenderType.Responsive);
+            item.FeaturedImageLquip = ContentHelper.SetFeaturedImage(item.UserId, selectedFeaturedImage, ImageRenderType.LowQuality);
         }
     }
 }

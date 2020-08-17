@@ -7,6 +7,18 @@
 
 @foreach (var item in Model)
 {
+
+    var url = Url.Action("details", "content", new { area = string.Empty, id = item.Id });
+    var urlController = "content";
+    var urlArea = string.Empty;
+
+    @if (item.UserContentType == UserContentType.ComicStrip)
+    {
+        urlController = "comics";
+        urlArea = "member";
+        url = Url.Action("details", "comics", new { area = "member", id = item.Id });
+    }
+
     <div class="box box-widget box-content p-0 bg-white" data-id="@item.Id">
         <div class="box-header with-border">
             <div class="user-block">
@@ -23,7 +35,7 @@
                 }
                 else
                 {
-                    <a asp-protocol="@ViewData["protocol"]" asp-host="@ViewData["host"]" asp-area="" asp-controller="content" asp-action="details" asp-route-id="@item.Id" class="contenturl">
+                    <a asp-protocol="@ViewData["protocol"]" asp-host="@ViewData["host"]" asp-area="@urlArea" asp-controller="@urlController" asp-action="details" asp-route-id="@item.Id" class="contenturl">
                         <span class="description">@item.CreateDate.ToString()</span>
                     </a>
                 }
@@ -76,13 +88,8 @@
 
             @if (item.HasFeaturedImage)
             {
-                var url = Url.Action("details", "content", new { area = string.Empty, id = item.Id });
 
                 <div class="col-12 text-center overflow-hidden rounded-0 featuredimage @item.FeaturedMediaType">
-                    @if (item.UserContentType == UserContentType.ComicStrip)
-                    {
-                        url = Url.Action("details", "comics", new { area = "member", id = item.Id });
-                    }
                     <a href="@url">
                         @if (item.FeaturedMediaType == MediaType.Youtube)
                         {
@@ -111,7 +118,7 @@
             @if (item.IsArticle)
             {
                 <div class="p-2 bottomcontent">
-                    <a asp-area="" asp-controller="content" asp-action="details" asp-route-id="@item.Id">
+                    <a href="@url">
                         <div class="row col-12 font-weight-bold text-uppercase">@item.Title</div>
                         <div class="row col-12">@Html.Raw(item.Introduction)</div>
                     </a>

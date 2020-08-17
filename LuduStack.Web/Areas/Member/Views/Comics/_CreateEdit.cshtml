@@ -51,6 +51,8 @@
             <input type="hidden" asp-for="UserId" />
             <input type="hidden" asp-for="CreateDate" />
             <input type="hidden" asp-for="FeaturedImage" />
+            <input type="hidden" asp-for="SeriesId" />
+
             <div class="row">
                 <div class="col-12 col-sm-6 col-md-2">
                     <div class="form-group">
@@ -101,17 +103,29 @@
                     </div>
                 </div>
 
-                <div class="col-md-12 text-center">
-                    <div class="form-group">
-                        <label asp-for="FeaturedImage" class="col-form-label"></label>
+                @for (int i = 0; i < Model.Images.Count; i++)
+                {
+                    var imageTarget = string.Format("img_{0}", i);
+
+                    <div class="col-md-12 text-center px-5">
+                        <div class="form-group">
+                            <label class="col-form-label">@SharedLocalizer["Image in {0}", Model.Images[i].Language]</label>
+                        </div>
+                        <div class="dropzone">
+                            <img class="comicstripimage rounded img-fluid border" id="@imageTarget" src="@Model.Images[i].Image" alt="Featured Image @i">
+                        </div>
+
+                        <div class="col-12 text-center">
+                            <label class="btn btn-outline-secondary">
+                                <i class="fas fa-fw fa-upload" aria-hidden="true"></i>
+                                <span>@SharedLocalizer["change"]</span>
+                                <input type="hidden" asp-for="Images[i].Language" />
+                                <input type="hidden" asp-for="Images[i].Image" />
+                                <input type="file" class="sr-only comicstripimageinput" accept="image/*" data-target-img="@imageTarget" data-target-hidden="@String.Format("Images_{0}__Image", i)">
+                            </label>
+                        </div>
                     </div>
-                    <div class="mx-auto d-block border">
-                        <label class="label mb-0" data-toggle="tooltip" title="" data-original-title="@SharedLocalizer["Change the main language Comic Strip"]">
-                            <img class="rounded img-fluid" id="imgFeaturedImage" src="@Model.FeaturedImage" alt="Featured Image">
-                            <input type="file" class="sr-only" id="featuredimage" name="featuredimage" accept="image/*">
-                        </label>
-                    </div>
-                </div>
+                }
 
                 <div class="col-12 col-lg-6 offset-lg-6 col-xl-4 offset-xl-8 mt-2 mb-2">
                     <button type="button" id="btnSaveComics" class="btn btn-lg btn-primary btn-block" data-error-msg="<i class='fas fa-exclamation-circle' aria-hidden='true'></i> @SharedLocalizer["Something is missing!"]"><i class="fas fa-save" aria-hidden="true"></i> @SharedLocalizer["Save"]</button>
@@ -132,7 +146,7 @@
             </div>
             <div class="modal-body">
                 <div class="img-container p-10">
-                    <img id="image" src="@Model.FeaturedImage" class="img-fluid" alt="@Model.Title">
+                    <img id="cropperImage" src="@Model.FeaturedImage" class="img-fluid" alt="@Model.Title">
                 </div>
             </div>
             <div class="modal-footer">

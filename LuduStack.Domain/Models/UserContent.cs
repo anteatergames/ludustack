@@ -1,5 +1,6 @@
 ﻿using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Core.Models;
+using LuduStack.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
 
@@ -10,6 +11,8 @@ namespace LuduStack.Domain.Models
         public DateTime PublishDate { get; set; }
 
         public string FeaturedImage { get; set; }
+
+        public List<ImageListItemVo> Images { get; set; }
 
         public int? IssueNumber { get; set; }
 

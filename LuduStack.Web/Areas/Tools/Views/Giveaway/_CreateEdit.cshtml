@@ -185,7 +185,8 @@
                                     <input asp-for="ImageList[i]" type="hidden" class="imagelistitem@(image.Contains(Constants.DefaultGiveawayThumbnail) ? " default" : String.Empty)" />
                                     <button class="btn btn-sm btn-outline-danger btn-image-delete@(image.Contains(Constants.DefaultGiveawayThumbnail) ? " d-none" : String.Empty)"><i class="fas fa-trash" aria-hidden="true"></i></button>
                                     <div class="featuredlabel d-none"><span class="px-2 pb-1">@SharedLocalizer["featured"]</span></div>
-                                </div>}
+                                </div>
+                            }
                         </div>
                         <div id="dropzoneImages" class="dropzone">
                             <div class="dz-message needsclick">

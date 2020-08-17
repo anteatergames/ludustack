@@ -7,10 +7,7 @@
     var canInteract = false;
     var isNew = false;
 
-    var cropper;
-    var canvas;
-    var initialUrl;
-    var cropped = false;
+    var croppers = [];
 
     var datetimePickerIcons = {
         time: "fa fa-clock",
@@ -28,9 +25,9 @@
         selectors.userId = '#UserId';
         selectors.publishDate = 'input#PublishDate';
         selectors.btnSave = '#btnSaveComics';
-        selectors.dropzoneImages = '#dropzoneImages';
-        selectors.inputImageListItem = 'input.imagelistitem';
-        selectors.imageListItem = 'img.imagelistitem';
+        selectors.dropzone = '.dropzone';
+        selectors.inputImageListItem = 'input.comicstripimageinput';
+        selectors.imageListItem = 'img.comicstripimage';
         selectors.btnImageDelete = '.btn-image-delete';
         selectors.featuredLabel = '.featuredlabel';
         selectors.featuredImage = '#FeaturedImage';
@@ -72,99 +69,121 @@
     }
 
     function bindAll() {
-        bindCropper();
         bindDateTimePickers();
         bindBtnSaveForm();
+
+        bindChangeImage();
+
+        bindCropper();
+    }
+
+    function bindChangeImage() {
+        for (var i = 0; i < objs.inputImageListItem.length; i++) {
+            var element = objs.inputImageListItem[i];
+
+            element.addEventListener('change', function (e) {
+                var image = document.getElementById(e.target.dataset.targetImg);
+
+                var files = e.target.files
+
+                var done = function (url2) {
+                    element.value = '';
+
+                    croppers[image.dataset.cropperIndex].replace(url2);
+
+                    image.src = url2;
+
+                    e.target.dataset.changed = true;
+                };
+
+                MAINMODULE.Utils.GetSelectedFileUrl(files, done);
+            });
+        }
     }
 
     function bindCropper() {
-        var imgFeaturedImage = document.getElementById('imgFeaturedImage');
-        var image = document.getElementById('image');
-        var input = document.getElementById('featuredimage');
+        var images = document.querySelectorAll(selectors.imageListItem);
+        var i;
 
-        input.addEventListener('change', function (e) {
-            if (cropper) {
-                cropper.destroy();
-            }
-
-            var files = e.target.files;
-            var done = function (url2) {
-                input.value = '';
-
-                image.src = url2;
-
-                objs.modalCrop.modal('show');
-            };
-            var reader;
-            var file;
-
-            if (files && files.length > 0) {
-                file = files[0];
-
-                if (URL) {
-                    done(URL.createObjectURL(file));
-                } else if (FileReader) {
-                    reader = new FileReader();
-                    reader.onloadend = function (e2) {
-                        done(reader.result);
-                    };
-                    reader.readAsDataURL(file);
-                }
-            }
-        });
-
-        objs.modalCrop.on('shown.bs.modal', function () {
-            cropper = new Cropper(image, {
-                aspectRatio: 40 / 21,
+        for (i = 0; i < images.length; i++) {
+            croppers.push(new Cropper(images[i], {
+                aspectRatio: 16 / 9,
                 viewMode: 3,
-                autoCropArea: 1
-            });
-        });
+                autoCropArea: 1,
+                zoomOnWheel: false
+            }));
 
-        document.getElementById('crop').addEventListener('click', function () {
-            cropped = true;
-            if (cropper) {
-                canvas = cropper.getCroppedCanvas({
-                    width: 1200,
-                    minWidth: 1200
-                });
-                initialUrl = imgFeaturedImage.src;
-                imgFeaturedImage.src = canvas.toDataURL();
-            }
-
-            objs.modalCrop.modal('hide');
-        });
+            images[i].dataset.cropperIndex = i;
+        }
     }
 
-    function uploadCroppedImage(callback) {
-        if (cropper) {
-            if (canvas) {
-                canvas.toBlob(function (blob) {
-                    var formData = new FormData();
+    function uploadCroppedImages(callback) {
+        var imagesProcessed = 0;
 
-                    formData.append('userId', objs.userId.val());
+        var imagesChanged = objs.inputImageListItem.filter(function (index) {
+            return objs.inputImageListItem[index].dataset.changed === 'true';
+        });
 
-                    formData.append('featuredimage', blob);
+        var imagesToProcessCount = imagesChanged.length;
 
-                    $.ajax('/storage/uploadfeaturedimage', {
-                        method: "POST",
-                        data: formData,
-                        processData: false,
-                        contentType: false,
-                        success: function (response) {
-                            $('#FeaturedImage').val(response.imageUrl);
+        if (imagesChanged.length > 0) {
+            for (var i = 0; i < imagesToProcessCount; i++) {
+                var element = imagesChanged[i];
+                var changed = element.dataset.changed === 'true';
+
+                if (!changed) {
+                    console.log('skipping...');
+                    imagesProcessed++;
+                    continue;
+                }
+                console.log('uploading...');
+
+                var image = document.getElementById(element.dataset.targetImg);
+                var hidden = document.getElementById(element.dataset.targetHidden);
+
+                var cropper = croppers[image.dataset.cropperIndex];
+
+                var canvas = cropper.getCroppedCanvas();
+
+                var dataUri = canvas.toDataURL();
+
+                var blob = MAINMODULE.Utils.DataURItoBlob(dataUri);
+
+                var formData = new FormData();
+                formData.append('userId', objs.userId.val());
+
+                formData.append('upload', blob);
+
+                formData.append("randomName", true);
+
+                $.ajax('/storage/uploadcontentimage', {
+                    method: "POST",
+                    data: formData,
+                    async: false,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        imagesProcessed++;
+                        hidden.value = response.url;
+
+                        console.log(imagesToProcessCount);
+                        console.log(imagesProcessed);
+
+                        if (imagesProcessed === imagesToProcessCount) {
                             if (callback) {
                                 callback();
-
-                                cropper.destroy();
-                                cropper = null;
                             }
-                        },
-                        error: function (response) {
-                            imgFeaturedImage.src = initialUrl;
                         }
-                    });
+                    },
+                    error: function (response) {
+                        imgFeaturedImage.src = initialUrl;
+                    }
                 });
+            }
+        }
+        else {
+            if (callback) {
+                callback();
             }
         }
     }
@@ -199,15 +218,9 @@
             if (valid && canInteract) {
                 MAINMODULE.Common.DisableButton(btn);
 
-                console.log(cropped);
-                if (cropped) {
-                    uploadCroppedImage(function () {
-                        submitForm(btn);
-                    });
-                }
-                else {
+                uploadCroppedImages(function () {
                     submitForm(btn);
-                }
+                });
             }
         });
     }
@@ -239,3 +252,6 @@
 $(function () {
     COMICSEDIT.Init();
 });
+
+
+Dropzone.autoDiscover = false;

@@ -449,6 +449,39 @@
         return objs.locale.val();
     }
 
+    function getSelectedFileUrl(files, done) {
+        if (files && files.length > 0) {
+            file = files[0];
+
+            var reader;
+            var file;
+
+            if (files && files.length > 0) {
+                file = files[0];
+
+                if (URL) {
+                    done(URL.createObjectURL(file));
+                } else if (FileReader) {
+                    reader = new FileReader();
+                    reader.onloadend = function (e2) {
+                        done(reader.result);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            }
+        }
+    }
+
+    function dataURItoBlob(dataURI) {
+        var byteString = atob(dataURI.split(',')[1]);
+        var ab = new ArrayBuffer(byteString.length);
+        var ia = new Uint8Array(ab);
+        for (var i = 0; i < byteString.length; i++) {
+            ia[i] = byteString.charCodeAt(i);
+        }
+        return new Blob([ab], { type: 'image/jpeg' });
+    }
+
     return {
         Init: init,
         GetLocale: getLocale,
@@ -481,6 +514,10 @@
             SpinnerTop: spinnerTop,
             SpinnerBtn: spinnerBtn,
             DoneBtn: doneBtn
+        },
+        Utils: {
+            DataURItoBlob: dataURItoBlob,
+            GetSelectedFileUrl: getSelectedFileUrl
         }
     };
 }());
