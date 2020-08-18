@@ -143,19 +143,51 @@ namespace LuduStack.Domain.Services
         #region Comics
         public List<ComicsListItemVo> GetComicsListByUserId(Guid currentUserId)
         {
-            var allModels = repository.Get().Where(x => x.UserContentType == UserContentType.ComicStrip)
+            var allModels = repository.Get().Where(x => x.UserId == currentUserId && x.UserContentType == UserContentType.ComicStrip)
                 .Select(x => new ComicsListItemVo
                 {
                     Id = x.Id,
                     IssueNumber = x.IssueNumber.HasValue ? x.IssueNumber.Value : 0,
                     Title = x.Title,
-                    Content = x.Introduction,
+                    Content = x.Content,
                     FeaturedImage = x.FeaturedImage,
                     CreateDate = x.CreateDate
                 });
 
 
             return allModels.ToList();
+        }
+
+        public DomainOperationVo<UserContentRating> Rate(Guid userId, Guid id, decimal scoreDecimal)
+        {
+            UserContentRating rating;
+
+            IQueryable<UserContentRating> existing = repository.GetRatings(id);
+            bool exists = existing.Any(x => x.UserId == userId);
+
+            if (exists)
+            {
+                rating = existing.First(x => x.UserId == userId);
+
+                rating.Score = scoreDecimal;
+
+                repository.UpdateRating(id, rating);
+
+                return new DomainOperationVo<UserContentRating>(DomainActionPerformed.Update, rating);
+            }
+            else
+            {
+                rating = new UserContentRating
+                {
+                    UserId = userId,
+                    Score = scoreDecimal
+                };
+
+                repository.AddRating(id, rating);
+               
+
+                return new DomainOperationVo<UserContentRating>(DomainActionPerformed.Create, rating);
+            }
         }
         #endregion Comics
     }

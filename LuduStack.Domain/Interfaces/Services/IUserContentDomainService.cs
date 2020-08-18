@@ -30,6 +30,8 @@ namespace LuduStack.Domain.Interfaces.Services
 
         void Comment(UserContentComment model);
 
-        List<ComicsListItemVo> GetComicsListByUserId(Guid currentUserId);
+        List<ComicsListItemVo> GetComicsListByUserId(Guid userId);
+
+        DomainOperationVo<UserContentRating> Rate(Guid userId, Guid id, decimal scoreDecimal);
     }
 }

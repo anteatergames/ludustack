@@ -77,5 +77,34 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
 
             return result.IsAcknowledged && result.MatchedCount > 0;
         }
+
+        public IQueryable<UserContentRating> GetRatings(Guid id)
+        {
+            IQueryable<UserContentRating> participants = DbSet.AsQueryable().Where(x => x.Id == id).SelectMany(x => x.Ratings);
+
+            return participants;
+        }
+
+        public void UpdateRating(Guid id, UserContentRating rating)
+        {
+            FilterDefinition<UserContent> filter = Builders<UserContent>.Filter.And(
+                Builders<UserContent>.Filter.Eq(x => x.Id, id),
+                Builders<UserContent>.Filter.ElemMatch(x => x.Ratings, x => x.UserId == rating.UserId));
+
+            UpdateDefinition<UserContent> update = Builders<UserContent>.Update
+                .Set(c => c.Ratings[-1].Score, rating.Score);
+
+            Context.AddCommand(() => DbSet.UpdateOneAsync(filter, update));
+        }
+
+        public void AddRating(Guid id, UserContentRating rating)
+        {
+            rating.Id = Guid.NewGuid();
+
+            FilterDefinition<UserContent> filter = Builders<UserContent>.Filter.Where(x => x.Id == id);
+            UpdateDefinition<UserContent> add = Builders<UserContent>.Update.AddToSet(c => c.Ratings, rating);
+
+            Context.AddCommand(() => DbSet.UpdateOneAsync(filter, add));
+        }
     }
 }

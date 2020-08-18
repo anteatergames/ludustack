@@ -10,5 +10,6 @@ namespace LuduStack.Application.Interfaces
         OperationResultVo GenerateNew(Guid currentUserId);
         OperationResultVo GetForEdit(Guid currentUserId, Guid id);
         OperationResultVo GetForDetails(Guid currentUserId, Guid id);
+        OperationResultVo Rate(Guid currentUserId, Guid id, decimal scoreDecimal);
     }
 }

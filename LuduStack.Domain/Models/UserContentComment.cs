@@ -9,10 +9,6 @@ namespace LuduStack.Domain.Models
 
         public Guid UserContentId { get; set; }
 
-        public string AuthorName { get; set; }
-
-        public string AuthorPicture { get; set; }
-
         public string Text { get; set; }
     }
 }

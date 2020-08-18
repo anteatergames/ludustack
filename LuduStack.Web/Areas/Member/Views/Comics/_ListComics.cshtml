@@ -27,19 +27,19 @@
                 <thead>
                     <tr class="text-capitalize">
                         <th scope="col" class="text-center">@SharedLocalizer["issue"]</th>
-                        <th scope="col">@SharedLocalizer["Title"]</th>
-                        <th scope="col" class="text-center" title="@SharedLocalizer["Introduction"]"><i class="fas fa-fw fa-user" aria-hidden="true"></i></th>
                         <th scope="col" class="text-center">@SharedLocalizer["date"]</th>
+                        <th scope="col">@SharedLocalizer["Title"]</th>
+                        <th scope="col">@SharedLocalizer["content"]</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var item in Model)
                     {
                     <tr class="row-clickable">
-                        <td class="text-center"><a asp-area="member" asp-controller="comics" asp-action="details" asp-route-id="@item.Id"><span>@item.IssueNumber</span></a></td>
-                        <td><a asp-area="member" asp-controller="comics" asp-action="details" asp-route-id="@item.Id"><span>@item.Title</span></a></td>
-                        <td class="text-center"><a asp-area="member" asp-controller="comics" asp-action="details" asp-route-id="@item.Id"><span>@item.Content</span></a></td>
-                        <td class="text-center"><a asp-area="member" asp-controller="comics" asp-action="details" asp-route-id="@item.Id" title="@item.CreateDate.ToString()">@item.CreateDate.ToShortDateString()</a></td>
+                        <td class="text-center"><a asp-area="member" asp-controller="comics" asp-action="edit" asp-route-id="@item.Id"><span>@item.IssueNumber</span></a></td>
+                        <td class="text-center"><a asp-area="member" asp-controller="comics" asp-action="edit" asp-route-id="@item.Id" title="@item.CreateDate.ToString()">@item.CreateDate.ToShortDateString()</a></td>
+                        <td><a asp-area="member" asp-controller="comics" asp-action="edit" asp-route-id="@item.Id"><span>@item.Title</span></a></td>
+                        <td><a asp-area="member" asp-controller="comics" asp-action="edit" asp-route-id="@item.Id"><span>@item.Content</span></a></td>
                         <td class="text-right">
                             @if (canInteract)
                             {

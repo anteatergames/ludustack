@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using LuduStack.Application.Interfaces;
@@ -190,6 +191,25 @@ namespace LuduStack.Web.Areas.Member.Controllers
                 return Json(new OperationResultVo(ex.Message));
             }
         }
+
+
+        [HttpPost("rate/{id:guid}")]
+        public IActionResult Rate(Guid id, string score)
+        {
+            try
+            {
+                decimal scoreDecimal = decimal.Parse(score, CultureInfo.InvariantCulture);
+
+                OperationResultVo serviceResult = comicsAppService.Rate(CurrentUserId, id, scoreDecimal);
+
+                return Json(new OperationResultVo(serviceResult.Success, serviceResult.Message));
+            }
+            catch (Exception ex)
+            {
+                return Json(new OperationResultVo(ex.Message));
+            }
+        }
+
 
         private void SetLocalization(ComicStripViewModel model)
         {

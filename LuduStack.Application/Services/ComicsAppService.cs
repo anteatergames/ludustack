@@ -11,6 +11,7 @@ using NPOI.SS.Formula.Functions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Transactions;
 
 namespace LuduStack.Application.Services
 {
@@ -163,6 +164,17 @@ namespace LuduStack.Application.Services
 
                 ComicStripViewModel vm = mapper.Map<ComicStripViewModel>(existing);
 
+                var currentUserRate = existing.Ratings.FirstOrDefault(x => x.UserId == currentUserId);
+
+                if (currentUserRate != null)
+                {
+                    vm.CurrentUserRating = currentUserRate.Score;
+                }
+
+                var ratingCounts = existing.Ratings.Count > 0 ? existing.Ratings.Count : 1;
+
+                vm.TotalRating = existing.Ratings.Sum(x => x.Score) / ratingCounts;
+
                 SetAuthorDetails(vm);
 
                 SetImagesToShow(vm, false);
@@ -190,6 +202,22 @@ namespace LuduStack.Application.Services
                 SetPermissions(currentUserId, vm);
 
                 return new OperationResultVo<ComicStripViewModel>(vm);
+            }
+            catch (Exception ex)
+            {
+                return new OperationResultVo(ex.Message);
+            }
+        }
+
+        public OperationResultVo Rate(Guid currentUserId, Guid id, decimal scoreDecimal)
+        {
+            try
+            {
+                DomainOperationVo<UserContentRating> domainActionPerformed = userContentDomainService.Rate(currentUserId, id, scoreDecimal);
+
+                unitOfWork.Commit();
+
+                return new OperationResultVo(true, "Comics rated!");
             }
             catch (Exception ex)
             {
@@ -258,6 +286,8 @@ namespace LuduStack.Application.Services
                 vm.FeaturedImageResponsive = ContentHelper.SetFeaturedImage(vm.UserId, selectedFeaturedImage, ImageRenderType.Responsive);
                 vm.FeaturedImageLquip = ContentHelper.SetFeaturedImage(vm.UserId, selectedFeaturedImage, ImageRenderType.LowQuality);
             }
+
+            vm.Images = vm.Images.OrderBy(x => x.Language).ToList();
         }
     }
 }

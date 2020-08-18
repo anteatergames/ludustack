@@ -8,8 +8,12 @@
 
 @section Styles {
     <environment include="Development">
+        <link rel="stylesheet" href="~/lib/bootstrap-star-rating/css/star-rating.css">
+        <link href="~/lib/bootstrap-star-rating/themes/krajee-fas/theme.css" media="all" rel="stylesheet" type="text/css" />
     </environment>
     <environment exclude="Development">
+        <link rel="stylesheet" href="~/lib/bootstrap-star-rating/css/star-rating.min.css">
+        <link href="~/lib/bootstrap-star-rating/themes/krajee-fas/theme.min.css" media="all" rel="stylesheet" type="text/css" />
         <link rel="stylesheet" href="~/css/comics.min.css" asp-append-version="true" />
     </environment>
 }
@@ -17,10 +21,14 @@
 @section Scripts {
 
     <environment include="Development">
+        <script src="~/lib/bootstrap-star-rating/js/star-rating.js"></script>
+        <script src="~/lib/bootstrap-star-rating/themes/krajee-fas/theme.js"></script>
         <script src="~/js/shared/contentactions.js"></script>
         <script src="~/js/comics/comicsdetails.js"></script>
     </environment>
     <environment exclude="Development">
+        <script src="~/lib/bootstrap-star-rating/js/star-rating.min.js"></script>
+        <script src="~/lib/bootstrap-star-rating/themes/krajee-fas/theme.min.js"></script>
         <script src="~/js/comics/comicsdetails.min.js" asp-append-version="true"></script>
     </environment>
 
@@ -94,6 +102,11 @@
                         <a asp-area="member" asp-controller="comics" asp-action="details" asp-route-id="@Model.Id">
                             <span class="description">@Model.CreateDate.ToString()</span>
                         </a>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 text-right">
+                    <div class="px-2">
+                        <input id="txtRating" name="Rating" type="number" class="d-none comics-rating" step="1" value="@Model.TotalRating.ToString(new System.Globalization.CultureInfo("en-US"))" data-url="@Url.Action("rate", "comics", new { area = "member", id = Model.Id })">
                     </div>
                 </div>
             </div>

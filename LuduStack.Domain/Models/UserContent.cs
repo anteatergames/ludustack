@@ -37,6 +37,8 @@ namespace LuduStack.Domain.Models
 
         public virtual List<Poll> Polls { get; set; }
 
+        public virtual List<UserContentRating> Ratings { get; set; }
+
         public UserContent() : base()
         {
         }

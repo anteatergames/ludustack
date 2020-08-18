@@ -29,8 +29,6 @@
         $('[data-toggle="tooltip"]').tooltip();
 
         showMessage();
-
-        console.log(isAdmin);
     }
 
     function setSelectors() {
@@ -375,6 +373,27 @@
         });
     }
 
+
+
+    function post(url, data, callback) {
+        $.post(url, data).done(function (response) {
+            if (response.success === true) {
+                if (callback) {
+                    callback(response);
+                }
+
+                ALERTSYSTEM.ShowSuccessMessage(response.message, function () {
+                    if (response.url) {
+                        window.location = response.url;
+                    }
+                });
+            }
+            else {
+                ALERTSYSTEM.ShowWarningMessage(response.message);
+            }
+        });
+    }
+
     function deleteEntity(btn, callback) {
         var url = btn.data('url');
 
@@ -491,6 +510,7 @@
             SetStickyElement: setStickyElement
         },
         Ajax: {
+            Post: post,
             GetHtml: getHtml,
             LoadHtml: loadHtml,
             CallBackendAction: callBackendAction

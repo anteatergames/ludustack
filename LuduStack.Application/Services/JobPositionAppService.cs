@@ -367,7 +367,7 @@ namespace LuduStack.Application.Services
 
                 if (jobPosition == null)
                 {
-                    return new OperationResultVo("Idea not found!");
+                    return new OperationResultVo("Job Position not found!");
                 }
 
                 foreach (JobApplicant applicant in jobPosition.Applicants)

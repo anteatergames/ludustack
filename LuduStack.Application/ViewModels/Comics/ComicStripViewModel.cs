@@ -49,6 +49,10 @@ namespace LuduStack.Application.ViewModels.Comics
         public int CommentCount { get; set; }
         #endregion ICommentableItem
 
+        public decimal TotalRating { get; set; }
+
+        public decimal CurrentUserRating { get; set; }
+
         public ComicStripViewModel()
         {
             UserContentType = UserContentType.ComicStrip;
