@@ -41,6 +41,7 @@ namespace LuduStack.Domain.Models
 
         public UserContent() : base()
         {
+            Ratings = new List<UserContentRating>();
         }
     }
 }

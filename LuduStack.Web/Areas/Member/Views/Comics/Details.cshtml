@@ -105,9 +105,7 @@
                     </div>
                 </div>
                 <div class="col-12 col-md-6 text-right">
-                    <div class="px-2">
-                        <input id="txtRating" name="Rating" type="number" class="d-none comics-rating" step="1" value="@Model.TotalRating.ToString(new System.Globalization.CultureInfo("en-US"))" data-url="@Url.Action("rate", "comics", new { area = "member", id = Model.Id })">
-                    </div>
+                    <input id="txtRating" name="Rating" type="number" class="d-none comics-rating" step="1" value="@Model.TotalRating.ToString(new System.Globalization.CultureInfo("en-US"))" data-url="@Url.Action("rate", "comics", new { area = "member", id = Model.Id })">
                 </div>
             </div>
         </div>

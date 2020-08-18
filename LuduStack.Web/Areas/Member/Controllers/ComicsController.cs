@@ -60,7 +60,7 @@ namespace LuduStack.Web.Areas.Member.Controllers
             }
             else
             {
-                return RedirectToAction("index", "giveaway", new { area = "tools" });
+                return RedirectToAction("index", "home", new { area = string.Empty });
             }
         }
 
