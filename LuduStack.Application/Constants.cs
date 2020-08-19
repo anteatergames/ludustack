@@ -162,7 +162,6 @@
             }
         }
 
-
         public static string DefaultComicStripPlaceholder
         {
             get

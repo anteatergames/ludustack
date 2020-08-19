@@ -7,12 +7,9 @@ using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Interfaces.Services;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
-using Microsoft.AspNetCore.Mvc.Routing;
-using NPOI.SS.Formula.Functions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Transactions;
 
 namespace LuduStack.Application.Services
 {
@@ -26,6 +23,7 @@ namespace LuduStack.Application.Services
         }
 
         #region ICrudAppService
+
         public OperationResultVo<int> Count(Guid currentUserId)
         {
             throw new NotImplementedException();
@@ -107,6 +105,7 @@ namespace LuduStack.Application.Services
                 return new OperationResultVo<Guid>(ex.Message);
             }
         }
+
         #endregion ICrudAppService
 
         public OperationResultVo GenerateNew(Guid currentUserId)
@@ -165,14 +164,14 @@ namespace LuduStack.Application.Services
 
                 ComicStripViewModel vm = mapper.Map<ComicStripViewModel>(existing);
 
-                var currentUserRate = existing.Ratings.FirstOrDefault(x => x.UserId == currentUserId);
+                UserContentRating currentUserRate = existing.Ratings.FirstOrDefault(x => x.UserId == currentUserId);
 
                 if (currentUserRate != null)
                 {
                     vm.CurrentUserRating = currentUserRate.Score;
                 }
 
-                var ratingCounts = existing.Ratings.Count > 0 ? existing.Ratings.Count : 1;
+                int ratingCounts = existing.Ratings.Count > 0 ? existing.Ratings.Count : 1;
 
                 vm.RatingCount = existing.Ratings.Count();
                 vm.TotalRating = existing.Ratings.Sum(x => x.Score) / ratingCounts;
@@ -237,10 +236,9 @@ namespace LuduStack.Application.Services
             SetBasePermissions(currentUserId, vm);
         }
 
-
         private void FormatImagesToSave(UserContent model)
         {
-            var except = model.Images.Where(x => x.Image.Contains(Constants.DefaultComicStripPlaceholder) || Constants.DefaultComicStripPlaceholder.Contains(x.Image));
+            IEnumerable<ImageListItemVo> except = model.Images.Where(x => x.Image.Contains(Constants.DefaultComicStripPlaceholder) || Constants.DefaultComicStripPlaceholder.Contains(x.Image));
             model.Images = model.Images.Except(except).ToList();
         }
 
@@ -249,7 +247,7 @@ namespace LuduStack.Application.Services
             vm.FeaturedImage = ContentHelper.SetFeaturedImage(vm.UserId, vm.FeaturedImage, ImageRenderType.Full);
             vm.FeaturedImageLquip = ContentHelper.SetFeaturedImage(vm.UserId, vm.FeaturedImage, ImageRenderType.LowQuality);
 
-            foreach (var image in vm.Images)
+            foreach (ImageListItemVo image in vm.Images)
             {
                 image.Image = ContentHelper.SetFeaturedImage(vm.UserId, image.Image, ImageRenderType.Full);
                 image.ImageResponsive = ContentHelper.SetFeaturedImage(vm.UserId, image.Image, ImageRenderType.Responsive);
@@ -278,7 +276,7 @@ namespace LuduStack.Application.Services
             }
             else
             {
-                var selectedFeaturedImage = vm.FeaturedImage;
+                string selectedFeaturedImage = vm.FeaturedImage;
 
                 if (vm.Images.Any(x => x.Language == vm.Language))
                 {
@@ -296,7 +294,6 @@ namespace LuduStack.Application.Services
 
             vm.Images = vm.Images.OrderBy(x => x.Language).ToList();
         }
-
 
         private void LoadAuthenticatedData(Guid currentUserId, UserGeneratedCommentBaseViewModel item)
         {

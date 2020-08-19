@@ -1,8 +1,6 @@
 ﻿using LuduStack.Application.ViewModels.Gamification;
 using LuduStack.Domain.ValueObjects;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace LuduStack.Application.Interfaces

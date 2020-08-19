@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
-using LuduStack.Application.Interfaces;
+﻿using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels.Comics;
 using LuduStack.Domain.ValueObjects;
 using LuduStack.Web.Areas.Member.Controllers.Base;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 
 namespace LuduStack.Web.Areas.Member.Controllers
 {
@@ -50,7 +48,7 @@ namespace LuduStack.Web.Areas.Member.Controllers
             {
                 OperationResultVo<ComicStripViewModel> castRestult = result as OperationResultVo<ComicStripViewModel>;
 
-                var model = castRestult.Value;
+                ComicStripViewModel model = castRestult.Value;
 
                 SetAuthorDetails(model);
 
@@ -192,7 +190,6 @@ namespace LuduStack.Web.Areas.Member.Controllers
             }
         }
 
-
         [HttpPost("rate/{id:guid}")]
         public IActionResult Rate(Guid id, string score)
         {
@@ -209,7 +206,6 @@ namespace LuduStack.Web.Areas.Member.Controllers
                 return Json(new OperationResultVo(ex.Message));
             }
         }
-
 
         private void SetLocalization(ComicStripViewModel model)
         {

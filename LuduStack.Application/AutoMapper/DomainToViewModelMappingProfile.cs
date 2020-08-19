@@ -165,13 +165,13 @@ namespace LuduStack.Application.AutoMapper
 
             #endregion ShortUrl
 
-
-
             #region Comics
+
             CreateMap<UserContent, ComicStripViewModel>()
                     .ForMember(x => x.Likes, opt => opt.MapFrom(x => x.Likes.Select(y => y.UserId)))
-                    .ForMember(x => x.LikeCount, opt => opt.MapFrom(x => x.Likes.Count)); 
-            #endregion
+                    .ForMember(x => x.LikeCount, opt => opt.MapFrom(x => x.Likes.Count));
+
+            #endregion Comics
         }
     }
 }

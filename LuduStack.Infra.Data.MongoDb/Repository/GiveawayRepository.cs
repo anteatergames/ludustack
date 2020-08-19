@@ -20,7 +20,7 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
 
         public Task<GiveawayBasicInfo> GetBasicGiveawayById(Guid id)
         {
-            var obj = DbSet.AsQueryable().Where(x => x.Id == id).Select(x => new GiveawayBasicInfo
+            IQueryable<GiveawayBasicInfo> obj = DbSet.AsQueryable().Where(x => x.Id == id).Select(x => new GiveawayBasicInfo
             {
                 Id = x.Id,
                 UserId = x.UserId,
@@ -128,7 +128,7 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
 
         public Guid CheckParticipantByEmail(Guid giveawayId, string email)
         {
-            var guid = DbSet.AsQueryable().Where(x => x.Id == giveawayId).SelectMany(x => x.Participants).Where(x => x.Email.Equals(email)).Select(x => x.Id).FirstOrDefault();
+            Guid guid = DbSet.AsQueryable().Where(x => x.Id == giveawayId).SelectMany(x => x.Participants).Where(x => x.Email.Equals(email)).Select(x => x.Id).FirstOrDefault();
 
             return guid;
         }

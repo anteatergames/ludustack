@@ -19,7 +19,6 @@
         5: 'AWESOME!'
     };
 
-
     function setSelectors() {
         selectors.container = '.container';
         selectors.canInteract = '#caninteract';
@@ -74,7 +73,6 @@
     }
 
     function bindRatings() {
-
         objs.totalRating.rating({
             theme: 'krajee-fas',
             showClear: false,

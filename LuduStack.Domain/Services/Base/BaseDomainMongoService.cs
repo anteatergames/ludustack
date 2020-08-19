@@ -68,7 +68,7 @@ namespace LuduStack.Domain.Services
             {
                 obj.CreateDate = obj.CreateDate.ToLocalTime();
 
-                obj.PublishDate = obj.PublishDate.ToLocalTime(); 
+                obj.PublishDate = obj.PublishDate.ToLocalTime();
             }
 
             return obj;

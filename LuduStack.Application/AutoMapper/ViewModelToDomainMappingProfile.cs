@@ -157,7 +157,6 @@ namespace LuduStack.Application.AutoMapper
 
             #endregion ShortUrl
 
-
             #region Comics
 
             CreateMap<ComicStripViewModel, Domain.Models.UserContent>();

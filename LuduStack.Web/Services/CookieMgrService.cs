@@ -21,7 +21,7 @@ namespace LuduStack.Web.Services
 
         public void Set(string key, string value, int? expireTime, bool isEssential)
         {
-            var consent = _httpContextAccessor.HttpContext.Request.Cookies[".LuduStack.Consent"];
+            string consent = _httpContextAccessor.HttpContext.Request.Cookies[".LuduStack.Consent"];
 
             CookieOptions option = new CookieOptions
             {
@@ -36,7 +36,7 @@ namespace LuduStack.Web.Services
             option.IsEssential = isEssential || consent != null;
             option.Secure = true;
 
-            var existing = _httpContextAccessor.HttpContext.Request.Cookies[key];
+            string existing = _httpContextAccessor.HttpContext.Request.Cookies[key];
 
             if (existing != null)
             {
@@ -44,7 +44,6 @@ namespace LuduStack.Web.Services
             }
 
             _httpContextAccessor.HttpContext.Response.Cookies.Append(key, value, option);
-
         }
     }
 }

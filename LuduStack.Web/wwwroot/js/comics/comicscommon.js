@@ -39,7 +39,6 @@
 
             var btn = $(this);
 
-
             if (canInteract) {
                 MAINMODULE.Common.DeleteEntity(btn, COMICSCOMMON.Callback.DeleteEntity);
             }

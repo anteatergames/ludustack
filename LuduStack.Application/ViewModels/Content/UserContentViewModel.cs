@@ -20,7 +20,6 @@ namespace LuduStack.Application.ViewModels.Content
         public string FeaturedImageLquip { get; set; }
 
         [Display(Name = "Images")]
-
         public List<ImageListItemVo> Images { get; set; }
 
         [StringLength(128)]

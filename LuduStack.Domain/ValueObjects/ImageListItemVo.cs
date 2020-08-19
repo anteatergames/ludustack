@@ -1,7 +1,4 @@
 ﻿using LuduStack.Domain.Core.Enums;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace LuduStack.Domain.ValueObjects
 {

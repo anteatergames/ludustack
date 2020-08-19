@@ -1,12 +1,9 @@
 ﻿using LuduStack.Application.Interfaces;
 using LuduStack.Domain.Core.Enums;
-using LuduStack.Domain.Interfaces.Models;
 using LuduStack.Domain.ValueObjects;
-using Org.BouncyCastle.Bcpg;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace LuduStack.Application.ViewModels.Comics
 {

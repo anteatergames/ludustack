@@ -142,9 +142,10 @@ namespace LuduStack.Domain.Services
         }
 
         #region Comics
+
         public List<ComicsListItemVo> GetComicsListByUserId(Guid currentUserId)
         {
-            var allModels = repository.Get().Where(x => x.UserId == currentUserId && x.UserContentType == UserContentType.ComicStrip)
+            IQueryable<ComicsListItemVo> allModels = repository.Get().Where(x => x.UserId == currentUserId && x.UserContentType == UserContentType.ComicStrip)
                 .Select(x => new ComicsListItemVo
                 {
                     Id = x.Id,
@@ -154,7 +155,6 @@ namespace LuduStack.Domain.Services
                     FeaturedImage = x.FeaturedImage,
                     CreateDate = x.CreateDate
                 });
-
 
             return allModels.ToList();
         }
@@ -186,10 +186,10 @@ namespace LuduStack.Domain.Services
 
                 repository.AddRating(id, rating);
 
-
                 return new DomainOperationVo<UserContentRating>(DomainActionPerformed.Create, rating);
             }
         }
+
         #endregion Comics
     }
 }

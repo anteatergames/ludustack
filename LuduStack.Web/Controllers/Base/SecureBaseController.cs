@@ -46,7 +46,6 @@ namespace LuduStack.Web.Controllers.Base
 
         public String CurrentLocale { get; set; }
 
-
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             base.OnActionExecuting(context);
@@ -59,7 +58,7 @@ namespace LuduStack.Web.Controllers.Base
                 ViewBag.CurrentUserId = CurrentUserId;
                 ViewBag.ProfileImage = UrlFormatter.ProfileImage(CurrentUserId);
 
-                var userIsAdmin = User.FindFirst(x => x.Type == ClaimTypes.Role && x.Value.Equals(Roles.Administrator.ToString()));
+                Claim userIsAdmin = User.FindFirst(x => x.Type == ClaimTypes.Role && x.Value.Equals(Roles.Administrator.ToString()));
 
                 if (userIsAdmin != null)
                 {
@@ -215,9 +214,9 @@ namespace LuduStack.Web.Controllers.Base
         {
             RequestCulture requestLanguage = Request.HttpContext.Features.Get<IRequestCultureFeature>().RequestCulture;
 
-            var cookieValue = GetCookieValue(CookieRequestCultureProvider.DefaultCookieName);
+            string cookieValue = GetCookieValue(CookieRequestCultureProvider.DefaultCookieName);
 
-            var cookie = CookieRequestCultureProvider.ParseCookieValue(cookieValue);
+            ProviderCultureResult cookie = CookieRequestCultureProvider.ParseCookieValue(cookieValue);
 
             if (!User.Identity.IsAuthenticated)
             {

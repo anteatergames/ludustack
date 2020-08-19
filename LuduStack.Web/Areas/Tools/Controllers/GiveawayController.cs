@@ -223,7 +223,7 @@ namespace LuduStack.Web.Areas.Tools.Controllers
             {
                 OperationResultVo<GiveawayViewModel> castRestult = result as OperationResultVo<GiveawayViewModel>;
 
-                var model = castRestult.Value;
+                GiveawayViewModel model = castRestult.Value;
 
                 SetAuthorDetails(model);
 
@@ -252,7 +252,7 @@ namespace LuduStack.Web.Areas.Tools.Controllers
 
                 if (!string.IsNullOrWhiteSpace(sessionEmail) && castRestult.Value.Status != GiveawayStatus.Ended)
                 {
-                    var checkParticipant = giveawayAppService.CheckParticipant(CurrentUserId, id, sessionEmail);
+                    OperationResultVo checkParticipant = giveawayAppService.CheckParticipant(CurrentUserId, id, sessionEmail);
 
                     if (checkParticipant.Success)
                     {
@@ -358,7 +358,7 @@ namespace LuduStack.Web.Areas.Tools.Controllers
                     return RedirectToAction("details", "giveaway", new { area = "tools", id = id });
                 }
 
-                var emailSplit = sessionEmail.Split("@");
+                string[] emailSplit = sessionEmail.Split("@");
 
                 ViewData["mailProvider"] = emailSplit.Length > 1 ? String.Format("https://{0}", emailSplit[1]) : "#";
 
@@ -558,7 +558,7 @@ namespace LuduStack.Web.Areas.Tools.Controllers
 
         private void SetEntryOptions(GiveawayParticipationViewModel model, Guid giveawayId)
         {
-            foreach (var item in model.EntryOptions)
+            foreach (GiveawayEntryOptionViewModel item in model.EntryOptions)
             {
                 switch (item.Type)
                 {

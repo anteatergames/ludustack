@@ -282,7 +282,6 @@ namespace LuduStack.Application.Services
 
                 foreach (UserContentViewModel item in viewModels)
                 {
-
                     item.CreateDate = item.CreateDate.ToLocalTime();
 
                     item.PublishDate = item.PublishDate.ToLocalTime();
@@ -504,7 +503,7 @@ namespace LuduStack.Application.Services
 
         private static void SetFeaturedImage(UserContentViewModel item)
         {
-            var selectedFeaturedImage = item.FeaturedImage;
+            string selectedFeaturedImage = item.FeaturedImage;
 
             if (string.IsNullOrWhiteSpace(item.FeaturedImage) && item.Images.Any(x => x.Language == item.Language))
             {

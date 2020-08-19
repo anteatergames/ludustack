@@ -1,6 +1,5 @@
 ﻿using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels.Home;
-using LuduStack.Application.ViewModels.UserPreferences;
 using LuduStack.Domain.Core.Attributes;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Core.Extensions;
@@ -11,7 +10,6 @@ using LuduStack.Web.Exceptions;
 using LuduStack.Web.Extensions;
 using LuduStack.Web.Models;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;

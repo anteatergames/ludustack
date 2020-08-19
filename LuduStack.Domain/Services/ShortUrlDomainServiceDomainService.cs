@@ -21,14 +21,14 @@ namespace LuduStack.Domain.Services
 
         private string Encode(int length)
         {
-            var newToken = new string(Enumerable.Repeat(ALPHABET, length).Select(s => s[random.Next(s.Length)]).ToArray());
+            string newToken = new string(Enumerable.Repeat(ALPHABET, length).Select(s => s[random.Next(s.Length)]).ToArray());
 
             return newToken;
         }
 
         public string Add(string urlReferal, ShortUrlDestinationType type)
         {
-            var newToken = Encode(5);
+            string newToken = Encode(5);
 
             ShortUrl newShortUrl = new ShortUrl
             {
@@ -52,7 +52,7 @@ namespace LuduStack.Domain.Services
 
         public ShortUrl GetByToken(string token)
         {
-            var obj = repository.Get().Where(x => x.Token.Equals(token));
+            IQueryable<ShortUrl> obj = repository.Get().Where(x => x.Token.Equals(token));
 
             return obj.FirstOrDefault();
         }

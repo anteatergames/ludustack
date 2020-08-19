@@ -209,7 +209,7 @@ namespace LuduStack.Application.Services
         {
             try
             {
-                var exists = giveawayDomainService.CheckParticipantByEmail(giveawayId, sessionEmail);
+                bool exists = giveawayDomainService.CheckParticipantByEmail(giveawayId, sessionEmail);
 
                 if (!exists)
                 {

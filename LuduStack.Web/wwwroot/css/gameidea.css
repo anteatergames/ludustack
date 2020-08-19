@@ -51,7 +51,6 @@
             border: 5px solid rgba(82,146,150,1);
         }
 
-
         .gameidea .slot .game-idea-element {
             margin: auto;
             position: absolute;
@@ -149,7 +148,6 @@
         transform: translateY(0);
     }
 }
-
 
 @keyframes mov {
     0% {

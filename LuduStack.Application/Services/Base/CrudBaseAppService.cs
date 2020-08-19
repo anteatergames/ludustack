@@ -1,12 +1,10 @@
 ﻿using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels;
-using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Core.Models;
 using LuduStack.Domain.Interfaces;
 using LuduStack.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace LuduStack.Application.Services
 {

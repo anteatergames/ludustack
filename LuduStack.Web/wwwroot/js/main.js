@@ -373,8 +373,6 @@
         });
     }
 
-
-
     function post(url, data, options, callback) {
         $.post(url, data).done(function (response) {
             if (response.success === true) {
@@ -394,7 +392,6 @@
                         window.location = response.url;
                     }
                 }
-
             }
             else {
                 ALERTSYSTEM.ShowWarningMessage(response.message);
