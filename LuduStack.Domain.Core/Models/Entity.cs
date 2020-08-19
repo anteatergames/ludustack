@@ -15,6 +15,8 @@ namespace LuduStack.Domain.Core.Models
 
         public DateTime CreateDate { get; set; }
 
+        public DateTime PublishDate { get; set; }
+
         public DateTime? LastUpdateDate { get; set; }
 
         public Entity()

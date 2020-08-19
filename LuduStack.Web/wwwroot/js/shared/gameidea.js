@@ -41,7 +41,6 @@
 
     var rules = ['avoid enemies', 'limited inventory', 'can\'t use twice', 'cannot avoid', 'must fly', 'one life only', 'must not be seen', 'can\'t touch the floor', 'limited time', 'must wait', 'can\'t breath', 'object is radioactive', 'the end is near', 'no gravity', 'naked', 'limited ammo', 'must dig', 'can\'t lose', 'can\'t regenerate', 'health is depleating', 'can\'t jump', 'silently'];
 
-
     function setSelectors() {
         selectors.gameIdeaStandalone = '#gameIdeaStandalone';
         selectors.btnGenerateGameIdea = '#btnGenerateGameIdea';
@@ -87,7 +86,6 @@
     }
 
     function stopPigkingGenre() {
-
         objs.genre.classList.remove("picking");
         clearInterval(pickingGenreInterval);
         clearInterval(stopGenreInterval);
@@ -110,7 +108,6 @@
     }
 
     function stopPigkingAction() {
-
         objs.action.classList.remove("picking");
         clearInterval(pickingActionInterval);
         clearInterval(stopActionInterval);
@@ -133,7 +130,6 @@
     }
 
     function stopPigkingThings() {
-
         objs.things.classList.remove("picking");
         clearInterval(pickingThingsInterval);
         clearInterval(stopThingsInterval);
@@ -156,7 +152,6 @@
     }
 
     function stopPigkingGoals() {
-
         objs.goals.classList.remove("picking");
         clearInterval(pickingGoalsInterval);
         clearInterval(stopGoalsInterval);
@@ -179,7 +174,6 @@
     }
 
     function stopPigkingRules() {
-
         objs.rules.classList.remove("picking");
         clearInterval(pickingRulesInterval);
         clearInterval(stopRulesInterval);

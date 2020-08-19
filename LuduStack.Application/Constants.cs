@@ -162,6 +162,14 @@
             }
         }
 
+        public static string DefaultComicStripPlaceholder
+        {
+            get
+            {
+                return "/images/placeholders/comicstripolaceholder.jpg";
+            }
+        }
+
         public static string TimeZones
         {
             get

@@ -1,5 +1,6 @@
 ﻿using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Core.Models;
+using LuduStack.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
 
@@ -7,11 +8,13 @@ namespace LuduStack.Domain.Models
 {
     public class UserContent : Entity
     {
-        public string AuthorName { get; set; }
-
-        public string AuthorPicture { get; set; }
-
         public string FeaturedImage { get; set; }
+
+        public List<ImageListItemVo> Images { get; set; }
+
+        public int? IssueNumber { get; set; }
+
+        public Guid? SeriesId { get; set; }
 
         public string Title { get; set; }
 
@@ -32,8 +35,11 @@ namespace LuduStack.Domain.Models
 
         public virtual List<Poll> Polls { get; set; }
 
+        public virtual List<UserContentRating> Ratings { get; set; }
+
         public UserContent() : base()
         {
+            Ratings = new List<UserContentRating>();
         }
     }
 }

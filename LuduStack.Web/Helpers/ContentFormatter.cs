@@ -118,10 +118,10 @@ namespace LuduStack.Web.Helpers
 
         public static string GetYoutubeVideoId(string url)
         {
-            var uri = new Uri(url);
-            var query = HttpUtility.ParseQueryString(uri.Query);
+            Uri uri = new Uri(url);
+            System.Collections.Specialized.NameValueCollection query = HttpUtility.ParseQueryString(uri.Query);
 
-            var videoId = string.Empty;
+            string videoId = string.Empty;
 
             if (query.AllKeys.Contains("v"))
             {

@@ -3,6 +3,7 @@ using LuduStack.Application.Formatters;
 using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels;
 using LuduStack.Application.ViewModels.User;
+using LuduStack.Application.ViewModels.UserPreferences;
 using LuduStack.Domain.Core.Attributes;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Core.Extensions;
@@ -43,24 +44,38 @@ namespace LuduStack.Web.Controllers.Base
 
         public Guid CurrentUserId { get; set; }
 
+        public String CurrentLocale { get; set; }
+
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             base.OnActionExecuting(context);
 
-            if (User != null && User.Identity.IsAuthenticated && ViewBag.Username == null)
+            if (User != null && User.Identity.IsAuthenticated)
             {
                 string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 CurrentUserId = new Guid(userId);
 
-                string username = User.FindFirstValue(ClaimTypes.Name);
-
-                SetProfileOnSession(CurrentUserId, username);
-
                 ViewBag.CurrentUserId = CurrentUserId;
-                ViewBag.Username = username ?? Constants.DefaultUsername;
                 ViewBag.ProfileImage = UrlFormatter.ProfileImage(CurrentUserId);
-                ViewBag.Locale = GetAspNetCultureCookie();
+
+                Claim userIsAdmin = User.FindFirst(x => x.Type == ClaimTypes.Role && x.Value.Equals(Roles.Administrator.ToString()));
+
+                if (userIsAdmin != null)
+                {
+                    ViewData["user_is_admin"] = "true";
+                }
+
+                if (ViewBag.Username == null)
+                {
+                    string username = User.FindFirstValue(ClaimTypes.Name);
+
+                    SetProfileOnSession(CurrentUserId, username);
+                    ViewBag.Username = username ?? Constants.DefaultUsername;
+                }
             }
+
+            CurrentLocale = GetAspNetCultureCookie();
+            ViewBag.Locale = CurrentLocale;
         }
 
         protected void SetProfileOnSession(Guid userId, string userName)
@@ -181,14 +196,14 @@ namespace LuduStack.Web.Controllers.Base
 
         protected void SetAspNetCultureCookie(SupportedLanguage language)
         {
-            string culture = language.GetAttributeOfType<UiInfoAttribute>()?.Culture;
+            string locale = language.GetAttributeOfType<UiInfoAttribute>()?.Locale;
 
-            culture = string.IsNullOrWhiteSpace(culture) ? "en-US" : culture;
+            locale = string.IsNullOrWhiteSpace(locale) ? "en-US" : locale;
 
-            SetAspNetCultureCookie(new RequestCulture(culture));
+            SetAspNetCultureCookie(new RequestCulture(locale));
         }
 
-        protected void SetAspNetCultureCookie(RequestCulture culture)
+        private void SetAspNetCultureCookie(RequestCulture culture)
         {
             ViewBag.Locale = culture;
 
@@ -197,16 +212,40 @@ namespace LuduStack.Web.Controllers.Base
 
         protected string GetAspNetCultureCookie()
         {
-            var cookieValue = GetCookieValue(CookieRequestCultureProvider.DefaultCookieName);
+            RequestCulture requestLanguage = Request.HttpContext.Features.Get<IRequestCultureFeature>().RequestCulture;
 
-            var cookie = CookieRequestCultureProvider.ParseCookieValue(cookieValue);
+            string cookieValue = GetCookieValue(CookieRequestCultureProvider.DefaultCookieName);
 
-            if (cookie == null || !cookie.Cultures.Any())
+            ProviderCultureResult cookie = CookieRequestCultureProvider.ParseCookieValue(cookieValue);
+
+            if (!User.Identity.IsAuthenticated)
             {
-                return "en-US";
-            }
+                SetAspNetCultureCookie(requestLanguage);
 
-            return cookie.Cultures.First().Value;
+                return requestLanguage.UICulture.Name;
+            }
+            else
+            {
+                if (cookie == null || !cookie.Cultures.Any())
+                {
+                    UserPreferencesViewModel userPrefs = UserPreferencesAppService.GetByUserId(CurrentUserId);
+
+                    if (userPrefs != null && userPrefs.Id != Guid.Empty)
+                    {
+                        SetAspNetCultureCookie(userPrefs.UiLanguage);
+                    }
+                    else
+                    {
+                        SetAspNetCultureCookie(requestLanguage);
+                    }
+
+                    return requestLanguage != null ? requestLanguage.UICulture.Name : "en-US";
+                }
+                else
+                {
+                    return cookie.Cultures.First().Value;
+                }
+            }
         }
 
         #region Upload Management

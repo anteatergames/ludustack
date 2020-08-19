@@ -1,0 +1,58 @@
+﻿@{
+    var isAjax = ViewContext.HttpContext.Request.IsAjaxRequest();
+    var canInteract = User.Identity.IsAuthenticated;
+
+    if (isAjax)
+    {
+        Layout = null;
+    }
+
+    ViewData["Title"] = SharedLocalizer["Comics"];
+    ViewData["Description"] = SharedLocalizer["Manage Comic Strips"];
+    ViewData["Url"] = ViewBag.BaseUrl + Url.Action("index", "comics", new { area = "member" });
+}
+
+@section ComponentStyles {
+    <environment include="Development">
+        <link rel="stylesheet" href="~/css/_feature.css">
+        <link rel="stylesheet" href="~/css/comics.css">
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="~/css/comics.min.css" asp-append-version="true">
+    </environment>
+}
+
+@section Scripts {
+    <environment include="Development">
+        <script src="~/js/comics/comicscommon.js"></script>
+        <script src="~/js/comics/comicsdashboard.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/js/comics/comicsdashboard.min.js" asp-append-version="true"></script>
+    </environment>
+}
+
+@section TranslatedMessages {
+    <span class="msg" data-msg-id="msgUrlPlaceholder">@SharedLocalizer["placeholder message"]</span>
+}
+
+<div id="featurecontainer" class="col-12 container">
+    <input type="hidden" id="isajax" value="@isAjax.ToString().ToLower()" />
+    <input type="hidden" id="urls" value="urls"
+           data-url-list="@Url.Action("listbyme", "comics", new { area = "member" })" />
+
+    <div id="containerlist" class="row">
+        <div class="col-12 mb-2">
+            <h1><i class="fas fa-fw fa-grin-squint-tears" aria-hidden="true"></i> @ViewData["Title"]</h1>
+        </div>
+        <div class="col-12 mb-3">
+            @if (canInteract)
+            {
+                <div class="col-lg-12 mb-2 p-0 text-right">
+                    <a asp-area="member" asp-controller="comics" asp-action="add" class="btn btn-success">@SharedLocalizer["New Comic Strip"] <i class="fas fa-plus" aria-hidden="true"></i></a>
+                </div>
+            }
+            <div id="divList"></div>
+        </div>
+    </div>
+</div>

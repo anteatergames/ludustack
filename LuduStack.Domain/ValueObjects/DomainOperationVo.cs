@@ -10,8 +10,8 @@ namespace LuduStack.Domain.ValueObjects
 
         public DomainOperationVo(DomainActionPerformed action, T entity)
         {
-            this.Action = action;
-            this.Entity = entity;
+            Action = action;
+            Entity = entity;
         }
     }
 }

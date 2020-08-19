@@ -1,6 +1,5 @@
 ﻿@{
     var isAjax = ViewContext.HttpContext.Request.IsAjaxRequest();
-    var canInteract = User.Identity.IsAuthenticated;
 
     if (isAjax)
     {
@@ -43,7 +42,6 @@
 
 <div id="featurecontainer" class="col-12">
     <input type="hidden" id="isajax" value="@isAjax.ToString().ToLower()" />
-    <input type="hidden" id="caninteract" value="@canInteract.ToString().ToLower()" />
     <input type="hidden" id="studyProfile" value="@studyProfile" />
     <input type="hidden" id="urls" value="urls"
            data-url-listcourses="@Url.Action("list", "course", new { area = "learn" })"

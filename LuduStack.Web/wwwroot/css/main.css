@@ -115,6 +115,7 @@ select.form-control {
     .blur-up.lazyloaded {
         -webkit-filter: blur(0);
         filter: blur(0);
+        transform: scale(1);
     }
 
 .btn-icon {

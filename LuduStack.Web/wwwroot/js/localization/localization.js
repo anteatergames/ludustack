@@ -19,6 +19,7 @@
     }
 
     function cacheObjsCommon() {
+        objs.canInteract = $(selectors.canInteract);
         objs.controlsidebar = $(selectors.controlsidebar);
         objs.container = $(selectors.container);
         objs.urls = $(selectors.urls);
@@ -38,7 +39,7 @@
 
         cacheObjs();
 
-        canInteract = objs.container.find(selectors.canInteract).val() === "true";
+        canInteract = objs.canInteract.val() === "true";
 
         var url = objs.urls.data('urlList');
         var urlMine = objs.urls.data('urlMine');

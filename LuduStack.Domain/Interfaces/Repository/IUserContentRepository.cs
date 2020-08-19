@@ -19,5 +19,11 @@ namespace LuduStack.Domain.Interfaces.Repository
         Task<bool> RemoveLike(Guid userId, Guid userContentId);
 
         Task<bool> AddComment(UserContentComment model);
+
+        IQueryable<UserContentRating> GetRatings(Guid id);
+
+        void UpdateRating(Guid id, UserContentRating rating);
+
+        void AddRating(Guid id, UserContentRating rating);
     }
 }

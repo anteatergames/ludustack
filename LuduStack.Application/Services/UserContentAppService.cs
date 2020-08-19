@@ -91,16 +91,17 @@ namespace LuduStack.Application.Services
                 UserContent model = userContentDomainService.GetById(id);
 
                 UserProfile authorProfile = GetCachedProfileByUserId(model.UserId);
+
+                UserContentViewModel vm = mapper.Map<UserContentViewModel>(model);
+
                 if (authorProfile == null)
                 {
-                    model.AuthorName = Constants.UnknownSoul;
+                    vm.AuthorName = Constants.UnknownSoul;
                 }
                 else
                 {
-                    model.AuthorName = authorProfile.Name;
+                    vm.AuthorName = authorProfile.Name;
                 }
-
-                UserContentViewModel vm = mapper.Map<UserContentViewModel>(model);
 
                 vm.HasFeaturedImage = !string.IsNullOrWhiteSpace(vm.FeaturedImage) && !vm.FeaturedImage.Contains(Constants.DefaultFeaturedImage);
 
@@ -183,6 +184,11 @@ namespace LuduStack.Application.Services
                 else
                 {
                     model = mapper.Map<UserContent>(viewModel);
+                }
+
+                if (model.PublishDate == DateTime.MinValue)
+                {
+                    model.PublishDate = model.CreateDate;
                 }
 
                 if (isNew)
@@ -276,6 +282,10 @@ namespace LuduStack.Application.Services
 
                 foreach (UserContentViewModel item in viewModels)
                 {
+                    item.CreateDate = item.CreateDate.ToLocalTime();
+
+                    item.PublishDate = item.PublishDate.ToLocalTime();
+
                     UserProfile authorProfile = GetCachedProfileByUserId(item.UserId);
                     if (authorProfile == null)
                     {
@@ -290,8 +300,6 @@ namespace LuduStack.Application.Services
 
                     item.IsArticle = !string.IsNullOrWhiteSpace(item.Title) && !string.IsNullOrWhiteSpace(item.Introduction);
 
-                    item.HasFeaturedImage = !string.IsNullOrWhiteSpace(item.FeaturedImage) && !item.FeaturedImage.Contains(Constants.DefaultFeaturedImage);
-
                     item.FeaturedMediaType = GetMediaType(item.FeaturedImage);
                     if (item.FeaturedMediaType == MediaType.Youtube)
                     {
@@ -300,10 +308,10 @@ namespace LuduStack.Application.Services
 
                     if (item.FeaturedMediaType != MediaType.Youtube)
                     {
-                        item.FeaturedImage = ContentHelper.SetFeaturedImage(item.UserId, item.FeaturedImage, ImageRenderType.Full);
-                        item.FeaturedImageResponsive = ContentHelper.SetFeaturedImage(item.UserId, item.FeaturedImage, ImageRenderType.Responsive);
-                        item.FeaturedImageLquip = ContentHelper.SetFeaturedImage(item.UserId, item.FeaturedImage, ImageRenderType.LowQuality);
+                        SetFeaturedImage(item);
                     }
+
+                    item.HasFeaturedImage = !string.IsNullOrWhiteSpace(item.FeaturedImage) && !item.FeaturedImage.Contains(Constants.DefaultFeaturedImage);
 
                     item.LikeCount = item.Likes.Count;
 
@@ -320,7 +328,7 @@ namespace LuduStack.Application.Services
             }
             catch (Exception ex)
             {
-                string msg = $"Unable to save get the Activity Feed.";
+                string msg = $"Unable to get the Activity Feed.";
                 logger.Log(LogLevel.Error, ex, msg);
                 throw;
             }
@@ -491,6 +499,24 @@ namespace LuduStack.Application.Services
             {
                 return new OperationResultVo(ex.Message);
             }
+        }
+
+        private static void SetFeaturedImage(UserContentViewModel item)
+        {
+            string selectedFeaturedImage = item.FeaturedImage;
+
+            if (string.IsNullOrWhiteSpace(item.FeaturedImage) && item.Images.Any(x => x.Language == item.Language))
+            {
+                selectedFeaturedImage = item.Images.FirstOrDefault(x => x.Language == item.Language)?.Image;
+            }
+            else if (string.IsNullOrWhiteSpace(item.FeaturedImage) && item.Images.Any())
+            {
+                selectedFeaturedImage = item.Images.FirstOrDefault()?.Image;
+            }
+
+            item.FeaturedImage = ContentHelper.SetFeaturedImage(item.UserId, selectedFeaturedImage, ImageRenderType.Full);
+            item.FeaturedImageResponsive = ContentHelper.SetFeaturedImage(item.UserId, selectedFeaturedImage, ImageRenderType.Responsive);
+            item.FeaturedImageLquip = ContentHelper.SetFeaturedImage(item.UserId, selectedFeaturedImage, ImageRenderType.LowQuality);
         }
     }
 }

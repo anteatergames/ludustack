@@ -272,7 +272,7 @@ namespace LuduStack.Web.Controllers
             if (images != null)
             {
                 string[] imgSplit = images.Split('|');
-                vm.Images = new List<string>();
+                vm.Images = new List<ImageListItemVo>();
 
                 for (int i = 0; i < imgSplit.Length; i++)
                 {
@@ -284,7 +284,11 @@ namespace LuduStack.Web.Controllers
                         }
                         else
                         {
-                            vm.Images.Add(imgSplit[i]);
+                            vm.Images.Add(new ImageListItemVo
+                            {
+                                Language = SupportedLanguage.English,
+                                Image = imgSplit[i]
+                            });
                         }
                     }
                 }

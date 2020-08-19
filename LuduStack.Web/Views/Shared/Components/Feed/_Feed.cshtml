@@ -7,6 +7,18 @@
 
 @foreach (var item in Model)
 {
+
+    var url = Url.Action("details", "content", new { area = string.Empty, id = item.Id });
+    var urlController = "content";
+    var urlArea = string.Empty;
+
+    @if (item.UserContentType == UserContentType.ComicStrip)
+    {
+        urlController = "comics";
+        urlArea = "member";
+        url = Url.Action("details", "comics", new { area = "member", id = item.Id });
+    }
+
     <div class="box box-widget box-content p-0 bg-white" data-id="@item.Id">
         <div class="box-header with-border">
             <div class="user-block">
@@ -17,20 +29,25 @@
 
                 @if (!String.IsNullOrWhiteSpace(item.Url))
                 {
-                    <a href="@item.Url" class="contenturl" aria-label="@item.CreateDate.ToString()">
-                        <span class="description">@item.CreateDate.ToString()</span>
+                    <a href="@item.Url" class="contenturl" aria-label="@item.PublishDate.ToString()">
+                        <span class="description">@item.PublishDate.ToString()</span>
                     </a>
                 }
                 else
                 {
-                    <a asp-protocol="@ViewData["protocol"]" asp-host="@ViewData["host"]" asp-area="" asp-controller="content" asp-action="details" asp-route-id="@item.Id" class="contenturl">
-                        <span class="description">@item.CreateDate.ToString()</span>
+                    <a asp-protocol="@ViewData["protocol"]" asp-host="@ViewData["host"]" asp-area="@urlArea" asp-controller="@urlController" asp-action="details" asp-route-id="@item.Id" class="contenturl">
+                        <span class="description">@item.PublishDate.ToString()</span>
                     </a>
                 }
             </div>
             <div class="box-tools">
                 @if (item.Permissions.CanDelete || item.Permissions.CanEdit)
                 {
+                    var editUrl = Url.Action("edit", "content", new { area = "", id = item.Id });
+                    @if (item.UserContentType == UserContentType.ComicStrip)
+                    {
+                        editUrl = Url.Action("edit", "comics", new { area = "member", id = item.Id });
+                    }
                     <div class="btn-group">
                         <button type="button" class="btn  btn-box-tool" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fas fa-ellipsis-v" aria-hidden="true"></i>
@@ -38,7 +55,7 @@
                         <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(-67px, 28px, 0px); top: 0px; left: 0px; will-change: transform;">
                             @if (item.Permissions.CanEdit)
                             {
-                                <a class="btnEditPost dropdown-item text-capitalize" asp-area="" asp-controller="content" asp-action="edit" asp-route-id="@item.Id">@SharedLocalizer["edit"]</a>
+                                <a class="btnEditPost dropdown-item text-capitalize" href="@editUrl">@SharedLocalizer["edit"]</a>
                             }
                             @if (item.Permissions.CanDelete)
                             {
@@ -71,8 +88,9 @@
 
             @if (item.HasFeaturedImage)
             {
+
                 <div class="col-12 text-center overflow-hidden rounded-0 featuredimage @item.FeaturedMediaType">
-                    <a asp-area="" asp-controller="content" asp-action="details" asp-route-id="@item.Id">
+                    <a href="@url">
                         @if (item.FeaturedMediaType == MediaType.Youtube)
                         {
                             <div class="videoWrapper" data-url="@item.FeaturedImage">
@@ -100,7 +118,7 @@
             @if (item.IsArticle)
             {
                 <div class="p-2 bottomcontent">
-                    <a asp-area="" asp-controller="content" asp-action="details" asp-route-id="@item.Id">
+                    <a href="@url">
                         <div class="row col-12 font-weight-bold text-uppercase">@item.Title</div>
                         <div class="row col-12">@Html.Raw(item.Introduction)</div>
                     </a>

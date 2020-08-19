@@ -1,7 +1,7 @@
 function initializeCookieConsent(message, linkText, url) {
     window.cookieconsent.initialise({
         cookie: {
-            name: '@cookieString'
+            name: '.LuduStack.Consent'
         },
         palette: {
             popup: {

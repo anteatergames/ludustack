@@ -18,6 +18,7 @@
     }
 
     function cacheObjs() {
+        objs.canInteract = $(selectors.canInteract);
         objs.container = $(selectors.container);
         objs.urls = $(selectors.urls);
         objs.containerDetails = $(selectors.containerDetails);
@@ -27,7 +28,7 @@
         setSelectors();
         cacheObjs();
 
-        canInteract = objs.container.find(selectors.canInteract).val();
+        canInteract = objs.canInteract.val() === 'true';
 
         bindAll();
 

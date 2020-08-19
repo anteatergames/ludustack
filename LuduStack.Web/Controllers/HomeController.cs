@@ -1,6 +1,5 @@
 ﻿using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels.Home;
-using LuduStack.Application.ViewModels.UserPreferences;
 using LuduStack.Domain.Core.Attributes;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Core.Extensions;
@@ -11,7 +10,6 @@ using LuduStack.Web.Exceptions;
 using LuduStack.Web.Extensions;
 using LuduStack.Web.Models;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
@@ -53,7 +51,7 @@ namespace LuduStack.Web.Controllers
 
             SetEmailConfirmed();
 
-            ViewBag.BuildNumber = Environment.GetEnvironmentVariable("LUDUSTACK_BUILD_NUMBER") ?? "no-buildnumber-env-var";
+            ViewBag.BuildNumber = Environment.GetEnvironmentVariable("LUDUSTACK_BUILD_NUMBER") ?? "0.0.0";
 
             return View();
         }
@@ -113,39 +111,20 @@ namespace LuduStack.Web.Controllers
         {
             PostFromHomeViewModel postModel = new PostFromHomeViewModel();
 
-            RequestCulture requestLanguage = Request.HttpContext.Features.Get<IRequestCultureFeature>().RequestCulture;
-
-            string lang = GetCookieValue(SessionValues.PostLanguage);
-            if (lang != null)
+            string postLanguageFromCookie = GetCookieValue(SessionValues.PostLanguage);
+            if (postLanguageFromCookie != null)
             {
-                SupportedLanguage langEnum = (SupportedLanguage)Enum.Parse(typeof(SupportedLanguage), lang);
+                SupportedLanguage langEnum = (SupportedLanguage)Enum.Parse(typeof(SupportedLanguage), postLanguageFromCookie);
                 postModel.DefaultLanguage = langEnum;
             }
             else
             {
-                if (!User.Identity.IsAuthenticated)
+                if (User.Identity.IsAuthenticated)
                 {
-                    SetAspNetCultureCookie(requestLanguage);
-                    postModel.DefaultLanguage = base.SetLanguageFromCulture(requestLanguage.UICulture.Name);
+                    SetCookieValue(SessionValues.PostLanguage, base.CurrentLocale, 7);
                 }
-                else
-                {
-                    UserPreferencesViewModel userPrefs = userPreferencesAppService.GetByUserId(CurrentUserId);
 
-                    if (userPrefs != null && userPrefs.Id != Guid.Empty)
-                    {
-                        SetAspNetCultureCookie(userPrefs.UiLanguage);
-
-                        SetCookieValue(SessionValues.PostLanguage, postModel.DefaultLanguage.ToString(), 7);
-
-                        postModel.DefaultLanguage = userPrefs.UiLanguage;
-                    }
-                    else
-                    {
-                        SetAspNetCultureCookie(requestLanguage);
-                        postModel.DefaultLanguage = base.SetLanguageFromCulture(requestLanguage.UICulture.Name);
-                    }
-                }
+                postModel.DefaultLanguage = base.SetLanguageFromCulture(base.CurrentLocale);
             }
 
             ViewBag.PostFromHome = postModel;

@@ -15,17 +15,17 @@ namespace LuduStack.Domain.Services
 
         public async Task<GamificationLevel> GenerateNew(Guid userId)
         {
-            var model = new GamificationLevel
+            GamificationLevel model = new GamificationLevel
             {
                 UserId = userId
             };
 
-            var all = await repository.GetAll();
+            System.Collections.Generic.IEnumerable<GamificationLevel> all = await repository.GetAll();
 
-            var maxNumber = all.Max(x => x.Number);
+            int maxNumber = all.Max(x => x.Number);
             model.Number = maxNumber + 1;
 
-            var maxXp = all.Max(x => x.XpToAchieve);
+            int maxXp = all.Max(x => x.XpToAchieve);
             model.XpToAchieve = maxXp * 2;
 
             return model;
@@ -33,10 +33,10 @@ namespace LuduStack.Domain.Services
 
         public async Task<bool> ValidateXp(int xpToAchieve, Guid id)
         {
-            var all = await repository.GetAll();
+            System.Collections.Generic.IEnumerable<GamificationLevel> all = await repository.GetAll();
 
-            var maxXp = all.Max(x => x.XpToAchieve);
-            var maxId = all.FirstOrDefault(x => x.XpToAchieve == maxXp)?.Id;
+            int maxXp = all.Max(x => x.XpToAchieve);
+            Guid? maxId = all.FirstOrDefault(x => x.XpToAchieve == maxXp)?.Id;
 
             if (id == Guid.Empty)
             {

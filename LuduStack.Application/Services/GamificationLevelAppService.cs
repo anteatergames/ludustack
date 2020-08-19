@@ -1,14 +1,9 @@
-﻿using AutoMapper;
-using LuduStack.Application.Interfaces;
+﻿using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels.Gamification;
-using LuduStack.Domain.Interfaces;
-using LuduStack.Domain.Interfaces.Infrastructure;
 using LuduStack.Domain.Interfaces.Services;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace LuduStack.Application.Services

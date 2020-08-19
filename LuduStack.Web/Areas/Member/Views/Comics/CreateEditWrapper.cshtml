@@ -1,0 +1,48 @@
+﻿@model ComicStripViewModel
+@{
+    var isAjax = ViewContext.HttpContext.Request.IsAjaxRequest();
+    var canInteract = User.Identity.IsAuthenticated;
+}
+
+@section ComponentStyles {
+
+    <environment include="Development">
+        <link rel="stylesheet" href="~/lib/tempusdominus/css/tempusdominus-bootstrap-4.css" />
+        <link rel="stylesheet" href="~/lib/cropperjs/cropper.css" />
+        <link rel="stylesheet" href="~/css/comics.css">
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="~/lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" />
+        <link rel="stylesheet" href="~/lib/cropperjs/cropper.min.css" />
+        <link rel="stylesheet" href="~/css/comics.min.css" asp-append-version="true">
+    </environment>
+}
+
+@section Scripts {
+
+    <environment include="Development">
+        <script src="~/lib/moment/moment-with-locales.js"></script>
+        <script src="~/lib/tempusdominus/js/tempusdominus-bootstrap-4.js"></script>
+        <script src="~/lib/cropperjs/cropper.js"></script>
+        <script src="~/js/common-edit.js"></script>
+        <script src="~/js/comics/comicscommon.js"></script>
+        <script src="~/js/comics/comicsedit.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/lib/moment/moment-with-locales.min.js"></script>
+        <script src="~/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+        <script src="~/lib/cropperjs/cropper.min.js"></script>
+        <script src="~/js/comics/comicsedit.min.js" asp-append-version="true"></script>
+    </environment>
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+<input type="hidden" id="urls" value="urls"
+       data-url-image="@Constants.DefaultImagePlaceholder" />
+
+<section class="content container">
+    <div id="featurecontainer" class="col">
+        <partial name="_CreateEdit" model="Model" />
+    </div>
+</section>

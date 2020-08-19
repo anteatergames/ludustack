@@ -23,7 +23,7 @@ namespace LuduStack.Web.Controllers
             {
                 OperationResultVo<string> castRestult = result as OperationResultVo<string>;
 
-                var url = castRestult.Value;
+                string url = castRestult.Value;
 
                 url = PrepareUrl(url, source);
 

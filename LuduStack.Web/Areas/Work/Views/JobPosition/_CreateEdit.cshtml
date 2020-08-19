@@ -1,10 +1,9 @@
 ﻿@model JobPositionViewModel
 
 @{
-    var isAjax = ViewContext.HttpContext.Request.IsAjaxRequest();
-    var canInteract = User.Identity.IsAuthenticated;
-
     ViewData["Title"] = SharedLocalizer["{0} Job Position", (Model.Id == Guid.Empty ? "New" : "Edit")];
+
+    var isAjax = ViewContext.HttpContext.Request.IsAjaxRequest();
 }
 
 @if (!isAjax)
@@ -33,7 +32,6 @@ else
 </div>
 <div class="box bg-white">
     <form id="frmJobPositionSave" asp-controller="jobposition" asp-action="save" method="post">
-        <input type="hidden" id="caninteract" value="@canInteract.ToString().ToLower()" />
         <input type="hidden" asp-for="Id" />
         <input type="hidden" asp-for="UserId" />
         <input type="hidden" asp-for="CreateDate" />

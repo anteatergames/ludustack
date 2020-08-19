@@ -23,6 +23,7 @@
     }
 
     function cacheObjs() {
+        objs.canInteract = $(selectors.canInteract);
         objs.controlsidebar = $(selectors.controlsidebar);
         objs.container = $(selectors.container);
         objs.urls = $(selectors.urls);
@@ -43,12 +44,12 @@
         setSelectors();
         cacheObjs();
 
-        bindAll();
-
-        canInteract = objs.container.find(selectors.canInteract).val();
+        canInteract = objs.canInteract.val() === 'true';
         isNew = window.location.href.indexOf('add') > -1;
         isDetails = window.location.href.indexOf('details') > -1;
         isIndex = !isNew && !isDetails;
+
+        bindAll();
 
         if (isIndex) {
             var url = objs.urls.data('urlList');

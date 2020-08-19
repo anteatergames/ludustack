@@ -86,7 +86,7 @@ namespace LuduStack.Domain.Services
             Task<Giveaway> task = Task.Run(async () => await repository.GetById(giveawayId));
             Giveaway model = task.Result;
 
-            var copy = model.Copy();
+            Giveaway copy = model.Copy();
 
             copy.Id = Guid.Empty;
 
@@ -159,13 +159,13 @@ namespace LuduStack.Domain.Services
 
         public DomainOperationVo<int> DailyEntry(Guid giveawayId, Guid participantId)
         {
-            var existing = repository.GetParticipantById(giveawayId, participantId);
+            GiveawayParticipant existing = repository.GetParticipantById(giveawayId, participantId);
             if (existing == null)
             {
                 return new DomainOperationVo<int>(DomainActionPerformed.None, 0);
             }
 
-            var entryAlreadyExists = existing.Entries.Any(x => x.Type == GiveawayEntryType.Daily && x.Date.ToLocalTime().Date == DateTime.Today.ToLocalTime().Date);
+            bool entryAlreadyExists = existing.Entries.Any(x => x.Type == GiveawayEntryType.Daily && x.Date.ToLocalTime().Date == DateTime.Today.ToLocalTime().Date);
 
             if (entryAlreadyExists)
             {
@@ -181,7 +181,7 @@ namespace LuduStack.Domain.Services
 
             repository.UpdateParticipant(giveawayId, existing);
 
-            var countDailyEntries = existing.Entries.Where(x => x.Type == GiveawayEntryType.Daily).Sum(x => x.Points);
+            int countDailyEntries = existing.Entries.Where(x => x.Type == GiveawayEntryType.Daily).Sum(x => x.Points);
 
             return new DomainOperationVo<int>(DomainActionPerformed.Create, countDailyEntries);
         }
@@ -195,7 +195,7 @@ namespace LuduStack.Domain.Services
 
         public bool CheckParticipantByEmail(Guid giveawayId, string email)
         {
-            var guid = repository.CheckParticipantByEmail(giveawayId, email);
+            Guid guid = repository.CheckParticipantByEmail(giveawayId, email);
 
             return guid != default(Guid);
         }

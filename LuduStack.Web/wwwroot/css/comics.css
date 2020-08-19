@@ -1,0 +1,14 @@
+﻿.dropzone {
+    min-height: 150px;
+    border: 0;
+    background: white;
+    padding: 0;
+}
+
+    .dropzone .dz-message {
+        display: none;
+    }
+
+.rating-disabled .rating-input, .rating-disabled .rating-stars {
+    cursor: inherit !important;
+}

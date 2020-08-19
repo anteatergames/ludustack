@@ -4,28 +4,28 @@ namespace LuduStack.Domain.Core.Enums
 {
     public enum SupportedLanguage
     {
-        [UiInfo(Culture = "en-US")]
+        [UiInfo(Locale = "en-US")]
         English = 1,
 
-        [UiInfo(Culture = "pt-BR")]
+        [UiInfo(Locale = "pt-BR")]
         Portuguese = 2,
 
-        [UiInfo(Culture = "ru-RU")]
+        [UiInfo(Locale = "ru-RU")]
         Russian = 3,
 
-        [UiInfo(Culture = "es")]
+        [UiInfo(Locale = "es")]
         Spanish = 4,
 
-        [UiInfo(Culture = "bs")]
+        [UiInfo(Locale = "bs")]
         Bosnian = 5,
 
-        [UiInfo(Culture = "sr")]
+        [UiInfo(Locale = "sr")]
         Serbian = 6,
 
-        [UiInfo(Culture = "hr")]
+        [UiInfo(Locale = "hr")]
         Croatian = 7,
 
-        [UiInfo(Culture = "de")]
+        [UiInfo(Locale = "de")]
         German = 8
     }
 }

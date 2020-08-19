@@ -34,22 +34,16 @@ namespace LuduStack.Infra.Data.MongoDb.Repository.Base
 
         public virtual void Add(TEntity obj)
         {
-            if (obj.CreateDate == DateTime.MinValue)
-            {
-                obj.CreateDate = DateTime.Now;
-            }
+            SetDefaultDates(obj);
 
             Context.AddCommand(() => DbSet.InsertOneAsync(obj));
         }
 
         public virtual void AddDirectly(TEntity obj)
         {
-            if (obj.CreateDate == DateTime.MinValue)
-            {
-                obj.CreateDate = DateTime.Now;
-            }
+            SetDefaultDates(obj);
 
-            var task = DbSet.InsertOneAsync(obj);
+            DbSet.InsertOneAsync(obj);
         }
 
         public virtual async Task<TEntity> GetById(Guid id)
@@ -139,6 +133,19 @@ namespace LuduStack.Infra.Data.MongoDb.Repository.Base
             if (dispose)
             {
                 Context?.Dispose();
+            }
+        }
+
+        private static void SetDefaultDates(TEntity obj)
+        {
+            if (obj.CreateDate == DateTime.MinValue)
+            {
+                obj.CreateDate = DateTime.Now;
+
+                if (obj.PublishDate == DateTime.MinValue)
+                {
+                    obj.PublishDate = obj.CreateDate;
+                }
             }
         }
     }

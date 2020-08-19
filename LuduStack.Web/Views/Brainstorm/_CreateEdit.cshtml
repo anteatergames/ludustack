@@ -31,7 +31,6 @@
     <h1>@ViewData["Title"]</h1>
     <div class="box bg-white">
         <form id="frmBrainstormIdeaSave" asp-controller="brainstorm" asp-action="save" method="post">
-            <input type="hidden" id="caninteract" value="@canInteract.ToString().ToLower()" />
             <input type="hidden" asp-for="Id" />
             <input type="hidden" asp-for="UserId" />
             <input type="hidden" asp-for="CreateDate" />

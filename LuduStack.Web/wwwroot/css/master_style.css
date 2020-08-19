@@ -48,7 +48,7 @@ Body :		Poppins, sans-serif;
 -------------------------------------------------------------------*/
 
 html {
-    --border-radius:  8px;
+    --border-radius: 8px;
 }
 
 body {
@@ -808,7 +808,7 @@ ul.flexbox {
 }
 
 .card-title {
-    line-height: 1.5;
+    line-height: 1;
     margin-bottom: 0;
     padding: 0;
 }
@@ -1903,8 +1903,8 @@ button.btn.dropdown-toggle::after, .wysihtml5-toolbar .btn.dropdown-toggle::afte
 }
 
 .user-block img {
-    width: 40px;
-    height: 40px;
+    width: 43px;
+    height: 43px;
     float: left;
 }
 

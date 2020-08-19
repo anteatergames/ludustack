@@ -373,6 +373,32 @@
         });
     }
 
+    function post(url, data, options, callback) {
+        $.post(url, data).done(function (response) {
+            if (response.success === true) {
+                if (callback) {
+                    callback(response);
+                }
+
+                if (options !== undefined && options.showSuccessMessage === true) {
+                    ALERTSYSTEM.ShowSuccessMessage(response.message, function () {
+                        if (response.url) {
+                            window.location = response.url;
+                        }
+                    });
+                }
+                else {
+                    if (response.url) {
+                        window.location = response.url;
+                    }
+                }
+            }
+            else {
+                ALERTSYSTEM.ShowWarningMessage(response.message);
+            }
+        });
+    }
+
     function deleteEntity(btn, callback) {
         var url = btn.data('url');
 
@@ -449,6 +475,39 @@
         return objs.locale.val();
     }
 
+    function getSelectedFileUrl(files, done) {
+        if (files && files.length > 0) {
+            file = files[0];
+
+            var reader;
+            var file;
+
+            if (files && files.length > 0) {
+                file = files[0];
+
+                if (URL) {
+                    done(URL.createObjectURL(file));
+                } else if (FileReader) {
+                    reader = new FileReader();
+                    reader.onloadend = function (e2) {
+                        done(reader.result);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            }
+        }
+    }
+
+    function dataURItoBlob(dataURI) {
+        var byteString = atob(dataURI.split(',')[1]);
+        var ab = new ArrayBuffer(byteString.length);
+        var ia = new Uint8Array(ab);
+        for (var i = 0; i < byteString.length; i++) {
+            ia[i] = byteString.charCodeAt(i);
+        }
+        return new Blob([ab], { type: 'image/jpeg' });
+    }
+
     return {
         Init: init,
         GetLocale: getLocale,
@@ -456,6 +515,7 @@
             SetStickyElement: setStickyElement
         },
         Ajax: {
+            Post: post,
             GetHtml: getHtml,
             LoadHtml: loadHtml,
             CallBackendAction: callBackendAction
@@ -481,6 +541,10 @@
             SpinnerTop: spinnerTop,
             SpinnerBtn: spinnerBtn,
             DoneBtn: doneBtn
+        },
+        Utils: {
+            DataURItoBlob: dataURItoBlob,
+            GetSelectedFileUrl: getSelectedFileUrl
         }
     };
 }());

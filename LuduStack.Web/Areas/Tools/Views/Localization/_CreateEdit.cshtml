@@ -38,7 +38,8 @@
                         @if (Model.Permissions.CanEdit)
                         {
                             <a asp-area="tools" asp-controller="localization" asp-action="export" asp-route-id="@Model.Id" class="dropdown-item">@SharedLocalizer["export"]</a>
-                            <a asp-area="tools" asp-controller="localization" asp-action="review" asp-route-id="@Model.Id" class="dropdown-item">@SharedLocalizer["review"]</a>}
+                            <a asp-area="tools" asp-controller="localization" asp-action="review" asp-route-id="@Model.Id" class="dropdown-item">@SharedLocalizer["review"]</a>
+                        }
 
                         @if (Model.Permissions.CanDelete)
                         {
@@ -52,7 +53,6 @@
 
     <div class="box-body p-0 px-md-2">
         <form id="frmTranslationSave" asp-area="tools" asp-controller="localization" asp-action="save" method="post">
-            <input type="hidden" id="caninteract" value="@canInteract.ToString().ToLower()" />
             <input type="hidden" asp-for="Id" />
             <input type="hidden" asp-for="UserId" />
             <input type="hidden" asp-for="CreateDate" />

@@ -47,6 +47,7 @@
     }
 
     function cacheObjects() {
+        objs.canInteract = $(selectors.canInteract);
         objs.container = $(selectors.container);
         objs.Id = $(selectors.Id);
         objs.divListTeams = $(selectors.divListTeams);
@@ -73,10 +74,11 @@
 
         isList = objs.Id.val() === undefined;
 
-        bindAll();
+        canInteract = objs.canInteract.val() === 'true';
         isAjax = $(selectors.container).find(selectors.isAjax).val();
         canInteract = $(selectors.container).find(selectors.caninteract).val();
-        objs.container.find(selectors.caninteract).val();
+
+        bindAll();
 
         if (isList) {
             loadTeams();
