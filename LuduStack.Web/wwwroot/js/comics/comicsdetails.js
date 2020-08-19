@@ -102,9 +102,14 @@
             emptyStar: '<i class="fas fa-gamepad tilt-20"></i>',
             starCaptions: ratingCaptions
         }).on('rating:hover', function (event, value, caption, target) {
+            console.log(event);
+            console.log(target);
+            console.log(value);
             var txt = caption.replace(new RegExp(/<span (.+)>(.+)<\/span>/, 'g'), '$2');
             objs.ratingCaption.html(txt);
         }).on('rating:hoverleave', function (event, target) {
+            console.log(event);
+            console.log(target);
             var stars = objs.userRating.data('ratedValue');
             objs.ratingCaption.html(stars);
         }).on('rating:change', selectors.rating, function (event, value, caption) {

@@ -176,6 +176,7 @@
                         }
                     },
                     error: function (response) {
+                        console.log(response);
                         imgFeaturedImage.src = initialUrl;
                     }
                 });

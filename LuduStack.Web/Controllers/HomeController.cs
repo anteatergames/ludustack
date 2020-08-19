@@ -121,7 +121,7 @@ namespace LuduStack.Web.Controllers
             {
                 if (User.Identity.IsAuthenticated)
                 {
-                    SetCookieValue(SessionValues.PostLanguage, base.CurrentLocale, 7); ;
+                    SetCookieValue(SessionValues.PostLanguage, base.CurrentLocale, 7);
                 }
 
                 postModel.DefaultLanguage = base.SetLanguageFromCulture(base.CurrentLocale);
