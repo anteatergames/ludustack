@@ -1,7 +1,6 @@
 ﻿@model CourseViewModel
 @{
     var isAjax = ViewContext.HttpContext.Request.IsAjaxRequest();
-    var canInteract = User.Identity.IsAuthenticated;
 }
 
 @section ComponentStyles {
@@ -25,8 +24,6 @@
 
 <input type="hidden" id="urls" value="urls"
        data-url-listplans="@Url.Action("listplans", "course", new { area = "learn", courseId = Model.Id })" />
-
-<input type="hidden" id="caninteract" value="@canInteract.ToString().ToLower()" />
 
 <section class="content container">
     <partial name="_CourseDetails" model="Model" />

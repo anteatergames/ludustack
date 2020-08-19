@@ -282,6 +282,11 @@ namespace LuduStack.Application.Services
 
                 foreach (UserContentViewModel item in viewModels)
                 {
+
+                    item.CreateDate = item.CreateDate.ToLocalTime();
+
+                    item.PublishDate = item.PublishDate.ToLocalTime();
+
                     UserProfile authorProfile = GetCachedProfileByUserId(item.UserId);
                     if (authorProfile == null)
                     {

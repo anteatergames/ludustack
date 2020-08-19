@@ -2,7 +2,6 @@
 
 @{
     Layout = null;
-    var canInteract = User.Identity.IsAuthenticated;
 
     ViewData["Title"] = SharedLocalizer["{0} Comics", (Model.Id == Guid.Empty ? "New" : "Edit")];
 
@@ -46,7 +45,6 @@
 
     <div class="box-body p-0 px-md-2">
         <form id="frmComicsSave" asp-area="member" asp-controller="comics" asp-action="save" method="post">
-            <input type="hidden" id="caninteract" value="@canInteract.ToString().ToLower()" />
             <input type="hidden" asp-for="Id" />
             <input type="hidden" asp-for="UserId" />
             <input type="hidden" asp-for="CreateDate" />

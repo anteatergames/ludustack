@@ -11,6 +11,8 @@ namespace LuduStack.Application.ViewModels.Content
 {
     public class UserContentViewModel : UserGeneratedCommentBaseViewModel, ICommentableItem
     {
+        public DateTime PublishDate { get; set; }
+
         [Display(Name = "Featured Image")]
         public string FeaturedImage { get; set; }
 

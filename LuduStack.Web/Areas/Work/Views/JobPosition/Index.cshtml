@@ -50,7 +50,6 @@
 <section class="content container">
     <div id="jobpositioncontainer" class="col-12">
         <input type="hidden" id="isajax" value="@isAjax.ToString().ToLower()" />
-        <input type="hidden" id="caninteract" value="@canInteract.ToString().ToLower()" />
         <input type="hidden" id="jobprofile" value="@jobProfile" />
         <input type="hidden" id="urls" value="urls" data-url-mine="@Url.Action("List", "JobPosition", new { area = "Work", employerId = ViewBag.CurrentUserId })" />
 

@@ -375,18 +375,26 @@
 
 
 
-    function post(url, data, callback) {
+    function post(url, data, options, callback) {
         $.post(url, data).done(function (response) {
             if (response.success === true) {
                 if (callback) {
                     callback(response);
                 }
 
-                ALERTSYSTEM.ShowSuccessMessage(response.message, function () {
+                if (options !== undefined && options.showSuccessMessage === true) {
+                    ALERTSYSTEM.ShowSuccessMessage(response.message, function () {
+                        if (response.url) {
+                            window.location = response.url;
+                        }
+                    });
+                }
+                else {
                     if (response.url) {
                         window.location = response.url;
                     }
-                });
+                }
+
             }
             else {
                 ALERTSYSTEM.ShowWarningMessage(response.message);

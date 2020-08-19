@@ -25,6 +25,7 @@
     string userId = UserManager.GetUserId(User);
 
     var isAdmin = (ViewData["user_is_admin"]?.ToString() ?? "false").ToLower();
+    var canInteract = User.Identity.IsAuthenticated;
 
     var consentFeature = Context.Features.Get<ITrackingConsentFeature>();
     var showCookieBanner = !consentFeature?.CanTrack ?? false;
@@ -731,6 +732,7 @@
     @await Html.PartialAsync("_TagManagerHead")
 </head>
 <body class="hold-transition skin-ludustack sidebar-mini">
+    <input type="hidden" id="caninteract" value="@canInteract.ToString().ToLower()" />
     <input type="hidden" id="locale" value="@ViewBag.Locale" />
     @await Html.PartialAsync("_TagManagerBody")
     <div id="translatedJavascriptMessages" class="d-none">

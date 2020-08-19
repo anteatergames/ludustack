@@ -10,6 +10,7 @@
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap-star-rating/css/star-rating.css">
         <link href="~/lib/bootstrap-star-rating/themes/krajee-fas/theme.css" media="all" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" href="~/css/comics.css"/>
     </environment>
     <environment exclude="Development">
         <link rel="stylesheet" href="~/lib/bootstrap-star-rating/css/star-rating.min.css">
@@ -35,26 +36,17 @@
     <script type="application/ld+json">
         {
         "@@context":"http://schema.org",
-        "@@type":"SocialMediaPosting",
+        "@@type":"ComicSeries",
         "@@id":"@(ViewData["Url"])",
-        "headline":"@(JavaScriptEncoder.Default.Encode(Model.Title))",
+        "name": "@(JavaScriptEncoder.Default.Encode(Model.Title))",
+        "description":"@(JavaScriptEncoder.Default.Encode(Model.Content))",
         "image": "@(ViewBag.BaseUrl + Model.FeaturedImage)",
-        "datePublished": "@Model.CreateDate.ToString("yyyy-MM-dd")",
+        "datePublished": "@Model.PublishDate.ToString("yyyy-MM-dd")",
         "issueNumber": "@Model.IssueNumber",
         "author":{
         "@@type":"Person",
         "name":"@Model.AuthorName",
         "url":"@(ViewBag.BaseUrl + "/profile/" + Model.UserId)"
-        },
-        "sharedContent":{
-        "@@type":"WebPage",
-        "headline":"@(JavaScriptEncoder.Default.Encode(Model.Content))",
-        "url":"@(ViewData["Url"])",
-        "image": "@Model.FeaturedImage",
-        "author":{
-        "@@type":"Person",
-        "name":"@Model.AuthorName"
-        }
         }
         }
     </script>
@@ -91,7 +83,7 @@
 
         <div class="box-body">
             <div class="row">
-                <div class="col-12 col-md-6">
+                <div class="col-12 col-lg mb-1">
                     <div class="user-block">
                         <a asp-area="" asp-controller="profile" asp-action="details" asp-route-id="@Model.UserId">
                             <img class="rounded-circle" src="@Model.AuthorPicture" alt="This is @Model.AuthorName">
@@ -104,8 +96,23 @@
                         </a>
                     </div>
                 </div>
-                <div class="col-12 col-md-6 text-right">
-                    <input id="txtRating" name="Rating" type="number" class="d-none comics-rating" step="1" value="@Model.TotalRating.ToString(new System.Globalization.CultureInfo("en-US"))" data-url="@Url.Action("rate", "comics", new { area = "member", id = Model.Id })">
+                <div class="col-12 col-lg text-center">
+                    <div class="row mx-0 no-gutters bg-dark text-white">
+                        <div class="col-12 col-md-6 px-0">
+                            <div class="col-12 small">average</div>
+                            <span class="h5">@Model.TotalRating.ToString(new System.Globalization.CultureInfo("en-US"))</span>
+                            <div class="col-12 col-md px-0">
+                                <input id="inputTotalRating" name="Rating" type="number" class="d-none comics-rating" step="1" value="@Model.TotalRating.ToString(new System.Globalization.CultureInfo("en-US"))">
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 px-0">
+                            <div class="col-12 small">yours</div>
+                            <span id="myrating" class="h5">@Model.CurrentUserRating.ToString(new System.Globalization.CultureInfo("en-US"))</span>
+                            <div class="col-12 col-md px-0">
+                                <input id="inputUserRating" name="Rating" type="number" class="d-none comics-rating" step="1" value="@Model.CurrentUserRating.ToString(new System.Globalization.CultureInfo("en-US"))" data-url="@Url.Action("rate", "comics", new { area = "member", id = Model.Id })">
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

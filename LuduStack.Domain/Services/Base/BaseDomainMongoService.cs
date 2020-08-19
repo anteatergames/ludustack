@@ -64,6 +64,13 @@ namespace LuduStack.Domain.Services
         {
             T obj = repository.GetById(id).Result;
 
+            if (obj != null)
+            {
+                obj.CreateDate = obj.CreateDate.ToLocalTime();
+
+                obj.PublishDate = obj.PublishDate.ToLocalTime(); 
+            }
+
             return obj;
         }
 

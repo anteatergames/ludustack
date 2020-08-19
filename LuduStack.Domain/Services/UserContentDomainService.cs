@@ -81,6 +81,8 @@ namespace LuduStack.Domain.Services
         {
             IQueryable<UserContent> allModels = repository.Get();
 
+            allModels = allModels.Where(x => x.PublishDate <= DateTime.Now);
+
             List<Guid> featuredIds = featuredContentRepository.Get(x => x.Active).Select(x => x.UserContentId).ToList();
 
             if (featuredIds.Any())
@@ -113,8 +115,7 @@ namespace LuduStack.Domain.Services
                 allModels = allModels.Where(x => x.CreateDate <= oldestDate && x.Id != oldestId);
             }
 
-            IOrderedQueryable<UserContent> orderedList = allModels
-                .OrderByDescending(x => x.CreateDate);
+            IOrderedQueryable<UserContent> orderedList = allModels.OrderByDescending(x => x.PublishDate);
 
             IQueryable<UserContent> finalList = orderedList.Take(count);
 
@@ -184,7 +185,7 @@ namespace LuduStack.Domain.Services
                 };
 
                 repository.AddRating(id, rating);
-               
+
 
                 return new DomainOperationVo<UserContentRating>(DomainActionPerformed.Create, rating);
             }

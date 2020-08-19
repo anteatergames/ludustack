@@ -3,7 +3,6 @@
     ViewData["Description"] = SharedLocalizer["Study gamedev or mentor students."];
 
     var isAjax = ViewContext.HttpContext.Request.IsAjaxRequest();
-    var canInteract = User.Identity.IsAuthenticated;
 
     if (isAjax)
     {
@@ -14,8 +13,6 @@
 @section Scripts {
     <script src="~/js/study/studyprofileselector.js"></script>
 }
-
-<input type="hidden" id="caninteract" value="@canInteract.ToString().ToLower()" />
 
 <div class="col-12 text-center">
     <h3>@SharedLocalizer["Choose your destiny!"]</h3>

@@ -53,7 +53,6 @@
 
     <div class="box-body p-0 px-md-2">
         <form id="frmTranslationSave" asp-area="tools" asp-controller="localization" asp-action="save" method="post">
-            <input type="hidden" id="caninteract" value="@canInteract.ToString().ToLower()" />
             <input type="hidden" asp-for="Id" />
             <input type="hidden" asp-for="UserId" />
             <input type="hidden" asp-for="CreateDate" />

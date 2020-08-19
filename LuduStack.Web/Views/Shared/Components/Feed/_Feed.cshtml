@@ -29,14 +29,14 @@
 
                 @if (!String.IsNullOrWhiteSpace(item.Url))
                 {
-                    <a href="@item.Url" class="contenturl" aria-label="@item.CreateDate.ToString()">
-                        <span class="description">@item.CreateDate.ToString()</span>
+                    <a href="@item.Url" class="contenturl" aria-label="@item.PublishDate.ToString()">
+                        <span class="description">@item.PublishDate.ToString()</span>
                     </a>
                 }
                 else
                 {
                     <a asp-protocol="@ViewData["protocol"]" asp-host="@ViewData["host"]" asp-area="@urlArea" asp-controller="@urlController" asp-action="details" asp-route-id="@item.Id" class="contenturl">
-                        <span class="description">@item.CreateDate.ToString()</span>
+                        <span class="description">@item.PublishDate.ToString()</span>
                     </a>
                 }
             </div>

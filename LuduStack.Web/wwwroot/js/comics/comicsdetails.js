@@ -4,24 +4,49 @@
     var selectors = {};
     var objs = {};
 
+    var canInteract = false;
+
+    var ratingCaptions = {
+        0.5: 'meh',
+        1: '1.0',
+        1.5: '1.5',
+        2: '2.0',
+        2.5: '2.5',
+        3: '3.0',
+        3.5: '3.5',
+        4: '4.0',
+        4.5: '4.5',
+        5: 'AWESOME!'
+    };
+
+
     function setSelectors() {
         selectors.container = '.container';
         selectors.canInteract = '#caninteract';
         selectors.urls = '#urls';
         selectors.btnLanguage = '.btn-changelanguage';
         selectors.imgMultilanguage = '.img-multilanguage';
-        selectors.rating = '.comics-rating';
+        selectors.totalRating = '#inputTotalRating';
+        selectors.userRating = '#inputUserRating';
+        selectors.ratingCaption = '#myrating';
     }
 
     function cacheObjs() {
         objs.container = $(selectors.container);
+        objs.canInteract = $(selectors.canInteract);
         objs.urls = $(selectors.urls);
         objs.imgMultilanguage = $(selectors.imgMultilanguage);
+        objs.totalRating = $(selectors.totalRating);
+        objs.userRating = $(selectors.userRating);
+        objs.ratingCaption = $(selectors.ratingCaption);
     }
 
     function init() {
         setSelectors();
         cacheObjs();
+
+
+        canInteract = objs.canInteract.val() === 'true';
 
         bindAll();
     }
@@ -50,30 +75,42 @@
     }
 
     function bindRatings() {
-        $(selectors.rating).rating({
+
+        objs.totalRating.rating({
             theme: 'krajee-fas',
             showClear: false,
-            size: 'md',
+            size: 'sm',
             animate: false,
             showCaption: false,
+            disabled: true,
+            readonly: true,
             step: 0.5,
             filledStar: '<i class="fas fa-gamepad tilt-20"></i>',
             emptyStar: '<i class="fas fa-gamepad tilt-20"></i>',
-            starCaptions: {
-                0.5: 'Padawan',
-                1: '1',
-                1.5: '1.5',
-                2: '2',
-                2.5: '2.5',
-                3: '3',
-                3.5: '3.5',
-                4: '4',
-                4.5: '4.5',
-                5: 'Jedi'
-            }
+            starCaptions: ratingCaptions
         });
 
-        objs.container.on('rating:change', selectors.rating, function (event, value, caption) {
+        objs.userRating.data('ratedValue', objs.userRating.val());
+
+        objs.userRating.rating({
+            theme: 'krajee-fas',
+            showClear: false,
+            size: 'sm',
+            animate: false,
+            showCaption: false,
+            disabled: !canInteract,
+            readonly: !canInteract,
+            step: 0.5,
+            filledStar: '<i class="fas fa-gamepad tilt-20"></i>',
+            emptyStar: '<i class="fas fa-gamepad tilt-20"></i>',
+            starCaptions: ratingCaptions
+        }).on('rating:hover', function (event, value, caption, target) {
+            var txt = caption.replace(new RegExp(/<span (.+)>(.+)<\/span>/, 'g'), '$2');
+            objs.ratingCaption.html(txt);
+        }).on('rating:hoverleave', function (event, target) {
+            var stars = objs.userRating.data('ratedValue');
+            objs.ratingCaption.html(stars);
+        }).on('rating:change', selectors.rating, function (event, value, caption) {
             var url = $(this).data('url');
 
             console.log(event);
@@ -82,6 +119,8 @@
             var data = { score: value };
 
             MAINMODULE.Ajax.Post(url, data);
+
+            objs.userRating.data('ratedValue', value);
         });
     }
 

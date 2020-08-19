@@ -8,8 +8,6 @@ namespace LuduStack.Domain.Models
 {
     public class UserContent : Entity
     {
-        public DateTime PublishDate { get; set; }
-
         public string FeaturedImage { get; set; }
 
         public List<ImageListItemVo> Images { get; set; }

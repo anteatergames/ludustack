@@ -8,3 +8,7 @@
     .dropzone .dz-message {
         display: none;
     }
+
+.rating-disabled .rating-input, .rating-disabled .rating-stars {
+    cursor: inherit !important;
+}
