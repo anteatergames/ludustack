@@ -10,7 +10,7 @@ using System.Text;
 
 namespace LuduStack.Application.ViewModels.Comics
 {
-    public class ComicStripViewModel : UserGeneratedBaseViewModel, ICommentableItem
+    public class ComicStripViewModel : UserGeneratedCommentBaseViewModel, ICommentableItem
     {
         [Required]
         public int IssueNumber { get; set; }
@@ -35,19 +35,7 @@ namespace LuduStack.Application.ViewModels.Comics
 
         public List<ImageListItemVo> Images { get; set; }
 
-        public SupportedLanguage Language { get; set; }
-
-        public List<Guid> Likes { get; set; }
-
-        public int LikeCount { get; set; }
-
-        #region ICommentableItem
-        public string Url { get; set; }
-
-        public List<CommentViewModel> Comments { get; set; }
-
-        public int CommentCount { get; set; }
-        #endregion ICommentableItem
+        public int RatingCount { get; set; }
 
         public decimal TotalRating { get; set; }
 

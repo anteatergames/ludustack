@@ -1,6 +1,7 @@
 ﻿using LuduStack.Application.Formatters;
 using LuduStack.Application.Helpers;
 using LuduStack.Application.Interfaces;
+using LuduStack.Application.ViewModels;
 using LuduStack.Application.ViewModels.Comics;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Interfaces.Services;
@@ -173,9 +174,15 @@ namespace LuduStack.Application.Services
 
                 var ratingCounts = existing.Ratings.Count > 0 ? existing.Ratings.Count : 1;
 
+                vm.RatingCount = existing.Ratings.Count();
                 vm.TotalRating = existing.Ratings.Sum(x => x.Score) / ratingCounts;
 
+                vm.LikeCount = vm.Likes.Count;
+                vm.CommentCount = vm.Comments.Count;
+
                 SetAuthorDetails(vm);
+
+                LoadAuthenticatedData(currentUserId, vm);
 
                 SetImagesToShow(vm, false);
 
@@ -288,6 +295,31 @@ namespace LuduStack.Application.Services
             }
 
             vm.Images = vm.Images.OrderBy(x => x.Language).ToList();
+        }
+
+
+        private void LoadAuthenticatedData(Guid currentUserId, UserGeneratedCommentBaseViewModel item)
+        {
+            if (currentUserId != Guid.Empty)
+            {
+                item.CurrentUserLiked = item.Likes.Any(x => x == currentUserId);
+
+                foreach (CommentViewModel comment in item.Comments)
+                {
+                    UserProfile commenterProfile = GetCachedProfileByUserId(comment.UserId);
+                    if (commenterProfile == null)
+                    {
+                        comment.AuthorName = Constants.UnknownSoul;
+                    }
+                    else
+                    {
+                        comment.AuthorName = commenterProfile.Name;
+                    }
+
+                    comment.AuthorPicture = UrlFormatter.ProfileImage(comment.UserId);
+                    comment.Text = string.IsNullOrWhiteSpace(comment.Text) ? Constants.SoundOfSilence : comment.Text;
+                }
+            }
         }
     }
 }

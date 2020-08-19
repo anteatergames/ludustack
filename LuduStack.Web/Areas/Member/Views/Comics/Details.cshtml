@@ -10,7 +10,7 @@
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap-star-rating/css/star-rating.css">
         <link href="~/lib/bootstrap-star-rating/themes/krajee-fas/theme.css" media="all" rel="stylesheet" type="text/css" />
-        <link rel="stylesheet" href="~/css/comics.css"/>
+        <link rel="stylesheet" href="~/css/comics.css" />
     </environment>
     <environment exclude="Development">
         <link rel="stylesheet" href="~/lib/bootstrap-star-rating/css/star-rating.min.css">
@@ -76,13 +76,37 @@
         {
             var image = Model.Images.ElementAt(i);
 
-            <div class="box-body text-center overflow-hidden square-bottom px-0 img-multilanguage@(image.Image.Equals(Model.FeaturedImage) ? string.Empty : " d-none") @(String.Format("img-{0}", image.Language.ToString().ToLower()))">
+            <div class="square-bottom text-center overflow-hidden px-0 img-multilanguage@(image.Image.Equals(Model.FeaturedImage) ? string.Empty : " d-none") @(String.Format("img-{0}", image.Language.ToString().ToLower())) @(Model.Images.Count == 1 ? string.Empty : "square-top")">
                 <img data-src="@image.Image" src="@image.ImageLquip" class="img-fluid lazyload blur-up" style="width:100%" alt="@(String.IsNullOrWhiteSpace(Model.Title) ? Model.Content : Model.Title)" />
             </div>
         }
 
-        <div class="box-body">
+        <div class="box-body mt-n4">
             <div class="row">
+                <div class="col-12 col-lg text-center">
+                    <div class="row mx-0 no-gutters bg-dark text-white">
+                        <div class="col-12 col-sm-6 px-0">
+                            <div class="col-12 small">
+                                @SharedLocalizer["average of {0}", Model.RatingCount]
+                            </div>
+                            <span class="h5">@Model.TotalRating.ToString(new System.Globalization.CultureInfo("en-US"))</span>
+                            <div class="col-12 col-md px-0">
+                                <input id="inputTotalRating" name="Rating" type="number" class="d-none comics-rating" step="1" value="@Model.TotalRating.ToString(new System.Globalization.CultureInfo("en-US"))">
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-6 px-0">
+                            <div class="col-12 small">
+                                @SharedLocalizer["yours"]
+                            </div>
+                            <span id="myrating" class="h5">@Model.CurrentUserRating.ToString(new System.Globalization.CultureInfo("en-US"))</span>
+                            <div class="col-12 col-md px-0">
+                                <input id="inputUserRating" name="Rating" type="number" class="d-none comics-rating" step="1" value="@Model.CurrentUserRating.ToString(new System.Globalization.CultureInfo("en-US"))" data-url="@Url.Action("rate", "comics", new { area = "member", id = Model.Id })">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-1">
                 <div class="col-12 col-lg mb-1">
                     <div class="user-block">
                         <a asp-area="" asp-controller="profile" asp-action="details" asp-route-id="@Model.UserId">
@@ -94,24 +118,6 @@
                         <a asp-area="member" asp-controller="comics" asp-action="details" asp-route-id="@Model.Id">
                             <span class="description">@Model.CreateDate.ToString()</span>
                         </a>
-                    </div>
-                </div>
-                <div class="col-12 col-lg text-center">
-                    <div class="row mx-0 no-gutters bg-dark text-white">
-                        <div class="col-12 col-md-6 px-0">
-                            <div class="col-12 small">average</div>
-                            <span class="h5">@Model.TotalRating.ToString(new System.Globalization.CultureInfo("en-US"))</span>
-                            <div class="col-12 col-md px-0">
-                                <input id="inputTotalRating" name="Rating" type="number" class="d-none comics-rating" step="1" value="@Model.TotalRating.ToString(new System.Globalization.CultureInfo("en-US"))">
-                            </div>
-                        </div>
-                        <div class="col-12 col-md-6 px-0">
-                            <div class="col-12 small">yours</div>
-                            <span id="myrating" class="h5">@Model.CurrentUserRating.ToString(new System.Globalization.CultureInfo("en-US"))</span>
-                            <div class="col-12 col-md px-0">
-                                <input id="inputUserRating" name="Rating" type="number" class="d-none comics-rating" step="1" value="@Model.CurrentUserRating.ToString(new System.Globalization.CultureInfo("en-US"))" data-url="@Url.Action("rate", "comics", new { area = "member", id = Model.Id })">
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>

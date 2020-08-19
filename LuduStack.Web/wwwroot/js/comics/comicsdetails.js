@@ -45,7 +45,6 @@
         setSelectors();
         cacheObjs();
 
-
         canInteract = objs.canInteract.val() === 'true';
 
         bindAll();

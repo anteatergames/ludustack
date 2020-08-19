@@ -14,34 +14,6 @@
     var isDetails = false;
     var isCompany = false;
 
-    function init() {
-        setSelectors();
-        cacheObjects();
-
-        bindAll();
-
-        canInteract = objs.container.find(selectors.canInteract).val();
-        isCompany = objs.container.find(selectors.jobProfile).val() === 'Company';
-        isNew = window.location.href.indexOf('add') > -1;
-        isDetails = window.location.href.indexOf('details') > -1;
-        isIndex = !isNew && !isDetails;
-
-        if (isIndex) {
-            if (isCompany) {
-                var url = objs.urls.data('urlMine');
-                loadJobPositions(false, url);
-                loadMyJobPositionStats(urlMyPositionStats);
-            }
-            else {
-                loadJobPositions(false, urlListDefault);
-                loadMyApplications(urlMyApplications);
-            }
-        }
-        else if (isDetails) {
-            bindDetails();
-        }
-    }
-
     function setSelectors() {
         selectors.controlsidebar = '.control-sidebar';
         selectors.canInteract = '#caninteract';
@@ -74,6 +46,7 @@
     }
 
     function cacheObjects() {
+        objs.canInteract = $(selectors.canInteract);
         objs.controlsidebar = $(selectors.controlsidebar);
         objs.container = $(selectors.container);
         objs.urls = $(selectors.urls);
@@ -95,6 +68,34 @@
         cacheObjectsCreateEdit();
 
         $(selectors.datepicker).datepicker();
+    }
+
+    function init() {
+        setSelectors();
+        cacheObjects();
+
+        canInteract = objs.canInteract.val() === 'true';
+        isCompany = objs.container.find(selectors.jobProfile).val() === 'Company';
+        isNew = window.location.href.indexOf('add') > -1;
+        isDetails = window.location.href.indexOf('details') > -1;
+        isIndex = !isNew && !isDetails;
+
+        bindAll();
+
+        if (isIndex) {
+            if (isCompany) {
+                var url = objs.urls.data('urlMine');
+                loadJobPositions(false, url);
+                loadMyJobPositionStats(urlMyPositionStats);
+            }
+            else {
+                loadJobPositions(false, urlListDefault);
+                loadMyApplications(urlMyApplications);
+            }
+        }
+        else if (isDetails) {
+            bindDetails();
+        }
     }
 
     function bindAll() {

@@ -35,6 +35,7 @@
     }
 
     function cacheObjsCreateEdit() {
+        objs.canInteract = $(selectors.canInteract);
         objs.controlsidebar = $(selectors.controlsidebar);
         objs.container = $(selectors.container);
         objs.urls = $(selectors.urls);
@@ -74,7 +75,7 @@
 
         setCreateEdit();
 
-        canInteract = objs.container.find(selectors.canInteract).val();
+        canInteract = objs.canInteract.val() === 'true';
     }
 
     function bindBtnSaveForm() {
