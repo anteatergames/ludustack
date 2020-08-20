@@ -62,7 +62,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo<Guid> Save(Guid currentUserId, ComicStripViewModel vm)
+        public OperationResultVo<Guid> Save(Guid currentUserId, ComicStripViewModel viewModel)
         {
             int pointsEarned = 0;
 
@@ -70,24 +70,22 @@ namespace LuduStack.Application.Services
             {
                 UserContent model;
 
-                UserContent existing = userContentDomainService.GetById(vm.Id);
+                UserContent existing = userContentDomainService.GetById(viewModel.Id);
                 if (existing != null)
                 {
-                    model = mapper.Map(vm, existing);
+                    model = mapper.Map(viewModel, existing);
                 }
                 else
                 {
-                    model = mapper.Map<UserContent>(vm);
+                    model = mapper.Map<UserContent>(viewModel);
                 }
 
                 FormatImagesToSave(model);
 
-                if (vm.Id == Guid.Empty)
+                if (viewModel.Id == Guid.Empty)
                 {
                     userContentDomainService.Add(model);
-                    vm.Id = model.Id;
-
-                    //pointsEarned += gamificationDomainService.ProcessAction(currentUserId, PlatformAction.ComicsAdd);
+                    viewModel.Id = model.Id;
                 }
                 else
                 {
@@ -96,7 +94,7 @@ namespace LuduStack.Application.Services
 
                 unitOfWork.Commit();
 
-                vm.Id = model.Id;
+                viewModel.Id = model.Id;
 
                 return new OperationResultVo<Guid>(model.Id, pointsEarned);
             }
@@ -173,7 +171,7 @@ namespace LuduStack.Application.Services
 
                 int ratingCounts = existing.Ratings.Count > 0 ? existing.Ratings.Count : 1;
 
-                vm.RatingCount = existing.Ratings.Count();
+                vm.RatingCount = existing.Ratings.Count;
                 vm.TotalRating = existing.Ratings.Sum(x => x.Score) / ratingCounts;
 
                 vm.LikeCount = vm.Likes.Count;
@@ -223,7 +221,14 @@ namespace LuduStack.Application.Services
 
                 unitOfWork.Commit();
 
-                return new OperationResultVo(true, "Comics rated!");
+                if (domainActionPerformed.Action == DomainActionPerformed.Update)
+                {
+                    return new OperationResultVo(true, "Your rate was updated!");
+                }
+                else
+                {
+                    return new OperationResultVo(true, "Comics rated!");
+                }
             }
             catch (Exception ex)
             {

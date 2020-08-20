@@ -156,3 +156,8 @@
 .swal2-actions {
     width: inherit !important;
 }
+
+.card-img, .card-img-top {
+    border-top-left-radius: var(--border-radius);
+    border-top-right-radius: var(--border-radius);
+}
