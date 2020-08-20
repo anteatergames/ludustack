@@ -40,7 +40,7 @@ namespace LuduStack.Tests.Domain
         }
 
         [Theory]
-        [Trait("Method", "GetAll")]
+        [Trait("Method", "GetById")]
         [AutoSubstituteData]
         public async Task ShouldReturnSingleGame(IGameRepository repository)
         {
