@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace LuduStack.Domain.Services
 {
@@ -76,7 +77,14 @@ namespace LuduStack.Domain.Services
 
         public virtual IEnumerable<T> GetByUserId(Guid userId)
         {
-            IEnumerable<T> obj = repository.GetByUserId(userId).Result;
+            var task = repository.GetByUserId(userId);
+
+            if (task.Status == TaskStatus.Faulted)
+            {
+                return new List<T>();
+            }
+
+            IEnumerable<T> obj = task.Result;
 
             return obj.ToList();
         }
