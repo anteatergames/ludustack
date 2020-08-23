@@ -197,7 +197,7 @@ namespace LuduStack.Domain.Services
         {
             Guid guid = repository.CheckParticipantByEmail(giveawayId, email);
 
-            return guid != default(Guid);
+            return guid != default;
         }
 
         public void UpdateParticipantShortUrl(Guid giveawayId, string email, string shortUrl)
@@ -327,11 +327,11 @@ namespace LuduStack.Domain.Services
 
                 //int timeZoneOffset = int.Parse(model.TimeZone ?? "0");
 
-                model.StartDate = model.StartDate.ToLocalTime();//.AddHours(timeZoneOffset);
+                model.StartDate = model.StartDate.ToLocalTime(); //.AddHours(timeZoneOffset);
 
                 if (model.EndDate.HasValue)
                 {
-                    model.EndDate = model.EndDate.Value.ToLocalTime();//.AddHours(timeZoneOffset);
+                    model.EndDate = model.EndDate.Value.ToLocalTime(); //.AddHours(timeZoneOffset);
                 }
 
                 GiveawayStatus effectiveStatus = model.Status;

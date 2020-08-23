@@ -218,7 +218,7 @@ namespace LuduStack.Domain.Services
 
         public UserConnectionVo GetConnectionDetails(Guid originalUserId, Guid connectedUserId)
         {
-            List<UserConnection> connections = userConnectionRepository.Get(x => x.UserId == originalUserId && x.TargetUserId == connectedUserId || x.UserId == connectedUserId && x.TargetUserId == originalUserId).ToList();
+            List<UserConnection> connections = userConnectionRepository.Get(x => (x.UserId == originalUserId && x.TargetUserId == connectedUserId) || (x.UserId == connectedUserId && x.TargetUserId == originalUserId)).ToList();
 
             bool fromUser = connections.Any(x => x.UserId == originalUserId);
             bool toUser = connections.Any(x => x.TargetUserId == originalUserId);
