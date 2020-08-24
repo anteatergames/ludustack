@@ -12,7 +12,7 @@ pr:
 pool:
   name: Azure Pipelines
   vmImage: 'ubuntu-16.04'
-  
+
 variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
@@ -28,18 +28,18 @@ steps:
         configPath: '.releaserc'
         cwd: '$(Build.Repository.LocalPath)'
         versionOverwrite: 'semantic-release@17'
-    
+
     - task: gittagloader@1
       inputs:
         filter: 'Latest'
         lines: '100'
       condition: and(succeeded(), eq(variables.isMain, true))
-    
+
     - bash: |
         echo "Latest Tag Found: $(Tag.Label)"
       displayName: Echo Tag
       condition: and(succeeded(), eq(variables.isMain, true))
-    
+
     - bash: |
         echo "##vso[build.updatebuildnumber]$(Tag.Label)"
       name: SetReleaseBuildNumber
