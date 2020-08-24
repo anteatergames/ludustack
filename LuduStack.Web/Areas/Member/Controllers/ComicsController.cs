@@ -1,13 +1,16 @@
 ﻿using LuduStack.Application.Interfaces;
+using LuduStack.Application.Requests.Notification;
 using LuduStack.Application.ViewModels.Comics;
 using LuduStack.Domain.ValueObjects;
 using LuduStack.Web.Areas.Member.Controllers.Base;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace LuduStack.Web.Areas.Member.Controllers
 {
@@ -40,7 +43,7 @@ namespace LuduStack.Web.Areas.Member.Controllers
 
         [AllowAnonymous]
         [Route("{id:guid}")]
-        public IActionResult Details(Guid id, string referralCode, string source)
+        public IActionResult Details(Guid id)
         {
             OperationResultVo result = comicsAppService.GetForDetails(CurrentUserId, id);
 
@@ -142,7 +145,7 @@ namespace LuduStack.Web.Areas.Member.Controllers
                 {
                     string url = Url.Action("edit", "comics", new { area = "member", id = vm.Id, pointsEarned = saveResult.PointsEarned });
 
-                    if (isNew)
+                    if (isNew && EnvName.Equals(ConstantHelper.ProductionEnvironmentName))
                     {
                         NotificationSender.SendTeamNotificationAsync("New Comic Strip created!");
                     }

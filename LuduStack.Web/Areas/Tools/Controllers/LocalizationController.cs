@@ -352,7 +352,10 @@ namespace LuduStack.Web.Areas.Tools.Controllers
                     {
                         url = Url.Action("edit", "localization", new { area = "tools", id = vm.Id, pointsEarned = saveResult.PointsEarned });
 
-                        NotificationSender.SendTeamNotificationAsync("New Localization Project created!");
+                        if (EnvName.Equals(ConstantHelper.ProductionEnvironmentName))
+                        {
+                            NotificationSender.SendTeamNotificationAsync("New Localization Project created!");
+                        }
                     }
 
                     return Json(new OperationResultRedirectVo<Guid>(saveResult, url));

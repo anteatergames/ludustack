@@ -1,4 +1,5 @@
-﻿using LuduStack.Domain.Core.Enums;
+﻿using LuduStack.Application.Requests.Notification;
+using LuduStack.Domain.Core.Enums;
 using LuduStack.Infra.CrossCutting.Identity;
 using LuduStack.Infra.CrossCutting.Identity.Model;
 using LuduStack.Infra.CrossCutting.Identity.Models;
@@ -9,6 +10,7 @@ using LuduStack.Web.Middlewares;
 using LuduStack.Web.ModelBinders;
 using LuduStack.Web.RewriterRules;
 using LuduStack.Web.Services;
+using MediatR;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Builder;
@@ -26,6 +28,7 @@ using Microsoft.Net.Http.Headers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using WebEssentials.AspNetCore.Pwa;
@@ -127,6 +130,8 @@ namespace LuduStack.Web
             {
                 myOptions.FacebookAppId = Configuration["Authentication:Facebook:AppId"];
             });
+
+            services.AddMediatR(Assembly.GetExecutingAssembly(), typeof(SendNotificationRequestHandler).GetTypeInfo().Assembly);
 
             // .NET Native DI Abstraction
             RegisterServices(services);

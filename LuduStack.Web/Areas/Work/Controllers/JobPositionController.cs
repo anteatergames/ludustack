@@ -288,7 +288,7 @@ namespace LuduStack.Web.Areas.Work.Controllers
 
                     string url = Url.Action("Details", "JobPosition", new { area = "Work", id = vm.Id, pointsEarned = saveResult.PointsEarned });
 
-                    if (isNew)
+                    if (isNew && EnvName.Equals(ConstantHelper.ProductionEnvironmentName))
                     {
                         NotificationSender.SendTeamNotificationAsync("New Job Position posted!");
                     }

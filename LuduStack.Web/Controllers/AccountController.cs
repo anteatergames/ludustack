@@ -131,7 +131,7 @@ namespace LuduStack.Web.Controllers
 
             string logMessage = String.Format("User {0} logged in.", model.UserName);
 
-            if (!model.UserName.Equals("programad"))
+            if (EnvName.Equals(ConstantHelper.ProductionEnvironmentName))
             {
                 await NotificationSender.SendTeamNotificationAsync(logMessage);
             }
@@ -295,7 +295,10 @@ namespace LuduStack.Web.Controllers
 
                     string logMessage = String.Format("User {0} created a new account with password.", model.UserName);
 
-                    await NotificationSender.SendTeamNotificationAsync(logMessage);
+                    if (EnvName.Equals(ConstantHelper.ProductionEnvironmentName))
+                    {
+                        await NotificationSender.SendTeamNotificationAsync(logMessage); 
+                    }
 
                     _logger.LogInformation(logMessage);
 
@@ -360,7 +363,10 @@ namespace LuduStack.Web.Controllers
                 {
                     string logMessage = String.Format("User {0} logged in with {1} provider.", existingUser.UserName, info.LoginProvider);
 
-                    await NotificationSender.SendTeamNotificationAsync(logMessage);
+                    if (EnvName.Equals(ConstantHelper.ProductionEnvironmentName))
+                    {
+                        await NotificationSender.SendTeamNotificationAsync(logMessage);
+                    }
 
                     _logger.LogInformation(logMessage);
 
@@ -496,7 +502,10 @@ namespace LuduStack.Web.Controllers
                 logMessage = String.Format("User {0} registered with a {1} account.", user.UserName, externalLoginInfo.LoginProvider);
             }
 
-            await NotificationSender.SendTeamNotificationAsync(logMessage);
+            if (EnvName.Equals(ConstantHelper.ProductionEnvironmentName))
+            {
+                await NotificationSender.SendTeamNotificationAsync(logMessage);
+            }
 
             _logger.LogInformation(logMessage);
 

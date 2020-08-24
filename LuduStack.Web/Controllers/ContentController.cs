@@ -38,10 +38,8 @@ namespace LuduStack.Web.Controllers
         }
 
         [Route("content/{id:guid}")]
-        public async Task<IActionResult> Details(Guid id, Guid notificationclicked)
+        public async Task<IActionResult> Details(Guid id)
         {
-            notificationAppService.MarkAsRead(notificationclicked);
-
             OperationResultVo<UserContentViewModel> serviceResult = userContentAppService.GetById(CurrentUserId, id);
 
             if (!serviceResult.Success)
@@ -58,9 +56,9 @@ namespace LuduStack.Web.Controllers
 
             if (vm.GameId.HasValue && vm.GameId.Value != Guid.Empty)
             {
-                OperationResultVo<Application.ViewModels.Game.GameViewModel> gameServiceResult = gameAppService.GetById(CurrentUserId, vm.GameId.Value);
+                OperationResultVo<GameViewModel> gameServiceResult = gameAppService.GetById(CurrentUserId, vm.GameId.Value);
 
-                Application.ViewModels.Game.GameViewModel game = gameServiceResult.Value;
+                GameViewModel game = gameServiceResult.Value;
 
                 vm.GameTitle = game.Title;
                 vm.GameThumbnail = UrlFormatter.Image(game.UserId, ImageType.GameThumbnail, game.ThumbnailUrl);
@@ -154,7 +152,7 @@ namespace LuduStack.Web.Controllers
 
                     string url = Url.Action("Index", "Home", new { area = string.Empty, id = vm.Id, pointsEarned = saveResult.PointsEarned });
 
-                    if (isNew)
+                    if (isNew && EnvName.Equals(ConstantHelper.ProductionEnvironmentName))
                     {
                         NotificationSender.SendTeamNotificationAsync("New complex post!");
                     }
@@ -209,7 +207,10 @@ namespace LuduStack.Web.Controllers
 
             NotifyFollowers(profile, vm.GameId, vm.Id);
 
-            NotificationSender.SendTeamNotificationAsync("New simple post!");
+            if (EnvName.Equals(ConstantHelper.ProductionEnvironmentName))
+            {
+                NotificationSender.SendTeamNotificationAsync("New simple post!"); 
+            }
 
             return Json(result);
         }
@@ -219,7 +220,7 @@ namespace LuduStack.Web.Controllers
         #region Content interactions
 
         [Route("content/like")]
-        public IActionResult LikeContent(Guid targetId)
+        public IActionResult LikeContent(Guid targetId, UserContentType contentType)
         {
             OperationResultVo response = userContentAppService.ContentLike(CurrentUserId, targetId);
 
@@ -230,6 +231,11 @@ namespace LuduStack.Web.Controllers
             string text = String.Format(SharedLocalizer["{0} liked your post"], myName);
 
             string url = Url.Action("Details", "Content", new { id = targetId });
+
+            if (contentType == UserContentType.ComicStrip)
+            {
+                url = Url.Action("Details", "Comics", new { area = "member", id = targetId });
+            }
 
             notificationAppService.Notify(CurrentUserId, content.Value.UserId, NotificationType.ContentLike, targetId, text, url);
 
@@ -260,11 +266,11 @@ namespace LuduStack.Web.Controllers
 
         #endregion Content interactions
 
-        public IActionResult Feed(Guid? gameId, Guid? userId, Guid? oldestId, DateTime? oldestDate, bool? articlesOnly)
+        public Task<IActionResult> Feed(Guid? gameId, Guid? userId, Guid? oldestId, DateTime? oldestDate, bool? articlesOnly)
         {
             ViewComponentResult component = ViewComponent("Feed", new { count = 10, gameId, userId, oldestId, oldestDate, articlesOnly });
 
-            return component;
+            return Task.FromResult((IActionResult)component);
         }
 
         private void SetContentImages(UserContentViewModel vm, string images)

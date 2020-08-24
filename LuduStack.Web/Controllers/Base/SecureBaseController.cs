@@ -1,6 +1,7 @@
 ﻿using LuduStack.Application;
 using LuduStack.Application.Formatters;
 using LuduStack.Application.Interfaces;
+using LuduStack.Application.Requests.Notification;
 using LuduStack.Application.ViewModels;
 using LuduStack.Application.ViewModels.User;
 using LuduStack.Application.ViewModels.UserPreferences;
@@ -11,6 +12,8 @@ using LuduStack.Infra.CrossCutting.Abstractions;
 using LuduStack.Infra.CrossCutting.Identity.Models;
 using LuduStack.Web.Enums;
 using LuduStack.Web.Services;
+using MediatR;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -24,31 +27,48 @@ namespace LuduStack.Web.Controllers.Base
 {
     public class SecureBaseController : BaseController
     {
+        private IServiceProvider services;
+        public IServiceProvider Services => services ?? (services = HttpContext?.RequestServices.GetService<IServiceProvider>());
+
+        private IWebHostEnvironment hostEnvironment;
+        public IWebHostEnvironment HostEnvironment => hostEnvironment ?? (hostEnvironment = Services.GetService<IWebHostEnvironment>());
+
         private INotificationSender notificationSender;
-        public INotificationSender NotificationSender => notificationSender ?? (notificationSender = HttpContext?.RequestServices.GetService<INotificationSender>());
+        public INotificationSender NotificationSender => notificationSender ?? (notificationSender = Services.GetService<INotificationSender>());
 
         private UserManager<ApplicationUser> _userManager;
-        public UserManager<ApplicationUser> UserManager => _userManager ?? (_userManager = HttpContext?.RequestServices.GetService<UserManager<ApplicationUser>>());
+        public UserManager<ApplicationUser> UserManager => _userManager ?? (_userManager = Services.GetService<UserManager<ApplicationUser>>());
 
         private IImageStorageService _imageStorageService;
-        public IImageStorageService ImageStorageService => _imageStorageService ?? (_imageStorageService = HttpContext?.RequestServices.GetService<IImageStorageService>());
+        public IImageStorageService ImageStorageService => _imageStorageService ?? (_imageStorageService = Services.GetService<IImageStorageService>());
 
         private ICookieMgrService _cookieMgrService;
-        public ICookieMgrService CookieMgrService => _cookieMgrService ?? (_cookieMgrService = HttpContext?.RequestServices.GetService<ICookieMgrService>());
+        public ICookieMgrService CookieMgrService => _cookieMgrService ?? (_cookieMgrService = Services.GetService<ICookieMgrService>());
 
         private IProfileAppService profileAppService;
-        public IProfileAppService ProfileAppService => profileAppService ?? (profileAppService = HttpContext?.RequestServices.GetService<IProfileAppService>());
+        public IProfileAppService ProfileAppService => profileAppService ?? (profileAppService = Services.GetService<IProfileAppService>());
 
         private IUserPreferencesAppService userPreferencesAppService;
-        public IUserPreferencesAppService UserPreferencesAppService => userPreferencesAppService ?? (userPreferencesAppService = HttpContext?.RequestServices.GetService<IUserPreferencesAppService>());
+
+        public IUserPreferencesAppService UserPreferencesAppService => userPreferencesAppService ?? (userPreferencesAppService = Services.GetService<IUserPreferencesAppService>());
 
         public Guid CurrentUserId { get; set; }
 
         public String CurrentLocale { get; set; }
 
-        public override void OnActionExecuting(ActionExecutingContext context)
+        public string EnvName { get; private set; }
+
+        public override Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            base.OnActionExecuting(context);
+            var notificationClicked = context.HttpContext.Request.Query["notificationclicked"].FirstOrDefault();
+            if (notificationClicked != null)
+            {
+                var notificationId = Guid.Parse(notificationClicked);
+
+                var mediator = Services.GetRequiredService<IMediator>();
+
+                Task.Run(async () => await mediator.Send(new SendNotificationRequest(notificationId)));
+            }
 
             if (User != null && User.Identity.IsAuthenticated)
             {
@@ -76,6 +96,10 @@ namespace LuduStack.Web.Controllers.Base
 
             CurrentLocale = GetAspNetCultureCookie();
             ViewBag.Locale = CurrentLocale;
+
+            EnvName = string.Format("env-{0}", HostEnvironment.EnvironmentName);
+
+            return base.OnActionExecutionAsync(context, next);
         }
 
         protected void SetProfileOnSession(Guid userId, string userName)

@@ -132,7 +132,7 @@ namespace LuduStack.Web.Areas.Tools.Controllers
                 {
                     string url = Url.Action("edit", "giveaway", new { area = "tools", id = vm.Id, pointsEarned = saveResult.PointsEarned });
 
-                    if (isNew)
+                    if (isNew && EnvName.Equals(ConstantHelper.ProductionEnvironmentName))
                     {
                         NotificationSender.SendTeamNotificationAsync("New Giveaway created!");
                     }
@@ -310,7 +310,10 @@ namespace LuduStack.Web.Areas.Tools.Controllers
 
                             await NotificationSender.SendGiveawayEmailConfirmationAsync(enter.Email, emailConfirmationUrl, castRestultGiveawayInfo.Value.Name);
 
-                            await NotificationSender.SendTeamNotificationAsync(String.Format("{0} joined the giveaway {1}", enter.Email, castRestultGiveawayInfo.Value.Name));
+                            if (EnvName.Equals(ConstantHelper.ProductionEnvironmentName))
+                            {
+                                await NotificationSender.SendTeamNotificationAsync(String.Format("{0} joined the giveaway {1}", enter.Email, castRestultGiveawayInfo.Value.Name));
+                            }
                         }
                     }
 

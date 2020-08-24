@@ -122,7 +122,7 @@ namespace LuduStack.Web.Controllers
 
                 string url = Url.Action("Index", "Brainstorm", new { area = string.Empty, id = vm.SessionId.ToString() });
 
-                if (isNew)
+                if (isNew && EnvName.Equals(ConstantHelper.ProductionEnvironmentName))
                 {
                     NotificationSender.SendTeamNotificationAsync($"New idea posted: {vm.Title}");
                 }
@@ -148,7 +148,7 @@ namespace LuduStack.Web.Controllers
 
                 string url = Url.Action("Index", "Brainstorm", new { area = string.Empty, id = vm.Id.ToString() });
 
-                if (isNew)
+                if (isNew && EnvName.Equals(ConstantHelper.ProductionEnvironmentName))
                 {
                     NotificationSender.SendTeamNotificationAsync($"New brainstorm session created: {vm.Title}");
                 }

@@ -128,7 +128,7 @@ namespace LuduStack.Web.Areas.Staff.Controllers
                 {
                     string url = Url.Action("index", "gamificationlevel", new { area = "staff" });
 
-                    if (isNew)
+                    if (isNew && EnvName.Equals(ConstantHelper.ProductionEnvironmentName))
                     {
                         NotificationSender.SendTeamNotificationAsync("New Gamification Level created!");
                     }
