@@ -167,7 +167,10 @@ namespace LuduStack.Web.Areas.Learn.Controllers
                     {
                         url = Url.Action("edit", "course", new { area = "learn", id = vm.Id, pointsEarned = saveResult.PointsEarned });
 
-                        NotificationSender.SendTeamNotificationAsync("New Course created!");
+                        if (EnvName.Equals(ConstantHelper.ProductionEnvironmentName))
+                        {
+                            NotificationSender.SendTeamNotificationAsync("New Course created!");
+                        }
                     }
 
                     return Json(new OperationResultRedirectVo<Guid>(saveResult, url));

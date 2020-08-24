@@ -28,7 +28,7 @@
     @if (User.Identity.IsAuthenticated)
     {
         <div class="row no-gutters bb-1 mt-3">
-            <button type="button" class="col-4 btn btn-lg bg-transparent btn-interaction btn-interaction-like @(Model.CurrentUserLiked ? "text-blue like-liked" : string.Empty)" data-id="@Model.Id">
+            <button type="button" class="col-4 btn btn-lg bg-transparent btn-interaction btn-interaction-like @(Model.CurrentUserLiked ? "text-blue like-liked" : string.Empty)" data-id="@Model.Id" data-type="@Model.UserContentType">
                 <i class="fa fa-thumbs-up" aria-hidden="true">&nbsp;</i>@SharedLocalizer["Like"]
             </button>
             <button type="button" class="col-4 btn btn-lg bg-transparent btn-interaction btn-interaction-comment">
@@ -41,7 +41,7 @@
 
         <div class="box-commentsection mt-10 @(isDetails ? string.Empty : "d-none")">
             <div class="box-comment-template d-none">
-                <img class="rounded img-sm rounded-circle" src="#" alt="User Image">
+                <img class="rounded img-sm rounded-circle" src="@ConstantHelper.DefaultAvatar" alt="User Image">
 
                 <div class="comment-text">
                     <span class="username">

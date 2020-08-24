@@ -81,33 +81,39 @@
             </div>
         }
 
-        <div class="box-body mt-n4">
+        <div class="box-body mt-n3">
             <div class="row">
-                <div class="col-12 col-lg text-center">
+                <div class="col-12 col-lg-6 text-center">
                     <div class="row mx-0 no-gutters bg-dark text-white">
                         <div class="col-12 col-sm-6 px-0">
-                            <div class="col-12 small">
-                                @SharedLocalizer["average of {0}", Model.RatingCount]
+                            <div class="row no-gutters px-5">
+                                <div class="col col-md-12 small">
+                                    @SharedLocalizer["average of {0}", Model.RatingCount]
+                                </div>
+                                <div class="col col-md-12">
+                                    <span class="h5">@Model.TotalRating.ToString(new System.Globalization.CultureInfo("en-US"))</span>
+                                </div>
                             </div>
-                            <span class="h5">@Model.TotalRating.ToString(new System.Globalization.CultureInfo("en-US"))</span>
                             <div class="col-12 col-md px-0">
                                 <input id="inputTotalRating" name="Rating" type="number" class="d-none comics-rating" step="1" value="@Model.TotalRating.ToString(new System.Globalization.CultureInfo("en-US"))">
                             </div>
                         </div>
                         <div class="col-12 col-sm-6 px-0">
-                            <div class="col-12 small">
-                                @SharedLocalizer["yours"]
+                            <div class="row no-gutters px-5 ">
+                                <div class="col-6 col-md-12 small">
+                                    @SharedLocalizer["yours"]
+                                </div>
+                                <div class="col-6 col-md-12">
+                                    <span id="myrating" class="h5">@Model.CurrentUserRating.ToString(new System.Globalization.CultureInfo("en-US"))</span>
+                                </div>
                             </div>
-                            <span id="myrating" class="h5">@Model.CurrentUserRating.ToString(new System.Globalization.CultureInfo("en-US"))</span>
                             <div class="col-12 col-md px-0">
                                 <input id="inputUserRating" name="Rating" type="number" class="d-none comics-rating" step="1" value="@Model.CurrentUserRating.ToString(new System.Globalization.CultureInfo("en-US"))" data-url="@Url.Action("rate", "comics", new { area = "member", id = Model.Id })">
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="row mt-1">
-                <div class="col-12 col-lg mb-1">
+                <div class="mt-3 col-12 col-lg-3 order-lg-first mb-1">
                     <div class="user-block">
                         <a asp-area="" asp-controller="profile" asp-action="details" asp-route-id="@Model.UserId">
                             <img class="rounded-circle" src="@Model.AuthorPicture" alt="This is @Model.AuthorName">

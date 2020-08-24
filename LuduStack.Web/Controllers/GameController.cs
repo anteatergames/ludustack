@@ -137,7 +137,7 @@ namespace LuduStack.Web.Controllers
                 {
                     string url = Url.Action("Details", "Game", new { area = string.Empty, id = vm.Id.ToString(), pointsEarned = saveResult.PointsEarned });
 
-                    if (isNew)
+                    if (isNew && EnvName.Equals(ConstantHelper.ProductionEnvironmentName))
                     {
                         NotificationSender.SendTeamNotificationAsync($"New game Created: {vm.Title}");
                     }

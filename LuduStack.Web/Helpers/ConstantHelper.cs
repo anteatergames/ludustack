@@ -7,6 +7,8 @@ namespace LuduStack.Web
 {
     public static class ConstantHelper
     {
+        public static string ProductionEnvironmentName { get { return "env-production"; } }
+
         public static string SiteName { get { return "LUDUSTACK"; } }
 
         public static string DefaultTitle { get { return "LUDUSTACK - The one stop place for game developers"; } }

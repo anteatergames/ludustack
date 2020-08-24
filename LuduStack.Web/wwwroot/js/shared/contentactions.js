@@ -43,12 +43,13 @@
             var btn = $(this);
             var likeCount = btn.closest(selectors.item).find(selectors.likeCounter);
             var targetId = btn.data('id');
+            var type = btn.data('type');
 
             if (btn.hasClass("like-liked")) {
                 unlike(targetId).done(function (response) { unlikeCallback(response, likeCount, btn); });
             }
             else {
-                like(targetId).done(function (response) { likeCallback(response, likeCount, btn); });
+                like(targetId, type).done(function (response) { likeCallback(response, likeCount, btn); });
             }
         });
     }
@@ -185,8 +186,8 @@
         });
     }
 
-    function like(targetId) {
-        return $.post("/content/like", { targetId: targetId });
+    function like(targetId, contentType) {
+        return $.post("/content/like", { targetId: targetId, contentType: contentType });
     }
     function likeCallback(response, likeCount, btn) {
         if (response.success === true) {
