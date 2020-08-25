@@ -59,11 +59,7 @@ namespace LuduStack.Web.Controllers
 
             string fullName = GetSessionValue(SessionValues.FullName);
 
-            string text = String.Format(SharedLocalizer["{0} is following you now!"], fullName);
-
-            string url = Url.Action("Details", "Profile", new { id = CurrentUserId });
-
-            notificationAppService.Notify(CurrentUserId, userId, NotificationType.ContentLike, userId, text, url);
+            notificationAppService.Notify(CurrentUserId, fullName, userId, NotificationType.FollowYou, CurrentUserId);
 
             return Json(response);
         }
@@ -144,11 +140,7 @@ namespace LuduStack.Web.Controllers
 
             string fullName = GetSessionValue(SessionValues.FullName);
 
-            string text = String.Format(SharedLocalizer["{0} wants to connect."], fullName);
-
-            string url = Url.Action("Details", "Profile", new { id = CurrentUserId });
-
-            notificationAppService.Notify(CurrentUserId, userId, NotificationType.ConnectionRequest, userId, text, url);
+            notificationAppService.Notify(CurrentUserId, fullName, userId, NotificationType.ConnectionRequest, CurrentUserId);
 
             return Json(response);
         }

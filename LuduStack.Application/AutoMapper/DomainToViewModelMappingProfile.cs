@@ -10,6 +10,7 @@ using LuduStack.Application.ViewModels.Gamification;
 using LuduStack.Application.ViewModels.Giveaway;
 using LuduStack.Application.ViewModels.Jobs;
 using LuduStack.Application.ViewModels.Localization;
+using LuduStack.Application.ViewModels.Notification;
 using LuduStack.Application.ViewModels.Search;
 using LuduStack.Application.ViewModels.ShortUrl;
 using LuduStack.Application.ViewModels.Study;
@@ -41,6 +42,8 @@ namespace LuduStack.Application.AutoMapper
             CreateMap<UserContentComment, CommentViewModel>();
 
             CreateMap<BrainstormComment, CommentViewModel>();
+
+            CreateMap<Notification, NotificationItemViewModel>();
 
             #endregion General
 

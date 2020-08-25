@@ -650,7 +650,7 @@
     <comment>Notification</comment>
   </data>
   <data name="{0} loves your game {1}" xml:space="preserve">
-    <value>{0} adora seu jogo {1}</value>
+    <value>{0} adorou seu jogo {1}</value>
     <comment>Notification</comment>
   </data>
   <data name="Motion Comics" xml:space="preserve">
@@ -665,8 +665,8 @@
     <value>{0} agora te segue!</value>
     <comment>Notification</comment>
   </data>
-  <data name="{0} is following your game {1} now!" xml:space="preserve">
-    <value>{0} agora segue seu jogo {1}!</value>
+  <data name="{0} is following your game {1}" xml:space="preserve">
+    <value>{0} agora segue seu jogo {1}</value>
     <comment>Notification</comment>
   </data>
   <data name="You have 1 new notification" xml:space="preserve">
@@ -2556,5 +2556,37 @@
   <data name="Share on Twitter" xml:space="preserve">
     <value>Tuíte isso</value>
     <comment>Giveaway</comment>
+  </data>
+  <data name="You earned an achievement!" xml:space="preserve">
+    <value>Você ganhou uma conquista!</value>
+    <comment>Notification</comment>
+  </data>
+  <data name="You leveled up!" xml:space="preserve">
+    <value>Você subiu de nível!</value>
+    <comment>Notification</comment>
+  </data>
+  <data name="{0} has commented on your post." xml:space="preserve">
+    <value>{0} comentou na sua postagem.</value>
+    <comment>Notification</comment>
+  </data>
+  <data name="{0} loves your comic strip!" xml:space="preserve">
+    <value>{0} adorou sua tirinha!</value>
+    <comment>Notification</comment>
+  </data>
+  <data name="{0} loves your the content you posted!" xml:space="preserve">
+    <value>{0} adorou o conteúdo que você postou!</value>
+    <comment>Notification</comment>
+  </data>
+  <data name="{0} posted a new content!" xml:space="preserve">
+    <value>{0} postou um novo conteúdo!</value>
+    <comment>Notification</comment>
+  </data>
+  <data name="{0} wants to connect with you." xml:space="preserve">
+    <value>{0} quer se conectar a você.</value>
+    <comment>Notification</comment>
+  </data>
+  <data name="{0} wrote an article about your game." xml:space="preserve">
+    <value>{0} escreveu um artigo sobre seu jogo.</value>
+    <comment>Notification</comment>
   </data>
 </root>

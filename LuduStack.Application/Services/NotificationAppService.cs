@@ -98,24 +98,9 @@ namespace LuduStack.Application.Services
         {
             List<Notification> notifications = notificationDomainService.GetByUserId(userId).OrderByDescending(x => x.CreateDate).Take(count).ToList();
 
-            List<NotificationItemViewModel> tempList = new List<NotificationItemViewModel>();
-            foreach (Notification notification in notifications)
-            {
-                NotificationItemViewModel vm = new NotificationItemViewModel
-                {
-                    Id = notification.Id,
-                    UserId = notification.UserId,
-                    Text = notification.Text,
-                    Url = notification.Url,
-                    IsRead = notification.IsRead,
-                    CreateDate = notification.CreateDate,
-                    Type = notification.Type
-                };
+            var vms = mapper.Map<IEnumerable<NotificationItemViewModel>>(notifications);
 
-                tempList.Add(vm);
-            }
-
-            return new OperationResultListVo<NotificationItemViewModel>(tempList);
+            return new OperationResultListVo<NotificationItemViewModel>(vms);
         }
 
         OperationResultVo<NotificationItemViewModel> ICrudAppService<NotificationItemViewModel>.GetById(Guid currentUserId, Guid id)
@@ -123,17 +108,24 @@ namespace LuduStack.Application.Services
             throw new NotImplementedException();
         }
 
-        public OperationResultVo Notify(Guid currentUserId, Guid targetUserId, NotificationType notificationType, Guid targetId, string text, string url)
+        public OperationResultVo Notify(Guid originId, string originName, Guid targetUserId, NotificationType notificationType, Guid targetId)
+        {
+            return Notify(originId, originName, targetUserId, notificationType, targetId, null);
+        }
+
+        public OperationResultVo Notify(Guid originId, string originName, Guid targetUserId, NotificationType notificationType, Guid targetId, string targetName)
         {
             NotificationItemViewModel vm = new NotificationItemViewModel
             {
                 UserId = targetUserId,
-                Text = text,
-                Url = url,
-                Type = notificationType
+                Type = notificationType,
+                OriginId = originId,
+                OriginName = originName,
+                TargetId = targetId,
+                TargetName = targetName
             };
 
-            return Save(currentUserId, vm);
+            return Save(originId, vm);
         }
 
         public OperationResultVo MarkAsRead(Guid id)

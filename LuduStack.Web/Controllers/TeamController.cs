@@ -226,16 +226,15 @@ namespace LuduStack.Web.Controllers
 
         private void Notify(TeamViewModel vm, IEnumerable<Guid> oldMembers)
         {
-            string notificationText = SharedLocalizer["{0} has invited you to join a team!"];
-            string notificationUrl = Url.Action("Details", "Team", new { teamId = vm.Id });
-
             TeamMemberViewModel meAsMember = vm.Members.FirstOrDefault(x => x.UserId == CurrentUserId);
+
+            string fullName = GetSessionValue(SessionValues.FullName);
 
             foreach (TeamMemberViewModel member in vm.Members.Where(x => !x.Leader))
             {
                 if (!oldMembers.Contains(member.Id))
                 {
-                    notificationAppService.Notify(CurrentUserId, member.UserId, NotificationType.TeamInvitation, vm.Id, String.Format(notificationText, meAsMember?.Name), notificationUrl);
+                    notificationAppService.Notify(CurrentUserId, fullName, member.UserId, NotificationType.TeamInvitation, vm.Id);
                 }
             }
         }
