@@ -119,7 +119,7 @@ namespace LuduStack.Web.ViewComponents
                     break;
                 case Domain.Core.Enums.NotificationType.ComicsLike:
                     item.Text = SharedLocalizer["{0} loves your comic strip!", item.OriginName];
-                    item.Url = Url.Action("details", "comics", new { area = "member", teamId = item.TargetId });
+                    item.Url = Url.Action("details", "comics", new { area = "member", id = item.TargetId });
                     item.Icon = "fas fa-heart";
                     item.IconColor = "text-red";
                     break;
