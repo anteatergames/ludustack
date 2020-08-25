@@ -228,16 +228,14 @@ namespace LuduStack.Web.Controllers
 
             string myName = GetSessionValue(SessionValues.FullName);
 
-            string text = String.Format(SharedLocalizer["{0} liked your post"], myName);
-
-            string url = Url.Action("Details", "Content", new { id = targetId });
-
             if (contentType == UserContentType.ComicStrip)
             {
-                url = Url.Action("Details", "Comics", new { area = "member", id = targetId });
+                notificationAppService.Notify(CurrentUserId, myName, content.Value.UserId, NotificationType.ComicsLike, targetId);
             }
-
-            notificationAppService.Notify(CurrentUserId, content.Value.UserId, NotificationType.ContentLike, targetId, text, url);
+            else
+            {
+                notificationAppService.Notify(CurrentUserId, myName, content.Value.UserId, NotificationType.ContentLike, targetId);
+            }
 
             return Json(response);
         }
@@ -305,9 +303,6 @@ namespace LuduStack.Web.Controllers
         {
             Dictionary<Guid, FollowType> followersToNotify = new Dictionary<Guid, FollowType>();
 
-            string notificationText = SharedLocalizer["{0} has posted a new content!"];
-            string notificationUrl = Url.Action("Details", "Content", new { id = contentId });
-
             string gameName = string.Empty;
 
             Guid targetId = Guid.Empty;
@@ -322,7 +317,7 @@ namespace LuduStack.Web.Controllers
 
             gameName = ProcessGamePost(gameId, followersToNotify, gameName);
 
-            Notify(profile, followersToNotify, notificationText, notificationUrl, gameName, targetId);
+            Notify(profile, followersToNotify, gameName, targetId);
         }
 
         private string ProcessGamePost(Guid? gameId, Dictionary<Guid, FollowType> userFollowers, string gameName)
@@ -351,22 +346,18 @@ namespace LuduStack.Web.Controllers
             return gameName;
         }
 
-        private void Notify(ProfileViewModel profile, Dictionary<Guid, FollowType> followers, string notificationText, string notificationUrl, string gameName, Guid targetId)
+        private void Notify(ProfileViewModel profile, Dictionary<Guid, FollowType> followers, string gameName, Guid targetId)
         {
             foreach (KeyValuePair<Guid, FollowType> follower in followers)
             {
                 switch (follower.Value)
                 {
-                    case FollowType.Content:
-                        notificationAppService.Notify(CurrentUserId, follower.Key, NotificationType.ContentPosted, targetId, String.Format(notificationText, profile.Name), notificationUrl);
-                        break;
-
                     case FollowType.Game:
-                        notificationAppService.Notify(CurrentUserId, follower.Key, NotificationType.ContentPosted, targetId, String.Format(notificationText, gameName), notificationUrl);
+                        notificationAppService.Notify(CurrentUserId, gameName, follower.Key, NotificationType.ContentPosted, targetId);
                         break;
-
+                    case FollowType.Content:
                     default:
-                        notificationAppService.Notify(CurrentUserId, follower.Key, NotificationType.ContentPosted, targetId, String.Format(notificationText, profile.Name), notificationUrl);
+                        notificationAppService.Notify(CurrentUserId, profile.Name, follower.Key, NotificationType.ContentPosted, targetId);
                         break;
                 }
             }

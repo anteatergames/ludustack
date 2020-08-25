@@ -1,5 +1,6 @@
 ﻿using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Core.Models;
+using System;
 
 namespace LuduStack.Domain.Models
 {
@@ -7,10 +8,14 @@ namespace LuduStack.Domain.Models
     {
         public NotificationType Type { get; set; }
 
+        public Guid? OriginId { get; set; }
+
+        public string OriginName { get; set; }
+
+        public Guid? TargetId { get; set; }
+
+        public string TargetName { get; set; }
+
         public bool IsRead { get; set; }
-
-        public string Text { get; set; }
-
-        public string Url { get; set; }
     }
 }
