@@ -2589,4 +2589,8 @@
     <value>{0} escreveu um artigo sobre seu jogo.</value>
     <comment>Notification</comment>
   </data>
+  <data name="someone" xml:space="preserve">
+    <value>alguém</value>
+    <comment>Notification</comment>
+  </data>
 </root>

@@ -44,6 +44,11 @@ namespace LuduStack.Web.ViewComponents
 
         private void SetNotificationDisplayData(NotificationItemViewModel item)
         {
+            if (string.IsNullOrWhiteSpace(item.OriginName))
+            {
+                item.OriginName = SharedLocalizer["someone"];
+            }
+
             switch (item.Type)
             {
                 case Domain.Core.Enums.NotificationType.ContentLike:
