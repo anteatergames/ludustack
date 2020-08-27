@@ -1,0 +1,51 @@
+﻿@{
+    var isAjax = ViewContext.HttpContext.Request.IsAjaxRequest();
+    var canInteract = User.Identity.IsAuthenticated;
+
+    if (isAjax)
+    {
+        Layout = null;
+    }
+
+    ViewData["Title"] = SharedLocalizer["Notifications"];
+    ViewData["Description"] = SharedLocalizer["Manage Notifications"];
+    ViewData["Url"] = ViewBag.BaseUrl + Url.Action("index", "notification", new { area = "member" });
+}
+
+@section ComponentStyles {
+    <environment include="Development">
+        <link rel="stylesheet" href="~/css/_feature.css">
+        <link rel="stylesheet" href="~/css/notification.css">
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="~/css/notification.min.css" asp-append-version="true">
+    </environment>
+}
+
+@section Scripts {
+    <environment include="Development">
+        <script src="~/js/notification/notificationdashboard.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/js/notification/notificationdashboard.min.js" asp-append-version="true"></script>
+    </environment>
+}
+
+@section TranslatedMessages {
+    <span class="msg" data-msg-id="msgUrlPlaceholder">@SharedLocalizer["placeholder message"]</span>
+}
+
+<div id="featurecontainer" class="col-12 container">
+    <input type="hidden" id="isajax" value="@isAjax.ToString().ToLower()" />
+    <input type="hidden" id="urls" value="urls"
+           data-url-list="@Url.Action("listmine", "notification", new { area = "member" })" />
+
+    <div id="containerlist" class="row">
+        <div class="col-12 mb-2">
+            <h1><i class="fas fa-fw fa-bell" aria-hidden="true"></i> @ViewData["Title"]</h1>
+        </div>
+        <div class="col-12 mb-3">
+            <div id="divList"></div>
+        </div>
+    </div>
+</div>
