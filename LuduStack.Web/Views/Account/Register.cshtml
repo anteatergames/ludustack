@@ -1,4 +1,8 @@
 ﻿@model MvcRegisterViewModel
+@using Microsoft.Extensions.Options
+
+@inject IOptions<ConfigOptions> ConfigOptions
+
 @{
     ViewData["Title"] = SharedLocalizer["Register"];
     ViewData["Description"] = String.Format("{0} - {1}", SharedLocalizer["Register"], ConstantHelper.DefaultTitle);
@@ -45,6 +49,9 @@
                         <input asp-for="AcceptTerms">
                         <label asp-for="AcceptTerms">@SharedLocalizer["I agree to the"] <strong><a asp-area="" asp-controller="home" asp-action="terms" target="_blank">@SharedLocalizer["terms"]</a></strong></label>
                     </div>
+                </div>
+                <div class="col-12 align-content-center">
+                    <div class="g-recaptcha" data-sitekey="@ConfigOptions.Value.ReCaptchaSiteKey"></div>
                 </div>
                 <!-- /.col -->
                 <div class="col-12 text-center text-capitalize">
@@ -97,4 +104,6 @@
             return false;
         });
     </script>
+
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 }
