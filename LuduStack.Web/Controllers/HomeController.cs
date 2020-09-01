@@ -114,7 +114,8 @@ namespace LuduStack.Web.Controllers
             string postLanguageFromCookie = GetCookieValue(SessionValues.PostLanguage);
             if (postLanguageFromCookie != null)
             {
-                SupportedLanguage langEnum = (SupportedLanguage)Enum.Parse(typeof(SupportedLanguage), postLanguageFromCookie);
+                List<SupportedLanguage> allLanguages = Enum.GetValues(typeof(SupportedLanguage)).Cast<SupportedLanguage>().ToList();
+               SupportedLanguage langEnum = allLanguages.FirstOrDefault(x => x.ToUiInfo().Locale.Equals(postLanguageFromCookie));
                 postModel.DefaultLanguage = langEnum;
             }
             else
