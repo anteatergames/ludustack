@@ -418,5 +418,18 @@
       "wwwroot/js/shared/contentactions.js",
       "wwwroot/js/comics/comicsdetails.js"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/css/notification.min.css",
+    "inputFiles": [
+      "wwwroot/css/_feature.css",
+      "wwwroot/css/notification.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/notification/notificationdashboard.min.js",
+    "inputFiles": [
+      "wwwroot/js/notification/notificationdashboard.js"
+    ]
   }
 ]

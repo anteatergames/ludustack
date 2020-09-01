@@ -89,7 +89,18 @@ namespace LuduStack.Application.Services
 
         public OperationResultVo Remove(Guid currentUserId, Guid id)
         {
-            return new OperationResultVo(string.Empty);
+            try
+            {
+                notificationDomainService.Remove(id);
+
+                unitOfWork.Commit();
+
+                return new OperationResultVo(true, "That Notification is gone now!");
+            }
+            catch (Exception ex)
+            {
+                return new OperationResultVo(ex.Message);
+            }
         }
 
         #endregion ICrudAppService

@@ -19,11 +19,14 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -42,6 +45,8 @@ namespace LuduStack.Web.Controllers
 
         private readonly IWebHostEnvironment hostingEnvironment;
 
+        public IConfiguration Configuration { get; }
+
         private string envName;
 
         public AccountController(
@@ -49,13 +54,15 @@ namespace LuduStack.Web.Controllers
             SignInManager<ApplicationUser> signInManager,
             IProfileAppService profileAppService,
             ILogger<AccountController> logger,
-            IWebHostEnvironment hostingEnvironment) : base()
+            IWebHostEnvironment hostingEnvironment,
+            IConfiguration configuration) : base()
         {
             _userManager = userManager;
             _signInManager = signInManager;
             this.profileAppService = profileAppService;
             _logger = logger;
             this.hostingEnvironment = hostingEnvironment;
+            Configuration = configuration;
 
             envName = string.Format("env-{0}", hostingEnvironment.EnvironmentName);
         }
@@ -275,8 +282,10 @@ namespace LuduStack.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(MvcRegisterViewModel model, string returnUrl = null)
         {
+            var reCaptchaValid = IsReCaptchValid();
+
             ViewData["ReturnUrl"] = returnUrl;
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && reCaptchaValid)
             {
                 ApplicationUser user = new ApplicationUser { UserName = model.UserName, Email = model.Email };
 
@@ -297,7 +306,7 @@ namespace LuduStack.Web.Controllers
 
                     if (EnvName.Equals(ConstantHelper.ProductionEnvironmentName))
                     {
-                        await NotificationSender.SendTeamNotificationAsync(logMessage); 
+                        await NotificationSender.SendTeamNotificationAsync(logMessage);
                     }
 
                     _logger.LogInformation(logMessage);
@@ -315,6 +324,27 @@ namespace LuduStack.Web.Controllers
 
             // If we got this far, something failed, redisplay form
             return View(model);
+        }
+
+        public bool IsReCaptchValid()
+        {
+            var result = false;
+            var captchaResponse = Request.Form["g-recaptcha-response"];
+            var secretKey = Configuration["ReCaptcha:SecretKey"];
+            var apiUrl = "https://www.google.com/recaptcha/api/siteverify?secret={0}&response={1}";
+            var requestUri = string.Format(apiUrl, secretKey, captchaResponse);
+            var request = (HttpWebRequest)WebRequest.Create(requestUri);
+
+            using (WebResponse response = request.GetResponse())
+            {
+                using (StreamReader stream = new StreamReader(response.GetResponseStream()))
+                {
+                    JObject jResponse = JObject.Parse(stream.ReadToEnd());
+                    var isSuccess = jResponse.Value<bool>("success");
+                    result = (isSuccess) ? true : false;
+                }
+            }
+            return result;
         }
 
         [HttpPost]

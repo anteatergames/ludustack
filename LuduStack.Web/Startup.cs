@@ -129,6 +129,7 @@ namespace LuduStack.Web
             services.Configure<ConfigOptions>(myOptions =>
             {
                 myOptions.FacebookAppId = Configuration["Authentication:Facebook:AppId"];
+                myOptions.ReCaptchaSiteKey = Configuration["ReCaptcha:SiteKey"];
             });
 
             services.AddMediatR(Assembly.GetExecutingAssembly(), typeof(SendNotificationRequestHandler).GetTypeInfo().Assembly);

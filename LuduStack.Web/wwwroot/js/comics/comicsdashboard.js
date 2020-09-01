@@ -4,7 +4,7 @@
     var selectors = {};
     var objs = {};
 
-    var urlComicss;
+    var urlComics;
 
     function setSelectors() {
         selectors.canInteract = '#caninteract';
@@ -29,9 +29,9 @@
 
         bindAll();
 
-        urlComicss = objs.urls.data('urlList');
+        urlComics = objs.urls.data('urlList');
 
-        loadItems(urlComicss);
+        loadItems(urlComics);
 
         COMICSCOMMON.Callback.DeleteEntity = deleteCallback;
     }
@@ -48,7 +48,7 @@
 
             MAINMODULE.Common.PostWithoutConfirmation(btn, function (response) {
                 if (response.success) {
-                    loadItems(urlComicss);
+                    loadItems(urlComics);
                 }
             });
 
@@ -62,7 +62,7 @@
 
     function deleteCallback(response) {
         if (response.success) {
-            loadItems(urlComicss);
+            loadItems(urlComics);
         }
     }
 

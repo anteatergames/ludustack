@@ -17,13 +17,13 @@
         <link rel="stylesheet" href="~/lib/dropzone/dropzone.css" />
     </environment>
     <environment exclude="Development">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.7.0/dropzone.min.css"
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.7.2/min/dropzone.min.css"
               asp-fallback-href="~/lib/dropzone/min/dropzone.min.css"
               asp-fallback-test-class="dropzone"
               asp-fallback-test-property="box-sizing"
               asp-fallback-test-value="border-box"
-              integrity="sha256-NkyhTCRnLQ7iMv7F3TQWjVq25kLnjhbKEVPqGJBcCUg="
-              crossorigin="anonymous">
+              integrity="sha512-bbUR1MeyQAnEuvdmss7V2LclMzO+R9BzRntEE57WIKInFVQjvX7l7QZSxjNDt8bg41Ww05oHSh0ycKFijqD7dA=="
+              crossorigin="anonymous" />
 
         <link rel="stylesheet" href="~/css/home.min.css" asp-append-version="true" />
     </environment>
@@ -43,8 +43,10 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/embedo/1.13.0/embedo.min.js"
                 integrity="sha256-iV1+ZN2IJ5wgrZujdohJeFjfuJlKTLTrAIqFJ5ptftE="
                 crossorigin="anonymous" defer></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.7.0/dropzone.min.js"
-                integrity="sha256-OG/103wXh6XINV06JTPspzNgKNa/jnP1LjPP5Y3XQDY="
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.7.2/dropzone.min.js"
+                asp-fallback-src="~/lib/dropzone/min/dropzone.min.js"
+                asp-fallback-test="window.Dropzone"
+                integrity="sha512-8l10HpXwk93V4i9Sm38Y1F3H4KJlarwdLndY9S5v+hSAODWMx3QcAVECA23NTMKPtDOi53VFfhIuSsBjjfNGnA=="
                 crossorigin="anonymous" defer></script>
 
         <script src="~/js/home/home.min.js" asp-append-version="true" defer></script>
