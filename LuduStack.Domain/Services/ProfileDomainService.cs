@@ -25,15 +25,32 @@ namespace LuduStack.Domain.Services
         public override Guid Add(UserProfile model)
         {
             model.HasCoverImage = false;
+            model.Handler = model.Handler.ToLower();
 
             return base.Add(model);
         }
 
+        public override Guid Update(UserProfile model)
+        {
+            model.Handler = model.Handler.ToLower();
+
+            return base.Update(model);
+        }
+
         public async Task<UserProfile> Get(Guid userId, string userHandler, ProfileType type)
         {
-            var allProfiles = repository.Get(x => (x.UserName.Equals(userHandler) || x.UserId == userId) && x.Type == type);
-
-            return allProfiles.FirstOrDefault();
+            if (userId != Guid.Empty)
+            {
+                return repository.Get(x => x.UserId == userId && x.Type == type).FirstOrDefault();
+            }
+            else if(!string.IsNullOrWhiteSpace(userHandler))
+            {
+                return repository.Get(x => x.Handler.Equals(userHandler.ToLower()) && x.Type == type).FirstOrDefault();
+            }
+            else
+            {
+                return default(UserProfile);
+            }
         }
 
         public IEnumerable<Guid> GetAllUserIds()

@@ -49,8 +49,12 @@ namespace LuduStack.Application.Services
                 return new OperationResultVo<int>(ex.Message);
             }
         }
-
         public OperationResultListVo<ProfileViewModel> GetAll(Guid currentUserId)
+        {
+            return GetAll(currentUserId, false);
+        }
+
+        public OperationResultListVo<ProfileViewModel> GetAll(Guid currentUserId, bool noCache)
         {
             try
             {
@@ -59,7 +63,8 @@ namespace LuduStack.Application.Services
 
                 foreach (Guid userId in allIds)
                 {
-                    UserProfile profile = GetCachedProfileByUserId(userId);
+                    UserProfile profile = noCache ? null : GetCachedProfileByUserId(userId);
+
                     if (profile == null)
                     {
                         UserProfile userProfile = profileDomainService.GetByUserId(userId).FirstOrDefault();
@@ -154,6 +159,11 @@ namespace LuduStack.Application.Services
                 if (existing != null)
                 {
                     model = mapper.Map(viewModel, existing);
+
+                    if (!string.IsNullOrWhiteSpace(existing.Handler))
+                    {
+                        model.Handler = existing.Handler;
+                    }
                 }
                 else
                 {

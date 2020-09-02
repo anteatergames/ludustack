@@ -36,6 +36,7 @@
     }
 
     function executeAction(url) {
+        objs.divResult.html(MAINMODULE.Default.SpinnerTop);
         $.post(url)
             .done(function (response) {
                 objs.divResult.html(response);

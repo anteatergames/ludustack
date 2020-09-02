@@ -11,7 +11,7 @@ namespace LuduStack.Application.ViewModels.User
     {
         public ProfileType Type { get; set; }
 
-        public string UserName { get; set; }
+        public string Handler { get; set; }
 
         [Required]
         [Display(Name = "Display Name")]

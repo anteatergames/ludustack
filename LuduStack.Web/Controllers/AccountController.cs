@@ -127,13 +127,13 @@ namespace LuduStack.Web.Controllers
             {
                 SetEmailConfirmed(user);
 
-                SetProfileOnSession(new Guid(user.Id), user.UserName);
+                await SetProfileOnSession(new Guid(user.Id), user.UserName);
 
                 await SetStaffRoles(user);
 
                 SetPreferences(user);
 
-                SetCache(user);
+                await SetCache(user);
             }
 
             string logMessage = String.Format("User {0} logged in.", model.UserName);
@@ -287,14 +287,14 @@ namespace LuduStack.Web.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid && reCaptchaValid)
             {
-                ApplicationUser user = new ApplicationUser { UserName = model.UserName, Email = model.Email };
+                ApplicationUser user = new ApplicationUser { UserName = model.UserName, Email = model.Email, CreateDate = DateTime.Now };
 
                 IdentityResult result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
                     ProfileViewModel profile = profileAppService.GenerateNewOne(ProfileType.Personal);
                     profile.UserId = new Guid(user.Id);
-                    profile.UserName = model.UserName;
+                    profile.Handler = model.UserName;
                     profileAppService.Save(CurrentUserId, profile);
 
                     UploadFirstAvatar(profile.UserId, ProfileType.Personal);
@@ -406,7 +406,7 @@ namespace LuduStack.Web.Controllers
 
                     _logger.LogInformation(logMessage);
 
-                    SetProfileOnSession(new Guid(existingUser.Id), existingUser.UserName);
+                    await SetProfileOnSession(new Guid(existingUser.Id), existingUser.UserName);
 
                     await SetStaffRoles(existingUser);
 
@@ -516,7 +516,7 @@ namespace LuduStack.Web.Controllers
                 profile = profileAppService.GenerateNewOne(ProfileType.Personal);
                 profile.UserId = userGuid;
 
-                profile.UserName = user.UserName;
+                profile.Handler = user.UserName;
 
                 profile.Name = SelectName(externalLoginInfo);
             }

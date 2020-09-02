@@ -9,6 +9,8 @@ namespace LuduStack.Application.Interfaces
 {
     public interface IProfileAppService : ICrudAppService<ProfileViewModel>, IProfileBaseAppService
     {
+        OperationResultListVo<ProfileViewModel> GetAll(Guid currentUserId, bool noCache);
+
         UserProfileEssentialVo GetBasicDataByUserId(Guid userId);
 
         Task<ProfileViewModel> GetByUserId(Guid userId, ProfileType type);
