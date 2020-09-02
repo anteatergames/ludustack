@@ -17,23 +17,21 @@ namespace LuduStack.Web.Controllers
     public class ProfileController : SecureBaseController
     {
         private readonly IProfileAppService profileAppService;
-        private readonly INotificationAppService notificationAppService;
         private readonly IGamificationAppService gamificationAppService;
 
-        public ProfileController(IProfileAppService profileAppService
-            , INotificationAppService notificationAppService
-            , IGamificationAppService gamificationAppService) : base()
+        public ProfileController(IProfileAppService profileAppService, IGamificationAppService gamificationAppService) : base()
         {
             this.profileAppService = profileAppService;
-            this.notificationAppService = notificationAppService;
             this.gamificationAppService = gamificationAppService;
         }
 
         [HttpGet]
+        [Route("/u/{userHandler?}")]
         [Route("profile/{id:guid}")]
-        public async Task<IActionResult> Details(Guid id, Guid notificationclicked)
+        public async Task<IActionResult> Details(Guid id, string userHandler)
         {
-            ProfileViewModel vm = profileAppService.GetByUserId(CurrentUserId, id, ProfileType.Personal);
+            ProfileViewModel vm = await profileAppService.Get(CurrentUserId, id, userHandler, ProfileType.Personal);
+
             if (vm == null)
             {
                 ProfileViewModel profile = profileAppService.GenerateNewOne(ProfileType.Personal);
@@ -64,11 +62,6 @@ namespace LuduStack.Web.Controllers
                 vm.Permissions.CanEdit = vm.UserId == CurrentUserId;
                 vm.Permissions.CanFollow = vm.UserId != CurrentUserId;
                 vm.Permissions.CanConnect = vm.UserId != CurrentUserId;
-
-                if (notificationclicked != Guid.Empty)
-                {
-                    notificationAppService.MarkAsRead(notificationclicked);
-                }
             }
 
             ViewData["ConnecionTypes"] = EnumExtensions.ToJson(UserConnectionType.Mentor);
@@ -77,9 +70,9 @@ namespace LuduStack.Web.Controllers
         }
 
         [Route("profile/edit/{userId:guid}")]
-        public IActionResult Edit(Guid userId)
+        public async Task<IActionResult> Edit(Guid userId)
         {
-            ProfileViewModel vm = profileAppService.GetByUserId(userId, ProfileType.Personal, true);
+            ProfileViewModel vm = await profileAppService.GetByUserId(userId, ProfileType.Personal, true);
 
             OperationResultVo countriesResult = profileAppService.GetCountries(CurrentUserId);
             if (countriesResult.Success)

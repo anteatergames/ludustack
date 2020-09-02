@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
 namespace LuduStack.Domain.Services
@@ -26,6 +27,13 @@ namespace LuduStack.Domain.Services
             model.HasCoverImage = false;
 
             return base.Add(model);
+        }
+
+        public async Task<UserProfile> Get(Guid userId, string userHandler, ProfileType type)
+        {
+            var allProfiles = repository.Get(x => (x.UserName.Equals(userHandler) || x.UserId == userId) && x.Type == type);
+
+            return allProfiles.FirstOrDefault();
         }
 
         public IEnumerable<Guid> GetAllUserIds()

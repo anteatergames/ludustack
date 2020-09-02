@@ -1,15 +1,41 @@
 ﻿@{
     ViewData["Title"] = "Super Powers!";
+    var isAdmin = User.IsInRole(Roles.Administrator.ToString());
+}
+
+
+@section Styles {
+    <environment include="Development">
+        <link rel="stylesheet" href="~/css/staff.css" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="~/css/staff.min.css" asp-append-version="true" />
+    </environment>
 }
 
 <div class="col-12">
     <div class="row">
+        @if (isAdmin)
+        {
+            <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 p-2">
+                <div class="flex-square clickable rectangle bg-red">
+                    <div class="flex-square-inner">
+                        <a asp-area="staff" asp-controller="admin" asp-action="index">
+                            <div class="flex-square-inner-content text-white">
+                                <div><i class="fas fa-3x fa-crown" aria-hidden="true"></i></div>
+                                <div>@SharedLocalizer["admin tasks"]</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
         <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 p-2">
-            <div class="flex-square clickable rectangle bg-red">
+            <div class="flex-square clickable rectangle bg-green">
                 <div class="flex-square-inner">
                     <a asp-area="staff" asp-controller="featuredcontent" asp-action="index">
                         <div class="flex-square-inner-content text-white">
-                            <div><i class="fa fa-3x fa-star" aria-hidden="true"></i></div>
+                            <div><i class="fas fa-3x fa-star" aria-hidden="true"></i></div>
                             <div>@SharedLocalizer["featured content"]</div>
                         </div>
                     </a>

@@ -431,5 +431,17 @@
     "inputFiles": [
       "wwwroot/js/notification/notificationdashboard.js"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/css/staff.min.css",
+    "inputFiles": [
+      "wwwroot/css/staff.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/staff/admintasks.min.js",
+    "inputFiles": [
+      "wwwroot/js/staff/admintasks.js"
+    ]
   }
 ]

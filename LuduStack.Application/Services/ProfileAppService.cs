@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Threading.Tasks;
 
 namespace LuduStack.Application.Services
 {
@@ -199,30 +200,28 @@ namespace LuduStack.Application.Services
             return profile;
         }
 
-        public ProfileViewModel GetByUserId(Guid userId, ProfileType type)
+        public async Task<ProfileViewModel> GetByUserId(Guid userId, ProfileType type)
         {
-            return GetByUserId(userId, userId, type, false);
+            return await Get(userId, userId, string.Empty, type, false);
         }
 
-        public ProfileViewModel GetByUserId(Guid userId, ProfileType type, bool forEdit)
+        public async Task<ProfileViewModel> GetByUserId(Guid userId, ProfileType type, bool forEdit)
         {
-            return GetByUserId(userId, userId, type, forEdit);
+            return await Get(userId, userId, string.Empty, type, forEdit);
         }
 
-        public ProfileViewModel GetByUserId(Guid currentUserId, Guid userId, ProfileType type)
+        public async Task<ProfileViewModel> Get(Guid currentUserId, Guid userId, string userHandler, ProfileType type)
         {
-            return GetByUserId(currentUserId, userId, type, false);
+            return await Get(currentUserId, userId, userHandler, type, false);
         }
 
-        public ProfileViewModel GetByUserId(Guid currentUserId, Guid userId, ProfileType type, bool forEdit)
+        public async Task<ProfileViewModel> Get(Guid currentUserId, Guid userId, string userHandler, ProfileType type, bool forEdit)
         {
             ProfileViewModel vm = new ProfileViewModel();
 
-            IEnumerable<UserProfile> profiles = profileDomainService.GetByUserId(userId);
+            UserProfile model = await profileDomainService.Get(userId, userHandler, type);
 
-            UserProfile model = profiles.FirstOrDefault(x => x.Type == type);
-
-            if (profiles.Any() && model != null)
+            if (model != null)
             {
                 vm = mapper.Map(model, vm);
             }

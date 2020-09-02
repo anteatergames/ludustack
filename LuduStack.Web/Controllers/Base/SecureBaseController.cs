@@ -102,7 +102,7 @@ namespace LuduStack.Web.Controllers.Base
             return base.OnActionExecutionAsync(context, next);
         }
 
-        protected void SetProfileOnSession(Guid userId, string userName)
+        protected async Task SetProfileOnSession(Guid userId, string userName)
         {
             string sessionUserName = GetSessionValue(SessionValues.Username);
 
@@ -115,7 +115,7 @@ namespace LuduStack.Web.Controllers.Base
 
             if (sessionFullName == null)
             {
-                ProfileViewModel profile = ProfileAppService.GetByUserId(userId, ProfileType.Personal);
+                ProfileViewModel profile = await ProfileAppService.GetByUserId(userId, ProfileType.Personal);
                 if (profile != null)
                 {
                     SetSessionValue(SessionValues.FullName, profile.Name);

@@ -130,13 +130,13 @@ namespace LuduStack.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Save(UserContentViewModel vm)
+        public async Task<IActionResult> Save(UserContentViewModel vm)
         {
             try
             {
                 bool isNew = vm.Id == Guid.Empty;
 
-                ProfileViewModel profile = ProfileAppService.GetByUserId(CurrentUserId, ProfileType.Personal);
+                ProfileViewModel profile = await ProfileAppService.GetByUserId(CurrentUserId, ProfileType.Personal);
 
                 SetAuthorDetails(vm);
 
@@ -154,7 +154,7 @@ namespace LuduStack.Web.Controllers
 
                     if (isNew && EnvName.Equals(ConstantHelper.ProductionEnvironmentName))
                     {
-                        NotificationSender.SendTeamNotificationAsync("New complex post!");
+                        await NotificationSender.SendTeamNotificationAsync("New complex post!");
                     }
 
                     return Json(new OperationResultRedirectVo(url));
@@ -184,7 +184,7 @@ namespace LuduStack.Web.Controllers
         }
 
         [HttpPost("content/post")]
-        public IActionResult SimplePost(string text, string images, IEnumerable<PollOptionViewModel> pollOptions, SupportedLanguage? language, Guid? gameId)
+        public async Task<IActionResult> SimplePost(string text, string images, IEnumerable<PollOptionViewModel> pollOptions, SupportedLanguage? language, Guid? gameId)
         {
             UserContentViewModel vm = new UserContentViewModel
             {
@@ -197,7 +197,7 @@ namespace LuduStack.Web.Controllers
                 GameId = gameId
             };
 
-            ProfileViewModel profile = ProfileAppService.GetByUserId(CurrentUserId, ProfileType.Personal);
+            ProfileViewModel profile = await ProfileAppService.GetByUserId(CurrentUserId, ProfileType.Personal);
 
             SetAuthorDetails(vm);
 
@@ -209,7 +209,7 @@ namespace LuduStack.Web.Controllers
 
             if (EnvName.Equals(ConstantHelper.ProductionEnvironmentName))
             {
-                NotificationSender.SendTeamNotificationAsync("New simple post!"); 
+                await NotificationSender.SendTeamNotificationAsync("New simple post!"); 
             }
 
             return Json(result);

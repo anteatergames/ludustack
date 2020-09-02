@@ -9,7 +9,6 @@
     ViewData["Title"] = Model.Name;
     ViewData["Description"] = String.Format("{0} - {1}", Model.Name, Model.Bio);
     string currentUserId = UserManager.GetUserId(User);
-    var userId = Guid.Parse(ViewContext.RouteData.Values["id"].ToString());
 
     var canFollowAndConnect = currentUserId != null ? !currentUserId.Equals(Model.UserId.ToString()) : false;
 }
@@ -76,7 +75,7 @@
                 {
                     <div class="user-profile-cover-topright">
                         <div class="btn-group">
-                            <a asp-controller="Profile" asp-action="Edit" asp-route-userId="@userId" class="btn btn-default bg-transparent">
+                            <a asp-controller="Profile" asp-action="Edit" asp-route-userId="@Model.UserId" class="btn btn-default bg-transparent">
                                 <i class="fas fa-pencil-alt" aria-hidden="true"></i>
                                 @SharedLocalizer["Edit Profile"]
                             </a>

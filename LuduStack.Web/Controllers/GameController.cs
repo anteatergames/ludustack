@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 namespace LuduStack.Web.Controllers
@@ -234,12 +235,12 @@ namespace LuduStack.Web.Controllers
             vm.AuthorPicture = UrlFormatter.ProfileImage(vm.UserId, 90);
         }
 
-        private void SetAuthorDetails(GameViewModel vm)
+        private async Task SetAuthorDetails(GameViewModel vm)
         {
             if (vm.Id == Guid.Empty || vm.UserId == Guid.Empty || vm.UserId == CurrentUserId)
             {
                 vm.UserId = CurrentUserId;
-                ProfileViewModel profile = ProfileAppService.GetByUserId(CurrentUserId, ProfileType.Personal);
+                ProfileViewModel profile = await ProfileAppService.GetByUserId(CurrentUserId, ProfileType.Personal);
 
                 if (profile != null)
                 {

@@ -3,6 +3,7 @@ using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Interfaces.Services;
 using LuduStack.Domain.ValueObjects;
 using System;
+using System.Threading.Tasks;
 
 namespace LuduStack.Application.Interfaces
 {
@@ -10,13 +11,13 @@ namespace LuduStack.Application.Interfaces
     {
         UserProfileEssentialVo GetBasicDataByUserId(Guid userId);
 
-        ProfileViewModel GetByUserId(Guid userId, ProfileType type);
+        Task<ProfileViewModel> GetByUserId(Guid userId, ProfileType type);
 
-        ProfileViewModel GetByUserId(Guid userId, ProfileType type, bool forEdit);
+        Task<ProfileViewModel> GetByUserId(Guid userId, ProfileType type, bool forEdit);
 
-        ProfileViewModel GetByUserId(Guid currentUserId, Guid userId, ProfileType type);
+        Task<ProfileViewModel> Get(Guid currentUserId, Guid userId, string userHandler, ProfileType type);
 
-        ProfileViewModel GetByUserId(Guid currentUserId, Guid userId, ProfileType type, bool forEdit);
+        Task<ProfileViewModel> Get(Guid currentUserId, Guid userId, string userHandler, ProfileType type, bool forEdit);
 
         ProfileViewModel GenerateNewOne(ProfileType type);
 
@@ -33,7 +34,6 @@ namespace LuduStack.Application.Interfaces
         OperationResultVo Disconnect(Guid currentUserId, Guid userId);
 
         OperationResultVo Allow(Guid currentUserId, Guid userId);
-
         OperationResultVo Deny(Guid currentUserId, Guid userId);
 
         OperationResultVo GetConnectionsByUserId(Guid userId);

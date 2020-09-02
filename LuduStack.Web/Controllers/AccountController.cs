@@ -294,6 +294,7 @@ namespace LuduStack.Web.Controllers
                 {
                     ProfileViewModel profile = profileAppService.GenerateNewOne(ProfileType.Personal);
                     profile.UserId = new Guid(user.Id);
+                    profile.UserName = model.UserName;
                     profileAppService.Save(CurrentUserId, profile);
 
                     UploadFirstAvatar(profile.UserId, ProfileType.Personal);
@@ -328,6 +329,11 @@ namespace LuduStack.Web.Controllers
 
         public bool IsReCaptchValid()
         {
+            if (envName.ToLower().Equals("env-development"))
+            {
+                return true;
+            }
+
             var result = false;
             var captchaResponse = Request.Form["g-recaptcha-response"];
             var secretKey = Configuration["ReCaptcha:SecretKey"];
@@ -504,11 +510,13 @@ namespace LuduStack.Web.Controllers
             SetPreferences(user);
 
             Guid userGuid = new Guid(user.Id);
-            ProfileViewModel profile = profileAppService.GetByUserId(userGuid, ProfileType.Personal);
+            ProfileViewModel profile = await profileAppService.GetByUserId(userGuid, ProfileType.Personal);
             if (profile == null)
             {
                 profile = profileAppService.GenerateNewOne(ProfileType.Personal);
                 profile.UserId = userGuid;
+
+                profile.UserName = user.UserName;
 
                 profile.Name = SelectName(externalLoginInfo);
             }
@@ -522,7 +530,7 @@ namespace LuduStack.Web.Controllers
 
             profileAppService.Save(CurrentUserId, profile);
 
-            SetProfileOnSession(new Guid(user.Id), user.UserName);
+            await SetProfileOnSession(new Guid(user.Id), user.UserName);
 
             await _signInManager.SignInAsync(user, isPersistent: false);
 
@@ -810,14 +818,14 @@ namespace LuduStack.Web.Controllers
             return imageUrl;
         }
 
-        private void SetCache(ApplicationUser user)
+        private async Task SetCache(ApplicationUser user)
         {
             Guid key = new Guid(user.Id);
             ProfileViewModel cachedProfile = profileAppService.GetUserProfileWithCache(key);
 
             if (cachedProfile == null)
             {
-                ProfileViewModel profile = profileAppService.GetByUserId(key, ProfileType.Personal);
+                ProfileViewModel profile = await profileAppService.GetByUserId(key, ProfileType.Personal);
                 if (profile != null)
                 {
                     profileAppService.SetProfileCache(key, profile);
