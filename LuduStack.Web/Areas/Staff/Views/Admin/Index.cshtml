@@ -1,0 +1,49 @@
+﻿@{
+}
+
+
+@section Styles {
+    <environment include="Development">
+        <link rel="stylesheet" href="~/css/staff.css" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="~/css/staff.min.css" asp-append-version="true" />
+    </environment>
+}
+
+@section Scripts {
+    <environment include="Development">
+        <script src="~/js/staff/admintasks.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/js/staff/admintasks.min.js" asp-append-version="true"></script>
+    </environment>
+}
+
+<div class="px-3">
+    <div class="box bg-white">
+        <h1>Admin Tasks</h1>
+
+        <h2>Batches</h2>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="form-group">
+                    <label class="col-form-label">Check User Inconsistencies</label>
+                    <button class="btn btn-primary btn-action" data-url="@Url.Action("checkuserinconsistencies", "admin", new { area = "staff" })">Go</button>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="form-group">
+                    <label class="col-form-label">Copy UserName from User to UserProfile Handlers</label>
+                    <button class="btn btn-primary btn-action" data-url="@Url.Action("fixuserinconcistencies", "admin", new { area = "staff" })">Go</button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div id="divResult" class="col-12">
+                <span>No result to show</span>
+            </div>
+        </div>
+    </div>
+</div>

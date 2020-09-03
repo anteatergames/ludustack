@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LuduStack.Web.Areas.Staff.Controllers.Base
 {
-    [Authorize]
+    [Authorize(Roles = "Administrator")]
     [Area("staff")]
     public class StaffBaseController : SecureBaseController
     {

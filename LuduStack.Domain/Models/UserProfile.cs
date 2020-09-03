@@ -9,6 +9,8 @@ namespace LuduStack.Domain.Models
     {
         public ProfileType Type { get; set; }
 
+        public string Handler { get; set; }
+
         public string Name { get; set; }
 
         public string Motto { get; set; }

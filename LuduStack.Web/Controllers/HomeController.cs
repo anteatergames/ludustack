@@ -32,9 +32,9 @@ namespace LuduStack.Web.Controllers
             this.gameAppService = gameAppService;
         }
 
-        [HttpGet("{handler?}")]
-        public IActionResult Index(string handler, int? pointsEarned)
+        public IActionResult Index(int? pointsEarned)
         {
+
             CarouselViewModel featured = featuredContentAppService.GetFeaturedNow();
             ViewBag.Carousel = featured;
 

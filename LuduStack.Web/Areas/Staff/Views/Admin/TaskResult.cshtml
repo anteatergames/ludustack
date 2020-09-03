@@ -1,0 +1,18 @@
+﻿@model OperationResultListVo<string>
+
+@{
+    Layout = null;
+}
+
+<div class="p-1 bordered bg-light">
+    <span>@Model.Message</span>: <span>@(Model.Success ? "Success" :"Fail")</span>
+    <hr class="border-info" />
+    <div class="col-12">
+        @foreach (var item in Model.Value)
+        {
+            <div class="col-12">
+                <span>@item</span>
+            </div>
+        }
+    </div>
+</div>

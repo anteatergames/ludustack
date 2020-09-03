@@ -43,13 +43,11 @@ namespace LuduStack.Domain.Services
             Task.Run(async () => await repository.AddLike(model));
         }
 
-        public bool CheckIfCommentExists<T>(Expression<Func<UserContentComment, bool>> where)
+        public async Task<bool> CheckIfCommentExists<T>(Expression<Func<UserContentComment, bool>> where)
         {
-            Task<IQueryable<UserContentComment>> task = repository.GetComments(where);
+            List<UserContentComment> task = await repository.GetComments(where);
 
-            task.Wait();
-
-            bool exists = task.Result.Any();
+            bool exists = task.Any();
 
             return exists;
         }
@@ -122,11 +120,11 @@ namespace LuduStack.Domain.Services
             return finalList;
         }
 
-        public IQueryable<UserContentComment> GetComments(Expression<Func<UserContentComment, bool>> where)
+        public async Task<List<UserContentComment>> GetComments(Expression<Func<UserContentComment, bool>> where)
         {
-            Task<IQueryable<UserContentComment>> task = Task.Run(async () => await repository.GetComments(where));
+            List<UserContentComment> comments = await repository.GetComments(where);
 
-            return task.Result;
+            return comments;
         }
 
         public IEnumerable<UserContentLike> GetLikes(Func<UserContentLike, bool> where)

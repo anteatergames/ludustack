@@ -1,11 +1,14 @@
 ﻿using LuduStack.Infra.CrossCutting.Identity.Model;
 using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 
 namespace LuduStack.Infra.CrossCutting.Identity.Models
 {
     public class ApplicationUser : IdentityUser
     {
+        public DateTime CreateDate { get; set; }
+
         public string AuthenticatorKey { get; set; }
 
         public List<string> Roles { get; set; }

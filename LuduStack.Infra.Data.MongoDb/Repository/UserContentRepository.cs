@@ -1,10 +1,12 @@
 ﻿using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Interfaces.Repository;
 using LuduStack.Domain.Models;
+using LuduStack.Infra.Data.MongoDb.Extensions;
 using LuduStack.Infra.Data.MongoDb.Interfaces;
 using LuduStack.Infra.Data.MongoDb.Repository.Base;
 using MongoDB.Driver;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -34,11 +36,11 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
             return Task.FromResult(count);
         }
 
-        public Task<IQueryable<UserContentComment>> GetComments(Expression<Func<UserContentComment, bool>> where)
+        public async Task<List<UserContentComment>> GetComments(Expression<Func<UserContentComment, bool>> where)
         {
-            IQueryable<UserContentComment> list = DbSet.AsQueryable().SelectMany(x => x.Comments).Where(where).AsQueryable();
+            var list = await DbSet.AsQueryable().SelectMany(x => x.Comments).Where(where).ToMongoListAsync();
 
-            return Task.FromResult(list);
+            return list;
         }
 
         public Task<IQueryable<UserContentLike>> GetLikes(Func<UserContentLike, bool> where)

@@ -9,9 +9,10 @@
     ViewData["Title"] = Model.Name;
     ViewData["Description"] = String.Format("{0} - {1}", Model.Name, Model.Bio);
     string currentUserId = UserManager.GetUserId(User);
-    var userId = Guid.Parse(ViewContext.RouteData.Values["id"].ToString());
 
     var canFollowAndConnect = currentUserId != null ? !currentUserId.Equals(Model.UserId.ToString()) : false;
+
+    var isAdmin = User.IsInRole(Roles.Administrator.ToString());
 }
 
 @section Styles {
@@ -71,18 +72,27 @@
                         }
                     </div>
                 </div>
-
-                @if (Model.Permissions.CanEdit)
-                {
-                    <div class="user-profile-cover-topright">
-                        <div class="btn-group">
-                            <a asp-controller="Profile" asp-action="Edit" asp-route-userId="@userId" class="btn btn-default bg-transparent">
+                <div class="user-profile-cover-topright">
+                    @if (Model.Permissions.CanEdit)
+                    {
+                        <div class="btn-group text-capitalize">
+                            <a asp-controller="Profile" asp-action="Edit" asp-route-userId="@Model.UserId" class="btn btn-default bg-transparent">
                                 <i class="fas fa-pencil-alt" aria-hidden="true"></i>
-                                @SharedLocalizer["Edit Profile"]
+                                @SharedLocalizer["edit"]
                             </a>
                         </div>
-                    </div>
-                }
+                    }
+
+                    @if (isAdmin)
+                    {
+                        <div class="btn-group text-capitalize">
+                            <a asp-area="staff" asp-controller="admin" asp-action="analyseuser" asp-route-userId="@Model.UserId" class="btn btn-danger bg-transparent">
+                                <i class="fas fa-question" aria-hidden="true"></i>
+                                @SharedLocalizer["analyse"]
+                            </a>
+                        </div>
+                    }
+                </div>
 
                 <div class="profileactions">
                     <div class="">
