@@ -1,0 +1,241 @@
+﻿@model AnalyseUserViewModel
+
+@{
+}
+
+
+@section Scripts {
+    <script src="~/js/staff/useranalisys.js"></script>
+}
+
+<div class="col-12">
+    <div class="box px-3 bg-white">
+        <h1>Analyse User</h1>
+
+        <h2>User Data</h2>
+
+        <div class="row">
+            <div class="col-12 col-md-7">
+                <div class="form-group">
+                    <label class="col-form-label">ID</label>
+                    <span class="form-control bg-light">@Model.User.Id</span>
+                </div>
+            </div>
+            <div class="col-12 col-md-5">
+                <div class="form-group">
+                    <label class="col-form-label">Create Date</label>
+                    <span class="form-control bg-light">@Model.User.CreateDate.ToString()</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 col-md-5">
+                <div class="form-group">
+                    <label class="col-form-label">UserName</label>
+                    <span class="form-control bg-light">@Model.User.UserName</span>
+                </div>
+            </div>
+            <div class="col-12 col-md-7">
+                <div class="form-group">
+                    <label class="col-form-label">Email</label>
+                    <div class="input-group">
+                        <span class="form-control bg-light">@Model.User.Email</span>
+                        @if (Model.User.EmailConfirmed)
+                        {
+                            <div class="input-group-append">
+                                <label class="input-group-text bg-success text-white"><i class="fas fa-check" aria-hidden="true"></i></label>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 col-sm">
+                <div class="form-group">
+                    <label class="col-form-label">Have Password</label>
+                    <span class="form-control bg-light">@(Model.User.PasswordHash?.Length > 0 ? "Yes" : "No")</span>
+                </div>
+            </div>
+            <div class="col-12 col-sm">
+                <div class="form-group">
+                    <label class="col-form-label">Lockout</label>
+                    <span class="form-control bg-light">@Model.User.LockoutEnabled</span>
+                </div>
+            </div>
+            <div class="col-12 col-sm">
+                <div class="form-group">
+                    <label class="col-form-label">Lockout End</label>
+                    <span class="form-control bg-light">@Model.User.LockoutEnd</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <h3>External Logins</h3>
+                <ul>
+                    @foreach (var login in Model.User.Logins)
+                    {
+                        <li>@login.ProviderDisplayName</li>
+                    }
+                </ul>
+            </div>
+            <div class="col">
+
+                <h3>Roles</h3>
+                <ul>
+                    @foreach (var role in Model.User.Roles)
+                    {
+                        <li>@role</li>
+                    }
+                </ul>
+            </div>
+        </div>
+
+        <hr />
+
+        <h2>Profile Data</h2>
+
+        <div class="d-flex flex-row">
+            <div class="pr-1">
+                <img src="@Model.Profile.ProfileImageUrl" />
+            </div>
+            <div class="">
+                <img src="@Model.Profile.CoverImageUrl" class="img-fluid" />
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 col-md-7">
+                <div class="form-group">
+                    <label class="col-form-label">ID</label>
+                    <span class="form-control bg-light">@Model.Profile.Id</span>
+                </div>
+            </div>
+            <div class="col-12 col-md-5">
+                <div class="form-group">
+                    <label class="col-form-label">CreateDate</label>
+                    <span class="form-control bg-light">@Model.Profile.CreateDate.ToString()</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 col-md">
+                <div class="form-group">
+                    <label class="col-form-label">Name</label>
+                    <span class="form-control bg-light">@Model.Profile.Name</span>
+                </div>
+            </div>
+            <div class="col-12 col-md">
+                <div class="form-group">
+                    <label class="col-form-label">Handler</label>
+                    <span class="form-control bg-light">@Model.Profile.Handler</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="form-group">
+                    <label class="col-form-label">Studio Name</label>
+                    <span class="form-control bg-light">@Model.Profile.StudioName</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="form-group">
+                    <label class="col-form-label">Motto</label>
+                    <span class="form-control bg-light">@Model.Profile.Motto</span>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="form-group">
+                    <label class="col-form-label">Bio</label>
+                    <textarea class="form-control bg-light" readonly rows="5">@Model.Profile.Bio</textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 col-md">
+                <div class="form-group">
+                    <label class="col-form-label">Country</label>
+                    <span class="form-control bg-light">@Model.Profile.Country</span>
+                </div>
+            </div>
+            <div class="col-12 col-md">
+                <div class="form-group">
+                    <label class="col-form-label">Location</label>
+                    <span class="form-control bg-light">@Model.Profile.Location</span>
+                </div>
+            </div>
+        </div>
+
+        <h3>External Links</h3>
+        <div class="row">
+            @foreach (var item in Model.Profile.ExternalLinks)
+            {
+                <div class="col-12 col-lg-6">
+                    <a href="@item.Value" target="_blank">@item.Value</a>
+                </div>
+            }
+        </div>
+
+        <h3>Activity</h3>
+        <div class="row">
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="form-group">
+                    <label class="col-form-label">Followers</label>
+                    <span class="form-control bg-light">@Model.Profile.Counters.Followers</span>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="form-group">
+                    <label class="col-form-label">Following</label>
+                    <span class="form-control bg-light">@Model.Profile.Counters.Following</span>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="form-group">
+                    <label class="col-form-label">Connections</label>
+                    <span class="form-control bg-light">@Model.Profile.Counters.Connections</span>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="form-group">
+                    <label class="col-form-label">Games</label>
+                    <span class="form-control bg-light">@Model.Profile.Counters.Games</span>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="form-group">
+                    <label class="col-form-label">Posts</label>
+                    <span class="form-control bg-light">@Model.Profile.Counters.Posts</span>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="form-group">
+                    <label class="col-form-label">Comments</label>
+                    <span class="form-control bg-light">@Model.Profile.Counters.Comments</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 col-lg-6 offset-lg-6 col-xl-4 offset-xl-8 mt-2 mb-2">
+                <a id="btnDeleteUser" class="btn btn-lg btn-danger btn-block" href="#" data-url="@Url.Action("deleteuser", "admin", new { area = "staff", userId = Model.Profile.UserId })" data-confirmationmessage="@SharedLocalizer["Are you sure you want to delete this User?"]" data-confirmationtitle="@SharedLocalizer["Are you sure?"]" data-confirmationbuttontext="@SharedLocalizer["Yes, delete it!"]" data-cancelbuttontext="@SharedLocalizer["Cancel"]"><i class="fas fa-trash" aria-hidden="true"></i> @SharedLocalizer["DELETE USER"]</a>
+            </div>
+            <div class="col-12 col-lg-6 offset-lg-6 col-xl-4 offset-xl-8 mt-2 mb-2">
+                <a asp-area="" asp-controller="profile" asp-action="details" asp-route-id="@Model.Profile.UserId" id="btnVisitProfile" class="btn btn-lg btn-success btn-block"><i class="fas fa-eye" aria-hidden="true"></i> @SharedLocalizer["View Profile"]</a>
+            </div>
+        </div>
+    </div>
+
+
+</div>

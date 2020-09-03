@@ -1,11 +1,12 @@
-﻿using LuduStack.Application.Interfaces;
+﻿using LuduStack.Application.Requests.User;
+using LuduStack.Application.ViewModels.User;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.ValueObjects;
 using LuduStack.Infra.CrossCutting.Identity.Models;
 using LuduStack.Web.Areas.Staff.Controllers.Base;
-using Microsoft.AspNetCore.Authorization;
+using LuduStack.Web.Models;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Org.BouncyCastle.Math.EC.Rfc7748;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,33 +16,43 @@ namespace LuduStack.Web.Areas.Staff.Controllers
 {
     public class AdminController : StaffBaseController
     {
+        private IMediator mediator;
+
+        public AdminController(IMediator mediator)
+        {
+            this.mediator = mediator;
+        }
+
         public async Task<IActionResult> Index()
         {
             return View();
         }
 
-        public async Task<IActionResult> CheckUserInconsistencies([FromServices] IProfileAppService profileAppService)
+        public async Task<IActionResult> CheckUserInconsistencies()
         {
-            var messages = new List<string>();
-            var result = new OperationResultListVo<string>(messages);
-            result.Message = "Check User Inconsistencies Task";
+            List<string> messages = new List<string>();
+            OperationResultListVo<string> result = new OperationResultListVo<string>(messages)
+            {
+                Message = "Check User Inconsistencies Task"
+            };
 
             try
             {
-                var allUsers = await GetUsersAsync();
+                IQueryable<ApplicationUser> allUsers = await GetUsersAsync();
 
-                var profileResult = profileAppService.GetAll(CurrentUserId, true);
+                OperationResultListVo<ProfileViewModel> profileResult = ProfileAppService.GetAll(CurrentUserId, true);
 
                 if (!profileResult.Success)
                 {
                     return View("TaskResult", profileResult);
                 }
 
-                foreach (var profile in profileResult.Value)
+                foreach (ProfileViewModel profile in profileResult.Value)
                 {
 
-                    var user = allUsers.FirstOrDefault(x => x.Id.Equals(profile.UserId.ToString()));
-                    if (user == null) {
+                    ApplicationUser user = allUsers.FirstOrDefault(x => x.Id.Equals(profile.UserId.ToString()));
+                    if (user == null)
+                    {
                         messages.Add($"profile {profile.Name} ({profile.Id}) without user {profile.UserId}");
                     }
                     else
@@ -60,10 +71,10 @@ namespace LuduStack.Web.Areas.Staff.Controllers
                     }
                 }
 
-                foreach (var user in allUsers)
+                foreach (ApplicationUser user in allUsers)
                 {
-                    var guid = Guid.Parse(user.Id);
-                    var profile = profileResult.Value.FirstOrDefault(x => x.UserId == guid);
+                    Guid guid = Guid.Parse(user.Id);
+                    ProfileViewModel profile = profileResult.Value.FirstOrDefault(x => x.UserId == guid);
                     if (profile == null)
                     {
                         messages.Add($"user {user.UserName} ({user.Id}) without profile");
@@ -86,27 +97,29 @@ namespace LuduStack.Web.Areas.Staff.Controllers
             return View("TaskResult", result);
         }
 
-        public async Task<IActionResult> FixUserInconcistencies([FromServices]IProfileAppService profileAppService)
+        public async Task<IActionResult> FixUserInconcistencies()
         {
-            var messages = new List<string>();
-            var result = new OperationResultListVo<string>(messages);
-            result.Message = "Update Handlers Task";
+            List<string> messages = new List<string>();
+            OperationResultListVo<string> result = new OperationResultListVo<string>(messages)
+            {
+                Message = "Update Handlers Task"
+            };
 
             try
             {
-                var allUsers = await GetUsersAsync();
+                IQueryable<ApplicationUser> allUsers = await GetUsersAsync();
 
-                var profileResult = profileAppService.GetAll(CurrentUserId, true);
+                OperationResultListVo<ProfileViewModel> profileResult = ProfileAppService.GetAll(CurrentUserId, true);
 
                 if (!profileResult.Success)
                 {
                     return View("TaskResult", profileResult);
                 }
 
-                var usersWithoutDate = allUsers.Where(x => x.CreateDate == DateTime.MinValue);
-                foreach (var user in usersWithoutDate)
+                IQueryable<ApplicationUser> usersWithoutDate = allUsers.Where(x => x.CreateDate == DateTime.MinValue);
+                foreach (ApplicationUser user in usersWithoutDate)
                 {
-                    var profile = profileResult.Value.FirstOrDefault(x => x.UserId.ToString().Equals(user.Id));
+                    ProfileViewModel profile = profileResult.Value.FirstOrDefault(x => x.UserId.ToString().Equals(user.Id));
                     if (profile != null)
                     {
                         user.CreateDate = profile.CreateDate;
@@ -114,20 +127,20 @@ namespace LuduStack.Web.Areas.Staff.Controllers
                     }
                 }
 
-                foreach (var profile in profileResult.Value)
+                foreach (ProfileViewModel profile in profileResult.Value)
                 {
-                    var user = allUsers.FirstOrDefault(x => x.Id.Equals(profile.UserId.ToString()));
+                    ApplicationUser user = allUsers.FirstOrDefault(x => x.Id.Equals(profile.UserId.ToString()));
                     if (user == null)
                     {
                         messages.Add($"ERROR: user for {profile.Handler} ({profile.UserId}) NOT FOUND");
                     }
                     else
                     {
-                        var handler = user.UserName.ToLower();
+                        string handler = user.UserName.ToLower();
                         if (string.IsNullOrWhiteSpace(profile.Handler) || !profile.Handler.Equals(handler))
                         {
                             profile.Handler = handler;
-                            var saveResult = profileAppService.Save(CurrentUserId, profile);
+                            OperationResultVo<Guid> saveResult = ProfileAppService.Save(CurrentUserId, profile);
                             messages.Add($"SUCCESS: {profile.Name} handler updated to \"{handler}\"");
                         }
                     }
@@ -137,11 +150,43 @@ namespace LuduStack.Web.Areas.Staff.Controllers
             {
                 result.Success = false;
                 messages.Add("ERROR: " + ex.Message);
-            }   
+            }
 
             result.Value = messages.OrderBy(x => x);
 
             return View("TaskResult", result);
+        }
+
+        [Route("staff/admin/analyseuser/{userId:guid}")]
+        public async Task<IActionResult> AnalyseUser(Guid userId)
+        {
+            AnalyseUserViewModel model = new AnalyseUserViewModel();
+
+            ApplicationUser user = await UserManager.FindByIdAsync(userId.ToString());
+            ProfileViewModel profile = await ProfileAppService.GetByUserId(userId, ProfileType.Personal);
+
+            var roles = await UserManager.GetRolesAsync(user);
+
+            user.Roles = roles.ToList();
+
+            model.User = user;
+            model.Profile = profile;
+
+            return View(model);
+        }
+
+        [HttpDelete("staff/admin/deleteuser/{userId:guid}")]
+        public async Task<IActionResult> DeleteUser(Guid userId)
+        {
+            OperationResultVo result = await mediator.Send(new DeleteUserFromPlatformRequest(CurrentUserId, userId));
+
+            if (result.Success)
+            {
+                ApplicationUser user = await UserManager.FindByIdAsync(userId.ToString());
+                await UserManager.DeleteAsync(user);
+            }
+
+            return Json(result);
         }
 
         public async Task<IQueryable<ApplicationUser>> GetUsersAsync()

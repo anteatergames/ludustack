@@ -251,13 +251,13 @@ namespace LuduStack.Web.Controllers
 
         [HttpPost]
         [Route("content/comment")]
-        public IActionResult Comment(CommentViewModel vm)
+        public async Task<IActionResult> Comment(CommentViewModel vm)
         {
             OperationResultVo response;
 
             SetAuthorDetails(vm);
 
-            response = userContentAppService.Comment(vm);
+            response = await userContentAppService.Comment(vm);
 
             return Json(response);
         }

@@ -5,6 +5,7 @@ using LuduStack.Domain.Interfaces.Services;
 using LuduStack.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace LuduStack.Application.Interfaces
 {
@@ -20,6 +21,8 @@ namespace LuduStack.Application.Interfaces
 
         OperationResultVo ContentUnlike(Guid currentUserId, Guid targetId);
 
-        OperationResultVo Comment(CommentViewModel vm);
+        Task<OperationResultVo> Comment(CommentViewModel vm);
+
+        Task<OperationResultVo> GetCommentsByUserId(Guid currentUserId, Guid userId);
     }
 }

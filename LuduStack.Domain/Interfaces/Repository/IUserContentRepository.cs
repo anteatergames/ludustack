@@ -1,5 +1,6 @@
 ﻿using LuduStack.Domain.Models;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -10,7 +11,7 @@ namespace LuduStack.Domain.Interfaces.Repository
     {
         Task<int> CountComments(Expression<Func<UserContentComment, bool>> where);
 
-        Task<IQueryable<UserContentComment>> GetComments(Expression<Func<UserContentComment, bool>> where);
+        Task<List<UserContentComment>> GetComments(Expression<Func<UserContentComment, bool>> where);
 
         Task<IQueryable<UserContentLike>> GetLikes(Func<UserContentLike, bool> where);
 

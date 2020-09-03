@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace LuduStack.Application.Services
 {
@@ -469,11 +470,11 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo Comment(CommentViewModel vm)
+        public async Task<OperationResultVo> Comment(CommentViewModel vm)
         {
             try
             {
-                bool commentAlreadyExists = userContentDomainService.CheckIfCommentExists<UserContentComment>(x => x.UserContentId == vm.UserContentId && x.UserId == vm.UserId && x.Text.Equals(vm.Text));
+                bool commentAlreadyExists = await userContentDomainService.CheckIfCommentExists<UserContentComment>(x => x.UserContentId == vm.UserContentId && x.UserId == vm.UserId && x.Text.Equals(vm.Text));
 
                 if (commentAlreadyExists)
                 {
@@ -488,12 +489,28 @@ namespace LuduStack.Application.Services
 
                     userContentDomainService.Comment(model);
 
-                    unitOfWork.Commit();
+                    await unitOfWork.Commit();
 
                     int newCount = userContentDomainService.CountComments(x => x.UserContentId == model.UserContentId && x.UserId == model.UserId);
 
                     return new OperationResultVo<int>(newCount);
                 }
+            }
+            catch (Exception ex)
+            {
+                return new OperationResultVo(ex.Message);
+            }
+        }
+
+        public async Task<OperationResultVo> GetCommentsByUserId(Guid currentUserId, Guid userId)
+        {
+            try
+            {
+                var comments = await userContentDomainService.GetComments(x => x.UserId == userId);
+
+                var vms = mapper.Map<List<CommentViewModel>>(comments);
+
+                return new OperationResultListVo<CommentViewModel>(vms);
             }
             catch (Exception ex)
             {
