@@ -6,6 +6,7 @@ using LuduStack.Infra.CrossCutting.Identity.Models;
 using LuduStack.Web.Areas.Staff.Controllers.Base;
 using LuduStack.Web.Models;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -183,7 +184,9 @@ namespace LuduStack.Web.Areas.Staff.Controllers
             if (result.Success)
             {
                 ApplicationUser user = await UserManager.FindByIdAsync(userId.ToString());
-                await UserManager.DeleteAsync(user);
+                IdentityResult identityResult = await UserManager.DeleteAsync(user);
+
+                Console.WriteLine(identityResult.Succeeded);
             }
 
             return Json(result);
