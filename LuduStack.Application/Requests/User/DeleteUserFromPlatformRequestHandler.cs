@@ -1,5 +1,6 @@
 ﻿using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels;
+using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.ValueObjects;
 using MediatR;
 using System;
@@ -37,7 +38,14 @@ namespace LuduStack.Application.Requests.User
 
             if (canDelete)
             {
-                var result = profileAppService.Remove(request.CurrentUserId, request.UserId);
+                var profile = await profileAppService.GetByUserId(request.UserId, ProfileType.Personal, false);
+
+                if (profile == null)
+                {
+                    return new OperationResultVo(false, "Can't delete user");
+                }
+
+                var result = profileAppService.Remove(request.CurrentUserId, profile.Id);
 
                 return result;
             }
