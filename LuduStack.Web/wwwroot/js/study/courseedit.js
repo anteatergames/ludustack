@@ -1,4 +1,4 @@
-﻿var STUDYCOURSEEDIT = (function () {
+﻿var COURSEEDIT = (function () {
     "use strict";
 
     var selectors = {};
@@ -8,12 +8,15 @@
 
     var propPrefix = 'Plans';
 
+    var croppers = [];
+
     function setSelectors() {
         selectors.controlsidebar = '.control-sidebar';
         selectors.canInteract = '#caninteract';
         selectors.urls = '#urls';
         selectors.container = '#featurecontainer';
         selectors.form = '#frmCourseSave';
+        selectors.userId = '#UserId';
         selectors.btnSave = '#btnSaveCourse';
         selectors.txtAreaDescription = '#Description';
         selectors.sortablePlanning = 'divPlans';
@@ -27,6 +30,9 @@
         selectors.btnCollapse = '.btn-collapse';
         selectors.btnSavePlans = '#btn-course-plans-save';
         selectors.rangeSlider = 'input[type="range"]';
+        selectors.inputImageListItem = 'input.image-upload';
+        selectors.imageListItem = 'img.image-upload';
+        selectors.modalCrop = '#modalCrop';
     }
 
     function cacheObjs() {
@@ -34,10 +40,13 @@
         objs.container = $(selectors.container);
         objs.urls = $(selectors.urls);
         objs.form = $(selectors.form);
+        objs.userId = $(selectors.userId);
         objs.txtAreaDescription = $(selectors.txtAreaDescription);
         objs.sortablePlanning = document.getElementById(selectors.sortablePlanning);
         objs.divPlans = $(selectors.divPlans);
         objs.divNoItems = $(selectors.divNoItems);
+        objs.inputImageListItem = $(selectors.inputImageListItem);
+        objs.modalCrop = $(selectors.modalCrop);
     }
 
     function init() {
@@ -52,11 +61,12 @@
         if (isNew) {
             console.log('new course');
         }
+        else {
+            var urlPlans = objs.urls.data('urlListplansforedit');
+            loadPlans(urlPlans);
+        }
 
         MAINMODULE.Common.BindPopOvers();
-
-        var urlPlans = objs.urls.data('urlListplansforedit');
-        loadPlans(urlPlans);
     }
 
     function bindAll() {
@@ -66,6 +76,10 @@
         bindBtnDeletePlan();
         bindBtnCollapse();
         bindBtnSavePlans();
+
+        bindChangeImage();
+
+        bindCropper();
     }
 
     function bindSelect2() {
@@ -86,7 +100,9 @@
             if (valid && canInteract) {
                 MAINMODULE.Common.DisableButton(btn);
 
-                submitForm(btn);
+                uploadCroppedImages(function () {
+                    submitForm(btn);
+                });
             }
         });
     }
@@ -154,6 +170,118 @@
 
             return false;
         });
+    }
+
+    function bindChangeImage() {
+        for (var i = 0; i < objs.inputImageListItem.length; i++) {
+            var element = objs.inputImageListItem[i];
+
+            element.addEventListener('change', function (e) {
+                var image = document.getElementById(e.target.dataset.targetImg);
+
+                var files = e.target.files
+
+                var done = function (url2) {
+                    element.value = '';
+
+                    croppers[image.dataset.cropperIndex].replace(url2);
+
+                    image.src = url2;
+
+                    e.target.dataset.changed = true;
+                };
+
+                MAINMODULE.Utils.GetSelectedFileUrl(files, done);
+            });
+        }
+    }
+
+    function bindCropper() {
+        var images = document.querySelectorAll(selectors.imageListItem);
+        var i;
+
+        for (i = 0; i < images.length; i++) {
+            croppers.push(new Cropper(images[i], {
+                aspectRatio: 40 / 21,
+                viewMode: 3,
+                autoCropArea: 1,
+                zoomOnWheel: false
+            }));
+
+            images[i].dataset.cropperIndex = i;
+        }
+    }
+
+    function uploadCroppedImages(callback) {
+        var imagesProcessed = 0;
+
+        var imagesChanged = objs.inputImageListItem.filter(function (index) {
+            return objs.inputImageListItem[index].dataset.changed === 'true';
+        });
+
+        var imagesToProcessCount = imagesChanged.length;
+
+        if (imagesChanged.length > 0) {
+            for (var i = 0; i < imagesToProcessCount; i++) {
+                var element = imagesChanged[i];
+                var changed = element.dataset.changed === 'true';
+
+                if (!changed) {
+                    console.log('skipping...');
+                    imagesProcessed++;
+                    continue;
+                }
+                console.log('uploading...');
+
+                var image = document.getElementById(element.dataset.targetImg);
+                var hidden = document.getElementById(element.dataset.targetHidden);
+
+                var cropper = croppers[image.dataset.cropperIndex];
+
+                var canvas = cropper.getCroppedCanvas();
+
+                var dataUri = canvas.toDataURL();
+
+                var blob = MAINMODULE.Utils.DataURItoBlob(dataUri);
+
+                var formData = new FormData();
+                formData.append('userId', objs.userId.val());
+
+                formData.append('upload', blob);
+
+                formData.append("randomName", true);
+
+                $.ajax('/storage/uploadcontentimage', {
+                    method: "POST",
+                    data: formData,
+                    async: false,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        imagesProcessed++;
+                        hidden.value = response.url;
+
+                        console.log(imagesToProcessCount);
+                        console.log(imagesProcessed);
+
+                        if (imagesProcessed === imagesToProcessCount) {
+                            if (callback) {
+                                callback();
+                            }
+                        }
+                    },
+                    error: function (response) {
+                        console.log(response);
+                        imgFeaturedImage.src = initialUrl;
+                    }
+                });
+            }
+        }
+        else {
+            if (callback) {
+                callback();
+            }
+        }
     }
 
     function initSortable() {
@@ -324,5 +452,5 @@
 }());
 
 $(function () {
-    STUDYCOURSEEDIT.Init();
+    COURSEEDIT.Init();
 });

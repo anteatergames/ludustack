@@ -43,6 +43,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LuduStack.Infra.CrossCuttin
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{96FF3B45-0693-40ED-BA8E-FD0F2F9D4125}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LuduStack.Infra.CrossCutting.Messaging", "LuduStack.Infra.CrossCutting.Messaging\LuduStack.Infra.CrossCutting.Messaging.csproj", "{F37604C3-01A9-4ACE-A4DB-D6285B5E0E72}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -101,6 +103,10 @@ Global
 		{96FF3B45-0693-40ED-BA8E-FD0F2F9D4125}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{96FF3B45-0693-40ED-BA8E-FD0F2F9D4125}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{96FF3B45-0693-40ED-BA8E-FD0F2F9D4125}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F37604C3-01A9-4ACE-A4DB-D6285B5E0E72}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F37604C3-01A9-4ACE-A4DB-D6285B5E0E72}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F37604C3-01A9-4ACE-A4DB-D6285B5E0E72}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F37604C3-01A9-4ACE-A4DB-D6285B5E0E72}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -120,6 +126,7 @@ Global
 		{E6C6FF32-A62F-43AF-9058-EA76A1FCDBFF} = {226F680D-ECFC-4966-8DE5-FB680D76F4C5}
 		{18FC47B0-A866-433B-A2AA-246B30073448} = {400C777F-65C4-4EAF-A899-AB4D89C6BA0A}
 		{184A4385-8D5C-48A7-BBA3-E44EEA8E7CDE} = {400C777F-65C4-4EAF-A899-AB4D89C6BA0A}
+		{F37604C3-01A9-4ACE-A4DB-D6285B5E0E72} = {400C777F-65C4-4EAF-A899-AB4D89C6BA0A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A3E0D829-84B5-4934-AC66-A64246933BB4}

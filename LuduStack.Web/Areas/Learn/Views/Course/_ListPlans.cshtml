@@ -39,14 +39,17 @@ else
                             <label asp-for="@plan.Description" class="col-form-label"></label>
                             <p>@plan.Description</p>
                         </div>
-                        <div class="col-12">
-                            <label asp-for="@plan.ScoreToPass" class="col-form-label"></label>
-                            <p>
-                                <span class="badge badge-secondary align-top p-1">
-                                    @plan.ScoreToPass
-                                </span>
-                            </p>
-                        </div>
+                        @if (plan.ScoreToPass > 0)
+                        {
+                            <div class="col-12">
+                                <label asp-for="@plan.ScoreToPass" class="col-form-label"></label>
+                                <p>
+                                    <span class="badge badge-secondary align-top p-1">
+                                        @plan.ScoreToPass
+                                    </span>
+                                </p>
+                            </div>
+                        }
                     </div>
                 </div>
             </div>

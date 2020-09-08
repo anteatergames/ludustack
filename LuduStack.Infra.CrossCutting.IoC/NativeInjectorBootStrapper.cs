@@ -6,6 +6,7 @@ using LuduStack.Domain.Interfaces.Repository;
 using LuduStack.Domain.Interfaces.Services;
 using LuduStack.Domain.Services;
 using LuduStack.Infra.CrossCutting.Abstractions;
+using LuduStack.Infra.CrossCutting.Messaging;
 using LuduStack.Infra.CrossCutting.Notifications;
 using LuduStack.Infra.Data.Cache;
 using LuduStack.Infra.Data.MongoDb.Context;
@@ -21,6 +22,9 @@ namespace LuduStack.Infra.CrossCutting.IoC
     {
         public static void RegisterServices(IServiceCollection services)
         {
+            // Domain Bus (Mediator)
+            services.AddScoped<IMediatorHandler, InMemoryBus>();
+
             // ASP.NET HttpContext dependency
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<ICacheService, CacheService>();

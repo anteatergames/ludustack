@@ -7,7 +7,7 @@
 <a asp-area="learn" asp-controller="course" asp-action="details" asp-route-id="@Model.Id" asp-route-backUrl="@ViewData["BackUrl"]">
     <div class="box p-0 bg-white hover">
         <div class="cardborder-0">
-            <img data-sizes="auto" src="@Model.ThumbnailUrl" class="card-img-top img-fluid lazyload" style="width:100%" alt="@Model.Name" />
+            <img data-sizes="auto" src="@Model.FeaturedImage" class="card-img-top img-fluid lazyload" style="width:100%" alt="@Model.Name" />
             <div class="card-body p-0">
                 <div class="box-body">
                     @if (!string.IsNullOrWhiteSpace(Model.Name))

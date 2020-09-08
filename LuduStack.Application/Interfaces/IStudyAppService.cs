@@ -2,6 +2,7 @@
 using LuduStack.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace LuduStack.Application.Interfaces
 {
@@ -19,11 +20,11 @@ namespace LuduStack.Application.Interfaces
 
         OperationResultVo GenerateNewCourse(Guid currentUserId);
 
-        OperationResultVo<Guid> SaveCourse(Guid currentUserId, CourseViewModel vm);
+        Task<OperationResultVo<Guid>> SaveCourse(Guid currentUserId, CourseViewModel vm);
 
-        OperationResultVo RemoveCourse(Guid currentUserId, Guid id);
+        Task<OperationResultVo> DeleteCourse(Guid currentUserId, Guid id);
 
-        OperationResultVo GetCourseById(Guid currentUserId, Guid id);
+        Task<OperationResultVo> GetCourseById(Guid currentUserId, Guid id);
 
         OperationResultVo GetPlans(Guid currentUserId, Guid courseId);
 

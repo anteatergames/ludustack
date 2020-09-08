@@ -121,11 +121,11 @@ namespace LuduStack.Domain.Services
             return model;
         }
 
-        public StudyCourse GetCourseById(Guid id)
+        public async Task<StudyCourse> GetCourseById(Guid id)
         {
-            Task<StudyCourse> task = Task.Run(async () => await studyCourseRepository.GetById(id));
+            var course = await studyCourseRepository.GetById(id);
 
-            return task.Result;
+            return course;
         }
 
         public void AddCourse(StudyCourse model)

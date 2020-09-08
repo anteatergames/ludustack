@@ -21,7 +21,7 @@ namespace LuduStack.Web.Areas.Learn.Controllers
             this.studyAppService = studyAppService;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string msg)
         {
             string studyProfile = StudyProfile.Student.ToString();
 
@@ -50,10 +50,8 @@ namespace LuduStack.Web.Areas.Learn.Controllers
             {
                 case "Mentor":
                     return View("MentorDashboard");
-
                 case "Student":
                     return View("StudentDashboard");
-
                 default:
                     return View("StudentDashboard");
             }

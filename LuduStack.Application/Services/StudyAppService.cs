@@ -1,4 +1,6 @@
-﻿using LuduStack.Application.Formatters;
+﻿using FluentValidation.Results;
+using LuduStack.Application.Commands;
+using LuduStack.Application.Formatters;
 using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels.Study;
 using LuduStack.Application.ViewModels.User;
@@ -7,6 +9,7 @@ using LuduStack.Domain.Interfaces.Services;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
 using LuduStack.Domain.ValueObjects.Study;
+using LuduStack.Infra.CrossCutting.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,11 +21,13 @@ namespace LuduStack.Application.Services
     {
         private readonly IStudyDomainService studyDomainService;
         private readonly IGamificationDomainService gamificationDomainService;
+        private readonly IMediatorHandler mediator;
 
-        public StudyAppService(IProfileBaseAppServiceCommon profileBaseAppServiceCommon
+        public StudyAppService(IMediatorHandler mediator, IProfileBaseAppServiceCommon profileBaseAppServiceCommon
             , IStudyDomainService studyDomainService
             , IGamificationDomainService gamificationDomainService) : base(profileBaseAppServiceCommon)
         {
+            this.mediator = mediator;
             this.studyDomainService = studyDomainService;
             this.gamificationDomainService = gamificationDomainService;
         }
@@ -105,7 +110,7 @@ namespace LuduStack.Application.Services
 
                 foreach (StudyCourseListItemVo course in courses)
                 {
-                    course.ThumbnailUrl = SetFeaturedImage(currentUserId, course.ThumbnailUrl, ImageRenderType.Full, Constants.DefaultCourseThumbnail);
+                    course.FeaturedImage = SetFeaturedImage(course.UserId, course.FeaturedImage, ImageRenderType.Small, Constants.DefaultCourseThumbnail);
                 }
 
                 return new OperationResultListVo<StudyCourseListItemVo>(courses);
@@ -166,9 +171,11 @@ namespace LuduStack.Application.Services
             {
                 StudyCourse model = studyDomainService.GenerateNewCourse(currentUserId);
 
-                CourseViewModel newVm = mapper.Map<CourseViewModel>(model);
+                CourseViewModel vm = mapper.Map<CourseViewModel>(model);
 
-                return new OperationResultVo<CourseViewModel>(newVm);
+                vm.FeaturedImage = SetFeaturedImage(currentUserId, vm.FeaturedImage, ImageRenderType.Full, Constants.DefaultCourseThumbnail);
+
+                return new OperationResultVo<CourseViewModel>(vm);
             }
             catch (Exception ex)
             {
@@ -176,7 +183,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo<Guid> SaveCourse(Guid currentUserId, CourseViewModel vm)
+        public async Task<OperationResultVo<Guid>> SaveCourse(Guid currentUserId, CourseViewModel vm)
         {
             int pointsEarned = 0;
 
@@ -184,7 +191,7 @@ namespace LuduStack.Application.Services
             {
                 StudyCourse model;
 
-                StudyCourse existing = studyDomainService.GetCourseById(vm.Id);
+                StudyCourse existing = await studyDomainService.GetCourseById(vm.Id);
                 if (existing != null)
                 {
                     model = mapper.Map(vm, existing);
@@ -206,7 +213,7 @@ namespace LuduStack.Application.Services
                     studyDomainService.UpdateCourse(model);
                 }
 
-                unitOfWork.Commit();
+                await unitOfWork.Commit();
 
                 vm.Id = model.Id;
 
@@ -218,17 +225,20 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo RemoveCourse(Guid currentUserId, Guid id)
+        public async Task<OperationResultVo> DeleteCourse(Guid currentUserId, Guid id)
         {
             try
             {
-                // validate before
+                ValidationResult result = await mediator.SendCommand(new DeleteCourseCommand(id));
 
-                studyDomainService.RemoveCourse(id);
-
-                unitOfWork.Commit();
-
-                return new OperationResultVo(true, "That Course is gone now!");
+                if (result.IsValid)
+                {
+                    return new OperationResultVo(true, "That Course is gone now!");
+                }
+                else
+                {
+                    return new OperationResultVo(false, result.Errors.FirstOrDefault().ErrorMessage);
+                }
             }
             catch (Exception ex)
             {
@@ -236,11 +246,11 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo GetCourseById(Guid currentUserId, Guid id)
+        public async Task<OperationResultVo> GetCourseById(Guid currentUserId, Guid id)
         {
             try
             {
-                StudyCourse existing = studyDomainService.GetCourseById(id);
+                StudyCourse existing = await studyDomainService.GetCourseById(id);
 
                 CourseViewModel vm = mapper.Map<CourseViewModel>(existing);
 
@@ -248,7 +258,7 @@ namespace LuduStack.Application.Services
 
                 SetPermissions(currentUserId, vm);
 
-                vm.ThumbnailUrl = SetFeaturedImage(currentUserId, vm.ThumbnailUrl, ImageRenderType.Full, Constants.DefaultCourseThumbnail);
+                vm.FeaturedImage = SetFeaturedImage(vm.UserId, vm.FeaturedImage, ImageRenderType.Full, Constants.DefaultCourseThumbnail);
 
                 return new OperationResultVo<CourseViewModel>(vm);
             }

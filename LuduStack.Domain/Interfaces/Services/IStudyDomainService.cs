@@ -27,7 +27,7 @@ namespace LuduStack.Domain.Interfaces.Services
 
         StudyCourse GenerateNewCourse(Guid userId);
 
-        StudyCourse GetCourseById(Guid id);
+        Task<StudyCourse> GetCourseById(Guid id);
 
         void AddCourse(StudyCourse model);
 

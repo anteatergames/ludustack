@@ -28,14 +28,10 @@ namespace LuduStack.Web.Areas.Tools.Controllers
             this.giveawayAppService = giveawayAppService;
         }
 
-        public IActionResult Index(string msg)
+        public IActionResult Index()
         {
             if (User.Identity.IsAuthenticated)
             {
-                if (!string.IsNullOrWhiteSpace(msg))
-                {
-                    TempData["Message"] = SharedLocalizer[msg];
-                }
                 return View("Dashboard");
             }
             else

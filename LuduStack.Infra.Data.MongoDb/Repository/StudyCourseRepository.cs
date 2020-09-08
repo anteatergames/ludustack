@@ -22,7 +22,9 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
             IQueryable<StudyCourseListItemVo> obj = DbSet.AsQueryable().Select(x => new StudyCourseListItemVo
             {
                 Id = x.Id,
+                UserId = x.UserId,
                 Name = x.Name,
+                FeaturedImage = x.FeaturedImage,
                 OpenForApplication = x.OpenForApplication,
                 StudentCount = x.Members.Count
             });
@@ -35,7 +37,9 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
             IQueryable<StudyCourseListItemVo> obj = DbSet.AsQueryable().Where(x => x.UserId == userId).Select(x => new StudyCourseListItemVo
             {
                 Id = x.Id,
+                UserId = x.UserId,
                 Name = x.Name,
+                FeaturedImage = x.FeaturedImage,
                 OpenForApplication = x.OpenForApplication,
                 StudentCount = x.Members.Count
             });

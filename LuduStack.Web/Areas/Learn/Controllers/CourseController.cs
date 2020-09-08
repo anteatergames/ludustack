@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace LuduStack.Web.Areas.Learn.Controllers
 {
@@ -92,11 +93,11 @@ namespace LuduStack.Web.Areas.Learn.Controllers
         }
 
         [Route("learn/course/{id:guid}")]
-        public ViewResult Details(Guid id, string backUrl)
+        public async Task<IActionResult> Details(Guid id, string backUrl)
         {
             CourseViewModel vm;
 
-            OperationResultVo serviceResult = studyAppService.GetCourseById(CurrentUserId, id);
+            OperationResultVo serviceResult = await studyAppService.GetCourseById(CurrentUserId, id);
 
             if (serviceResult.Success)
             {
@@ -131,11 +132,11 @@ namespace LuduStack.Web.Areas.Learn.Controllers
         }
 
         [Route("learn/course/edit/{id:guid}")]
-        public ViewResult Edit(Guid id)
+        public async Task<IActionResult> Edit(Guid id)
         {
             CourseViewModel model;
 
-            OperationResultVo serviceResult = studyAppService.GetCourseById(CurrentUserId, id);
+            OperationResultVo serviceResult = await studyAppService.GetCourseById(CurrentUserId, id);
 
             OperationResultVo<CourseViewModel> castResult = serviceResult as OperationResultVo<CourseViewModel>;
 
@@ -147,7 +148,7 @@ namespace LuduStack.Web.Areas.Learn.Controllers
         }
 
         [Route("learn/course/save")]
-        public JsonResult SaveCourse(CourseViewModel vm)
+        public async Task<IActionResult> SaveCourse(CourseViewModel vm)
         {
             bool isNew = vm.Id == Guid.Empty;
 
@@ -155,7 +156,7 @@ namespace LuduStack.Web.Areas.Learn.Controllers
             {
                 vm.UserId = CurrentUserId;
 
-                OperationResultVo<Guid> saveResult = studyAppService.SaveCourse(CurrentUserId, vm);
+                OperationResultVo<Guid> saveResult = await studyAppService.SaveCourse(CurrentUserId, vm);
 
                 if (saveResult.Success)
                 {
@@ -169,7 +170,7 @@ namespace LuduStack.Web.Areas.Learn.Controllers
 
                         if (EnvName.Equals(ConstantHelper.ProductionEnvironmentName))
                         {
-                            NotificationSender.SendTeamNotificationAsync("New Course created!");
+                            await NotificationSender.SendTeamNotificationAsync("New Course created!");
                         }
                     }
 
@@ -188,21 +189,27 @@ namespace LuduStack.Web.Areas.Learn.Controllers
 
         [Authorize]
         [HttpDelete("learn/course/delete/{id:guid}")]
-        public IActionResult Delete(Guid id)
+        public async Task<IActionResult> Delete(Guid id, bool edit)
         {
             try
             {
-                OperationResultVo saveResult = studyAppService.RemoveCourse(CurrentUserId, id);
+                OperationResultVo deleteResult = await studyAppService.DeleteCourse(CurrentUserId, id);
 
-                if (saveResult.Success)
+                if (deleteResult.Success)
                 {
-                    string url = Url.Action("index", "study", new { area = "learn" });
+                    if (edit)
+                    {
+                        string url = Url.Action("index", "study", new { area = "learn", msg = deleteResult.Message });
+                        deleteResult.Message = null;
 
-                    return Json(new OperationResultRedirectVo(saveResult, url));
+                        return Json(new OperationResultRedirectVo(deleteResult, url)); 
+                    }
+
+                    return Json(deleteResult);
                 }
                 else
                 {
-                    return Json(new OperationResultVo(false));
+                    return Json(deleteResult);
                 }
             }
             catch (Exception ex)

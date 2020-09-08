@@ -278,18 +278,18 @@
     ]
   },
   {
-    "outputFileName": "wwwroot/js/study/studycourseedit.min.js",
+    "outputFileName": "wwwroot/js/study/courseedit.min.js",
     "inputFiles": [
       "wwwroot/lib/select2/js/select2.full.min.js",
       "wwwroot/js/common-edit.js",
-      "wwwroot/js/study/studycoursecommon.js",
-      "wwwroot/js/study/studycourseedit.js"
+      "wwwroot/js/study/coursecommon.js",
+      "wwwroot/js/study/courseedit.js"
     ]
   },
   {
-    "outputFileName": "wwwroot/js/study/studycoursedetails.min.js",
+    "outputFileName": "wwwroot/js/study/coursedetails.min.js",
     "inputFiles": [
-      "wwwroot/js/study/studycoursecommon.js",
+      "wwwroot/js/study/coursecommon.js",
       "wwwroot/js/study/coursedetails.js"
     ]
   },

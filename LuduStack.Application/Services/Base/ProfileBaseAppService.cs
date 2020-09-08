@@ -137,6 +137,9 @@ namespace LuduStack.Application.Services
             {
                 switch (imageType)
                 {
+                    case ImageRenderType.Small:
+                        return UrlFormatter.Image(userId, ImageType.CourseThumbnail, thumbnailUrl, 350, 0);
+
                     case ImageRenderType.LowQuality:
                         return UrlFormatter.Image(userId, ImageType.CourseThumbnail, thumbnailUrl, 278, 10);
 
@@ -145,7 +148,7 @@ namespace LuduStack.Application.Services
 
                     case ImageRenderType.Full:
                     default:
-                        return UrlFormatter.Image(userId, ImageType.CourseThumbnail, thumbnailUrl, 278);
+                        return UrlFormatter.Image(userId, ImageType.CourseThumbnail, thumbnailUrl, false, 0, 0);
                 }
             }
         }
