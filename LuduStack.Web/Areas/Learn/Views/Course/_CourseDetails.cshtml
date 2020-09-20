@@ -29,7 +29,7 @@
 
                         @if (Model.Permissions.CanDelete)
                         {
-                            <a class="btn-course-delete dropdown-item" href="#" data-url="@Url.Action("delete", "course", new { area = "learn", id = Model.Id })" data-confirmationmessage="@SharedLocalizer["Are you sure you want to delete this Translation Project?"]" data-confirmationtitle="@SharedLocalizer["Are you sure?"]" data-confirmationbuttontext="@SharedLocalizer["Yes, delete it!"]" data-cancelbuttontext="@SharedLocalizer["Cancel"]">@SharedLocalizer["delete"]</a>
+                            <a class="btn-course-delete dropdown-item" href="#" data-url="@Url.Action("delete", "course", new { area = "learn", id = Model.Id, redirect = true })" data-confirmationmessage="@SharedLocalizer["Are you sure you want to delete this Translation Project?"]" data-confirmationtitle="@SharedLocalizer["Are you sure?"]" data-confirmationbuttontext="@SharedLocalizer["Yes, delete it!"]" data-cancelbuttontext="@SharedLocalizer["Cancel"]">@SharedLocalizer["delete"]</a>
                         }
                     </div>
                 </div>
@@ -42,7 +42,7 @@
                     <div class="box-widget widget-course">
                         <div class="overflow-hidden square-bottom">
                             <a asp-area="learn" asp-controller="course" asp-action="details" asp-route-id="@Model.Id">
-                                <img data-sizes="auto" src="@Model.ThumbnailUrl" class="card-img-top img-fluid lazyload blur-up" style="width:100%" alt="@Model.Name" />
+                                <img data-sizes="auto" src="@Model.FeaturedImage" class="card-img-top img-fluid lazyload blur-up" style="width:100%" alt="@Model.Name" />
                             </a>
                         </div>
 

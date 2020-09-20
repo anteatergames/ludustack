@@ -1,9 +1,5 @@
 ﻿using LuduStack.Application.ViewModels.User;
 using LuduStack.Infra.CrossCutting.Identity.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace LuduStack.Web.Models
 {

@@ -124,6 +124,7 @@ namespace LuduStack.Web.Middlewares
                 { "course", "details" },
                 { "course", "listplans" },
                 { "course", "listplansforedit" },
+                { "course", "edit" },
                 { "study", "listmymentors" },
                 { "study", "listmystudents" },
 

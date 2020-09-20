@@ -50,7 +50,6 @@ namespace LuduStack.Web.Areas.Staff.Controllers
 
                 foreach (ProfileViewModel profile in profileResult.Value)
                 {
-
                     ApplicationUser user = allUsers.FirstOrDefault(x => x.Id.Equals(profile.UserId.ToString()));
                     if (user == null)
                     {
@@ -199,6 +198,5 @@ namespace LuduStack.Web.Areas.Staff.Controllers
                 return UserManager.Users;
             });
         }
-
     }
 }

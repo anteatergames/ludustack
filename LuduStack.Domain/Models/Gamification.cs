@@ -11,5 +11,7 @@ namespace LuduStack.Domain.Models
         public int XpCurrentLevel { get; set; }
 
         public int XpToNextLevel { get; set; }
+
+        public bool ExcludeFromRanking { get; set; }
     }
 }

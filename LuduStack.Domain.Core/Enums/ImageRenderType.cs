@@ -4,6 +4,7 @@
     {
         Full = 0,
         LowQuality = 1,
-        Responsive = 2
+        Responsive = 2,
+        Small = 3
     }
 }

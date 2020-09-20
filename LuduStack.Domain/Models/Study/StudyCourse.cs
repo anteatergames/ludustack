@@ -17,6 +17,8 @@ namespace LuduStack.Domain.Models
 
         public decimal ScoreToPass { get; set; }
 
+        public string FeaturedImage { get; set; }
+
         public List<CourseMember> Members { get; set; }
 
         public List<StudyGroup> Groups { get; set; }

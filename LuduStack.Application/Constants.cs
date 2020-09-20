@@ -150,7 +150,7 @@
         {
             get
             {
-                return "/images/placeholders/courseplaceholder.png";
+                return "/images/placeholders/default1200x630.jpg";
             }
         }
 

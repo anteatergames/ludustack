@@ -1,8 +1,6 @@
 ﻿using LuduStack.Domain.ValueObjects;
 using MediatR;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace LuduStack.Application.Requests.User
 {

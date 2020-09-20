@@ -8,7 +8,7 @@ namespace LuduStack.Infra.Data.MongoDb.Interfaces
     {
         bool HasPendingCommands { get; }
 
-        void AddCommand(Func<Task> func);
+        Task AddCommand(Func<Task> func);
 
         Task<int> SaveChanges();
 

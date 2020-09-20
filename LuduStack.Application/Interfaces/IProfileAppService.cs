@@ -36,6 +36,7 @@ namespace LuduStack.Application.Interfaces
         OperationResultVo Disconnect(Guid currentUserId, Guid userId);
 
         OperationResultVo Allow(Guid currentUserId, Guid userId);
+
         OperationResultVo Deny(Guid currentUserId, Guid userId);
 
         OperationResultVo GetConnectionsByUserId(Guid userId);

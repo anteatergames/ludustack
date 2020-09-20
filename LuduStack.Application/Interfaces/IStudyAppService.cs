@@ -2,35 +2,36 @@
 using LuduStack.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace LuduStack.Application.Interfaces
 {
     public interface IStudyAppService
     {
-        OperationResultVo GetMyMentors(Guid currentUserId);
+        Task<OperationResultVo> GetMyMentors(Guid currentUserId);
 
-        OperationResultVo GetMyStudents(Guid currentUserId);
+        Task<OperationResultVo> GetMyStudents(Guid currentUserId);
 
-        OperationResultVo GetCourses(Guid currentUserId);
+        Task<OperationResultVo> GetCourses(Guid currentUserId);
 
-        OperationResultVo GetCoursesByMe(Guid currentUserId);
+        Task<OperationResultVo> GetCoursesByMe(Guid currentUserId);
 
-        OperationResultVo GetMyCourses(Guid currentUserId);
+        Task<OperationResultVo> GetMyCourses(Guid currentUserId);
 
         OperationResultVo GenerateNewCourse(Guid currentUserId);
 
-        OperationResultVo<Guid> SaveCourse(Guid currentUserId, CourseViewModel vm);
+        Task<OperationResultVo<Guid>> SaveCourse(Guid currentUserId, CourseViewModel vm);
 
-        OperationResultVo RemoveCourse(Guid currentUserId, Guid id);
+        Task<OperationResultVo> DeleteCourse(Guid currentUserId, Guid id);
 
-        OperationResultVo GetCourseById(Guid currentUserId, Guid id);
+        Task<OperationResultVo> GetCourseById(Guid currentUserId, Guid id);
 
-        OperationResultVo GetPlans(Guid currentUserId, Guid courseId);
+        Task<OperationResultVo> GetPlans(Guid currentUserId, Guid courseId);
 
-        OperationResultVo SavePlans(Guid currentUserId, Guid courseId, IEnumerable<StudyPlanViewModel> plans);
+        Task<OperationResultVo> SavePlans(Guid currentUserId, Guid courseId, IEnumerable<StudyPlanViewModel> plans);
 
-        OperationResultVo EnrollCourse(Guid currentUserId, Guid courseId);
+        Task<OperationResultVo> EnrollCourse(Guid currentUserId, Guid courseId);
 
-        OperationResultVo LeaveCourse(Guid currentUserId, Guid courseId);
+        Task<OperationResultVo> LeaveCourse(Guid currentUserId, Guid courseId);
     }
 }

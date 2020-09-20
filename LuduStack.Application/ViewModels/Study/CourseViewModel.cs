@@ -27,7 +27,7 @@ namespace LuduStack.Application.ViewModels.Study
         [Display(Name = "Score to Pass")]
         public decimal ScoreToPass { get; set; }
 
-        public string ThumbnailUrl { get; set; }
+        public string FeaturedImage { get; set; }
 
         public List<CourseMemberViewModel> Members { get; set; }
 

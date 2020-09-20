@@ -36,7 +36,7 @@ namespace LuduStack.Domain.Services
 
             List<GamificationLevel> levels = gamificationLevelRepository.Get().ToList();
 
-            IQueryable<Gamification> model = gamificationRepository.Get().OrderByDescending(x => x.XpTotal).ThenBy(x => x.CreateDate).Take(count);
+            IQueryable<Gamification> model = gamificationRepository.Get(x => !x.ExcludeFromRanking).OrderByDescending(x => x.XpTotal).ThenBy(x => x.CreateDate).Take(count);
 
             List<Gamification> list = model.ToList();
 

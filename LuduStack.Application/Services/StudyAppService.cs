@@ -4,9 +4,13 @@ using LuduStack.Application.ViewModels.Study;
 using LuduStack.Application.ViewModels.User;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Interfaces.Services;
+using LuduStack.Domain.Messaging;
+using LuduStack.Domain.Messaging.Queries.Course;
+using LuduStack.Domain.Messaging.Queries.Study;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
 using LuduStack.Domain.ValueObjects.Study;
+using LuduStack.Infra.CrossCutting.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,20 +22,22 @@ namespace LuduStack.Application.Services
     {
         private readonly IStudyDomainService studyDomainService;
         private readonly IGamificationDomainService gamificationDomainService;
+        private readonly IMediatorHandler mediator;
 
-        public StudyAppService(IProfileBaseAppServiceCommon profileBaseAppServiceCommon
+        public StudyAppService(IMediatorHandler mediator, IProfileBaseAppServiceCommon profileBaseAppServiceCommon
             , IStudyDomainService studyDomainService
             , IGamificationDomainService gamificationDomainService) : base(profileBaseAppServiceCommon)
         {
+            this.mediator = mediator;
             this.studyDomainService = studyDomainService;
             this.gamificationDomainService = gamificationDomainService;
         }
 
-        public OperationResultVo GetMyMentors(Guid currentUserId)
+        public async Task<OperationResultVo> GetMyMentors(Guid currentUserId)
         {
             try
             {
-                IEnumerable<Guid> mentors = studyDomainService.GetMentorsByUserId(currentUserId);
+                IEnumerable<Guid> mentors = await mediator.Query<GetMentorsByUserIdQuery, IEnumerable<Guid>>(new GetMentorsByUserIdQuery(currentUserId));
 
                 List<ProfileViewModel> finalList = new List<ProfileViewModel>();
 
@@ -61,11 +67,11 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo GetMyStudents(Guid currentUserId)
+        public async Task<OperationResultVo> GetMyStudents(Guid currentUserId)
         {
             try
             {
-                IEnumerable<Guid> students = studyDomainService.GetStudentsByUserId(currentUserId);
+                IEnumerable<Guid> students = await mediator.Query<GetStudentsByUserIdQuery, IEnumerable<Guid>>(new GetStudentsByUserIdQuery(currentUserId));
 
                 List<ProfileViewModel> finalList = new List<ProfileViewModel>();
 
@@ -97,15 +103,15 @@ namespace LuduStack.Application.Services
 
         #region Course
 
-        public OperationResultVo GetCourses(Guid currentUserId)
+        public async Task<OperationResultVo> GetCourses(Guid currentUserId)
         {
             try
             {
-                List<StudyCourseListItemVo> courses = studyDomainService.GetCourses();
+                List<StudyCourseListItemVo> courses = await mediator.Query<GetCoursesQuery, List<StudyCourseListItemVo>>(new GetCoursesQuery());
 
                 foreach (StudyCourseListItemVo course in courses)
                 {
-                    course.ThumbnailUrl = SetFeaturedImage(currentUserId, course.ThumbnailUrl, ImageRenderType.Full, Constants.DefaultCourseThumbnail);
+                    course.FeaturedImage = SetFeaturedImage(course.UserId, course.FeaturedImage, ImageRenderType.Small, Constants.DefaultCourseThumbnail);
                 }
 
                 return new OperationResultListVo<StudyCourseListItemVo>(courses);
@@ -116,11 +122,11 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo GetCoursesByMe(Guid currentUserId)
+        public async Task<OperationResultVo> GetCoursesByMe(Guid currentUserId)
         {
             try
             {
-                List<StudyCourseListItemVo> courses = studyDomainService.GetCoursesByUserId(currentUserId);
+                List<StudyCourseListItemVo> courses = await mediator.Query<GetCoursesByUserIdQuery, List<StudyCourseListItemVo>>(new GetCoursesByUserIdQuery(currentUserId));
 
                 return new OperationResultListVo<StudyCourseListItemVo>(courses);
             }
@@ -130,11 +136,11 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo GetMyCourses(Guid currentUserId)
+        public async Task<OperationResultVo> GetMyCourses(Guid currentUserId)
         {
             try
             {
-                StudyCoursesOfUserVo courses = studyDomainService.GetCoursesForUserId(currentUserId);
+                StudyCoursesOfUserVo courses = await mediator.Query<GetCoursesForUserIdQuery, StudyCoursesOfUserVo>(new GetCoursesForUserIdQuery(currentUserId));
 
                 List<StudyCourseListItemVo> finalList = new List<StudyCourseListItemVo>();
 
@@ -166,89 +172,9 @@ namespace LuduStack.Application.Services
             {
                 StudyCourse model = studyDomainService.GenerateNewCourse(currentUserId);
 
-                CourseViewModel newVm = mapper.Map<CourseViewModel>(model);
+                CourseViewModel vm = mapper.Map<CourseViewModel>(model);
 
-                return new OperationResultVo<CourseViewModel>(newVm);
-            }
-            catch (Exception ex)
-            {
-                return new OperationResultVo(ex.Message);
-            }
-        }
-
-        public OperationResultVo<Guid> SaveCourse(Guid currentUserId, CourseViewModel vm)
-        {
-            int pointsEarned = 0;
-
-            try
-            {
-                StudyCourse model;
-
-                StudyCourse existing = studyDomainService.GetCourseById(vm.Id);
-                if (existing != null)
-                {
-                    model = mapper.Map(vm, existing);
-                }
-                else
-                {
-                    model = mapper.Map<StudyCourse>(vm);
-                }
-
-                if (vm.Id == Guid.Empty)
-                {
-                    studyDomainService.AddCourse(model);
-                    vm.Id = model.Id;
-
-                    pointsEarned += gamificationDomainService.ProcessAction(currentUserId, PlatformAction.CourseAdd);
-                }
-                else
-                {
-                    studyDomainService.UpdateCourse(model);
-                }
-
-                unitOfWork.Commit();
-
-                vm.Id = model.Id;
-
-                return new OperationResultVo<Guid>(model.Id, pointsEarned);
-            }
-            catch (Exception ex)
-            {
-                return new OperationResultVo<Guid>(ex.Message);
-            }
-        }
-
-        public OperationResultVo RemoveCourse(Guid currentUserId, Guid id)
-        {
-            try
-            {
-                // validate before
-
-                studyDomainService.RemoveCourse(id);
-
-                unitOfWork.Commit();
-
-                return new OperationResultVo(true, "That Course is gone now!");
-            }
-            catch (Exception ex)
-            {
-                return new OperationResultVo(ex.Message);
-            }
-        }
-
-        public OperationResultVo GetCourseById(Guid currentUserId, Guid id)
-        {
-            try
-            {
-                StudyCourse existing = studyDomainService.GetCourseById(id);
-
-                CourseViewModel vm = mapper.Map<CourseViewModel>(existing);
-
-                SetAuthorDetails(vm);
-
-                SetPermissions(currentUserId, vm);
-
-                vm.ThumbnailUrl = SetFeaturedImage(currentUserId, vm.ThumbnailUrl, ImageRenderType.Full, Constants.DefaultCourseThumbnail);
+                vm.FeaturedImage = SetFeaturedImage(currentUserId, vm.FeaturedImage, ImageRenderType.Full, Constants.DefaultCourseThumbnail);
 
                 return new OperationResultVo<CourseViewModel>(vm);
             }
@@ -258,11 +184,87 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo GetPlans(Guid currentUserId, Guid courseId)
+        public async Task<OperationResultVo<Guid>> SaveCourse(Guid currentUserId, CourseViewModel vm)
+        {
+            int pointsEarned = 0;
+
+            try
+            {
+                StudyCourse model;
+
+                StudyCourse existing = await mediator.Query<GetCourseByIdQuery, StudyCourse>(new GetCourseByIdQuery(vm.Id));
+                if (existing != null)
+                {
+                    model = mapper.Map(vm, existing);
+                }
+                else
+                {
+                    model = mapper.Map<StudyCourse>(vm);
+                }
+
+                CommandResult result = await mediator.SendCommand(new SaveCourseCommand(model));
+
+                if (model.Id == Guid.Empty && result.Validation.IsValid)
+                {
+                    pointsEarned += gamificationDomainService.ProcessAction(currentUserId, PlatformAction.CourseAdd);
+                }
+
+                return new OperationResultVo<Guid>(model.Id, pointsEarned);
+            }
+            catch (Exception ex)
+            {
+                return new OperationResultVo<Guid>(ex.Message);
+            }
+        }
+
+        public async Task<OperationResultVo> DeleteCourse(Guid currentUserId, Guid id)
         {
             try
             {
-                IEnumerable<StudyPlan> plans = studyDomainService.GetPlans(courseId);
+                CommandResult result = await mediator.SendCommand(new DeleteCourseCommand(id));
+
+                if (result.Validation.IsValid)
+                {
+                    return new OperationResultVo(true, "That Course is gone now!");
+                }
+                else
+                {
+                    return new OperationResultVo(false, result.Validation.Errors.FirstOrDefault().ErrorMessage);
+                }
+            }
+            catch (Exception ex)
+            {
+                return new OperationResultVo(ex.Message);
+            }
+        }
+
+        public async Task<OperationResultVo> GetCourseById(Guid currentUserId, Guid id)
+        {
+            try
+            {
+                StudyCourse existing = await mediator.Query<GetCourseByIdQuery, StudyCourse>(new GetCourseByIdQuery(id));
+
+                CourseViewModel vm = mapper.Map<CourseViewModel>(existing);
+
+                SetAuthorDetails(vm);
+
+                SetPermissions(currentUserId, vm);
+
+                vm.FeaturedImage = SetFeaturedImage(vm.UserId, vm.FeaturedImage, ImageRenderType.Full, Constants.DefaultCourseThumbnail);
+
+                return new OperationResultVo<CourseViewModel>(vm);
+            }
+            catch (Exception ex)
+            {
+                return new OperationResultVo(ex.Message);
+            }
+        }
+
+        public async Task<OperationResultVo> GetPlans(Guid currentUserId, Guid courseId)
+        {
+            try
+            {
+                List<StudyPlan> plans = await mediator.Query<GetPlansQuery, List<StudyPlan>>(new GetPlansQuery(courseId));
 
                 List<StudyPlanViewModel> vms = mapper.Map<IEnumerable<StudyPlan>, IEnumerable<StudyPlanViewModel>>(plans).ToList();
 
@@ -276,7 +278,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo SavePlans(Guid currentUserId, Guid courseId, IEnumerable<StudyPlanViewModel> plans)
+        public async Task<OperationResultVo> SavePlans(Guid currentUserId, Guid courseId, IEnumerable<StudyPlanViewModel> plans)
         {
             try
             {
@@ -287,11 +289,7 @@ namespace LuduStack.Application.Services
                     term.UserId = currentUserId;
                 }
 
-                Task.Run(async () => await studyDomainService.SavePlans(courseId, entities));
-
-                Task<bool> task = unitOfWork.Commit();
-
-                task.Wait();
+                var result = await mediator.SendCommand(new SavePlansCommand(courseId, entities));
 
                 return new OperationResultVo(true, "Plans Updated!");
             }
@@ -301,20 +299,16 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo EnrollCourse(Guid currentUserId, Guid courseId)
+        public async Task<OperationResultVo> EnrollCourse(Guid currentUserId, Guid courseId)
         {
             try
             {
-                bool result = Task.Run(async () => await studyDomainService.EnrollCourse(currentUserId, courseId)).Result;
+                var result = await mediator.SendCommand(new EnrollCourseCommand(currentUserId, courseId));
 
-                if (!result)
+                if (!result.Validation.IsValid || !result.Success)
                 {
                     return new OperationResultVo(false, "Can't enroll you.");
                 }
-
-                Task<bool> task = unitOfWork.Commit();
-
-                task.Wait();
 
                 return new OperationResultVo(true, "You have enrolled to this course!");
             }
@@ -324,13 +318,13 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo LeaveCourse(Guid currentUserId, Guid courseId)
+        public async Task<OperationResultVo> LeaveCourse(Guid currentUserId, Guid courseId)
         {
             try
             {
-                bool result = Task.Run(async () => await studyDomainService.LeaveCourse(currentUserId, courseId)).Result;
+                var result = await mediator.SendCommand(new LeaveCourseCommand(currentUserId, courseId));
 
-                if (!result)
+                if (!result.Validation.IsValid || !result.Success)
                 {
                     return new OperationResultVo(false, "Can't get you out of this course.");
                 }

@@ -92,6 +92,12 @@ namespace LuduStack.Web.Controllers.Base
                     SetProfileOnSession(CurrentUserId, username);
                     ViewBag.Username = username ?? Constants.DefaultUsername;
                 }
+
+                var msg = context.HttpContext.Request.Query["msg"].FirstOrDefault();
+                if (!string.IsNullOrWhiteSpace(msg))
+                {
+                    TempData["Message"] = SharedLocalizer[msg];
+                }
             }
 
             CurrentLocale = GetAspNetCultureCookie();

@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
 namespace LuduStack.Domain.Services
@@ -43,7 +42,7 @@ namespace LuduStack.Domain.Services
             {
                 return repository.Get(x => x.UserId == userId && x.Type == type).FirstOrDefault();
             }
-            else if(!string.IsNullOrWhiteSpace(userHandler))
+            else if (!string.IsNullOrWhiteSpace(userHandler))
             {
                 return repository.Get(x => x.Handler.Equals(userHandler.ToLower()) && x.Type == type).FirstOrDefault();
             }

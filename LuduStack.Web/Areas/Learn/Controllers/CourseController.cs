@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace LuduStack.Web.Areas.Learn.Controllers
 {
@@ -21,11 +22,11 @@ namespace LuduStack.Web.Areas.Learn.Controllers
         }
 
         [Route("learn/course/listbyme")]
-        public PartialViewResult ListByMe()
+        public async Task<PartialViewResult> ListByMe()
         {
             List<StudyCourseListItemVo> model;
 
-            OperationResultVo serviceResult = studyAppService.GetCoursesByMe(CurrentUserId);
+            OperationResultVo serviceResult = await studyAppService.GetCoursesByMe(CurrentUserId);
 
             if (serviceResult.Success)
             {
@@ -44,11 +45,11 @@ namespace LuduStack.Web.Areas.Learn.Controllers
         }
 
         [Route("learn/course/listmine")]
-        public PartialViewResult ListMine()
+        public async Task<PartialViewResult> ListMine()
         {
             List<StudyCourseListItemVo> model;
 
-            OperationResultVo serviceResult = studyAppService.GetMyCourses(CurrentUserId);
+            OperationResultVo serviceResult = await studyAppService.GetMyCourses(CurrentUserId);
 
             if (serviceResult.Success)
             {
@@ -67,11 +68,11 @@ namespace LuduStack.Web.Areas.Learn.Controllers
         }
 
         [Route("learn/course/list")]
-        public PartialViewResult List(string backUrl)
+        public async Task<PartialViewResult> List(string backUrl)
         {
             List<StudyCourseListItemVo> model;
 
-            OperationResultVo serviceResult = studyAppService.GetCourses(CurrentUserId);
+            OperationResultVo serviceResult = await studyAppService.GetCourses(CurrentUserId);
 
             if (serviceResult.Success)
             {
@@ -92,11 +93,11 @@ namespace LuduStack.Web.Areas.Learn.Controllers
         }
 
         [Route("learn/course/{id:guid}")]
-        public ViewResult Details(Guid id, string backUrl)
+        public async Task<IActionResult> Details(Guid id, string backUrl)
         {
             CourseViewModel vm;
 
-            OperationResultVo serviceResult = studyAppService.GetCourseById(CurrentUserId, id);
+            OperationResultVo serviceResult = await studyAppService.GetCourseById(CurrentUserId, id);
 
             if (serviceResult.Success)
             {
@@ -131,11 +132,11 @@ namespace LuduStack.Web.Areas.Learn.Controllers
         }
 
         [Route("learn/course/edit/{id:guid}")]
-        public ViewResult Edit(Guid id)
+        public async Task<IActionResult> Edit(Guid id)
         {
             CourseViewModel model;
 
-            OperationResultVo serviceResult = studyAppService.GetCourseById(CurrentUserId, id);
+            OperationResultVo serviceResult = await studyAppService.GetCourseById(CurrentUserId, id);
 
             OperationResultVo<CourseViewModel> castResult = serviceResult as OperationResultVo<CourseViewModel>;
 
@@ -147,7 +148,7 @@ namespace LuduStack.Web.Areas.Learn.Controllers
         }
 
         [Route("learn/course/save")]
-        public JsonResult SaveCourse(CourseViewModel vm)
+        public async Task<IActionResult> SaveCourse(CourseViewModel vm)
         {
             bool isNew = vm.Id == Guid.Empty;
 
@@ -155,21 +156,21 @@ namespace LuduStack.Web.Areas.Learn.Controllers
             {
                 vm.UserId = CurrentUserId;
 
-                OperationResultVo<Guid> saveResult = studyAppService.SaveCourse(CurrentUserId, vm);
+                OperationResultVo<Guid> saveResult = await studyAppService.SaveCourse(CurrentUserId, vm);
 
                 if (saveResult.Success)
                 {
                     //GenerateFeedPost(vm);
 
-                    string url = Url.Action("details", "course", new { area = "learn", id = vm.Id });
+                    string url = Url.Action("details", "course", new { area = "learn", id = saveResult.Value });
 
                     if (isNew)
                     {
-                        url = Url.Action("edit", "course", new { area = "learn", id = vm.Id, pointsEarned = saveResult.PointsEarned });
+                        url = Url.Action("edit", "course", new { area = "learn", id = saveResult.Value, pointsEarned = saveResult.PointsEarned });
 
                         if (EnvName.Equals(ConstantHelper.ProductionEnvironmentName))
                         {
-                            NotificationSender.SendTeamNotificationAsync("New Course created!");
+                            await NotificationSender.SendTeamNotificationAsync("New Course created!");
                         }
                     }
 
@@ -188,21 +189,27 @@ namespace LuduStack.Web.Areas.Learn.Controllers
 
         [Authorize]
         [HttpDelete("learn/course/delete/{id:guid}")]
-        public IActionResult Delete(Guid id)
+        public async Task<IActionResult> Delete(Guid id, bool redirect)
         {
             try
             {
-                OperationResultVo saveResult = studyAppService.RemoveCourse(CurrentUserId, id);
+                OperationResultVo deleteResult = await studyAppService.DeleteCourse(CurrentUserId, id);
 
-                if (saveResult.Success)
+                if (deleteResult.Success)
                 {
-                    string url = Url.Action("index", "study", new { area = "learn" });
+                    if (redirect)
+                    {
+                        string url = Url.Action("index", "study", new { area = "learn", msg = deleteResult.Message });
+                        deleteResult.Message = null;
 
-                    return Json(new OperationResultRedirectVo(saveResult, url));
+                        return Json(new OperationResultRedirectVo(deleteResult, url));
+                    }
+
+                    return Json(deleteResult);
                 }
                 else
                 {
-                    return Json(new OperationResultVo(false));
+                    return Json(deleteResult);
                 }
             }
             catch (Exception ex)
@@ -212,7 +219,7 @@ namespace LuduStack.Web.Areas.Learn.Controllers
         }
 
         [Route("learn/course/{courseId:guid}/listplans")]
-        public PartialViewResult ListPlans(Guid courseId)
+        public async Task<PartialViewResult> ListPlans(Guid courseId)
         {
             ViewData["ListDescription"] = SharedLocalizer["Study Plans"].ToString();
 
@@ -220,7 +227,7 @@ namespace LuduStack.Web.Areas.Learn.Controllers
 
             try
             {
-                OperationResultVo result = studyAppService.GetPlans(CurrentUserId, courseId);
+                OperationResultVo result = await studyAppService.GetPlans(CurrentUserId, courseId);
 
                 if (result.Success)
                 {
@@ -243,7 +250,7 @@ namespace LuduStack.Web.Areas.Learn.Controllers
         }
 
         [Route("learn/course/{courseId:guid}/edit/plans/")]
-        public PartialViewResult ListPlansForEdit(Guid courseId)
+        public async Task<PartialViewResult> ListPlansForEdit(Guid courseId)
         {
             ViewData["ListDescription"] = SharedLocalizer["Study Plans"].ToString();
 
@@ -251,7 +258,7 @@ namespace LuduStack.Web.Areas.Learn.Controllers
 
             try
             {
-                OperationResultVo result = studyAppService.GetPlans(CurrentUserId, courseId);
+                OperationResultVo result = await studyAppService.GetPlans(CurrentUserId, courseId);
 
                 if (result.Success)
                 {
@@ -275,11 +282,11 @@ namespace LuduStack.Web.Areas.Learn.Controllers
         [HttpPost("study/course/{courseId:guid}/saveplans/")]
         [RequestFormLimits(ValueCountLimit = int.MaxValue)]
         [RequestSizeLimit(int.MaxValue)]
-        public IActionResult SavePlans(Guid courseId, IEnumerable<StudyPlanViewModel> plans)
+        public async Task<IActionResult> SavePlans(Guid courseId, IEnumerable<StudyPlanViewModel> plans)
         {
             try
             {
-                OperationResultVo result = studyAppService.SavePlans(CurrentUserId, courseId, plans);
+                OperationResultVo result = await studyAppService.SavePlans(CurrentUserId, courseId, plans);
 
                 return Json(result);
             }
@@ -291,11 +298,11 @@ namespace LuduStack.Web.Areas.Learn.Controllers
 
         [Authorize]
         [HttpPost("study/course/{courseId:guid}/enroll/")]
-        public IActionResult Enroll(Guid courseId)
+        public async Task<IActionResult> Enroll(Guid courseId)
         {
             try
             {
-                OperationResultVo result = studyAppService.EnrollCourse(CurrentUserId, courseId);
+                OperationResultVo result = await studyAppService.EnrollCourse(CurrentUserId, courseId);
 
                 string url = Url.Action("details", "course", new { area = "learn", id = courseId });
 
@@ -309,11 +316,11 @@ namespace LuduStack.Web.Areas.Learn.Controllers
 
         [Authorize]
         [HttpPost("study/course/{courseId:guid}/leave/")]
-        public IActionResult Leave(Guid courseId)
+        public async Task<IActionResult> Leave(Guid courseId)
         {
             try
             {
-                OperationResultVo result = studyAppService.LeaveCourse(CurrentUserId, courseId);
+                OperationResultVo result = await studyAppService.LeaveCourse(CurrentUserId, courseId);
 
                 string url = Url.Action("details", "course", new { area = "learn", id = courseId });
 

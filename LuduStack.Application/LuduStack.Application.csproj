@@ -14,17 +14,19 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="10.0.0" />
-    <PackageReference Include="CloudinaryDotNet" Version="1.12.0" />
-    <PackageReference Include="CountryData" Version="3.35.0" />
+    <PackageReference Include="CloudinaryDotNet" Version="1.13.0" />
+    <PackageReference Include="CountryData" Version="3.36.0" />
     <PackageReference Include="MediatR" Version="8.1.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="3.1.7" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="3.1.8" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.8" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="NPOI" Version="2.5.1" />
     <PackageReference Include="WindowsAzure.Storage" Version="9.3.3" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\LuduStack.Domain.Messaging\LuduStack.Domain.Messaging.csproj" />
+    <ProjectReference Include="..\LuduStack.Infra.CrossCutting.Messaging\LuduStack.Infra.CrossCutting.Messaging.csproj" />
     <ProjectReference Include="..\LuduStack.Domain\LuduStack.Domain.csproj" />
     <ProjectReference Include="..\LuduStack.Infra.Data\LuduStack.Infra.Data.csproj" />
   </ItemGroup>
