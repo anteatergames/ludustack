@@ -223,7 +223,7 @@
                 goalsReady = false;
                 rulesReady = false;
 
-                setTimeout(playSlotsSound, 300);
+                playSlotsSound();
 
                 pick();
             }
@@ -242,7 +242,7 @@
                 if (genreReady === true) {
                     genreReady = false;
 
-                    setTimeout(playSlotsSound, 300);
+                    playSlotsSound();
 
                     pickGenre();
                 }
@@ -262,7 +262,7 @@
                 if (actionReady === true) {
                     actionReady = false;
 
-                    setTimeout(playSlotsSound, 300);
+                    playSlotsSound();
 
                     pickAction();
                 }
@@ -282,7 +282,7 @@
                 if (thingsReady === true) {
                     thingsReady = false;
 
-                    setTimeout(playSlotsSound, 300);
+                    playSlotsSound();
 
                     pickThing();
                 }
@@ -302,7 +302,7 @@
                 if (goalsReady === true) {
                     goalsReady = false;
 
-                    setTimeout(playSlotsSound, 300);
+                    playSlotsSound();
 
                     pickGoal();
                 }
@@ -322,7 +322,7 @@
                 if (rulesReady === true) {
                     rulesReady = false;
 
-                    setTimeout(playSlotsSound, 300);
+                    playSlotsSound();
 
                     pickRule();
                 }
