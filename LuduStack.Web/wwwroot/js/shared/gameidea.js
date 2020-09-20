@@ -189,7 +189,7 @@
 
         if (objs.gameIdeaStandalone) {
             clickSound = new Audio("/sounds/click.mp3");
-            slotsSound = new Audio("/sounds/gameideagenerator.mp3");
+            slotsSound = new Audio("/sounds/spin.mp3");
         }
 
         playSlotsSound();

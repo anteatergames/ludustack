@@ -1,0 +1,243 @@
+﻿@model RateCalculatorViewModel
+
+@{
+    var isAjax = ViewContext.HttpContext.Request.IsAjaxRequest();
+    var canInteract = User.Identity.IsAuthenticated;
+
+
+    ViewData["Title"] = SharedLocalizer["Rate Calculator"];
+    ViewData["Description"] = SharedLocalizer["Calculate how much you should charge for freelance jobs."];
+    ViewData["Url"] = ViewBag.BaseUrl + Url.Action("index", "ratecalculator", new { area = "tools" });
+    ViewData["OgImage"] = ViewBag.BaseUrl + "/images/og/ogratecalculator.png";
+}
+
+@section ComponentStyles {
+    <environment include="Development">
+        <link rel="stylesheet" href="~/css/ratecalculator.css">
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="~/css/ratecalculator.min.css" asp-append-version="true">
+    </environment>
+}
+
+@section Scripts {
+    <environment include="Development">
+        <script src="~/lib/moment/moment-with-locales.js"></script>
+        <script src="~/js/ratecalculator/ratecalculator.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/lib/moment/moment-with-locales.min.js"></script>
+        <script src="~/js/ratecalculator/ratecalculator.min.js" asp-append-version="true"></script>
+    </environment>
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+<section class="content container">
+    <div id="featurecontainer" class="col">
+        <h1 class="sr-only">@ViewData["Title"]</h1>
+
+        <div class="box bg-white">
+            <div class="box-header with-border">
+                <div class="float-left mr-3">
+                    <a asp-area="tools" asp-controller="ratecalculator" asp-action="index" class="btn btn-default"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
+                </div>
+                <h2 class="card-title">@SharedLocalizer["You are calculating your freelancer rates"]</h2>
+                <span class="card-subtitle">
+                    @SharedLocalizer["Play around to find how much you should charge for your work."]
+                </span>
+            </div>
+
+            <div class="box-body p-0 px-md-2">
+                <form id="frmRateCalculator" asp-area="tools" asp-controller="giveaway" asp-action="save" method="post">
+                    <div class="row no-gutters">
+                        <div class="col-12 col-md-2">
+                            <div class="form-group validation">
+                                <label asp-for="YearWorkDays" class="col-form-label"></label>
+                                <span asp-description-for="YearWorkDays" class="col-form-label" />
+                                <input asp-for="YearWorkDays" class="form-control user-entry" placeholder="@SharedLocalizer["How many days you work in a year."]" />
+                                <span asp-validation-for="YearWorkDays" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row no-gutters">
+                        <div class="col-12 col-sm-6 col-md-6">
+                            <div class="form-group validation">
+                                <label asp-for="MontlyExpenses" class="col-form-label"></label>
+                                <span asp-description-for="MontlyExpenses" class="col-form-label" />
+                                <input asp-for="MontlyExpenses" type="number" step=".01" class="form-control user-entry" placeholder="@SharedLocalizer["Amount needed to survive each month."]" />
+                                <span asp-validation-for="MontlyExpenses" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-6">
+                            <div class="form-group validation">
+                                <label asp-for="AnnualCost" class="col-form-label"></label>
+                                <span asp-description-for="AnnualCost" class="col-form-label" />
+                                <input asp-for="AnnualCost" type="number" step=".01" class="form-control user-entry" placeholder="@SharedLocalizer["Amount needed to survive each year."]" />
+                                <span asp-validation-for="AnnualCost" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row no-gutters">
+                        <div class="col-12 col-md-4 col-lg-2">
+                            <div class="form-group validation">
+                                <label asp-for="SavingsPercentage" class="col-form-label"></label>
+                                <span asp-description-for="SavingsPercentage" class="col-form-label" />
+                                <input asp-for="SavingsPercentage" type="number" step=".01" class="form-control user-entry" placeholder="@SharedLocalizer["for the future"]" />
+                                <span asp-validation-for="SavingsPercentage" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4 col-lg-5">
+                            <div class="form-group">
+                                <label asp-for="SavingsValueMonthly" class="col-form-label"></label>
+                                <span asp-description-for="SavingsValueMonthly" class="col-form-label" />
+                                <input asp-for="SavingsValueMonthly" type="number" step=".01" class="form-control user-entry readonly" placeholder="@SharedLocalizer["Emergencies/month"]" tabindex="-1" readonly />
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4 col-lg-5">
+                            <div class="form-group">
+                                <label asp-for="SavingsValueYearly" class="col-form-label"></label>
+                                <span asp-description-for="SavingsValueYearly" class="col-form-label" />
+                                <input asp-for="SavingsValueYearly" type="number" step=".01" class="form-control user-entry readonly" placeholder="@SharedLocalizer["Emergencies/year"]" tabindex="-1" readonly />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row no-gutters">
+                        <div class="col-12 col-md-4 col-lg-2">
+                            <div class="form-group validation">
+                                <label asp-for="YourExtraPercentage" class="col-form-label"></label>
+                                <span asp-description-for="YourExtraPercentage" class="col-form-label" />
+                                <input asp-for="YourExtraPercentage" type="number" step=".01" class="form-control user-entry" placeholder="@SharedLocalizer["Your extra stuff"]" />
+                                <span asp-validation-for="YourExtraPercentage" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4 col-lg-5">
+                            <div class="form-group">
+                                <label asp-for="YourExtraValueMontly" class="col-form-label"></label>
+                                <span asp-description-for="YourExtraValueMontly" class="col-form-label" />
+                                <input asp-for="YourExtraValueMontly" type="number" step=".01" class="form-control user-entry readonly" placeholder="@SharedLocalizer["Savings/month"]" tabindex="-1" readonly />
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4 col-lg-5">
+                            <div class="form-group">
+                                <label asp-for="YourExtraValueYearly" class="col-form-label"></label>
+                                <span asp-description-for="YourExtraValueYearly" class="col-form-label" />
+                                <input asp-for="YourExtraValueYearly" type="number" step=".01" class="form-control user-entry readonly" placeholder="@SharedLocalizer["Savings/year"]" tabindex="-1" readonly />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row no-gutters">
+                        <div class="col-12 col-md-4 col-lg-2">
+                            <div class="form-group validation">
+                                <label asp-for="TaxesPercentage" class="col-form-label"></label>
+                                <span asp-description-for="TaxesPercentage" class="col-form-label" />
+                                <input asp-for="TaxesPercentage" type="number" step=".01" class="form-control user-entry" placeholder="@SharedLocalizer["pay your taxes"]" />
+                                <span asp-validation-for="TaxesPercentage" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4 col-lg-5">
+                            <div class="form-group">
+                                <label asp-for="TaxesValueMontly" class="col-form-label"></label>
+                                <span asp-description-for="TaxesValueMontly" class="col-form-label" />
+                                <input asp-for="TaxesValueMontly" type="number" step=".01" class="form-control user-entry readonly" placeholder="@SharedLocalizer["Taxes/month"]" tabindex="-1" readonly />
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4 col-lg-5">
+                            <div class="form-group">
+                                <label asp-for="TaxesValueYearly" class="col-form-label"></label>
+                                <span asp-description-for="TaxesValueYearly" class="col-form-label" />
+                                <input asp-for="TaxesValueYearly" type="number" step=".01" class="form-control user-entry readonly" placeholder="@SharedLocalizer["Taxes/year"]" tabindex="-1" readonly />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12 col-md-4">
+                            <div class="form-group validation">
+                                <label asp-for="RevisionFactor" class="col-form-label"></label>
+                                <span asp-description-for="RevisionFactor" class="col-form-label" />
+                                <input asp-for="RevisionFactor" type="number" step=".01" class="form-control user-entry" placeholder="@SharedLocalizer["revision factor"]" />
+                                <span asp-validation-for="RevisionFactor" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-4">
+                            <div class="form-group validation">
+                                <label asp-for="RushFactor" class="col-form-label"></label>
+                                <span asp-description-for="RushFactor" class="col-form-label" />
+                                <input asp-for="RushFactor" type="number" step=".01" class="form-control user-entry" placeholder="@SharedLocalizer["rush factor"]" />
+                                <span asp-validation-for="RushFactor" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-4">
+                            <div class="form-group validation">
+                                <label asp-for="AssholeFactor" class="col-form-label"></label>
+                                <span asp-description-for="AssholeFactor" class="col-form-label" />
+                                <input asp-for="AssholeFactor" type="number" step=".01" class="form-control user-entry" placeholder="@SharedLocalizer["asshole factor"]" />
+                                <span asp-validation-for="AssholeFactor" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+
+                <hr />
+
+                <div class="row">
+                    <div class="col col-md-6">
+                        <h2>You should charge</h2>
+                    </div>
+                </div>
+
+                <div class="row text-capitalize">
+                    <div class="col">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th class="font-weight-bold">@SharedLocalizer["rate"]</th>
+                                    <th class="text-right font-weight-bold">@SharedLocalizer["per day"]</th>
+                                    <th class="text-right font-weight-bold">@SharedLocalizer["per hour"]</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>@SharedLocalizer["regular"]</td>
+                                    <td class="text-right"><span id="txtPerDay">-</span></td>
+                                    <td class="text-right"><span id="txtPerHour">-</span></td>
+                                </tr>
+                                <tr>
+                                    <td>@SharedLocalizer["revision"]</td>
+                                    <td class="text-right"><span id="txtPerRevisionDay">-</span></td>
+                                    <td class="text-right"><span id="txtPerRevisionHour">-</span></td>
+                                </tr>
+                                <tr>
+                                    <td>@SharedLocalizer["rush job"]</td>
+                                    <td class="text-right"><span id="txtPerRushJobDay">-</span></td>
+                                    <td class="text-right"><span id="txtPerRushJobHour">-</span></td>
+                                </tr>
+                                <tr>
+                                    <td>@SharedLocalizer["asshole rate"]</td>
+                                    <td class="text-right"><span id="txtAssholeRateDay">-</span></td>
+                                    <td class="text-right"><span id="txtAssholeRateHour">-</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <p class="alert alert-warning">@SharedLocalizer["These values are suggestions for the MINIMUM values you should charge to compete on the freelance market whyle being able to pay your bills. We strongly recommend that you do you own research on freelance rates on your region according to your skill set."]</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
