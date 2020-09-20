@@ -300,17 +300,14 @@
 
   <ItemGroup>
     <Content Remove="wwwroot\js\giveaway\giveawayyouarein.min.js" />
-    <Content Remove="wwwroot\js\shared\gameidea.min.js" />
   </ItemGroup>
 
   <ItemGroup>
     <_ContentIncludedByDefault Remove="wwwroot\js\giveaway\giveawayyouarein.min.js" />
-    <_ContentIncludedByDefault Remove="wwwroot\js\shared\gameidea.min.js" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="wwwroot\js\giveaway\giveawayyouarein.min.js" />
-    <None Include="wwwroot\js\shared\gameidea.min.js" />
   </ItemGroup>
 
 </Project>
