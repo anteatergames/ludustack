@@ -51,7 +51,6 @@
 
         //var msgs = MAINMODULE.Common.GetDeleteMessages(btn);
 
-
         //ALERTSYSTEM.ShowConfirmMessage(msgs.confirmationTitle, msgs.msg, msgs.confirmationButtonText, msgs.cancelButtonText, function () {
         //    $.ajax({
         //        url: url,

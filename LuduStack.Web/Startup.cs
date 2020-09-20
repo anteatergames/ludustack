@@ -1,5 +1,6 @@
 ﻿using LuduStack.Application.Requests.Notification;
 using LuduStack.Domain.Core.Enums;
+using LuduStack.Domain.Messaging;
 using LuduStack.Infra.CrossCutting.Identity;
 using LuduStack.Infra.CrossCutting.Identity.Model;
 using LuduStack.Infra.CrossCutting.Identity.Models;
@@ -132,7 +133,7 @@ namespace LuduStack.Web
                 myOptions.ReCaptchaSiteKey = Configuration["ReCaptcha:SiteKey"];
             });
 
-            services.AddMediatR(Assembly.GetExecutingAssembly(), typeof(SendNotificationRequestHandler).GetTypeInfo().Assembly);
+            services.AddMediatR(Assembly.GetExecutingAssembly(), typeof(SendNotificationRequestHandler).GetTypeInfo().Assembly, typeof(DeleteCourseCommandHandler).GetTypeInfo().Assembly);
 
             // .NET Native DI Abstraction
             RegisterServices(services);

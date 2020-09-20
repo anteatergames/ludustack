@@ -1,9 +1,7 @@
 ﻿using LuduStack.Infra.CrossCutting.Messaging;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace LuduStack.Application.Commands
+namespace LuduStack.Domain.Messaging
 {
     public abstract class CourseCommand : Command
     {
@@ -13,6 +11,11 @@ namespace LuduStack.Application.Commands
         {
             Id = id;
             AggregateId = id;
+        }
+
+        public virtual bool IsValid()
+        {
+            return Result.Validation.IsValid;
         }
     }
 }

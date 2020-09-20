@@ -2,7 +2,6 @@
 using LuduStack.Application.Formatters;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Web.Controllers.Base;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;

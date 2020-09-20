@@ -3,7 +3,6 @@ using LuduStack.Application.ViewModels.User;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.ValueObjects;
 using LuduStack.Infra.CrossCutting.Identity.Models;
-using LuduStack.Infra.CrossCutting.Messaging;
 using LuduStack.Web.Areas.Staff.Controllers.Base;
 using LuduStack.Web.Models;
 using MediatR;
@@ -51,7 +50,6 @@ namespace LuduStack.Web.Areas.Staff.Controllers
 
                 foreach (ProfileViewModel profile in profileResult.Value)
                 {
-
                     ApplicationUser user = allUsers.FirstOrDefault(x => x.Id.Equals(profile.UserId.ToString()));
                     if (user == null)
                     {
@@ -200,6 +198,5 @@ namespace LuduStack.Web.Areas.Staff.Controllers
                 return UserManager.Users;
             });
         }
-
     }
 }

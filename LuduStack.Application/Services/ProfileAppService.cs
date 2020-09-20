@@ -49,6 +49,7 @@ namespace LuduStack.Application.Services
                 return new OperationResultVo<int>(ex.Message);
             }
         }
+
         public OperationResultListVo<ProfileViewModel> GetAll(Guid currentUserId)
         {
             return GetAll(currentUserId, false);

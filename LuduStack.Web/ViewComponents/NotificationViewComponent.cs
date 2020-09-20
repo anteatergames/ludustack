@@ -1,17 +1,13 @@
-﻿using LuduStack.Application.Interfaces;
-using LuduStack.Application.Requests.Notification;
+﻿using LuduStack.Application.Requests.Notification;
 using LuduStack.Application.ViewModels.Notification;
 using LuduStack.Domain.ValueObjects;
 using LuduStack.Web.Extensions.ViewModelExtensions;
 using LuduStack.Web.ViewComponents.Base;
-using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using LuduStack.Web.Extensions.ViewModelExtensions;
 
 namespace LuduStack.Web.ViewComponents
 {

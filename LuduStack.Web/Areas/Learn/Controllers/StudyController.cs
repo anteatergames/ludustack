@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace LuduStack.Web.Areas.Learn.Controllers
 {
@@ -50,8 +51,10 @@ namespace LuduStack.Web.Areas.Learn.Controllers
             {
                 case "Mentor":
                     return View("MentorDashboard");
+
                 case "Student":
                     return View("StudentDashboard");
+
                 default:
                     return View("StudentDashboard");
             }
@@ -98,11 +101,11 @@ namespace LuduStack.Web.Areas.Learn.Controllers
         }
 
         [Route("learn/study/listmymentors")]
-        public PartialViewResult ListMyMentors()
+        public async Task<PartialViewResult> ListMyMentors()
         {
             List<ProfileViewModel> model;
 
-            OperationResultVo serviceResult = studyAppService.GetMyMentors(CurrentUserId);
+            OperationResultVo serviceResult = await studyAppService.GetMyMentors(CurrentUserId);
 
             if (serviceResult.Success)
             {
@@ -121,11 +124,11 @@ namespace LuduStack.Web.Areas.Learn.Controllers
         }
 
         [Route("learn/study/listmystudents")]
-        public PartialViewResult ListMyStudents()
+        public async Task<PartialViewResult> ListMyStudents()
         {
             List<ProfileViewModel> model;
 
-            OperationResultVo serviceResult = studyAppService.GetMyStudents(CurrentUserId);
+            OperationResultVo serviceResult = await studyAppService.GetMyStudents(CurrentUserId);
 
             if (serviceResult.Success)
             {

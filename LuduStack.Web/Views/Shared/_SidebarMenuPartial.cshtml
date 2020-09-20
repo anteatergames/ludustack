@@ -1,4 +1,4 @@
-<nav class="navigation">
+<nav class="navigation text-capitalize">
     <ul id="mainmenu" class="mainmenu">
         <li class="active"><a asp-area="" asp-controller="home" asp-action="index"><i class="fa fa-fw fa-home" aria-hidden="true"></i><span>&nbsp;@SharedLocalizer["Home"]</span></a></li>
         <li>
@@ -30,7 +30,7 @@
                 @*<li><a href="#" class="notimplemented"><i class="fas fa-fw fa-hand-spock" aria-hidden="true"></i>&nbsp;@SharedLocalizer["Meet"]</a></li>*@
                 <li><a asp-area="work" asp-controller="jobposition" asp-action="index"><i class="fas fa-fw fa-briefcase" aria-hidden="true"></i>&nbsp;@SharedLocalizer["Work"]</a></li>
                 <environment exclude="Production">
-                    <li><a asp-area="learn" asp-controller="study" asp-action="index"><i class="fas fa-fw fa-graduation-cap" aria-hidden="true"></i>&nbsp;@SharedLocalizer["Study"]</a></li>
+                    <li><a asp-area="learn" asp-controller="study" asp-action="index"><i class="fas fa-fw fa-graduation-cap" aria-hidden="true"></i>&nbsp;@SharedLocalizer["study"]</a></li>
                 </environment>
                 @*<li><a href="#" class="notimplemented"><i class="fas fa-fw fa-check-circle" aria-hidden="true"></i>&nbsp;@SharedLocalizer["Vote"]</a></li>*@
             </ul>

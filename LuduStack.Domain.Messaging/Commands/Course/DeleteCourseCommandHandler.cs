@@ -1,17 +1,13 @@
-﻿using FluentValidation.Results;
-using LuduStack.Domain.Interfaces;
+﻿using LuduStack.Domain.Interfaces;
 using LuduStack.Domain.Interfaces.Repository;
 using LuduStack.Infra.CrossCutting.Messaging;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace LuduStack.Application.Commands
+namespace LuduStack.Domain.Messaging
 {
-    public class DeleteCourseCommandHandler : CommandHandler, IRequestHandler<DeleteCourseCommand, ValidationResult>
+    public class DeleteCourseCommandHandler : CommandHandler, IRequestHandler<DeleteCourseCommand, CommandResult>
     {
         protected readonly IUnitOfWork unitOfWork;
         protected readonly IStudyCourseRepository studyCourseRepository;
@@ -22,23 +18,27 @@ namespace LuduStack.Application.Commands
             this.studyCourseRepository = studyCourseRepository;
         }
 
-        public async Task<ValidationResult> Handle(DeleteCourseCommand message, CancellationToken cancellationToken)
+        public async Task<CommandResult> Handle(DeleteCourseCommand request, CancellationToken cancellationToken)
         {
-            if (!message.IsValid()) return message.ValidationResult;
+            if (!request.IsValid()) return request.Result;
 
-            var course = await studyCourseRepository.GetById(message.Id);
+            var course = await studyCourseRepository.GetById(request.Id);
 
             if (course is null)
             {
                 AddError("The course doesn't exists.");
-                return ValidationResult;
+                return request.Result;
             }
 
             //customer.AddDomainEvent(new CustomerRemovedEvent(message.Id));
 
             studyCourseRepository.Remove(course.Id);
 
-            return await Commit(unitOfWork);
+            var validation = await Commit(unitOfWork);
+
+            request.Result.Validation = validation;
+
+            return request.Result;
         }
     }
 }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using LuduStack.Application.Interfaces;
-using LuduStack.Application.Requests.Notification;
+﻿using LuduStack.Application.Requests.Notification;
 using LuduStack.Application.ViewModels.Notification;
 using LuduStack.Domain.ValueObjects;
 using LuduStack.Web.Areas.Member.Controllers.Base;
@@ -11,10 +6,13 @@ using LuduStack.Web.Extensions.ViewModelExtensions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace LuduStack.Web.Areas.Member.Controllers
 {
-
     [Authorize]
     [Route("notification")]
     public class NotificationController : MemberBaseController

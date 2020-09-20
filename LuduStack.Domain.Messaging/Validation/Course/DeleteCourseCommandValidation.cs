@@ -1,9 +1,4 @@
-﻿using LuduStack.Application.Commands;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace LuduStack.Application.Validation
+﻿namespace LuduStack.Domain.Messaging
 {
     public class DeleteCourseCommandValidation : CourseValidation<DeleteCourseCommand>
     {

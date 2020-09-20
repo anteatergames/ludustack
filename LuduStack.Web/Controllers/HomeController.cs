@@ -34,7 +34,6 @@ namespace LuduStack.Web.Controllers
 
         public IActionResult Index(int? pointsEarned)
         {
-
             CarouselViewModel featured = featuredContentAppService.GetFeaturedNow();
             ViewBag.Carousel = featured;
 
@@ -115,7 +114,7 @@ namespace LuduStack.Web.Controllers
             if (postLanguageFromCookie != null)
             {
                 List<SupportedLanguage> allLanguages = Enum.GetValues(typeof(SupportedLanguage)).Cast<SupportedLanguage>().ToList();
-               SupportedLanguage langEnum = allLanguages.FirstOrDefault(x => x.ToUiInfo().Locale.Equals(postLanguageFromCookie));
+                SupportedLanguage langEnum = allLanguages.FirstOrDefault(x => x.ToUiInfo().Locale.Equals(postLanguageFromCookie));
                 postModel.DefaultLanguage = langEnum;
             }
             else

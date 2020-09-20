@@ -2593,4 +2593,8 @@
     <value>alguém</value>
     <comment>Notification</comment>
   </data>
+  <data name="study" xml:space="preserve">
+    <value>estudar</value>
+    <comment>Menu</comment>
+  </data>
 </root>

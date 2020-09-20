@@ -1,6 +1,7 @@
 ﻿using LuduStack.Domain.Interfaces.Repository;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
+using LuduStack.Infra.Data.MongoDb.Extensions;
 using LuduStack.Infra.Data.MongoDb.Interfaces;
 using LuduStack.Infra.Data.MongoDb.Repository.Base;
 using MongoDB.Driver;
@@ -17,7 +18,7 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
         {
         }
 
-        public List<StudyCourseListItemVo> GetCourses()
+        public async Task<List<StudyCourseListItemVo>> GetCourses()
         {
             IQueryable<StudyCourseListItemVo> obj = DbSet.AsQueryable().Select(x => new StudyCourseListItemVo
             {
@@ -29,10 +30,10 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
                 StudentCount = x.Members.Count
             });
 
-            return obj.ToList();
+            return await obj.ToMongoListAsync();
         }
 
-        public List<StudyCourseListItemVo> GetCoursesByUserId(Guid userId)
+        public async Task<List<StudyCourseListItemVo>> GetCoursesByUserId(Guid userId)
         {
             IQueryable<StudyCourseListItemVo> obj = DbSet.AsQueryable().Where(x => x.UserId == userId).Select(x => new StudyCourseListItemVo
             {
@@ -44,12 +45,14 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
                 StudentCount = x.Members.Count
             });
 
-            return obj.ToList();
+            return await obj.ToMongoListAsync();
         }
 
-        public IQueryable<StudyPlan> GetPlans(Guid courseId)
+        public async Task<List<StudyPlan>> GetPlans(Guid courseId)
         {
-            return DbSet.AsQueryable().Where(x => x.Id == courseId).SelectMany(x => x.Plans);
+            var objs = DbSet.AsQueryable().Where(x => x.Id == courseId).SelectMany(x => x.Plans);
+
+            return await objs.ToMongoListAsync();
         }
 
         public async Task<bool> AddPlan(Guid courseId, StudyPlan plan)
@@ -99,19 +102,17 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
             return DbSet.AsQueryable().FirstOrDefault(x => x.Id == courseId && x.Members.Any(y => y.UserId == userId)) != null;
         }
 
-        public async Task<bool> AddStudent(Guid courseId, CourseMember student)
+        public async Task AddStudent(Guid courseId, CourseMember student)
         {
             student.Id = Guid.NewGuid();
 
             FilterDefinition<StudyCourse> filter = Builders<StudyCourse>.Filter.Where(x => x.Id == courseId);
             UpdateDefinition<StudyCourse> add = Builders<StudyCourse>.Update.AddToSet(c => c.Members, student);
 
-            UpdateResult result = await DbSet.UpdateOneAsync(filter, add);
-
-            return result.IsAcknowledged && result.MatchedCount > 0;
+            await Context.AddCommand(() => DbSet.UpdateOneAsync(filter, add));
         }
 
-        public async Task<bool> UpdateStudent(Guid courseId, CourseMember student)
+        public async Task UpdateStudent(Guid courseId, CourseMember student)
         {
             student.LastUpdateDate = DateTime.Now;
 
@@ -125,19 +126,15 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
                 .Set(c => c.Members[-1].Passed, student.Passed)
                 .Set(c => c.Members[-1].FinalScore, student.FinalScore);
 
-            UpdateResult result = await DbSet.UpdateOneAsync(filter, update);
-
-            return result.IsAcknowledged && result.ModifiedCount > 0;
+            await Context.AddCommand(() => DbSet.UpdateOneAsync(filter, update));
         }
 
-        public async Task<bool> RemoveStudent(Guid courseId, Guid userId)
+        public async Task RemoveStudent(Guid courseId, Guid userId)
         {
             FilterDefinition<StudyCourse> filter = Builders<StudyCourse>.Filter.Where(x => x.Id == courseId);
             UpdateDefinition<StudyCourse> remove = Builders<StudyCourse>.Update.PullFilter(c => c.Members, m => m.UserId == userId);
 
-            UpdateResult result = await DbSet.UpdateOneAsync(filter, remove);
-
-            return result.IsAcknowledged && result.MatchedCount > 0;
+            await Context.AddCommand(() => DbSet.UpdateOneAsync(filter, remove));
         }
     }
 }

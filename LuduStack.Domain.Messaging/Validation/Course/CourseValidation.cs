@@ -1,10 +1,7 @@
 ﻿using FluentValidation;
-using LuduStack.Application.Commands;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace LuduStack.Application.Validation
+namespace LuduStack.Domain.Messaging
 {
     public abstract class CourseValidation<T> : AbstractValidator<T> where T : CourseCommand
     {

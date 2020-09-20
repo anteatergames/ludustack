@@ -79,9 +79,11 @@ namespace LuduStack.Infra.Data.MongoDb.Context
             GC.SuppressFinalize(this);
         }
 
-        public void AddCommand(Func<Task> func)
+        public Task AddCommand(Func<Task> func)
         {
             _commands.Add(func);
+
+            return Task.CompletedTask;
         }
     }
 }

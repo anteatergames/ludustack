@@ -209,7 +209,7 @@ namespace LuduStack.Web.Controllers
 
             if (EnvName.Equals(ConstantHelper.ProductionEnvironmentName))
             {
-                await NotificationSender.SendTeamNotificationAsync("New simple post!"); 
+                await NotificationSender.SendTeamNotificationAsync("New simple post!");
             }
 
             return Json(result);
@@ -355,6 +355,7 @@ namespace LuduStack.Web.Controllers
                     case FollowType.Game:
                         notificationAppService.Notify(CurrentUserId, gameName, follower.Key, NotificationType.ContentPosted, targetId);
                         break;
+
                     case FollowType.Content:
                     default:
                         notificationAppService.Notify(CurrentUserId, profile.Name, follower.Key, NotificationType.ContentPosted, targetId);
