@@ -443,5 +443,17 @@
     "inputFiles": [
       "wwwroot/js/staff/admintasks.js"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/css/ratecalculator.min.css",
+    "inputFiles": [
+      "wwwroot/css/ratecalculator.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/ratecalculator/ratecalculator.min.js",
+    "inputFiles": [
+      "wwwroot/js/ratecalculator/ratecalculator.js"
+    ]
   }
 ]
