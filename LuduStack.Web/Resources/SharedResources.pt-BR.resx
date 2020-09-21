@@ -2605,6 +2605,10 @@
     <value>Uma porcentagem de dinheiro para guardar pro futuro. Recomendamos de 15% a 25%.</value>
     <comment>Rate Calculator</comment>
   </data>
+  <data name="add coffee" xml:space="preserve">
+    <value>adicione café</value>
+    <comment>Rate Calculator</comment>
+  </data>
   <data name="Annual Cost" xml:space="preserve">
     <value>Custo Anual</value>
     <comment>Rate Calculator</comment>
@@ -2615,6 +2619,10 @@
   </data>
   <data name="asshole rate" xml:space="preserve">
     <value>taxa do babaca</value>
+    <comment>Rate Calculator</comment>
+  </data>
+  <data name="be a jerk" xml:space="preserve">
+    <value>seja idiota</value>
     <comment>Rate Calculator</comment>
   </data>
   <data name="Calculate how much you should charge for freelance jobs." xml:space="preserve">
@@ -2643,6 +2651,10 @@
   </data>
   <data name="for the future" xml:space="preserve">
     <value>para o futuro</value>
+    <comment>Rate Calculator</comment>
+  </data>
+  <data name="get it right" xml:space="preserve">
+    <value>faça direito</value>
     <comment>Rate Calculator</comment>
   </data>
   <data name="How much you should charge" xml:space="preserve">
