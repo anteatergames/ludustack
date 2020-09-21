@@ -132,8 +132,6 @@
     }
 
     function calculate() {
-        console.log('calculating...');
-
         var savingsValueMonthly = objs.monthlyExpenses.val() * objs.savingsPercentage.val() / 100;
 
         objs.savingsValueMonthly.val(savingsValueMonthly.toFixed(2))
@@ -148,6 +146,10 @@
 
         objs.taxesValueMonthly.val(taxesValueMonthly.toFixed(2))
         objs.taxesValueYearly.val((taxesValueMonthly * 12).toFixed(2));
+
+        if (objs.yearWorkDays.val().length === 0) {
+            objs.yearWorkDays.val('231');
+        }
 
         var dayRate = objs.annualCost.val() / objs.yearWorkDays.val();
         var hourRate = dayRate / 8;

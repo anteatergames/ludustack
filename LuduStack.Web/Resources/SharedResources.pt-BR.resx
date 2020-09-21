@@ -2597,4 +2597,220 @@
     <value>estudar</value>
     <comment>Menu</comment>
   </data>
+  <data name="A percentage of money for games, movies, books, etc. Try to stick between 25%-50%" xml:space="preserve">
+    <value>Uma porcentagem de dinheiro para jogos, filmes, livros, etc. Tente algo entre 25% e 50%</value>
+    <comment>Rate Calculator</comment>
+  </data>
+  <data name="A percentage of money to save for the future. We recommend 15%-25%" xml:space="preserve">
+    <value>Uma porcentagem de dinheiro para guardar pro futuro. Recomendamos de 15% a 25%.</value>
+    <comment>Rate Calculator</comment>
+  </data>
+  <data name="add coffee" xml:space="preserve">
+    <value>adicione café</value>
+    <comment>Rate Calculator</comment>
+  </data>
+  <data name="Annual Cost" xml:space="preserve">
+    <value>Custo Anual</value>
+    <comment>Rate Calculator</comment>
+  </data>
+  <data name="Asshole Factor" xml:space="preserve">
+    <value>Fator do Babaca</value>
+    <comment>Rate Calculator</comment>
+  </data>
+  <data name="asshole rate" xml:space="preserve">
+    <value>taxa do babaca</value>
+    <comment>Rate Calculator</comment>
+  </data>
+  <data name="be a jerk" xml:space="preserve">
+    <value>seja idiota</value>
+    <comment>Rate Calculator</comment>
+  </data>
+  <data name="Calculate how much you should charge for freelance jobs." xml:space="preserve">
+    <value>Calcule quanto você deveria cobrar por trabalhos freelance.</value>
+    <comment>Rate Calculator</comment>
+  </data>
+  <data name="e.g. 231" xml:space="preserve">
+    <value>ex.: 231</value>
+    <comment>Rate Calculator</comment>
+  </data>
+  <data name="e.g. 99999" xml:space="preserve">
+    <value>ex.: 99999</value>
+    <comment>Rate Calculator</comment>
+  </data>
+  <data name="Extra %" xml:space="preserve">
+    <value>Extra %</value>
+    <comment>Rate Calculator</comment>
+  </data>
+  <data name="Extra/month" xml:space="preserve">
+    <value>Extra/mês</value>
+    <comment>Rate Calculator</comment>
+  </data>
+  <data name="Extra/year" xml:space="preserve">
+    <value>Extra/ano</value>
+    <comment>Rate Calculator</comment>
+  </data>
+  <data name="for the future" xml:space="preserve">
+    <value>para o futuro</value>
+    <comment>Rate Calculator</comment>
+  </data>
+  <data name="get it right" xml:space="preserve">
+    <value>faça direito</value>
+    <comment>Rate Calculator</comment>
+  </data>
+  <data name="How much you should charge" xml:space="preserve">
+    <value>Quanto você deve cobrar</value>
+    <comment>Rate Calculator</comment>
+  </data>
+  <data name="Montly Expenses" xml:space="preserve">
+    <value>Despesas Mensais</value>
+    <comment>Rate Calculator</comment>
+  </data>
+  <data name="Montly Expenses x 12" xml:space="preserve">
+    <value>Despesas Mensais x 12</value>
+    <comment>Rate Calculator</comment>
+  </data>
+  <data name="Need a number here!" xml:space="preserve">
+    <value>Precisa de um número aqui!</value>
+    <comment>Validation</comment>
+  </data>
+  <data name="pay your taxes" xml:space="preserve">
+    <value>pague seus impostos</value>
+    <comment>Rate Calculator</comment>
+  </data>
+  <data name="per day" xml:space="preserve">
+    <value>por dia</value>
+    <comment>Rate Calculator</comment>
+  </data>
+  <data name="per hour" xml:space="preserve">
+    <value>por hora</value>
+    <comment>Rate Calculator</comment>
+  </data>
+  <data name="per month" xml:space="preserve">
+    <value>por mês</value>
+    <comment>Rate Calculator</comment>
+  </data>
+  <data name="per year" xml:space="preserve">
+    <value>por ano</value>
+    <comment>Rate Calculator</comment>
+  </data>
+  <data name="Play around to find how much you should charge for your work." xml:space="preserve">
+    <value>Brinque com os valores para descobrir quanto deveria cobrar por seu trabalho.</value>
+    <comment>Rate Calculator</comment>
+  </data>
+  <data name="rate" xml:space="preserve">
+    <value>taxa</value>
+    <comment>Rate Calculator</comment>
+  </data>
+  <data name="Rate Calculator" xml:space="preserve">
+    <value>Calculadora de Taxa</value>
+    <comment>Rate Calculator</comment>
+  </data>
+  <data name="regular" xml:space="preserve">
+    <value>regular</value>
+    <comment>Rate Calculator</comment>
+  </data>
+  <data name="revision" xml:space="preserve">
+    <value>revisão</value>
+    <comment>Rate Calculator</comment>
+  </data>
+  <data name="Revision Factor" xml:space="preserve">
+    <value>Fator de Revisão</value>
+    <comment>Rate Calculator</comment>
+  </data>
+  <data name="Rush Factor" xml:space="preserve">
+    <value>Fator de Pressa</value>
+    <comment>Rate Calculator</comment>
+  </data>
+  <data name="rush job" xml:space="preserve">
+    <value>trabalho urgente</value>
+    <comment>Rate Calculator</comment>
+  </data>
+  <data name="Savings %" xml:space="preserve">
+    <value>Guardar %</value>
+    <comment>Rate Calculator</comment>
+  </data>
+  <data name="Savings/month" xml:space="preserve">
+    <value>Economia/mês</value>
+    <comment>Rate Calculator</comment>
+  </data>
+  <data name="Savings/year" xml:space="preserve">
+    <value>Economia/ano</value>
+    <comment>Rate Calculator</comment>
+  </data>
+  <data name="Taxes %" xml:space="preserve">
+    <value>Impostos %</value>
+    <comment>Rate Calculator</comment>
+  </data>
+  <data name="Taxes/month" xml:space="preserve">
+    <value>Impostos/mês</value>
+    <comment>Rate Calculator</comment>
+  </data>
+  <data name="Taxes/year" xml:space="preserve">
+    <value>Impostos/ano</value>
+    <comment>Rate Calculator</comment>
+  </data>
+  <data name="The amount of money for games, movies, books, etc. Each month." xml:space="preserve">
+    <value>A quantidade de dinheiro para jogos, filmes, livros, etc. Por mês</value>
+    <comment>Rate Calculator</comment>
+  </data>
+  <data name="The amount of money for games, movies, books, etc. Each year." xml:space="preserve">
+    <value>A quantidade de dinheiro para jogos, filmes, livros, etc. Por ano</value>
+    <comment>Rate Calculator</comment>
+  </data>
+  <data name="The amount of money for taxes each month." xml:space="preserve">
+    <value>A quantidade de dinheiro para impostos por mês.</value>
+    <comment>Rate Calculator</comment>
+  </data>
+  <data name="The amount of money for taxes each year." xml:space="preserve">
+    <value>A quantidade de dinheiro para impostos por ano.</value>
+    <comment>Rate Calculator</comment>
+  </data>
+  <data name="The amount of money needed to save each month" xml:space="preserve">
+    <value>A quantidade de dinheiro a ser guardada por mês</value>
+    <comment>Rate Calculator</comment>
+  </data>
+  <data name="The amount of money needed to save each year" xml:space="preserve">
+    <value>A quantidade de dinheiro a ser guardada por ano</value>
+    <comment>Rate Calculator</comment>
+  </data>
+  <data name="The amount of money needed to survive only paying the bills and buying food." xml:space="preserve">
+    <value>A quantidade de dinheiro necessário para sobreviver apenas pagando as contas e comprando comida.</value>
+    <comment>Rate Calculator</comment>
+  </data>
+  <data name="The count of working days per year minus holidays, vacation days and sick days." xml:space="preserve">
+    <value>A quantidade de dias úteis por ano menos feriados, dias de férias e dias que você fica doente.</value>
+    <comment>Rate Calculator</comment>
+  </data>
+  <data name="The percentage of money you must pay as taxes to your country/state/city. Choose a value between 25%-40% according to where you live." xml:space="preserve">
+    <value>A porcentagem de dinheiro que você deve pagar para seu país/estado/cidade. Escolha um valor entre 25% e 40% de acordo com o lugar onde você vive.</value>
+    <comment>Rate Calculator</comment>
+  </data>
+  <data name="The percentage to add to a job you don't want to get. We recommend a starting at 100%." xml:space="preserve">
+    <value>A porcentagem a ser adicionada a um trabalho que você não quer pegar. Recomendamos começar em 100%.</value>
+    <comment>Rate Calculator</comment>
+  </data>
+  <data name="The percentage to add to a revision job. Revisions tend to be more detailed and demand more effort from you and from the client itself. We recommend a minimum of 25%." xml:space="preserve">
+    <value>A porcentagem a ser adicionada a um trabalho de revisão. Revisões tendem a ser mais detalhadas e demandam mais esforço seu e do seu cliente. Recomendamos um mínimo de 25%.</value>
+    <comment>Rate Calculator</comment>
+  </data>
+  <data name="The percentage to add to a rushed job. If the client want a fast delivery, it must understand the overrate. We recommend a number between 50%-100%." xml:space="preserve">
+    <value>A porcentagem a ser adicionada a um trabalho com urgência. Se o cliente quer uma entrega rápida, ele deve entender a sobretaxa. Recomendamos um número entre 50% e 100%.</value>
+    <comment>Rate Calculator</comment>
+  </data>
+  <data name="These values are suggestions for the MINIMUM values you should charge to compete on the freelance market whyle being able to pay your bills. We strongly recommend that you do you own research on freelance rates on your region according to your skill set." xml:space="preserve">
+    <value>Esses valores são sugestões de valor MÍNIMO que você deve cobrar para ser competitivo no mercado freelancer e conseguir pagar suas contas. Recomendamos fortemente que você faça sua própria pesquisa de taxas freelance na sua região de acordo com suas habilidades profissionais.</value>
+    <comment>Rate Calculator</comment>
+  </data>
+  <data name="Work days per year" xml:space="preserve">
+    <value>Dias úteis no ano</value>
+    <comment>Rate Calculator</comment>
+  </data>
+  <data name="You are calculating your freelancer rates" xml:space="preserve">
+    <value>Você está calculando suas taxas de freelancer</value>
+    <comment>Rate Calculator</comment>
+  </data>
+  <data name="your pleasure" xml:space="preserve">
+    <value>seu prazer</value>
+    <comment>Rate Calculator</comment>
+  </data>
 </root>
