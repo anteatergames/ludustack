@@ -269,6 +269,12 @@
     <Content Update="Views\Team\_ViewImports.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="wwwroot\css\ratecalculator - Copy.min.css">
+      <DependentUpon>ratecalculator.min.css</DependentUpon>
+    </Content>
+    <Content Update="wwwroot\js\calculators\ratecalculator - Copy.min.js">
+      <DependentUpon>ratecalculator.min.js</DependentUpon>
+    </Content>
     <Content Update="wwwroot\js\staff\admintasks - Copy %282%29.min.js">
       <DependentUpon>admintasks.min.js</DependentUpon>
     </Content>
