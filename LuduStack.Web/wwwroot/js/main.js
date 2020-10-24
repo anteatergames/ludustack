@@ -300,7 +300,7 @@
         }
     }
 
-    function getHtml(url) {
+    async function getHtml(url) {
         var useJquery = false;
         var promise;
 
@@ -308,7 +308,7 @@
             promise = $.get(url);
         }
         else {
-            promise = fetch(url, {
+            promise = await fetch(url, {
                 method: 'GET',
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest'
@@ -321,7 +321,7 @@
         return promise;
     }
 
-    function loadHtml(url, listObj) {
+    async function loadHtml(url, listObj) {
         var idList = '';
 
         if (listObj instanceof jQuery) {
