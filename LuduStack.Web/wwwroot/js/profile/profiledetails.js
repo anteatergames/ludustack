@@ -169,14 +169,14 @@
         }
     }
 
-    async function connect(userId, callback) {
+    function connect(userId, callback) {
         var json = $('#modalConnectionType').data('connectiontypes');
         var title = $('#modalConnectionType').data('title');
         var placeholder = $('#modalConnectionType').data('placeholder');
         var text = $('#modalConnectionType').data('text');
         var validationText = $('#modalConnectionType').data('validationtext');
 
-        const { value: connectionType } = await Swal.fire({
+        const { value: connectionType } = Swal.fire({
             title: title,
             text: text,
             showCancelButton: true,

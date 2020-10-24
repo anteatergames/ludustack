@@ -1,0 +1,153 @@
+﻿@model CostCalculatorViewModel
+
+@{
+    var isAjax = ViewContext.HttpContext.Request.IsAjaxRequest();
+    var canInteract = User.Identity.IsAuthenticated;
+
+
+    ViewData["Title"] = SharedLocalizer["Cost Calculator"];
+    //ViewData["Description"] = SharedLocalizer["Calculate how much you should charge for freelance jobs."];
+    //ViewData["Url"] = ViewBag.BaseUrl + Url.Action("index", "ratecalculator", new { area = "tools" });
+    //ViewData["OgImage"] = ViewBag.BaseUrl + "/images/og/ogratecalculator.png";
+
+    var artStyles = Html.GetEnumSelectList<ArtStyle2D>();
+}
+
+@section ComponentStyles {
+    <environment include="Development">
+        <link rel="stylesheet" href="~/css/costcalculator.css">
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="~/css/costcalculator.min.css" asp-append-version="true">
+    </environment>
+}
+
+@section Scripts {
+    <environment include="Development">
+        <script src="~/lib/moment/moment-with-locales.js"></script>
+        <script src="~/js/calculators/costcalculator.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/lib/moment/moment-with-locales.min.js"></script>
+        <script src="~/js/calculators/costcalculator.min.js" asp-append-version="true"></script>
+    </environment>
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+<section class="content container">
+    <div id="featurecontainer" class="col">
+        <h1 class="sr-only">@ViewData["Title"]</h1>
+
+        <div class="box bg-white">
+            <div class="box-header with-border">
+                <div class="float-left mr-3">
+                    <a asp-area="tools" asp-controller="costcalculator" asp-action="index" class="btn btn-default"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
+                </div>
+                <h2 class="card-title">@SharedLocalizer["You are calculating the cost of a videogame"]</h2>
+                <span class="card-subtitle">
+                    @SharedLocalizer["Play around to find how much a game would cost."]
+                </span>
+            </div>
+
+            <div class="box-body p-0 px-md-2">
+                <form id="frmCostCalculator" asp-area="tools" asp-controller="giveaway" asp-action="save" method="post">
+                    <div class="row">
+                        <div class="col-12">
+                            <label asp-for="ArtStyle" class="col-form-label"></label>
+                            <span asp-description-for="ArtStyle" class="col-form-label" />
+                            <select asp-for="ArtStyle" asp-items="artStyles" class="form-control" data-placeholder="@SharedLocalizer["Select the art style"]"></select>
+                            <span asp-validation-for="ArtStyle" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-md-2">
+                            <div class="form-group validation">
+                                <label asp-for="Characters" class="col-form-label"></label>
+                                <span asp-description-for="Characters" class="col-form-label" />
+                                <input asp-for="Characters" class="form-control user-entry" placeholder="@SharedLocalizer["e.g. 12"]" />
+                                <span asp-validation-for="Characters" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-2">
+                            <div class="form-group validation">
+                                <label asp-for="Levels" class="col-form-label"></label>
+                                <span asp-description-for="Levels" class="col-form-label" />
+                                <input asp-for="Levels" class="form-control user-entry" placeholder="@SharedLocalizer["e.g. 12"]" />
+                                <span asp-validation-for="Levels" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <hr />
+
+                <div class="row">
+                    <div class="col col-md-6">
+                        <h2>@SharedLocalizer["How much this game would cost"]</h2>
+                    </div>
+                </div>
+
+                <div class="row text-capitalize">
+                    <div class="col">
+                        <table class="table table-striped">
+                            <caption class="sr-only">@SharedLocalizer["How much this game would cost"]</caption>
+                            <thead>
+                                <tr>
+                                    <th scope="col" class="font-weight-bold">@SharedLocalizer["element"]</th>
+                                    <th scope="col" class="text-right font-weight-bold">@SharedLocalizer["quantity"]</th>
+                                    <th scope="col" class="text-right font-weight-bold">@SharedLocalizer["minimum (per unit)"]</th>
+                                    <th scope="col" class="text-right font-weight-bold">@SharedLocalizer["average (per unit)"]</th>
+                                    <th scope="col" class="text-right font-weight-bold">@SharedLocalizer["maximum (per unit)"]</th>
+                                    <th scope="col" class="text-right font-weight-bold">@SharedLocalizer["subtotal"]</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>@SharedLocalizer["characters"]</td>
+                                    <td class="text-right"><span id="txtCharacterQuantity">-</span></td>
+                                    <td class="text-right"><span id="txt1">-</span></td>
+                                    <td class="text-right"><span id="txt1">-</span></td>
+                                    <td class="text-right"><span id="txt1">-</span></td>
+                                    <td class="text-right"><span id="txt1">-</span></td>
+                                </tr>
+                                <tr>
+                                    <td>@SharedLocalizer["revision"]</td>
+                                    <td class="text-right"><span id="txt1">-</span></td>
+                                    <td class="text-right"><span id="txt1">-</span></td>
+                                    <td class="text-right"><span id="txt1">-</span></td>
+                                    <td class="text-right"><span id="txt1">-</span></td>
+                                    <td class="text-right"><span id="txt1">-</span></td>
+                                </tr>
+                                <tr>
+                                    <td>@SharedLocalizer["rush job"]</td>
+                                    <td class="text-right"><span id="txt1">-</span></td>
+                                    <td class="text-right"><span id="txt1">-</span></td>
+                                    <td class="text-right"><span id="txt1">-</span></td>
+                                    <td class="text-right"><span id="txt1">-</span></td>
+                                    <td class="text-right"><span id="txt1">-</span></td>
+                                </tr>
+                                <tr>
+                                    <td>@SharedLocalizer["asshole rate"]</td>
+                                    <td class="text-right"><span id="txt1">-</span></td>
+                                    <td class="text-right"><span id="txt1">-</span></td>
+                                    <td class="text-right"><span id="txt1">-</span></td>
+                                    <td class="text-right"><span id="txt1">-</span></td>
+                                    <td class="text-right"><span id="txt1">-</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <p class="alert alert-warning">@SharedLocalizer["These values are suggestions for the MINIMUM values you should charge to compete on the freelance market whyle being able to pay your bills. We strongly recommend that you do you own research on freelance rates on your region according to your skill set."]</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+

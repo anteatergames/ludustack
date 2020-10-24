@@ -92,7 +92,7 @@ namespace LuduStack.Web.ViewComponents
                 UserContentViewModel oldest = model.OrderByDescending(x => x.CreateDate).Last();
 
                 ViewData["OldestPostGuid"] = oldest.Id;
-                ViewData["OldestPostDate"] = oldest.CreateDate.ToString("o");
+                ViewData["OldestPostDate"] = oldest.CreateDate.ToString("yyyy-MM-ddTHH:mm:ss.fffffff");
             }
 
             ViewData["IsMorePosts"] = oldestId.HasValue;

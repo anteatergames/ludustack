@@ -451,9 +451,21 @@
     ]
   },
   {
-    "outputFileName": "wwwroot/js/ratecalculator/ratecalculator.min.js",
+    "outputFileName": "wwwroot/js/calculators/ratecalculator.min.js",
     "inputFiles": [
-      "wwwroot/js/ratecalculator/ratecalculator.js"
+      "wwwroot/js/calculators/ratecalculator.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/costcalculator.min.css",
+    "inputFiles": [
+      "wwwroot/css/costcalculator.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/calculators/costcalculator.min.js",
+    "inputFiles": [
+      "wwwroot/js/calculators/costcalculator.js"
     ]
   }
 ]
