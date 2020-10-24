@@ -300,7 +300,7 @@
         }
     }
 
-    async function getHtml(url) {
+    function getHtml(url) {
         var useJquery = false;
         var promise;
 
@@ -308,7 +308,7 @@
             promise = $.get(url);
         }
         else {
-            promise = await fetch(url, {
+            promise = fetch(url, {
                 method: 'GET',
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest'
@@ -321,7 +321,7 @@
         return promise;
     }
 
-    async function loadHtml(url, listObj) {
+    function loadHtml(url, listObj) {
         var idList = '';
 
         if (listObj instanceof jQuery) {
@@ -341,7 +341,7 @@
         else {
             document.querySelector(idList).innerHTML = MAINMODULE.Default.SpinnerTop;
 
-            const promise = await getHtml(url)
+            const promise = getHtml(url)
                 .then(function (body) {
                     document.querySelector(idList).innerHTML = body;
 
