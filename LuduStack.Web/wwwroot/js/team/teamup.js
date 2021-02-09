@@ -15,7 +15,7 @@
     function setSelectors() {
         selectors.container = '#teamcontainer';
         selectors.isAjax = '#isajax';
-        selectors.caninteract = '#caninteract';
+        selectors.canInteract = '#caninteract';
         selectors.Id = '#Id';
         selectors.divListTeams = '#divListTeams';
         selectors.divListMyTeams = '#divListMyTeams';
@@ -76,7 +76,6 @@
 
         canInteract = objs.canInteract.val() === 'true';
         isAjax = $(selectors.container).find(selectors.isAjax).val();
-        canInteract = $(selectors.container).find(selectors.caninteract).val();
 
         bindAll();
 

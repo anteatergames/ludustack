@@ -189,6 +189,41 @@ namespace LuduStack.Application.Services
 
         #region ITeamAppService
 
+        public OperationResultVo<int> CountNotSingleMemberGroups(Guid currentUserId)
+        {
+            try
+            {
+                int count = teamDomainService.CountNotSingleMemberGroups();
+
+                return new OperationResultVo<int>(count);
+            }
+            catch (Exception ex)
+            {
+                return new OperationResultVo<int>(ex.Message);
+            }
+        }
+
+        public OperationResultListVo<TeamViewModel> GetNotSingleMemberGroups(Guid currentUserId)
+        {
+            try
+            {
+                IEnumerable<Team> allModels = teamDomainService.GetNotSingleMemberGroups();
+
+                IEnumerable<TeamViewModel> vms = mapper.Map<IEnumerable<Team>, IEnumerable<TeamViewModel>>(allModels);
+
+                foreach (TeamViewModel team in vms)
+                {
+                    SetUiData(currentUserId, team);
+                }
+
+                return new OperationResultListVo<TeamViewModel>(vms);
+            }
+            catch (Exception ex)
+            {
+                return new OperationResultListVo<TeamViewModel>(ex.Message);
+            }
+        }
+
         public OperationResultVo GenerateNewTeam(Guid currentUserId)
         {
             try

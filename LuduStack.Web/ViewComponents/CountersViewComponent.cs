@@ -47,7 +47,7 @@ namespace LuduStack.Web.ViewComponents
 
             model.ArticlesCount = contentService.CountArticles();
 
-            OperationResultVo<int> teamCount = teamAppService.Count(CurrentUserId);
+            OperationResultVo<int> teamCount = teamAppService.CountNotSingleMemberGroups(CurrentUserId);
 
             if (teamCount.Success)
             {

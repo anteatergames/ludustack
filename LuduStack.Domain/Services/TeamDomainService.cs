@@ -6,6 +6,7 @@ using LuduStack.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace LuduStack.Domain.Services
 {
@@ -112,6 +113,22 @@ namespace LuduStack.Domain.Services
             team.Members.Add(meAsMember);
 
             return team;
+        }
+
+        public int CountNotSingleMemberGroups()
+        {
+            Task<int> count = repository.Count(x => x.Recruiting || x.Members.Count > 1);
+
+            count.Wait();
+
+            return count.Result;
+        }
+
+        public IEnumerable<Team> GetNotSingleMemberGroups()
+        {
+            IQueryable<Team> qry = repository.Get(x => x.Recruiting || x.Members.Count > 1);
+
+            return qry.OrderByDescending(x => x.CreateDate).ToList();
         }
     }
 }
