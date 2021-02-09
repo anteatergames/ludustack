@@ -22,5 +22,9 @@ namespace LuduStack.Domain.Interfaces.Services
         IEnumerable<SelectListItemVo<Guid>> GetTeamListByMemberUserId(Guid userId);
 
         Team GenerateNewTeam(Guid currentUserId);
+
+        int CountNotSingleMemberGroups();
+
+        IEnumerable<Team> GetNotSingleMemberGroups();
     }
 }

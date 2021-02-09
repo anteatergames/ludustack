@@ -6,6 +6,10 @@ namespace LuduStack.Application.Interfaces
 {
     public interface ITeamAppService : ICrudAppService<TeamViewModel>
     {
+        OperationResultVo<int> CountNotSingleMemberGroups(Guid currentUserId);
+
+        OperationResultListVo<TeamViewModel> GetNotSingleMemberGroups(Guid currentUserId);
+
         OperationResultVo GenerateNewTeam(Guid currentUserId);
 
         OperationResultVo AcceptInvite(Guid teamId, Guid currentUserId, string quote);

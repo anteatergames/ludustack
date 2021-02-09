@@ -39,7 +39,7 @@ namespace LuduStack.Web.Controllers
         [Route("list")]
         public IActionResult List()
         {
-            OperationResultListVo<TeamViewModel> serviceResult = teamAppService.GetAll(CurrentUserId);
+            OperationResultListVo<TeamViewModel> serviceResult = teamAppService.GetNotSingleMemberGroups(CurrentUserId);
 
             List<TeamViewModel> model = serviceResult.Value.ToList();
 
