@@ -15,7 +15,7 @@
 
         bindAll();
 
-        canInteract = objs.container.find('#caninteract').val();
+        canInteract = $('#caninteract').val();
         newIdea = window.location.href.indexOf('newidea') > -1;
         details = window.location.href.indexOf('details') > -1;
 
