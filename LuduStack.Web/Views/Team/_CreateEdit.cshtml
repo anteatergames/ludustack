@@ -1,10 +1,13 @@
 ﻿@model TeamViewModel
 
 @{
-    ViewData["Title"] = SharedLocalizer["new team"];
+    var isNew = Model.Id == Guid.Empty;
+
+    ViewData["Title"] = !isNew ? SharedLocalizer["editting {0}", Model.Name] : SharedLocalizer["new team"];
+    var cardTitle = !isNew ? SharedLocalizer["You are editting your Team"] : SharedLocalizer["You are creating a new Team"];
 }
 
-<h1>@ViewData["Title"]</h1>
+<h1 class="sr-only">@ViewData["Title"]</h1>
 <div class="box bg-white">
     <form id="frmTeamSave" asp-controller="team" asp-action="save" method="post">
         <input type="hidden" asp-for="Id" />
@@ -15,7 +18,7 @@
             <div class="float-left mr-3 mb-3">
                 <a asp-area="" asp-controller="team" asp-action="index" class="btn btn-lg btn-default"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
             </div>
-            <h3 class="card-title">@SharedLocalizer["You are creating a new Team"]</h3>
+            <h3 class="card-title">@cardTitle</h3>
             <h4 class="card-subtitle">
                 @SharedLocalizer["Invite your friends!"]
             </h4>
