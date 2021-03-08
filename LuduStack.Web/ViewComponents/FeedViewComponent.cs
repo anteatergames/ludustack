@@ -53,7 +53,7 @@ namespace LuduStack.Web.ViewComponents
                 ArticlesOnly = articlesOnly
             };
 
-            List<UserContentViewModel> model = _userContentAppService.GetActivityFeed(vm).ToList();
+            IEnumerable<UserContentViewModel> model = await _userContentAppService.GetActivityFeed(vm);
 
             bool userIsAdmin = User.Identity.IsAuthenticated && User.IsInRole(Roles.Administrator.ToString());
 

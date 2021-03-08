@@ -5,11 +5,16 @@ using LuduStack.Application.ViewModels;
 using LuduStack.Application.ViewModels.Brainstorm;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Interfaces.Services;
+using LuduStack.Domain.Messaging.Queries.Base;
+using LuduStack.Domain.Messaging.Queries.Brainstorm;
+using LuduStack.Domain.Messaging.Queries.BrainstormSession;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
+using LuduStack.Infra.CrossCutting.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace LuduStack.Application.Services
 {
@@ -19,9 +24,9 @@ namespace LuduStack.Application.Services
 
         private readonly IBrainstormDomainService brainstormDomainService;
 
-        public BrainstormAppService(IProfileBaseAppServiceCommon profileBaseAppServiceCommon
+        public BrainstormAppService(IMediatorHandler mediator, IProfileBaseAppServiceCommon profileBaseAppServiceCommon
             , IGamificationDomainService gamificationDomainService
-            , IBrainstormDomainService brainstormDomainService) : base(profileBaseAppServiceCommon)
+            , IBrainstormDomainService brainstormDomainService) : base(mediator, profileBaseAppServiceCommon)
         {
             this.gamificationDomainService = gamificationDomainService;
 
@@ -30,11 +35,11 @@ namespace LuduStack.Application.Services
 
         #region ICrudAppService
 
-        public OperationResultVo<int> Count(Guid currentUserId)
+        public async Task<OperationResultVo<int>> Count(Guid currentUserId)
         {
             try
             {
-                int count = brainstormDomainService.Count();
+                int count = await mediator.Query<CountBrainstormSessionQuery, int>(new CountBrainstormSessionQuery());
 
                 return new OperationResultVo<int>(count);
             }
@@ -63,7 +68,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo<BrainstormIdeaViewModel> GetById(Guid currentUserId, Guid id)
+        public async Task<OperationResultVo<BrainstormIdeaViewModel>> GetById(Guid currentUserId, Guid id)
         {
             try
             {
@@ -114,7 +119,7 @@ namespace LuduStack.Application.Services
             return new OperationResultVo("Not Implemented");
         }
 
-        public OperationResultVo<Guid> Save(Guid currentUserId, BrainstormIdeaViewModel viewModel)
+        public async Task<OperationResultVo<Guid>> Save(Guid currentUserId, BrainstormIdeaViewModel viewModel)
         {
             try
             {
@@ -227,11 +232,12 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo<BrainstormSessionViewModel> GetSession(Guid sessionId)
+        public async Task<OperationResultVo<BrainstormSessionViewModel>> GetSession(Guid sessionId)
         {
             try
             {
-                BrainstormSession main = brainstormDomainService.GetById(sessionId);
+                //BrainstormSession main = brainstormDomainService.GetById(sessionId);
+                BrainstormSession main = await mediator.Query<GetBrainstormSessionByIdQuery, BrainstormSession>(new GetBrainstormSessionByIdQuery(sessionId));
 
                 BrainstormSessionViewModel vm = mapper.Map<BrainstormSessionViewModel>(main);
 

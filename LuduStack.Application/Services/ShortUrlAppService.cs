@@ -1,29 +1,34 @@
 ﻿using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels.ShortUrl;
 using LuduStack.Domain.Interfaces.Services;
+using LuduStack.Domain.Messaging.Queries.ShortUrl;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
+using LuduStack.Infra.CrossCutting.Messaging;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace LuduStack.Application.Services
 {
     public class ShortUrlAppService : BaseAppService, IShortUrlAppService
     {
+        private readonly IMediatorHandler mediator;
         private readonly IShortUrlDomainService shortUrlDomainService;
 
-        public ShortUrlAppService(IBaseAppServiceCommon baseAppServiceCommon, IShortUrlDomainService shortUrlDomainService) : base(baseAppServiceCommon)
+        public ShortUrlAppService(IMediatorHandler mediator, IBaseAppServiceCommon baseAppServiceCommon, IShortUrlDomainService shortUrlDomainService) : base(baseAppServiceCommon)
         {
+            this.mediator = mediator;
             this.shortUrlDomainService = shortUrlDomainService;
         }
 
         #region ICrudAppService
 
-        public OperationResultVo<int> Count(Guid currentUserId)
+        public async Task<OperationResultVo<int>> Count(Guid currentUserId)
         {
             try
             {
-                int count = shortUrlDomainService.Count();
+                int count = await mediator.Query<CountShortUrlQuery, int>(new CountShortUrlQuery());
 
                 return new OperationResultVo<int>(count);
             }
@@ -63,11 +68,11 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo<ShortUrlViewModel> GetById(Guid currentUserId, Guid id)
+        public async Task<OperationResultVo<ShortUrlViewModel>> GetById(Guid currentUserId, Guid id)
         {
             try
             {
-                ShortUrl model = shortUrlDomainService.GetById(id);
+                ShortUrl model = await mediator.Query<GetShortUrlByIdQuery, ShortUrl>(new GetShortUrlByIdQuery(id));
 
                 ShortUrlViewModel vm = mapper.Map<ShortUrlViewModel>(model);
 
@@ -79,7 +84,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo<Guid> Save(Guid currentUserId, ShortUrlViewModel viewModel)
+        public async Task<OperationResultVo<Guid>> Save(Guid currentUserId, ShortUrlViewModel viewModel)
         {
             try
             {

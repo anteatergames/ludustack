@@ -24,29 +24,6 @@ namespace LuduStack.Domain.Services
             return model.Id;
         }
 
-        public virtual int Count()
-        {
-            System.Threading.Tasks.Task<int> count = repository.Count();
-
-            count.Wait();
-
-            return count.Result;
-        }
-
-        public virtual int Count(Expression<Func<T, bool>> where)
-        {
-            int count = repository.Count(where).Result;
-
-            return count;
-        }
-
-        public virtual IEnumerable<T> Search(Expression<Func<T, bool>> where)
-        {
-            IEnumerable<T> objs = repository.Get(where);
-
-            return objs;
-        }
-
         public virtual IEnumerable<T> GetAll()
         {
             IEnumerable<T> objs = repository.GetAll().Result;

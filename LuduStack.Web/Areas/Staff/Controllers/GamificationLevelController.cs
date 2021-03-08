@@ -83,7 +83,7 @@ namespace LuduStack.Web.Areas.Staff.Controllers
         {
             GamificationLevelViewModel model;
 
-            OperationResultVo serviceResult = gamificationLevelAppService.GetById(CurrentUserId, id);
+            OperationResultVo serviceResult = await gamificationLevelAppService.GetById(CurrentUserId, id);
 
             OperationResultVo<GamificationLevelViewModel> castResult = serviceResult as OperationResultVo<GamificationLevelViewModel>;
 
@@ -114,7 +114,7 @@ namespace LuduStack.Web.Areas.Staff.Controllers
         }
 
         [HttpPost("save")]
-        public JsonResult Save(GamificationLevelViewModel vm)
+        public async Task<JsonResult> Save(GamificationLevelViewModel vm)
         {
             bool isNew = vm.Id == Guid.Empty;
 
@@ -122,7 +122,7 @@ namespace LuduStack.Web.Areas.Staff.Controllers
             {
                 vm.UserId = CurrentUserId;
 
-                OperationResultVo<Guid> saveResult = gamificationLevelAppService.Save(CurrentUserId, vm);
+                OperationResultVo<Guid> saveResult = await gamificationLevelAppService .Save(CurrentUserId, vm);
 
                 if (saveResult.Success)
                 {
@@ -130,7 +130,7 @@ namespace LuduStack.Web.Areas.Staff.Controllers
 
                     if (isNew && EnvName.Equals(ConstantHelper.ProductionEnvironmentName))
                     {
-                        NotificationSender.SendTeamNotificationAsync("New Gamification Level created!");
+                        await NotificationSender .SendTeamNotificationAsync("New Gamification Level created!");
                     }
 
                     return Json(new OperationResultRedirectVo<Guid>(saveResult, url));

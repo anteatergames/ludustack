@@ -4,11 +4,14 @@ using LuduStack.Application.ViewModels.Team;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Core.Extensions;
 using LuduStack.Domain.Interfaces.Services;
+using LuduStack.Domain.Messaging.Queries.Team;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
+using LuduStack.Infra.CrossCutting.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace LuduStack.Application.Services
 {
@@ -17,9 +20,10 @@ namespace LuduStack.Application.Services
         private readonly ITeamDomainService teamDomainService;
         private readonly IGamificationDomainService gamificationDomainService;
 
-        public TeamAppService(IProfileBaseAppServiceCommon profileBaseAppServiceCommon
+        public TeamAppService(IMediatorHandler mediator
+            , IProfileBaseAppServiceCommon profileBaseAppServiceCommon
             , ITeamDomainService teamDomainService
-            , IGamificationDomainService gamificationDomainService) : base(profileBaseAppServiceCommon)
+            , IGamificationDomainService gamificationDomainService) : base(mediator, profileBaseAppServiceCommon)
         {
             this.teamDomainService = teamDomainService;
             this.gamificationDomainService = gamificationDomainService;
@@ -27,11 +31,11 @@ namespace LuduStack.Application.Services
 
         #region ICrudAppService
 
-        public OperationResultVo<int> Count(Guid currentUserId)
+        public async Task<OperationResultVo<int>> Count(Guid currentUserId)
         {
             try
             {
-                int count = teamDomainService.Count();
+                int count = await mediator.Query<CountTeamQuery, int>(new CountTeamQuery());
 
                 return new OperationResultVo<int>(count);
             }
@@ -76,11 +80,11 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo<TeamViewModel> GetById(Guid currentUserId, Guid id)
+        public async Task<OperationResultVo<TeamViewModel>> GetById(Guid currentUserId, Guid id)
         {
             try
             {
-                Team model = teamDomainService.GetById(id);
+                Team model = await mediator.Query<GetTeamByIdQuery, Team>(new GetTeamByIdQuery(id));
 
                 if (model == null)
                 {
@@ -125,7 +129,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo<Guid> Save(Guid currentUserId, TeamViewModel viewModel)
+        public async Task<OperationResultVo<Guid>> Save(Guid currentUserId, TeamViewModel viewModel)
         {
             int pointsEarned = 0;
 

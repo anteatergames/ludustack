@@ -36,6 +36,13 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
             return Task.FromResult(count);
         }
 
+        public Task<int> CountLikes(Expression<Func<UserContentLike, bool>> where)
+        {
+            int count = DbSet.AsQueryable().SelectMany(x => x.Likes).Where(where).Count();
+
+            return Task.FromResult(count);
+        }
+
         public async Task<List<UserContentComment>> GetComments(Expression<Func<UserContentComment, bool>> where)
         {
             var list = await DbSet.AsQueryable().SelectMany(x => x.Comments).Where(where).ToMongoListAsync();
@@ -43,7 +50,7 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
             return list;
         }
 
-        public Task<IQueryable<UserContentLike>> GetLikes(Func<UserContentLike, bool> where)
+        public Task<IQueryable<UserContentLike>> GetLikes(Expression<Func<UserContentLike, bool>> where)
         {
             IQueryable<UserContentLike> list = DbSet.AsQueryable().SelectMany(x => x.Likes).Where(where).AsQueryable();
 
@@ -55,9 +62,13 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
             FilterDefinition<UserContent> filter = Builders<UserContent>.Filter.Where(x => x.Id == model.ContentId);
             UpdateDefinition<UserContent> add = Builders<UserContent>.Update.AddToSet(c => c.Likes, model);
 
-            UpdateResult result = await DbSet.UpdateOneAsync(filter, add);
+            //UpdateResult result = await DbSet.UpdateOneAsync(filter, add);
 
-            return result.IsAcknowledged && result.MatchedCount > 0;
+            //return result.IsAcknowledged && result.MatchedCount > 0;
+
+            await Context.AddCommand(() => DbSet.UpdateOneAsync(filter, add));
+
+            return true;
         }
 
         public async Task<bool> RemoveLike(Guid userId, Guid userContentId)
@@ -65,9 +76,13 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
             FilterDefinition<UserContent> filter = Builders<UserContent>.Filter.Where(x => x.Id == userContentId);
             UpdateDefinition<UserContent> remove = Builders<UserContent>.Update.PullFilter(c => c.Likes, m => m.UserId == userId);
 
-            UpdateResult result = await DbSet.UpdateOneAsync(filter, remove);
+            //UpdateResult result = await DbSet.UpdateOneAsync(filter, remove);
 
-            return result.IsAcknowledged && result.MatchedCount > 0;
+            //return result.IsAcknowledged && result.MatchedCount > 0;
+
+            await Context.AddCommand(() => DbSet.UpdateOneAsync(filter, remove));
+
+            return true;
         }
 
         public async Task<bool> AddComment(UserContentComment model)

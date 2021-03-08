@@ -3,6 +3,7 @@ using LuduStack.Application.Interfaces;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Interfaces;
 using LuduStack.Domain.Interfaces.Infrastructure;
+using LuduStack.Infra.CrossCutting.Messaging;
 using System;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -13,14 +14,17 @@ namespace LuduStack.Application.Services
     {
         protected readonly IMapper mapper;
         protected readonly IUnitOfWork unitOfWork;
+        protected readonly IMediatorHandler mediator;
         protected readonly ICacheService cacheService;
 
         protected BaseAppService(IMapper mapper
             , IUnitOfWork unitOfWork
+            , IMediatorHandler mediator
             , ICacheService cacheService)
         {
             this.mapper = mapper;
             this.unitOfWork = unitOfWork;
+            this.mediator = mediator;
             this.cacheService = cacheService;
         }
 
@@ -28,6 +32,7 @@ namespace LuduStack.Application.Services
         {
             mapper = baseAppServiceCommon.Mapper;
             unitOfWork = baseAppServiceCommon.UnitOfWork;
+            mediator = baseAppServiceCommon.Mediator;
             cacheService = baseAppServiceCommon.CacheService;
         }
 

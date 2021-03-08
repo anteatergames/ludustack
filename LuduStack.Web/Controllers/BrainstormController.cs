@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace LuduStack.Web.Controllers
 {
@@ -45,7 +46,7 @@ namespace LuduStack.Web.Controllers
 
         [Route("brainstorm/{sessionId:guid}/newidea")]
         [Route("brainstorm/newidea")]
-        public IActionResult NewIdea(Guid sessionId)
+        public async Task<IActionResult> NewIdea(Guid sessionId)
         {
             OperationResultVo<BrainstormSessionViewModel> sessionResult;
 
@@ -55,7 +56,7 @@ namespace LuduStack.Web.Controllers
             }
             else
             {
-                sessionResult = brainstormAppService.GetSession(sessionId);
+                sessionResult = await brainstormAppService.GetSession(sessionId);
             }
 
             if (sessionResult.Success)
@@ -87,9 +88,9 @@ namespace LuduStack.Web.Controllers
             return PartialView("_CreateEditSession", vm);
         }
 
-        public IActionResult Details(Guid id)
+        public async Task<IActionResult> Details(Guid id)
         {
-            OperationResultVo<BrainstormIdeaViewModel> op = brainstormAppService.GetById(CurrentUserId, id);
+            OperationResultVo<BrainstormIdeaViewModel> op = await brainstormAppService.GetById(CurrentUserId, id);
 
             BrainstormIdeaViewModel vm = op.Value;
 

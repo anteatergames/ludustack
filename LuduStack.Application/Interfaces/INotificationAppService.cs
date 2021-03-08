@@ -2,6 +2,7 @@
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.ValueObjects;
 using System;
+using System.Threading.Tasks;
 
 namespace LuduStack.Application.Interfaces
 {
@@ -9,9 +10,9 @@ namespace LuduStack.Application.Interfaces
     {
         OperationResultListVo<NotificationItemViewModel> GetByUserId(Guid userId, int count);
 
-        OperationResultVo Notify(Guid currentUserId, string originName, Guid targetUserId, NotificationType notificationType, Guid targetId);
+        Task<OperationResultVo> Notify(Guid currentUserId, string originName, Guid targetUserId, NotificationType notificationType, Guid targetId);
 
-        OperationResultVo Notify(Guid currentUserId, string originName, Guid targetUserId, NotificationType notificationType, Guid targetId, string targetName);
+        Task<OperationResultVo> Notify(Guid currentUserId, string originName, Guid targetUserId, NotificationType notificationType, Guid targetId, string targetName);
 
         OperationResultVo MarkAsRead(Guid id);
     }

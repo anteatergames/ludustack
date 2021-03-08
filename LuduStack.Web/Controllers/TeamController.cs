@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace LuduStack.Web.Controllers
 {
@@ -39,7 +40,7 @@ namespace LuduStack.Web.Controllers
         [Route("list")]
         public IActionResult List()
         {
-            OperationResultListVo<TeamViewModel> serviceResult = teamAppService.GetNotSingleMemberGroups(CurrentUserId);
+            OperationResultListVo<TeamViewModel> serviceResult = teamAppService.GetAll(CurrentUserId);
 
             List<TeamViewModel> model = serviceResult.Value.ToList();
 
@@ -81,11 +82,11 @@ namespace LuduStack.Web.Controllers
         }
 
         [Route("{teamId:guid}")]
-        public IActionResult Details(Guid teamId, int? pointsEarned, Guid notificationclicked)
+        public async Task<IActionResult> Details(Guid teamId, int? pointsEarned, Guid notificationclicked)
         {
             notificationAppService.MarkAsRead(notificationclicked);
 
-            OperationResultVo<TeamViewModel> serviceResult = teamAppService.GetById(CurrentUserId, teamId);
+            OperationResultVo<TeamViewModel> serviceResult = await teamAppService.GetById(CurrentUserId, teamId);
 
             if (!serviceResult.Success)
             {
@@ -102,9 +103,9 @@ namespace LuduStack.Web.Controllers
 
         [Authorize]
         [Route("edit/{teamId:guid}")]
-        public IActionResult Edit(Guid teamId)
+        public async Task<IActionResult> Edit(Guid teamId)
         {
-            OperationResultVo<TeamViewModel> service = teamAppService.GetById(CurrentUserId, teamId);
+            OperationResultVo<TeamViewModel> service = await teamAppService.GetById(CurrentUserId, teamId);
 
             TeamViewModel model = service.Value;
 
@@ -124,7 +125,7 @@ namespace LuduStack.Web.Controllers
 
         [Authorize]
         [HttpPost("save")]
-        public IActionResult Save(TeamViewModel vm)
+        public async Task<IActionResult> Save(TeamViewModel vm)
         {
             try
             {
@@ -133,7 +134,7 @@ namespace LuduStack.Web.Controllers
 
                 IEnumerable<Guid> oldMembers = vm.Members.Where(x => x.Id != Guid.Empty).Select(x => x.Id);
 
-                OperationResultVo<Guid> saveResult = teamAppService.Save(CurrentUserId, vm);
+                OperationResultVo<Guid> saveResult = await teamAppService.Save(CurrentUserId, vm);
 
                 if (saveResult.Success)
                 {
@@ -146,7 +147,7 @@ namespace LuduStack.Web.Controllers
 
                     if (isNew && EnvName.Equals(ConstantHelper.ProductionEnvironmentName))
                     {
-                        NotificationSender.SendTeamNotificationAsync($"New team Created: {vm.Name}");
+                        await NotificationSender.SendTeamNotificationAsync($"New team Created: {vm.Name}");
                     }
 
                     return Json(new OperationResultRedirectVo(saveResult, url));

@@ -11,15 +11,15 @@ namespace LuduStack.Application.Interfaces
 {
     public interface IUserContentAppService : ICrudAppService<UserContentViewModel>, IProfileBaseAppService
     {
-        IEnumerable<UserContentViewModel> GetActivityFeed(ActivityFeedRequestViewModel vm);
+        Task<IEnumerable<UserContentViewModel>> GetActivityFeed(ActivityFeedRequestViewModel vm);
 
-        int CountArticles();
+        Task<int> CountArticles();
 
-        OperationResultListVo<UserContentSearchViewModel> Search(Guid currentUserId, string q);
+        Task<OperationResultListVo<UserContentSearchViewModel>> Search(Guid currentUserId, string q);
 
-        OperationResultVo ContentLike(Guid currentUserId, Guid targetId);
+        Task<OperationResultVo> ContentLike(Guid currentUserId, Guid targetId);
 
-        OperationResultVo ContentUnlike(Guid currentUserId, Guid targetId);
+        Task<OperationResultVo> ContentUnlike(Guid currentUserId, Guid targetId);
 
         Task<OperationResultVo> Comment(CommentViewModel vm);
 

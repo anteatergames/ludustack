@@ -8,10 +8,15 @@ using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Core.Extensions;
 using LuduStack.Domain.Core.Interfaces;
 using LuduStack.Domain.Interfaces.Services;
+using LuduStack.Domain.Messaging.Queries.Base;
+using LuduStack.Domain.Messaging.Queries.Game;
+using LuduStack.Domain.Messaging.Queries.UserContent;
+using LuduStack.Domain.Messaging.Queries.UserProfile;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.Specifications;
 using LuduStack.Domain.Specifications.Follow;
 using LuduStack.Domain.ValueObjects;
+using LuduStack.Infra.CrossCutting.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,9 +31,10 @@ namespace LuduStack.Application.Services
 
         private readonly IGameDomainService gameDomainService;
 
-        public ProfileAppService(IProfileBaseAppServiceCommon profileBaseAppServiceCommon
+        public ProfileAppService(IMediatorHandler mediator
+            , IProfileBaseAppServiceCommon profileBaseAppServiceCommon
             , IUserContentDomainService userContentDomainService
-            , IGameDomainService gameDomainService) : base(profileBaseAppServiceCommon)
+            , IGameDomainService gameDomainService) : base(mediator, profileBaseAppServiceCommon)
         {
             this.userContentDomainService = userContentDomainService;
             this.gameDomainService = gameDomainService;
@@ -36,11 +42,11 @@ namespace LuduStack.Application.Services
 
         #region ICrudAppService
 
-        public OperationResultVo<int> Count(Guid currentUserId)
+        public async Task<OperationResultVo<int>> Count(Guid currentUserId)
         {
             try
             {
-                int count = profileDomainService.Count();
+                int count = await mediator.Query<CountUserProfileQuery, int>(new CountUserProfileQuery());
 
                 return new OperationResultVo<int>(count);
             }
@@ -111,11 +117,11 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo<ProfileViewModel> GetById(Guid currentUserId, Guid id)
+        public async Task<OperationResultVo<ProfileViewModel>> GetById(Guid currentUserId, Guid id)
         {
             try
             {
-                UserProfile model = profileDomainService.GetById(id);
+                UserProfile model = await mediator.Query<GetUserProfileByIdQuery, UserProfile>(new GetUserProfileByIdQuery(id));
 
                 ProfileViewModel vm = mapper.Map<ProfileViewModel>(model);
 
@@ -143,7 +149,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo<Guid> Save(Guid currentUserId, ProfileViewModel viewModel)
+        public async Task<OperationResultVo<Guid>> Save(Guid currentUserId, ProfileViewModel viewModel)
         {
             try
             {
@@ -243,9 +249,10 @@ namespace LuduStack.Application.Services
 
             SetImages(vm, model.HasCoverImage);
 
-            vm.Counters.Games = gameDomainService.Count(x => x.UserId == vm.UserId);
-            vm.Counters.Posts = userContentDomainService.Count(x => x.UserId == vm.UserId);
-            vm.Counters.Comments = userContentDomainService.CountComments(x => x.UserId == vm.UserId);
+            vm.Counters.Games = await mediator.Query<CountGameQuery, int>(new CountGameQuery(x => x.UserId == vm.UserId));
+            vm.Counters.Posts = await mediator.Query<CountUserContentQuery, int>(new CountUserContentQuery(x => x.UserId == vm.UserId));
+            vm.Counters.Comments = await mediator.Query<CountCommentsQuery, int>(new CountCommentsQuery(x => x.UserId == vm.UserId));
+
 
             vm.Counters.Followers = model.Followers.SafeCount();
             vm.Counters.Following = profileDomainService.CountFollows(userId);

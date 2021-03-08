@@ -7,10 +7,6 @@ namespace LuduStack.Domain.Interfaces
 {
     public interface IDomainService<T>
     {
-        int Count();
-
-        int Count(Expression<Func<T, bool>> where);
-
         IEnumerable<T> GetAll();
 
         IEnumerable<Guid> GetAllIds();

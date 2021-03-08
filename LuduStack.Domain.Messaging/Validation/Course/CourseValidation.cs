@@ -3,7 +3,7 @@ using System;
 
 namespace LuduStack.Domain.Messaging
 {
-    public abstract class CourseValidation<T> : AbstractValidator<T> where T : CourseCommand
+    public abstract class CourseValidation<T> : AbstractValidator<T> where T : BaseCommand
     {
         protected void ValidateId()
         {

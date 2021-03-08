@@ -11,9 +11,11 @@ namespace LuduStack.Domain.Interfaces.Repository
     {
         Task<int> CountComments(Expression<Func<UserContentComment, bool>> where);
 
+        Task<int> CountLikes(Expression<Func<UserContentLike, bool>> where);
+
         Task<List<UserContentComment>> GetComments(Expression<Func<UserContentComment, bool>> where);
 
-        Task<IQueryable<UserContentLike>> GetLikes(Func<UserContentLike, bool> where);
+        Task<IQueryable<UserContentLike>> GetLikes(Expression<Func<UserContentLike, bool>> where);
 
         Task<bool> AddLike(UserContentLike model);
 

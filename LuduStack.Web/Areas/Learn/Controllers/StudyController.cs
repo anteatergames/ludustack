@@ -61,7 +61,7 @@ namespace LuduStack.Web.Areas.Learn.Controllers
         }
 
         [HttpPost("learn/study/setstudyprofile/{type}")]
-        public IActionResult SetStudyProfile(StudyProfile type)
+        public async Task<IActionResult> SetStudyProfile(StudyProfile type)
         {
             try
             {
@@ -81,7 +81,7 @@ namespace LuduStack.Web.Areas.Learn.Controllers
                 }
                 userPreferences.StudyProfile = type;
 
-                OperationResultVo<Guid> saveResult = UserPreferencesAppService.Save(CurrentUserId, userPreferences);
+                OperationResultVo<Guid> saveResult = await UserPreferencesAppService.Save(CurrentUserId, userPreferences);
 
                 if (!saveResult.Success)
                 {

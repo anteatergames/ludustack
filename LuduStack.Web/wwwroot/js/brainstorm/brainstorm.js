@@ -133,7 +133,7 @@
             var vote = btn.data('vote');
             var sameVote = item.data('currentuservote') === vote;
 
-            if (canInteract === 'true' && !sameVote) {
+            if (canInteract === true && !sameVote) {
                 var url = rootUrl + "/vote";
 
                 return $.post(url, { votingItemId: id, voteValue: vote }).then(function (response) {

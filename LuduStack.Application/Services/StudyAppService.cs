@@ -22,13 +22,11 @@ namespace LuduStack.Application.Services
     {
         private readonly IStudyDomainService studyDomainService;
         private readonly IGamificationDomainService gamificationDomainService;
-        private readonly IMediatorHandler mediator;
 
         public StudyAppService(IMediatorHandler mediator, IProfileBaseAppServiceCommon profileBaseAppServiceCommon
             , IStudyDomainService studyDomainService
-            , IGamificationDomainService gamificationDomainService) : base(profileBaseAppServiceCommon)
+            , IGamificationDomainService gamificationDomainService) : base(mediator, profileBaseAppServiceCommon)
         {
-            this.mediator = mediator;
             this.studyDomainService = studyDomainService;
             this.gamificationDomainService = gamificationDomainService;
         }

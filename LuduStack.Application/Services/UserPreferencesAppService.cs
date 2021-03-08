@@ -2,30 +2,37 @@
 using LuduStack.Application.ViewModels.UserPreferences;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Interfaces.Services;
+using LuduStack.Domain.Messaging.Queries.UserPreferences;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
+using LuduStack.Infra.CrossCutting.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace LuduStack.Application.Services
 {
     public class UserPreferencesAppService : BaseAppService, IUserPreferencesAppService
     {
+        private readonly IMediatorHandler mediator;
         private readonly IUserPreferencesDomainService userPreferencesDomainService;
 
-        public UserPreferencesAppService(IBaseAppServiceCommon baseAppServiceCommon, IUserPreferencesDomainService userPreferencesDomainService) : base(baseAppServiceCommon)
+        public UserPreferencesAppService(IMediatorHandler mediator
+            , IBaseAppServiceCommon baseAppServiceCommon
+            , IUserPreferencesDomainService userPreferencesDomainService) : base(baseAppServiceCommon)
         {
+            this.mediator = mediator;
             this.userPreferencesDomainService = userPreferencesDomainService;
         }
 
         #region ICrudAppService
 
-        public OperationResultVo<int> Count(Guid currentUserId)
+        public async Task<OperationResultVo<int>> Count(Guid currentUserId)
         {
             try
             {
-                int count = userPreferencesDomainService.Count();
+                int count = await mediator.Query<CountUserPreferencesQuery, int>(new CountUserPreferencesQuery());
 
                 return new OperationResultVo<int>(count);
             }
@@ -65,11 +72,11 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo<UserPreferencesViewModel> GetById(Guid currentUserId, Guid id)
+        public async Task<OperationResultVo<UserPreferencesViewModel>> GetById(Guid currentUserId, Guid id)
         {
             try
             {
-                UserPreferences model = userPreferencesDomainService.GetById(id);
+                UserPreferences model = await mediator.Query<GetUserPreferencesByIdQuery, UserPreferences>(new GetUserPreferencesByIdQuery(id));
 
                 UserPreferencesViewModel vm = mapper.Map<UserPreferencesViewModel>(model);
 
@@ -97,7 +104,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo<Guid> Save(Guid currentUserId, UserPreferencesViewModel viewModel)
+        public async Task<OperationResultVo<Guid>> Save(Guid currentUserId, UserPreferencesViewModel viewModel)
         {
             try
             {

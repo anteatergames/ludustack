@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace LuduStack.Web.Controllers
 {
@@ -32,7 +33,7 @@ namespace LuduStack.Web.Controllers
             this.gameAppService = gameAppService;
         }
 
-        public IActionResult Index(int? pointsEarned)
+        public async Task<IActionResult> Index(int? pointsEarned)
         {
             CarouselViewModel featured = featuredContentAppService.GetFeaturedNow();
             ViewBag.Carousel = featured;
@@ -42,7 +43,7 @@ namespace LuduStack.Web.Controllers
             Dictionary<GameGenre, UiInfoAttribute> genreDict = Enum.GetValues(typeof(GameGenre)).Cast<GameGenre>().ToUiInfoDictionary(true);
             ViewData["Genres"] = genreDict;
 
-            IEnumerable<SelectListItemVo> games = gameAppService.GetByUser(CurrentUserId);
+            IEnumerable<SelectListItemVo> games = await gameAppService.GetByUser(CurrentUserId);
             List<SelectListItem> gamesDropDown = games.ToSelectList();
             ViewBag.UserGames = gamesDropDown;
 
@@ -326,7 +327,7 @@ namespace LuduStack.Web.Controllers
             // Future
             model.Items.Add(GenerateTimeLineItem(new DateTime(2020, 11, 01), "fas fa-bug", "danger", "November 2020", "Open Beta", "At this point, we hope to have a consistent beta tester base so we can polish the platform and fix every possible bug tha shows up."));
 
-            model.Items.Add(GenerateTimeLineItem(new DateTime(2021, 01, 01), "fas fa-star", "success", "January 2021", "Launch day!", "This is the scheduled launch day. On this day, all the core features will be implemented."));
+            model.Items.Add(GenerateTimeLineItem(new DateTime(2099, 01, 01), "fas fa-star", "success", "Near Future", "Launch day!", "This is the launch day. On this day, all the core features will be implemented."));
 
             model.Items = model.Items.OrderBy(x => x.Date).ToList();
             return model;

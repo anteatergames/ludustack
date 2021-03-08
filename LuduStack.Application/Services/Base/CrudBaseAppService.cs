@@ -2,9 +2,11 @@
 using LuduStack.Application.ViewModels;
 using LuduStack.Domain.Core.Models;
 using LuduStack.Domain.Interfaces;
+using LuduStack.Domain.Messaging.Queries.Base;
 using LuduStack.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace LuduStack.Application.Services
 {
@@ -15,20 +17,6 @@ namespace LuduStack.Application.Services
         public CrudBaseAppService(IBaseAppServiceCommon baseAppServiceCommon, TDomainService domainService) : base(baseAppServiceCommon)
         {
             this.domainService = domainService;
-        }
-
-        public virtual OperationResultVo<int> Count(Guid currentUserId)
-        {
-            try
-            {
-                int count = domainService.Count();
-
-                return new OperationResultVo<int>(count);
-            }
-            catch (Exception ex)
-            {
-                return new OperationResultVo<int>(ex.Message);
-            }
         }
 
         public virtual OperationResultListVo<TViewModel> GetAll(Guid currentUserId)
@@ -61,7 +49,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public virtual OperationResultVo<TViewModel> GetById(Guid currentUserId, Guid id)
+        public virtual async Task<OperationResultVo<TViewModel>> GetById(Guid currentUserId, Guid id)
         {
             try
             {
@@ -98,7 +86,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public virtual OperationResultVo<Guid> Save(Guid currentUserId, TViewModel viewModel)
+        public virtual async Task<OperationResultVo<Guid>> Save(Guid currentUserId, TViewModel viewModel)
         {
             try
             {

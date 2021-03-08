@@ -7,11 +7,14 @@ using LuduStack.Application.ViewModels.FeaturedContent;
 using LuduStack.Application.ViewModels.Home;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Interfaces.Services;
+using LuduStack.Domain.Messaging.Queries.Base;
+using LuduStack.Domain.Messaging.Queries.FeaturedContent;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace LuduStack.Application.Services
 {
@@ -30,11 +33,11 @@ namespace LuduStack.Application.Services
 
         #region ICrudAppService
 
-        public OperationResultVo<int> Count(Guid currentUserId)
+        public async Task<OperationResultVo<int>> Count(Guid currentUserId)
         {
             try
             {
-                int count = featuredContentDomainService.Count();
+                int count = await mediator.Query<CountFeaturedContentQuery, int>(new CountFeaturedContentQuery());
 
                 return new OperationResultVo<int>(count);
             }
@@ -74,7 +77,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo<FeaturedContentViewModel> GetById(Guid currentUserId, Guid id)
+        public async Task<OperationResultVo<FeaturedContentViewModel>> GetById(Guid currentUserId, Guid id)
         {
             try
             {
@@ -90,7 +93,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo<Guid> Save(Guid currentUserId, FeaturedContentViewModel viewModel)
+        public async Task<OperationResultVo<Guid>> Save(Guid currentUserId, FeaturedContentViewModel viewModel)
         {
             try
             {

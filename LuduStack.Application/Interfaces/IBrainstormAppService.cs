@@ -3,6 +3,7 @@ using LuduStack.Application.ViewModels.Brainstorm;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.ValueObjects;
 using System;
+using System.Threading.Tasks;
 
 namespace LuduStack.Application.Interfaces
 {
@@ -12,7 +13,7 @@ namespace LuduStack.Application.Interfaces
 
         OperationResultVo Comment(CommentViewModel vm);
 
-        OperationResultVo<BrainstormSessionViewModel> GetSession(Guid sessionId);
+        Task<OperationResultVo<BrainstormSessionViewModel>> GetSession(Guid sessionId);
 
         OperationResultVo<BrainstormSessionViewModel> GetSession(Guid userId, BrainstormSessionType type);
 

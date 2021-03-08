@@ -7,6 +7,7 @@ using LuduStack.Domain.Interfaces.Models;
 using LuduStack.Domain.Interfaces.Services;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
+using LuduStack.Infra.CrossCutting.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,10 +20,10 @@ namespace LuduStack.Application.Services
         private readonly IGamificationDomainService gamificationDomainService;
         private readonly IShortUrlDomainService shortUrlDomainService;
 
-        public GiveawayAppService(IProfileBaseAppServiceCommon profileBaseAppServiceCommon
+        public GiveawayAppService(IMediatorHandler mediator, IProfileBaseAppServiceCommon profileBaseAppServiceCommon
             , IGiveawayDomainService giveawayDomainService
             , IGamificationDomainService gamificationDomainService
-            , IShortUrlDomainService shortUrlDomainService) : base(profileBaseAppServiceCommon)
+            , IShortUrlDomainService shortUrlDomainService) : base(mediator, profileBaseAppServiceCommon)
         {
             this.giveawayDomainService = giveawayDomainService;
             this.gamificationDomainService = gamificationDomainService;

@@ -219,7 +219,7 @@
                 measure += domain[i + 1] - domain[i];
         }
 
-        return spline.sort();
+        return spline.sort((a, b) => (a - b));
     }
 
     // Create the overarching container

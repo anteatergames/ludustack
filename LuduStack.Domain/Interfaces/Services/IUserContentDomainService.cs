@@ -11,27 +11,7 @@ namespace LuduStack.Domain.Interfaces.Services
 {
     public interface IUserContentDomainService : IDomainService<UserContent>
     {
-        new IEnumerable<UserContentSearchVo> Search(Expression<Func<UserContent, bool>> where);
-
-        int CountComments(Expression<Func<UserContentComment, bool>> where);
-
-        int CountCommentsByUserId(Guid userId);
-
-        IQueryable<UserContent> GetActivityFeed(Guid? gameId, Guid? userId, List<SupportedLanguage> languages, Guid? oldestId, DateTime? oldestDate, bool? articlesOnly, int count);
-
-        Task<List<UserContentComment>> GetComments(Expression<Func<UserContentComment, bool>> where);
-
-        void AddLike(UserContentLike model);
-
-        IEnumerable<UserContentLike> GetLikes(Func<UserContentLike, bool> where);
-
-        void RemoveLike(Guid currentUserId, Guid userContentId);
-
-        Task<bool> CheckIfCommentExists<T>(Expression<Func<UserContentComment, bool>> where);
-
         void Comment(UserContentComment model);
-
-        List<ComicsListItemVo> GetComicsListByUserId(Guid userId);
 
         DomainOperationVo<UserContentRating> Rate(Guid userId, Guid id, decimal scoreDecimal);
     }

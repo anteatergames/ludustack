@@ -77,12 +77,12 @@ namespace LuduStack.Web.Areas.Tools.Controllers
         }
 
         [Route("tools/localization/listmine")]
-        public PartialViewResult ListMine()
+        public async Task<PartialViewResult> ListMine()
         {
             IEnumerable<LocalizationViewModel> model;
             OperationResultVo serviceResult;
 
-            serviceResult = translationAppService.GetByUserId(CurrentUserId, CurrentUserId);
+            serviceResult = await translationAppService.GetByUserId(CurrentUserId, CurrentUserId);
 
             if (serviceResult != null && serviceResult.Success)
             {
@@ -129,9 +129,9 @@ namespace LuduStack.Web.Areas.Tools.Controllers
 
         [Authorize]
         [Route("tools/localization/translate/{id:guid}/{language?}")]
-        public IActionResult Translate(Guid id, SupportedLanguage language, int? pointsEarned)
+        public async Task<IActionResult> Translate(Guid id, SupportedLanguage language, int? pointsEarned)
         {
-            OperationResultVo result = translationAppService.GetById(CurrentUserId, id);
+            OperationResultVo result = await translationAppService.GetById(CurrentUserId, id);
 
             if (result.Success)
             {
@@ -155,9 +155,9 @@ namespace LuduStack.Web.Areas.Tools.Controllers
         }
 
         [Route("tools/localization/review/{id:guid}/{language?}")]
-        public IActionResult Review(Guid id, SupportedLanguage language, int? pointsEarned)
+        public async Task<IActionResult> Review(Guid id, SupportedLanguage language, int? pointsEarned)
         {
-            OperationResultVo result = translationAppService.GetById(CurrentUserId, id);
+            OperationResultVo result = await translationAppService.GetById(CurrentUserId, id);
 
             if (result.Success)
             {
@@ -309,9 +309,9 @@ namespace LuduStack.Web.Areas.Tools.Controllers
 
         [Authorize]
         [Route("tools/localization/edit/{id:guid}")]
-        public IActionResult Edit(Guid id)
+        public async Task<IActionResult> Edit(Guid id)
         {
-            OperationResultVo serviceResult = translationAppService.GetById(CurrentUserId, id);
+            OperationResultVo serviceResult = await translationAppService.GetById(CurrentUserId, id);
 
             if (serviceResult.Success)
             {
@@ -332,7 +332,7 @@ namespace LuduStack.Web.Areas.Tools.Controllers
         [Authorize]
         [HttpPost("tools/localization/save")]
         [RequestFormLimits(ValueCountLimit = int.MaxValue)]
-        public IActionResult Save(LocalizationViewModel vm)
+        public async Task<IActionResult> Save(LocalizationViewModel vm)
         {
             bool isNew = vm.Id == Guid.Empty;
 
@@ -340,7 +340,7 @@ namespace LuduStack.Web.Areas.Tools.Controllers
             {
                 vm.UserId = CurrentUserId;
 
-                OperationResultVo<Guid> saveResult = translationAppService.Save(CurrentUserId, vm);
+                OperationResultVo<Guid> saveResult = await translationAppService .Save(CurrentUserId, vm);
 
                 if (saveResult.Success)
                 {
@@ -354,7 +354,7 @@ namespace LuduStack.Web.Areas.Tools.Controllers
 
                         if (EnvName.Equals(ConstantHelper.ProductionEnvironmentName))
                         {
-                            NotificationSender.SendTeamNotificationAsync("New Localization Project created!");
+                            await NotificationSender.SendTeamNotificationAsync("New Localization Project created!");
                         }
                     }
 

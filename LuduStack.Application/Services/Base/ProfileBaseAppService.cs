@@ -9,11 +9,14 @@ using LuduStack.Domain.Core.Models;
 using LuduStack.Domain.Interfaces;
 using LuduStack.Domain.Interfaces.Models;
 using LuduStack.Domain.Interfaces.Services;
+using LuduStack.Domain.Messaging.Queries.Game;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
+using LuduStack.Infra.CrossCutting.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace LuduStack.Application.Services
 {
@@ -21,7 +24,7 @@ namespace LuduStack.Application.Services
     {
         protected readonly IProfileDomainService profileDomainService;
 
-        protected ProfileBaseAppService(IProfileBaseAppServiceCommon profileBaseAppServiceCommon) : base(profileBaseAppServiceCommon.Mapper, profileBaseAppServiceCommon.UnitOfWork, profileBaseAppServiceCommon.CacheService)
+        protected ProfileBaseAppService(IMediatorHandler mediator, IProfileBaseAppServiceCommon profileBaseAppServiceCommon) : base(profileBaseAppServiceCommon.Mapper, profileBaseAppServiceCommon.UnitOfWork, profileBaseAppServiceCommon.Mediator, profileBaseAppServiceCommon.CacheService)
         {
             profileDomainService = profileBaseAppServiceCommon.ProfileDomainService;
         }
@@ -95,24 +98,6 @@ namespace LuduStack.Application.Services
             return fromCache;
         }
 
-        private T GetCachedObjectById<T>(IDomainService<T> domainService, Guid id, string preffix) where T : Entity
-        {
-            T obj = GetObjectFromCache<T>(id, preffix);
-
-            if (obj == null)
-            {
-                T objectFromDb = domainService.GetById(id);
-
-                if (objectFromDb != null)
-                {
-                    SetOjectOnCache(id, objectFromDb, preffix);
-                    obj = objectFromDb;
-                }
-            }
-
-            return obj;
-        }
-
         public OperationResultVo GetCountries(Guid currentUserId)
         {
             try
@@ -179,13 +164,13 @@ namespace LuduStack.Application.Services
             SetGameCache(id, model);
         }
 
-        public GameViewModel GetGameWithCache(IDomainService<Game> domainService, Guid id)
+        public async Task<GameViewModel> GetGameWithCache(IDomainService<Game> domainService, Guid id)
         {
             Game model = GetObjectFromCache<Game>(id, "game");
 
             if (model == null)
             {
-                model = domainService.GetById(id);
+                model = await mediator.Query<GetGameByIdQuery, Game>(new GetGameByIdQuery(id));
             }
 
             GameViewModel viewModel = mapper.Map<GameViewModel>(model);

@@ -12,7 +12,7 @@ namespace LuduStack.Application.Interfaces
     {
         OperationResultVo GenerateNew(Guid currentUserId);
 
-        OperationResultVo GetByUserId(Guid currentUserId, Guid userId);
+        Task<OperationResultVo> GetByUserId(Guid currentUserId, Guid userId);
 
         OperationResultVo GetBasicInfoById(Guid currentUserId, Guid id);
 

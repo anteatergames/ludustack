@@ -5,8 +5,11 @@ using LuduStack.Application.ViewModels.Localization;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Core.Extensions;
 using LuduStack.Domain.Interfaces.Services;
+using LuduStack.Domain.Messaging.Queries.Base;
+using LuduStack.Domain.Messaging.Queries.Localization;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
+using LuduStack.Infra.CrossCutting.Messaging;
 using Microsoft.AspNetCore.Http;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
@@ -25,10 +28,10 @@ namespace LuduStack.Application.Services
         private readonly IGameDomainService gameDomainService;
         private readonly IGamificationDomainService gamificationDomainService;
 
-        public LocalizationAppService(IProfileBaseAppServiceCommon profileBaseAppServiceCommon
+        public LocalizationAppService(IMediatorHandler mediator, IProfileBaseAppServiceCommon profileBaseAppServiceCommon
             , ILocalizationDomainService translationDomainService
             , IGameDomainService gameDomainService
-            , IGamificationDomainService gamificationDomainService) : base(profileBaseAppServiceCommon)
+            , IGamificationDomainService gamificationDomainService) : base(mediator, profileBaseAppServiceCommon)
         {
             this.translationDomainService = translationDomainService;
             this.gameDomainService = gameDomainService;
@@ -37,11 +40,11 @@ namespace LuduStack.Application.Services
 
         #region ICrudAppService
 
-        public OperationResultVo<int> Count(Guid currentUserId)
+        public async Task<OperationResultVo<int>> Count(Guid currentUserId)
         {
             try
             {
-                int count = translationDomainService.Count();
+                int count = await mediator.Query<CountLocalizationQuery, int>(new CountLocalizationQuery());
 
                 return new OperationResultVo<int>(count);
             }
@@ -99,7 +102,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo GetByUserId(Guid currentUserId, Guid userId)
+        public async Task<OperationResultVo> GetByUserId(Guid currentUserId, Guid userId)
         {
             try
             {
@@ -111,7 +114,7 @@ namespace LuduStack.Application.Services
                 {
                     item.TermCount = item.Terms.Count;
 
-                    ViewModels.Game.GameViewModel game = GetGameWithCache(gameDomainService, item.Game.Id);
+                    GameViewModel game = await GetGameWithCache(gameDomainService, item.Game.Id);
                     item.Game.Title = game.Title;
 
                     SetPermissions(userId, item);
@@ -127,7 +130,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo<LocalizationViewModel> GetById(Guid currentUserId, Guid id)
+        public async Task<OperationResultVo<LocalizationViewModel>> GetById(Guid currentUserId, Guid id)
         {
             try
             {
@@ -198,7 +201,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo<Guid> Save(Guid currentUserId, LocalizationViewModel viewModel)
+        public async Task<OperationResultVo<Guid>> Save(Guid currentUserId, LocalizationViewModel viewModel)
         {
             int pointsEarned = 0;
 
@@ -696,9 +699,9 @@ namespace LuduStack.Application.Services
             }
         }
 
-        private void SetGameViewModel(Guid gameId, LocalizationViewModel vm)
+        private async Task SetGameViewModel(Guid gameId, LocalizationViewModel vm)
         {
-            GameViewModel game = GetGameWithCache(gameDomainService, gameId);
+            GameViewModel game = await GetGameWithCache(gameDomainService, gameId);
             if (game != null)
             {
                 vm.Game.Title = game.Title;

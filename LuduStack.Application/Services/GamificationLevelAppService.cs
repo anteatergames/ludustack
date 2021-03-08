@@ -1,6 +1,7 @@
 ﻿using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels.Gamification;
 using LuduStack.Domain.Interfaces.Services;
+using LuduStack.Domain.Messaging.Queries.GamificationLevel;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
 using System;
@@ -12,6 +13,20 @@ namespace LuduStack.Application.Services
     {
         public GamificationLevelAppService(IBaseAppServiceCommon baseAppServiceCommon, IGamificationLevelDomainService gamificationLevelDomainService) : base(baseAppServiceCommon, gamificationLevelDomainService)
         {
+        }
+
+        public virtual async Task<OperationResultVo<int>> Count(Guid currentUserId)
+        {
+            try
+            {
+                int count = await mediator.Query<CountGamificationLevelQuery, int>(new CountGamificationLevelQuery());
+
+                return new OperationResultVo<int>(count);
+            }
+            catch (Exception ex)
+            {
+                return new OperationResultVo<int>(ex.Message);
+            }
         }
 
         public async Task<OperationResultVo> GenerateNew(Guid currentUserId)

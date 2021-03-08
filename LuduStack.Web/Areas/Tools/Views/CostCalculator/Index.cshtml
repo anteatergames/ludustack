@@ -11,6 +11,7 @@
     //ViewData["OgImage"] = ViewBag.BaseUrl + "/images/og/ogratecalculator.png";
 
     var artStyles = Html.GetEnumSelectList<ArtStyle2D>();
+    var soundStyles = Html.GetEnumSelectList<SoundStyle>();
 }
 
 @section ComponentStyles {
@@ -53,14 +54,28 @@
             <div class="box-body p-0 px-md-2">
                 <form id="frmCostCalculator" asp-area="tools" asp-controller="giveaway" asp-action="save" method="post">
                     <div class="row">
-                        <div class="col-12">
+                        <div class="col-6">
                             <label asp-for="ArtStyle" class="col-form-label"></label>
                             <span asp-description-for="ArtStyle" class="col-form-label" />
                             <select asp-for="ArtStyle" asp-items="artStyles" class="form-control" data-placeholder="@SharedLocalizer["Select the art style"]"></select>
                             <span asp-validation-for="ArtStyle" class="text-danger"></span>
                         </div>
+                        <div class="col-6">
+                            <label asp-for="SoundStyle" class="col-form-label"></label>
+                            <span asp-description-for="SoundStyle" class="col-form-label" />
+                            <select asp-for="SoundStyle" asp-items="soundStyles" class="form-control" data-placeholder="@SharedLocalizer["Select the sound style"]"></select>
+                            <span asp-validation-for="SoundStyle" class="text-danger"></span>
+                        </div>
                     </div>
                     <div class="row">
+                        <div class="col-12 col-md-2">
+                            <div class="form-group validation">
+                                <label asp-for="ConceptArtPieces" class="col-form-label"></label>
+                                <span asp-description-for="ConceptArtPieces" class="col-form-label" />
+                                <input asp-for="ConceptArtPieces" class="form-control user-entry" placeholder="@SharedLocalizer["e.g. 12"]" />
+                                <span asp-validation-for="ConceptArtPieces" class="text-danger"></span>
+                            </div>
+                        </div>
                         <div class="col-12 col-md-2">
                             <div class="form-group validation">
                                 <label asp-for="Characters" class="col-form-label"></label>
@@ -75,6 +90,22 @@
                                 <span asp-description-for="Levels" class="col-form-label" />
                                 <input asp-for="Levels" class="form-control user-entry" placeholder="@SharedLocalizer["e.g. 12"]" />
                                 <span asp-validation-for="Levels" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-2">
+                            <div class="form-group validation">
+                                <label asp-for="SoundEffects" class="col-form-label"></label>
+                                <span asp-description-for="SoundEffects" class="col-form-label" />
+                                <input asp-for="SoundEffects" class="form-control user-entry" placeholder="@SharedLocalizer["e.g. 12"]" />
+                                <span asp-validation-for="SoundEffects" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-2">
+                            <div class="form-group validation">
+                                <label asp-for="MusicTracks" class="col-form-label"></label>
+                                <span asp-description-for="MusicTracks" class="col-form-label" />
+                                <input asp-for="MusicTracks" class="form-control user-entry" placeholder="@SharedLocalizer["e.g. 12"]" />
+                                <span asp-validation-for="MusicTracks" class="text-danger"></span>
                             </div>
                         </div>
                     </div>
@@ -96,13 +127,21 @@
                                 <tr>
                                     <th scope="col" class="font-weight-bold">@SharedLocalizer["element"]</th>
                                     <th scope="col" class="text-right font-weight-bold">@SharedLocalizer["quantity"]</th>
-                                    <th scope="col" class="text-right font-weight-bold">@SharedLocalizer["minimum (per unit)"]</th>
-                                    <th scope="col" class="text-right font-weight-bold">@SharedLocalizer["average (per unit)"]</th>
-                                    <th scope="col" class="text-right font-weight-bold">@SharedLocalizer["maximum (per unit)"]</th>
+                                    <th scope="col" class="text-right font-weight-bold">@SharedLocalizer["minimum"]</th>
+                                    <th scope="col" class="text-right font-weight-bold">@SharedLocalizer["average"]</th>
+                                    <th scope="col" class="text-right font-weight-bold">@SharedLocalizer["maximum"]</th>
                                     <th scope="col" class="text-right font-weight-bold">@SharedLocalizer["subtotal"]</th>
                                 </tr>
                             </thead>
                             <tbody>
+                                <tr>
+                                    <td>@SharedLocalizer["concepts"]</td>
+                                    <td class="text-right"><span id="txtConceptsQuantity">-</span></td>
+                                    <td class="text-right"><span id="txt1">-</span></td>
+                                    <td class="text-right"><span id="txt1">-</span></td>
+                                    <td class="text-right"><span id="txt1">-</span></td>
+                                    <td class="text-right"><span id="txt1">-</span></td>
+                                </tr>
                                 <tr>
                                     <td>@SharedLocalizer["characters"]</td>
                                     <td class="text-right"><span id="txtCharacterQuantity">-</span></td>
@@ -112,7 +151,7 @@
                                     <td class="text-right"><span id="txt1">-</span></td>
                                 </tr>
                                 <tr>
-                                    <td>@SharedLocalizer["revision"]</td>
+                                    <td>@SharedLocalizer["maps"]</td>
                                     <td class="text-right"><span id="txt1">-</span></td>
                                     <td class="text-right"><span id="txt1">-</span></td>
                                     <td class="text-right"><span id="txt1">-</span></td>
@@ -120,7 +159,7 @@
                                     <td class="text-right"><span id="txt1">-</span></td>
                                 </tr>
                                 <tr>
-                                    <td>@SharedLocalizer["rush job"]</td>
+                                    <td>@SharedLocalizer["songs"]</td>
                                     <td class="text-right"><span id="txt1">-</span></td>
                                     <td class="text-right"><span id="txt1">-</span></td>
                                     <td class="text-right"><span id="txt1">-</span></td>
@@ -128,7 +167,7 @@
                                     <td class="text-right"><span id="txt1">-</span></td>
                                 </tr>
                                 <tr>
-                                    <td>@SharedLocalizer["asshole rate"]</td>
+                                    <td>@SharedLocalizer["sound fx"]</td>
                                     <td class="text-right"><span id="txt1">-</span></td>
                                     <td class="text-right"><span id="txt1">-</span></td>
                                     <td class="text-right"><span id="txt1">-</span></td>

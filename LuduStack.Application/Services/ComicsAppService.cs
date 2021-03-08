@@ -5,11 +5,14 @@ using LuduStack.Application.ViewModels;
 using LuduStack.Application.ViewModels.Comics;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Interfaces.Services;
+using LuduStack.Domain.Messaging.Queries.UserContent;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
+using LuduStack.Infra.CrossCutting.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace LuduStack.Application.Services
 {
@@ -17,14 +20,14 @@ namespace LuduStack.Application.Services
     {
         private readonly IUserContentDomainService userContentDomainService;
 
-        public ComicsAppService(IProfileBaseAppServiceCommon profileBaseAppServiceCommon, IUserContentDomainService userContentDomainService) : base(profileBaseAppServiceCommon)
+        public ComicsAppService(IMediatorHandler mediator, IProfileBaseAppServiceCommon profileBaseAppServiceCommon, IUserContentDomainService userContentDomainService) : base(mediator, profileBaseAppServiceCommon)
         {
             this.userContentDomainService = userContentDomainService;
         }
 
         #region ICrudAppService
 
-        public OperationResultVo<int> Count(Guid currentUserId)
+        public async Task<OperationResultVo<int>> Count(Guid currentUserId)
         {
             throw new NotImplementedException();
         }
@@ -39,7 +42,7 @@ namespace LuduStack.Application.Services
             throw new NotImplementedException();
         }
 
-        public OperationResultVo<ComicStripViewModel> GetById(Guid currentUserId, Guid id)
+        public async Task<OperationResultVo<ComicStripViewModel>> GetById(Guid currentUserId, Guid id)
         {
             throw new NotImplementedException();
         }
@@ -62,7 +65,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo<Guid> Save(Guid currentUserId, ComicStripViewModel viewModel)
+        public async Task<OperationResultVo<Guid>> Save(Guid currentUserId, ComicStripViewModel viewModel)
         {
             int pointsEarned = 0;
 
@@ -140,13 +143,23 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo GetComicsByMe(Guid currentUserId)
+        public async Task<OperationResultVo> GetComicsByMe(Guid currentUserId)
         {
             try
             {
-                List<ComicsListItemVo> comics = userContentDomainService.GetComicsListByUserId(currentUserId);
+                var comics = await mediator.Query<GetComicsByUserIdQuery, IEnumerable<UserContent>>(new GetComicsByUserIdQuery(currentUserId));
 
-                return new OperationResultListVo<ComicsListItemVo>(comics);
+                var voList = comics.Select(x => new ComicsListItemVo
+                {
+                    Id = x.Id,
+                    IssueNumber = x.IssueNumber.HasValue ? x.IssueNumber.Value : 0,
+                    Title = x.Title,
+                    Content = x.Content,
+                    FeaturedImage = x.FeaturedImage,
+                    CreateDate = x.CreateDate
+                });
+
+                return new OperationResultListVo<ComicsListItemVo>(voList);
             }
             catch (Exception ex)
             {
@@ -154,11 +167,11 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo GetForDetails(Guid currentUserId, Guid id)
+        public async Task<OperationResultVo> GetForDetails(Guid currentUserId, Guid id)
         {
             try
             {
-                UserContent existing = userContentDomainService.GetById(id);
+                UserContent existing = await mediator.Query<GetUserContentByIdQuery, UserContent>(new GetUserContentByIdQuery(id));
 
                 ComicStripViewModel vm = mapper.Map<ComicStripViewModel>(existing);
 
@@ -191,11 +204,11 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo GetForEdit(Guid currentUserId, Guid id)
+        public async Task<OperationResultVo> GetForEdit(Guid currentUserId, Guid id)
         {
             try
             {
-                UserContent existing = userContentDomainService.GetById(id);
+                UserContent existing = await mediator.Query<GetUserContentByIdQuery, UserContent>(new GetUserContentByIdQuery(id));
 
                 ComicStripViewModel vm = mapper.Map<ComicStripViewModel>(existing);
 

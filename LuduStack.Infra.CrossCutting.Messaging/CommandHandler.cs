@@ -20,7 +20,10 @@ namespace LuduStack.Infra.CrossCutting.Messaging
 
         protected async Task<ValidationResult> Commit(IUnitOfWork uow, string message)
         {
-            if (!await uow.Commit()) AddError(message);
+            if (!await uow.Commit())
+            {
+                AddError(message);
+            }
 
             return ValidationResult;
         }

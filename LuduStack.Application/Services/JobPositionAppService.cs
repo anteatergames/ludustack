@@ -4,11 +4,15 @@ using LuduStack.Application.ViewModels.Jobs;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Core.Extensions;
 using LuduStack.Domain.Interfaces.Services;
+using LuduStack.Domain.Messaging.Queries.Base;
+using LuduStack.Domain.Messaging.Queries.JobPosition;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
+using LuduStack.Infra.CrossCutting.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace LuduStack.Application.Services
 {
@@ -17,9 +21,10 @@ namespace LuduStack.Application.Services
         private readonly IJobPositionDomainService jobPositionDomainService;
         private readonly IGamificationDomainService gamificationDomainService;
 
-        public JobPositionAppService(IProfileBaseAppServiceCommon profileBaseAppServiceCommon
+        public JobPositionAppService(IMediatorHandler mediator
+            , IProfileBaseAppServiceCommon profileBaseAppServiceCommon
             , IJobPositionDomainService jobPositionDomainService
-            , IGamificationDomainService gamificationDomainService) : base(profileBaseAppServiceCommon)
+            , IGamificationDomainService gamificationDomainService) : base(mediator, profileBaseAppServiceCommon)
         {
             this.jobPositionDomainService = jobPositionDomainService;
             this.gamificationDomainService = gamificationDomainService;
@@ -27,11 +32,11 @@ namespace LuduStack.Application.Services
 
         #region ICrudAppService
 
-        public OperationResultVo<int> Count(Guid currentUserId)
+        public async Task<OperationResultVo<int>> Count(Guid currentUserId)
         {
             try
             {
-                int count = jobPositionDomainService.Count();
+                int count = await mediator.Query<CountJobPositionQuery, int>(new CountJobPositionQuery());
 
                 return new OperationResultVo<int>(count);
             }
@@ -71,11 +76,11 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo<JobPositionViewModel> GetById(Guid currentUserId, Guid id)
+        public async Task<OperationResultVo<JobPositionViewModel>> GetById(Guid currentUserId, Guid id)
         {
             try
             {
-                JobPosition model = jobPositionDomainService.GetById(id);
+                JobPosition model = await mediator.Query<GetJobPositionByIdQuery, JobPosition>(new GetJobPositionByIdQuery(id));
 
                 if (model == null)
                 {
@@ -149,7 +154,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo<Guid> Save(Guid currentUserId, JobPositionViewModel viewModel)
+        public async Task<OperationResultVo<Guid>> Save(Guid currentUserId, JobPositionViewModel viewModel)
         {
             int pointsEarned = 0;
 

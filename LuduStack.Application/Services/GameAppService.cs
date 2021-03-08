@@ -9,12 +9,16 @@ using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Core.Extensions;
 using LuduStack.Domain.Core.Interfaces;
 using LuduStack.Domain.Interfaces.Services;
+using LuduStack.Domain.Messaging.Queries.Base;
+using LuduStack.Domain.Messaging.Queries.Game;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.Specifications;
 using LuduStack.Domain.ValueObjects;
+using LuduStack.Infra.CrossCutting.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace LuduStack.Application.Services
 {
@@ -25,10 +29,11 @@ namespace LuduStack.Application.Services
 
         private readonly IGameDomainService gameDomainService;
 
-        public GameAppService(IProfileBaseAppServiceCommon profileBaseAppServiceCommon
+        public GameAppService(IMediatorHandler mediator
+            , IProfileBaseAppServiceCommon profileBaseAppServiceCommon
             , ITeamDomainService teamDomainService
             , IGameDomainService gameDomainService
-            , IGamificationDomainService gamificationDomainService) : base(profileBaseAppServiceCommon)
+            , IGamificationDomainService gamificationDomainService) : base(mediator, profileBaseAppServiceCommon)
         {
             this.gameDomainService = gameDomainService;
             this.teamDomainService = teamDomainService;
@@ -37,11 +42,11 @@ namespace LuduStack.Application.Services
 
         #region ICrudAppService
 
-        public OperationResultVo<int> Count(Guid currentUserId)
+        public async Task<OperationResultVo<int>> Count(Guid currentUserId)
         {
             try
             {
-                int count = gameDomainService.Count();
+                int count = await mediator.Query<CountGameQuery, int>(new CountGameQuery());
 
                 return new OperationResultVo<int>(count);
             }
@@ -81,16 +86,16 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo<GameViewModel> GetById(Guid currentUserId, Guid id)
+        public async Task<OperationResultVo<GameViewModel>> GetById(Guid currentUserId, Guid id)
         {
-            return GetById(currentUserId, id, false);
+            return await GetById(currentUserId, id, false);
         }
 
-        public OperationResultVo<GameViewModel> GetById(Guid currentUserId, Guid id, bool forEdit)
+        public async Task<OperationResultVo<GameViewModel>> GetById(Guid currentUserId, Guid id, bool forEdit)
         {
             try
             {
-                Game model = gameDomainService.GetById(id);
+                Game model = await mediator.Query<GetGameByIdQuery, Game>(new GetGameByIdQuery(id));
 
                 GameViewModel vm = mapper.Map<GameViewModel>(model);
 
@@ -142,7 +147,7 @@ namespace LuduStack.Application.Services
             return new OperationResultVo<GameViewModel>(vm);
         }
 
-        public OperationResultVo<Guid> Save(Guid currentUserId, GameViewModel viewModel)
+        public async Task<OperationResultVo<Guid>> Save(Guid currentUserId, GameViewModel viewModel)
         {
             int pointsEarned = 0;
 
@@ -169,7 +174,8 @@ namespace LuduStack.Application.Services
 
                 viewModel.ExternalLinks.RemoveAll(x => String.IsNullOrWhiteSpace(x.Value));
 
-                Game existing = gameDomainService.GetById(viewModel.Id);
+                Game existing = await mediator.Query<GetGameByIdQuery, Game>(new GetGameByIdQuery(viewModel.Id));
+
                 if (existing != null)
                 {
                     game = mapper.Map(viewModel, existing);
@@ -190,14 +196,14 @@ namespace LuduStack.Application.Services
                     gameDomainService.Update(game);
                 }
 
-                unitOfWork.Commit();
+                await unitOfWork.Commit();
                 viewModel.Id = game.Id;
 
                 if (createTeam && newTeam != null)
                 {
                     game.TeamId = newTeam.Id;
                     gameDomainService.Update(game);
-                    unitOfWork.Commit();
+                    await unitOfWork.Commit();
                 }
 
                 return new OperationResultVo<Guid>(game.Id, pointsEarned);
@@ -272,9 +278,9 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public IEnumerable<SelectListItemVo> GetByUser(Guid userId)
+        public async Task<IEnumerable<SelectListItemVo>> GetByUser(Guid userId)
         {
-            IEnumerable<Game> allModels = gameDomainService.GetByUserId(userId);
+            IEnumerable<Game> allModels = await mediator.Query<GetGamesByUserIdQuery, IEnumerable<Game>>(new GetGamesByUserIdQuery(userId));
 
             List<SelectListItemVo> vms = mapper.Map<IEnumerable<Game>, IEnumerable<SelectListItemVo>>(allModels).ToList();
 

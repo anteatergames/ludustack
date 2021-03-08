@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace LuduStack.Web.Areas.Member.Controllers
 {
@@ -40,9 +41,9 @@ namespace LuduStack.Web.Areas.Member.Controllers
 
         [AllowAnonymous]
         [Route("{id:guid}")]
-        public IActionResult Details(Guid id)
+        public async Task<IActionResult> Details(Guid id)
         {
-            OperationResultVo result = comicsAppService.GetForDetails(CurrentUserId, id);
+            OperationResultVo result = await comicsAppService.GetForDetails(CurrentUserId, id);
 
             if (result.Success)
             {
@@ -63,11 +64,11 @@ namespace LuduStack.Web.Areas.Member.Controllers
         }
 
         [Route("listbyme")]
-        public PartialViewResult ListByMe()
+        public async Task<PartialViewResult> ListByMe()
         {
             List<ComicsListItemVo> model;
 
-            OperationResultVo serviceResult = comicsAppService.GetComicsByMe(CurrentUserId);
+            OperationResultVo serviceResult = await comicsAppService.GetComicsByMe(CurrentUserId);
 
             if (serviceResult.Success)
             {
@@ -112,11 +113,11 @@ namespace LuduStack.Web.Areas.Member.Controllers
         }
 
         [Route("edit/{id:guid}")]
-        public ViewResult Edit(Guid id)
+        public async Task<ViewResult> Edit(Guid id)
         {
             ComicStripViewModel model;
 
-            OperationResultVo serviceResult = comicsAppService.GetForEdit(CurrentUserId, id);
+            OperationResultVo serviceResult = await comicsAppService.GetForEdit(CurrentUserId, id);
 
             OperationResultVo<ComicStripViewModel> castResult = serviceResult as OperationResultVo<ComicStripViewModel>;
 
@@ -128,7 +129,7 @@ namespace LuduStack.Web.Areas.Member.Controllers
         }
 
         [Route("save")]
-        public JsonResult Save(ComicStripViewModel vm)
+        public async Task<JsonResult> Save(ComicStripViewModel vm)
         {
             bool isNew = vm.Id == Guid.Empty;
 
@@ -136,7 +137,7 @@ namespace LuduStack.Web.Areas.Member.Controllers
             {
                 vm.UserId = CurrentUserId;
 
-                OperationResultVo<Guid> saveResult = comicsAppService.Save(CurrentUserId, vm);
+                OperationResultVo<Guid> saveResult = await comicsAppService .Save(CurrentUserId, vm);
 
                 if (saveResult.Success)
                 {
@@ -144,7 +145,7 @@ namespace LuduStack.Web.Areas.Member.Controllers
 
                     if (isNew && EnvName.Equals(ConstantHelper.ProductionEnvironmentName))
                     {
-                        NotificationSender.SendTeamNotificationAsync("New Comic Strip created!");
+                        await NotificationSender.SendTeamNotificationAsync("New Comic Strip created!");
                     }
 
                     return Json(new OperationResultRedirectVo<Guid>(saveResult, url));
