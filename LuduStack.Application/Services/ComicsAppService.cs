@@ -33,7 +33,7 @@ namespace LuduStack.Application.Services
             throw new NotImplementedException();
         }
 
-        public OperationResultListVo<ComicStripViewModel> GetAll(Guid currentUserId)
+        public async Task<OperationResultListVo<ComicStripViewModel>> GetAll(Guid currentUserId)
         {
             throw new NotImplementedException();
         }

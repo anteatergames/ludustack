@@ -37,7 +37,7 @@ namespace LuduStack.Web.Areas.Staff.Controllers
         {
             List<GamificationLevelViewModel> model;
 
-            OperationResultVo serviceResult = gamificationLevelAppService.GetAll(CurrentUserId);
+            OperationResultVo serviceResult = await gamificationLevelAppService .GetAll(CurrentUserId);
 
             if (serviceResult.Success)
             {

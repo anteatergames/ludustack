@@ -49,7 +49,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultListVo<BrainstormIdeaViewModel> GetAll(Guid currentUserId)
+        public async Task<OperationResultListVo<BrainstormIdeaViewModel>> GetAll(Guid currentUserId)
         {
             return new OperationResultListVo<BrainstormIdeaViewModel>("Not Implemented");
         }

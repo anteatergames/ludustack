@@ -19,7 +19,7 @@ namespace LuduStack.Application.Services
             this.domainService = domainService;
         }
 
-        public virtual OperationResultListVo<TViewModel> GetAll(Guid currentUserId)
+        public virtual async Task<OperationResultListVo<TViewModel>> GetAll(Guid currentUserId)
         {
             try
             {

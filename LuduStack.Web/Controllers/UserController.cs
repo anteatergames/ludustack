@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace LuduStack.Web.Controllers
 {
@@ -40,9 +41,9 @@ namespace LuduStack.Web.Controllers
         }
 
         [Route("list")]
-        public IActionResult List()
+        public async Task<IActionResult> List()
         {
-            OperationResultListVo<ProfileViewModel> serviceResult = profileAppService.GetAll(CurrentUserId);
+            OperationResultListVo<ProfileViewModel> serviceResult = await profileAppService.GetAll(CurrentUserId);
 
             List<ProfileViewModel> profiles = serviceResult.Value.OrderByDescending(x => x.CreateDate).ToList();
 

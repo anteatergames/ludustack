@@ -27,7 +27,7 @@ namespace LuduStack.Application.Services
             return new OperationResultVo<int>(string.Empty);
         }
 
-        public OperationResultListVo<NotificationItemViewModel> GetAll(Guid currentUserId)
+        public async Task<OperationResultListVo<NotificationItemViewModel>> GetAll(Guid currentUserId)
         {
             return new OperationResultListVo<NotificationItemViewModel>(string.Empty);
         }

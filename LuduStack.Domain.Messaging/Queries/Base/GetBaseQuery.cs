@@ -11,18 +11,22 @@ using System.Threading.Tasks;
 
 namespace LuduStack.Domain.Messaging.Queries.Base
 {
-    public abstract class SearchBaseQuery<TModel> : Query<IEnumerable<TModel>>
+    public abstract class GetBaseQuery<TModel> : Query<IEnumerable<TModel>>
     {
         public Expression<Func<TModel, bool>> Where { get; private set; }
 
+        public GetBaseQuery()
+        {
 
-        public SearchBaseQuery(Expression<Func<TModel, bool>> where)
+        }
+
+        public GetBaseQuery(Expression<Func<TModel, bool>> where)
         {
             Where = where;
         }
     }
 
-    public abstract class SearchBaseQueryHandler<TQuery, TModel, TRepository> : QueryHandler, IRequestHandler<TQuery, IEnumerable<TModel>> where TQuery : SearchBaseQuery<TModel> where TModel : Entity where TRepository : IRepository<TModel>
+    public abstract class SearchBaseQueryHandler<TQuery, TModel, TRepository> : QueryHandler, IRequestHandler<TQuery, IEnumerable<TModel>> where TQuery : GetBaseQuery<TModel> where TModel : Entity where TRepository : IRepository<TModel>
     {
         protected readonly TRepository repository;
 
@@ -33,9 +37,14 @@ namespace LuduStack.Domain.Messaging.Queries.Base
 
         public async Task<IEnumerable<TModel>> Handle(TQuery request, CancellationToken cancellationToken)
         {
-            IEnumerable<TModel> objs = repository.Get(request.Where);
-
-            return objs;
+            if (request.Where != null)
+            {
+                return repository.Get(request.Where);
+            }
+            else
+            {
+                return await repository.GetAll();
+            }
         }
     }
 }

@@ -56,7 +56,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultListVo<ProfileViewModel> GetAll(Guid currentUserId)
+        public async Task<OperationResultListVo<ProfileViewModel>> GetAll(Guid currentUserId)
         {
             return GetAll(currentUserId, false);
         }

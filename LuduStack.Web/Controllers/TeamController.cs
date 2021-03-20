@@ -38,9 +38,9 @@ namespace LuduStack.Web.Controllers
         }
 
         [Route("list")]
-        public IActionResult List()
+        public async Task<IActionResult> List()
         {
-            OperationResultListVo<TeamViewModel> serviceResult = teamAppService.GetAll(CurrentUserId);
+            OperationResultListVo<TeamViewModel> serviceResult = await teamAppService.GetAll(CurrentUserId);
 
             List<TeamViewModel> model = serviceResult.Value.ToList();
 

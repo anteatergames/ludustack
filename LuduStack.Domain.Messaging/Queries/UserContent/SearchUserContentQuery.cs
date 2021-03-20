@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace LuduStack.Domain.Messaging.Queries.UserContent
 {
-    public class SearchUserContentQuery : SearchBaseQuery<Models.UserContent>
+    public class SearchUserContentQuery : GetBaseQuery<Models.UserContent>
     {
         public SearchUserContentQuery(Expression<Func<Models.UserContent, bool>> where) : base(where)
         {

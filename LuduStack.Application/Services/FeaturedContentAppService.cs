@@ -47,7 +47,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultListVo<FeaturedContentViewModel> GetAll(Guid currentUserId)
+        public async Task<OperationResultListVo<FeaturedContentViewModel>> GetAll(Guid currentUserId)
         {
             try
             {

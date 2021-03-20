@@ -48,12 +48,12 @@ namespace LuduStack.Web.Areas.Tools.Controllers
         }
 
         [Route("tools/localization/list")]
-        public PartialViewResult List()
+        public async Task<PartialViewResult> List()
         {
             IEnumerable<LocalizationViewModel> model;
             OperationResultVo serviceResult;
 
-            serviceResult = translationAppService.GetAll(CurrentUserId);
+            serviceResult = await translationAppService.GetAll(CurrentUserId);
 
             if (serviceResult != null && serviceResult.Success)
             {

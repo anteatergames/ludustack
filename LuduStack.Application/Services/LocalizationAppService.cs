@@ -7,6 +7,7 @@ using LuduStack.Domain.Core.Extensions;
 using LuduStack.Domain.Interfaces.Services;
 using LuduStack.Domain.Messaging.Queries.Base;
 using LuduStack.Domain.Messaging.Queries.Localization;
+using LuduStack.Domain.Messaging.Queries.UserContent;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
 using LuduStack.Infra.CrossCutting.Messaging;
@@ -54,11 +55,12 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultListVo<LocalizationViewModel> GetAll(Guid currentUserId)
+        public async Task<OperationResultListVo<LocalizationViewModel>> GetAll(Guid currentUserId)
         {
             try
             {
-                IEnumerable<Localization> allModels = translationDomainService.GetAll();
+                //IEnumerable<Localization> allModels = translationDomainService.GetAll();
+                var allModels = await mediator.Query<GetLocalizationQuery, IEnumerable<Localization>>(new GetLocalizationQuery());
 
                 List<LocalizationViewModel> vms = mapper.Map<IEnumerable<Localization>, IEnumerable<LocalizationViewModel>>(allModels).ToList();
 
@@ -66,7 +68,7 @@ namespace LuduStack.Application.Services
                 {
                     item.TermCount = item.Terms.Count;
 
-                    SetGameViewModel(item.Game.Id, item);
+                    await SetGameViewModel(item.Game.Id, item);
                     item.Game.Title = string.Empty;
 
                     SetPermissions(currentUserId, item);
