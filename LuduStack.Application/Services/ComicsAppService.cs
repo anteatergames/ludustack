@@ -5,6 +5,7 @@ using LuduStack.Application.ViewModels;
 using LuduStack.Application.ViewModels.Comics;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Interfaces.Services;
+using LuduStack.Domain.Messaging;
 using LuduStack.Domain.Messaging.Queries.UserContent;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
@@ -47,17 +48,20 @@ namespace LuduStack.Application.Services
             throw new NotImplementedException();
         }
 
-        public OperationResultVo Remove(Guid currentUserId, Guid id)
+        public async Task<OperationResultVo> Remove(Guid currentUserId, Guid id)
         {
             try
             {
-                // validate before
+                CommandResult result = await mediator.SendCommand(new DeleteUserContentCommand(id));
 
-                userContentDomainService.Remove(id);
-
-                unitOfWork.Commit();
-
-                return new OperationResultVo(true, "That Comic Strip is gone now!");
+                if (!result.Validation.IsValid)
+                {
+                    return new OperationResultVo(result.Validation.Errors.First().ErrorMessage);
+                }
+                else
+                {
+                    return new OperationResultVo(true, "That Comic Strip is gone now!");
+                }
             }
             catch (Exception ex)
             {
@@ -226,22 +230,13 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo Rate(Guid currentUserId, Guid id, decimal scoreDecimal)
+        public async Task<OperationResultVo> Rate(Guid currentUserId, Guid id, decimal scoreDecimal)
         {
             try
             {
-                DomainOperationVo<UserContentRating> domainActionPerformed = userContentDomainService.Rate(currentUserId, id, scoreDecimal);
+                CommandResult result = await mediator.SendCommand(new RateUserContentCommand(currentUserId, id, scoreDecimal));
 
-                unitOfWork.Commit();
-
-                if (domainActionPerformed.Action == DomainActionPerformed.Update)
-                {
-                    return new OperationResultVo(true, "Your rate was updated!");
-                }
-                else
-                {
-                    return new OperationResultVo(true, "Comics rated!");
-                }
+                return new OperationResultVo(true, "Your rate has been registered!");
             }
             catch (Exception ex)
             {

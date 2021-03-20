@@ -90,9 +90,13 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
             FilterDefinition<UserContent> filter = Builders<UserContent>.Filter.Where(x => x.Id == model.UserContentId);
             UpdateDefinition<UserContent> add = Builders<UserContent>.Update.AddToSet(c => c.Comments, model);
 
-            UpdateResult result = await DbSet.UpdateOneAsync(filter, add);
+            //UpdateResult result = await DbSet.UpdateOneAsync(filter, add);
 
-            return result.IsAcknowledged && result.MatchedCount > 0;
+            //return result.IsAcknowledged && result.MatchedCount > 0;
+
+            await Context.AddCommand(() => DbSet.UpdateOneAsync(filter, add));
+
+            return true;
         }
 
         public IQueryable<UserContentRating> GetRatings(Guid id)
@@ -102,7 +106,14 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
             return participants;
         }
 
-        public void UpdateRating(Guid id, UserContentRating rating)
+        public IQueryable<UserContentRating> GetRatings(Expression<Func<UserContent, bool>> where)
+        {
+            IQueryable<UserContentRating> participants = DbSet.AsQueryable().Where(where).SelectMany(x => x.Ratings);
+
+            return participants;
+        }
+
+        public async Task<bool> UpdateRating(Guid id, UserContentRating rating)
         {
             FilterDefinition<UserContent> filter = Builders<UserContent>.Filter.And(
                 Builders<UserContent>.Filter.Eq(x => x.Id, id),
@@ -111,17 +122,21 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
             UpdateDefinition<UserContent> update = Builders<UserContent>.Update
                 .Set(c => c.Ratings[-1].Score, rating.Score);
 
-            Context.AddCommand(() => DbSet.UpdateOneAsync(filter, update));
+            await Context.AddCommand(() => DbSet.UpdateOneAsync(filter, update));
+
+            return true;
         }
 
-        public void AddRating(Guid id, UserContentRating rating)
+        public async Task<bool> AddRating(Guid id, UserContentRating rating)
         {
             rating.Id = Guid.NewGuid();
 
             FilterDefinition<UserContent> filter = Builders<UserContent>.Filter.Where(x => x.Id == id);
             UpdateDefinition<UserContent> add = Builders<UserContent>.Update.AddToSet(c => c.Ratings, rating);
 
-            Context.AddCommand(() => DbSet.UpdateOneAsync(filter, add));
+            await Context.AddCommand(() => DbSet.UpdateOneAsync(filter, add));
+
+            return true;
         }
     }
 }

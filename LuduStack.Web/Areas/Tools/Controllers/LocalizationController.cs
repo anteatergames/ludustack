@@ -373,11 +373,11 @@ namespace LuduStack.Web.Areas.Tools.Controllers
 
         [Authorize]
         [HttpDelete("tools/localization/delete/{id:guid}")]
-        public IActionResult Delete(Guid id)
+        public async Task<IActionResult> Delete(Guid id)
         {
             try
             {
-                OperationResultVo saveResult = translationAppService.Remove(CurrentUserId, id);
+                OperationResultVo saveResult = await translationAppService .Remove(CurrentUserId, id);
 
                 if (saveResult.Success)
                 {

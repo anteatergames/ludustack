@@ -311,7 +311,7 @@ namespace LuduStack.Web.Areas.Work.Controllers
         {
             try
             {
-                OperationResultVo serviceResult = jobPositionAppService.Remove(CurrentUserId, jobPositionId);
+                OperationResultVo serviceResult = await jobPositionAppService .Remove(CurrentUserId, jobPositionId);
 
                 OperationResultListVo<Application.ViewModels.Search.UserContentSearchViewModel> searchContentResult = await userContentAppService.Search(CurrentUserId, jobPositionId.ToString());
 
@@ -321,7 +321,7 @@ namespace LuduStack.Web.Areas.Work.Controllers
 
                     if (existing != null)
                     {
-                        userContentAppService.Remove(CurrentUserId, existing.ContentId);
+                        await userContentAppService.Remove(CurrentUserId, existing.ContentId);
                     }
                 }
 

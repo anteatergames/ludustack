@@ -11,8 +11,5 @@ namespace LuduStack.Domain.Interfaces.Services
 {
     public interface IUserContentDomainService : IDomainService<UserContent>
     {
-        void Comment(UserContentComment model);
-
-        DomainOperationVo<UserContentRating> Rate(Guid userId, Guid id, decimal scoreDecimal);
     }
 }

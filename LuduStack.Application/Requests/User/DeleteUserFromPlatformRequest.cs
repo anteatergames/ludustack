@@ -55,7 +55,7 @@ namespace LuduStack.Application.Requests.User
                     return new OperationResultVo(false, "Can't delete user");
                 }
 
-                var result = profileAppService.Remove(request.CurrentUserId, profile.Id);
+                var result = await profileAppService.Remove(request.CurrentUserId, profile.Id);
 
                 return result;
             }

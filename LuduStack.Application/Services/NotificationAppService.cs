@@ -83,7 +83,7 @@ namespace LuduStack.Application.Services
                     notificationDomainService.Update(model);
                 }
 
-                unitOfWork.Commit();
+                await unitOfWork.Commit();
 
                 return new OperationResultVo<Guid>(model.Id);
             }
@@ -93,13 +93,13 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo Remove(Guid currentUserId, Guid id)
+        public async Task<OperationResultVo> Remove(Guid currentUserId, Guid id)
         {
             try
             {
                 notificationDomainService.Remove(id);
 
-                unitOfWork.Commit();
+                await unitOfWork.Commit();
 
                 return new OperationResultVo(true, "That Notification is gone now!");
             }

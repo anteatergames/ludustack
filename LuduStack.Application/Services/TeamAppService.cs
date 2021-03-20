@@ -159,7 +159,7 @@ namespace LuduStack.Application.Services
                     teamDomainService.Update(model);
                 }
 
-                unitOfWork.Commit();
+                await unitOfWork.Commit();
 
                 viewModel.Id = model.Id;
 
@@ -171,7 +171,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo Remove(Guid currentUserId, Guid id)
+        public async Task<OperationResultVo> Remove(Guid currentUserId, Guid id)
         {
             try
             {
@@ -179,7 +179,7 @@ namespace LuduStack.Application.Services
 
                 teamDomainService.Remove(id);
 
-                unitOfWork.Commit();
+                await unitOfWork.Commit();
 
                 return new OperationResultVo(true);
             }

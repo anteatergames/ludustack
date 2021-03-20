@@ -180,9 +180,9 @@ namespace LuduStack.Web.Controllers
         }
 
         [HttpDelete("{teamId:guid}")]
-        public IActionResult DeleteTeam(Guid teamId)
+        public async Task<IActionResult> DeleteTeam(Guid teamId)
         {
-            OperationResultVo serviceResult = teamAppService.Remove(CurrentUserId, teamId);
+            OperationResultVo serviceResult = await teamAppService .Remove(CurrentUserId, teamId);
 
             return Json(serviceResult);
         }

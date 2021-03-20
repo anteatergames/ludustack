@@ -162,11 +162,11 @@ namespace LuduStack.Web.Areas.Member.Controllers
         }
 
         [HttpDelete("{id:guid}")]
-        public IActionResult Delete(Guid id, bool edit)
+        public async Task<IActionResult> Delete(Guid id, bool edit)
         {
             try
             {
-                OperationResultVo deleteResult = comicsAppService.Remove(CurrentUserId, id);
+                OperationResultVo deleteResult = await comicsAppService.Remove(CurrentUserId, id);
 
                 if (deleteResult.Success)
                 {
@@ -192,13 +192,13 @@ namespace LuduStack.Web.Areas.Member.Controllers
         }
 
         [HttpPost("rate/{id:guid}")]
-        public IActionResult Rate(Guid id, string score)
+        public async Task<IActionResult> Rate(Guid id, string score)
         {
             try
             {
                 decimal scoreDecimal = decimal.Parse(score, CultureInfo.InvariantCulture);
 
-                OperationResultVo serviceResult = comicsAppService.Rate(CurrentUserId, id, scoreDecimal);
+                OperationResultVo serviceResult = await comicsAppService.Rate(CurrentUserId, id, scoreDecimal);
 
                 return Json(new OperationResultVo(serviceResult.Success, serviceResult.Message));
             }

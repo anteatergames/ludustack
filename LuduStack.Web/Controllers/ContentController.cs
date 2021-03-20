@@ -167,9 +167,9 @@ namespace LuduStack.Web.Controllers
         }
 
         [HttpDelete("/content/{id:guid}")]
-        public IActionResult Delete(Guid id)
+        public async Task<IActionResult> Delete(Guid id)
         {
-            OperationResultVo result = userContentAppService.Remove(CurrentUserId, id);
+            OperationResultVo result = await userContentAppService .Remove(CurrentUserId, id);
 
             if (result.Success)
             {

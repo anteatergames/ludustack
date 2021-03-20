@@ -75,36 +75,6 @@ namespace LuduStack.Web.Controllers
 
         #endregion User Follow/Unfollow
 
-        [Route("search")]
-        public IActionResult Search(string term)
-        {
-            Select2SearchResultViewModel vm = new Select2SearchResultViewModel();
-
-            OperationResultVo serviceResult = profileAppService.Search(term);
-
-            if (serviceResult.Success)
-            {
-                IEnumerable<ProfileSearchViewModel> searchResults = ((OperationResultListVo<ProfileSearchViewModel>)serviceResult).Value;
-
-                foreach (ProfileSearchViewModel item in searchResults)
-                {
-                    Select2SearchResultItemViewModel s2obj = new Select2SearchResultItemViewModel
-                    {
-                        Id = item.UserId.ToString(),
-                        Text = item.Name
-                    };
-
-                    vm.Results.Add(s2obj);
-                }
-
-                return Json(vm);
-            }
-            else
-            {
-                return Json(serviceResult);
-            }
-        }
-
         #region User Connection
 
         [HttpGet]

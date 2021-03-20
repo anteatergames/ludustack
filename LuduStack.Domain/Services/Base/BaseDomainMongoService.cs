@@ -77,10 +77,5 @@ namespace LuduStack.Domain.Services
 
             return model.Id;
         }
-
-        IQueryable<T> IDomainService<T>.Search(Expression<Func<T, bool>> where)
-        {
-            return repository.Get(where);
-        }
     }
 }

@@ -133,13 +133,13 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo Remove(Guid currentUserId, Guid id)
+        public async Task<OperationResultVo> Remove(Guid currentUserId, Guid id)
         {
             try
             {
                 profileDomainService.Remove(id);
 
-                unitOfWork.Commit();
+                await unitOfWork.Commit();
 
                 return new OperationResultVo(true);
             }
@@ -308,22 +308,6 @@ namespace LuduStack.Application.Services
             profile.CoverImageUrl = Constants.DefaultGameCoverImage;
 
             return profile;
-        }
-
-        public OperationResultVo Search(string term)
-        {
-            try
-            {
-                IQueryable<UserProfile> results = profileDomainService.Search(x => x.Name.ToLower().Contains(term.ToLower()));
-
-                IQueryable<ProfileSearchViewModel> vms = results.ProjectTo<ProfileSearchViewModel>(mapper.ConfigurationProvider);
-
-                return new OperationResultListVo<ProfileSearchViewModel>(vms);
-            }
-            catch (Exception ex)
-            {
-                return new OperationResultVo(ex.Message);
-            }
         }
 
         public OperationResultVo UserFollow(Guid currentUserId, Guid userId)

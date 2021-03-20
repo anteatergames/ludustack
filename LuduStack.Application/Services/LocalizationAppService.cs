@@ -158,7 +158,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo GetBasicInfoById(Guid currentUserId, Guid id)
+        public async Task<OperationResultVo> GetBasicInfoById(Guid currentUserId, Guid id)
         {
             try
             {
@@ -171,7 +171,7 @@ namespace LuduStack.Application.Services
 
                 LocalizationViewModel vm = mapper.Map<LocalizationViewModel>(model);
 
-                SetGameViewModel(model.GameId, vm);
+                await SetGameViewModel(model.GameId, vm);
 
                 SetPermissions(currentUserId, vm);
 
@@ -183,7 +183,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo Remove(Guid currentUserId, Guid id)
+        public async Task<OperationResultVo> Remove(Guid currentUserId, Guid id)
         {
             try
             {
@@ -191,7 +191,7 @@ namespace LuduStack.Application.Services
 
                 translationDomainService.Remove(id);
 
-                unitOfWork.Commit();
+                await unitOfWork.Commit();
 
                 return new OperationResultVo(true, "That Translation Project is gone now!");
             }

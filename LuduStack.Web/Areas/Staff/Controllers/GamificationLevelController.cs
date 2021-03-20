@@ -147,11 +147,11 @@ namespace LuduStack.Web.Areas.Staff.Controllers
         }
 
         [HttpDelete("{id:guid}")]
-        public IActionResult Delete(Guid id, bool edit)
+        public async Task<IActionResult> Delete(Guid id, bool edit)
         {
             try
             {
-                OperationResultVo deleteResult = gamificationLevelAppService.Remove(CurrentUserId, id);
+                OperationResultVo deleteResult = await gamificationLevelAppService .Remove(CurrentUserId, id);
 
                 if (deleteResult.Success)
                 {

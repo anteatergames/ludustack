@@ -70,13 +70,13 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public virtual OperationResultVo Remove(Guid currentUserId, Guid id)
+        public virtual async Task<OperationResultVo> Remove(Guid currentUserId, Guid id)
         {
             try
             {
                 domainService.Remove(id);
 
-                unitOfWork.Commit();
+                await unitOfWork.Commit();
 
                 return new OperationResultVo(true, "That Entity is gone now!");
             }

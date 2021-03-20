@@ -25,8 +25,10 @@ namespace LuduStack.Domain.Interfaces.Repository
 
         IQueryable<UserContentRating> GetRatings(Guid id);
 
-        void UpdateRating(Guid id, UserContentRating rating);
+        IQueryable<UserContentRating> GetRatings(Expression<Func<UserContent, bool>> where);
 
-        void AddRating(Guid id, UserContentRating rating);
+        Task<bool> UpdateRating(Guid id, UserContentRating rating);
+
+        Task<bool> AddRating(Guid id, UserContentRating rating);
     }
 }

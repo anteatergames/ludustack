@@ -133,7 +133,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo Remove(Guid currentUserId, Guid id)
+        public async Task<OperationResultVo> Remove(Guid currentUserId, Guid id)
         {
             try
             {
@@ -141,7 +141,7 @@ namespace LuduStack.Application.Services
 
                 userContentDomainService.Remove(id);
 
-                unitOfWork.Commit();
+                await unitOfWork.Commit();
 
                 return new OperationResultVo(true);
             }
@@ -475,26 +475,19 @@ namespace LuduStack.Application.Services
         {
             try
             {
-                bool commentAlreadyExists = await mediator.Query<CheckIfCommentExistsQuery, bool>(new CheckIfCommentExistsQuery(x => x.UserContentId == vm.UserContentId && x.UserId == vm.UserId && x.Text.Equals(vm.Text)));
+                var command = new AddCommentUserContentCommand(vm.UserId, vm.UserContentId, vm.ParentCommentId, vm.Text);
 
-                if (commentAlreadyExists)
+                CommandResult result = await mediator.SendCommand(command);
+
+                if (result.Validation.IsValid)
                 {
-                    return new OperationResultVo(false)
-                    {
-                        Message = "Duplicated Comment"
-                    };
+                    int newCount = await mediator.Query<CountCommentsQuery, int>(new CountCommentsQuery(x => x.UserContentId == command.Id && x.UserId == command.UserId));
+
+                    return new OperationResultVo<int>(newCount, "Your comment was added");
                 }
                 else
                 {
-                    UserContentComment model = mapper.Map<UserContentComment>(vm);
-
-                    userContentDomainService.Comment(model);
-
-                    await unitOfWork.Commit();
-
-                    int newCount = await mediator.Query<CountCommentsQuery, int>(new CountCommentsQuery(x => x.UserContentId == model.UserContentId && x.UserId == model.UserId));
-
-                    return new OperationResultVo<int>(newCount);
+                    return new OperationResultVo(false, result.Validation.Errors.FirstOrDefault().ErrorMessage);
                 }
             }
             catch (Exception ex)

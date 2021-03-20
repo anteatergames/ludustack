@@ -15,6 +15,6 @@ namespace LuduStack.Application.Interfaces
 
         Task<OperationResultVo> GetForDetails(Guid currentUserId, Guid id);
 
-        OperationResultVo Rate(Guid currentUserId, Guid id, decimal scoreDecimal);
+        Task<OperationResultVo> Rate(Guid currentUserId, Guid id, decimal scoreDecimal);
     }
 }

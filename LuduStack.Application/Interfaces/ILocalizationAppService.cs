@@ -14,7 +14,7 @@ namespace LuduStack.Application.Interfaces
 
         Task<OperationResultVo> GetByUserId(Guid currentUserId, Guid userId);
 
-        OperationResultVo GetBasicInfoById(Guid currentUserId, Guid id);
+        Task<OperationResultVo> GetBasicInfoById(Guid currentUserId, Guid id);
 
         OperationResultVo GetMyUntranslatedGames(Guid currentUserId);
 

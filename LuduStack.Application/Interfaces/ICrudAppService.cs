@@ -14,7 +14,7 @@ namespace LuduStack.Application.Interfaces
 
         Task<OperationResultVo<TViewModel>> GetById(Guid currentUserId, Guid id);
 
-        OperationResultVo Remove(Guid currentUserId, Guid id);
+        Task<OperationResultVo> Remove(Guid currentUserId, Guid id);
 
         Task<OperationResultVo<Guid>> Save(Guid currentUserId, TViewModel viewModel);
     }
