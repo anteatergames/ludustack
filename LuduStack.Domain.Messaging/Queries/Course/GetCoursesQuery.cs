@@ -20,7 +20,7 @@ namespace LuduStack.Domain.Messaging.Queries.Course
             this.studyCourseRepository = studyCourseRepository;
         }
 
-        public async Task<List<StudyCourseListItemVo>> Handle(GetCoursesQuery message, CancellationToken cancellationToken)
+        public async Task<List<StudyCourseListItemVo>> Handle(GetCoursesQuery request, CancellationToken cancellationToken)
         {
             List<StudyCourseListItemVo> objs = await studyCourseRepository.GetCourses();
 

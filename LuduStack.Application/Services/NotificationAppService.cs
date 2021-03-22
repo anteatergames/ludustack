@@ -22,17 +22,17 @@ namespace LuduStack.Application.Services
 
         #region ICrudAppService
 
-        public async Task<OperationResultVo<int>> Count(Guid currentUserId)
+        public Task<OperationResultVo<int>> Count(Guid currentUserId)
         {
-            return new OperationResultVo<int>(string.Empty);
+            return Task.FromResult(new OperationResultVo<int>(string.Empty));
         }
 
-        public async Task<OperationResultListVo<NotificationItemViewModel>> GetAll(Guid currentUserId)
+        public Task<OperationResultListVo<NotificationItemViewModel>> GetAll(Guid currentUserId)
         {
-            return new OperationResultListVo<NotificationItemViewModel>(string.Empty);
+            return Task.FromResult(new OperationResultListVo<NotificationItemViewModel>(string.Empty));
         }
 
-        public OperationResultVo GetAllIds(Guid currentUserId)
+        public async Task<OperationResultVo> GetAllIds(Guid currentUserId)
         {
             try
             {
@@ -45,11 +45,6 @@ namespace LuduStack.Application.Services
                 return new OperationResultVo(ex.Message);
             }
         }
-
-        //public async Task<OperationResultVo<NotificationItemViewModel>> GetById(Guid id)
-        //{
-        //    return new OperationResultVo<NotificationItemViewModel>(string.Empty);
-        //}
 
         Task<OperationResultVo<NotificationItemViewModel>> ICrudAppService<NotificationItemViewModel>.GetById(Guid currentUserId, Guid id)
         {
@@ -125,24 +120,24 @@ namespace LuduStack.Application.Services
             throw new NotImplementedException();
         }
 
-        public async Task<OperationResultVo> Notify(Guid originId, string originName, Guid targetUserId, NotificationType notificationType, Guid targetId)
+        public async Task<OperationResultVo> Notify(Guid originUserId, string originUserName, Guid targetUserId, NotificationType notificationType, Guid targetId)
         {
-            return await Notify(originId, originName, targetUserId, notificationType, targetId, null);
+            return await Notify(originUserId, originUserName, targetUserId, notificationType, targetId, null);
         }
 
-        public async Task<OperationResultVo> Notify(Guid originId, string originName, Guid targetUserId, NotificationType notificationType, Guid targetId, string targetName)
+        public async Task<OperationResultVo> Notify(Guid originUserId, string originUserName, Guid targetUserId, NotificationType notificationType, Guid targetId, string targetName)
         {
             NotificationItemViewModel vm = new NotificationItemViewModel
             {
                 UserId = targetUserId,
                 Type = notificationType,
-                OriginId = originId,
-                OriginName = originName,
+                OriginId = originUserId,
+                OriginName = originUserName,
                 TargetId = targetId,
                 TargetName = targetName
             };
 
-            return await Save(originId, vm);
+            return await Save(originUserId, vm);
         }
 
         public OperationResultVo MarkAsRead(Guid id)

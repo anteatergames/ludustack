@@ -58,7 +58,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public async Task<OperationResultListVo<UserContentViewModel>> GetAll(Guid currentUserId)
+        public Task<OperationResultListVo<UserContentViewModel>> GetAll(Guid currentUserId)
         {
             try
             {
@@ -66,15 +66,15 @@ namespace LuduStack.Application.Services
 
                 IEnumerable<UserContentViewModel> vms = mapper.Map<IEnumerable<UserContent>, IEnumerable<UserContentViewModel>>(allModels);
 
-                return new OperationResultListVo<UserContentViewModel>(vms);
+                return Task.FromResult(new OperationResultListVo<UserContentViewModel>(vms));
             }
             catch (Exception ex)
             {
-                return new OperationResultListVo<UserContentViewModel>(ex.Message);
+                return Task.FromResult(new OperationResultListVo<UserContentViewModel>(ex.Message));
             }
         }
 
-        public OperationResultVo GetAllIds(Guid currentUserId)
+        public async Task<OperationResultVo> GetAllIds(Guid currentUserId)
         {
             try
             {
@@ -217,7 +217,7 @@ namespace LuduStack.Application.Services
                     userContentDomainService.Update(model);
                 }
 
-                unitOfWork.Commit().Wait();
+                await unitOfWork.Commit();
 
                 return new OperationResultVo<Guid>(model.Id, pointsEarned);
             }

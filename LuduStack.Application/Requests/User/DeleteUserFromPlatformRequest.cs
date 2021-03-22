@@ -24,8 +24,8 @@ namespace LuduStack.Application.Requests.User
 
     public class DeleteUserFromPlatformRequestHandler : IRequestHandler<DeleteUserFromPlatformRequest, OperationResultVo>
     {
-        private IProfileAppService profileAppService;
-        private IUserContentAppService userContentAppService;
+        private readonly IProfileAppService profileAppService;
+        private readonly IUserContentAppService userContentAppService;
 
         public DeleteUserFromPlatformRequestHandler(IProfileAppService profileAppService, IUserContentAppService userContentAppService)
         {

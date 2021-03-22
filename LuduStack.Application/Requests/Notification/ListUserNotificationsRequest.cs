@@ -28,7 +28,7 @@ namespace LuduStack.Application.Requests.Notification
 
     public class ListUserNotificationsRequestHandler : IRequestHandler<ListUserNotificationsRequest, OperationResultVo>
     {
-        private INotificationAppService notificationAppService;
+        private readonly INotificationAppService notificationAppService;
 
         public ListUserNotificationsRequestHandler(INotificationAppService notificationAppService)
         {

@@ -30,7 +30,7 @@ namespace LuduStack.Application.Interfaces
 
         OperationResultVo SaveEntries(Guid currentUserId, Guid projectId, SupportedLanguage language, IEnumerable<LocalizationEntryViewModel> entries);
 
-        OperationResultVo GetStatsById(Guid currentUserId, Guid id);
+        Task<OperationResultVo> GetStatsById(Guid currentUserId, Guid id);
 
         OperationResultVo GetPercentageByGameId(Guid currentUserId, Guid gameId);
 

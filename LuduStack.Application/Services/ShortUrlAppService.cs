@@ -13,7 +13,6 @@ namespace LuduStack.Application.Services
 {
     public class ShortUrlAppService : BaseAppService, IShortUrlAppService
     {
-        private readonly IMediatorHandler mediator;
         private readonly IShortUrlDomainService shortUrlDomainService;
 
         public ShortUrlAppService(IMediatorHandler mediator, IBaseAppServiceCommon baseAppServiceCommon, IShortUrlDomainService shortUrlDomainService) : base(baseAppServiceCommon)
@@ -54,7 +53,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo GetAllIds(Guid currentUserId)
+        public async Task<OperationResultVo> GetAllIds(Guid currentUserId)
         {
             try
             {

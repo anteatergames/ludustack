@@ -90,7 +90,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo GetAllIds(Guid currentUserId)
+        public async Task<OperationResultVo> GetAllIds(Guid currentUserId)
         {
             try
             {
@@ -423,7 +423,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo GetStatsById(Guid currentUserId, Guid id)
+        public async Task<OperationResultVo> GetStatsById(Guid currentUserId, Guid id)
         {
             try
             {
@@ -456,7 +456,7 @@ namespace LuduStack.Application.Services
 
                 SetContributors(model, vm);
 
-                SetGameViewModel(model.GameId, vm);
+                await SetGameViewModel(model.GameId, vm);
 
                 SetPermissions(currentUserId, vm);
 

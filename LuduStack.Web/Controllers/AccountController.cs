@@ -295,7 +295,7 @@ namespace LuduStack.Web.Controllers
                     ProfileViewModel profile = profileAppService.GenerateNewOne(ProfileType.Personal);
                     profile.UserId = new Guid(user.Id);
                     profile.Handler = model.UserName;
-                    profileAppService.Save(CurrentUserId, profile);
+                    await profileAppService.Save(CurrentUserId, profile);
 
                     UploadFirstAvatar(profile.UserId, ProfileType.Personal);
 
@@ -528,7 +528,7 @@ namespace LuduStack.Web.Controllers
                 UploadFirstAvatar(profile.UserId, ProfileType.Personal);
             }
 
-            profileAppService.Save(CurrentUserId, profile);
+            await profileAppService .Save(CurrentUserId, profile);
 
             await SetProfileOnSession(new Guid(user.Id), user.UserName);
 

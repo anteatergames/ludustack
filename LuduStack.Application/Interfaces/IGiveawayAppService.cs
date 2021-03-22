@@ -8,11 +8,11 @@ namespace LuduStack.Application.Interfaces
     {
         OperationResultVo GenerateNew(Guid currentUserId);
 
-        OperationResultVo GetGiveawayForManagement(Guid currentUserId, Guid id);
+        OperationResultVo GetGiveawayForManagement(Guid currentUserId, Guid giveawayId);
 
         OperationResultVo GetForEdit(Guid currentUserId, Guid giveawayId);
 
-        OperationResultVo GetForDetails(Guid currentUserId, Guid id);
+        OperationResultVo GetForDetails(Guid currentUserId, Guid giveawayId);
 
         OperationResultVo GetGiveawayParticipantInfo(Guid currentUserId, Guid giveawayId, string email);
 

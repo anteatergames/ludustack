@@ -28,9 +28,9 @@ namespace LuduStack.Domain.Messaging.Queries.Course
             this.studyCourseRepository = studyCourseRepository;
         }
 
-        public async Task<List<StudyCourseListItemVo>> Handle(GetCoursesByUserIdQuery message, CancellationToken cancellationToken)
+        public async Task<List<StudyCourseListItemVo>> Handle(GetCoursesByUserIdQuery request, CancellationToken cancellationToken)
         {
-            List<StudyCourseListItemVo> objs = await studyCourseRepository.GetCoursesByUserId(message.UserId);
+            List<StudyCourseListItemVo> objs = await studyCourseRepository.GetCoursesByUserId(request.UserId);
 
             return objs;
         }

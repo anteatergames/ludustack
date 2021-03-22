@@ -14,7 +14,7 @@ namespace LuduStack.Application.Services
     {
         protected readonly IMapper mapper;
         protected readonly IUnitOfWork unitOfWork;
-        protected readonly IMediatorHandler mediator;
+        protected IMediatorHandler mediator;
         protected readonly ICacheService cacheService;
 
         protected BaseAppService(IMapper mapper

@@ -161,7 +161,7 @@ namespace LuduStack.Web.Middlewares
 
                 foreach (Type controller in controllers)
                 {
-                    sb.AppendLine(CheckController(controller));
+                    sb.AppendLine(await CheckController(controller));
                 }
 
                 sb.AppendLine("</urlset>");
@@ -179,7 +179,7 @@ namespace LuduStack.Web.Middlewares
             }
         }
 
-        private string CheckController(Type controller)
+        private async Task<string> CheckController(Type controller)
         {
             StringBuilder sb = new StringBuilder();
 
@@ -191,7 +191,7 @@ namespace LuduStack.Web.Middlewares
                 sb.AppendLine(CheckMethod(controller, method));
             }
 
-            List<string> detailMethods = CheckDetailsMethod(controller);
+            List<string> detailMethods = await CheckDetailsMethod(controller);
 
             foreach (string method in detailMethods)
             {
@@ -263,7 +263,7 @@ namespace LuduStack.Web.Middlewares
             return sitemapContent;
         }
 
-        private List<string> CheckDetailsMethod(Type controller)
+        private async Task<List<string>> CheckDetailsMethod(Type controller)
         {
             string pattern = string.Empty;
             OperationResultVo ids = null;
@@ -272,17 +272,17 @@ namespace LuduStack.Web.Middlewares
             if (controller.Name.Equals("ProfileController"))
             {
                 pattern = "profile/{0}";
-                ids = ProfileAppService.GetAllIds(Guid.Empty);
+                ids = await ProfileAppService.GetAllIds(Guid.Empty);
             }
             else if (controller.Name.Equals("GameController"))
             {
                 pattern = "game/{0}";
-                ids = GameAppService.GetAllIds(Guid.Empty);
+                ids = await GameAppService.GetAllIds(Guid.Empty);
             }
             else if (controller.Name.Equals("ContentController"))
             {
                 pattern = "content/{0}";
-                ids = ContentAppService.GetAllIds(Guid.Empty);
+                ids = await ContentAppService .GetAllIds(Guid.Empty);
             }
 
             if (ids != null && !string.IsNullOrWhiteSpace(pattern))

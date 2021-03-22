@@ -86,11 +86,6 @@ namespace LuduStack.Application.Services
 
         #region Generics
 
-        private void SetOjectOnCache<T>(Guid id, T value, string preffix)
-        {
-            cacheService.Set<string, T>(FormatObjectCacheId(preffix, id), value);
-        }
-
         private T GetObjectFromCache<T>(Guid id, string preffix) where T : Entity
         {
             T fromCache = cacheService.Get<string, T>(FormatObjectCacheId(preffix, id));

@@ -10,9 +10,9 @@ namespace LuduStack.Application.Interfaces
     {
         OperationResultListVo<NotificationItemViewModel> GetByUserId(Guid userId, int count);
 
-        Task<OperationResultVo> Notify(Guid currentUserId, string originName, Guid targetUserId, NotificationType notificationType, Guid targetId);
+        Task<OperationResultVo> Notify(Guid originUserId, string originUserName, Guid targetUserId, NotificationType notificationType, Guid targetId);
 
-        Task<OperationResultVo> Notify(Guid currentUserId, string originName, Guid targetUserId, NotificationType notificationType, Guid targetId, string targetName);
+        Task<OperationResultVo> Notify(Guid originUserId, string originUserName, Guid targetUserId, NotificationType notificationType, Guid targetId, string targetName);
 
         OperationResultVo MarkAsRead(Guid id);
     }

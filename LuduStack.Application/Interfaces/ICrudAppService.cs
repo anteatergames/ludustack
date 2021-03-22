@@ -10,7 +10,7 @@ namespace LuduStack.Application.Interfaces
 
         Task<OperationResultListVo<TViewModel>> GetAll(Guid currentUserId);
 
-        OperationResultVo GetAllIds(Guid currentUserId);
+        Task<OperationResultVo> GetAllIds(Guid currentUserId);
 
         Task<OperationResultVo<TViewModel>> GetById(Guid currentUserId, Guid id);
 

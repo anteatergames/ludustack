@@ -17,16 +17,16 @@ namespace LuduStack.Web.Areas.Staff.Controllers
 {
     public class AdminController : StaffBaseController
     {
-        private IMediator mediator;
+        private readonly IMediator mediator;
 
         public AdminController(IMediator mediator)
         {
             this.mediator = mediator;
         }
 
-        public async Task<IActionResult> Index()
+        public Task<ViewResult> Index()
         {
-            return View();
+            return Task.FromResult(View());
         }
 
         public async Task<IActionResult> CheckUserInconsistencies()

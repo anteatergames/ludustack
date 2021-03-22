@@ -66,7 +66,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo GetAllIds(Guid currentUserId)
+        public async Task<OperationResultVo> GetAllIds(Guid currentUserId)
         {
             try
             {

@@ -28,24 +28,24 @@ namespace LuduStack.Application.Services
 
         #region ICrudAppService
 
-        public async Task<OperationResultVo<int>> Count(Guid currentUserId)
+        public Task<OperationResultVo<int>> Count(Guid currentUserId)
         {
-            throw new NotImplementedException();
+            return Task.FromResult(new OperationResultVo<int>("Not Implemented"));
         }
 
-        public async Task<OperationResultListVo<ComicStripViewModel>> GetAll(Guid currentUserId)
+        public Task<OperationResultListVo<ComicStripViewModel>> GetAll(Guid currentUserId)
         {
-            throw new NotImplementedException();
+            return Task.FromResult(new OperationResultListVo<ComicStripViewModel>("Not Implemented"));
         }
 
-        public OperationResultVo GetAllIds(Guid currentUserId)
+        public Task<OperationResultVo> GetAllIds(Guid currentUserId)
         {
-            throw new NotImplementedException();
+            return Task.FromResult(new OperationResultVo("Not Implemented"));
         }
 
-        public async Task<OperationResultVo<ComicStripViewModel>> GetById(Guid currentUserId, Guid id)
+        public Task<OperationResultVo<ComicStripViewModel>> GetById(Guid currentUserId, Guid id)
         {
-            throw new NotImplementedException();
+            return Task.FromResult(new OperationResultVo<ComicStripViewModel>("Not Implemented"));
         }
 
         public async Task<OperationResultVo> Remove(Guid currentUserId, Guid id)
@@ -117,8 +117,6 @@ namespace LuduStack.Application.Services
         {
             try
             {
-                //int lastIssueNumber = userContentDomainService.GetMaxIssueNumber(currentUserId);
-
                 ComicStripViewModel newVm = new ComicStripViewModel
                 {
                     UserId = currentUserId,
@@ -234,7 +232,7 @@ namespace LuduStack.Application.Services
         {
             try
             {
-                CommandResult result = await mediator.SendCommand(new RateUserContentCommand(currentUserId, id, scoreDecimal));
+                await mediator.SendCommand(new RateUserContentCommand(currentUserId, id, scoreDecimal));
 
                 return new OperationResultVo(true, "Your rate has been registered!");
             }

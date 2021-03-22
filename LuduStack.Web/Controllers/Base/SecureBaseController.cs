@@ -58,7 +58,7 @@ namespace LuduStack.Web.Controllers.Base
 
         public string EnvName { get; private set; }
 
-        public override Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
+        public override async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
             var notificationClicked = context.HttpContext.Request.Query["notificationclicked"].FirstOrDefault();
             if (notificationClicked != null)
@@ -67,7 +67,7 @@ namespace LuduStack.Web.Controllers.Base
 
                 var mediator = Services.GetRequiredService<IMediator>();
 
-                Task.Run(async () => await mediator.Send(new SendNotificationRequest(notificationId)));
+                await mediator.Send(new SendNotificationRequest(notificationId));
             }
 
             if (User != null && User.Identity.IsAuthenticated)
@@ -89,7 +89,7 @@ namespace LuduStack.Web.Controllers.Base
                 {
                     string username = User.FindFirstValue(ClaimTypes.Name);
 
-                    SetProfileOnSession(CurrentUserId, username);
+                    await SetProfileOnSession(CurrentUserId, username);
                     ViewBag.Username = username ?? Constants.DefaultUsername;
                 }
 
@@ -105,7 +105,7 @@ namespace LuduStack.Web.Controllers.Base
 
             EnvName = string.Format("env-{0}", HostEnvironment.EnvironmentName);
 
-            return base.OnActionExecutionAsync(context, next);
+            await base.OnActionExecutionAsync(context, next);
         }
 
         protected async Task SetProfileOnSession(Guid userId, string userName)

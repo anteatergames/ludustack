@@ -46,7 +46,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public async Task<OperationResultListVo<JobPositionViewModel>> GetAll(Guid currentUserId)
+        public Task<OperationResultListVo<JobPositionViewModel>> GetAll(Guid currentUserId)
         {
             try
             {
@@ -54,15 +54,15 @@ namespace LuduStack.Application.Services
 
                 IEnumerable<JobPositionViewModel> vms = mapper.Map<IEnumerable<JobPosition>, IEnumerable<JobPositionViewModel>>(allModels);
 
-                return new OperationResultListVo<JobPositionViewModel>(vms);
+                return Task.FromResult(new OperationResultListVo<JobPositionViewModel>(vms));
             }
             catch (Exception ex)
             {
-                return new OperationResultListVo<JobPositionViewModel>(ex.Message);
+                return Task.FromResult(new OperationResultListVo<JobPositionViewModel>(ex.Message));
             }
         }
 
-        public OperationResultVo GetAllIds(Guid currentUserId)
+        public async Task<OperationResultVo> GetAllIds(Guid currentUserId)
         {
             try
             {
@@ -184,7 +184,7 @@ namespace LuduStack.Application.Services
                     jobPositionDomainService.Update(model);
                 }
 
-                unitOfWork.Commit();
+                await unitOfWork.Commit();
 
                 viewModel.Id = model.Id;
 

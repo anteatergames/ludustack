@@ -22,7 +22,7 @@ namespace LuduStack.Application.Requests.Notification
 
     public class DeleteNotificationRequestHandler : IRequestHandler<DeleteNotificationRequest, OperationResultVo>
     {
-        private INotificationAppService notificationAppService;
+        private readonly INotificationAppService notificationAppService;
 
         public DeleteNotificationRequestHandler(INotificationAppService notificationAppService)
         {

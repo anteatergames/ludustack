@@ -2,7 +2,6 @@
 using LuduStack.Application.ViewModels;
 using LuduStack.Domain.Core.Models;
 using LuduStack.Domain.Interfaces;
-using LuduStack.Domain.Messaging.Queries.Base;
 using LuduStack.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
@@ -19,7 +18,7 @@ namespace LuduStack.Application.Services
             this.domainService = domainService;
         }
 
-        public virtual async Task<OperationResultListVo<TViewModel>> GetAll(Guid currentUserId)
+        public virtual Task<OperationResultListVo<TViewModel>> GetAll(Guid currentUserId)
         {
             try
             {
@@ -27,15 +26,15 @@ namespace LuduStack.Application.Services
 
                 IEnumerable<TViewModel> vms = mapper.Map<IEnumerable<TEntity>, IEnumerable<TViewModel>>(allModels);
 
-                return new OperationResultListVo<TViewModel>(vms);
+                return Task.FromResult(new OperationResultListVo<TViewModel>(vms));
             }
             catch (Exception ex)
             {
-                return new OperationResultListVo<TViewModel>(ex.Message);
+                return Task.FromResult(new OperationResultListVo<TViewModel>(ex.Message));
             }
         }
 
-        public virtual OperationResultVo GetAllIds(Guid currentUserId)
+        public virtual async Task<OperationResultVo> GetAllIds(Guid currentUserId)
         {
             try
             {
@@ -49,7 +48,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public virtual async Task<OperationResultVo<TViewModel>> GetById(Guid currentUserId, Guid id)
+        public virtual Task<OperationResultVo<TViewModel>> GetById(Guid currentUserId, Guid id)
         {
             try
             {
@@ -57,16 +56,16 @@ namespace LuduStack.Application.Services
 
                 if (model == null)
                 {
-                    return new OperationResultVo<TViewModel>("Entity not found!");
+                    return Task.FromResult(new OperationResultVo<TViewModel>("Entity not found!"));
                 }
 
                 TViewModel vm = mapper.Map<TViewModel>(model);
 
-                return new OperationResultVo<TViewModel>(vm);
+                return Task.FromResult(new OperationResultVo<TViewModel>(vm));
             }
             catch (Exception ex)
             {
-                return new OperationResultVo<TViewModel>(ex.Message);
+                return Task.FromResult(new OperationResultVo<TViewModel>(ex.Message));
             }
         }
 
@@ -112,7 +111,7 @@ namespace LuduStack.Application.Services
                     domainService.Update(model);
                 }
 
-                unitOfWork.Commit();
+                await unitOfWork.Commit();
 
                 viewModel.Id = model.Id;
 

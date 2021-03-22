@@ -15,14 +15,12 @@ namespace LuduStack.Application.Services
 {
     public class UserPreferencesAppService : BaseAppService, IUserPreferencesAppService
     {
-        private readonly IMediatorHandler mediator;
         private readonly IUserPreferencesDomainService userPreferencesDomainService;
 
         public UserPreferencesAppService(IMediatorHandler mediator
             , IBaseAppServiceCommon baseAppServiceCommon
             , IUserPreferencesDomainService userPreferencesDomainService) : base(baseAppServiceCommon)
         {
-            this.mediator = mediator;
             this.userPreferencesDomainService = userPreferencesDomainService;
         }
 
@@ -42,7 +40,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public async Task<OperationResultListVo<UserPreferencesViewModel>> GetAll(Guid currentUserId)
+        public Task<OperationResultListVo<UserPreferencesViewModel>> GetAll(Guid currentUserId)
         {
             try
             {
@@ -50,15 +48,15 @@ namespace LuduStack.Application.Services
 
                 IEnumerable<UserPreferencesViewModel> vms = mapper.Map<IEnumerable<UserPreferences>, IEnumerable<UserPreferencesViewModel>>(allModels);
 
-                return new OperationResultListVo<UserPreferencesViewModel>(vms);
+                return Task.FromResult(new OperationResultListVo<UserPreferencesViewModel>(vms));
             }
             catch (Exception ex)
             {
-                return new OperationResultListVo<UserPreferencesViewModel>(ex.Message);
+                return Task.FromResult(new OperationResultListVo<UserPreferencesViewModel>(ex.Message));
             }
         }
 
-        public OperationResultVo GetAllIds(Guid currentUserId)
+        public async Task<OperationResultVo> GetAllIds(Guid currentUserId)
         {
             try
             {
@@ -136,7 +134,7 @@ namespace LuduStack.Application.Services
                     userPreferencesDomainService.Update(model);
                 }
 
-                unitOfWork.Commit();
+                await unitOfWork.Commit();
 
                 return new OperationResultVo<Guid>(model.Id);
             }

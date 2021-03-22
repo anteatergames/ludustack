@@ -105,7 +105,7 @@ namespace LuduStack.Web.Areas.Staff.Controllers
 
                 return Json(validate.Success);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 result = new OperationResultVo(false);
             }

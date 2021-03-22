@@ -27,17 +27,11 @@ namespace LuduStack.Application.Services
 {
     public class ProfileAppService : ProfileBaseAppService, IProfileAppService
     {
-        private readonly IUserContentDomainService userContentDomainService;
-
-        private readonly IGameDomainService gameDomainService;
-
         public ProfileAppService(IMediatorHandler mediator
             , IProfileBaseAppServiceCommon profileBaseAppServiceCommon
             , IUserContentDomainService userContentDomainService
             , IGameDomainService gameDomainService) : base(mediator, profileBaseAppServiceCommon)
         {
-            this.userContentDomainService = userContentDomainService;
-            this.gameDomainService = gameDomainService;
         }
 
         #region ICrudAppService
@@ -103,7 +97,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo GetAllIds(Guid currentUserId)
+        public async Task<OperationResultVo> GetAllIds(Guid currentUserId)
         {
             try
             {

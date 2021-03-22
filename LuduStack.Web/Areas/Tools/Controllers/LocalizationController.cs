@@ -106,9 +106,9 @@ namespace LuduStack.Web.Areas.Tools.Controllers
         }
 
         [Route("tools/localization/{id:guid}")]
-        public IActionResult Details(Guid id)
+        public async Task<IActionResult> Details(Guid id)
         {
-            OperationResultVo result = translationAppService.GetStatsById(CurrentUserId, id);
+            OperationResultVo result = await translationAppService.GetStatsById(CurrentUserId, id);
 
             if (result.Success)
             {
@@ -181,9 +181,9 @@ namespace LuduStack.Web.Areas.Tools.Controllers
         }
 
         [Route("tools/localization/export/{id:guid}")]
-        public IActionResult Export(Guid id)
+        public async Task<IActionResult> Export(Guid id)
         {
-            OperationResultVo result = translationAppService.GetStatsById(CurrentUserId, id);
+            OperationResultVo result = await translationAppService.GetStatsById(CurrentUserId, id);
 
             if (result.Success)
             {
