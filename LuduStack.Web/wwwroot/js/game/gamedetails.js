@@ -80,7 +80,7 @@
             FB.ui({
                 method: 'share',
                 href: url
-            }, function (response) { });
+            }, function (response) { console.log(response); });
         });
     }
 

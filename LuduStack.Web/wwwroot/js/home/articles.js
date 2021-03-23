@@ -8,8 +8,6 @@
         setSelectors();
         cacheObjs();
 
-        bindAll();
-
         ACTIVITYFEED.Init(objs.divActivityFeed, FEEDTYPE.ARTICLES);
 
         ACTIVITYFEED.Methods.LoadActivityFeed();
@@ -21,9 +19,6 @@
 
     function cacheObjs() {
         objs.divActivityFeed = $('#divActivityFeed');
-    }
-
-    function bindAll() {
     }
 
     return {

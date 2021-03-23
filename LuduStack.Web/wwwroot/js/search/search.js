@@ -5,7 +5,6 @@
 
     function init() {
         cacheSelectors();
-        bindAll();
 
         searchPosts();
     }
@@ -13,9 +12,6 @@
     function cacheSelectors() {
         selectors.term = $('.searchTerm');
         selectors.divSearchPosts = $('#divSearchPosts');
-    }
-
-    function bindAll() {
     }
 
     function searchPosts() {

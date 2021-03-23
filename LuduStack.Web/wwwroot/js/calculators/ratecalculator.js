@@ -158,7 +158,6 @@
         var revisionDayRate = dayRate * revisionFactor;
         var revisionHourRate = revisionDayRate / 8;
 
-
         var rushFactor = (objs.rushFactor.val() / 100) + 1;
         var rushFactorDayRate = dayRate * rushFactor;
         var rushHourRate = rushFactorDayRate / 8;

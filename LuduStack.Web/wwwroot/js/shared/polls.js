@@ -111,7 +111,7 @@
             ClearOptions: clearOptions
         },
         Events: {
-            PostAddOption: function () { }
+            PostAddOption: function () { console.log('polls default PostAddOption'); }
         }
     };
 }());

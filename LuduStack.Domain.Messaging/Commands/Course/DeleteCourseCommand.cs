@@ -44,7 +44,7 @@ namespace LuduStack.Domain.Messaging
                 return request.Result;
             }
 
-            //customer.AddDomainEvent(new CustomerRemovedEvent(message.Id));
+            // AddDomainEvent here
 
             studyCourseRepository.Remove(course.Id);
 

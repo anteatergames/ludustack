@@ -28,8 +28,6 @@
         setSelectors();
         cacheObjs();
 
-        bindAll();
-
         console.log(objs.studyProfile.val());
 
         var urlCourses = objs.urls.data('urlListmycourses');
@@ -46,9 +44,6 @@
         }
 
         loadMyCourses(urlCourses);
-    }
-
-    function bindAll() {
     }
 
     function loadMyCourses(url) {

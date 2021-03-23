@@ -31,7 +31,7 @@
         pickingRulesInterval = 0,
         stopRulesInterval = 0;
 
-    var genre = ['beat\'em up','twin stick', 'management', 'sim', 'battle royale', 'dungeon crawler', 'racing', 'action', 'arcade', 'educational', 'top-down', 'adventure', 'strategy', 'rts', 'turn-based strategy', 'role-playing', 'platformer', 'puzzle', 'visual novel', 'social media', 'mobile', 'browser', 'fighting', 'artsy', 'open world', 'tycoon', 'one touch'];
+    var genre = ['beat\'em up', 'twin stick', 'management', 'sim', 'battle royale', 'dungeon crawler', 'racing', 'action', 'arcade', 'educational', 'top-down', 'adventure', 'strategy', 'rts', 'turn-based strategy', 'role-playing', 'platformer', 'puzzle', 'visual novel', 'social media', 'mobile', 'browser', 'fighting', 'artsy', 'open world', 'tycoon', 'one touch'];
 
     var action = ['hide', 'evade', 'punch', 'kick', 'travel', 'carry', 'slice', 'ride', 'hunt', 'climb', 'break dance', 'skate', 'craft', 'lick', 'shoot', 'shoot at', 'play notes', 'grow', 'bounce', 'escape', 'rescue', 'go to war with', 'wage war on', 'unite', 'lead', 'build', 'destroy', 'conquer', 'invade', 'colonize', 'discover', 'explore', 'trade with', 'lead the rebels in', 'make peace with', 'investigate', 'collect gold from', 'collect crystals from', 'mine ore from', 'align', 'click on', 'match', 'throw', 'toss', 'fire pellets at', 'control', 'touch', 'stack', 'guess', 'memorize', 'rotate', 'swap', 'slide', 'avoid', 'drag and drop', 'tickle', 'race', 'challenge', 'collect', 'draw', 'unlock', 'cook', 'break', 'solve puzzles involving', 'collect', 'juggle'];
 

@@ -2,6 +2,7 @@
     "use strict";
 
     function init() {
+        console.log('COMMONEDIT.init');
     }
 
     function resetValidator(formObject) {

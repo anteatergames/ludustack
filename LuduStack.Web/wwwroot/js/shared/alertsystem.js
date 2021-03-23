@@ -11,15 +11,7 @@
     // https://sweetalert2.github.io
 
     function init() {
-        cacheSelectors();
-
-        bindAll();
-    }
-
-    function cacheSelectors() {
-    }
-
-    function bindAll() {
+        console.log('ALERTSYSTEM.init');
     }
 
     function showInfoAlert(text, callback) {

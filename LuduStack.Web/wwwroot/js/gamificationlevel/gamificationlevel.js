@@ -26,16 +26,11 @@
         setSelectors();
         cacheObjs();
 
-        bindAll();
-
         urlList = objs.urls.data('urlList');
 
         loadItems(urlList);
 
         GAMIFICATIONLEVELCOMMON.Callback.DeleteEntity = deleteCallback;
-    }
-
-    function bindAll() {
     }
 
     function loadItems(url) {

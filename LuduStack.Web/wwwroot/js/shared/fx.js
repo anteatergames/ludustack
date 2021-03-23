@@ -22,11 +22,6 @@
     function init() {
         setSelectors();
         cacheObjs();
-
-        bindAll();
-    }
-
-    function bindAll() {
     }
 
     function bindKonamiCode() {

@@ -441,8 +441,6 @@ namespace LuduStack.Application.Services
                     vm.StatusMessage = "Thank you for participating!";
                     break;
 
-                case GiveawayStatus.Draft:
-                case GiveawayStatus.OpenForEntries:
                 default:
                     vm.StatusMessage = "Enter your email address below:";
                     break;

@@ -7,7 +7,7 @@ namespace LuduStack.Domain.Messaging
     {
         public Guid Id { get; internal set; }
 
-        public BaseCommand(Guid id)
+        protected BaseCommand(Guid id)
         {
             Id = id;
             AggregateId = id;

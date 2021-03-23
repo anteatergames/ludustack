@@ -129,7 +129,7 @@
                 FB.ui({
                     method: 'share',
                     href: url
-                }, function (response) { });
+                }, function (response) { console.log(response); });
             }
             else if (provider === 'reddit') {
                 url = 'https://www.reddit.com/submit?title=' + title + '&url=' + url;

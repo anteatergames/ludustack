@@ -11,8 +11,6 @@
     function init() {
         setSelectors();
         cacheObjects();
-
-        bindAll();
     }
 
     function setSelectors() {
@@ -21,9 +19,6 @@
 
     function cacheObjects() {
         objs.xxx = $(selectors.xxx);
-    }
-
-    function bindAll() {
     }
 
     function tableToExcel(table, name) {

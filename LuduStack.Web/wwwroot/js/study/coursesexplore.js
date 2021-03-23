@@ -24,15 +24,10 @@
         setSelectors();
         cacheObjs();
 
-        bindAll();
-
         console.log(objs.studyProfile.val());
 
         var urlCourses = objs.urls.data('urlListcourses');
         listCourses(urlCourses);
-    }
-
-    function bindAll() {
     }
 
     function listCourses(url) {

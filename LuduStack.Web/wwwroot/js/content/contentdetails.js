@@ -2,15 +2,7 @@
     "use strict";
 
     function init() {
-        cacheSelectors();
-
-        bindAll();
-    }
-
-    function cacheSelectors() {
-    }
-
-    function bindAll() {
+        console.log('CONTENTDETAILS.init');
     }
 
     return {
