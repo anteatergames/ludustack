@@ -15,6 +15,7 @@ namespace LuduStack.Domain.Messaging.Queries.UserContent
         {
         }
     }
+
     public class CountUserContentQueryHandler : CountBaseQueryHandler<CountUserContentQuery, Models.UserContent, IUserContentRepository>
     {
         public CountUserContentQueryHandler(IUserContentRepository repository) : base(repository)

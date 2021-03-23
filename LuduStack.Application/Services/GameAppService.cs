@@ -9,7 +9,6 @@ using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Core.Extensions;
 using LuduStack.Domain.Core.Interfaces;
 using LuduStack.Domain.Interfaces.Services;
-using LuduStack.Domain.Messaging.Queries.Base;
 using LuduStack.Domain.Messaging.Queries.Game;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.Specifications;
@@ -56,7 +55,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public async Task<OperationResultListVo<GameViewModel>> GetAll(Guid currentUserId)
+        public Task<OperationResultListVo<GameViewModel>> GetAll(Guid currentUserId)
         {
             try
             {
@@ -64,11 +63,11 @@ namespace LuduStack.Application.Services
 
                 IEnumerable<GameViewModel> vms = mapper.Map<IEnumerable<Game>, IEnumerable<GameViewModel>>(allModels);
 
-                return new OperationResultListVo<GameViewModel>(vms);
+                return Task.FromResult(new OperationResultListVo<GameViewModel>(vms));
             }
             catch (Exception ex)
             {
-                return new OperationResultListVo<GameViewModel>(ex.Message);
+                return Task.FromResult(new OperationResultListVo<GameViewModel>(ex.Message));
             }
         }
 

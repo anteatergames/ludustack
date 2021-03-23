@@ -1,6 +1,5 @@
 ﻿using LuduStack.Domain.Interfaces.Repository;
 using LuduStack.Domain.Messaging.Queries.Base;
-using System;
 
 namespace LuduStack.Domain.Messaging.Queries.JobPosition
 {
@@ -10,6 +9,7 @@ namespace LuduStack.Domain.Messaging.Queries.JobPosition
         {
         }
     }
+
     public class CountJobPositionQueryHandler : CountBaseQueryHandler<CountJobPositionQuery, Models.JobPosition, IJobPositionRepository>
     {
         public CountJobPositionQueryHandler(IJobPositionRepository repository) : base(repository)

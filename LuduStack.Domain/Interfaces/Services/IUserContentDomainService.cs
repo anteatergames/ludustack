@@ -1,11 +1,4 @@
-﻿using LuduStack.Domain.Core.Enums;
-using LuduStack.Domain.Models;
-using LuduStack.Domain.ValueObjects;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
+﻿using LuduStack.Domain.Models;
 
 namespace LuduStack.Domain.Interfaces.Services
 {

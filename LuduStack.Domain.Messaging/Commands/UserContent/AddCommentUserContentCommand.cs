@@ -5,8 +5,6 @@ using LuduStack.Domain.Models;
 using LuduStack.Infra.CrossCutting.Messaging;
 using MediatR;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -33,6 +31,7 @@ namespace LuduStack.Domain.Messaging
             return Result.Validation.IsValid;
         }
     }
+
     public class AddCommentUserContentCommandHandler : CommandHandler, IRequestHandler<AddCommentUserContentCommand, CommandResult>
     {
         private readonly IMediatorHandler mediator;

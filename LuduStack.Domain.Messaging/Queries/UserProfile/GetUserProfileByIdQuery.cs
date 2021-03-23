@@ -10,6 +10,7 @@ namespace LuduStack.Domain.Messaging.Queries.UserProfile
         {
         }
     }
+
     public class GetUserProfileByIdQueryHandler : GetByIdBaseQueryHandler<GetUserProfileByIdQuery, Models.UserProfile, IUserProfileRepository>
     {
         public GetUserProfileByIdQueryHandler(IUserProfileRepository repository) : base(repository)

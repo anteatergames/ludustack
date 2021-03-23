@@ -13,9 +13,9 @@ namespace LuduStack.Domain.Messaging.Queries.GamificationLevel
 
         public CountGamificationLevelQuery(Expression<Func<Models.GamificationLevel, bool>> where) : base(where)
         {
-
         }
     }
+
     public class CountGamificationLevelQueryHandler : CountBaseQueryHandler<CountGamificationLevelQuery, Models.GamificationLevel, IGamificationLevelRepository>
     {
         public CountGamificationLevelQueryHandler(IGamificationLevelRepository repository) : base(repository)

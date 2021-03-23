@@ -4,7 +4,6 @@
     var isAjax = ViewContext.HttpContext.Request.IsAjaxRequest();
     var canInteract = User.Identity.IsAuthenticated;
 
-
     ViewData["Title"] = SharedLocalizer["Cost Calculator"];
     //ViewData["Description"] = SharedLocalizer["Calculate how much you should charge for freelance jobs."];
     //ViewData["Url"] = ViewBag.BaseUrl + Url.Action("index", "ratecalculator", new { area = "tools" });
@@ -188,5 +187,3 @@
         </div>
     </div>
 </section>
-
-

@@ -1,6 +1,5 @@
 ﻿using LuduStack.Domain.Interfaces.Repository;
 using LuduStack.Domain.Messaging.Queries.Base;
-using System;
 
 namespace LuduStack.Domain.Messaging.Queries.Localization
 {
@@ -10,6 +9,7 @@ namespace LuduStack.Domain.Messaging.Queries.Localization
         {
         }
     }
+
     public class CountLocalizationQueryHandler : CountBaseQueryHandler<CountLocalizationQuery, Models.Localization, ILocalizationRepository>
     {
         public CountLocalizationQueryHandler(ILocalizationRepository repository) : base(repository)

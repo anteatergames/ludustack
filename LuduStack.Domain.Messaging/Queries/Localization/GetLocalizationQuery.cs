@@ -1,12 +1,6 @@
-﻿using LuduStack.Domain.Core.Enums;
-using LuduStack.Domain.Core.Extensions;
-using LuduStack.Domain.Interfaces.Repository;
+﻿using LuduStack.Domain.Interfaces.Repository;
 using LuduStack.Domain.Messaging.Queries.Base;
-using LuduStack.Domain.ValueObjects;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -18,6 +12,7 @@ namespace LuduStack.Domain.Messaging.Queries.Localization
         {
         }
     }
+
     public class GetLocalizationQueryHandler : SearchBaseQueryHandler<GetLocalizationQuery, Models.Localization, ILocalizationRepository>
     {
         public GetLocalizationQueryHandler(ILocalizationRepository repository) : base(repository)

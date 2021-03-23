@@ -5,7 +5,6 @@ using LuduStack.Application.ViewModels;
 using LuduStack.Application.ViewModels.Brainstorm;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Interfaces.Services;
-using LuduStack.Domain.Messaging.Queries.Base;
 using LuduStack.Domain.Messaging.Queries.Brainstorm;
 using LuduStack.Domain.Messaging.Queries.BrainstormSession;
 using LuduStack.Domain.Models;

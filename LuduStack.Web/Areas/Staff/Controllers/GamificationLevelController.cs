@@ -37,7 +37,7 @@ namespace LuduStack.Web.Areas.Staff.Controllers
         {
             List<GamificationLevelViewModel> model;
 
-            OperationResultVo serviceResult = await gamificationLevelAppService .GetAll(CurrentUserId);
+            OperationResultVo serviceResult = await gamificationLevelAppService.GetAll(CurrentUserId);
 
             if (serviceResult.Success)
             {
@@ -122,7 +122,7 @@ namespace LuduStack.Web.Areas.Staff.Controllers
             {
                 vm.UserId = CurrentUserId;
 
-                OperationResultVo<Guid> saveResult = await gamificationLevelAppService .Save(CurrentUserId, vm);
+                OperationResultVo<Guid> saveResult = await gamificationLevelAppService.Save(CurrentUserId, vm);
 
                 if (saveResult.Success)
                 {
@@ -130,7 +130,7 @@ namespace LuduStack.Web.Areas.Staff.Controllers
 
                     if (isNew && EnvName.Equals(ConstantHelper.ProductionEnvironmentName))
                     {
-                        await NotificationSender .SendTeamNotificationAsync("New Gamification Level created!");
+                        await NotificationSender.SendTeamNotificationAsync("New Gamification Level created!");
                     }
 
                     return Json(new OperationResultRedirectVo<Guid>(saveResult, url));
@@ -151,7 +151,7 @@ namespace LuduStack.Web.Areas.Staff.Controllers
         {
             try
             {
-                OperationResultVo deleteResult = await gamificationLevelAppService .Remove(CurrentUserId, id);
+                OperationResultVo deleteResult = await gamificationLevelAppService.Remove(CurrentUserId, id);
 
                 if (deleteResult.Success)
                 {

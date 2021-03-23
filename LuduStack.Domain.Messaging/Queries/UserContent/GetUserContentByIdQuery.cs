@@ -1,8 +1,6 @@
 ﻿using LuduStack.Domain.Interfaces.Repository;
 using LuduStack.Domain.Messaging.Queries.Base;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace LuduStack.Domain.Messaging.Queries.UserContent
 {
@@ -12,6 +10,7 @@ namespace LuduStack.Domain.Messaging.Queries.UserContent
         {
         }
     }
+
     public class GetUserContentByIdQueryHandler : GetByIdBaseQueryHandler<GetUserContentByIdQuery, Models.UserContent, IUserContentRepository>
     {
         public GetUserContentByIdQueryHandler(IUserContentRepository userContentRepository) : base(userContentRepository)

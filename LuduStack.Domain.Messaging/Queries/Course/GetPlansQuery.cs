@@ -18,6 +18,7 @@ namespace LuduStack.Domain.Messaging.Queries.Course
             CourseId = courseId;
         }
     }
+
     public class GetPlansQueryHandler : QueryHandler, IRequestHandler<GetPlansQuery, List<StudyPlan>>
     {
         protected readonly IStudyCourseRepository studyCourseRepository;

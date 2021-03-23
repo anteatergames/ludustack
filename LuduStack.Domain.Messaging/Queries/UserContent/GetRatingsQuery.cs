@@ -4,6 +4,7 @@ using LuduStack.Infra.CrossCutting.Messaging;
 using MediatR;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -29,11 +30,11 @@ namespace LuduStack.Domain.Messaging.Queries.UserContent
             this.repository = repository;
         }
 
-        public async Task<IEnumerable<UserContentRating>> Handle(GetRatingsQuery request, CancellationToken cancellationToken)
+        public Task<IEnumerable<UserContentRating>> Handle(GetRatingsQuery request, CancellationToken cancellationToken)
         {
             var comments = repository.GetRatings(request.Where);
 
-            return comments;
+            return Task.FromResult(comments.AsEnumerable());
         }
     }
 }

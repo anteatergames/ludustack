@@ -11,6 +11,7 @@ namespace LuduStack.Domain.Messaging.Queries.Course
     public class GetCoursesQuery : Query<List<StudyCourseListItemVo>>
     {
     }
+
     public class GetCoursesQueryHandler : QueryHandler, IRequestHandler<GetCoursesQuery, List<StudyCourseListItemVo>>
     {
         protected readonly IStudyCourseRepository studyCourseRepository;

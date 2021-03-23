@@ -4,7 +4,6 @@ using LuduStack.Infra.CrossCutting.Messaging;
 using MediatR;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -17,7 +16,6 @@ namespace LuduStack.Domain.Messaging.Queries.Base
 
         public GetBaseQuery()
         {
-
         }
 
         public GetBaseQuery(Expression<Func<TModel, bool>> where)

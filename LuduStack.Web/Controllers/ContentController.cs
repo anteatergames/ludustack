@@ -169,7 +169,7 @@ namespace LuduStack.Web.Controllers
         [HttpDelete("/content/{id:guid}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            OperationResultVo result = await userContentAppService .Remove(CurrentUserId, id);
+            OperationResultVo result = await userContentAppService.Remove(CurrentUserId, id);
 
             if (result.Success)
             {
@@ -230,11 +230,11 @@ namespace LuduStack.Web.Controllers
 
             if (contentType == UserContentType.ComicStrip)
             {
-                await notificationAppService .Notify(CurrentUserId, myName, content.Value.UserId, NotificationType.ComicsLike, targetId);
+                await notificationAppService.Notify(CurrentUserId, myName, content.Value.UserId, NotificationType.ComicsLike, targetId);
             }
             else
             {
-                await notificationAppService .Notify(CurrentUserId, myName, content.Value.UserId, NotificationType.ContentLike, targetId);
+                await notificationAppService.Notify(CurrentUserId, myName, content.Value.UserId, NotificationType.ContentLike, targetId);
             }
 
             return Json(response);

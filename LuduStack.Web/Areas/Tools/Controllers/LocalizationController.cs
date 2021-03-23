@@ -340,7 +340,7 @@ namespace LuduStack.Web.Areas.Tools.Controllers
             {
                 vm.UserId = CurrentUserId;
 
-                OperationResultVo<Guid> saveResult = await translationAppService .Save(CurrentUserId, vm);
+                OperationResultVo<Guid> saveResult = await translationAppService.Save(CurrentUserId, vm);
 
                 if (saveResult.Success)
                 {
@@ -377,7 +377,7 @@ namespace LuduStack.Web.Areas.Tools.Controllers
         {
             try
             {
-                OperationResultVo saveResult = await translationAppService .Remove(CurrentUserId, id);
+                OperationResultVo saveResult = await translationAppService.Remove(CurrentUserId, id);
 
                 if (saveResult.Success)
                 {

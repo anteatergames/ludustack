@@ -24,6 +24,7 @@ namespace LuduStack.Domain.Messaging
             return Result.Validation.IsValid;
         }
     }
+
     public class EnrollCourseCommandHandler : CommandHandler, IRequestHandler<EnrollCourseCommand, CommandResult>
     {
         protected readonly IUnitOfWork unitOfWork;

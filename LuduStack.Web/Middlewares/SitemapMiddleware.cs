@@ -282,7 +282,7 @@ namespace LuduStack.Web.Middlewares
             else if (controller.Name.Equals("ContentController"))
             {
                 pattern = "content/{0}";
-                ids = await ContentAppService .GetAllIds(Guid.Empty);
+                ids = await ContentAppService.GetAllIds(Guid.Empty);
             }
 
             if (ids != null && !string.IsNullOrWhiteSpace(pattern))

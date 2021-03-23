@@ -10,6 +10,7 @@ namespace LuduStack.Domain.Messaging.Queries.Game
         {
         }
     }
+
     public class GetGameByIdQueryHandler : GetByIdBaseQueryHandler<GetGameByIdQuery, Models.Game, IGameRepository>
     {
         public GetGameByIdQueryHandler(IGameRepository repository) : base(repository)

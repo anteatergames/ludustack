@@ -1,6 +1,5 @@
 ﻿using LuduStack.Domain.Interfaces.Repository;
 using LuduStack.Domain.Messaging.Queries.Base;
-using System;
 
 namespace LuduStack.Domain.Messaging.Queries.Brainstorm
 {
@@ -10,6 +9,7 @@ namespace LuduStack.Domain.Messaging.Queries.Brainstorm
         {
         }
     }
+
     public class CountBrainstormSessionQueryHandler : CountBaseQueryHandler<CountBrainstormSessionQuery, Models.Game, IGameRepository>
     {
         public CountBrainstormSessionQueryHandler(IGameRepository repository) : base(repository)

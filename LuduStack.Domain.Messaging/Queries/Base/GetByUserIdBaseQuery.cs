@@ -13,7 +13,7 @@ namespace LuduStack.Domain.Messaging.Queries.Base
     {
         public Guid UserId { get; }
 
-        public GetByUserIdBaseQuery(Guid userId)
+        protected GetByUserIdBaseQuery(Guid userId)
         {
             UserId = userId;
         }
@@ -23,7 +23,7 @@ namespace LuduStack.Domain.Messaging.Queries.Base
     {
         protected readonly TRepository repository;
 
-        public GetByUserIdBaseQueryHandler(TRepository repository)
+        protected GetByUserIdBaseQueryHandler(TRepository repository)
         {
             this.repository = repository;
         }

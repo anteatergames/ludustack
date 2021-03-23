@@ -41,7 +41,7 @@ namespace LuduStack.Web.Controllers
                 if (user != null)
                 {
                     profile.UserId = id;
-                    await profileAppService .Save(CurrentUserId, profile);
+                    await profileAppService.Save(CurrentUserId, profile);
                 }
                 else
                 {

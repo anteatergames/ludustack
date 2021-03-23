@@ -311,7 +311,7 @@ namespace LuduStack.Web.Areas.Work.Controllers
         {
             try
             {
-                OperationResultVo serviceResult = await jobPositionAppService .Remove(CurrentUserId, jobPositionId);
+                OperationResultVo serviceResult = await jobPositionAppService.Remove(CurrentUserId, jobPositionId);
 
                 OperationResultListVo<Application.ViewModels.Search.UserContentSearchViewModel> searchContentResult = await userContentAppService.Search(CurrentUserId, jobPositionId.ToString());
 
@@ -443,7 +443,7 @@ namespace LuduStack.Web.Areas.Work.Controllers
                     Language = vm.Language
                 };
 
-                OperationResultListVo<Application.ViewModels.Search.UserContentSearchViewModel> searchContentResult = await userContentAppService .Search(CurrentUserId, vm.Id.ToString());
+                OperationResultListVo<Application.ViewModels.Search.UserContentSearchViewModel> searchContentResult = await userContentAppService.Search(CurrentUserId, vm.Id.ToString());
 
                 if (searchContentResult.Success && searchContentResult.Value.Any())
                 {
@@ -455,7 +455,7 @@ namespace LuduStack.Web.Areas.Work.Controllers
                     }
                 }
 
-                await userContentAppService .Save(CurrentUserId, newContent);
+                await userContentAppService.Save(CurrentUserId, newContent);
             }
         }
     }

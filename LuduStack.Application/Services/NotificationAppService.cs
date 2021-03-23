@@ -115,7 +115,7 @@ namespace LuduStack.Application.Services
             return new OperationResultListVo<NotificationItemViewModel>(vms);
         }
 
-        OperationResultVo<NotificationItemViewModel> GetById(Guid currentUserId, Guid id)
+        private OperationResultVo<NotificationItemViewModel> GetById(Guid currentUserId, Guid id)
         {
             throw new NotImplementedException();
         }

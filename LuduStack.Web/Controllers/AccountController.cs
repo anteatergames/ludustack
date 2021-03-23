@@ -528,7 +528,7 @@ namespace LuduStack.Web.Controllers
                 UploadFirstAvatar(profile.UserId, ProfileType.Personal);
             }
 
-            await profileAppService .Save(CurrentUserId, profile);
+            await profileAppService.Save(CurrentUserId, profile);
 
             await SetProfileOnSession(new Guid(user.Id), user.UserName);
 

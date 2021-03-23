@@ -1,12 +1,10 @@
 ﻿using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Interfaces.Repository;
-using LuduStack.Domain.Models;
 using LuduStack.Infra.CrossCutting.Messaging;
 using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 

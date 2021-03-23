@@ -10,6 +10,7 @@ namespace LuduStack.Domain.Messaging.Queries.Team
         {
         }
     }
+
     public class GetTeamByIdQueryHandler : GetByIdBaseQueryHandler<GetTeamByIdQuery, Models.Team, ITeamRepository>
     {
         public GetTeamByIdQueryHandler(ITeamRepository repository) : base(repository)

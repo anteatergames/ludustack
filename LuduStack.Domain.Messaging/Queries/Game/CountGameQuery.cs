@@ -13,9 +13,9 @@ namespace LuduStack.Domain.Messaging.Queries.Game
 
         public CountGameQuery(Expression<Func<Models.Game, bool>> where) : base(where)
         {
-
         }
     }
+
     public class CountGameQueryHandler : CountBaseQueryHandler<CountGameQuery, Models.Game, IGameRepository>
     {
         public CountGameQueryHandler(IGameRepository repository) : base(repository)

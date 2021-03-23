@@ -137,7 +137,7 @@ namespace LuduStack.Web.Areas.Member.Controllers
             {
                 vm.UserId = CurrentUserId;
 
-                OperationResultVo<Guid> saveResult = await comicsAppService .Save(CurrentUserId, vm);
+                OperationResultVo<Guid> saveResult = await comicsAppService.Save(CurrentUserId, vm);
 
                 if (saveResult.Success)
                 {
@@ -215,6 +215,7 @@ namespace LuduStack.Web.Areas.Member.Controllers
 
         private void SetLocalization(ComicsListItemVo item)
         {
+            // Here goes the localization for each list VO
         }
 
         private void SetLocalization(ComicStripViewModel item, bool editing)

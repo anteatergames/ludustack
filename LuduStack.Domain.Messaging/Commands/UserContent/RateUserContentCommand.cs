@@ -1,9 +1,7 @@
-﻿using LuduStack.Domain.Core.Enums;
-using LuduStack.Domain.Interfaces;
+﻿using LuduStack.Domain.Interfaces;
 using LuduStack.Domain.Interfaces.Repository;
 using LuduStack.Domain.Messaging.Queries.UserContent;
 using LuduStack.Domain.Models;
-using LuduStack.Domain.ValueObjects;
 using LuduStack.Infra.CrossCutting.Messaging;
 using MediatR;
 using System;
@@ -16,7 +14,6 @@ namespace LuduStack.Domain.Messaging
 {
     public class RateUserContentCommand : BaseCommand
     {
-
         public Guid UserId { get; }
         public decimal Score { get; }
 
@@ -32,6 +29,7 @@ namespace LuduStack.Domain.Messaging
             return Result.Validation.IsValid;
         }
     }
+
     public class RateUserContentCommandHandler : CommandHandler, IRequestHandler<RateUserContentCommand, CommandResult>
     {
         private readonly IMediatorHandler mediator;

@@ -14,7 +14,6 @@ namespace LuduStack.Domain.Messaging
 {
     public class UnlikeUserContentCommand : BaseCommand
     {
-
         public Guid UserId { get; }
 
         public UnlikeUserContentCommand(Guid userId, Guid courseId) : base(courseId)
@@ -28,6 +27,7 @@ namespace LuduStack.Domain.Messaging
             return Result.Validation.IsValid;
         }
     }
+
     public class UnlikeUserContentCommandHandler : CommandHandler, IRequestHandler<UnlikeUserContentCommand, CommandResult>
     {
         private readonly IMediatorHandler mediator;

@@ -22,13 +22,11 @@ namespace LuduStack.Web.Controllers
 {
     public class HomeController : SecureBaseController
     {
-        private readonly IUserPreferencesAppService userPreferencesAppService;
         private readonly IFeaturedContentAppService featuredContentAppService;
         private readonly IGameAppService gameAppService;
 
-        public HomeController(IUserPreferencesAppService userPreferencesAppService, IFeaturedContentAppService featuredContentAppService, IGameAppService gameAppService) : base()
+        public HomeController(IFeaturedContentAppService featuredContentAppService, IGameAppService gameAppService) : base()
         {
-            this.userPreferencesAppService = userPreferencesAppService;
             this.featuredContentAppService = featuredContentAppService;
             this.gameAppService = gameAppService;
         }

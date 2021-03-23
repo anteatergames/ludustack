@@ -10,6 +10,7 @@ namespace LuduStack.Domain.Messaging.Queries.JobPosition
         {
         }
     }
+
     public class GetJobPositionByIdQueryHandler : GetByIdBaseQueryHandler<GetJobPositionByIdQuery, Models.JobPosition, IJobPositionRepository>
     {
         public GetJobPositionByIdQueryHandler(IJobPositionRepository repository) : base(repository)

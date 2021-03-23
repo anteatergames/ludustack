@@ -1,5 +1,4 @@
-﻿using AutoMapper.QueryableExtensions;
-using LuduStack.Application.Formatters;
+﻿using LuduStack.Application.Formatters;
 using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels;
 using LuduStack.Application.ViewModels.User;
@@ -8,7 +7,6 @@ using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Core.Extensions;
 using LuduStack.Domain.Core.Interfaces;
 using LuduStack.Domain.Interfaces.Services;
-using LuduStack.Domain.Messaging.Queries.Base;
 using LuduStack.Domain.Messaging.Queries.Game;
 using LuduStack.Domain.Messaging.Queries.UserContent;
 using LuduStack.Domain.Messaging.Queries.UserProfile;
@@ -246,7 +244,6 @@ namespace LuduStack.Application.Services
             vm.Counters.Games = await mediator.Query<CountGameQuery, int>(new CountGameQuery(x => x.UserId == vm.UserId));
             vm.Counters.Posts = await mediator.Query<CountUserContentQuery, int>(new CountUserContentQuery(x => x.UserId == vm.UserId));
             vm.Counters.Comments = await mediator.Query<CountCommentsQuery, int>(new CountCommentsQuery(x => x.UserId == vm.UserId));
-
 
             vm.Counters.Followers = model.Followers.SafeCount();
             vm.Counters.Following = profileDomainService.CountFollows(userId);

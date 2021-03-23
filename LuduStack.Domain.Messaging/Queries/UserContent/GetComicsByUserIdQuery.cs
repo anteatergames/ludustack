@@ -6,7 +6,6 @@ namespace LuduStack.Domain.Messaging.Queries.UserContent
 {
     public class GetComicsByUserIdQuery : GetUserContentQuery
     {
-
         public GetComicsByUserIdQuery(Guid userId) : base(x => x.UserId == userId && x.UserContentType == UserContentType.ComicStrip)
         {
         }

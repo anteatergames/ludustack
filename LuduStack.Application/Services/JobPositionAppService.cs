@@ -4,7 +4,6 @@ using LuduStack.Application.ViewModels.Jobs;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Core.Extensions;
 using LuduStack.Domain.Interfaces.Services;
-using LuduStack.Domain.Messaging.Queries.Base;
 using LuduStack.Domain.Messaging.Queries.JobPosition;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;

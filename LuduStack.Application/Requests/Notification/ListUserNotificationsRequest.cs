@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace LuduStack.Application.Requests.Notification
 {
-    public class ListUserNotificationsRequest : IRequest<OperationResultVo>
+    public class ListUserNotificationsRequest : IRequest<OperationResultListVo<NotificationItemViewModel>>
     {
         public Guid UserId { get; }
 
@@ -26,7 +26,7 @@ namespace LuduStack.Application.Requests.Notification
         }
     }
 
-    public class ListUserNotificationsRequestHandler : IRequestHandler<ListUserNotificationsRequest, OperationResultVo>
+    public class ListUserNotificationsRequestHandler : IRequestHandler<ListUserNotificationsRequest, OperationResultListVo<NotificationItemViewModel>>
     {
         private readonly INotificationAppService notificationAppService;
 
@@ -35,7 +35,7 @@ namespace LuduStack.Application.Requests.Notification
             this.notificationAppService = notificationAppService;
         }
 
-        public async Task<OperationResultVo> Handle(ListUserNotificationsRequest request, CancellationToken cancellationToken)
+        public Task<OperationResultListVo<NotificationItemViewModel>> Handle(ListUserNotificationsRequest request, CancellationToken cancellationToken)
         {
             if (request.Quantity == 0)
             {
@@ -44,7 +44,7 @@ namespace LuduStack.Application.Requests.Notification
 
             OperationResultListVo<NotificationItemViewModel> result = notificationAppService.GetByUserId(request.UserId, request.Quantity);
 
-            return result;
+            return Task.FromResult(result);
         }
     }
 }

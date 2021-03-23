@@ -10,6 +10,7 @@ namespace LuduStack.Domain.Messaging.Queries.ShortUrl
         {
         }
     }
+
     public class GetShortUrlByIdQueryHandler : GetByIdBaseQueryHandler<GetShortUrlByIdQuery, Models.ShortUrl, IShortUrlRepository>
     {
         public GetShortUrlByIdQueryHandler(IShortUrlRepository repository) : base(repository)
