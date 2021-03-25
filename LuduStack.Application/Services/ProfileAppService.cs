@@ -186,7 +186,7 @@ namespace LuduStack.Application.Services
                     profileDomainService.Update(model);
                 }
 
-                unitOfWork.Commit();
+                await unitOfWork.Commit();
 
                 SetProfileCache(viewModel.UserId, model);
 

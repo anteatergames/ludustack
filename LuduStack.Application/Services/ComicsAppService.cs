@@ -99,7 +99,7 @@ namespace LuduStack.Application.Services
                     userContentDomainService.Update(model);
                 }
 
-                unitOfWork.Commit();
+                await unitOfWork.Commit();
 
                 viewModel.Id = model.Id;
 

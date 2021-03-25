@@ -115,11 +115,6 @@ namespace LuduStack.Application.Services
             return new OperationResultListVo<NotificationItemViewModel>(vms);
         }
 
-        private OperationResultVo<NotificationItemViewModel> GetById(Guid currentUserId, Guid id)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<OperationResultVo> Notify(Guid originUserId, string originUserName, Guid targetUserId, NotificationType notificationType, Guid targetId)
         {
             return await Notify(originUserId, originUserName, targetUserId, notificationType, targetId, null);

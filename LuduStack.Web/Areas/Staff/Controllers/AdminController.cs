@@ -140,7 +140,7 @@ namespace LuduStack.Web.Areas.Staff.Controllers
                         if (string.IsNullOrWhiteSpace(profile.Handler) || !profile.Handler.Equals(handler))
                         {
                             profile.Handler = handler;
-                            OperationResultVo<Guid> saveResult = await ProfileAppService.Save(CurrentUserId, profile);
+                            await ProfileAppService.Save(CurrentUserId, profile);
                             messages.Add($"SUCCESS: {profile.Name} handler updated to \"{handler}\"");
                         }
                     }

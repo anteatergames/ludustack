@@ -57,7 +57,6 @@ namespace LuduStack.Application.Services
         {
             try
             {
-                //IEnumerable<Localization> allModels = translationDomainService.GetAll();
                 var allModels = await mediator.Query<GetLocalizationQuery, IEnumerable<Localization>>(new GetLocalizationQuery());
 
                 List<LocalizationViewModel> vms = mapper.Map<IEnumerable<Localization>, IEnumerable<LocalizationViewModel>>(allModels).ToList();
@@ -143,7 +142,7 @@ namespace LuduStack.Application.Services
 
                 LocalizationViewModel vm = mapper.Map<LocalizationViewModel>(model);
 
-                SetGameViewModel(model.GameId, vm);
+                await SetGameViewModel(model.GameId, vm);
 
                 SetPermissions(currentUserId, vm);
 
@@ -239,7 +238,7 @@ namespace LuduStack.Application.Services
                     translationDomainService.Update(model);
                 }
 
-                unitOfWork.Commit();
+                await unitOfWork.Commit();
 
                 viewModel.Id = model.Id;
 

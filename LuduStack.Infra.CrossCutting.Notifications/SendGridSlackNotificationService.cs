@@ -43,7 +43,7 @@ namespace LuduStack.Infra.CrossCutting.Notifications
 
             msg.AddTo(new EmailAddress(email));
 
-            Response response = await client.SendEmailAsync(msg);
+            await client.SendEmailAsync(msg);
 
             return true;
         }
@@ -68,7 +68,7 @@ namespace LuduStack.Infra.CrossCutting.Notifications
 
             msg.AddTo(new EmailAddress(email));
 
-            Response response = await client.SendEmailAsync(msg);
+            await client.SendEmailAsync(msg);
 
             return true;
         }
@@ -97,7 +97,7 @@ namespace LuduStack.Infra.CrossCutting.Notifications
 
             try
             {
-                IRestResponse response = await client.ExecuteAsync(request);
+                await client.ExecuteAsync(request);
             }
             catch (Exception ex)
             {

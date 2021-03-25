@@ -2,7 +2,7 @@
 
 namespace LuduStack.Domain.Core.Enums
 {
-    public enum ArtStyle2D
+    public enum ArtStyle
     {
         [Display(Name = "Pixel Art")]
         PixelArt = 1,

@@ -12,7 +12,7 @@ namespace LuduStack.Domain.Messaging.Queries.Base
     {
         public Guid Id { get; }
 
-        public GetByIdBaseQuery(Guid id)
+        protected GetByIdBaseQuery(Guid id)
         {
             Id = id;
         }
@@ -22,7 +22,7 @@ namespace LuduStack.Domain.Messaging.Queries.Base
     {
         protected readonly TRepository repository;
 
-        public GetByIdBaseQueryHandler(TRepository repository)
+        protected GetByIdBaseQueryHandler(TRepository repository)
         {
             this.repository = repository;
         }

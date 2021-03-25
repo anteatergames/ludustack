@@ -6,7 +6,7 @@ namespace LuduStack.Web.Models
     public class CostCalculatorViewModel
     {
         [Display(Name = "Art Style", Description = "How you want the game to look?")]
-        public ArtStyle2D ArtStyle { get; set; }
+        public ArtStyle ArtStyle { get; set; }
 
         [Display(Name = "Sound Style", Description = "How you want the game to sound?")]
         public SoundStyle SoundStyle { get; set; }

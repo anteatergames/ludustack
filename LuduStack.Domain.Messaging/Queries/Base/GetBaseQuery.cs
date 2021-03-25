@@ -14,11 +14,11 @@ namespace LuduStack.Domain.Messaging.Queries.Base
     {
         public Expression<Func<TModel, bool>> Where { get; private set; }
 
-        public GetBaseQuery()
+        protected GetBaseQuery()
         {
         }
 
-        public GetBaseQuery(Expression<Func<TModel, bool>> where)
+        protected GetBaseQuery(Expression<Func<TModel, bool>> where)
         {
             Where = where;
         }

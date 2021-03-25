@@ -13,11 +13,11 @@ namespace LuduStack.Domain.Messaging.Queries.Base
     {
         public Expression<Func<TModel, bool>> Where { get; private set; }
 
-        public CountBaseQuery()
+        protected CountBaseQuery()
         {
         }
 
-        public CountBaseQuery(Expression<Func<TModel, bool>> where)
+        protected CountBaseQuery(Expression<Func<TModel, bool>> where)
         {
             Where = where;
         }

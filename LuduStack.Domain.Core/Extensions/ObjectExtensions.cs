@@ -30,7 +30,7 @@ namespace LuduStack.Domain.Core.Extensions
             if (typeToReflect.IsArray)
             {
                 Type arrayType = typeToReflect.GetElementType();
-                if (IsPrimitive(arrayType) == false)
+                if (!IsPrimitive(arrayType))
                 {
                     Array clonedArray = (Array)cloneObject;
                     clonedArray.ForEach((array, indices) => array.SetValue(InternalCopy(clonedArray.GetValue(indices), visited), indices));

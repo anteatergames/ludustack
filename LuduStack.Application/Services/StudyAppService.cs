@@ -287,7 +287,7 @@ namespace LuduStack.Application.Services
                     term.UserId = currentUserId;
                 }
 
-                var result = await mediator.SendCommand(new SavePlansCommand(courseId, entities));
+                await mediator.SendCommand(new SavePlansCommand(courseId, entities));
 
                 return new OperationResultVo(true, "Plans Updated!");
             }
