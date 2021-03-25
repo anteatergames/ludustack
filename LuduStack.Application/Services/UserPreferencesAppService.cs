@@ -113,7 +113,7 @@ namespace LuduStack.Application.Services
                     viewModel.Id = Guid.Empty;
                 }
 
-                UserPreferences existing = userPreferencesDomainService.GetById(viewModel.Id);
+                UserPreferences existing = await mediator.Query<GetUserPreferencesByIdQuery, UserPreferences>(new GetUserPreferencesByIdQuery(viewModel.Id));
 
                 if (existing != null)
                 {

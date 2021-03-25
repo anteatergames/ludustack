@@ -2,6 +2,7 @@
 using LuduStack.Application.ViewModels.Notification;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Interfaces.Services;
+using LuduStack.Domain.Messaging.Queries.Notification;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
 using System;
@@ -57,7 +58,7 @@ namespace LuduStack.Application.Services
             {
                 Notification model;
 
-                Notification existing = notificationDomainService.GetById(viewModel.Id);
+                Notification existing = await mediator.Query<GetNotificationByIdQuery, Notification>(new GetNotificationByIdQuery(viewModel.Id));
 
                 if (existing != null)
                 {
@@ -135,18 +136,18 @@ namespace LuduStack.Application.Services
             return await Save(originUserId, vm);
         }
 
-        public OperationResultVo MarkAsRead(Guid id)
+        public async Task<OperationResultVo> MarkAsRead(Guid id)
         {
             try
             {
-                Notification notification = notificationDomainService.GetById(id);
+                Notification notification = await mediator.Query<GetNotificationByIdQuery, Notification>(new GetNotificationByIdQuery(id));
 
                 if (notification != null)
                 {
                     notification.IsRead = true;
                     notificationDomainService.Update(notification);
 
-                    unitOfWork.Commit();
+                    await unitOfWork.Commit();
                 }
 
                 return new OperationResultVo(true);

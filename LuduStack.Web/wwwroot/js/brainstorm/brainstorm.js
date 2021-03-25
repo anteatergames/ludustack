@@ -15,7 +15,7 @@
 
         bindAll();
 
-        canInteract = $('#caninteract').val();
+        canInteract = $(selectors.canInteract).val() === 'true';
         newIdea = window.location.href.indexOf('newidea') > -1;
         details = window.location.href.indexOf('details') > -1;
 
@@ -28,6 +28,7 @@
 
     function setSelectors() {
         selectors.container = '#contentwrapper';
+        selectors.canInteract = '#caninteract';
         selectors.toolbar = $("#divToolbar");
         selectors.list = $("#divList");
         selectors.btnPostVotingItem = $("#btnPostVotingItem");
@@ -138,9 +139,7 @@
 
                 return $.post(url, { votingItemId: id, voteValue: vote }).then(function (response) {
                     if (response.success === true) {
-                        ALERTSYSTEM.ShowSuccessMessage("Awesome!", function () {
-                            location.reload();
-                        });
+                        location.reload();
                     }
                     else {
                         ALERTSYSTEM.ShowWarningMessage("An error occurred! Check the console!");

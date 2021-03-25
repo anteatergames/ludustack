@@ -114,7 +114,7 @@ namespace LuduStack.Web.Areas.Tools.Controllers
 
         [Authorize]
         [Route("tools/giveaway/save")]
-        public JsonResult SaveGiveaway(GiveawayViewModel vm)
+        public async Task<JsonResult> SaveGiveaway(GiveawayViewModel vm)
         {
             bool isNew = vm.Id == Guid.Empty;
 
@@ -122,7 +122,7 @@ namespace LuduStack.Web.Areas.Tools.Controllers
             {
                 vm.UserId = CurrentUserId;
 
-                OperationResultVo<Guid> saveResult = giveawayAppService.SaveGiveaway(CurrentUserId, vm);
+                OperationResultVo<Guid> saveResult = await giveawayAppService.SaveGiveaway(CurrentUserId, vm);
 
                 if (saveResult.Success)
                 {
@@ -130,7 +130,7 @@ namespace LuduStack.Web.Areas.Tools.Controllers
 
                     if (isNew && EnvName.Equals(ConstantHelper.ProductionEnvironmentName))
                     {
-                        NotificationSender.SendTeamNotificationAsync("New Giveaway created!");
+                        await NotificationSender.SendTeamNotificationAsync("New Giveaway created!");
                     }
 
                     return Json(new OperationResultRedirectVo<Guid>(saveResult, url));
@@ -211,9 +211,9 @@ namespace LuduStack.Web.Areas.Tools.Controllers
 
         [Authorize]
         [Route("giveaway/{id:guid}/manage")]
-        public IActionResult Manage(Guid id)
+        public async Task<IActionResult> Manage(Guid id)
         {
-            OperationResultVo result = giveawayAppService.GetGiveawayForManagement(CurrentUserId, id);
+            OperationResultVo result = await giveawayAppService.GetGiveawayForManagement(CurrentUserId, id);
 
             if (result.Success)
             {

@@ -133,7 +133,7 @@ namespace LuduStack.Application.Services
         {
             try
             {
-                Localization model = translationDomainService.GetById(id);
+                Localization model = await mediator.Query<GetLocalizationByIdQuery, Localization>(new GetLocalizationByIdQuery(id));
 
                 if (model == null)
                 {
@@ -208,7 +208,7 @@ namespace LuduStack.Application.Services
             {
                 Localization model;
 
-                Localization existing = translationDomainService.GetById(viewModel.Id);
+                Localization existing = await mediator.Query<GetLocalizationByIdQuery, Localization>(new GetLocalizationByIdQuery(viewModel.Id));
                 if (existing != null)
                 {
                     model = mapper.Map(viewModel, existing);
@@ -424,7 +424,7 @@ namespace LuduStack.Application.Services
         {
             try
             {
-                Localization model = translationDomainService.GetById(id);
+                Localization model = await mediator.Query<GetLocalizationByIdQuery, Localization>(new GetLocalizationByIdQuery(id));
 
                 if (model == null)
                 {
@@ -557,7 +557,7 @@ namespace LuduStack.Application.Services
 
                     FillTerms(dataTable, loadedTerms);
 
-                    Localization model = translationDomainService.GetById(projectId);
+                    Localization model = await mediator.Query<GetLocalizationByIdQuery, Localization>(new GetLocalizationByIdQuery(projectId));
 
                     if (model != null)
                     {

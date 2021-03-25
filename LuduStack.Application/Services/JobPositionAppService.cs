@@ -160,8 +160,7 @@ namespace LuduStack.Application.Services
             try
             {
                 JobPosition model;
-
-                JobPosition existing = jobPositionDomainService.GetById(viewModel.Id);
+                JobPosition existing = await mediator.Query<GetJobPositionByIdQuery, JobPosition>(new GetJobPositionByIdQuery(viewModel.Id));
                 if (existing != null)
                 {
                     model = mapper.Map(viewModel, existing);
@@ -307,13 +306,13 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo Apply(Guid currentUserId, Guid jobPositionId, string email, string coverLetter)
+        public async Task<OperationResultVo> Apply(Guid currentUserId, Guid jobPositionId, string email, string coverLetter)
         {
             try
             {
                 int pointsEarned = 0;
 
-                JobPosition jobPosition = jobPositionDomainService.GetById(jobPositionId);
+                JobPosition jobPosition = await mediator.Query<GetJobPositionByIdQuery, JobPosition>(new GetJobPositionByIdQuery(jobPositionId));
 
                 if (jobPosition == null)
                 {
@@ -328,7 +327,7 @@ namespace LuduStack.Application.Services
 
                 jobPositionDomainService.AddApplicant(currentUserId, jobPositionId, email, coverLetter);
 
-                unitOfWork.Commit();
+                await unitOfWork.Commit();
 
                 return new OperationResultVo<Guid>(jobPosition.UserId, pointsEarned, "You have applyed to this Job Position!");
             }
@@ -338,11 +337,11 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo ChangeStatus(Guid currentUserId, Guid jobPositionId, JobPositionStatus selectedStatus)
+        public async Task<OperationResultVo> ChangeStatus(Guid currentUserId, Guid jobPositionId, JobPositionStatus selectedStatus)
         {
             try
             {
-                JobPosition jobPosition = jobPositionDomainService.GetById(jobPositionId);
+                JobPosition jobPosition = await mediator.Query<GetJobPositionByIdQuery, JobPosition>(new GetJobPositionByIdQuery(jobPositionId));
 
                 if (jobPosition == null)
                 {
@@ -353,7 +352,7 @@ namespace LuduStack.Application.Services
 
                 jobPositionDomainService.Update(jobPosition);
 
-                unitOfWork.Commit();
+                await unitOfWork.Commit();
 
                 return new OperationResultVo(true);
             }
@@ -363,11 +362,11 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo RateApplicant(Guid currentUserId, Guid jobPositionId, Guid userId, decimal score)
+        public async Task<OperationResultVo> RateApplicant(Guid currentUserId, Guid jobPositionId, Guid userId, decimal score)
         {
             try
             {
-                JobPosition jobPosition = jobPositionDomainService.GetById(jobPositionId);
+                JobPosition jobPosition = await mediator.Query<GetJobPositionByIdQuery, JobPosition>(new GetJobPositionByIdQuery(jobPositionId));
 
                 if (jobPosition == null)
                 {
@@ -384,7 +383,7 @@ namespace LuduStack.Application.Services
 
                 jobPositionDomainService.Update(jobPosition);
 
-                unitOfWork.Commit();
+                await unitOfWork.Commit();
 
                 return new OperationResultVo(true, "Applicant rated!");
             }

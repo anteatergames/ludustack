@@ -5,12 +5,14 @@ using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Core.Extensions;
 using LuduStack.Domain.Interfaces.Models;
 using LuduStack.Domain.Interfaces.Services;
+using LuduStack.Domain.Messaging.Queries.Giveaway;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
 using LuduStack.Infra.CrossCutting.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace LuduStack.Application.Services
 {
@@ -48,11 +50,11 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo GetGiveawayForManagement(Guid currentUserId, Guid giveawayId)
+        public async Task<OperationResultVo> GetGiveawayForManagement(Guid currentUserId, Guid giveawayId)
         {
             try
             {
-                Giveaway existing = giveawayDomainService.GetById(giveawayId);
+                Giveaway existing = await mediator.Query<GetGiveawayByIdQuery, Giveaway>(new GetGiveawayByIdQuery(giveawayId));
 
                 GiveawayViewModel vm = mapper.Map<GiveawayViewModel>(existing);
 
@@ -128,7 +130,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo<Guid> SaveGiveaway(Guid currentUserId, GiveawayViewModel vm)
+        public async Task<OperationResultVo<Guid>> SaveGiveaway(Guid currentUserId, GiveawayViewModel vm)
         {
             int pointsEarned = 0;
 
@@ -136,7 +138,7 @@ namespace LuduStack.Application.Services
             {
                 Giveaway model;
 
-                Giveaway existing = giveawayDomainService.GetById(vm.Id);
+                Giveaway existing = await mediator.Query<GetGiveawayByIdQuery, Giveaway>(new GetGiveawayByIdQuery(vm.Id));
                 if (existing != null)
                 {
                     model = mapper.Map(vm, existing);
@@ -160,7 +162,7 @@ namespace LuduStack.Application.Services
                     giveawayDomainService.Update(model);
                 }
 
-                unitOfWork.Commit();
+                await unitOfWork.Commit();
 
                 vm.Id = model.Id;
 

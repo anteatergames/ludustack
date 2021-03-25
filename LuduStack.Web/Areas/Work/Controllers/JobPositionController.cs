@@ -359,7 +359,7 @@ namespace LuduStack.Web.Areas.Work.Controllers
             {
                 Infra.CrossCutting.Identity.Models.ApplicationUser user = await UserManager.GetUserAsync(User);
 
-                OperationResultVo serviceResult = jobPositionAppService.Apply(CurrentUserId, jobPositionId, user.Email, coverLetter);
+                OperationResultVo serviceResult = await jobPositionAppService.Apply(CurrentUserId, jobPositionId, user.Email, coverLetter);
 
                 if (serviceResult.Success)
                 {
@@ -384,13 +384,13 @@ namespace LuduStack.Web.Areas.Work.Controllers
         }
 
         [HttpPost("work/jobposition/rateapplicant/{jobPositionId:guid}/{userId:guid}")]
-        public IActionResult RateApplicant(Guid jobPositionId, Guid userId, string score)
+        public async Task<IActionResult> RateApplicant(Guid jobPositionId, Guid userId, string score)
         {
             try
             {
                 decimal scoreDecimal = decimal.Parse(score, CultureInfo.InvariantCulture);
 
-                OperationResultVo serviceResult = jobPositionAppService.RateApplicant(CurrentUserId, jobPositionId, userId, scoreDecimal);
+                OperationResultVo serviceResult = await jobPositionAppService .RateApplicant(CurrentUserId, jobPositionId, userId, scoreDecimal);
 
                 return Json(new OperationResultVo(serviceResult.Success, serviceResult.Message));
             }

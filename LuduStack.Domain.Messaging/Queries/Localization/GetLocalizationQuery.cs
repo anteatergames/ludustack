@@ -1,6 +1,8 @@
 ﻿using LuduStack.Domain.Interfaces.Repository;
 using LuduStack.Domain.Messaging.Queries.Base;
+using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -9,6 +11,10 @@ namespace LuduStack.Domain.Messaging.Queries.Localization
     public class GetLocalizationQuery : GetBaseQuery<Models.Localization>
     {
         public GetLocalizationQuery() : base()
+        {
+        }
+
+        public GetLocalizationQuery(Expression<Func<Models.Localization, bool>> where) : base(where)
         {
         }
     }

@@ -89,7 +89,7 @@ namespace LuduStack.Application.Services
             {
                 ShortUrl model;
 
-                ShortUrl existing = shortUrlDomainService.GetById(viewModel.Id);
+                ShortUrl existing = await mediator.Query<GetShortUrlByIdQuery, ShortUrl>(new GetShortUrlByIdQuery(viewModel.Id));
 
                 if (existing != null)
                 {

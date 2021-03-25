@@ -42,7 +42,7 @@ namespace LuduStack.Web.Controllers
         [Route("game/{id:guid}")]
         public async Task<IActionResult> Details(Guid id, int? pointsEarned, Guid notificationclicked)
         {
-            notificationAppService.MarkAsRead(notificationclicked);
+            await notificationAppService.MarkAsRead(notificationclicked);
 
             OperationResultVo<GameViewModel> serviceResult = await gameAppService.GetById(CurrentUserId, id);
 

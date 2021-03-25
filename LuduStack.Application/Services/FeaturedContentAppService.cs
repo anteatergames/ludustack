@@ -8,6 +8,7 @@ using LuduStack.Application.ViewModels.Home;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Interfaces.Services;
 using LuduStack.Domain.Messaging.Queries.FeaturedContent;
+using LuduStack.Domain.Messaging.Queries.UserContent;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
 using System;
@@ -80,7 +81,7 @@ namespace LuduStack.Application.Services
         {
             try
             {
-                FeaturedContent model = featuredContentDomainService.GetById(id);
+                FeaturedContent model = await mediator.Query<GetFeaturedContentByIdQuery, FeaturedContent>(new GetFeaturedContentByIdQuery(id));
 
                 FeaturedContentViewModel vm = mapper.Map<FeaturedContentViewModel>(model);
 
@@ -98,7 +99,7 @@ namespace LuduStack.Application.Services
             {
                 FeaturedContent model;
 
-                FeaturedContent existing = featuredContentDomainService.GetById(viewModel.Id);
+                FeaturedContent existing = await mediator.Query<GetFeaturedContentByIdQuery, FeaturedContent>(new GetFeaturedContentByIdQuery(viewModel.Id));
 
                 if (existing != null)
                 {
@@ -181,7 +182,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo<Guid> Add(Guid userId, Guid contentId, string title, string introduction)
+        public async Task<OperationResultVo<Guid>> Add(Guid userId, Guid contentId, string title, string introduction)
         {
             try
             {
@@ -190,7 +191,7 @@ namespace LuduStack.Application.Services
                     UserContentId = contentId
                 };
 
-                UserContent content = userContentDomainService.GetById(contentId);
+                UserContent content = await mediator.Query<GetUserContentByIdQuery, UserContent>(new GetUserContentByIdQuery(contentId));
 
                 newFeaturedContent.Title = string.IsNullOrWhiteSpace(title) ? content.Title : title;
                 newFeaturedContent.Introduction = string.IsNullOrWhiteSpace(introduction) ? content.Introduction : introduction;
@@ -206,7 +207,7 @@ namespace LuduStack.Application.Services
 
                 featuredContentDomainService.Add(newFeaturedContent);
 
-                unitOfWork.Commit();
+                await unitOfWork.Commit();
 
                 return new OperationResultVo<Guid>(newFeaturedContent.Id);
             }
@@ -225,7 +226,7 @@ namespace LuduStack.Application.Services
 
             foreach (UserContentToBeFeaturedViewModel item in vms)
             {
-                FeaturedContent featuredNow = featured.FirstOrDefault(x => x.UserContentId == item.Id && x.StartDate.Date <= DateTime.Today && (!x.EndDate.HasValue || (x.EndDate.HasValue && x.EndDate.Value.Date > DateTime.Today)));
+                FeaturedContent featuredNow = featured.FirstOrDefault(x => x.UserContentId == item.Id && x.StartDate.ToLocalTime() <= DateTime.Now.ToLocalTime() && (!x.EndDate.HasValue || (x.EndDate.HasValue && x.EndDate.Value.ToLocalTime() > DateTime.Now.ToLocalTime())));
 
                 if (featuredNow != null)
                 {
@@ -250,11 +251,11 @@ namespace LuduStack.Application.Services
             return vms;
         }
 
-        public OperationResultVo Unfeature(Guid id)
+        public async Task<OperationResultVo> Unfeature(Guid id)
         {
             try
             {
-                FeaturedContent existing = featuredContentDomainService.GetById(id);
+                FeaturedContent existing = await mediator.Query<GetFeaturedContentByIdQuery, FeaturedContent>(new GetFeaturedContentByIdQuery(id));
 
                 if (existing != null)
                 {
@@ -264,7 +265,7 @@ namespace LuduStack.Application.Services
 
                     featuredContentDomainService.Update(existing);
 
-                    unitOfWork.Commit();
+                    await unitOfWork.Commit();
                 }
 
                 return new OperationResultVo(true);

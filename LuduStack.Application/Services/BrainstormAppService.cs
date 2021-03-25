@@ -122,7 +122,7 @@ namespace LuduStack.Application.Services
         {
             try
             {
-                BrainstormSession session = brainstormDomainService.GetById(viewModel.SessionId);
+                BrainstormSession session = await mediator.Query<GetBrainstormSessionByIdQuery, BrainstormSession>(new GetBrainstormSessionByIdQuery(viewModel.SessionId));
 
                 BrainstormIdea model;
 
@@ -287,13 +287,14 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo<Guid> SaveSession(BrainstormSessionViewModel vm)
+        public async Task<OperationResultVo<Guid>> SaveSession(BrainstormSessionViewModel vm)
         {
             try
             {
                 BrainstormSession model;
 
-                BrainstormSession existing = brainstormDomainService.GetById(vm.Id);
+                BrainstormSession existing = await mediator.Query<GetBrainstormSessionByIdQuery, BrainstormSession>(new GetBrainstormSessionByIdQuery(vm.Id));
+
                 if (existing != null)
                 {
                     model = mapper.Map(vm, existing);
@@ -313,7 +314,7 @@ namespace LuduStack.Application.Services
                     brainstormDomainService.Update(model);
                 }
 
-                unitOfWork.Commit();
+                await unitOfWork.Commit();
 
                 return new OperationResultVo<Guid>(model.Id);
             }

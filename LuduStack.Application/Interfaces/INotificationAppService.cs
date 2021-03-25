@@ -14,6 +14,6 @@ namespace LuduStack.Application.Interfaces
 
         Task<OperationResultVo> Notify(Guid originUserId, string originUserName, Guid targetUserId, NotificationType notificationType, Guid targetId, string targetName);
 
-        OperationResultVo MarkAsRead(Guid id);
+        Task<OperationResultVo> MarkAsRead(Guid id);
     }
 }

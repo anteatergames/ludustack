@@ -84,7 +84,7 @@ namespace LuduStack.Web.Controllers
         [Route("{teamId:guid}")]
         public async Task<IActionResult> Details(Guid teamId, int? pointsEarned, Guid notificationclicked)
         {
-            notificationAppService.MarkAsRead(notificationclicked);
+            await notificationAppService.MarkAsRead(notificationclicked);
 
             OperationResultVo<TeamViewModel> serviceResult = await teamAppService.GetById(CurrentUserId, teamId);
 
@@ -196,9 +196,9 @@ namespace LuduStack.Web.Controllers
         }
 
         [HttpPost("CandidateApply")]
-        public IActionResult CandidateApply(TeamMemberViewModel vm)
+        public async Task<IActionResult> CandidateApply(TeamMemberViewModel vm)
         {
-            OperationResultVo serviceResult = teamAppService.CandidateApply(CurrentUserId, vm);
+            OperationResultVo serviceResult = await teamAppService.CandidateApply(CurrentUserId, vm);
 
             string url = Url.Action("Details", "Team", new { area = string.Empty, teamId = vm.TeamId, pointsEarned = serviceResult.PointsEarned });
 

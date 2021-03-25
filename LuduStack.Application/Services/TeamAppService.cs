@@ -137,7 +137,7 @@ namespace LuduStack.Application.Services
             {
                 Team model;
 
-                Team existing = teamDomainService.GetById(viewModel.Id);
+                Team existing = await mediator.Query<GetTeamByIdQuery, Team>(new GetTeamByIdQuery(viewModel.Id));
                 if (existing != null)
                 {
                     model = mapper.Map(viewModel, existing);
@@ -344,13 +344,13 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo CandidateApply(Guid currentUserId, TeamMemberViewModel vm)
+        public async Task<OperationResultVo> CandidateApply(Guid currentUserId, TeamMemberViewModel vm)
         {
             int pointsEarned = 0;
 
             try
             {
-                Team team = teamDomainService.GetById(vm.TeamId);
+                Team team = await mediator.Query<GetTeamByIdQuery, Team>(new GetTeamByIdQuery(vm.TeamId));
 
                 if (team == null)
                 {
@@ -363,7 +363,7 @@ namespace LuduStack.Application.Services
 
                 pointsEarned += gamificationDomainService.ProcessAction(currentUserId, PlatformAction.TeamJoin);
 
-                unitOfWork.Commit();
+                await unitOfWork.Commit();
 
                 return new OperationResultVo(true, "Application sent! Now just sit and wait the team leader to accept you.", pointsEarned);
             }

@@ -154,7 +154,7 @@ namespace LuduStack.Application.Services
 
                 viewModel.ExternalLinks.RemoveAll(x => String.IsNullOrWhiteSpace(x.Value));
 
-                UserProfile existing = profileDomainService.GetById(viewModel.Id);
+                UserProfile existing = await mediator.Query<GetUserProfileByIdQuery, UserProfile>(new GetUserProfileByIdQuery(viewModel.Id));
                 if (existing != null)
                 {
                     model = mapper.Map(viewModel, existing);

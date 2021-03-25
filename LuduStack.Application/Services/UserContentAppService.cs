@@ -180,7 +180,7 @@ namespace LuduStack.Application.Services
                     return v;
                 });
 
-                UserContent existing = userContentDomainService.GetById(viewModel.Id);
+                UserContent existing = await mediator.Query<GetUserContentByIdQuery, UserContent>(new GetUserContentByIdQuery(viewModel.Id));
                 if (existing != null)
                 {
                     model = mapper.Map(viewModel, existing);

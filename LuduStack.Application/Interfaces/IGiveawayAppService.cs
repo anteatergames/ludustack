@@ -1,6 +1,7 @@
 ﻿using LuduStack.Application.ViewModels.Giveaway;
 using LuduStack.Domain.ValueObjects;
 using System;
+using System.Threading.Tasks;
 
 namespace LuduStack.Application.Interfaces
 {
@@ -8,7 +9,7 @@ namespace LuduStack.Application.Interfaces
     {
         OperationResultVo GenerateNew(Guid currentUserId);
 
-        OperationResultVo GetGiveawayForManagement(Guid currentUserId, Guid giveawayId);
+        Task<OperationResultVo> GetGiveawayForManagement(Guid currentUserId, Guid giveawayId);
 
         OperationResultVo GetForEdit(Guid currentUserId, Guid giveawayId);
 
@@ -18,7 +19,7 @@ namespace LuduStack.Application.Interfaces
 
         OperationResultVo GetGiveawaysByMe(Guid currentUserId);
 
-        OperationResultVo<Guid> SaveGiveaway(Guid currentUserId, GiveawayViewModel vm);
+        Task<OperationResultVo<Guid>> SaveGiveaway(Guid currentUserId, GiveawayViewModel vm);
 
         OperationResultVo DeleteGiveaway(Guid currentUserId, Guid giveawayId);
 
