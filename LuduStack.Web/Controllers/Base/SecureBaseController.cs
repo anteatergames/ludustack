@@ -313,21 +313,6 @@ namespace LuduStack.Web.Controllers.Base
             return url;
         }
 
-        private string DeleteImage(Guid userId, string imageType, string filename)
-        {
-            Task<string> op = ImageStorageService.DeleteImageAsync(userId.ToString(), imageType.ToLower() + "_" + filename);
-            op.Wait();
-
-            if (!op.IsCompletedSuccessfully)
-            {
-                throw op.Exception;
-            }
-
-            string url = op.Result;
-
-            return url;
-        }
-
         #endregion Main Methods
 
         protected string UploadImage(Guid userId, ImageType container, string filename, byte[] fileBytes, params string[] tags)

@@ -344,8 +344,6 @@ namespace LuduStack.Web.Areas.Tools.Controllers
 
                 if (saveResult.Success)
                 {
-                    //GenerateFeedPost(vm);
-
                     string url = Url.Action("details", "localization", new { area = "tools", id = vm.Id });
 
                     if (isNew)

@@ -525,9 +525,9 @@ namespace LuduStack.Web.Areas.Tools.Controllers
             SetLocalization(item, false);
         }
 
-        private void SetLocalization(GiveawayViewModel model, bool v)
+        private void SetLocalization(GiveawayViewModel model, bool editing)
         {
-            if (model != null)
+            if (model != null && !editing)
             {
                 DisplayAttribute displayStatus = model.Status.GetAttributeOfType<DisplayAttribute>();
                 model.StatusLocalized = SharedLocalizer[displayStatus != null ? displayStatus.Name : model.Status.ToString()];
@@ -536,7 +536,7 @@ namespace LuduStack.Web.Areas.Tools.Controllers
 
         private void SetLocalization(GiveawayListItemVo item, bool editing)
         {
-            if (item != null)
+            if (item != null && !editing)
             {
                 DisplayAttribute displayStatus = item.Status.GetAttributeOfType<DisplayAttribute>();
                 item.StatusLocalized = SharedLocalizer[displayStatus != null ? displayStatus.Name : item.Status.ToString()];

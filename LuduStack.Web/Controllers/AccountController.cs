@@ -47,7 +47,7 @@ namespace LuduStack.Web.Controllers
 
         public IConfiguration Configuration { get; }
 
-        private string envName;
+        private readonly string envName;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,

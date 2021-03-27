@@ -160,8 +160,6 @@ namespace LuduStack.Web.Areas.Learn.Controllers
 
                 if (saveResult.Success)
                 {
-                    //GenerateFeedPost(vm);
-
                     string url = Url.Action("details", "course", new { area = "learn", id = saveResult.Value });
 
                     if (isNew)

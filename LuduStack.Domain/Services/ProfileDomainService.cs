@@ -259,11 +259,14 @@ namespace LuduStack.Domain.Services
                 return null;
             }
 
+            var connectionDirection = fromUser ? UserConnectionDirection.FromUser : UserConnectionDirection.ToUser;
+            var connectionType = typePupil ? UserConnectionType.Pupil : UserConnectionType.WorkedTogether;
+
             UserConnectionVo model = new UserConnectionVo
             {
                 Accepted = connections.Any(x => x.ApprovalDate.HasValue),
-                Direction = fromUser && toUser ? UserConnectionDirection.BothWays : (fromUser ? UserConnectionDirection.FromUser : UserConnectionDirection.ToUser),
-                ConnectionType = typeMentor ? UserConnectionType.Mentor : (typePupil ? UserConnectionType.Pupil : UserConnectionType.WorkedTogether)
+                Direction = fromUser && toUser ? UserConnectionDirection.BothWays : connectionDirection,
+                ConnectionType = typeMentor ? UserConnectionType.Mentor : connectionType
             };
 
             return model;

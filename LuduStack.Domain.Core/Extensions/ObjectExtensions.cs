@@ -60,7 +60,7 @@ namespace LuduStack.Domain.Core.Extensions
         {
             foreach (FieldInfo fieldInfo in typeToReflect.GetFields(bindingFlags))
             {
-                if (filter != null && filter(fieldInfo) == false) continue;
+                if (filter != null && !filter(fieldInfo)) continue;
                 if (IsPrimitive(fieldInfo.FieldType)) continue;
                 object originalFieldValue = fieldInfo.GetValue(originalObject);
                 object clonedFieldValue = InternalCopy(originalFieldValue, visited);
@@ -97,7 +97,7 @@ namespace LuduStack.Domain.Core.Extensions
     internal class ArrayTraverse
     {
         public int[] Position;
-        private int[] maxLengths;
+        private readonly int[] maxLengths;
 
         public ArrayTraverse(Array array)
         {

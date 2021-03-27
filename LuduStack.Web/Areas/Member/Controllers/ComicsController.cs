@@ -220,11 +220,7 @@ namespace LuduStack.Web.Areas.Member.Controllers
 
         private void SetLocalization(ComicStripViewModel item, bool editing)
         {
-            //if (item != null)
-            //{
-            //    DisplayAttribute displayStatus = item.Status.GetAttributeOfType<DisplayAttribute>();
-            //    item.StatusLocalized = SharedLocalizer[displayStatus != null ? displayStatus.Name : item.Status.ToString()];
-            //}
+            // Here goes the localization for each ViewModel
         }
     }
 }
