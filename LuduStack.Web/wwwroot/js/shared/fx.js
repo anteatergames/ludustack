@@ -324,27 +324,27 @@
             // Start the loop
             requestAnimationFrame(loop);
         }
-
-        function loop(timestamp) {
-            var delta = prev ? timestamp - prev : 0;
-            prev = timestamp;
-            var height = $window.height();
-
-            for (var i = confetti.length - 1; i >= 0; --i) {
-                if (confetti[i].update(height, delta)) {
-                    container.removeChild(confetti[i].outer);
-                    confetti.splice(i, 1);
-                }
-            }
-
-            if (timer || confetti.length)
-                return frame = requestAnimationFrame(loop);
-
-            // Cleanup
-            document.body.removeChild(container);
-            frame = undefined;
-        };
     }
+
+    function loop(timestamp) {
+        var delta = prev ? timestamp - prev : 0;
+        prev = timestamp;
+        var height = $window.height();
+
+        for (var i = confetti.length - 1; i >= 0; --i) {
+            if (confetti[i].update(height, delta)) {
+                container.removeChild(confetti[i].outer);
+                confetti.splice(i, 1);
+            }
+        }
+
+        if (timer || confetti.length)
+            return frame = requestAnimationFrame(loop);
+
+        // Cleanup
+        document.body.removeChild(container);
+        frame = undefined;
+    };
     // end confetti
 
     return {
