@@ -24,84 +24,6 @@ namespace LuduStack.Application.Services
             this.userPreferencesDomainService = userPreferencesDomainService;
         }
 
-        #region ICrudAppService
-
-        public async Task<OperationResultVo<int>> Count(Guid currentUserId)
-        {
-            try
-            {
-                int count = await mediator.Query<CountUserPreferencesQuery, int>(new CountUserPreferencesQuery());
-
-                return new OperationResultVo<int>(count);
-            }
-            catch (Exception ex)
-            {
-                return new OperationResultVo<int>(ex.Message);
-            }
-        }
-
-        public async Task<OperationResultListVo<UserPreferencesViewModel>> GetAll(Guid currentUserId)
-        {
-            try
-            {
-                IEnumerable<UserPreferences> allModels = await mediator.Query<GetUserPreferencesQuery, IEnumerable<UserPreferences>>(new GetUserPreferencesQuery());
-
-                IEnumerable<UserPreferencesViewModel> vms = mapper.Map<IEnumerable<UserPreferences>, IEnumerable<UserPreferencesViewModel>>(allModels);
-
-                return new OperationResultListVo<UserPreferencesViewModel>(vms);
-            }
-            catch (Exception ex)
-            {
-                return new OperationResultListVo<UserPreferencesViewModel>(ex.Message);
-            }
-        }
-
-        public async Task<OperationResultVo> GetAllIds(Guid currentUserId)
-        {
-            try
-            {
-                IEnumerable<Guid> allIds = userPreferencesDomainService.GetAllIds();
-
-                return new OperationResultListVo<Guid>(allIds);
-            }
-            catch (Exception ex)
-            {
-                return new OperationResultVo(ex.Message);
-            }
-        }
-
-        public async Task<OperationResultVo<UserPreferencesViewModel>> GetById(Guid currentUserId, Guid id)
-        {
-            try
-            {
-                UserPreferences model = await mediator.Query<GetUserPreferencesByIdQuery, UserPreferences>(new GetUserPreferencesByIdQuery(id));
-
-                UserPreferencesViewModel vm = mapper.Map<UserPreferencesViewModel>(model);
-
-                return new OperationResultVo<UserPreferencesViewModel>(vm);
-            }
-            catch (Exception ex)
-            {
-                return new OperationResultVo<UserPreferencesViewModel>(ex.Message);
-            }
-        }
-
-        public async Task<OperationResultVo> Remove(Guid currentUserId, Guid id)
-        {
-            try
-            {
-                userPreferencesDomainService.Remove(id);
-
-                await unitOfWork.Commit();
-
-                return new OperationResultVo(true);
-            }
-            catch (Exception ex)
-            {
-                return new OperationResultVo(ex.Message);
-            }
-        }
-
         public async Task<OperationResultVo<Guid>> Save(Guid currentUserId, UserPreferencesViewModel viewModel)
         {
             try
@@ -143,8 +65,6 @@ namespace LuduStack.Application.Services
                 return new OperationResultVo<Guid>(ex.Message);
             }
         }
-
-        #endregion ICrudAppService
 
         public UserPreferencesViewModel GetByUserId(Guid userId)
         {

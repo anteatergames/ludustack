@@ -39,8 +39,6 @@ namespace LuduStack.Application.Services
             this.gamificationDomainService = gamificationDomainService;
         }
 
-        #region ICrudAppService
-
         public async Task<OperationResultVo<int>> Count(Guid currentUserId)
         {
             try
@@ -71,17 +69,17 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public async Task<OperationResultVo> GetAllIds(Guid currentUserId)
+        public Task<OperationResultListVo<Guid>> GetAllIds(Guid currentUserId)
         {
             try
             {
                 IEnumerable<Guid> allIds = gameDomainService.GetAllIds();
 
-                return new OperationResultListVo<Guid>(allIds);
+                return Task.FromResult(new OperationResultListVo<Guid>(allIds));
             }
             catch (Exception ex)
             {
-                return new OperationResultVo(ex.Message);
+                return Task.FromResult(new OperationResultListVo<Guid>(ex.Message));
             }
         }
 
@@ -227,8 +225,6 @@ namespace LuduStack.Application.Services
                 return new OperationResultVo(ex.Message);
             }
         }
-
-        #endregion ICrudAppService
 
         public IEnumerable<GameListItemViewModel> GetLatest(Guid currentUserId, int count, Guid userId, Guid? teamId, GameGenre genre)
         {

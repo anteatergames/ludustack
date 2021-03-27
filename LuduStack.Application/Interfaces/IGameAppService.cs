@@ -11,13 +11,13 @@ namespace LuduStack.Application.Interfaces
     {
         Task<OperationResultVo<int>> Count(Guid currentUserId);
 
-        Task<OperationResultVo> GetAllIds(Guid currentUserId);
-
-        Task<OperationResultVo<GameViewModel>> GetById(Guid currentUserId, Guid id);
+        Task<OperationResultListVo<Guid>> GetAllIds(Guid currentUserId);
 
         Task<OperationResultVo> Remove(Guid currentUserId, Guid id);
 
         Task<OperationResultVo<Guid>> Save(Guid currentUserId, GameViewModel viewModel);
+
+        Task<OperationResultVo<GameViewModel>> GetById(Guid currentUserId, Guid id);
 
         Task<OperationResultVo<GameViewModel>> GetById(Guid currentUserId, Guid id, bool forEdit);
 

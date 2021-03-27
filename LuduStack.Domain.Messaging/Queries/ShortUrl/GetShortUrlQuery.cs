@@ -25,7 +25,7 @@ namespace LuduStack.Domain.Messaging.Queries.ShortUrl
         {
         }
 
-        public async Task<IEnumerable<Models.ShortUrl>> Handle(GetShortUrlQuery request, CancellationToken cancellationToken)
+        public new async Task<IEnumerable<Models.ShortUrl>> Handle(GetShortUrlQuery request, CancellationToken cancellationToken)
         {
             IEnumerable<Models.ShortUrl> all = await base.Handle(request, cancellationToken);
 

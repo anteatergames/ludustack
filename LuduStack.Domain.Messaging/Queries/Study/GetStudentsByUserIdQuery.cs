@@ -30,7 +30,7 @@ namespace LuduStack.Domain.Messaging.Queries.Study
             this.profileDomainService = profileDomainService;
         }
 
-        public async Task<IEnumerable<Guid>> Handle(GetStudentsByUserIdQuery request, CancellationToken cancellationToken)
+        public Task<IEnumerable<Guid>> Handle(GetStudentsByUserIdQuery request, CancellationToken cancellationToken)
         {
             IEnumerable<UserConnection> studentsIAdded = profileDomainService.GetConnectionByUserId(request.UserId, UserConnectionType.Pupil);
             IEnumerable<UserConnection> studentsAddedMe = profileDomainService.GetConnectionByTargetUserId(request.UserId, UserConnectionType.Mentor);
@@ -50,7 +50,7 @@ namespace LuduStack.Domain.Messaging.Queries.Study
                 }
             }
 
-            return finalList;
+            return Task.FromResult(finalList.AsEnumerable());
         }
     }
 }

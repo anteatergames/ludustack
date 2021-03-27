@@ -14,6 +14,11 @@ namespace LuduStack.Domain.Core.Extensions
             return (type.IsValueType && type.IsPrimitive);
         }
 
+        public static T Copy<T>(this T original)
+        {
+            return (T)Copy((Object)original);
+        }
+
         public static Object Copy(this Object originalObject)
         {
             return InternalCopy(originalObject, new Dictionary<Object, Object>(new ReferenceEqualityComparer()));
@@ -61,11 +66,6 @@ namespace LuduStack.Domain.Core.Extensions
                 object clonedFieldValue = InternalCopy(originalFieldValue, visited);
                 fieldInfo.SetValue(cloneObject, clonedFieldValue);
             }
-        }
-
-        public static T Copy<T>(this T original)
-        {
-            return (T)Copy((Object)original);
         }
     }
 

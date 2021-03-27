@@ -25,7 +25,7 @@ namespace LuduStack.Domain.Messaging.Queries.FeaturedContent
         {
         }
 
-        public async Task<IEnumerable<Models.FeaturedContent>> Handle(GetFeaturedContentQuery request, CancellationToken cancellationToken)
+        public new async Task<IEnumerable<Models.FeaturedContent>> Handle(GetFeaturedContentQuery request, CancellationToken cancellationToken)
         {
             IEnumerable<Models.FeaturedContent> all = await base.Handle(request, cancellationToken);
 

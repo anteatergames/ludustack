@@ -32,8 +32,6 @@ namespace LuduStack.Application.Services
             this.brainstormDomainService = brainstormDomainService;
         }
 
-        #region ICrudAppService
-
         public async Task<OperationResultVo<int>> Count(Guid currentUserId)
         {
             try
@@ -53,17 +51,17 @@ namespace LuduStack.Application.Services
             return Task.FromResult(new OperationResultListVo<BrainstormIdeaViewModel>("Not Implemented"));
         }
 
-        public async Task<OperationResultVo> GetAllIds(Guid currentUserId)
+        public Task<OperationResultListVo<Guid>> GetAllIds(Guid currentUserId)
         {
             try
             {
                 IEnumerable<Guid> allIds = brainstormDomainService.GetAllIds();
 
-                return new OperationResultListVo<Guid>(allIds);
+                return Task.FromResult(new OperationResultListVo<Guid>(allIds));
             }
             catch (Exception ex)
             {
-                return new OperationResultVo(ex.Message);
+                return Task.FromResult(new OperationResultListVo<Guid>(ex.Message));
             }
         }
 
@@ -158,8 +156,6 @@ namespace LuduStack.Application.Services
                 return new OperationResultVo<Guid>(ex.Message);
             }
         }
-
-        #endregion ICrudAppService
 
         public OperationResultVo Vote(Guid userId, Guid ideaId, VoteValue vote)
         {

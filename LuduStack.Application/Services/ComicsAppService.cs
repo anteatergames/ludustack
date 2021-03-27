@@ -26,8 +26,6 @@ namespace LuduStack.Application.Services
             this.userContentDomainService = userContentDomainService;
         }
 
-        #region ICrudAppService
-
         public Task<OperationResultVo<int>> Count(Guid currentUserId)
         {
             return Task.FromResult(new OperationResultVo<int>("Not Implemented"));
@@ -110,8 +108,6 @@ namespace LuduStack.Application.Services
                 return new OperationResultVo<Guid>(ex.Message);
             }
         }
-
-        #endregion ICrudAppService
 
         public OperationResultVo GenerateNew(Guid currentUserId)
         {

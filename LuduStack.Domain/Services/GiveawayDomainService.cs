@@ -325,13 +325,11 @@ namespace LuduStack.Domain.Services
                     model.StartDate = DateTime.Now;
                 }
 
-                //int timeZoneOffset = int.Parse(model.TimeZone ?? "0");
-
-                model.StartDate = model.StartDate.ToLocalTime(); //.AddHours(timeZoneOffset);
+                model.StartDate = model.StartDate.ToLocalTime();
 
                 if (model.EndDate.HasValue)
                 {
-                    model.EndDate = model.EndDate.Value.ToLocalTime(); //.AddHours(timeZoneOffset);
+                    model.EndDate = model.EndDate.Value.ToLocalTime();
                 }
 
                 GiveawayStatus effectiveStatus = model.Status;

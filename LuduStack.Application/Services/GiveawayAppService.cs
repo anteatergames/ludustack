@@ -178,8 +178,6 @@ namespace LuduStack.Application.Services
         {
             try
             {
-                // validate before
-
                 giveawayDomainService.Remove(giveawayId);
 
                 unitOfWork.Commit();

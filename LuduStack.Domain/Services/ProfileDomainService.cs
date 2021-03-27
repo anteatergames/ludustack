@@ -36,19 +36,23 @@ namespace LuduStack.Domain.Services
             return base.Update(model);
         }
 
-        public async Task<UserProfile> Get(Guid userId, string userHandler, ProfileType type)
+        public Task<UserProfile> Get(Guid userId, string userHandler, ProfileType type)
         {
             if (userId != Guid.Empty)
             {
-                return repository.Get(x => x.UserId == userId && x.Type == type).FirstOrDefault();
+                UserProfile profileById = repository.Get(x => x.UserId == userId && x.Type == type).FirstOrDefault();
+
+                return Task.FromResult(profileById);
             }
             else if (!string.IsNullOrWhiteSpace(userHandler))
             {
-                return repository.Get(x => x.Handler.Equals(userHandler.ToLower()) && x.Type == type).FirstOrDefault();
+                UserProfile profileByHandler = repository.Get(x => x.Handler.Equals(userHandler.ToLower()) && x.Type == type).FirstOrDefault();
+
+                return Task.FromResult(profileByHandler);
             }
             else
             {
-                return default(UserProfile);
+                return default;
             }
         }
 

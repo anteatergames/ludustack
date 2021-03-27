@@ -21,8 +21,6 @@ namespace LuduStack.Application.Services
             this.notificationDomainService = notificationDomainService;
         }
 
-        #region ICrudAppService
-
         public Task<OperationResultVo<int>> Count(Guid currentUserId)
         {
             return Task.FromResult(new OperationResultVo<int>(string.Empty));
@@ -33,17 +31,17 @@ namespace LuduStack.Application.Services
             return Task.FromResult(new OperationResultListVo<NotificationItemViewModel>(string.Empty));
         }
 
-        public async Task<OperationResultVo> GetAllIds(Guid currentUserId)
+        public Task<OperationResultListVo<Guid>> GetAllIds(Guid currentUserId)
         {
             try
             {
                 IEnumerable<Guid> allIds = notificationDomainService.GetAllIds();
 
-                return new OperationResultListVo<Guid>(allIds);
+                return Task.FromResult(new OperationResultListVo<Guid>(allIds));
             }
             catch (Exception ex)
             {
-                return new OperationResultVo(ex.Message);
+                return Task.FromResult(new OperationResultListVo<Guid>(ex.Message));
             }
         }
 
@@ -104,8 +102,6 @@ namespace LuduStack.Application.Services
                 return new OperationResultVo(ex.Message);
             }
         }
-
-        #endregion ICrudAppService
 
         public OperationResultListVo<NotificationItemViewModel> GetByUserId(Guid userId, int count)
         {

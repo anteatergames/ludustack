@@ -4,6 +4,7 @@ using LuduStack.Infra.CrossCutting.Messaging;
 using MediatR;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -32,11 +33,11 @@ namespace LuduStack.Domain.Messaging.Queries.UserContent
             this.repository = repository;
         }
 
-        public async Task<IEnumerable<Models.UserContent>> Handle(TQuery request, CancellationToken cancellationToken)
+        public Task<IEnumerable<Models.UserContent>> Handle(TQuery request, CancellationToken cancellationToken)
         {
-            System.Linq.IQueryable<Models.UserContent> comics = repository.Get(request.Where);
+            IQueryable<Models.UserContent> comics = repository.Get(request.Where);
 
-            return comics;
+            return Task.FromResult(comics.AsEnumerable());
         }
     }
 }

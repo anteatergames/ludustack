@@ -9,8 +9,6 @@ namespace LuduStack.Application.Interfaces
     {
         Task<OperationResultVo<int>> Count(Guid currentUserId);
 
-        Task<OperationResultVo> GetAllIds(Guid currentUserId);
-
         Task<OperationResultVo<TeamViewModel>> GetById(Guid currentUserId, Guid id);
 
         Task<OperationResultVo> Remove(Guid currentUserId, Guid id);

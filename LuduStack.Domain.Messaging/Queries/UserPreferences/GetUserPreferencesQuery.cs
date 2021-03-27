@@ -25,7 +25,7 @@ namespace LuduStack.Domain.Messaging.Queries.UserPreferences
         {
         }
 
-        public async Task<IEnumerable<Models.UserPreferences>> Handle(GetUserPreferencesQuery request, CancellationToken cancellationToken)
+        public new async Task<IEnumerable<Models.UserPreferences>> Handle(GetUserPreferencesQuery request, CancellationToken cancellationToken)
         {
             IEnumerable<Models.UserPreferences> all = await base.Handle(request, cancellationToken);
 

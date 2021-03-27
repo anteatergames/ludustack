@@ -25,7 +25,7 @@ namespace LuduStack.Domain.Messaging.Queries.Localization
         {
         }
 
-        public async Task<IEnumerable<Models.Localization>> Handle(GetLocalizationQuery request, CancellationToken cancellationToken)
+        public new async Task<IEnumerable<Models.Localization>> Handle(GetLocalizationQuery request, CancellationToken cancellationToken)
         {
             IEnumerable<Models.Localization> all = await base.Handle(request, cancellationToken);
 

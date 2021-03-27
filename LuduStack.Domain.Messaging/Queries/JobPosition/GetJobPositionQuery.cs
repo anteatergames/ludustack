@@ -25,7 +25,7 @@ namespace LuduStack.Domain.Messaging.Queries.JobPosition
         {
         }
 
-        public async Task<IEnumerable<Models.JobPosition>> Handle(GetJobPositionQuery request, CancellationToken cancellationToken)
+        public new async Task<IEnumerable<Models.JobPosition>> Handle(GetJobPositionQuery request, CancellationToken cancellationToken)
         {
             IEnumerable<Models.JobPosition> all = await base.Handle(request, cancellationToken);
 

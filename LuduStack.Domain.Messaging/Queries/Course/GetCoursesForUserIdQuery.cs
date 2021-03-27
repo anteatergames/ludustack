@@ -29,7 +29,7 @@ namespace LuduStack.Domain.Messaging.Queries.Course
             this.studyCourseRepository = studyCourseRepository;
         }
 
-        public async Task<StudyCoursesOfUserVo> Handle(GetCoursesForUserIdQuery request, CancellationToken cancellationToken)
+        public Task<StudyCoursesOfUserVo> Handle(GetCoursesForUserIdQuery request, CancellationToken cancellationToken)
         {
             List<UserCourseVo> objs = studyCourseRepository.Get().Where(x => x.Members.Any(y => y.UserId == request.UserId)).Select(x => new UserCourseVo
             {
@@ -47,7 +47,7 @@ namespace LuduStack.Domain.Messaging.Queries.Course
                 result.Courses = objs;
             }
 
-            return result;
+            return Task.FromResult(result);
         }
     }
 }

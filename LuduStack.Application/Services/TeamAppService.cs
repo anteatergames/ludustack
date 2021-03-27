@@ -29,8 +29,6 @@ namespace LuduStack.Application.Services
             this.gamificationDomainService = gamificationDomainService;
         }
 
-        #region ICrudAppService
-
         public async Task<OperationResultVo<int>> Count(Guid currentUserId)
         {
             try
@@ -63,20 +61,6 @@ namespace LuduStack.Application.Services
             catch (Exception ex)
             {
                 return new OperationResultListVo<TeamViewModel>(ex.Message);
-            }
-        }
-
-        public async Task<OperationResultVo> GetAllIds(Guid currentUserId)
-        {
-            try
-            {
-                IEnumerable<Guid> allIds = teamDomainService.GetAllIds();
-
-                return new OperationResultListVo<Guid>(allIds);
-            }
-            catch (Exception ex)
-            {
-                return new OperationResultVo(ex.Message);
             }
         }
 
@@ -175,8 +159,6 @@ namespace LuduStack.Application.Services
         {
             try
             {
-                // validate before
-
                 teamDomainService.Remove(id);
 
                 await unitOfWork.Commit();
@@ -188,10 +170,6 @@ namespace LuduStack.Application.Services
                 return new OperationResultVo(ex.Message);
             }
         }
-
-        #endregion ICrudAppService
-
-        #region ITeamAppService
 
         public OperationResultVo<int> CountNotSingleMemberGroups(Guid currentUserId)
         {
@@ -330,8 +308,6 @@ namespace LuduStack.Application.Services
         {
             try
             {
-                // validate before
-
                 teamDomainService.RemoveMember(teamId, userId);
 
                 unitOfWork.Commit();
@@ -406,8 +382,6 @@ namespace LuduStack.Application.Services
                 return new OperationResultVo(ex.Message);
             }
         }
-
-        #endregion ITeamAppService
 
         private void SetUiData(Guid userId, TeamViewModel team)
         {

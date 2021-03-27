@@ -61,7 +61,7 @@ namespace LuduStack.Infra.Data.MongoDb.Context
 
                 return count;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }

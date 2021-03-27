@@ -29,8 +29,6 @@ namespace LuduStack.Application.Services
             this.gamificationDomainService = gamificationDomainService;
         }
 
-        #region ICrudAppService
-
         public async Task<OperationResultVo<int>> Count(Guid currentUserId)
         {
             try
@@ -61,17 +59,17 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public async Task<OperationResultVo> GetAllIds(Guid currentUserId)
+        public Task<OperationResultListVo<Guid>> GetAllIds(Guid currentUserId)
         {
             try
             {
                 IEnumerable<Guid> allIds = jobPositionDomainService.GetAllIds();
 
-                return new OperationResultListVo<Guid>(allIds);
+                return Task.FromResult(new OperationResultListVo<Guid>(allIds));
             }
             catch (Exception ex)
             {
-                return new OperationResultVo(ex.Message);
+                return Task.FromResult(new OperationResultListVo<Guid>(ex.Message));
             }
         }
 
@@ -139,8 +137,6 @@ namespace LuduStack.Application.Services
         {
             try
             {
-                // validate before
-
                 jobPositionDomainService.Remove(id);
 
                 await unitOfWork.Commit();
@@ -193,8 +189,6 @@ namespace LuduStack.Application.Services
                 return new OperationResultVo<Guid>(ex.Message);
             }
         }
-
-        #endregion ICrudAppService
 
         public OperationResultVo GenerateNew(Guid currentUserId, JobPositionOrigin origin)
         {
