@@ -19,13 +19,6 @@ namespace LuduStack.Infra.Data.Cache
             return obj;
         }
 
-        public T Get<T>(string key)
-        {
-            T obj = (T)memoryCache.Get(key);
-
-            return obj;
-        }
-
         public T Get<TKey, T>(TKey key)
         {
             T obj = (T)memoryCache.Get(key);

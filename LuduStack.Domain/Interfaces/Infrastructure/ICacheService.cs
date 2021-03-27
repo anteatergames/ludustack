@@ -6,8 +6,6 @@
 
         T Get<TKey, T>(TKey key);
 
-        T Get<T>(string key);
-
         void Set(string key, string value);
 
         void Set<T>(string key, T value);

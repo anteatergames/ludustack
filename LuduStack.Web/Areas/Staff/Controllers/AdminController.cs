@@ -48,42 +48,14 @@ namespace LuduStack.Web.Areas.Staff.Controllers
                     return View("TaskResult", profileResult);
                 }
 
-                foreach (ProfileViewModel profile in profileResult.Value)
-                {
-                    ApplicationUser user = allUsers.FirstOrDefault(x => x.Id.Equals(profile.UserId.ToString()));
-                    if (user == null)
-                    {
-                        messages.Add($"profile {profile.Name} ({profile.Id}) without user {profile.UserId}");
-                    }
-                    else
-                    {
-                        if (string.IsNullOrWhiteSpace(profile.Handler))
-                        {
-                            messages.Add($"profile {profile.Name} ({profile.Id}) without handler (should be {user.UserName.ToLower()})");
-                        }
-                        else
-                        {
-                            if (!profile.Handler.Equals(profile.Handler.ToLower()))
-                            {
-                                messages.Add($"profile {profile.Name} ({profile.Id}) handler ({profile.Handler}) not lowercase");
-                            }
-                        }
-                    }
-                }
-
                 foreach (ApplicationUser user in allUsers)
                 {
-                    Guid guid = Guid.Parse(user.Id);
-                    ProfileViewModel profile = profileResult.Value.FirstOrDefault(x => x.UserId == guid);
-                    if (profile == null)
-                    {
-                        messages.Add($"user {user.UserName} ({user.Id}) without profile");
-                    }
+                    AnalyseUser(messages, profileResult, user);
+                }
 
-                    if (user.CreateDate == DateTime.MinValue)
-                    {
-                        messages.Add($"user {user.UserName} without create date");
-                    }
+                foreach (ProfileViewModel profile in profileResult.Value)
+                {
+                    AnalyseProfile(messages, allUsers, profile);
                 }
             }
             catch (Exception ex)
@@ -119,31 +91,12 @@ namespace LuduStack.Web.Areas.Staff.Controllers
                 IQueryable<ApplicationUser> usersWithoutDate = allUsers.Where(x => x.CreateDate == DateTime.MinValue);
                 foreach (ApplicationUser user in usersWithoutDate)
                 {
-                    ProfileViewModel profile = profileResult.Value.FirstOrDefault(x => x.UserId.ToString().Equals(user.Id));
-                    if (profile != null)
-                    {
-                        user.CreateDate = profile.CreateDate;
-                        await UserManager.UpdateAsync(user);
-                    }
+                    await FixUserInconsistencies(profileResult, user);
                 }
 
                 foreach (ProfileViewModel profile in profileResult.Value)
                 {
-                    ApplicationUser user = allUsers.FirstOrDefault(x => x.Id.Equals(profile.UserId.ToString()));
-                    if (user == null)
-                    {
-                        messages.Add($"ERROR: user for {profile.Handler} ({profile.UserId}) NOT FOUND");
-                    }
-                    else
-                    {
-                        string handler = user.UserName.ToLower();
-                        if (string.IsNullOrWhiteSpace(profile.Handler) || !profile.Handler.Equals(handler))
-                        {
-                            profile.Handler = handler;
-                            await ProfileAppService.Save(CurrentUserId, profile);
-                            messages.Add($"SUCCESS: {profile.Name} handler updated to \"{handler}\"");
-                        }
-                    }
+                    await FixProfileInconsistencies(messages, allUsers, profile);
                 }
             }
             catch (Exception ex)
@@ -197,6 +150,78 @@ namespace LuduStack.Web.Areas.Staff.Controllers
             {
                 return UserManager.Users;
             });
+        }
+
+        private static void AnalyseUser(List<string> messages, OperationResultListVo<ProfileViewModel> profileResult, ApplicationUser user)
+        {
+            Guid guid = Guid.Parse(user.Id);
+            ProfileViewModel profile = profileResult.Value.FirstOrDefault(x => x.UserId == guid);
+            if (profile == null)
+            {
+                messages.Add($"user {user.UserName} ({user.Id}) without profile");
+            }
+
+            if (user.CreateDate == DateTime.MinValue)
+            {
+                messages.Add($"user {user.UserName} without create date");
+            }
+        }
+
+        private static void AnalyseProfile(List<string> messages, IQueryable<ApplicationUser> allUsers, ProfileViewModel profile)
+        {
+            ApplicationUser user = allUsers.FirstOrDefault(x => x.Id.Equals(profile.UserId.ToString()));
+            if (user == null)
+            {
+                messages.Add($"profile {profile.Name} ({profile.Id}) without user {profile.UserId}");
+            }
+            else
+            {
+                AnalyseHandler(messages, profile, user);
+            }
+        }
+
+        private static void AnalyseHandler(List<string> messages, ProfileViewModel profile, ApplicationUser user)
+        {
+            if (string.IsNullOrWhiteSpace(profile.Handler))
+            {
+                messages.Add($"profile {profile.Name} ({profile.Id}) without handler (should be {user.UserName.ToLower()})");
+            }
+            else
+            {
+                if (!profile.Handler.Equals(profile.Handler.ToLower()))
+                {
+                    messages.Add($"profile {profile.Name} ({profile.Id}) handler ({profile.Handler}) not lowercase");
+                }
+            }
+        }
+
+        private async Task FixUserInconsistencies(OperationResultListVo<ProfileViewModel> profileResult, ApplicationUser user)
+        {
+            ProfileViewModel profile = profileResult.Value.FirstOrDefault(x => x.UserId.ToString().Equals(user.Id));
+            if (profile != null)
+            {
+                user.CreateDate = profile.CreateDate;
+                await UserManager.UpdateAsync(user);
+            }
+        }
+
+        private async Task FixProfileInconsistencies(List<string> messages, IQueryable<ApplicationUser> allUsers, ProfileViewModel profile)
+        {
+            ApplicationUser user = allUsers.FirstOrDefault(x => x.Id.Equals(profile.UserId.ToString()));
+            if (user == null)
+            {
+                messages.Add($"ERROR: user for {profile.Handler} ({profile.UserId}) NOT FOUND");
+            }
+            else
+            {
+                string handler = user.UserName.ToLower();
+                if (string.IsNullOrWhiteSpace(profile.Handler) || !profile.Handler.Equals(handler))
+                {
+                    profile.Handler = handler;
+                    await ProfileAppService.Save(CurrentUserId, profile);
+                    messages.Add($"SUCCESS: {profile.Name} handler updated to \"{handler}\"");
+                }
+            }
         }
     }
 }

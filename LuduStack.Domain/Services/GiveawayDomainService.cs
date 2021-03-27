@@ -332,20 +332,7 @@ namespace LuduStack.Domain.Services
                     model.EndDate = model.EndDate.Value.ToLocalTime();
                 }
 
-                GiveawayStatus effectiveStatus = model.Status;
-
-                if ((model.Status == GiveawayStatus.Draft || model.Status == GiveawayStatus.PendingStart) && model.StartDate <= DateTime.Now)
-                {
-                    effectiveStatus = GiveawayStatus.OpenForEntries;
-                }
-                else if ((model.Status == GiveawayStatus.Draft || model.Status == GiveawayStatus.OpenForEntries) && model.StartDate >= DateTime.Now)
-                {
-                    effectiveStatus = GiveawayStatus.PendingStart;
-                }
-                else if (model.Status != GiveawayStatus.Ended && model.EndDate.HasValue && DateTime.Now >= model.EndDate.Value)
-                {
-                    effectiveStatus = GiveawayStatus.PickingWinners;
-                }
+                GiveawayStatus effectiveStatus = ComputeEffectiveStatus(model);
 
                 if (effectiveStatus != GiveawayStatus.Draft)
                 {
@@ -354,6 +341,26 @@ namespace LuduStack.Domain.Services
             }
 
             return model;
+        }
+
+        private static GiveawayStatus ComputeEffectiveStatus(IGiveawayBasicInfo model)
+        {
+            GiveawayStatus effectiveStatus = model.Status;
+
+            if ((model.Status == GiveawayStatus.Draft || model.Status == GiveawayStatus.PendingStart) && model.StartDate <= DateTime.Now)
+            {
+                effectiveStatus = GiveawayStatus.OpenForEntries;
+            }
+            else if ((model.Status == GiveawayStatus.Draft || model.Status == GiveawayStatus.OpenForEntries) && model.StartDate >= DateTime.Now)
+            {
+                effectiveStatus = GiveawayStatus.PendingStart;
+            }
+            else if (model.Status != GiveawayStatus.Ended && model.EndDate.HasValue && DateTime.Now >= model.EndDate.Value)
+            {
+                effectiveStatus = GiveawayStatus.PickingWinners;
+            }
+
+            return effectiveStatus;
         }
 
         private static void SetRequiredProperties(Giveaway model)

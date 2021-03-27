@@ -244,7 +244,7 @@ namespace LuduStack.Application.Services
                 item.DeveloperImageUrl = UrlFormatter.ProfileImage(item.UserId, 40);
 
                 UserProfile authorProfile = GetCachedProfileByUserId(item.UserId);
-                item.DeveloperName = authorProfile.Name;
+                item.DeveloperName = authorProfile?.Name;
             }
 
             return vms;

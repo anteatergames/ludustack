@@ -488,18 +488,7 @@ namespace LuduStack.Application.Services
 
             if (!string.IsNullOrWhiteSpace(vm.FeaturedImage))
             {
-                if (!editing)
-                {
-                    string imageInTheList = vm.ImageList.FirstOrDefault(x => x.Contains(vm.FeaturedImage));
-                    int index = vm.ImageList.IndexOf(imageInTheList);
-                    if (index >= 0)
-                    {
-                        vm.ImageList.RemoveAt(index);
-                        vm.ImageList.Insert(0, imageInTheList);
-                    }
-
-                    vm.FeaturedImage = UrlFormatter.Image(vm.UserId, ImageType.FeaturedImage, vm.FeaturedImage, 720, 0);
-                }
+                ReplaceImage(vm, editing);
             }
             else if (vm.ImageList != null && vm.ImageList.Any() && !firstIsPlaceholder)
             {
@@ -508,6 +497,22 @@ namespace LuduStack.Application.Services
             else
             {
                 vm.FeaturedImage = UrlFormatter.Image(vm.UserId, ImageType.FeaturedImage, Constants.DefaultGiveawayThumbnail, 720, 0);
+            }
+        }
+
+        private static void ReplaceImage(IGiveawayScreenViewModel vm, bool editing)
+        {
+            if (!editing)
+            {
+                string imageInTheList = vm.ImageList.FirstOrDefault(x => x.Contains(vm.FeaturedImage));
+                int index = vm.ImageList.IndexOf(imageInTheList);
+                if (index >= 0)
+                {
+                    vm.ImageList.RemoveAt(index);
+                    vm.ImageList.Insert(0, imageInTheList);
+                }
+
+                vm.FeaturedImage = UrlFormatter.Image(vm.UserId, ImageType.FeaturedImage, vm.FeaturedImage, 720, 0);
             }
         }
 
