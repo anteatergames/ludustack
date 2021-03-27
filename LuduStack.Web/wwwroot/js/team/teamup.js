@@ -290,16 +290,18 @@
     }
 
     function deleteTeam(btn) {
-        var url = $(this).data('url');
+        var url = btn.data('url');
         $.ajax({
             url: url,
             type: 'DELETE'
-        }).done(deleteTeamCallback);
+        }).done(function (response) {
+            deleteTeamCallback(response, btn);
+        });
     }
 
-    function deleteTeamCallback(response) {
+    function deleteTeamCallback(response, btn) {
         if (response.success) {
-            btn.closest(selectors.divteamItem).remove();
+            btn.closest(selectors.divteamItem).parent().remove();
             loadMyTeams();
 
             if (response.message) {
