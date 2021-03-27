@@ -14,6 +14,7 @@ using LuduStack.Web.Enums;
 using LuduStack.Web.Services;
 using MediatR;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -398,7 +399,7 @@ namespace LuduStack.Web.Controllers.Base
 
         protected void SetCookieValue(SessionValues key, string value, int? expireTime, bool isEssential)
         {
-            CookieMgrService.Set(key.ToString(), value, expireTime, isEssential);
+            CookieMgrService.Set(key.ToString(), value, expireTime, isEssential, null);
         }
 
         protected void SetCookieValue(string key, string value, int? expireTime)
@@ -408,7 +409,17 @@ namespace LuduStack.Web.Controllers.Base
 
         protected void SetCookieValue(string key, string value, int? expireTime, bool isEssential)
         {
-            CookieMgrService.Set(key, value, expireTime, isEssential);
+            CookieMgrService.Set(key, value, expireTime, isEssential, null);
+        }
+
+        protected void SetCookieValue(string key, string value, int? expireTime, bool isEssential, SameSiteMode sameSite)
+        {
+            CookieMgrService.Set(key, value, expireTime, isEssential, sameSite);
+        }
+
+        protected void SetCookieValue(string key, string value, int? expireTime, SameSiteMode sameSite)
+        {
+            CookieMgrService.Set(key, value, expireTime, false, sameSite);
         }
 
         #endregion Cookie Management

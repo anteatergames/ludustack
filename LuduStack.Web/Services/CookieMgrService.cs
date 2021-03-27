@@ -19,7 +19,7 @@ namespace LuduStack.Web.Services
             return cookieValueFromContext;
         }
 
-        public void Set(string key, string value, int? expireTime, bool isEssential)
+        public void Set(string key, string value, int? expireTime, bool isEssential, SameSiteMode? sameSite)
         {
             string consent = _httpContextAccessor.HttpContext.Request.Cookies[".LuduStack.Consent"];
 
@@ -35,6 +35,7 @@ namespace LuduStack.Web.Services
 
             option.IsEssential = isEssential || consent != null;
             option.Secure = true;
+            option.SameSite = sameSite.HasValue ? sameSite.Value : SameSiteMode.Strict;
 
             string existing = _httpContextAccessor.HttpContext.Request.Cookies[key];
 
