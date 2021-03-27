@@ -59,32 +59,7 @@ namespace LuduStack.Web.ViewComponents
 
             foreach (UserContentViewModel item in model)
             {
-                if (item.UserContentType == UserContentType.TeamCreation)
-                {
-                    FormatTeamCreationPost(item);
-                }
-                if (item.UserContentType == UserContentType.JobPosition)
-                {
-                    FormatJobPositionPostForTheFeed(item);
-                }
-                else
-                {
-                    item.Content = ContentFormatter.FormatContentToShow(item.Content);
-                    if (item.FeaturedMediaType == MediaType.Youtube)
-                    {
-                        item.FeaturedImageResponsive = ContentFormatter.GetYoutubeVideoId(item.FeaturedImage);
-                        item.FeaturedImageLquip = ContentHelper.SetFeaturedImage(Guid.Empty, Constants.DefaultFeaturedImageLquip, ImageRenderType.LowQuality);
-                    }
-                }
-
-                foreach (CommentViewModel comment in item.Comments)
-                {
-                    comment.Text = ContentFormatter.FormatHashTagsToShow(comment.Text);
-                }
-
-                item.Permissions.CanEdit = !item.HasPoll && (item.UserId == CurrentUserId || userIsAdmin);
-
-                item.Permissions.CanDelete = item.UserId == CurrentUserId || userIsAdmin;
+                FillMissingInformation(userIsAdmin, item);
             }
 
             if (model.Any())
@@ -100,6 +75,36 @@ namespace LuduStack.Web.ViewComponents
             ViewData["UserId"] = userId;
 
             return await Task.Run(() => View(model));
+        }
+
+        private void FillMissingInformation(bool userIsAdmin, UserContentViewModel item)
+        {
+            if (item.UserContentType == UserContentType.TeamCreation)
+            {
+                FormatTeamCreationPost(item);
+            }
+            if (item.UserContentType == UserContentType.JobPosition)
+            {
+                FormatJobPositionPostForTheFeed(item);
+            }
+            else
+            {
+                item.Content = ContentFormatter.FormatContentToShow(item.Content);
+                if (item.FeaturedMediaType == MediaType.Youtube)
+                {
+                    item.FeaturedImageResponsive = ContentFormatter.GetYoutubeVideoId(item.FeaturedImage);
+                    item.FeaturedImageLquip = ContentHelper.SetFeaturedImage(Guid.Empty, Constants.DefaultFeaturedImageLquip, ImageRenderType.LowQuality);
+                }
+            }
+
+            foreach (CommentViewModel comment in item.Comments)
+            {
+                comment.Text = ContentFormatter.FormatHashTagsToShow(comment.Text);
+            }
+
+            item.Permissions.CanEdit = !item.HasPoll && (item.UserId == CurrentUserId || userIsAdmin);
+
+            item.Permissions.CanDelete = item.UserId == CurrentUserId || userIsAdmin;
         }
 
         private void FormatTeamCreationPost(UserContentViewModel item)

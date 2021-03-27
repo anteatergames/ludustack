@@ -237,32 +237,36 @@
                     submitForm(btn);
                 }
                 else {
-                    IMAGEMANIPULAION.Dropzone.Get(0).processQueue();
-
-                    IMAGEMANIPULAION.Dropzone.Get(0).on("success", function (file) {
-                        var response = JSON.parse(file.xhr.response);
-                        if (response.uploaded) {
-                            allImagesUploaded = true;
-
-                            placeUploadedImage(response.url);
-                        }
-                        else {
-                            if (response.error) {
-                                ALERTSYSTEM.ShowWarningMessage(response.error);
-                            }
-                        }
-                    });
-
-                    IMAGEMANIPULAION.Dropzone.Get(0).on("queuecomplete", function (file) {
-                        if (allImagesUploaded === true) {
-                            submitForm(btn).done(function () {
-                                IMAGEMANIPULAION.Dropzone.Initialize(0, imagesToUploadCount, selectors.dropzoneImages, true);
-                            });
-
-                            console.log(file);
-                        }
-                    });
+                    uploadImages(btn);
                 }
+            }
+        });
+    }
+
+    function uploadImages(btn) {
+        IMAGEMANIPULAION.Dropzone.Get(0).processQueue();
+
+        IMAGEMANIPULAION.Dropzone.Get(0).on("success", function (file) {
+            var response = JSON.parse(file.xhr.response);
+            if (response.uploaded) {
+                allImagesUploaded = true;
+
+                placeUploadedImage(response.url);
+            }
+            else {
+                if (response.error) {
+                    ALERTSYSTEM.ShowWarningMessage(response.error);
+                }
+            }
+        });
+
+        IMAGEMANIPULAION.Dropzone.Get(0).on("queuecomplete", function (file) {
+            if (allImagesUploaded === true) {
+                submitForm(btn).done(function () {
+                    IMAGEMANIPULAION.Dropzone.Initialize(0, imagesToUploadCount, selectors.dropzoneImages, true);
+                });
+
+                console.log(file);
             }
         });
     }

@@ -271,15 +271,11 @@
             }
 
             ALERTSYSTEM.Toastr.ShowSuccess(response.message, function (result) {
-                if (response.url) {
-                    window.location = response.url;
-                }
+                MAINMODULE.Ajax.HandleUrlResponse(response);
             });
         }
         else {
-            if (response.url) {
-                window.location = response.url;
-            }
+            MAINMODULE.Ajax.HandleUrlResponse(response);
         }
     }
 
@@ -382,15 +378,11 @@
 
                 if (options !== undefined && options.showSuccessMessage === true) {
                     ALERTSYSTEM.ShowSuccessMessage(response.message, function () {
-                        if (response.url) {
-                            window.location = response.url;
-                        }
+                        MAINMODULE.Ajax.HandleUrlResponse(response);
                     });
                 }
                 else {
-                    if (response.url) {
-                        window.location = response.url;
-                    }
+                    MAINMODULE.Ajax.HandleUrlResponse(response);
                 }
             }
             else {
@@ -508,6 +500,12 @@
         return new Blob([ab], { type: 'image/jpeg' });
     }
 
+    function handleUrlResponse(response) {
+        if (response.url) {
+            window.location = response.url;
+        }
+    }
+
     return {
         Init: init,
         GetLocale: getLocale,
@@ -518,7 +516,8 @@
             Post: post,
             GetHtml: getHtml,
             LoadHtml: loadHtml,
-            CallBackendAction: callBackendAction
+            CallBackendAction: callBackendAction,
+            HandleUrlResponse: handleUrlResponse
         },
         Common: {
             HandlePointsEarned: handlePointsEarned,

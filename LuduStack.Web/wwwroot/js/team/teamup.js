@@ -278,35 +278,39 @@
             e.preventDefault();
 
             var btn = $(this);
-            var url = $(this).data('url');
             var msg = btn.data('confirmationmessage');
             var confirmationTitle = btn.data('confirmationtitle');
             var confirmationButtonText = btn.data('confirmationbuttontext');
             var cancelButtonText = btn.data('cancelbuttontext');
 
             ALERTSYSTEM.ShowConfirmMessage(confirmationTitle, msg, confirmationButtonText, cancelButtonText, function () {
-                $.ajax({
-                    url: url,
-                    type: 'DELETE'
-                }).done(function (response) {
-                    if (response.success) {
-                        btn.closest(selectors.divteamItem).remove();
-                        loadMyTeams();
-
-                        if (response.message) {
-                            ALERTSYSTEM.ShowSuccessMessage(response.message, function () {
-                                if (response.url) {
-                                    window.location = response.url;
-                                }
-                            });
-                        }
-                    }
-                    else {
-                        ALERTSYSTEM.ShowWarningMessage(response.message);
-                    }
-                });
+                deleteTeam(btn);
             });
         });
+    }
+
+    function deleteTeam(btn) {
+        var url = $(this).data('url');
+        $.ajax({
+            url: url,
+            type: 'DELETE'
+        }).done(deleteTeamCallback);
+    }
+
+    function deleteTeamCallback(response) {
+        if (response.success) {
+            btn.closest(selectors.divteamItem).remove();
+            loadMyTeams();
+
+            if (response.message) {
+                ALERTSYSTEM.ShowSuccessMessage(response.message, function () {
+                    MAINMODULE.Ajax.HandleUrlResponse(response);
+                });
+            }
+        }
+        else {
+            ALERTSYSTEM.ShowWarningMessage(response.message);
+        }
     }
 
     function bindDeleteMember() {

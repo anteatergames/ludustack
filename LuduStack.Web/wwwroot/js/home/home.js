@@ -218,40 +218,44 @@
                 });
             }
             else {
-                postImagesDropZone.processQueue();
+                uploadImages(postImagesDropZone, text, gameId, options, txtArea);
+            }
+        });
+    }
 
-                var success = false;
+    function uploadImages(postImagesDropZone, text, gameId, options, txtArea) {
+        postImagesDropZone.processQueue();
 
-                postImagesDropZone.on("success", function (file) {
-                    var response = JSON.parse(file.xhr.response);
-                    if (response.uploaded) {
-                        success = true;
-                        objs.postImages.val(objs.postImages.val() + '|' + response.url);
+        var success = false;
+
+        postImagesDropZone.on("success", function (file) {
+            var response = JSON.parse(file.xhr.response);
+            if (response.uploaded) {
+                success = true;
+                objs.postImages.val(objs.postImages.val() + '|' + response.url);
+            }
+            else {
+                if (response.error) {
+                    ALERTSYSTEM.ShowWarningMessage(response.error);
+                }
+            }
+        });
+
+        postImagesDropZone.on("queuecomplete", function (file) {
+            if (success === true) {
+                var images2 = objs.postImages.val();
+                var json2 = { text: text, gameId: gameId, images: images2, pollOptions: options };
+                sendSimpleContent(json2).done(function (response) {
+                    sendSimpleContentCallback(response, txtArea);
+
+                    if (postImagesDropZone) {
+                        postImagesDropZone.destroy();
+                        postImagesDropZone = null;
                     }
-                    else {
-                        if (response.error) {
-                            ALERTSYSTEM.ShowWarningMessage(response.error);
-                        }
-                    }
+
+                    instantiateDropZone();
                 });
-
-                postImagesDropZone.on("queuecomplete", function (file) {
-                    if (success === true) {
-                        var images2 = objs.postImages.val();
-                        var json2 = { text: text, gameId: gameId, images: images2, pollOptions: options };
-                        sendSimpleContent(json2).done(function (response) {
-                            sendSimpleContentCallback(response, txtArea);
-
-                            if (postImagesDropZone) {
-                                postImagesDropZone.destroy();
-                                postImagesDropZone = null;
-                            }
-
-                            instantiateDropZone();
-                        });
-                        console.log(file);
-                    }
-                });
+                console.log(file);
             }
         });
     }

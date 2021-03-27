@@ -66,7 +66,7 @@
             $.post(url, data).done(function (response) {
                 if (response.success === true) {
                     ALERTSYSTEM.ShowSuccessMessage("Awesome!", function () {
-                        window.location = response.url;
+                        MAINMODULE.Ajax.HandleUrlResponse(response);
                     });
                 }
                 else {
@@ -195,7 +195,7 @@
                 }
 
                 ALERTSYSTEM.ShowSuccessMessage("Awesome!", function () {
-                    window.location = response.url;
+                    MAINMODULE.Ajax.HandleUrlResponse(response);
                 });
             }
             else {

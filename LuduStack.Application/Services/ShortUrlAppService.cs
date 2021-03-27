@@ -1,13 +1,9 @@
 ﻿using LuduStack.Application.Interfaces;
-using LuduStack.Application.ViewModels.ShortUrl;
 using LuduStack.Domain.Interfaces.Services;
-using LuduStack.Domain.Messaging.Queries.ShortUrl;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
 using LuduStack.Infra.CrossCutting.Messaging;
 using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace LuduStack.Application.Services
 {

@@ -721,19 +721,24 @@ namespace LuduStack.Application.Services
                 IRow headerRow = sheet.GetRow(0);
                 int cellCount = headerRow.LastCellNum;
 
-                for (int j = 0; j < cellCount; j++)
-                {
-                    ICell cell = headerRow.GetCell(j);
-                    if (cell == null || string.IsNullOrWhiteSpace(cell.ToString())) continue;
-                    {
-                        dtTable.Columns.Add(cell.ToString());
-                    }
-                }
+                AddColumns(dtTable, headerRow, cellCount);
 
                 FillDataTable(dtTable, sheet, cellCount);
             }
 
             return dtTable;
+        }
+
+        private static void AddColumns(DataTable dtTable, IRow headerRow, int cellCount)
+        {
+            for (int j = 0; j < cellCount; j++)
+            {
+                ICell cell = headerRow.GetCell(j);
+                if (cell == null || string.IsNullOrWhiteSpace(cell.ToString())) continue;
+                {
+                    dtTable.Columns.Add(cell.ToString());
+                }
+            }
         }
 
         private static void FillDataTable(DataTable dtTable, ISheet sheet, int cellCount)

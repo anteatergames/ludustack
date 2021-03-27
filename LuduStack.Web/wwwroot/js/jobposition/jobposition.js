@@ -250,36 +250,40 @@
                     url: url,
                     type: 'DELETE'
                 }).done(function (response) {
-                    if (response.success) {
-                        btn.closest(selectors.divListItem).remove();
-
-                        if (response.message) {
-                            ALERTSYSTEM.ShowSuccessMessage(response.message, function () {
-                                if (response.url) {
-                                    window.location = response.url;
-                                }
-                                else {
-                                    loadJobPositions(false, urlListDefault);
-                                    loadMyJobPositionStats(urlMyPositionStats);
-                                }
-                            });
-                        }
-                        else {
-                            if (response.url) {
-                                window.location = response.url;
-                            }
-                            else {
-                                loadJobPositions(false, urlListDefault);
-                                loadMyJobPositionStats(urlMyPositionStats);
-                            }
-                        }
-                    }
-                    else {
-                        ALERTSYSTEM.ShowWarningMessage(response.message);
-                    }
+                    deleteJobPositionCallback(response, btn);
                 });
             });
         });
+    }
+
+    function deleteJobPositionCallback(response, btn) {
+        if (response.success) {
+            btn.closest(selectors.divListItem).remove();
+
+            if (response.message) {
+                ALERTSYSTEM.ShowSuccessMessage(response.message, function () {
+                    if (response.url) {
+                        window.location = response.url;
+                    }
+                    else {
+                        loadJobPositions(false, urlListDefault);
+                        loadMyJobPositionStats(urlMyPositionStats);
+                    }
+                });
+            }
+            else {
+                if (response.url) {
+                    window.location = response.url;
+                }
+                else {
+                    loadJobPositions(false, urlListDefault);
+                    loadMyJobPositionStats(urlMyPositionStats);
+                }
+            }
+        }
+        else {
+            ALERTSYSTEM.ShowWarningMessage(response.message);
+        }
     }
 
     function bindRemoteChange() {

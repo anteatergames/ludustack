@@ -304,7 +304,6 @@ namespace LuduStack.Application.Services
                 if (vm.Id == Guid.Empty)
                 {
                     brainstormDomainService.Add(model);
-                    vm.Id = model.Id;
                 }
                 else
                 {
@@ -313,6 +312,7 @@ namespace LuduStack.Application.Services
 
                 await unitOfWork.Commit();
 
+                vm.Id = model.Id;
                 return new OperationResultVo<Guid>(model.Id);
             }
             catch (Exception ex)

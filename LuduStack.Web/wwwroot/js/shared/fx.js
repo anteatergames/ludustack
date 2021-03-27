@@ -4,6 +4,7 @@
     var onlyOnKonami = false;
     var pattern = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
     var current = 0;
+    var prev = undefined;
 
     var selectors = {};
     var objs = {};
@@ -192,29 +193,38 @@
 
             // Update the domain
             for (i = domain.length - 1; i > 0; i -= 2) {
-                l = i - 1;
-                a = domain[l];
-                b = domain[i];
-
-                // c---d          c---d  Do nothing
-                //   c-----d  c-----d    Move interior
-                //   c--------------d    Delete interval
-                //         c--d          Split interval
-                //       a------b
-                if (a >= c && a < d)
-                    if (b > d) domain[l] = d; // Move interior (Left case)
-                    else domain.splice(l, 2); // Delete interval
-                else if (a < c && b > c)
-                    if (b <= d) domain[i] = c; // Move interior (Right case)
-                    else domain.splice(i, 0, c, d); // Split interval
+                updateDomainItem(domain, i, l, a, b, c, d);
             }
 
             // Re-measure the domain
-            for (i = 0, l = domain.length, measure = 0; i < l; i += 2)
+            for (i = 0, l = domain.length, measure = 0; i < l; i += 2) {
                 measure += domain[i + 1] - domain[i];
+            }
         }
 
         return spline.sort((a, b) => (a - b));
+    }
+
+    function updateDomainItem(domain, i, l, a, b, c, d) {
+        l = i - 1;
+        a = domain[l];
+        b = domain[i];
+
+        // c---d          c---d  Do nothing
+        //   c-----d  c-----d    Move interior
+        //   c--------------d    Delete interval
+        //         c--d          Split interval
+        //       a------b
+        if (a >= c && a < d)
+            if (b > d)
+                domain[l] = d; // Move interior (Left case)
+            else
+                domain.splice(l, 2); // Delete interval
+        else if (a < c && b > c)
+            if (b <= d)
+                domain[i] = c; // Move interior (Right case)
+            else
+                domain.splice(i, 0, c, d);
     }
 
     // Create the overarching container
@@ -312,27 +322,28 @@
             })();
 
             // Start the loop
-            var prev = undefined;
-            requestAnimationFrame(function loop(timestamp) {
-                var delta = prev ? timestamp - prev : 0;
-                prev = timestamp;
-                var height = $window.height();
-
-                for (var i = confetti.length - 1; i >= 0; --i) {
-                    if (confetti[i].update(height, delta)) {
-                        container.removeChild(confetti[i].outer);
-                        confetti.splice(i, 1);
-                    }
-                }
-
-                if (timer || confetti.length)
-                    return frame = requestAnimationFrame(loop);
-
-                // Cleanup
-                document.body.removeChild(container);
-                frame = undefined;
-            });
+            requestAnimationFrame(loop);
         }
+
+        function loop(timestamp) {
+            var delta = prev ? timestamp - prev : 0;
+            prev = timestamp;
+            var height = $window.height();
+
+            for (var i = confetti.length - 1; i >= 0; --i) {
+                if (confetti[i].update(height, delta)) {
+                    container.removeChild(confetti[i].outer);
+                    confetti.splice(i, 1);
+                }
+            }
+
+            if (timer || confetti.length)
+                return frame = requestAnimationFrame(loop);
+
+            // Cleanup
+            document.body.removeChild(container);
+            frame = undefined;
+        };
     }
     // end confetti
 

@@ -222,65 +222,69 @@
         var imagesToProcessCount = imagesChanged.length;
 
         if (imagesChanged.length > 0) {
-            for (var i = 0; i < imagesToProcessCount; i++) {
-                var element = imagesChanged[i];
-                var changed = element.dataset.changed === 'true';
-
-                if (!changed) {
-                    console.log('skipping...');
-                    imagesProcessed++;
-                    continue;
-                }
-                console.log('uploading...');
-
-                var image = document.getElementById(element.dataset.targetImg);
-                var hidden = document.getElementById(element.dataset.targetHidden);
-
-                var cropper = croppers[image.dataset.cropperIndex];
-
-                var canvas = cropper.getCroppedCanvas();
-
-                var dataUri = canvas.toDataURL();
-
-                var blob = MAINMODULE.Utils.DataURItoBlob(dataUri);
-
-                var formData = new FormData();
-                formData.append('userId', objs.userId.val());
-
-                formData.append('upload', blob);
-
-                formData.append("randomName", true);
-
-                $.ajax('/storage/uploadcontentimage', {
-                    method: "POST",
-                    data: formData,
-                    async: false,
-                    processData: false,
-                    contentType: false,
-                    success: function (response) {
-                        imagesProcessed++;
-                        hidden.value = response.url;
-
-                        console.log(imagesToProcessCount);
-                        console.log(imagesProcessed);
-
-                        if (imagesProcessed === imagesToProcessCount) {
-                            if (callback) {
-                                callback();
-                            }
-                        }
-                    },
-                    error: function (response) {
-                        console.log(response);
-                        imgFeaturedImage.src = initialUrl;
-                    }
-                });
-            }
+            processImages(imagesChanged, imagesToProcessCount, imagesProcessed, callback);
         }
         else {
             if (callback) {
                 callback();
             }
+        }
+    }
+
+    function processImages(imagesChanged, imagesToProcessCount, imagesProcessed, callback) {
+        for (var i = 0; i < imagesToProcessCount; i++) {
+            var element = imagesChanged[i];
+            var changed = element.dataset.changed === 'true';
+
+            if (!changed) {
+                console.log('skipping...');
+                imagesProcessed++;
+                continue;
+            }
+            console.log('uploading...');
+
+            var image = document.getElementById(element.dataset.targetImg);
+            var hidden = document.getElementById(element.dataset.targetHidden);
+
+            var cropper = croppers[image.dataset.cropperIndex];
+
+            var canvas = cropper.getCroppedCanvas();
+
+            var dataUri = canvas.toDataURL();
+
+            var blob = MAINMODULE.Utils.DataURItoBlob(dataUri);
+
+            var formData = new FormData();
+            formData.append('userId', objs.userId.val());
+
+            formData.append('upload', blob);
+
+            formData.append("randomName", true);
+
+            $.ajax('/storage/uploadcontentimage', {
+                method: "POST",
+                data: formData,
+                async: false,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    imagesProcessed++;
+                    hidden.value = response.url;
+
+                    console.log(imagesToProcessCount);
+                    console.log(imagesProcessed);
+
+                    if (imagesProcessed === imagesToProcessCount) {
+                        if (callback) {
+                            callback();
+                        }
+                    }
+                },
+                error: function (response) {
+                    console.log(response);
+                    imgFeaturedImage.src = initialUrl;
+                }
+            });
         }
     }
 

@@ -230,36 +230,42 @@ namespace LuduStack.Web.Middlewares
 
             if (!isPost && !isDelete && !isPut && !areaForbidden && !isForbidden)
             {
-                sitemapContent += "<url>";
+                sitemapContent = FillUrl(actionName, hasParameter, routeTemplate, sitemapContent, controllerName);
+            }
 
-                if (hasParameter)
+            return sitemapContent;
+        }
+
+        private string FillUrl(string actionName, bool hasParameter, string routeTemplate, string sitemapContent, string controllerName)
+        {
+            sitemapContent += "<url>";
+
+            if (hasParameter)
+            {
+                sitemapContent += string.Format("<loc>{0}/{1}/</loc>", _rootUrl.Trim('/'), routeTemplate);
+            }
+            else
+            {
+                string methodName = actionName.Equals("index") ? string.Empty : actionName;
+                if (string.IsNullOrWhiteSpace(methodName))
                 {
-                    sitemapContent += string.Format("<loc>{0}/{1}/</loc>", _rootUrl.Trim('/'), routeTemplate);
-                }
-                else
-                {
-                    string methodName = actionName.Equals("index") ? string.Empty : actionName;
-                    if (string.IsNullOrWhiteSpace(methodName))
+                    if (controllerName.Equals("home") && actionName.Equals("index"))
                     {
-                        if (controllerName.Equals("home") && actionName.Equals("index"))
-                        {
-                            sitemapContent += string.Format("<loc>{0}/</loc>", _rootUrl.Trim('/'));
-                        }
-                        else
-                        {
-                            sitemapContent += string.Format("<loc>{0}/{1}/</loc>", _rootUrl.Trim('/'), controllerName.Trim('/'));
-                        }
+                        sitemapContent += string.Format("<loc>{0}/</loc>", _rootUrl.Trim('/'));
                     }
                     else
                     {
-                        sitemapContent += string.Format("<loc>{0}/{1}/{2}/</loc>", _rootUrl.Trim('/'), controllerName.Trim('/'), methodName.Trim('/'));
+                        sitemapContent += string.Format("<loc>{0}/{1}/</loc>", _rootUrl.Trim('/'), controllerName.Trim('/'));
                     }
                 }
-
-                sitemapContent += string.Format("<lastmod>{0}</lastmod>", DateTime.UtcNow.ToString("yyyy-MM-dd"));
-                sitemapContent += "</url>";
+                else
+                {
+                    sitemapContent += string.Format("<loc>{0}/{1}/{2}/</loc>", _rootUrl.Trim('/'), controllerName.Trim('/'), methodName.Trim('/'));
+                }
             }
 
+            sitemapContent += string.Format("<lastmod>{0}</lastmod>", DateTime.UtcNow.ToString("yyyy-MM-dd"));
+            sitemapContent += "</url>";
             return sitemapContent;
         }
 

@@ -137,7 +137,7 @@ namespace LuduStack.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult SaveSession(BrainstormSessionViewModel vm)
+        public async Task<IActionResult> SaveSession(BrainstormSessionViewModel vm)
         {
             try
             {
@@ -145,13 +145,13 @@ namespace LuduStack.Web.Controllers
 
                 vm.UserId = CurrentUserId;
 
-                brainstormAppService.SaveSession(vm);
+                await brainstormAppService.SaveSession(vm);
 
                 string url = Url.Action("Index", "Brainstorm", new { area = string.Empty, id = vm.Id.ToString() });
 
                 if (isNew && EnvName.Equals(ConstantHelper.ProductionEnvironmentName))
                 {
-                    NotificationSender.SendTeamNotificationAsync($"New brainstorm session created: {vm.Title}");
+                    await NotificationSender.SendTeamNotificationAsync($"New brainstorm session created: {vm.Title}");
                 }
 
                 return Json(new OperationResultRedirectVo(url));

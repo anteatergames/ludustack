@@ -136,32 +136,36 @@
                 };
 
                 $.post(url, data).done(function (response) {
-                    if (response.success === true) {
-                        objs.currentUserHelped.val('True');
-
-                        deleteEntryAuthorButton(response.value.termId, response.value.userId);
-
-                        loadSingleTranslation(response.value);
-
-                        decreaseChangeCounter();
-
-                        removeFromArray(changedEntries, termId);
-                    }
-                    else {
-                        ALERTSYSTEM.ShowWarningMessage("An error occurred! Check the console!");
-                    }
-
-                    if (response.message) {
-                        var scoreEarned = MAINMODULE.Common.HandlePointsEarned(response);
-                        if (!scoreEarned) {
-                            ALERTSYSTEM.Toastr.ShowWarning(response.message);
-                        }
-                    }
-
-                    entrySaving = false;
+                    entrySaveCallback(response, termId);
                 });
             }
         });
+    }
+
+    function entrySaveCallback(response, termId) {
+        if (response.success === true) {
+            objs.currentUserHelped.val('True');
+
+            deleteEntryAuthorButton(response.value.termId, response.value.userId);
+
+            loadSingleTranslation(response.value);
+
+            decreaseChangeCounter();
+
+            removeFromArray(changedEntries, termId);
+        }
+        else {
+            ALERTSYSTEM.ShowWarningMessage("An error occurred! Check the console!");
+        }
+
+        if (response.message) {
+            var scoreEarned = MAINMODULE.Common.HandlePointsEarned(response);
+            if (!scoreEarned) {
+                ALERTSYSTEM.Toastr.ShowWarning(response.message);
+            }
+        }
+
+        entrySaving = false;
     }
 
     function bindSaveTranslationChanges() {
@@ -184,28 +188,32 @@
                 }
 
                 $.post(url, { language: language, entries: data }).done(function (response) {
-                    if (response.success === true) {
-                        for (var j = 0; j < changedEntries.length; j++) {
-                            var input2 = $(selectors.entryInput + '[data-termid=' + changedEntries[j] + ']');
-
-                            input2.data('changed', false);
-                            input2.data('originalval', input2.val());
-                        }
-
-                        changedEntries = [];
-
-                        resetChangeCounter();
-
-                        if (response.message) {
-                            ALERTSYSTEM.Toastr.ShowWarning(response.message);
-                        }
-                    }
-                    else {
-                        ALERTSYSTEM.ShowWarningMessage("An error occurred! Check the console!");
-                    }
+                    saveTranslationChangesCallback(response);
                 });
             }
         });
+    }
+
+    function saveTranslationChangesCallback(response) {
+        if (response.success === true) {
+            for (var j = 0; j < changedEntries.length; j++) {
+                var input2 = $(selectors.entryInput + '[data-termid=' + changedEntries[j] + ']');
+
+                input2.data('changed', false);
+                input2.data('originalval', input2.val());
+            }
+
+            changedEntries = [];
+
+            resetChangeCounter();
+
+            if (response.message) {
+                ALERTSYSTEM.Toastr.ShowWarning(response.message);
+            }
+        }
+        else {
+            ALERTSYSTEM.ShowWarningMessage("An error occurred! Check the console!");
+        }
     }
 
     function bindEntryInputBlur() {
