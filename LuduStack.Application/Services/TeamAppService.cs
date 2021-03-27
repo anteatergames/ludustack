@@ -49,7 +49,7 @@ namespace LuduStack.Application.Services
         {
             try
             {
-                IEnumerable<Team> allModels = teamDomainService.GetAll();
+                IEnumerable<Team> allModels = await mediator.Query<GetTeamQuery, IEnumerable<Team>>(new GetTeamQuery());
 
                 IEnumerable<TeamViewModel> vms = mapper.Map<IEnumerable<Team>, IEnumerable<TeamViewModel>>(allModels);
 

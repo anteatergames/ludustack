@@ -58,19 +58,19 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public Task<OperationResultListVo<UserContentViewModel>> GetAll(Guid currentUserId)
+        public async Task<OperationResultListVo<UserContentViewModel>> GetAll(Guid currentUserId)
         {
             try
             {
-                IEnumerable<UserContent> allModels = userContentDomainService.GetAll();
+                IEnumerable<UserContent> allModels = await mediator.Query<GetUserContentQuery, IEnumerable<UserContent>>(new GetUserContentQuery());
 
                 IEnumerable<UserContentViewModel> vms = mapper.Map<IEnumerable<UserContent>, IEnumerable<UserContentViewModel>>(allModels);
 
-                return Task.FromResult(new OperationResultListVo<UserContentViewModel>(vms));
+                return new OperationResultListVo<UserContentViewModel>(vms);
             }
             catch (Exception ex)
             {
-                return Task.FromResult(new OperationResultListVo<UserContentViewModel>(ex.Message));
+                return new OperationResultListVo<UserContentViewModel>(ex.Message);
             }
         }
 
@@ -159,7 +159,7 @@ namespace LuduStack.Application.Services
 
                 UserContent model;
 
-                bool isSpam = CheckSpam(viewModel.Id, viewModel.Content);
+                bool isSpam = await CheckSpam(viewModel.Id, viewModel.Content);
 
                 bool isNew = viewModel.Id == Guid.Empty;
 
@@ -229,9 +229,9 @@ namespace LuduStack.Application.Services
 
         #endregion ICrudAppService
 
-        private bool CheckSpam(Guid id, string content)
+        private async Task<bool> CheckSpam(Guid id, string content)
         {
-            IEnumerable<UserContent> all = userContentDomainService.GetAll();
+            IEnumerable<UserContent> all = await mediator.Query<GetUserContentQuery, IEnumerable<UserContent>>(new GetUserContentQuery());
 
             if (all.Any())
             {

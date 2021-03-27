@@ -253,11 +253,12 @@ namespace LuduStack.Application.Services
         /// <param name="userId"></param>
         /// <param name="type"></param>
         /// <returns></returns>
-        public OperationResultVo<BrainstormSessionViewModel> GetSession(Guid userId, BrainstormSessionType type)
+        public async Task<OperationResultVo<BrainstormSessionViewModel>> GetSession(Guid userId, BrainstormSessionType type)
         {
             try
             {
-                BrainstormSession model = brainstormDomainService.GetAll().LastOrDefault(x => x.Type == type);
+                var allModels = await mediator.Query<GetBrainstormSessionQuery, IEnumerable<BrainstormSession>>(new GetBrainstormSessionQuery(x => x.Type == type));
+                BrainstormSession model = allModels.LastOrDefault(x => x.Type == type);
 
                 BrainstormSessionViewModel vm = mapper.Map<BrainstormSessionViewModel>(model);
 
@@ -269,11 +270,11 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultListVo<BrainstormSessionViewModel> GetSessions(Guid userId)
+        public async Task<OperationResultListVo<BrainstormSessionViewModel>> GetSessions(Guid userId)
         {
             try
             {
-                IEnumerable<BrainstormSession> allModels = brainstormDomainService.GetAll();
+                var allModels = await mediator.Query<GetBrainstormSessionQuery, IEnumerable<BrainstormSession>>(new GetBrainstormSessionQuery());
 
                 IEnumerable<BrainstormSessionViewModel> vms = mapper.Map<IEnumerable<BrainstormSession>, IEnumerable<BrainstormSessionViewModel>>(allModels);
 

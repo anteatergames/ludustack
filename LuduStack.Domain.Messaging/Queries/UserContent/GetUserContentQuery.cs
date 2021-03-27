@@ -1,6 +1,5 @@
 ﻿using LuduStack.Domain.Interfaces.Repository;
-using LuduStack.Infra.CrossCutting.Messaging;
-using MediatR;
+using LuduStack.Domain.Messaging.Queries.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
@@ -9,37 +8,28 @@ using System.Threading.Tasks;
 
 namespace LuduStack.Domain.Messaging.Queries.UserContent
 {
-    public class GetUserContentQuery : Query<IEnumerable<Models.UserContent>>
+    public class GetUserContentQuery : GetBaseQuery<Models.UserContent>
     {
-        public Expression<Func<Models.UserContent, bool>> Where { get; }
-
-        public GetUserContentQuery(Expression<Func<Models.UserContent, bool>> where)
+        public GetUserContentQuery() : base()
         {
-            Where = where;
+        }
+
+        public GetUserContentQuery(Expression<Func<Models.UserContent, bool>> where) : base(where)
+        {
         }
     }
 
-    public class GetUserContentQueryHandler : GetUserContentQueryHandler<GetUserContentQuery>
+    public class GetUserContentQueryHandler : SearchBaseQueryHandler<GetUserContentQuery, Models.UserContent, IUserContentRepository>
     {
         public GetUserContentQueryHandler(IUserContentRepository repository) : base(repository)
         {
         }
-    }
 
-    public class GetUserContentQueryHandler<TQuery> : QueryHandler, IRequestHandler<TQuery, IEnumerable<Models.UserContent>> where TQuery : GetUserContentQuery
-    {
-        protected readonly IUserContentRepository repository;
-
-        public GetUserContentQueryHandler(IUserContentRepository repository)
+        public async Task<IEnumerable<Models.UserContent>> Handle(GetUserContentQuery request, CancellationToken cancellationToken)
         {
-            this.repository = repository;
-        }
+            var all = await base.Handle(request, cancellationToken);
 
-        public async Task<IEnumerable<Models.UserContent>> Handle(TQuery request, CancellationToken cancellationToken)
-        {
-            var comics = repository.Get(request.Where);
-
-            return comics;
+            return all;
         }
     }
 }

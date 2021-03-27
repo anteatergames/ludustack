@@ -4,14 +4,14 @@ using System;
 
 namespace LuduStack.Domain.Messaging.Queries.Game
 {
-    public class GetGamesByUserIdQuery : GetByUserIdBaseQuery<Models.Game>
+    public class GetGameByUserIdQuery : GetByUserIdBaseQuery<Models.Game>
     {
-        public GetGamesByUserIdQuery(Guid id) : base(id)
+        public GetGameByUserIdQuery(Guid id) : base(id)
         {
         }
     }
 
-    public class GetGamesByUserIdQueryHandler : GetByUserIdBaseQueryHandler<GetGamesByUserIdQuery, Models.Game, IGameRepository>
+    public class GetGamesByUserIdQueryHandler : GetByUserIdBaseQueryHandler<GetGameByUserIdQuery, Models.Game, IGameRepository>
     {
         public GetGamesByUserIdQueryHandler(IGameRepository repository) : base(repository)
         {

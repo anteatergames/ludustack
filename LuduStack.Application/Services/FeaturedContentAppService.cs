@@ -51,7 +51,7 @@ namespace LuduStack.Application.Services
         {
             try
             {
-                IEnumerable<FeaturedContent> allModels = featuredContentDomainService.GetAll();
+                var allModels = await mediator.Query<GetFeaturedContentQuery, IEnumerable<FeaturedContent>>(new GetFeaturedContentQuery());
 
                 IEnumerable<FeaturedContentViewModel> vms = mapper.Map<IEnumerable<FeaturedContent>, IEnumerable<FeaturedContentViewModel>>(allModels);
 
@@ -217,10 +217,10 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public IEnumerable<UserContentToBeFeaturedViewModel> GetContentToBeFeatured()
+        public async Task<IEnumerable<UserContentToBeFeaturedViewModel>> GetContentToBeFeatured()
         {
-            IEnumerable<UserContent> finalList = userContentDomainService.GetAll();
-            IEnumerable<FeaturedContent> featured = featuredContentDomainService.GetAll();
+            IEnumerable<UserContent> finalList = await mediator.Query<GetUserContentQuery, IEnumerable<UserContent>>(new GetUserContentQuery());
+            IEnumerable<FeaturedContent> featured = await mediator.Query<GetFeaturedContentQuery, IEnumerable<FeaturedContent>>(new GetFeaturedContentQuery());
 
             IEnumerable<UserContentToBeFeaturedViewModel> vms = mapper.Map<IEnumerable<UserContent>, IEnumerable<UserContentToBeFeaturedViewModel>>(finalList);
 

@@ -25,9 +25,9 @@ namespace LuduStack.Web.Areas.Staff.Controllers
         }
 
         [Route("list")]
-        public IActionResult List()
+        public async Task<IActionResult> List()
         {
-            IEnumerable<UserContentToBeFeaturedViewModel> model = featuredContentAppService.GetContentToBeFeatured();
+            IEnumerable<UserContentToBeFeaturedViewModel> model = await featuredContentAppService.GetContentToBeFeatured();
 
             return PartialView("_List", model);
         }

@@ -24,11 +24,11 @@ namespace LuduStack.Web.Controllers
 
         [Route("brainstorm/{id:guid}")]
         [Route("brainstorm")]
-        public IActionResult Index(Guid? id)
+        public async Task<IActionResult> Index(Guid? id)
         {
             BrainstormSessionViewModel currentSession;
 
-            OperationResultListVo<BrainstormSessionViewModel> sessions = brainstormAppService.GetSessions(CurrentUserId);
+            OperationResultListVo<BrainstormSessionViewModel> sessions = await brainstormAppService.GetSessions(CurrentUserId);
 
             ViewData["Sessions"] = sessions.Value;
 

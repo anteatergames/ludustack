@@ -40,19 +40,19 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public Task<OperationResultListVo<UserPreferencesViewModel>> GetAll(Guid currentUserId)
+        public async Task<OperationResultListVo<UserPreferencesViewModel>> GetAll(Guid currentUserId)
         {
             try
             {
-                IEnumerable<UserPreferences> allModels = userPreferencesDomainService.GetAll();
+                IEnumerable<UserPreferences> allModels = await mediator.Query<GetUserPreferencesQuery, IEnumerable<UserPreferences>>(new GetUserPreferencesQuery());
 
                 IEnumerable<UserPreferencesViewModel> vms = mapper.Map<IEnumerable<UserPreferences>, IEnumerable<UserPreferencesViewModel>>(allModels);
 
-                return Task.FromResult(new OperationResultListVo<UserPreferencesViewModel>(vms));
+                return new OperationResultListVo<UserPreferencesViewModel>(vms);
             }
             catch (Exception ex)
             {
-                return Task.FromResult(new OperationResultListVo<UserPreferencesViewModel>(ex.Message));
+                return new OperationResultListVo<UserPreferencesViewModel>(ex.Message);
             }
         }
 

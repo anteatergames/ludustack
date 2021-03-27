@@ -7,6 +7,8 @@ namespace LuduStack.Application.Interfaces
 {
     public interface ITeamAppService : ICrudAppService<TeamViewModel>
     {
+        Task<OperationResultListVo<TeamViewModel>> GetAll(Guid currentUserId);
+
         OperationResultVo<int> CountNotSingleMemberGroups(Guid currentUserId);
 
         OperationResultListVo<TeamViewModel> GetNotSingleMemberGroups(Guid currentUserId);

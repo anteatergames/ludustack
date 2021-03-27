@@ -41,7 +41,7 @@ namespace LuduStack.Application.Services
         {
             try
             {
-                IEnumerable<ShortUrl> allModels = shortUrlDomainService.GetAll();
+                IEnumerable<ShortUrl> allModels = await mediator.Query<GetShortUrlQuery, IEnumerable<ShortUrl>>(new GetShortUrlQuery());
 
                 IEnumerable<ShortUrlViewModel> vms = mapper.Map<IEnumerable<ShortUrl>, IEnumerable<ShortUrlViewModel>>(allModels);
 

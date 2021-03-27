@@ -10,6 +10,8 @@ namespace LuduStack.Application.Interfaces
 {
     public interface ILocalizationAppService : ICrudAppService<LocalizationViewModel>, IPermissionControl<LocalizationViewModel>
     {
+        Task<OperationResultListVo<LocalizationViewModel>> GetAll(Guid currentUserId);
+
         OperationResultVo GenerateNew(Guid currentUserId);
 
         Task<OperationResultVo> GetByUserId(Guid currentUserId, Guid userId);

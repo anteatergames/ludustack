@@ -45,19 +45,19 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public Task<OperationResultListVo<JobPositionViewModel>> GetAll(Guid currentUserId)
+        public async Task<OperationResultListVo<JobPositionViewModel>> GetAll(Guid currentUserId)
         {
             try
             {
-                IEnumerable<JobPosition> allModels = jobPositionDomainService.GetAll();
+                IEnumerable<JobPosition> allModels = await mediator.Query<GetJobPositionQuery, IEnumerable<JobPosition>>(new GetJobPositionQuery());
 
                 IEnumerable<JobPositionViewModel> vms = mapper.Map<IEnumerable<JobPosition>, IEnumerable<JobPositionViewModel>>(allModels);
 
-                return Task.FromResult(new OperationResultListVo<JobPositionViewModel>(vms));
+                return new OperationResultListVo<JobPositionViewModel>(vms);
             }
             catch (Exception ex)
             {
-                return Task.FromResult(new OperationResultListVo<JobPositionViewModel>(ex.Message));
+                return new OperationResultListVo<JobPositionViewModel>(ex.Message);
             }
         }
 

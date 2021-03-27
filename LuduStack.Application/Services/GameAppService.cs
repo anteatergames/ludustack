@@ -55,19 +55,19 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public Task<OperationResultListVo<GameViewModel>> GetAll(Guid currentUserId)
+        public async Task<OperationResultListVo<GameViewModel>> GetAll(Guid currentUserId)
         {
             try
             {
-                IEnumerable<Game> allModels = gameDomainService.GetAll();
+                IEnumerable<Game> allModels = await mediator.Query<GetGameQuery, IEnumerable<Game>>(new GetGameQuery());
 
                 IEnumerable<GameViewModel> vms = mapper.Map<IEnumerable<Game>, IEnumerable<GameViewModel>>(allModels);
 
-                return Task.FromResult(new OperationResultListVo<GameViewModel>(vms));
+                return new OperationResultListVo<GameViewModel>(vms);
             }
             catch (Exception ex)
             {
-                return Task.FromResult(new OperationResultListVo<GameViewModel>(ex.Message));
+                return new OperationResultListVo<GameViewModel>(ex.Message);
             }
         }
 
@@ -279,7 +279,7 @@ namespace LuduStack.Application.Services
 
         public async Task<IEnumerable<SelectListItemVo>> GetByUser(Guid userId)
         {
-            IEnumerable<Game> allModels = await mediator.Query<GetGamesByUserIdQuery, IEnumerable<Game>>(new GetGamesByUserIdQuery(userId));
+            IEnumerable<Game> allModels = await mediator.Query<GetGameByUserIdQuery, IEnumerable<Game>>(new GetGameByUserIdQuery(userId));
 
             List<SelectListItemVo> vms = mapper.Map<IEnumerable<Game>, IEnumerable<SelectListItemVo>>(allModels).ToList();
 
