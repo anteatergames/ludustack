@@ -69,8 +69,6 @@ namespace LuduStack.Domain.Messaging
 
             IEnumerable<StudyPlan> plansToDelete = existingPlans.Where(x => !request.Plans.Contains(x));
 
-            // TODO check students with those plans and update them;
-
             if (plansToDelete.Any())
             {
                 foreach (StudyPlan plan in plansToDelete)

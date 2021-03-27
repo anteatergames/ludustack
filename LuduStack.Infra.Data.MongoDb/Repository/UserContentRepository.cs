@@ -62,10 +62,6 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
             FilterDefinition<UserContent> filter = Builders<UserContent>.Filter.Where(x => x.Id == model.ContentId);
             UpdateDefinition<UserContent> add = Builders<UserContent>.Update.AddToSet(c => c.Likes, model);
 
-            //UpdateResult result = await DbSet.UpdateOneAsync(filter, add);
-
-            //return result.IsAcknowledged && result.MatchedCount > 0;
-
             await Context.AddCommand(() => DbSet.UpdateOneAsync(filter, add));
 
             return true;
@@ -76,10 +72,6 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
             FilterDefinition<UserContent> filter = Builders<UserContent>.Filter.Where(x => x.Id == userContentId);
             UpdateDefinition<UserContent> remove = Builders<UserContent>.Update.PullFilter(c => c.Likes, m => m.UserId == userId);
 
-            //UpdateResult result = await DbSet.UpdateOneAsync(filter, remove);
-
-            //return result.IsAcknowledged && result.MatchedCount > 0;
-
             await Context.AddCommand(() => DbSet.UpdateOneAsync(filter, remove));
 
             return true;
@@ -89,10 +81,6 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
         {
             FilterDefinition<UserContent> filter = Builders<UserContent>.Filter.Where(x => x.Id == model.UserContentId);
             UpdateDefinition<UserContent> add = Builders<UserContent>.Update.AddToSet(c => c.Comments, model);
-
-            //UpdateResult result = await DbSet.UpdateOneAsync(filter, add);
-
-            //return result.IsAcknowledged && result.MatchedCount > 0;
 
             await Context.AddCommand(() => DbSet.UpdateOneAsync(filter, add));
 
