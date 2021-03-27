@@ -390,7 +390,7 @@ namespace LuduStack.Web.Areas.Work.Controllers
             {
                 decimal scoreDecimal = decimal.Parse(score, CultureInfo.InvariantCulture);
 
-                OperationResultVo serviceResult = await jobPositionAppService .RateApplicant(CurrentUserId, jobPositionId, userId, scoreDecimal);
+                OperationResultVo serviceResult = await jobPositionAppService.RateApplicant(CurrentUserId, jobPositionId, userId, scoreDecimal);
 
                 return Json(new OperationResultVo(serviceResult.Success, serviceResult.Message));
             }
