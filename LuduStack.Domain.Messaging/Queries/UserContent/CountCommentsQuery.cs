@@ -30,7 +30,7 @@ namespace LuduStack.Domain.Messaging.Queries.UserContent
 
         public async Task<int> Handle(CountCommentsQuery request, CancellationToken cancellationToken)
         {
-            var count = await repository.CountComments(request.Where);
+            int count = await repository.CountComments(request.Where);
 
             return count;
         }

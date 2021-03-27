@@ -257,7 +257,7 @@ namespace LuduStack.Application.Services
         {
             try
             {
-                var allModels = await mediator.Query<GetBrainstormSessionQuery, IEnumerable<BrainstormSession>>(new GetBrainstormSessionQuery(x => x.Type == type));
+                IEnumerable<BrainstormSession> allModels = await mediator.Query<GetBrainstormSessionQuery, IEnumerable<BrainstormSession>>(new GetBrainstormSessionQuery(x => x.Type == type));
                 BrainstormSession model = allModels.LastOrDefault(x => x.Type == type);
 
                 BrainstormSessionViewModel vm = mapper.Map<BrainstormSessionViewModel>(model);
@@ -274,7 +274,7 @@ namespace LuduStack.Application.Services
         {
             try
             {
-                var allModels = await mediator.Query<GetBrainstormSessionQuery, IEnumerable<BrainstormSession>>(new GetBrainstormSessionQuery());
+                IEnumerable<BrainstormSession> allModels = await mediator.Query<GetBrainstormSessionQuery, IEnumerable<BrainstormSession>>(new GetBrainstormSessionQuery());
 
                 IEnumerable<BrainstormSessionViewModel> vms = mapper.Map<IEnumerable<BrainstormSession>, IEnumerable<BrainstormSessionViewModel>>(allModels);
 

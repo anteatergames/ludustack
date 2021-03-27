@@ -27,7 +27,7 @@ namespace LuduStack.Domain.Messaging.Queries.Game
 
         public async Task<IEnumerable<Models.Game>> Handle(GetGameQuery request, CancellationToken cancellationToken)
         {
-            var all = await base.Handle(request, cancellationToken);
+            IEnumerable<Models.Game> all = await base.Handle(request, cancellationToken);
 
             return all;
         }

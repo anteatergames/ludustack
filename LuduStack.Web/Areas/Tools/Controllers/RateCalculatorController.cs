@@ -11,7 +11,7 @@ namespace LuduStack.Web.Areas.Tools.Controllers
         [Route("tools/ratecalculator")]
         public IActionResult Index()
         {
-            var model = new RateCalculatorViewModel();
+            RateCalculatorViewModel model = new RateCalculatorViewModel();
 
             return View(model);
         }

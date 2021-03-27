@@ -165,7 +165,7 @@ namespace LuduStack.Web.Areas.Staff.Controllers
             ApplicationUser user = await UserManager.FindByIdAsync(userId.ToString());
             ProfileViewModel profile = await ProfileAppService.GetByUserId(userId, ProfileType.Personal);
 
-            var roles = await UserManager.GetRolesAsync(user);
+            IList<string> roles = await UserManager.GetRolesAsync(user);
 
             user.Roles = roles.ToList();
 

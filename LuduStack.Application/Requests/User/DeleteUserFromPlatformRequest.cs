@@ -37,25 +37,25 @@ namespace LuduStack.Application.Requests.User
         {
             bool canDelete = true;
 
-            var comments = await userContentAppService.GetCommentsByUserId(request.CurrentUserId, request.UserId);
+            OperationResultVo comments = await userContentAppService.GetCommentsByUserId(request.CurrentUserId, request.UserId);
 
             if (comments.Success)
             {
-                var castResult = comments as OperationResultListVo<CommentViewModel>;
+                OperationResultListVo<CommentViewModel> castResult = comments as OperationResultListVo<CommentViewModel>;
 
                 canDelete = !castResult.Value.Any();
             }
 
             if (canDelete)
             {
-                var profile = await profileAppService.GetByUserId(request.UserId, ProfileType.Personal, false);
+                ViewModels.User.ProfileViewModel profile = await profileAppService.GetByUserId(request.UserId, ProfileType.Personal, false);
 
                 if (profile == null)
                 {
                     return new OperationResultVo(false, "Can't delete user");
                 }
 
-                var result = await profileAppService.Remove(request.CurrentUserId, profile.Id);
+                OperationResultVo result = await profileAppService.Remove(request.CurrentUserId, profile.Id);
 
                 return result;
             }

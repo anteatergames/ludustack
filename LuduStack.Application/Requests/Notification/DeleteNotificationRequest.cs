@@ -31,7 +31,7 @@ namespace LuduStack.Application.Requests.Notification
 
         public async Task<OperationResultVo> Handle(DeleteNotificationRequest request, CancellationToken cancellationToken)
         {
-            var result = await notificationAppService.Remove(request.CurrentUserId, request.Id);
+            OperationResultVo result = await notificationAppService.Remove(request.CurrentUserId, request.Id);
 
             return result;
         }

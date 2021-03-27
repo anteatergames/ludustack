@@ -5,8 +5,18 @@ using System.Threading.Tasks;
 
 namespace LuduStack.Application.Interfaces
 {
-    public interface IComicsAppService : ICrudAppService<ComicStripViewModel>
+    public interface IComicsAppService
     {
+        Task<OperationResultVo<int>> Count(Guid currentUserId);
+
+        Task<OperationResultVo> GetAllIds(Guid currentUserId);
+
+        Task<OperationResultVo<ComicStripViewModel>> GetById(Guid currentUserId, Guid id);
+
+        Task<OperationResultVo> Remove(Guid currentUserId, Guid id);
+
+        Task<OperationResultVo<Guid>> Save(Guid currentUserId, ComicStripViewModel viewModel);
+
         Task<OperationResultVo> GetComicsByMe(Guid currentUserId);
 
         OperationResultVo GenerateNew(Guid currentUserId);

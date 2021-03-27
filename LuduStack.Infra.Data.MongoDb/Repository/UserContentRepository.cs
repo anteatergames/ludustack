@@ -45,7 +45,7 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
 
         public async Task<List<UserContentComment>> GetComments(Expression<Func<UserContentComment, bool>> where)
         {
-            var list = await DbSet.AsQueryable().SelectMany(x => x.Comments).Where(where).ToMongoListAsync();
+            List<UserContentComment> list = await DbSet.AsQueryable().SelectMany(x => x.Comments).Where(where).ToMongoListAsync();
 
             return list;
         }

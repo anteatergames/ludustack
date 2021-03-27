@@ -45,14 +45,14 @@ namespace LuduStack.Domain.Messaging
         {
             if (!request.IsValid()) return request.Result;
 
-            var userContent = await repository.GetById(request.Id);
+            UserContent userContent = await repository.GetById(request.Id);
             if (userContent is null)
             {
                 AddError("The content doesn't exists.");
                 return request.Result;
             }
 
-            var likes = await mediator.Query<GetLikesQuery, IEnumerable<UserContentLike>>(new GetLikesQuery(x => x.ContentId == request.Id));
+            IEnumerable<UserContentLike> likes = await mediator.Query<GetLikesQuery, IEnumerable<UserContentLike>>(new GetLikesQuery(x => x.ContentId == request.Id));
 
             bool alreadyLiked = likes.Any(x => x.UserId == request.UserId);
             if (alreadyLiked)

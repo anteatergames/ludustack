@@ -41,7 +41,7 @@ namespace LuduStack.Domain.Messaging
 
         public async Task<CommandResult> Handle(SaveCourseCommand request, CancellationToken cancellationToken)
         {
-            var result = request.Result;
+            CommandResult result = request.Result;
 
             if (!request.IsValid()) return request.Result;
 
@@ -54,7 +54,7 @@ namespace LuduStack.Domain.Messaging
                 studyCourseRepository.Update(request.Course);
             }
 
-            var commitResult = await Commit(unitOfWork);
+            FluentValidation.Results.ValidationResult commitResult = await Commit(unitOfWork);
 
             result.Validation = commitResult;
 

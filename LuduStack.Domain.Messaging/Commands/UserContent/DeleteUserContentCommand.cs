@@ -29,14 +29,14 @@ namespace LuduStack.Domain.Messaging
         public DeleteUserContentCommandHandler(IUnitOfWork unitOfWork, IUserContentRepository studyUserContentRepository)
         {
             this.unitOfWork = unitOfWork;
-            this.userContentRepository = studyUserContentRepository;
+            userContentRepository = studyUserContentRepository;
         }
 
         public async Task<CommandResult> Handle(DeleteUserContentCommand request, CancellationToken cancellationToken)
         {
             if (!request.IsValid()) return request.Result;
 
-            var course = await userContentRepository.GetById(request.Id);
+            Models.UserContent course = await userContentRepository.GetById(request.Id);
 
             if (course is null)
             {
@@ -49,7 +49,7 @@ namespace LuduStack.Domain.Messaging
 
             userContentRepository.Remove(course.Id);
 
-            var validation = await Commit(unitOfWork);
+            FluentValidation.Results.ValidationResult validation = await Commit(unitOfWork);
 
             request.Result.Validation = validation;
 

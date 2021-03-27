@@ -53,7 +53,7 @@ namespace LuduStack.Domain.Services
 
         public virtual IEnumerable<T> GetByUserId(Guid userId)
         {
-            var task = repository.GetByUserId(userId);
+            Task<IEnumerable<T>> task = repository.GetByUserId(userId);
 
             if (task.Status == TaskStatus.Faulted)
             {

@@ -342,7 +342,7 @@ namespace LuduStack.Application.Services
         {
             try
             {
-                var all = await mediator.Query<SearchUserContentQuery, IEnumerable<UserContent>>(new SearchUserContentQuery(x => x.Content.Contains(q) || x.Introduction.Contains(q)));
+                IEnumerable<UserContent> all = await mediator.Query<SearchUserContentQuery, IEnumerable<UserContent>>(new SearchUserContentQuery(x => x.Content.Contains(q) || x.Introduction.Contains(q)));
 
                 IEnumerable<UserContentSearchVo> selected = all.OrderByDescending(x => x.CreateDate)
                     .Select(x => new UserContentSearchVo
@@ -354,7 +354,7 @@ namespace LuduStack.Application.Services
                         Language = (x.Language == 0 ? SupportedLanguage.English : x.Language)
                     });
 
-                var queryable = selected.AsQueryable();
+                IQueryable<UserContentSearchVo> queryable = selected.AsQueryable();
 
                 IQueryable<UserContentSearchViewModel> vms = queryable.ProjectTo<UserContentSearchViewModel>(mapper.ConfigurationProvider);
 
@@ -433,7 +433,7 @@ namespace LuduStack.Application.Services
                 }
                 else
                 {
-                    var likeCount = await mediator.Query<CountLikesQuery, int>(new CountLikesQuery(x => x.ContentId == targetId));
+                    int likeCount = await mediator.Query<CountLikesQuery, int>(new CountLikesQuery(x => x.ContentId == targetId));
 
                     return new OperationResultVo<int>(likeCount);
                 }
@@ -458,7 +458,7 @@ namespace LuduStack.Application.Services
                 }
                 else
                 {
-                    var likeCount = await mediator.Query<CountLikesQuery, int>(new CountLikesQuery(x => x.ContentId == targetId));
+                    int likeCount = await mediator.Query<CountLikesQuery, int>(new CountLikesQuery(x => x.ContentId == targetId));
 
                     return new OperationResultVo<int>(likeCount);
                 }
@@ -475,7 +475,7 @@ namespace LuduStack.Application.Services
         {
             try
             {
-                var command = new AddCommentUserContentCommand(vm.UserId, vm.UserContentId, vm.ParentCommentId, vm.Text);
+                AddCommentUserContentCommand command = new AddCommentUserContentCommand(vm.UserId, vm.UserContentId, vm.ParentCommentId, vm.Text);
 
                 CommandResult result = await mediator.SendCommand(command);
 
@@ -500,9 +500,9 @@ namespace LuduStack.Application.Services
         {
             try
             {
-                var comments = await mediator.Query<GetCommentsQuery, IEnumerable<UserContentComment>>(new GetCommentsQuery(x => x.UserId == userId));
+                IEnumerable<UserContentComment> comments = await mediator.Query<GetCommentsQuery, IEnumerable<UserContentComment>>(new GetCommentsQuery(x => x.UserId == userId));
 
-                var vms = mapper.Map<List<CommentViewModel>>(comments);
+                List<CommentViewModel> vms = mapper.Map<List<CommentViewModel>>(comments);
 
                 return new OperationResultListVo<CommentViewModel>(vms);
             }

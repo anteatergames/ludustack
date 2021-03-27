@@ -60,12 +60,12 @@ namespace LuduStack.Web.Controllers.Base
 
         public override async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            var notificationClicked = context.HttpContext.Request.Query["notificationclicked"].FirstOrDefault();
+            string notificationClicked = context.HttpContext.Request.Query["notificationclicked"].FirstOrDefault();
             if (notificationClicked != null)
             {
-                var notificationId = Guid.Parse(notificationClicked);
+                Guid notificationId = Guid.Parse(notificationClicked);
 
-                var mediator = Services.GetRequiredService<IMediator>();
+                IMediator mediator = Services.GetRequiredService<IMediator>();
 
                 await mediator.Send(new SendNotificationRequest(notificationId));
             }
@@ -93,7 +93,7 @@ namespace LuduStack.Web.Controllers.Base
                     ViewBag.Username = username ?? Constants.DefaultUsername;
                 }
 
-                var msg = context.HttpContext.Request.Query["msg"].FirstOrDefault();
+                string msg = context.HttpContext.Request.Query["msg"].FirstOrDefault();
                 if (!string.IsNullOrWhiteSpace(msg))
                 {
                     TempData["Message"] = SharedLocalizer[msg];

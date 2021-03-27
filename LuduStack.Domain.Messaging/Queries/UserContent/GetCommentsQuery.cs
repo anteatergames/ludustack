@@ -31,7 +31,7 @@ namespace LuduStack.Domain.Messaging.Queries.UserContent
 
         public async Task<IEnumerable<UserContentComment>> Handle(GetCommentsQuery request, CancellationToken cancellationToken)
         {
-            var comments = await repository.GetComments(request.Where);
+            List<UserContentComment> comments = await repository.GetComments(request.Where);
 
             return comments;
         }

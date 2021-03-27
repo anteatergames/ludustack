@@ -50,7 +50,7 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
 
         public async Task<List<StudyPlan>> GetPlans(Guid courseId)
         {
-            var objs = DbSet.AsQueryable().Where(x => x.Id == courseId).SelectMany(x => x.Plans);
+            IQueryable<StudyPlan> objs = DbSet.AsQueryable().Where(x => x.Id == courseId).SelectMany(x => x.Plans);
 
             return await objs.ToMongoListAsync();
         }

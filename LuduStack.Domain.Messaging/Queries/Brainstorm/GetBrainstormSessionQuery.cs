@@ -27,7 +27,7 @@ namespace LuduStack.Domain.Messaging.Queries.BrainstormSession
 
         public async Task<IEnumerable<Models.BrainstormSession>> Handle(GetBrainstormSessionQuery request, CancellationToken cancellationToken)
         {
-            var all = await base.Handle(request, cancellationToken);
+            IEnumerable<Models.BrainstormSession> all = await base.Handle(request, cancellationToken);
 
             return all;
         }

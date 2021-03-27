@@ -31,7 +31,7 @@ namespace LuduStack.Domain.Messaging.Queries.UserContent
 
         public async Task<IEnumerable<UserContentLike>> Handle(GetLikesQuery request, CancellationToken cancellationToken)
         {
-            var comments = await repository.GetLikes(request.Where);
+            System.Linq.IQueryable<UserContentLike> comments = await repository.GetLikes(request.Where);
 
             return comments;
         }

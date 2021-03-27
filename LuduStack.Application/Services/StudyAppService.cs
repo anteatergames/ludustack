@@ -301,7 +301,7 @@ namespace LuduStack.Application.Services
         {
             try
             {
-                var result = await mediator.SendCommand(new EnrollCourseCommand(currentUserId, courseId));
+                CommandResult result = await mediator.SendCommand(new EnrollCourseCommand(currentUserId, courseId));
 
                 if (!result.Validation.IsValid || !result.Success)
                 {
@@ -320,7 +320,7 @@ namespace LuduStack.Application.Services
         {
             try
             {
-                var result = await mediator.SendCommand(new LeaveCourseCommand(currentUserId, courseId));
+                CommandResult result = await mediator.SendCommand(new LeaveCourseCommand(currentUserId, courseId));
 
                 if (!result.Validation.IsValid || !result.Success)
                 {

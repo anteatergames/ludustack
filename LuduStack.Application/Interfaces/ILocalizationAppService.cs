@@ -8,8 +8,18 @@ using System.Threading.Tasks;
 
 namespace LuduStack.Application.Interfaces
 {
-    public interface ILocalizationAppService : ICrudAppService<LocalizationViewModel>, IPermissionControl<LocalizationViewModel>
+    public interface ILocalizationAppService : IPermissionControl<LocalizationViewModel>
     {
+        Task<OperationResultVo<int>> Count(Guid currentUserId);
+
+        Task<OperationResultVo> GetAllIds(Guid currentUserId);
+
+        Task<OperationResultVo<LocalizationViewModel>> GetById(Guid currentUserId, Guid id);
+
+        Task<OperationResultVo> Remove(Guid currentUserId, Guid id);
+
+        Task<OperationResultVo<Guid>> Save(Guid currentUserId, LocalizationViewModel viewModel);
+
         Task<OperationResultListVo<LocalizationViewModel>> GetAll(Guid currentUserId);
 
         OperationResultVo GenerateNew(Guid currentUserId);

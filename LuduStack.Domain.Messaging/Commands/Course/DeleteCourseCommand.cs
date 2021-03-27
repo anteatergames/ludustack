@@ -36,7 +36,7 @@ namespace LuduStack.Domain.Messaging
         {
             if (!request.IsValid()) return request.Result;
 
-            var course = await studyCourseRepository.GetById(request.Id);
+            Models.StudyCourse course = await studyCourseRepository.GetById(request.Id);
 
             if (course is null)
             {
@@ -48,7 +48,7 @@ namespace LuduStack.Domain.Messaging
 
             studyCourseRepository.Remove(course.Id);
 
-            var validation = await Commit(unitOfWork);
+            FluentValidation.Results.ValidationResult validation = await Commit(unitOfWork);
 
             request.Result.Validation = validation;
 

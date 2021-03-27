@@ -11,7 +11,7 @@ namespace LuduStack.Web.Areas.Tools.Controllers
         [Route("tools/costcalculator")]
         public IActionResult Index()
         {
-            var model = new CostCalculatorViewModel();
+            CostCalculatorViewModel model = new CostCalculatorViewModel();
 
             return View(model);
         }

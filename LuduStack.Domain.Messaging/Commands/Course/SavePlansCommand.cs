@@ -79,7 +79,7 @@ namespace LuduStack.Domain.Messaging
                 }
             }
 
-            var commitResult = await Commit(unitOfWork);
+            FluentValidation.Results.ValidationResult commitResult = await Commit(unitOfWork);
 
             request.Result.Validation = commitResult;
 

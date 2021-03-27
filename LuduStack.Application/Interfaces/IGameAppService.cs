@@ -7,8 +7,18 @@ using System.Threading.Tasks;
 
 namespace LuduStack.Application.Interfaces
 {
-    public interface IGameAppService : ICrudAppService<GameViewModel>
+    public interface IGameAppService
     {
+        Task<OperationResultVo<int>> Count(Guid currentUserId);
+
+        Task<OperationResultVo> GetAllIds(Guid currentUserId);
+
+        Task<OperationResultVo<GameViewModel>> GetById(Guid currentUserId, Guid id);
+
+        Task<OperationResultVo> Remove(Guid currentUserId, Guid id);
+
+        Task<OperationResultVo<Guid>> Save(Guid currentUserId, GameViewModel viewModel);
+
         Task<OperationResultVo<GameViewModel>> GetById(Guid currentUserId, Guid id, bool forEdit);
 
         OperationResultVo<GameViewModel> CreateNew(Guid currentUserId);

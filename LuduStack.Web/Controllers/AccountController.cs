@@ -282,7 +282,7 @@ namespace LuduStack.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(MvcRegisterViewModel model, string returnUrl = null)
         {
-            var reCaptchaValid = IsReCaptchValid();
+            bool reCaptchaValid = IsReCaptchValid();
 
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid && reCaptchaValid)
@@ -334,19 +334,19 @@ namespace LuduStack.Web.Controllers
                 return true;
             }
 
-            var result = false;
-            var captchaResponse = Request.Form["g-recaptcha-response"];
-            var secretKey = Configuration["ReCaptcha:SecretKey"];
-            var apiUrl = "https://www.google.com/recaptcha/api/siteverify?secret={0}&response={1}";
-            var requestUri = string.Format(apiUrl, secretKey, captchaResponse);
-            var request = (HttpWebRequest)WebRequest.Create(requestUri);
+            bool result = false;
+            Microsoft.Extensions.Primitives.StringValues captchaResponse = Request.Form["g-recaptcha-response"];
+            string secretKey = Configuration["ReCaptcha:SecretKey"];
+            string apiUrl = "https://www.google.com/recaptcha/api/siteverify?secret={0}&response={1}";
+            string requestUri = string.Format(apiUrl, secretKey, captchaResponse);
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(requestUri);
 
             using (WebResponse response = request.GetResponse())
             {
                 using (StreamReader stream = new StreamReader(response.GetResponseStream()))
                 {
                     JObject jResponse = JObject.Parse(stream.ReadToEnd());
-                    var isSuccess = jResponse.Value<bool>("success");
+                    bool isSuccess = jResponse.Value<bool>("success");
                     result = (isSuccess) ? true : false;
                 }
             }

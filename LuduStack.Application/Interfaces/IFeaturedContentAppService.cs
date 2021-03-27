@@ -1,5 +1,4 @@
 ﻿using LuduStack.Application.ViewModels.Content;
-using LuduStack.Application.ViewModels.FeaturedContent;
 using LuduStack.Application.ViewModels.Home;
 using LuduStack.Domain.ValueObjects;
 using System;
@@ -8,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LuduStack.Application.Interfaces
 {
-    public interface IFeaturedContentAppService : ICrudAppService<FeaturedContentViewModel>
+    public interface IFeaturedContentAppService
     {
         CarouselViewModel GetFeaturedNow();
 

@@ -49,7 +49,7 @@ namespace LuduStack.Domain.Messaging
         {
             if (!request.IsValid()) return request.Result;
 
-            var userContent = await repository.GetById(request.Id);
+            UserContent userContent = await repository.GetById(request.Id);
             if (userContent is null)
             {
                 AddError("The content doesn't exists.");
@@ -66,7 +66,7 @@ namespace LuduStack.Domain.Messaging
                 return new CommandResult(ValidationResult);
             }
 
-            var model = new UserContentComment
+            UserContentComment model = new UserContentComment
             {
                 UserContentId = request.Id,
                 ParentCommentId = request.ParentCommentId,

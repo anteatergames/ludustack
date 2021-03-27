@@ -6,8 +6,18 @@ using System.Threading.Tasks;
 
 namespace LuduStack.Application.Interfaces
 {
-    public interface IJobPositionAppService : ICrudAppService<JobPositionViewModel>
+    public interface IJobPositionAppService
     {
+        Task<OperationResultVo<int>> Count(Guid currentUserId);
+
+        Task<OperationResultVo> GetAllIds(Guid currentUserId);
+
+        Task<OperationResultVo<JobPositionViewModel>> GetById(Guid currentUserId, Guid id);
+
+        Task<OperationResultVo> Remove(Guid currentUserId, Guid id);
+
+        Task<OperationResultVo<Guid>> Save(Guid currentUserId, JobPositionViewModel viewModel);
+
         OperationResultVo GetAllAvailable(Guid currentUserId);
 
         Task<OperationResultVo> Apply(Guid currentUserId, Guid jobPositionId, string email, string coverLetter);

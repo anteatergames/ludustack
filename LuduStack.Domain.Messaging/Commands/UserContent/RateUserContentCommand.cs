@@ -49,14 +49,14 @@ namespace LuduStack.Domain.Messaging
 
             if (!request.IsValid()) return request.Result;
 
-            var userContent = await repository.GetById(request.Id);
+            UserContent userContent = await repository.GetById(request.Id);
             if (userContent is null)
             {
                 AddError("The content doesn't exists.");
                 return request.Result;
             }
 
-            var existing = await mediator.Query<GetRatingsQuery, IEnumerable<UserContentRating>>(new GetRatingsQuery(x => x.Id == request.Id));
+            IEnumerable<UserContentRating> existing = await mediator.Query<GetRatingsQuery, IEnumerable<UserContentRating>>(new GetRatingsQuery(x => x.Id == request.Id));
 
             bool alreadyRated = existing.Any(x => x.UserId == request.UserId);
             if (alreadyRated)

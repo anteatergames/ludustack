@@ -27,7 +27,7 @@ namespace LuduStack.Domain.Messaging.Queries.Team
 
         public async Task<IEnumerable<Models.Team>> Handle(GetTeamQuery request, CancellationToken cancellationToken)
         {
-            var all = await base.Handle(request, cancellationToken);
+            IEnumerable<Models.Team> all = await base.Handle(request, cancellationToken);
 
             return all;
         }

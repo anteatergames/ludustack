@@ -32,7 +32,7 @@ namespace LuduStack.Domain.Messaging.Queries.UserContent
 
         public Task<IEnumerable<UserContentRating>> Handle(GetRatingsQuery request, CancellationToken cancellationToken)
         {
-            var comments = repository.GetRatings(request.Where);
+            IQueryable<UserContentRating> comments = repository.GetRatings(request.Where);
 
             return Task.FromResult(comments.AsEnumerable());
         }

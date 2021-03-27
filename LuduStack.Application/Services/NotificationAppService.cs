@@ -47,7 +47,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        Task<OperationResultVo<NotificationItemViewModel>> ICrudAppService<NotificationItemViewModel>.GetById(Guid currentUserId, Guid id)
+        public Task<OperationResultVo<NotificationItemViewModel>> GetById(Guid currentUserId, Guid id)
         {
             throw new NotImplementedException();
         }
@@ -111,7 +111,7 @@ namespace LuduStack.Application.Services
         {
             List<Notification> notifications = notificationDomainService.GetByUserId(userId).OrderByDescending(x => x.CreateDate).Take(count).ToList();
 
-            var vms = mapper.Map<IEnumerable<NotificationItemViewModel>>(notifications);
+            IEnumerable<NotificationItemViewModel> vms = mapper.Map<IEnumerable<NotificationItemViewModel>>(notifications);
 
             return new OperationResultListVo<NotificationItemViewModel>(vms);
         }

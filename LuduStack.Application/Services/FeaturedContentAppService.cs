@@ -51,7 +51,7 @@ namespace LuduStack.Application.Services
         {
             try
             {
-                var allModels = await mediator.Query<GetFeaturedContentQuery, IEnumerable<FeaturedContent>>(new GetFeaturedContentQuery());
+                IEnumerable<FeaturedContent> allModels = await mediator.Query<GetFeaturedContentQuery, IEnumerable<FeaturedContent>>(new GetFeaturedContentQuery());
 
                 IEnumerable<FeaturedContentViewModel> vms = mapper.Map<IEnumerable<FeaturedContent>, IEnumerable<FeaturedContentViewModel>>(allModels);
 

@@ -5,8 +5,18 @@ using System.Threading.Tasks;
 
 namespace LuduStack.Application.Interfaces
 {
-    public interface ITeamAppService : ICrudAppService<TeamViewModel>
+    public interface ITeamAppService
     {
+        Task<OperationResultVo<int>> Count(Guid currentUserId);
+
+        Task<OperationResultVo> GetAllIds(Guid currentUserId);
+
+        Task<OperationResultVo<TeamViewModel>> GetById(Guid currentUserId, Guid id);
+
+        Task<OperationResultVo> Remove(Guid currentUserId, Guid id);
+
+        Task<OperationResultVo<Guid>> Save(Guid currentUserId, TeamViewModel viewModel);
+
         Task<OperationResultListVo<TeamViewModel>> GetAll(Guid currentUserId);
 
         OperationResultVo<int> CountNotSingleMemberGroups(Guid currentUserId);

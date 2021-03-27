@@ -57,7 +57,7 @@ namespace LuduStack.Application.Services
         {
             try
             {
-                var allModels = await mediator.Query<GetLocalizationQuery, IEnumerable<Localization>>(new GetLocalizationQuery());
+                IEnumerable<Localization> allModels = await mediator.Query<GetLocalizationQuery, IEnumerable<Localization>>(new GetLocalizationQuery());
 
                 List<LocalizationViewModel> vms = mapper.Map<IEnumerable<Localization>, IEnumerable<LocalizationViewModel>>(allModels).ToList();
 

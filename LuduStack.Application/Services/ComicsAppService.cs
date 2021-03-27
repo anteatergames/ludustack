@@ -149,9 +149,9 @@ namespace LuduStack.Application.Services
         {
             try
             {
-                var comics = await mediator.Query<GetComicsByUserIdQuery, IEnumerable<UserContent>>(new GetComicsByUserIdQuery(currentUserId));
+                IEnumerable<UserContent> comics = await mediator.Query<GetComicsByUserIdQuery, IEnumerable<UserContent>>(new GetComicsByUserIdQuery(currentUserId));
 
-                var voList = comics.Select(x => new ComicsListItemVo
+                IEnumerable<ComicsListItemVo> voList = comics.Select(x => new ComicsListItemVo
                 {
                     Id = x.Id,
                     IssueNumber = x.IssueNumber.HasValue ? x.IssueNumber.Value : 0,

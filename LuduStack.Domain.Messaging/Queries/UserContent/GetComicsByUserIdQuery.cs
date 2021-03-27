@@ -34,7 +34,7 @@ namespace LuduStack.Domain.Messaging.Queries.UserContent
 
         public async Task<IEnumerable<Models.UserContent>> Handle(TQuery request, CancellationToken cancellationToken)
         {
-            var comics = repository.Get(request.Where);
+            System.Linq.IQueryable<Models.UserContent> comics = repository.Get(request.Where);
 
             return comics;
         }

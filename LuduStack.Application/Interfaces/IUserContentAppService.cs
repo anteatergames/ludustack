@@ -9,8 +9,18 @@ using System.Threading.Tasks;
 
 namespace LuduStack.Application.Interfaces
 {
-    public interface IUserContentAppService : ICrudAppService<UserContentViewModel>, IProfileBaseAppService
+    public interface IUserContentAppService : IProfileBaseAppService
     {
+        Task<OperationResultVo<int>> Count(Guid currentUserId);
+
+        Task<OperationResultVo> GetAllIds(Guid currentUserId);
+
+        Task<OperationResultVo<UserContentViewModel>> GetById(Guid currentUserId, Guid id);
+
+        Task<OperationResultVo> Remove(Guid currentUserId, Guid id);
+
+        Task<OperationResultVo<Guid>> Save(Guid currentUserId, UserContentViewModel viewModel);
+
         Task<IEnumerable<UserContentViewModel>> GetActivityFeed(ActivityFeedRequestViewModel vm);
 
         Task<int> CountArticles();
