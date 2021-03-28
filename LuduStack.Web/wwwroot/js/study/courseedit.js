@@ -9,6 +9,7 @@
     var propPrefix = 'Plans';
 
     var croppers = [];
+    var imagesProcessed = 0;
 
     function setSelectors() {
         selectors.controlsidebar = '.control-sidebar';
@@ -213,8 +214,6 @@
     }
 
     function uploadCroppedImages(callback) {
-        var imagesProcessed = 0;
-
         var imagesChanged = objs.inputImageListItem.filter(function (index) {
             return objs.inputImageListItem[index].dataset.changed === 'true';
         });
@@ -222,7 +221,7 @@
         var imagesToProcessCount = imagesChanged.length;
 
         if (imagesChanged.length > 0) {
-            processImages(imagesChanged, imagesToProcessCount, imagesProcessed, callback);
+            processImages(imagesChanged, imagesToProcessCount, callback);
         }
         else {
             if (callback) {
@@ -231,7 +230,9 @@
         }
     }
 
-    function processImages(imagesChanged, imagesToProcessCount, imagesProcessed, callback) {
+    function processImages(imagesChanged, imagesToProcessCount, callback) {
+        imagesProcessed = 0;
+
         for (var i = 0; i < imagesToProcessCount; i++) {
             var element = imagesChanged[i];
             var changed = element.dataset.changed === 'true';
@@ -261,31 +262,32 @@
 
             formData.append("randomName", true);
 
-            $.ajax('/storage/uploadcontentimage', {
-                method: "POST",
-                data: formData,
-                async: false,
-                processData: false,
-                contentType: false,
-                success: function (response) {
-                    imagesProcessed++;
-                    hidden.value = response.url;
-
-                    console.log(imagesToProcessCount);
-                    console.log(imagesProcessed);
-
-                    if (imagesProcessed === imagesToProcessCount) {
-                        if (callback) {
-                            callback();
-                        }
-                    }
-                },
-                error: function (response) {
-                    console.log(response);
-                    imgFeaturedImage.src = initialUrl;
-                }
-            });
+            uploadImage(formData, imagesToProcessCount, hidden, callback);
         }
+    }
+
+    function uploadImage(formData, imagesToProcessCount, hidden, callback) {
+        $.ajax('/storage/uploadcontentimage', {
+            method: "POST",
+            data: formData,
+            async: false,
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                imagesProcessed++;
+                hidden.value = response.url;
+
+                if (imagesProcessed === imagesToProcessCount) {
+                    if (callback) {
+                        callback();
+                    }
+                }
+            },
+            error: function (response) {
+                console.log(response);
+                imgFeaturedImage.src = initialUrl;
+            }
+        });
     }
 
     function initSortable() {

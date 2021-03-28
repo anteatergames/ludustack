@@ -24,8 +24,7 @@
         selectors.containerList = '#containerlist';
         selectors.list = '#divList';
         selectors.divListItem = '.jobposition-item';
-        selectors.btnNewJobPosition = '#btn-jobposition-new';
-        selectors.btnNewExternalJobPosition = '#btn-jobposition-new-external';
+        selectors.btnNewJobPosition = '.btn-jobposition-new';
         selectors.btnListMine = '#btn-jobposition-listmine';
         selectors.form = '#frmJobPositionSave';
         selectors.btnSave = '#btnPostJobPosition';
@@ -99,7 +98,6 @@
     }
 
     function bindAll() {
-        bindBtnNewExternalJobPosition();
         bindBtnNewJobPosition();
         bindBtnSaveForm();
         bindBtnApply();
@@ -182,15 +180,6 @@
             var data = { score: value };
 
             genericPost(url, data);
-        });
-    }
-
-    function bindBtnNewExternalJobPosition() {
-        objs.container.on('click', selectors.btnNewExternalJobPosition, function () {
-            var url = $(this).data('url');
-            if (canInteract) {
-                loadNewJobPositionForm(url);
-            }
         });
     }
 

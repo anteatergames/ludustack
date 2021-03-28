@@ -1,14 +1,7 @@
-﻿var ALERTSYSTEM = (function () {
+﻿// https://sweetalert2.github.io
+
+var ALERTSYSTEM = (function () {
     "use strict";
-
-    //const toast = swal.mixin({
-    //    toast: true,
-    //    position: 'top-end',
-    //    showConfirmButton: false,
-    //    timer: 3000
-    //});
-
-    // https://sweetalert2.github.io
 
     function init() {
         console.log('ALERTSYSTEM.init');

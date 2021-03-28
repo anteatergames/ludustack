@@ -3,7 +3,7 @@ using System;
 
 namespace LuduStack.Infra.CrossCutting.Messaging
 {
-    public abstract class Command : Message, IRequest<CommandResult>, IBaseRequest
+    public abstract class Command : Message, IRequest<CommandResult>
     {
         public DateTime Timestamp { get; private set; }
 

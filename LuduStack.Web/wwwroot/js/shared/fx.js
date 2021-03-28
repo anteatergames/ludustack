@@ -100,8 +100,8 @@
         }
     }
 
-    // confetti
     // Globals
+
     var $window = $(window)
         , random = Math.random
         , cos = Math.cos

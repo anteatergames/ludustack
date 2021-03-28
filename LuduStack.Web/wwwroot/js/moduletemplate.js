@@ -33,7 +33,7 @@
     }
 
     function cacheObjectsCreateEdit() {
-        //objs.xpto = $(selectors.xpto);
+        // cache objects exclusive to the created/edit mode
     }
 
     function setCreateEdit() {

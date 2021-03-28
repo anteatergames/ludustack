@@ -347,7 +347,7 @@ namespace LuduStack.Web.Controllers
                 {
                     JObject jResponse = JObject.Parse(stream.ReadToEnd());
                     bool isSuccess = jResponse.Value<bool>("success");
-                    result = (isSuccess) ? true : false;
+                    result = isSuccess;
                 }
             }
             return result;

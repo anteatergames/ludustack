@@ -8,6 +8,7 @@
     var isNew = false;
 
     var croppers = [];
+    var imagesProcessed = 0;
 
     var datetimePickerIcons = {
         time: "fa fa-clock",
@@ -78,28 +79,26 @@
     }
 
     function bindChangeImage() {
-        for (var i = 0; i < objs.inputImageListItem.length; i++) {
-            var element = objs.inputImageListItem[i];
+        objs.inputImageListItem.on('change', function (e) {
+            var image = document.getElementById(e.target.dataset.targetImg);
 
-            element.addEventListener('change', function (e) {
-                var image = document.getElementById(e.target.dataset.targetImg);
+            var files = e.target.files
 
-                var files = e.target.files
-
-                var done = function (url2) {
-                    element.value = '';
-
-                    croppers[image.dataset.cropperIndex].replace(url2);
-
-                    image.src = url2;
-
-                    e.target.dataset.changed = true;
-                };
-
-                MAINMODULE.Utils.GetSelectedFileUrl(files, done);
+            MAINMODULE.Utils.GetSelectedFileUrl(files, function (url2) {
+                changeDone(url2, e.target, image);
             });
-        }
+        });
     }
+
+    var changeDone = function (url2, element, image) {
+        element.value = '';
+
+        croppers[image.dataset.cropperIndex].replace(url2);
+
+        image.src = url2;
+
+        element.dataset.changed = true;
+    };
 
     function bindCropper() {
         var images = document.querySelectorAll(selectors.imageListItem);
@@ -118,8 +117,6 @@
     }
 
     function uploadCroppedImages(callback) {
-        var imagesProcessed = 0;
-
         var imagesChanged = objs.inputImageListItem.filter(function (index) {
             return objs.inputImageListItem[index].dataset.changed === 'true';
         });
@@ -127,7 +124,7 @@
         var imagesToProcessCount = imagesChanged.length;
 
         if (imagesChanged.length > 0) {
-            processImages(imagesChanged, imagesToProcessCount, imagesProcessed, callback);
+            processImages(imagesChanged, imagesToProcessCount, callback);
         }
         else {
             if (callback) {
@@ -136,7 +133,9 @@
         }
     }
 
-    function processImages(imagesChanged, imagesToProcessCount, imagesProcessed, callback) {
+    function processImages(imagesChanged, imagesToProcessCount, callback) {
+        imagesProcessed = 0;
+
         for (var i = 0; i < imagesToProcessCount; i++) {
             var element = imagesChanged[i];
             var changed = element.dataset.changed === 'true';
@@ -146,7 +145,6 @@
                 imagesProcessed++;
                 continue;
             }
-            console.log('uploading...');
 
             var image = document.getElementById(element.dataset.targetImg);
             var hidden = document.getElementById(element.dataset.targetHidden);
@@ -166,31 +164,32 @@
 
             formData.append("randomName", true);
 
-            $.ajax('/storage/uploadcontentimage', {
-                method: "POST",
-                data: formData,
-                async: false,
-                processData: false,
-                contentType: false,
-                success: function (response) {
-                    imagesProcessed++;
-                    hidden.value = response.url;
-
-                    console.log(imagesToProcessCount);
-                    console.log(imagesProcessed);
-
-                    if (imagesProcessed === imagesToProcessCount) {
-                        if (callback) {
-                            callback();
-                        }
-                    }
-                },
-                error: function (response) {
-                    console.log(response);
-                    imgFeaturedImage.src = initialUrl;
-                }
-            });
+            uploadImage(formData, imagesToProcessCount, hidden, callback);
         }
+    }
+
+    function uploadImage(formData, imagesToProcessCount, hidden, callback) {
+        $.ajax('/storage/uploadcontentimage', {
+            method: "POST",
+            data: formData,
+            async: false,
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                imagesProcessed++;
+                hidden.value = response.url;
+
+                if (imagesProcessed === imagesToProcessCount) {
+                    if (callback) {
+                        callback();
+                    }
+                }
+            },
+            error: function (response) {
+                console.log(response);
+                imgFeaturedImage.src = initialUrl;
+            }
+        });
     }
 
     function bindDateTimePickers() {

@@ -356,7 +356,6 @@ namespace LuduStack.Web.Controllers
                         notificationAppService.Notify(CurrentUserId, gameName, follower.Key, NotificationType.ContentPosted, targetId);
                         break;
 
-                    case FollowType.Content:
                     default:
                         notificationAppService.Notify(CurrentUserId, profile.Name, follower.Key, NotificationType.ContentPosted, targetId);
                         break;

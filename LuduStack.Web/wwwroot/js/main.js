@@ -469,23 +469,17 @@
 
     function getSelectedFileUrl(files, done) {
         if (files && files.length > 0) {
-            file = files[0];
-
             var reader;
-            var file;
+            var file = files[0];
 
-            if (files && files.length > 0) {
-                file = files[0];
-
-                if (URL) {
-                    done(URL.createObjectURL(file));
-                } else if (FileReader) {
-                    reader = new FileReader();
-                    reader.onloadend = function (e2) {
-                        done(reader.result);
-                    };
-                    reader.readAsDataURL(file);
-                }
+            if (URL) {
+                done(URL.createObjectURL(file));
+            } else if (FileReader) {
+                reader = new FileReader();
+                reader.onloadend = function (e2) {
+                    done(reader.result);
+                };
+                reader.readAsDataURL(file);
             }
         }
     }
@@ -549,8 +543,3 @@
 }());
 
 MAINMODULE.Init();
-
-//var lazyLoadInstance = new LazyLoad({
-//    elements_selector: ".lazyload",
-//    callback_loaded: (el) => { el.classList.remove("blur-up"); }
-//});
