@@ -70,8 +70,6 @@
 
         bindAll();
 
-        canInteract = $(selectors.canInteract).val();
-
         MAINMODULE.Common.BindPopOvers();
 
         objs.monthlyExpenses.focus().select();

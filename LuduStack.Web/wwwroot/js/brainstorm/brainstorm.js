@@ -32,7 +32,7 @@
         selectors.toolbar = $("#divToolbar");
         selectors.list = $("#divList");
         selectors.btnPostVotingItem = $("#btnPostVotingItem");
-        selectors.btnPostBrainstormIdea = '#btnPostBrainstormIdea';
+        selectors.btnSave = '.btn-save';
         selectors.form = $("#frmBrainstormIdeaSave");
         selectors.ddlStatus = '#ddlStatus';
     }
@@ -40,14 +40,12 @@
     function cacheObjects() {
         objs.container = $(selectors.container);
         objs.ddlStatus = $(selectors.ddlStatus);
-        objs.btnPostBrainstormIdea = $(selectors.btnPostBrainstormIdea);
     }
 
     function bindAll() {
         bindBtnNewIdea();
         bindBtnNewSession();
-        bindBtnSaveIdea();
-        bindBtnSaveSession();
+        bindBtnSave();
         bindBtnVote();
         bindStatusChange();
     }
@@ -92,25 +90,8 @@
         });
     }
 
-    function bindBtnSaveIdea() {
-        objs.container.on('click', selectors.btnPostBrainstormIdea, function (e) {
-            e.preventDefault();
-
-            var btn = $(this);
-
-            var valid = selectors.form.valid();
-            if (valid && canInteract) {
-                MAINMODULE.Common.DisableButton(btn);
-
-                submitForm(btn);
-            }
-
-            return false;
-        });
-    }
-
-    function bindBtnSaveSession() {
-        objs.container.on('click', '#btnPostBrainstormSession', function (e) {
+    function bindBtnSave() {
+        objs.container.on('click', selectors.btnSave, function (e) {
             e.preventDefault();
 
             var btn = $(this);

@@ -33,7 +33,7 @@
 
         loadItems(urlGiveaways);
 
-        GIVEAWAYCOMMON.Callback.DeleteEntity = deleteCallback;
+        GIVEAWAYCOMMON.Callback.DeleteEntity = handleResponse;
     }
 
     function bindAll() {
@@ -46,11 +46,7 @@
 
             var btn = $(this);
 
-            MAINMODULE.Common.PostWithoutConfirmation(btn, function (response) {
-                if (response.success) {
-                    loadItems(urlGiveaways);
-                }
-            });
+            MAINMODULE.Common.PostWithoutConfirmation(btn, handleResponse);
 
             return false;
         });
@@ -60,7 +56,7 @@
         MAINMODULE.Ajax.LoadHtml(url, objs.list);
     }
 
-    function deleteCallback(response) {
+    function handleResponse(response) {
         if (response.success) {
             loadItems(urlGiveaways);
         }
