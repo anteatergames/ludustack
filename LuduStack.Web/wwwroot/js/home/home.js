@@ -60,8 +60,6 @@
 
         loadLatestGames();
 
-        //defaultCommentBoxHeight = Math.ceil(objs.commentBox.outerHeight());
-
         defaultTxtPostContentHeight = Math.ceil(objs.txtPostContent.height());
 
         POLLS.Events.PostAddOption = resizePostBox;
@@ -218,12 +216,12 @@
                 });
             }
             else {
-                uploadImages(postImagesDropZone, text, gameId, options, txtArea);
+                uploadImages(text, gameId, options, txtArea);
             }
         });
     }
 
-    function uploadImages(postImagesDropZone, text, gameId, options, txtArea) {
+    function uploadImages(text, gameId, options, txtArea) {
         postImagesDropZone.processQueue();
 
         var success = false;
@@ -423,9 +421,7 @@
     }
 
     function loadLatestGames() {
-        MAINMODULE.Ajax.LoadHtml("/game/latest", selectors.divLatestGames).then(() => {
-            //lazyLoadInstance.update();
-        });
+        MAINMODULE.Ajax.LoadHtml("/game/latest", selectors.divLatestGames);
     }
 
     function autosize(el) {

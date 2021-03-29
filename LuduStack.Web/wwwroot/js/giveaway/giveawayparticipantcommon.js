@@ -38,7 +38,6 @@
     function bindBtnShowTerms() {
         objs.container.on('click', selectors.btnShowTerms, function (e) {
             e.preventDefault();
-            var btn = $(this);
 
             if (objs.giveawayContainer.hasClass('d-none')) {
                 objs.termsContainer.addClass('d-none');

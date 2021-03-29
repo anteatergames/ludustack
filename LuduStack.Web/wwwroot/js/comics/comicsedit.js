@@ -82,7 +82,7 @@
         objs.inputImageListItem.on('change', function (e) {
             var image = document.getElementById(e.target.dataset.targetImg);
 
-            var files = e.target.files
+            var files = e.target.files;
 
             MAINMODULE.Utils.GetSelectedFileUrl(files, function (url2) {
                 changeDone(url2, e.target, image);

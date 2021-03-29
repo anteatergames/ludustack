@@ -46,30 +46,6 @@
         });
     }
 
-    function deleteCourse(btn, callback) {
-        //var url = btn.data('url');
-
-        //var msgs = MAINMODULE.Common.GetDeleteMessages(btn);
-
-        //ALERTSYSTEM.ShowConfirmMessage(msgs.confirmationTitle, msgs.msg, msgs.confirmationButtonText, msgs.cancelButtonText, function () {
-        //    $.ajax({
-        //        url: url,
-        //        type: 'DELETE'
-        //    }).done(function (response) {
-        //        if (response.success) {
-        //            if (callback) {
-        //                callback(response);
-        //            }
-
-        //            MAINMODULE.Common.HandleSuccessDefault(response);
-        //        }
-        //        else {
-        //            ALERTSYSTEM.ShowWarningMessage(response.message);
-        //        }
-        //    });
-        //});
-    }
-
     return {
         Init: init,
         Callback: {

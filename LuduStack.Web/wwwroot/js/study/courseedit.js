@@ -174,28 +174,26 @@
     }
 
     function bindChangeImage() {
-        for (var i = 0; i < objs.inputImageListItem.length; i++) {
-            var element = objs.inputImageListItem[i];
+        objs.inputImageListItem.on('change', function (e) {
+            var image = document.getElementById(e.target.dataset.targetImg);
 
-            element.addEventListener('change', function (e) {
-                var image = document.getElementById(e.target.dataset.targetImg);
+            var files = e.target.files;
 
-                var files = e.target.files
-
-                var done = function (url2) {
-                    element.value = '';
-
-                    croppers[image.dataset.cropperIndex].replace(url2);
-
-                    image.src = url2;
-
-                    e.target.dataset.changed = true;
-                };
-
-                MAINMODULE.Utils.GetSelectedFileUrl(files, done);
+            MAINMODULE.Utils.GetSelectedFileUrl(files, function (url2) {
+                changeDone(url2, e.target, image);
             });
-        }
+        });
     }
+
+    var changeDone = function (url2, element, image) {
+        element.value = '';
+
+        croppers[image.dataset.cropperIndex].replace(url2);
+
+        image.src = url2;
+
+        element.dataset.changed = true;
+    };
 
     function bindCropper() {
         var images = document.querySelectorAll(selectors.imageListItem);

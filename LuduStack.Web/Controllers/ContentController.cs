@@ -148,7 +148,7 @@ namespace LuduStack.Web.Controllers
                 }
                 else
                 {
-                    await NotifyFollowers(profile, vm.GameId, vm.Id);
+                    await NotifyFollowers(profile, vm.GameId);
 
                     string url = Url.Action("Index", "Home", new { area = string.Empty, id = vm.Id, pointsEarned = saveResult.PointsEarned });
 
@@ -205,7 +205,7 @@ namespace LuduStack.Web.Controllers
 
             OperationResultVo<Guid> result = await userContentAppService.Save(CurrentUserId, vm);
 
-            await NotifyFollowers(profile, vm.GameId, vm.Id);
+            await NotifyFollowers(profile, vm.GameId);
 
             if (EnvName.Equals(ConstantHelper.ProductionEnvironmentName))
             {
@@ -299,7 +299,7 @@ namespace LuduStack.Web.Controllers
             }
         }
 
-        private async Task NotifyFollowers(ProfileViewModel profile, Guid? gameId, Guid contentId)
+        private async Task NotifyFollowers(ProfileViewModel profile, Guid? gameId)
         {
             Dictionary<Guid, FollowType> followersToNotify = new Dictionary<Guid, FollowType>();
 

@@ -271,7 +271,7 @@ namespace LuduStack.Web.Middlewares
 
         private async Task<List<string>> CheckDetailsMethod(Type controller)
         {
-            string pattern = string.Empty;
+            string pattern = null;
             OperationResultVo ids = null;
             List<string> methodList = new List<string>();
 

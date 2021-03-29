@@ -47,7 +47,6 @@
     function bindBtnExportParticipantList() {
         objs.container.on('click', selectors.btnExportParticipantList, function (e) {
             e.preventDefault();
-            var btn = $(this);
 
             if (canInteract) {
                 EXPORTHELPER.TableToExcel('tblParticipantsExport', 'Participants');

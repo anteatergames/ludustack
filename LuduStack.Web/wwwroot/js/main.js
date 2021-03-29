@@ -341,8 +341,6 @@
                 .then(function (body) {
                     document.querySelector(idList).innerHTML = body;
 
-                    //lazyLoadInstance.update();
-
                     return body;
                 });
 

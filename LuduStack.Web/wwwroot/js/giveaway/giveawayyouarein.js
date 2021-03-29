@@ -65,7 +65,6 @@
     function bindBtnCopy() {
         objs.container.on('click', selectors.copyIcon, function (e) {
             e.preventDefault();
-            var btn = $(this);
 
             copyToClipboard(selectors.urlInput);
 
@@ -139,7 +138,6 @@
     function bindBtnTwitterShare() {
         objs.container.on('click', selectors.btnTwitterShare, function (e) {
             e.preventDefault();
-            var btn = $(this);
 
             if (!sharedOnTwitter) {
                 twitterShare(objs.name.val(), objs.urlInput.val());

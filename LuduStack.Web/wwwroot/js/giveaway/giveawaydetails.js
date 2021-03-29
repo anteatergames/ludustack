@@ -4,8 +4,6 @@
     var selectors = {};
     var objs = {};
 
-    const selection = window.getSelection();
-
     var spinnerBtn = '<span class="spinner-border" role="status" aria-hidden="true"></span>';
     var saveBtnOriginalText = '';
 
