@@ -390,8 +390,7 @@
             if (response.success === true) {
                 MAINMODULE.Common.PostSaveCallback(response, btn);
 
-                MAINMODULE.Common.HandleSuccessDefault(response, callback, function (result) {
-                    console.log(result);
+                MAINMODULE.Common.HandleSuccessDefault(response, callback, function () {
                     MAINMODULE.Common.RemoveErrorFromButton(btn);
 
                     loadTerms();

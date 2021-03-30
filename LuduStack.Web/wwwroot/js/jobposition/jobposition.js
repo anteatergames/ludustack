@@ -174,9 +174,6 @@
         objs.container.on('rating:change', selectors.applicantRating, function (event, value, caption) {
             var url = $(this).data('url');
 
-            console.log(event);
-            console.log(caption);
-
             var data = { score: value };
 
             genericPost(url, data);
@@ -187,7 +184,7 @@
         objs.container.on('click', selectors.btnNewJobPosition, function () {
             var url = $(this).data('url');
             if (canInteract) {
-                loadNewJobPositionForm(url);
+                loadEditForm(url);
             }
         });
     }
@@ -346,35 +343,8 @@
         MAINMODULE.Ajax.LoadHtml(url, objs.myApplications);
     }
 
-    function loadNewJobPositionForm(url) {
-        objs.containerDetails.html(MAINMODULE.Default.Spinner);
-        objs.containerList.hide();
-
-        MAINMODULE.Ajax.LoadHtml(url, objs.containerDetails).then(() => {
-            objs.containerDetails.show();
-            objs.form = $(selectors.form);
-
-            $.validator.unobtrusive.parse(selectors.form);
-            setCreateEdit();
-        });
-    }
-
     function apply(url, callback) {
-        $.post(url).done(function (response) {
-            if (response.success === true) {
-                if (callback) {
-                    callback(response);
-                }
-                ALERTSYSTEM.ShowSuccessMessage(response.message, function () {
-                    if (response.url) {
-                        window.location = response.url;
-                    }
-                });
-            }
-            else {
-                ALERTSYSTEM.ShowWarningMessage(response.message);
-            }
-        });
+        genericPost(url, null, callback);
     }
 
     function loadEditForm(url) {
@@ -404,7 +374,7 @@
                 }
 
                 ALERTSYSTEM.ShowSuccessMessage("Awesome!", function () {
-                    window.location = response.url;
+                    MAINMODULE.Ajax.HandleUrlResponse(response);
                 });
             }
             else {
@@ -420,9 +390,7 @@
                     callback(response);
                 }
                 ALERTSYSTEM.ShowSuccessMessage(response.message, function () {
-                    if (response.url) {
-                        window.location = response.url;
-                    }
+                    MAINMODULE.Ajax.HandleUrlResponse(response);
                 });
             }
             else {

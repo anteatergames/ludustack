@@ -270,7 +270,7 @@
                 successCallback();
             }
 
-            ALERTSYSTEM.Toastr.ShowSuccess(response.message, function (result) {
+            ALERTSYSTEM.Toastr.ShowSuccess(response.message, function () {
                 MAINMODULE.Ajax.HandleUrlResponse(response);
             });
         }
@@ -390,51 +390,11 @@
     }
 
     function deleteEntity(btn, callback) {
-        var url = btn.data('url');
-
-        var msgs = MAINMODULE.Common.GetDeleteMessages(btn);
-
-        ALERTSYSTEM.ShowConfirmMessage(msgs.confirmationTitle, msgs.msg, msgs.confirmationButtonText, msgs.cancelButtonText, function () {
-            $.ajax({
-                url: url,
-                type: 'DELETE'
-            }).done(function (response) {
-                if (response.success) {
-                    MAINMODULE.Common.HandleSuccessDefault(response);
-
-                    if (callback) {
-                        callback(response);
-                    }
-                }
-                else {
-                    ALERTSYSTEM.ShowWarningMessage(response.message);
-                }
-            });
-        });
+        postOrDeleteWithConfirmation(btn, 'DELETE', callback);
     }
 
     function postWithConfirmation(btn, callback) {
-        var url = btn.data('url');
-
-        var msgs = MAINMODULE.Common.GetDeleteMessages(btn);
-
-        ALERTSYSTEM.ShowConfirmMessage(msgs.confirmationTitle, msgs.msg, msgs.confirmationButtonText, msgs.cancelButtonText, function () {
-            $.ajax({
-                url: url,
-                type: 'POST'
-            }).done(function (response) {
-                if (response.success) {
-                    MAINMODULE.Common.HandleSuccessDefault(response);
-
-                    if (callback) {
-                        callback(response);
-                    }
-                }
-                else {
-                    ALERTSYSTEM.ShowWarningMessage(response.message);
-                }
-            });
-        });
+        postOrDeleteWithConfirmation(btn, 'POST', callback);
     }
 
     function postWithoutConfirmation(btn, callback) {
@@ -454,6 +414,27 @@
             else {
                 ALERTSYSTEM.ShowWarningMessage(response.message);
             }
+        });
+    }
+
+
+    function postOrDeleteWithConfirmation(btn, httpmethod, callback) {
+        var url = btn.data('url');
+
+        var msgs = MAINMODULE.Common.GetDeleteMessages(btn);
+
+        ALERTSYSTEM.ShowConfirmMessage(msgs.confirmationTitle, msgs.msg, msgs.confirmationButtonText, msgs.cancelButtonText, function () {
+            $.ajax({
+                url: url,
+                type: httpmethod
+            }).done(function (response) {
+                if (response.success) {
+                    MAINMODULE.Common.HandleSuccessDefault(response);
+                }
+                else {
+                    ALERTSYSTEM.ShowWarningMessage(response.message);
+                }
+            });
         });
     }
 
