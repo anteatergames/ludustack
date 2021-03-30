@@ -1,4 +1,5 @@
-﻿using LuduStack.Application.Formatters;
+﻿using AutoMapper.QueryableExtensions;
+using LuduStack.Application.Formatters;
 using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels;
 using LuduStack.Application.ViewModels.User;
@@ -295,6 +296,22 @@ namespace LuduStack.Application.Services
             profile.CoverImageUrl = Constants.DefaultGameCoverImage;
 
             return profile;
+        }
+
+        public OperationResultVo Search(string term)
+        {
+            try
+            {
+                IQueryable<UserProfile> results = profileDomainService.Search(x => x.Name.ToLower().Contains(term.ToLower()));
+
+                IQueryable<ProfileSearchViewModel> vms = results.ProjectTo<ProfileSearchViewModel>(mapper.ConfigurationProvider);
+
+                return new OperationResultListVo<ProfileSearchViewModel>(vms);
+            }
+            catch (Exception ex)
+            {
+                return new OperationResultVo(ex.Message);
+            }
         }
 
         public OperationResultVo UserFollow(Guid currentUserId, Guid userId)

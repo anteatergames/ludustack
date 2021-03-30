@@ -123,13 +123,13 @@
     </form>
 </div>
 
-<div class="row team-member mb-2 template">
-    <input type="hidden" id="Members_0__Id" name="Members[0].Id" />
-    <input type="hidden" id="Members_0__UserId" name="Members[0].UserId" class="team-member-userid" />
-    <input type="hidden" id="Members_0__TeamId" name="Members[0].TeamId" class="team-member-teamid" value="@Model.Id" />
-    <input type="hidden" id="Members_0__Leader" name="Members[0].Leader" value="False" />
-    <input type="hidden" id="Members_0__Name" name="Members[0].Name" class="team-member-name-hidden" />
-    <input type="hidden" id="Members_0__InvitationStatus" name="Members[0].InvitationStatus" value="@InvitationStatus.Invited" />
+<div class="row team-member mb-2 template" aria-hidden="true">
+    <input type="hidden" id="Members_99__Id" name="Members[0].Id" />
+    <input type="hidden" id="Members_99__UserId" name="Members[0].UserId" class="team-member-userid" />
+    <input type="hidden" id="Members_99__TeamId" name="Members[0].TeamId" class="team-member-teamid" value="@Model.Id" />
+    <input type="hidden" id="Members_99__Leader" name="Members[0].Leader" value="False" />
+    <input type="hidden" id="Members_99__Name" name="Members[0].Name" class="team-member-name-hidden" />
+    <input type="hidden" id="Members_99__InvitationStatus" name="Members[0].InvitationStatus" value="@InvitationStatus.Invited" />
     <div class="div-avatar">
         <h5 class="text-center team-member-isleader">@SharedLocalizer["Team Leader"]</h5>
         <span>&nbsp;</span>
@@ -143,11 +143,11 @@
             <div class="col-12">
                 <div class="form-group">
                     <label asp-for="Members[0].Role"></label>
-                    <input id="Members_0__Role" name="Members[0].Role" class="form-control" placeholder="Role" />
+                    <input id="Members_99__Role" name="Members[0].Role" class="form-control" placeholder="Role" />
                 </div>
                 <div class="form-group">
                     <label asp-for="Members[0].Works"></label>
-                    <select id="Members_0__Works" name="Members[0].Works" asp-items="Html.GetEnumSelectList<WorkType>()" class="form-control select2" multiple="" data-placeholder="@SharedLocalizer["Select work types"]" tabindex="-1" aria-hidden="true"></select>
+                    <select id="Members_99__Works" name="Members[0].Works" asp-items="Html.GetEnumSelectList<WorkType>()" class="form-control select2" multiple="" data-placeholder="@SharedLocalizer["Select work types"]" tabindex="-1" aria-hidden="true"></select>
                 </div>
             </div>
         </div>

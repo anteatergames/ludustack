@@ -56,6 +56,13 @@ namespace LuduStack.Domain.Services
             }
         }
 
+        public virtual IQueryable<UserProfile> Search(Expression<Func<UserProfile, bool>> where)
+        {
+            IQueryable<UserProfile> objs = repository.Get(where);
+
+            return objs;
+        }
+
         public IEnumerable<Guid> GetAllUserIds()
         {
             Task<IEnumerable<Guid>> allIds = Task.Run(async () => await repository.GetAllUserIds());

@@ -3,6 +3,7 @@ using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
@@ -11,6 +12,8 @@ namespace LuduStack.Domain.Interfaces.Services
     public interface IProfileDomainService : IDomainService<UserProfile>
     {
         Task<UserProfile> Get(Guid userId, string userHandler, ProfileType type);
+
+        IQueryable<UserProfile> Search(Expression<Func<UserProfile, bool>> where);
 
         IEnumerable<Guid> GetAllUserIds();
 

@@ -35,6 +35,8 @@ namespace LuduStack.Application.Interfaces
 
         ProfileViewModel GenerateNewOne(ProfileType type);
 
+        OperationResultVo Search(string term);
+
         OperationResultVo UserFollow(Guid currentUserId, Guid userId);
 
         OperationResultVo UserUnfollow(Guid currentUserId, Guid userId);
