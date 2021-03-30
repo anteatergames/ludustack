@@ -190,13 +190,7 @@
 
     function bindRejectInvitation() {
         objs.divMembers.on('click', selectors.btnRejectInvitation, function () {
-            var btn = $(this);
-            var url = $(this).data('url');
-
-            $.post(url)
-                .done(function () {
-                    btn.closest(selectors.teamMember).remove();
-                });
+            postReject(this);
         });
     }
 
@@ -248,13 +242,7 @@
 
     function bindRejectCandidate() {
         objs.divMembers.on('click', selectors.btnRejectCandidate, function () {
-            var btn = $(this);
-            var url = $(this).data('url');
-
-            $.post(url)
-                .done(function () {
-                    btn.closest(selectors.teamMember).remove();
-                });
+            postReject(this);
         });
     }
 
@@ -283,6 +271,16 @@
                 deleteTeam(btn);
             });
         });
+    }
+
+    function postReject(element) {
+        var btn = $(element);
+        var url = $(element).data('url');
+
+        $.post(url)
+            .done(function () {
+                btn.closest(selectors.teamMember).remove();
+            });
     }
 
     function deleteTeam(btn) {
