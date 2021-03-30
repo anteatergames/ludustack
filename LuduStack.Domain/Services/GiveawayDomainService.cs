@@ -316,7 +316,7 @@ namespace LuduStack.Domain.Services
             repository.UpdateGiveawayStatus(giveawayId, GiveawayStatus.Ended);
         }
 
-        private static IGiveawayBasicInfo SetDates(IGiveawayBasicInfo model)
+        private static void SetDates(IGiveawayBasicInfo model)
         {
             if (model != null)
             {
@@ -339,8 +339,6 @@ namespace LuduStack.Domain.Services
                     model.Status = effectiveStatus;
                 }
             }
-
-            return model;
         }
 
         private static GiveawayStatus ComputeEffectiveStatus(IGiveawayBasicInfo model)

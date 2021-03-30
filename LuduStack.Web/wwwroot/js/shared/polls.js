@@ -90,8 +90,7 @@
             var input = votedLi.find('input');
             input.prop("checked", true);
 
-            for (var i = 0; i < response.value.optionResults.length; i++) {
-                var optionReturned = response.value.optionResults[i];
+            for (let optionReturned of response.value.optionResults) {
                 var optionInput = poll.find(`input[value="${optionReturned.optionId}"]`);
                 var optionLi = optionInput.parent('li');
                 var percBack = optionLi.children('span.perc-back');

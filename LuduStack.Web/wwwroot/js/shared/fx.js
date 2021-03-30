@@ -344,7 +344,7 @@
         // Cleanup
         document.body.removeChild(container);
         frame = undefined;
-    };
+    }
     // end confetti
 
     return {

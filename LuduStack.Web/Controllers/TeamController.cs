@@ -227,8 +227,6 @@ namespace LuduStack.Web.Controllers
 
         private void Notify(TeamViewModel vm, IEnumerable<Guid> oldMembers)
         {
-            TeamMemberViewModel meAsMember = vm.Members.FirstOrDefault(x => x.UserId == CurrentUserId);
-
             string fullName = GetSessionValue(SessionValues.FullName);
 
             foreach (TeamMemberViewModel member in vm.Members.Where(x => !x.Leader))

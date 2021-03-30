@@ -422,9 +422,8 @@
         if (!result.id) {
             return result.text;
         }
-        var resultHtml = $('<span><img class="rounded-circle lazyload avatar" data-src="' + avatarBaseUrl + result.id + '/profileimage_' + result.id + '_Personal' + '" src="/images/profileimages/developer.png" alt="meh"> ' + result.text + '</span>');
 
-        return resultHtml;
+        return $('<span><img class="rounded-circle lazyload avatar" data-src="' + avatarBaseUrl + result.id + '/profileimage_' + result.id + '_Personal' + '" src="/images/profileimages/developer.png" alt="meh"> ' + result.text + '</span>');
     }
 
     function cacheAjaxObjs() {

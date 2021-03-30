@@ -4,8 +4,6 @@
     var selectors = {};
     var objs = {};
 
-    var canInteract = false;
-
     function setSelectors() {
         selectors.canInteract = '#caninteract';
         selectors.container = '#featurecontainer';

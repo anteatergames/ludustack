@@ -176,11 +176,11 @@
             if (language) {
                 var data = [];
 
-                for (var i = 0; i < changedEntries.length; i++) {
-                    var input = $(selectors.entryInput + '[data-termid=' + changedEntries[i] + ']');
+                for (let entry of changedEntries) {
+                    var input = $(selectors.entryInput + '[data-termid=' + entry + ']');
 
                     var item = {
-                        termId: changedEntries[i],
+                        termId: entry,
                         value: input.val()
                     };
 
@@ -196,8 +196,8 @@
 
     function saveTranslationChangesCallback(response) {
         if (response.success === true) {
-            for (var j = 0; j < changedEntries.length; j++) {
-                var input2 = $(selectors.entryInput + '[data-termid=' + changedEntries[j] + ']');
+            for (let entry of changedEntries) {
+                var input2 = $(selectors.entryInput + '[data-termid=' + entry + ']');
 
                 input2.data('changed', false);
                 input2.data('originalval', input2.val());
@@ -295,8 +295,8 @@
             if (response.success === true) {
                 resetTranslationStatus();
 
-                for (var i = 0; i < response.value.length; i++) {
-                    loadSingleTranslation(response.value[i]);
+                for (let translation of response.value) {
+                    loadSingleTranslation(translation);
                 }
             }
             else {

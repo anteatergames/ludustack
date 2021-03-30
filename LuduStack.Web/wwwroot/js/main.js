@@ -337,14 +337,12 @@
         else {
             document.querySelector(idList).innerHTML = MAINMODULE.Default.SpinnerTop;
 
-            const promise = getHtml(url)
+            return getHtml(url)
                 .then(function (body) {
                     document.querySelector(idList).innerHTML = body;
 
                     return body;
                 });
-
-            return promise;
         }
     }
 

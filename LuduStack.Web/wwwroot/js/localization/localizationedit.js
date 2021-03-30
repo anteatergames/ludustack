@@ -282,19 +282,6 @@
         COMMONEDIT.ResetValidator(objs.form);
     }
 
-    function addNewAuthor(container, translation) {
-        var newAuthorObj = $(selectors.entryAuthorTemplate).first().clone();
-        var btn = newAuthorObj.find('button');
-
-        btn.attr('data-userid', translation.userId);
-        btn.attr('title', translation.authorName);
-        btn.attr('data-value', translation.value);
-
-        newAuthorObj.removeClass('template');
-
-        newAuthorObj.appendTo(container);
-    }
-
     function submitForm(btn, callback) {
         var url = objs.form.attr('action');
 

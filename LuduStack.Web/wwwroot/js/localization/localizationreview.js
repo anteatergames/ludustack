@@ -140,8 +140,8 @@
             if (response.success === true) {
                 resetTranslationPlaces();
 
-                for (var i = 0; i < response.value.length; i++) {
-                    loadSingleTranslation(response.value[i]);
+                for (let translation of response.value) {
+                    loadSingleTranslation(translation);
                 }
             }
             else {
