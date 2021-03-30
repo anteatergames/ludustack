@@ -33,9 +33,7 @@ var ALERTSYSTEM = (function () {
             timer: 3000
         }).then(
             function (result) {
-                if (callback) {
-                    callback(result);
-                }
+                callbackResult(callback, result);
             }
         );
     }
@@ -47,9 +45,7 @@ var ALERTSYSTEM = (function () {
             type: "success"
         }).then(
             function (result) {
-                if (callback) {
-                    callback(result);
-                }
+                callbackResult(callback, result);
             }
         );
     }
@@ -61,12 +57,16 @@ var ALERTSYSTEM = (function () {
             title: msg,
             type: "warning"
         }).then(
-            function () {
-                if (callback) {
-                    callback();
-                }
+            function (result) {
+                callbackResult(callback, result);
             }
         );
+    }
+
+    function callbackResult(callback, result) {
+        if (callback) {
+            callback(result);
+        }
     }
 
     function showConfirmMessage(title, msg, confirmButtonText, cancelButtonText, callbackYes, callbackCancel) {

@@ -40,23 +40,11 @@
     }
 
     function bindBtnExportProject() {
-        objs.container.on('click', selectors.exportProject, function () {
-            var url = $(this).data('url');
-
-            url += '&fillGaps=' + objs.fillGaps.is(':checked');
-
-            window.location.href = url;
-        });
+        objs.container.on('click', selectors.exportProject, exportTranslations);
     }
 
     function bindBtnExportSingleLanguage() {
-        objs.container.on('click', selectors.btnExportLanguage, function () {
-            var url = $(this).data('url');
-
-            url += '&fillGaps=' + objs.fillGaps.is(':checked');
-
-            window.location.href = url;
-        });
+        objs.container.on('click', selectors.btnExportLanguage, exportTranslations);
     }
 
     function bindBtnExportContributorsNameProfile() {
@@ -65,6 +53,14 @@
 
             window.location.href = url;
         });
+    }
+
+    function exportTranslations(e) {
+        var url = $(e.target).closest('a').data('url');
+
+        url += '&fillGaps=' + objs.fillGaps.is(':checked');
+
+        window.location.href = url;
     }
 
     return {

@@ -30,17 +30,7 @@
             var btn = $(this);
             var id = btn.closest('tr').data('id');
 
-            $.post('/staff/featuredcontent/add', { id: id })
-                .done(function (response) {
-                    if (response.success === true) {
-                        ALERTSYSTEM.ShowSuccessMessage("Awesome!");
-                        loadList();
-                    }
-                    else {
-                        ALERTSYSTEM.ShowWarningMessage("An error occurred! Check the console!");
-                        console.log(response);
-                    }
-                });
+            $.post('/staff/featuredcontent/add', { id: id }).done(featureActionCallback);
         });
     }
 
@@ -49,18 +39,19 @@
             var btn = $(this);
             var id = btn.closest('tr').data('featureid');
 
-            $.post('/staff/featuredcontent/remove', { id: id })
-                .done(function (response) {
-                    if (response.success === true) {
-                        ALERTSYSTEM.ShowSuccessMessage("Awesome!");
-                        loadList();
-                    }
-                    else {
-                        ALERTSYSTEM.ShowWarningMessage("An error occurred! Check the console!");
-                        console.log(response);
-                    }
-                });
+            $.post('/staff/featuredcontent/remove', { id: id }).done(featureActionCallback);
         });
+    }
+
+    function featureActionCallback(response) {
+        if (response.success === true) {
+            ALERTSYSTEM.ShowSuccessMessage("Awesome!");
+            loadList();
+        }
+        else {
+            ALERTSYSTEM.ShowWarningMessage("An error occurred! Check the console!");
+            console.log(response);
+        }
     }
 
     function loadList() {

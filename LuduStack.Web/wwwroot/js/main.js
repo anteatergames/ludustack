@@ -267,7 +267,7 @@
 
         if (response.message) {
             if (successCallback) {
-                successCallback();
+                successCallback(response);
             }
 
             ALERTSYSTEM.Toastr.ShowSuccess(response.message, function () {
@@ -356,9 +356,7 @@
                 }
 
                 ALERTSYSTEM.ShowSuccessMessage(response.message, function () {
-                    if (response.url) {
-                        window.location = response.url;
-                    }
+                    MAINMODULE.Ajax.HandleUrlResponse(response);
                 });
             }
             else {
@@ -429,7 +427,7 @@
                 type: httpmethod
             }).done(function (response) {
                 if (response.success) {
-                    MAINMODULE.Common.HandleSuccessDefault(response);
+                    MAINMODULE.Common.HandleSuccessDefault(response, null, callback);
                 }
                 else {
                     ALERTSYSTEM.ShowWarningMessage(response.message);

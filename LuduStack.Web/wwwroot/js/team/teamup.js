@@ -112,20 +112,20 @@
 
     function bindSelect2() {
         $('#divMemberManagement select.select2').each(function () {
-            if ($(this).data('select2') === undefined) {
-                $(this).select2({
-                    width: 'element'
-                });
-            }
+            selectTwoBinder(this);
         });
 
         $('#divApplication select.select2').each(function () {
-            if ($(this).data('select2') === undefined) {
-                $(this).select2({
-                    width: 'element'
-                });
-            }
+            selectTwoBinder(this);
         });
+    }
+
+    function selectTwoBinder(element) {
+        if ($(element).data('select2') === undefined) {
+            $(element).select2({
+                width: 'element'
+            });
+        }
     }
 
     function bindSelect2Search() {
@@ -468,11 +468,11 @@
 
                 if (inputId !== undefined && inputName !== undefined) {
                     var idProp = inputId.split('__')[1];
-                    var newId = propPrefixId.replace('0', count) + idProp;
+                    var newId = propPrefixId.replace('99', count) + idProp;
                     $(this).attr('id', newId);
 
                     var nameProp = inputName.split('].')[1];
-                    var newName = propPrefixName.replace('0', count) + nameProp;
+                    var newName = propPrefixName.replace('99', count) + nameProp;
                     $(this).attr('name', newName);
                 }
             });
