@@ -217,9 +217,7 @@
 
                         if (response.message) {
                             ALERTSYSTEM.ShowSuccessMessage(response.message, function () {
-                                if (response.url) {
-                                    window.location = response.url;
-                                }
+                                MAINMODULE.Ajax.HandleUrlResponse(response);
                             });
                         }
                     }
@@ -240,9 +238,7 @@
                     else {
                         if (response.message) {
                             ALERTSYSTEM.ShowSuccessMessage(response.message, function () {
-                                if (response.url) {
-                                    window.location = response.url;
-                                }
+                                MAINMODULE.Ajax.HandleUrlResponse(response);
                             });
                         }
                     }
