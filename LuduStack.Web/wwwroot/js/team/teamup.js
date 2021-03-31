@@ -3,8 +3,6 @@
 
     var rootUrl = '/team';
     var avatarBaseUrl = "https://res.cloudinary.com/ludustack/image/upload/f_auto,q_auto/v1/";
-    var propPrefixId = "Members_0__";
-    var propPrefixName = "Members[0].";
 
     var propPrefix = 'Members';
 
