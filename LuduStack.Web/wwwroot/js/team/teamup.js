@@ -6,6 +6,8 @@
     var propPrefixId = "Members_0__";
     var propPrefixName = "Members[0].";
 
+    var propPrefix = 'Members';
+
     var selectors = {};
     var objs = {};
     var isAjax = false;
@@ -111,12 +113,12 @@
     }
 
     function bindSelect2() {
-        $('#divMemberManagement select.select2').each(function () {
-            selectTwoBinder(this);
-        });
+        $('#frmTeamSave select.select2').each(function () {
+            const hasSelect2 = $(this).hasClass("select2-hidden-accessible");
 
-        $('#divApplication select.select2').each(function () {
-            selectTwoBinder(this);
+            if (!hasSelect2) {
+                selectTwoBinder(this);
+            }
         });
     }
 
@@ -311,7 +313,6 @@
 
     function bindDeleteMember() {
         objs.container.on('click', selectors.btnDeleteMember, function (e) {
-            console.log('meh');
             e.preventDefault();
 
             var btn = $(this);
@@ -328,7 +329,7 @@
                 }).done(function (response) {
                     if (response.success) {
                         btn.closest(selectors.teamMember).remove();
-                        renameInputs();
+                        MAINMODULE.Common.RenameInputs(objs.divMembers, selectors.teamMember, propPrefix);
 
                         if (response.message) {
                             ALERTSYSTEM.ShowSuccessMessage(response.message);
@@ -365,7 +366,7 @@
 
     function loadEditForm(url) {
         MAINMODULE.Ajax.LoadHtml(url, objs.container).then(() => {
-            renameInputs();
+            MAINMODULE.Common.RenameInputs(objs.divMembers, selectors.teamMember, propPrefix);
 
             cacheAjaxObjs();
 
@@ -413,7 +414,7 @@
 
         newMemberObj.appendTo(selectors.divMembers);
 
-        renameInputs();
+        MAINMODULE.Common.RenameInputs(objs.divMembers, selectors.teamMember, propPrefix);
 
         bindSelect2();
     }
@@ -449,28 +450,6 @@
             else {
                 ALERTSYSTEM.ShowWarningMessage("An error occurred! Check the console!");
             }
-        });
-    }
-
-    function renameInputs() {
-        var count = 0;
-        objs.divMembers.find(selectors.teamMember).each(function () {
-            $(this).find(':input').each(function () {
-                var inputId = $(this).attr('id');
-                var inputName = $(this).attr('name');
-
-                if (inputId !== undefined && inputName !== undefined) {
-                    var idProp = inputId.split('__')[1];
-                    var newId = propPrefixId.replace('99', count) + idProp;
-                    $(this).attr('id', newId);
-
-                    var nameProp = inputName.split('].')[1];
-                    var newName = propPrefixName.replace('99', count) + nameProp;
-                    $(this).attr('name', newName);
-                }
-            });
-
-            count++;
         });
     }
 
