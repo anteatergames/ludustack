@@ -5,6 +5,7 @@ using LuduStack.Application.ViewModels.Localization;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Core.Extensions;
 using LuduStack.Domain.Interfaces.Services;
+using LuduStack.Domain.Messaging.Queries.Game;
 using LuduStack.Domain.Messaging.Queries.Localization;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
@@ -85,17 +86,17 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public Task<OperationResultListVo<Guid>> GetAllIds(Guid currentUserId)
+        public async Task<OperationResultListVo<Guid>> GetAllIds(Guid currentUserId)
         {
             try
             {
-                IEnumerable<Guid> allIds = translationDomainService.GetAllIds();
+                IEnumerable<Guid> allIds = await mediator.Query<GetLocalizationIdsQuery, IEnumerable<Guid>>(new GetLocalizationIdsQuery());
 
-                return Task.FromResult(new OperationResultListVo<Guid>(allIds));
+                return new OperationResultListVo<Guid>(allIds);
             }
             catch (Exception ex)
             {
-                return Task.FromResult(new OperationResultListVo<Guid>(ex.Message));
+                return new OperationResultListVo<Guid>(ex.Message);
             }
         }
 
@@ -103,7 +104,7 @@ namespace LuduStack.Application.Services
         {
             try
             {
-                IEnumerable<Localization> allModels = translationDomainService.GetByUserId(userId);
+                IEnumerable<Localization> allModels = await mediator.Query<GetLocalizationByUserIdQuery, IEnumerable<Localization>>(new GetLocalizationByUserIdQuery(userId));
 
                 List<LocalizationViewModel> vms = mapper.Map<IEnumerable<Localization>, IEnumerable<LocalizationViewModel>>(allModels).ToList();
 
@@ -246,11 +247,11 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo GetMyUntranslatedGames(Guid currentUserId)
+        public async Task<OperationResultVo> GetMyUntranslatedGames(Guid currentUserId)
         {
             try
             {
-                IEnumerable<Game> myGames = gameDomainService.GetByUserId(currentUserId);
+                IEnumerable<Game> myGames = await mediator.Query<GetGameByUserIdQuery, IEnumerable<Game>>(new GetGameByUserIdQuery(currentUserId));
 
                 IEnumerable<Guid> myTranslatedGames = translationDomainService.GetTranslatedGamesByUserId(currentUserId);
 
@@ -266,7 +267,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo GetTranslations(Guid currentUserId, Guid projectId, SupportedLanguage language)
+        public async Task<OperationResultVo> GetTranslations(Guid currentUserId, Guid projectId, SupportedLanguage language)
         {
             try
             {
@@ -276,7 +277,7 @@ namespace LuduStack.Application.Services
 
                 foreach (LocalizationEntryViewModel entry in vms)
                 {
-                    UserProfile profile = GetCachedProfileByUserId(entry.UserId);
+                    UserProfile profile = await GetCachedProfileByUserId(entry.UserId);
                     entry.AuthorName = profile.Name;
                     entry.AuthorPicture = UrlFormatter.ProfileImage(entry.UserId);
                 }
@@ -289,7 +290,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo SaveEntry(Guid currentUserId, Guid projectId, bool currentUserIsOwner, bool currentUserHelped, LocalizationEntryViewModel vm)
+        public async Task<OperationResultVo> SaveEntry(Guid currentUserId, Guid projectId, bool currentUserIsOwner, bool currentUserHelped, LocalizationEntryViewModel vm)
         {
             int pointsEarned = 0;
 
@@ -309,7 +310,7 @@ namespace LuduStack.Application.Services
                     pointsEarned += gamificationDomainService.ProcessAction(currentUserId, PlatformAction.LocalizationHelp);
                 }
 
-                unitOfWork.Commit();
+                await unitOfWork.Commit();
                 vm.Id = entry.Id;
 
                 if (!currentUserHelped && !currentUserIsOwner)
@@ -318,11 +319,11 @@ namespace LuduStack.Application.Services
 
                     if (badgeUpdated)
                     {
-                        unitOfWork.Commit();
+                        await unitOfWork.Commit();
                     }
                 }
 
-                UserProfile profile = GetCachedProfileByUserId(entry.UserId);
+                UserProfile profile = await GetCachedProfileByUserId(entry.UserId);
                 vm.AuthorName = profile.Name;
 
                 return new OperationResultVo<LocalizationEntryViewModel>(vm, pointsEarned, "Translation saved!");
@@ -359,7 +360,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo GetTerms(Guid currentUserId, Guid projectId)
+        public async Task<OperationResultVo> GetTerms(Guid currentUserId, Guid projectId)
         {
             try
             {
@@ -371,7 +372,7 @@ namespace LuduStack.Application.Services
 
                 foreach (LocalizationTermViewModel entry in vms)
                 {
-                    UserProfile profile = GetCachedProfileByUserId(entry.UserId);
+                    UserProfile profile = await GetCachedProfileByUserId(entry.UserId);
                     entry.AuthorName = profile.Name;
                     entry.AuthorPicture = UrlFormatter.ProfileImage(entry.UserId);
                 }
@@ -445,7 +446,7 @@ namespace LuduStack.Application.Services
 
                 SetPercentage(model, vm);
 
-                SetContributors(model, vm);
+                await SetContributors(model, vm);
 
                 await SetGameViewModel(model.GameId, vm);
 
@@ -512,7 +513,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo GetContributorsFile(Guid currentUserId, Guid projectId, ExportContributorsType type)
+        public async Task<OperationResultVo> GetContributorsFile(Guid currentUserId, Guid projectId, ExportContributorsType type)
         {
             try
             {
@@ -526,7 +527,7 @@ namespace LuduStack.Application.Services
 
                 foreach (Guid contributorId in contributorsIds)
                 {
-                    UserProfile profile = GetCachedProfileByUserId(contributorId);
+                    UserProfile profile = await GetCachedProfileByUserId(contributorId);
                     dict.Add(new KeyValuePair<Guid, string>(contributorId, profile.Name));
                 }
 
@@ -642,14 +643,14 @@ namespace LuduStack.Application.Services
             SetBasePermissions(currentUserId, vm);
         }
 
-        private void SetContributors(Localization model, TranslationStatsViewModel vm)
+        private async Task SetContributors(Localization model, TranslationStatsViewModel vm)
         {
             IEnumerable<IGrouping<Guid, LocalizationEntry>> contributors = model.Entries.GroupBy(x => x.UserId);
 
             foreach (IGrouping<Guid, LocalizationEntry> contributorGroup in contributors)
             {
                 ContributorViewModel contributor = new ContributorViewModel();
-                UserProfile profile = GetCachedProfileByUserId(contributorGroup.Key);
+                UserProfile profile = await GetCachedProfileByUserId (contributorGroup.Key);
                 contributor.UserId = contributorGroup.Key;
                 contributor.AuthorName = profile.Name;
                 contributor.AuthorPicture = UrlFormatter.ProfileImage(contributorGroup.Key);

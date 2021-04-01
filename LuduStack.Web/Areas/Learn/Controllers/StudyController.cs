@@ -22,7 +22,7 @@ namespace LuduStack.Web.Areas.Learn.Controllers
             this.studyAppService = studyAppService;
         }
 
-        public IActionResult Index(string msg)
+        public async Task<IActionResult> Index(string msg)
         {
             string studyProfile = StudyProfile.Student.ToString();
 
@@ -32,7 +32,7 @@ namespace LuduStack.Web.Areas.Learn.Controllers
 
                 if (string.IsNullOrWhiteSpace(studyProfile))
                 {
-                    UserPreferencesViewModel userPreferences = UserPreferencesAppService.GetByUserId(CurrentUserId);
+                    UserPreferencesViewModel userPreferences = await UserPreferencesAppService.GetByUserId(CurrentUserId);
                     if (userPreferences == null || userPreferences.StudyProfile == 0)
                     {
                         return View("NoStudyProfile");
@@ -70,7 +70,7 @@ namespace LuduStack.Web.Areas.Learn.Controllers
                     type = StudyProfile.Student;
                 }
 
-                UserPreferencesViewModel userPreferences = UserPreferencesAppService.GetByUserId(CurrentUserId);
+                UserPreferencesViewModel userPreferences = await UserPreferencesAppService.GetByUserId(CurrentUserId);
 
                 if (userPreferences == null)
                 {

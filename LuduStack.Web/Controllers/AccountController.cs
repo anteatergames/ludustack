@@ -131,7 +131,7 @@ namespace LuduStack.Web.Controllers
 
                 await SetStaffRoles(user);
 
-                SetPreferences(user);
+                await SetPreferences(user);
 
                 await SetCache(user);
             }
@@ -301,7 +301,7 @@ namespace LuduStack.Web.Controllers
 
                     await SetStaffRoles(user);
 
-                    SetPreferences(user);
+                    await SetPreferences(user);
 
                     string logMessage = String.Format("User {0} created a new account with password.", model.UserName);
 
@@ -410,7 +410,7 @@ namespace LuduStack.Web.Controllers
 
                     await SetStaffRoles(existingUser);
 
-                    SetPreferences(existingUser);
+                    await SetPreferences(existingUser);
                 }
 
                 return RedirectToLocal(returnUrl);
@@ -507,7 +507,7 @@ namespace LuduStack.Web.Controllers
                 await SetStaffRoles(user);
             }
 
-            SetPreferences(user);
+            await SetPreferences(user);
 
             Guid userGuid = new Guid(user.Id);
             ProfileViewModel profile = await profileAppService.GetByUserId(userGuid, ProfileType.Personal);
@@ -695,9 +695,9 @@ namespace LuduStack.Web.Controllers
             return Json(result);
         }
 
-        private void SetPreferences(ApplicationUser user)
+        private async Task SetPreferences(ApplicationUser user)
         {
-            UserPreferencesViewModel preferences = UserPreferencesAppService.GetByUserId(new Guid(user.Id));
+            UserPreferencesViewModel preferences = await UserPreferencesAppService.GetByUserId(new Guid(user.Id));
             if (preferences == null || preferences.Id == Guid.Empty)
             {
                 RequestCulture requestLanguage = Request.HttpContext.Features.Get<IRequestCultureFeature>().RequestCulture;
@@ -821,7 +821,7 @@ namespace LuduStack.Web.Controllers
         private async Task SetCache(ApplicationUser user)
         {
             Guid key = new Guid(user.Id);
-            ProfileViewModel cachedProfile = profileAppService.GetUserProfileWithCache(key);
+            ProfileViewModel cachedProfile = await profileAppService.GetUserProfileWithCache(key);
 
             if (cachedProfile == null)
             {

@@ -6,6 +6,7 @@ using LuduStack.Web.Controllers.Base;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace LuduStack.Web.Areas.Gamification.Controllers
 {
@@ -30,7 +31,7 @@ namespace LuduStack.Web.Areas.Gamification.Controllers
             return View(objs.Value);
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             OperationResultListVo<RankingViewModel> serviceResult = gamificationAppService.GetAll();
 
@@ -38,7 +39,7 @@ namespace LuduStack.Web.Areas.Gamification.Controllers
 
             foreach (RankingViewModel obj in objs)
             {
-                Application.ViewModels.User.ProfileViewModel profile = profileAppService.GetUserProfileWithCache(obj.UserId);
+                Application.ViewModels.User.ProfileViewModel profile = await profileAppService.GetUserProfileWithCache(obj.UserId);
 
                 if (profile != null)
                 {

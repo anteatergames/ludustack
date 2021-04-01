@@ -33,7 +33,7 @@ namespace LuduStack.Web.Areas.Work.Controllers
             this.userContentAppService = userContentAppService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             string jobProfile = JobProfile.Applicant.ToString();
 
@@ -43,7 +43,7 @@ namespace LuduStack.Web.Areas.Work.Controllers
 
                 if (string.IsNullOrWhiteSpace(jobProfile))
                 {
-                    UserPreferencesViewModel userPreferences = UserPreferencesAppService.GetByUserId(CurrentUserId);
+                    UserPreferencesViewModel userPreferences = await UserPreferencesAppService .GetByUserId(CurrentUserId);
                     if (userPreferences == null || userPreferences.JobProfile == 0)
                     {
                         return View("NoJobProfile");
@@ -71,7 +71,7 @@ namespace LuduStack.Web.Areas.Work.Controllers
                     type = JobProfile.Applicant;
                 }
 
-                UserPreferencesViewModel userPreferences = UserPreferencesAppService.GetByUserId(CurrentUserId);
+                UserPreferencesViewModel userPreferences = await UserPreferencesAppService .GetByUserId(CurrentUserId);
 
                 if (userPreferences == null)
                 {
@@ -103,7 +103,7 @@ namespace LuduStack.Web.Areas.Work.Controllers
 
         [Route("work/jobposition/list/{employerId:guid?}")]
         [Route("work/jobposition/list")]
-        public PartialViewResult List(Guid? employerId)
+        public async Task<PartialViewResult> List(Guid? employerId)
         {
             IEnumerable<JobPositionViewModel> model;
             OperationResultVo serviceResult;
@@ -111,7 +111,7 @@ namespace LuduStack.Web.Areas.Work.Controllers
             if (employerId.HasValue)
             {
                 ViewData["ListDescription"] = "These are the job positions you posted.";
-                serviceResult = jobPositionAppService.GetAllMine(employerId.Value);
+                serviceResult = await jobPositionAppService.GetAllMine(employerId.Value);
             }
             else
             {
@@ -139,11 +139,11 @@ namespace LuduStack.Web.Areas.Work.Controllers
         }
 
         [Route("work/jobposition/listmine")]
-        public PartialViewResult ListMine()
+        public async Task<PartialViewResult> ListMine()
         {
             List<JobPositionViewModel> model;
 
-            OperationResultVo serviceResult = jobPositionAppService.GetAllMine(CurrentUserId);
+            OperationResultVo serviceResult = await jobPositionAppService.GetAllMine(CurrentUserId);
 
             if (serviceResult.Success)
             {
@@ -214,7 +214,7 @@ namespace LuduStack.Web.Areas.Work.Controllers
             JobPositionViewModel vm = op.Value;
 
             SetLocalization(vm);
-            SetAuthorDetails(vm);
+            await SetAuthorDetails(vm);
             vm.Description = ContentFormatter.FormatContentToShow(vm.Description);
 
             SetGamificationMessage(pointsEarned);

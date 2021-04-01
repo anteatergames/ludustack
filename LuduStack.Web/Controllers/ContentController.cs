@@ -52,7 +52,7 @@ namespace LuduStack.Web.Controllers
 
             vm.Content = ContentFormatter.FormatContentToShow(vm.Content);
 
-            SetAuthorDetails(vm);
+            await SetAuthorDetails(vm);
 
             if (vm.GameId.HasValue && vm.GameId.Value != Guid.Empty)
             {
@@ -138,7 +138,7 @@ namespace LuduStack.Web.Controllers
 
                 ProfileViewModel profile = await ProfileAppService.GetByUserId(CurrentUserId, ProfileType.Personal);
 
-                SetAuthorDetails(vm);
+                await SetAuthorDetails(vm);
 
                 OperationResultVo<Guid> saveResult = await userContentAppService.Save(CurrentUserId, vm);
 
@@ -199,7 +199,7 @@ namespace LuduStack.Web.Controllers
 
             ProfileViewModel profile = await ProfileAppService.GetByUserId(CurrentUserId, ProfileType.Personal);
 
-            SetAuthorDetails(vm);
+            await SetAuthorDetails(vm);
 
             SetContentImages(vm, images);
 
@@ -255,7 +255,7 @@ namespace LuduStack.Web.Controllers
         {
             OperationResultVo response;
 
-            SetAuthorDetails(vm);
+            await SetAuthorDetails(vm);
 
             response = await userContentAppService.Comment(vm);
 

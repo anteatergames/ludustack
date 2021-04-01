@@ -19,7 +19,7 @@ namespace LuduStack.Domain.Messaging.Queries.UserPreferences
         }
     }
 
-    public class GetUserPreferencesQueryHandler : SearchBaseQueryHandler<GetUserPreferencesQuery, Models.UserPreferences, IUserPreferencesRepository>
+    public class GetUserPreferencesQueryHandler : GetBaseQueryHandler<GetUserPreferencesQuery, Models.UserPreferences, IUserPreferencesRepository>
     {
         public GetUserPreferencesQueryHandler(IUserPreferencesRepository repository) : base(repository)
         {

@@ -66,9 +66,9 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public UserPreferencesViewModel GetByUserId(Guid userId)
+        public async Task<UserPreferencesViewModel> GetByUserId(Guid userId)
         {
-            IEnumerable<UserPreferences> list = userPreferencesDomainService.GetByUserId(userId);
+            IEnumerable<UserPreferences> list = await mediator.Query<GetUserPreferencesByUserIdQuery, IEnumerable<UserPreferences>>(new GetUserPreferencesByUserIdQuery(userId));
 
             UserPreferences model = list.FirstOrDefault();
 

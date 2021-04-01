@@ -19,7 +19,7 @@ namespace LuduStack.Domain.Messaging.Queries.JobPosition
         }
     }
 
-    public class GetJobPositionQueryHandler : SearchBaseQueryHandler<GetJobPositionQuery, Models.JobPosition, IJobPositionRepository>
+    public class GetJobPositionQueryHandler : GetBaseQueryHandler<GetJobPositionQuery, Models.JobPosition, IJobPositionRepository>
     {
         public GetJobPositionQueryHandler(IJobPositionRepository repository) : base(repository)
         {

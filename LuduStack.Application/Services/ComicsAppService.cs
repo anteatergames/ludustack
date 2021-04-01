@@ -188,9 +188,9 @@ namespace LuduStack.Application.Services
                 vm.LikeCount = vm.Likes.Count;
                 vm.CommentCount = vm.Comments.Count;
 
-                SetAuthorDetails(vm);
+                await SetAuthorDetails(vm);
 
-                LoadAuthenticatedData(currentUserId, vm);
+                await LoadAuthenticatedData(currentUserId, vm);
 
                 SetImagesToShow(vm, false);
 
@@ -210,7 +210,7 @@ namespace LuduStack.Application.Services
 
                 ComicStripViewModel vm = mapper.Map<ComicStripViewModel>(existing);
 
-                SetAuthorDetails(vm);
+                await SetAuthorDetails(vm);
 
                 SetImagesToShow(vm, true);
 
@@ -302,7 +302,7 @@ namespace LuduStack.Application.Services
             vm.Images = vm.Images.OrderBy(x => x.Language).ToList();
         }
 
-        private void LoadAuthenticatedData(Guid currentUserId, UserGeneratedCommentBaseViewModel item)
+        private async Task LoadAuthenticatedData(Guid currentUserId, UserGeneratedCommentBaseViewModel item)
         {
             if (currentUserId != Guid.Empty)
             {
@@ -310,7 +310,7 @@ namespace LuduStack.Application.Services
 
                 foreach (CommentViewModel comment in item.Comments)
                 {
-                    UserProfile commenterProfile = GetCachedProfileByUserId(comment.UserId);
+                    UserProfile commenterProfile = await GetCachedProfileByUserId(comment.UserId);
                     if (commenterProfile == null)
                     {
                         comment.AuthorName = Constants.UnknownSoul;

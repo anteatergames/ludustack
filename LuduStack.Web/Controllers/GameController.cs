@@ -73,9 +73,9 @@ namespace LuduStack.Web.Controllers
         }
 
         [Route("games/{genre:alpha?}")]
-        public IActionResult List(GameGenre genre)
+        public async Task<IActionResult> List(GameGenre genre)
         {
-            IEnumerable<GameListItemViewModel> latest = gameAppService.GetLatest(CurrentUserId, 200, Guid.Empty, null, genre);
+            IEnumerable<GameListItemViewModel> latest = await gameAppService.GetLatest(CurrentUserId, 200, Guid.Empty, null, genre);
 
             ViewBag.Games = latest;
             ViewData["Genre"] = genre;
@@ -218,9 +218,9 @@ namespace LuduStack.Web.Controllers
         #endregion Game Follow/Unfollow
 
         [Route("game/byteam/{teamId:guid}")]
-        public IActionResult ByTeam(Guid teamId)
+        public async Task<IActionResult> ByTeam(Guid teamId)
         {
-            IEnumerable<GameListItemViewModel> games = gameAppService.GetLatest(CurrentUserId, 99, Guid.Empty, teamId, 0);
+            IEnumerable<GameListItemViewModel> games = await gameAppService.GetLatest(CurrentUserId, 99, Guid.Empty, teamId, 0);
 
             return View("_Games", games);
         }

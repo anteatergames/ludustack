@@ -59,17 +59,17 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public Task<OperationResultListVo<Guid>> GetAllIds(Guid currentUserId)
+        public async Task<OperationResultListVo<Guid>> GetAllIds(Guid currentUserId)
         {
             try
             {
-                IEnumerable<Guid> allIds = jobPositionDomainService.GetAllIds();
+                IEnumerable<Guid> allIds = await mediator.Query<GetJobPositionIdsQuery, IEnumerable<Guid>>(new GetJobPositionIdsQuery());
 
-                return Task.FromResult(new OperationResultListVo<Guid>(allIds));
+                return new OperationResultListVo<Guid>(allIds);
             }
             catch (Exception ex)
             {
-                return Task.FromResult(new OperationResultListVo<Guid>(ex.Message));
+                return new OperationResultListVo<Guid>(ex.Message);
             }
         }
 
@@ -88,7 +88,7 @@ namespace LuduStack.Application.Services
 
                 foreach (JobApplicantViewModel applicant in vm.Applicants)
                 {
-                    UserProfile profile = GetCachedProfileByUserId(applicant.UserId);
+                    UserProfile profile = await GetCachedProfileByUserId (applicant.UserId);
                     if (profile != null)
                     {
                         applicant.JobPositionId = id;
@@ -231,11 +231,11 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo GetAllMine(Guid currentUserId)
+        public async Task<OperationResultVo> GetAllMine(Guid currentUserId)
         {
             try
             {
-                IEnumerable<JobPosition> allModels = jobPositionDomainService.GetByUserId(currentUserId);
+                IEnumerable<JobPosition> allModels = await mediator.Query<GetJobPositionByUserIdQuery, IEnumerable<JobPosition>>(new GetJobPositionByUserIdQuery(currentUserId));
 
                 List<JobPositionViewModel> vms = mapper.Map<IEnumerable<JobPosition>, IEnumerable<JobPositionViewModel>>(allModels).ToList();
 

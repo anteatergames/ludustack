@@ -23,7 +23,7 @@ namespace LuduStack.Application.Interfaces
 
         OperationResultVo<GameViewModel> CreateNew(Guid currentUserId);
 
-        IEnumerable<GameListItemViewModel> GetLatest(Guid currentUserId, int count, Guid userId, Guid? teamId, GameGenre genre);
+        Task<IEnumerable<GameListItemViewModel>> GetLatest(Guid currentUserId, int count, Guid userId, Guid? teamId, GameGenre genre);
 
         Task<IEnumerable<SelectListItemVo>> GetByUser(Guid userId);
 

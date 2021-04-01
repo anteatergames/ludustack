@@ -292,12 +292,5 @@ namespace LuduStack.Domain.Services
         }
 
         #endregion Connection
-
-        public override IEnumerable<Guid> GetAllIds()
-        {
-            IEnumerable<Guid> objs = repository.Get().Select(x => x.UserId);
-
-            return objs.ToList();
-        }
     }
 }

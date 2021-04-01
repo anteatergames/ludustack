@@ -35,16 +35,16 @@ namespace LuduStack.Application.Requests.Notification
             this.notificationAppService = notificationAppService;
         }
 
-        public Task<OperationResultListVo<NotificationItemViewModel>> Handle(ListUserNotificationsRequest request, CancellationToken cancellationToken)
+        public async Task<OperationResultListVo<NotificationItemViewModel>> Handle(ListUserNotificationsRequest request, CancellationToken cancellationToken)
         {
             if (request.Quantity == 0)
             {
                 request.Quantity = 10;
             }
 
-            OperationResultListVo<NotificationItemViewModel> result = notificationAppService.GetByUserId(request.UserId, request.Quantity);
+            OperationResultListVo<NotificationItemViewModel> result = await notificationAppService.GetByUserId(request.UserId, request.Quantity);
 
-            return Task.FromResult(result);
+            return result;
         }
     }
 }

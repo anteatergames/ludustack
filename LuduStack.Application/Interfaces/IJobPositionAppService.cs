@@ -24,7 +24,7 @@ namespace LuduStack.Application.Interfaces
 
         OperationResultVo GenerateNew(Guid currentUserId, JobPositionOrigin origin);
 
-        OperationResultVo GetAllMine(Guid currentUserId);
+        Task<OperationResultVo> GetAllMine(Guid currentUserId);
 
         Task<OperationResultVo> ChangeStatus(Guid currentUserId, Guid jobPositionId, JobPositionStatus selectedStatus);
 

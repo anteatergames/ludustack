@@ -72,17 +72,17 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public Task<OperationResultListVo<Guid>> GetAllIds(Guid currentUserId)
+        public async Task<OperationResultListVo<Guid>> GetAllIds(Guid currentUserId)
         {
             try
             {
-                IEnumerable<Guid> allIds = userContentDomainService.GetAllIds();
+                IEnumerable<Guid> allIds = await mediator.Query<GetUserContentIdsQuery, IEnumerable<Guid>>(new GetUserContentIdsQuery());
 
-                return Task.FromResult(new OperationResultListVo<Guid>(allIds));
+                return new OperationResultListVo<Guid>(allIds);
             }
             catch (Exception ex)
             {
-                return Task.FromResult(new OperationResultListVo<Guid>(ex.Message));
+                return new OperationResultListVo<Guid>(ex.Message);
             }
         }
 
@@ -92,7 +92,7 @@ namespace LuduStack.Application.Services
             {
                 UserContent model = await mediator.Query<GetUserContentByIdQuery, UserContent>(new GetUserContentByIdQuery(id));
 
-                UserProfile authorProfile = GetCachedProfileByUserId(model.UserId);
+                UserProfile authorProfile = await GetCachedProfileByUserId (model.UserId);
 
                 UserContentViewModel vm = mapper.Map<UserContentViewModel>(model);
 
@@ -121,7 +121,7 @@ namespace LuduStack.Application.Services
 
                 vm.Poll = SetPoll(currentUserId, vm.Id);
 
-                LoadAuthenticatedData(currentUserId, vm);
+                await LoadAuthenticatedData(currentUserId, vm);
 
                 return new OperationResultVo<UserContentViewModel>(vm);
             }
@@ -286,7 +286,7 @@ namespace LuduStack.Application.Services
 
                     item.PublishDate = item.PublishDate.ToLocalTime();
 
-                    UserProfile authorProfile = GetCachedProfileByUserId(item.UserId);
+                    UserProfile authorProfile = await GetCachedProfileByUserId(item.UserId);
                     if (authorProfile == null)
                     {
                         item.AuthorName = Constants.UnknownSoul;
@@ -319,7 +319,7 @@ namespace LuduStack.Application.Services
 
                     item.Poll = SetPoll(vm.CurrentUserId, item.Id);
 
-                    LoadAuthenticatedData(vm.CurrentUserId, item);
+                    await LoadAuthenticatedData(vm.CurrentUserId, item);
 
                     item.Content = item.Content.ReplaceCloudname();
                 }
@@ -393,7 +393,7 @@ namespace LuduStack.Application.Services
             return pollVm;
         }
 
-        private void LoadAuthenticatedData(Guid currentUserId, UserGeneratedCommentBaseViewModel item)
+        private async Task LoadAuthenticatedData(Guid currentUserId, UserGeneratedCommentBaseViewModel item)
         {
             if (currentUserId != Guid.Empty)
             {
@@ -401,7 +401,7 @@ namespace LuduStack.Application.Services
 
                 foreach (CommentViewModel comment in item.Comments)
                 {
-                    UserProfile commenterProfile = GetCachedProfileByUserId(comment.UserId);
+                    UserProfile commenterProfile = await GetCachedProfileByUserId (comment.UserId);
                     if (commenterProfile == null)
                     {
                         comment.AuthorName = Constants.UnknownSoul;

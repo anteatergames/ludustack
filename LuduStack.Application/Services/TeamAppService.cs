@@ -80,7 +80,7 @@ namespace LuduStack.Application.Services
                 vm.Members = vm.Members.OrderByDescending(x => x.Leader).ToList();
                 foreach (TeamMemberViewModel member in vm.Members)
                 {
-                    UserProfile profile = GetCachedProfileByUserId(member.UserId);
+                    UserProfile profile = await GetCachedProfileByUserId(member.UserId);
                     member.Name = profile.Name;
                     member.Permissions.IsMe = member.UserId == currentUserId;
                     member.WorkDictionary = member.Works.ToDisplayNameList();
@@ -92,7 +92,7 @@ namespace LuduStack.Application.Services
 
                     if (vm.Recruiting)
                     {
-                        UserProfile myProfile = GetCachedProfileByUserId(currentUserId);
+                        UserProfile myProfile = await GetCachedProfileByUserId(currentUserId);
 
                         vm.Candidate = new TeamMemberViewModel
                         {
@@ -206,14 +206,14 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo GenerateNewTeam(Guid currentUserId)
+        public async Task<OperationResultVo> GenerateNewTeam(Guid currentUserId)
         {
             try
             {
                 Team newTeam = teamDomainService.GenerateNewTeam(currentUserId);
 
                 TeamViewModel newVm = mapper.Map<TeamViewModel>(newTeam);
-                UserProfile myProfile = GetCachedProfileByUserId(currentUserId);
+                UserProfile myProfile = await GetCachedProfileByUserId(currentUserId);
 
                 TeamMemberViewModel me = newVm.Members.FirstOrDefault(x => x.UserId == currentUserId);
                 me.Name = myProfile.Name;

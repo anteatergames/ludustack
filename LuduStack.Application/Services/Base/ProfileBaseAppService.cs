@@ -10,6 +10,7 @@ using LuduStack.Domain.Interfaces;
 using LuduStack.Domain.Interfaces.Models;
 using LuduStack.Domain.Interfaces.Services;
 using LuduStack.Domain.Messaging.Queries.Game;
+using LuduStack.Domain.Messaging.Queries.UserProfile;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
 using LuduStack.Infra.CrossCutting.Messaging;
@@ -50,13 +51,15 @@ namespace LuduStack.Application.Services
             return fromCache;
         }
 
-        protected UserProfile GetCachedProfileByUserId(Guid userId)
+        protected async Task<UserProfile> GetCachedProfileByUserId(Guid userId)
         {
             UserProfile profile = GetProfileFromCache(userId);
 
             if (profile == null)
             {
-                UserProfile profileFromDb = profileDomainService.GetByUserId(userId).FirstOrDefault();
+                IEnumerable<UserProfile> allUserProfiles = await mediator.Query<GetUserProfileByUserIdQuery, IEnumerable<UserProfile>>(new GetUserProfileByUserIdQuery(userId));
+
+                UserProfile profileFromDb = allUserProfiles.FirstOrDefault();
 
                 if (profileFromDb != null)
                 {
@@ -68,13 +71,15 @@ namespace LuduStack.Application.Services
             return profile;
         }
 
-        public ProfileViewModel GetUserProfileWithCache(Guid userId)
+        public async Task<ProfileViewModel> GetUserProfileWithCache(Guid userId)
         {
             UserProfile model = GetProfileFromCache(userId);
 
             if (model == null)
             {
-                model = profileDomainService.GetByUserId(userId).FirstOrDefault();
+                IEnumerable<UserProfile> allUserProfiles = await mediator.Query<GetUserProfileByUserIdQuery, IEnumerable<UserProfile>>(new GetUserProfileByUserIdQuery(userId));
+
+                model = allUserProfiles.FirstOrDefault();
             }
 
             ProfileViewModel viewModel = mapper.Map<ProfileViewModel>(model);
@@ -133,9 +138,9 @@ namespace LuduStack.Application.Services
             }
         }
 
-        protected void SetAuthorDetails(IUserGeneratedContent vm)
+        protected async Task SetAuthorDetails(IUserGeneratedContent vm)
         {
-            UserProfile authorProfile = GetCachedProfileByUserId(vm.UserId);
+            UserProfile authorProfile = await GetCachedProfileByUserId(vm.UserId);
             if (authorProfile != null)
             {
                 vm.AuthorPicture = UrlFormatter.ProfileImage(vm.UserId, 40);

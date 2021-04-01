@@ -69,17 +69,17 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public Task<OperationResultListVo<Guid>> GetAllIds(Guid currentUserId)
+        public async Task<OperationResultListVo<Guid>> GetAllIds(Guid currentUserId)
         {
             try
             {
-                IEnumerable<Guid> allIds = gameDomainService.GetAllIds();
+                IEnumerable<Guid> allIds = await mediator.Query<GetGameIdsQuery, IEnumerable<Guid>>(new GetGameIdsQuery());
 
-                return Task.FromResult(new OperationResultListVo<Guid>(allIds));
+                return new OperationResultListVo<Guid>(allIds);
             }
             catch (Exception ex)
             {
-                return Task.FromResult(new OperationResultListVo<Guid>(ex.Message));
+                return new OperationResultListVo<Guid>(ex.Message);
             }
         }
 
@@ -102,7 +102,7 @@ namespace LuduStack.Application.Services
                 vm.CurrentUserLiked = model.Likes.SafeAny(x => x.GameId == vm.Id && x.UserId == currentUserId);
                 vm.CurrentUserFollowing = model.Followers.SafeAny(x => x.GameId == vm.Id && x.UserId == currentUserId);
 
-                UserProfile authorProfile = GetCachedProfileByUserId(vm.UserId);
+                UserProfile authorProfile = await GetCachedProfileByUserId (vm.UserId);
                 vm.AuthorName = authorProfile.Name;
 
                 if (forEdit)
@@ -110,7 +110,7 @@ namespace LuduStack.Application.Services
                     FormatExternalLinksForEdit(ref vm);
                 }
 
-                FormatExternalLinks(vm);
+                await FormatExternalLinks(vm);
 
                 FilCharacteristics(vm);
 
@@ -226,7 +226,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public IEnumerable<GameListItemViewModel> GetLatest(Guid currentUserId, int count, Guid userId, Guid? teamId, GameGenre genre)
+        public async Task<IEnumerable<GameListItemViewModel>> GetLatest(Guid currentUserId, int count, Guid userId, Guid? teamId, GameGenre genre)
         {
             IQueryable<Game> allModels = gameDomainService.Get(genre, userId, teamId);
 
@@ -243,7 +243,7 @@ namespace LuduStack.Application.Services
                 item.ThumbnailLquip = SetFeaturedImage(item.UserId, item.ThumbnailUrl, ImageRenderType.LowQuality);
                 item.DeveloperImageUrl = UrlFormatter.ProfileImage(item.UserId, 40);
 
-                UserProfile authorProfile = GetCachedProfileByUserId(item.UserId);
+                UserProfile authorProfile = await GetCachedProfileByUserId (item.UserId);
                 item.DeveloperName = authorProfile?.Name;
             }
 
@@ -364,9 +364,9 @@ namespace LuduStack.Application.Services
             }
         }
 
-        private void FormatExternalLinks(GameViewModel vm)
+        private async Task FormatExternalLinks(GameViewModel vm)
         {
-            ProfileViewModel authorProfile = GetUserProfileWithCache(vm.UserId);
+            ProfileViewModel authorProfile = await GetUserProfileWithCache(vm.UserId);
             ExternalLinkBaseViewModel itchProfile = authorProfile.ExternalLinks.FirstOrDefault(x => x.Provider == ExternalLinkProvider.ItchIo);
 
             foreach (ExternalLinkBaseViewModel item in vm.ExternalLinks)

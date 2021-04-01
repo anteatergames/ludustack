@@ -19,7 +19,7 @@ namespace LuduStack.Domain.Messaging.Queries.FeaturedContent
         }
     }
 
-    public class GetFeaturedContentQueryHandler : SearchBaseQueryHandler<GetFeaturedContentQuery, Models.FeaturedContent, IFeaturedContentRepository>
+    public class GetFeaturedContentQueryHandler : GetBaseQueryHandler<GetFeaturedContentQuery, Models.FeaturedContent, IFeaturedContentRepository>
     {
         public GetFeaturedContentQueryHandler(IFeaturedContentRepository repository) : base(repository)
         {

@@ -11,9 +11,9 @@ namespace LuduStack.Application.Interfaces
 
         Task<OperationResultVo> GetGiveawayForManagement(Guid currentUserId, Guid giveawayId);
 
-        OperationResultVo GetForEdit(Guid currentUserId, Guid giveawayId);
+        Task<OperationResultVo> GetForEdit(Guid currentUserId, Guid giveawayId);
 
-        OperationResultVo GetForDetails(Guid currentUserId, Guid giveawayId);
+        Task<OperationResultVo> GetForDetails(Guid currentUserId, Guid giveawayId);
 
         OperationResultVo GetGiveawayParticipantInfo(Guid currentUserId, Guid giveawayId, string email);
 

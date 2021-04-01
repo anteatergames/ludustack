@@ -95,11 +95,11 @@ namespace LuduStack.Web.Areas.Tools.Controllers
 
         [Authorize]
         [Route("tools/giveaway/edit/{id:guid}")]
-        public ViewResult Edit(Guid id)
+        public async Task<ViewResult> Edit(Guid id)
         {
             GiveawayViewModel model;
 
-            OperationResultVo serviceResult = giveawayAppService.GetForEdit(CurrentUserId, id);
+            OperationResultVo serviceResult = await giveawayAppService.GetForEdit(CurrentUserId, id);
 
             OperationResultVo<GiveawayViewModel> castResult = serviceResult as OperationResultVo<GiveawayViewModel>;
 
@@ -221,7 +221,7 @@ namespace LuduStack.Web.Areas.Tools.Controllers
 
                 GiveawayViewModel model = castRestult.Value;
 
-                SetAuthorDetails(model);
+                await SetAuthorDetails(model);
 
                 SetLocalization(model);
 
@@ -236,9 +236,9 @@ namespace LuduStack.Web.Areas.Tools.Controllers
         }
 
         [Route("giveaway/{id:guid}")]
-        public IActionResult Details(Guid id, string referralCode, string source)
+        public async Task<IActionResult> Details(Guid id, string referralCode, string source)
         {
-            OperationResultVo result = giveawayAppService.GetForDetails(CurrentUserId, id);
+            OperationResultVo result = await giveawayAppService.GetForDetails(CurrentUserId, id);
 
             if (result.Success)
             {
@@ -267,7 +267,7 @@ namespace LuduStack.Web.Areas.Tools.Controllers
                     EntryType = Enum.TryParse(source, out entryType) ? entryType : new GiveawayEntryType?()
                 };
 
-                SetAuthorDetails(model);
+                await SetAuthorDetails(model);
 
                 SetLocalization(model);
 
@@ -294,7 +294,7 @@ namespace LuduStack.Web.Areas.Tools.Controllers
 
                     SetSessionValue(SessionValues.Email, enter.Email);
 
-                    OperationResultVo resultGiveawayInfo = giveawayAppService.GetForEdit(CurrentUserId, enter.GiveawayId);
+                    OperationResultVo resultGiveawayInfo = await giveawayAppService.GetForEdit(CurrentUserId, enter.GiveawayId);
 
                     if (resultGiveawayInfo.Success)
                     {

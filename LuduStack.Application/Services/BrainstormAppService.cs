@@ -46,26 +46,21 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public Task<OperationResultListVo<BrainstormIdeaViewModel>> GetAll(Guid currentUserId)
-        {
-            return Task.FromResult(new OperationResultListVo<BrainstormIdeaViewModel>("Not Implemented"));
-        }
-
-        public Task<OperationResultListVo<Guid>> GetAllIds(Guid currentUserId)
+        public async Task<OperationResultListVo<Guid>> GetAllIds(Guid currentUserId)
         {
             try
             {
-                IEnumerable<Guid> allIds = brainstormDomainService.GetAllIds();
+                IEnumerable<Guid> allIds = await mediator.Query<GetBrainstormSessionIdsQuery, IEnumerable<Guid>>(new GetBrainstormSessionIdsQuery());
 
-                return Task.FromResult(new OperationResultListVo<Guid>(allIds));
+                return new OperationResultListVo<Guid>(allIds);
             }
             catch (Exception ex)
             {
-                return Task.FromResult(new OperationResultListVo<Guid>(ex.Message));
+                return new OperationResultListVo<Guid>(ex.Message);
             }
         }
 
-        public Task<OperationResultVo<BrainstormIdeaViewModel>> GetById(Guid currentUserId, Guid id)
+        public async Task<OperationResultVo<BrainstormIdeaViewModel>> GetById(Guid currentUserId, Guid id)
         {
             try
             {
@@ -87,7 +82,7 @@ namespace LuduStack.Application.Services
 
                 foreach (CommentViewModel comment in vm.Comments)
                 {
-                    UserProfile commenterProfile = GetCachedProfileByUserId(comment.UserId);
+                    UserProfile commenterProfile = await GetCachedProfileByUserId(comment.UserId);
                     if (commenterProfile == null)
                     {
                         comment.AuthorName = Constants.UnknownSoul;
@@ -103,11 +98,11 @@ namespace LuduStack.Application.Services
 
                 vm.Permissions.CanEdit = currentUserId == sessionUserId;
 
-                return Task.FromResult(new OperationResultVo<BrainstormIdeaViewModel>(vm));
+                return new OperationResultVo<BrainstormIdeaViewModel>(vm);
             }
             catch (Exception ex)
             {
-                return Task.FromResult(new OperationResultVo<BrainstormIdeaViewModel>(ex.Message));
+                return new OperationResultVo<BrainstormIdeaViewModel>(ex.Message);
             }
         }
 

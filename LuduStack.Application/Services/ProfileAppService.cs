@@ -47,12 +47,12 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public Task<OperationResultListVo<ProfileViewModel>> GetAll(Guid currentUserId)
+        public async Task<OperationResultListVo<ProfileViewModel>> GetAll(Guid currentUserId)
         {
-            return Task.FromResult(GetAll(currentUserId, false));
+            return await GetAll(currentUserId, false);
         }
 
-        public OperationResultListVo<ProfileViewModel> GetAll(Guid currentUserId, bool noCache)
+        public async Task<OperationResultListVo<ProfileViewModel>> GetAll(Guid currentUserId, bool noCache)
         {
             try
             {
@@ -61,11 +61,12 @@ namespace LuduStack.Application.Services
 
                 foreach (Guid userId in allIds)
                 {
-                    UserProfile profile = noCache ? null : GetCachedProfileByUserId(userId);
+                    UserProfile profile = noCache ? null : await GetCachedProfileByUserId(userId);
 
                     if (profile == null)
                     {
-                        UserProfile userProfile = profileDomainService.GetByUserId(userId).FirstOrDefault();
+                        IEnumerable<UserProfile> allUserProfiles = await mediator.Query<GetUserProfileByUserIdQuery, IEnumerable<UserProfile>>(new GetUserProfileByUserIdQuery(userId));
+                        UserProfile userProfile = allUserProfiles.FirstOrDefault();
 
                         if (userProfile != null)
                         {
@@ -94,17 +95,17 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public Task<OperationResultListVo<Guid>> GetAllIds(Guid currentUserId)
+        public async Task<OperationResultListVo<Guid>> GetAllIds(Guid currentUserId)
         {
             try
             {
-                IEnumerable<Guid> allIds = profileDomainService.GetAllIds();
+                IEnumerable<Guid> allIds = await mediator.Query<GetUserProfileIdsQuery, IEnumerable<Guid>>(new GetUserProfileIdsQuery());
 
-                return Task.FromResult(new OperationResultListVo<Guid>(allIds));
+                return new OperationResultListVo<Guid>(allIds);
             }
             catch (Exception ex)
             {
-                return Task.FromResult(new OperationResultListVo<Guid>(ex.Message));
+                return new OperationResultListVo<Guid>(ex.Message);
             }
         }
 

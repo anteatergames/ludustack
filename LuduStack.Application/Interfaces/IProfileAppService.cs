@@ -21,7 +21,7 @@ namespace LuduStack.Application.Interfaces
 
         Task<OperationResultListVo<ProfileViewModel>> GetAll(Guid currentUserId);
 
-        OperationResultListVo<ProfileViewModel> GetAll(Guid currentUserId, bool noCache);
+        Task<OperationResultListVo<ProfileViewModel>> GetAll(Guid currentUserId, bool noCache);
 
         UserProfileEssentialVo GetBasicDataByUserId(Guid userId);
 
@@ -55,7 +55,7 @@ namespace LuduStack.Application.Interfaces
 
         void SetProfileCache(Guid key, ProfileViewModel viewModel);
 
-        ProfileViewModel GetUserProfileWithCache(Guid userId);
+        Task<ProfileViewModel> GetUserProfileWithCache(Guid userId);
 
         #endregion Connections
     }

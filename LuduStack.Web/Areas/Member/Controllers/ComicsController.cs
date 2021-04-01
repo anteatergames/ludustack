@@ -51,7 +51,7 @@ namespace LuduStack.Web.Areas.Member.Controllers
 
                 ComicStripViewModel model = castRestult.Value;
 
-                SetAuthorDetails(model);
+                await SetAuthorDetails(model);
 
                 SetLocalization(model);
 

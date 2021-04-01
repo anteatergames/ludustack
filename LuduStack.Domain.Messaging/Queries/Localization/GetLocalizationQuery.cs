@@ -19,7 +19,7 @@ namespace LuduStack.Domain.Messaging.Queries.Localization
         }
     }
 
-    public class GetLocalizationQueryHandler : SearchBaseQueryHandler<GetLocalizationQuery, Models.Localization, ILocalizationRepository>
+    public class GetLocalizationQueryHandler : GetBaseQueryHandler<GetLocalizationQuery, Models.Localization, ILocalizationRepository>
     {
         public GetLocalizationQueryHandler(ILocalizationRepository repository) : base(repository)
         {

@@ -19,7 +19,7 @@ namespace LuduStack.Domain.Messaging.Queries.BrainstormSession
         }
     }
 
-    public class GetBrainstormSessionQueryHandler : SearchBaseQueryHandler<GetBrainstormSessionQuery, Models.BrainstormSession, IBrainstormRepository>
+    public class GetBrainstormSessionQueryHandler : GetBaseQueryHandler<GetBrainstormSessionQuery, Models.BrainstormSession, IBrainstormRepository>
     {
         public GetBrainstormSessionQueryHandler(IBrainstormRepository repository) : base(repository)
         {

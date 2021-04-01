@@ -19,7 +19,7 @@ namespace LuduStack.Domain.Messaging.Queries.GamificationLevel
         }
     }
 
-    public class GetGamificationLevelQueryHandler : SearchBaseQueryHandler<GetGamificationLevelQuery, Models.GamificationLevel, IGamificationLevelRepository>
+    public class GetGamificationLevelQueryHandler : GetBaseQueryHandler<GetGamificationLevelQuery, Models.GamificationLevel, IGamificationLevelRepository>
     {
         public GetGamificationLevelQueryHandler(IGamificationLevelRepository repository) : base(repository)
         {

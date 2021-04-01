@@ -56,16 +56,6 @@ namespace LuduStack.Domain.Services
             return objs;
         }
 
-        public override Giveaway GetById(Guid id)
-        {
-            Task<Giveaway> task = Task.Run(async () => await repository.GetById(id));
-            Giveaway model = task.Result;
-
-            SetDates(model);
-
-            return model;
-        }
-
         public GiveawayBasicInfo GetGiveawayBasicInfoById(Guid id)
         {
             Task<GiveawayBasicInfo> task = Task.Run(async () => await repository.GetBasicGiveawayById(id));

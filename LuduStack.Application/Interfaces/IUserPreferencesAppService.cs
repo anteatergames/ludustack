@@ -9,6 +9,6 @@ namespace LuduStack.Application.Interfaces
     {
         Task<OperationResultVo<Guid>> Save(Guid currentUserId, UserPreferencesViewModel viewModel);
 
-        UserPreferencesViewModel GetByUserId(Guid userId);
+        Task<UserPreferencesViewModel> GetByUserId(Guid userId);
     }
 }

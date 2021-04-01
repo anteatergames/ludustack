@@ -27,7 +27,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\LuduStack.Domain.Messaging\LuduStack.Domain.Messaging.csproj" />
     <ProjectReference Include="..\LuduStack.Domain\LuduStack.Domain.csproj" />
+    <ProjectReference Include="..\LuduStack.Infra.CrossCutting.Messaging\LuduStack.Infra.CrossCutting.Messaging.csproj" />
   </ItemGroup>
 
 </Project>

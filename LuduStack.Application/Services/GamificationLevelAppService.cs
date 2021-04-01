@@ -93,7 +93,7 @@ namespace LuduStack.Application.Services
             {
                 GamificationLevel model;
 
-                GamificationLevel existing = gamificationLevelDomainService.GetById(viewModel.Id);
+                GamificationLevel existing = await mediator.Query<GetGamificationLevelByIdQuery, GamificationLevel>(new GetGamificationLevelByIdQuery(viewModel.Id));
                 if (existing != null)
                 {
                     model = mapper.Map(viewModel, existing);

@@ -94,7 +94,7 @@ namespace LuduStack.Web.Controllers
 
             BrainstormIdeaViewModel vm = op.Value;
 
-            SetAuthorDetails(vm);
+            await SetAuthorDetails(vm);
 
             return View("_Details", vm);
         }
@@ -180,11 +180,11 @@ namespace LuduStack.Web.Controllers
         }
 
         [HttpPost("brainstorm/comment")]
-        public IActionResult Comment(CommentViewModel vm)
+        public async Task<IActionResult> Comment(CommentViewModel vm)
         {
             OperationResultVo response;
 
-            SetAuthorDetails(vm);
+            await SetAuthorDetails(vm);
 
             response = brainstormAppService.Comment(vm);
 

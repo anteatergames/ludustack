@@ -41,7 +41,7 @@ namespace LuduStack.Web.Areas.Staff.Controllers
             {
                 IQueryable<ApplicationUser> allUsers = await GetUsersAsync();
 
-                OperationResultListVo<ProfileViewModel> profileResult = ProfileAppService.GetAll(CurrentUserId, true);
+                OperationResultListVo<ProfileViewModel> profileResult = await ProfileAppService.GetAll(CurrentUserId, true);
 
                 if (!profileResult.Success)
                 {
@@ -81,7 +81,7 @@ namespace LuduStack.Web.Areas.Staff.Controllers
             {
                 IQueryable<ApplicationUser> allUsers = await GetUsersAsync();
 
-                OperationResultListVo<ProfileViewModel> profileResult = ProfileAppService.GetAll(CurrentUserId, true);
+                OperationResultListVo<ProfileViewModel> profileResult = await ProfileAppService.GetAll(CurrentUserId, true);
 
                 if (!profileResult.Success)
                 {

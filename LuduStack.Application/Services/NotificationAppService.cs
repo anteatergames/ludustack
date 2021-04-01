@@ -31,17 +31,17 @@ namespace LuduStack.Application.Services
             return Task.FromResult(new OperationResultListVo<NotificationItemViewModel>(string.Empty));
         }
 
-        public Task<OperationResultListVo<Guid>> GetAllIds(Guid currentUserId)
+        public async Task<OperationResultListVo<Guid>> GetAllIds(Guid currentUserId)
         {
             try
             {
-                IEnumerable<Guid> allIds = notificationDomainService.GetAllIds();
+                IEnumerable<Guid> allIds = await mediator.Query<GetNotificationIdsQuery, IEnumerable<Guid>>(new GetNotificationIdsQuery());
 
-                return Task.FromResult(new OperationResultListVo<Guid>(allIds));
+                return new OperationResultListVo<Guid>(allIds);
             }
             catch (Exception ex)
             {
-                return Task.FromResult(new OperationResultListVo<Guid>(ex.Message));
+                return new OperationResultListVo<Guid>(ex.Message);
             }
         }
 
@@ -103,9 +103,10 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultListVo<NotificationItemViewModel> GetByUserId(Guid userId, int count)
+        public async Task<OperationResultListVo<NotificationItemViewModel>> GetByUserId(Guid userId, int count)
         {
-            List<Notification> notifications = notificationDomainService.GetByUserId(userId).OrderByDescending(x => x.CreateDate).Take(count).ToList();
+            IEnumerable<Notification> userNotifications = await mediator.Query<GetNotificationByUserIdQuery, IEnumerable<Notification>>(new GetNotificationByUserIdQuery(userId));
+            List<Notification> notifications = userNotifications.OrderByDescending(x => x.CreateDate).Take(count).ToList();
 
             IEnumerable<NotificationItemViewModel> vms = mapper.Map<IEnumerable<NotificationItemViewModel>>(notifications);
 

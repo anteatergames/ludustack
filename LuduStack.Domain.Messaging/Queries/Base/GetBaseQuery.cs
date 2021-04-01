@@ -24,11 +24,11 @@ namespace LuduStack.Domain.Messaging.Queries.Base
         }
     }
 
-    public abstract class SearchBaseQueryHandler<TQuery, TModel, TRepository> : QueryHandler, IRequestHandler<TQuery, IEnumerable<TModel>> where TQuery : GetBaseQuery<TModel> where TModel : Entity where TRepository : IRepository<TModel>
+    public abstract class GetBaseQueryHandler<TQuery, TModel, TRepository> : QueryHandler, IRequestHandler<TQuery, IEnumerable<TModel>> where TQuery : GetBaseQuery<TModel> where TModel : Entity where TRepository : IRepository<TModel>
     {
         protected readonly TRepository repository;
 
-        protected SearchBaseQueryHandler(TRepository repository)
+        protected GetBaseQueryHandler(TRepository repository)
         {
             this.repository = repository;
         }

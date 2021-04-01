@@ -39,7 +39,7 @@ namespace LuduStack.Web.ViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync(int count, Guid? gameId, Guid? userId, Guid? oldestId, DateTime? oldestDate, bool? articlesOnly)
         {
-            UserPreferencesViewModel preferences = _userPreferencesAppService.GetByUserId(CurrentUserId);
+            UserPreferencesViewModel preferences = await _userPreferencesAppService.GetByUserId(CurrentUserId);
 
             ActivityFeedRequestViewModel vm = new ActivityFeedRequestViewModel
             {

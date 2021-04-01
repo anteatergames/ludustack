@@ -122,7 +122,7 @@ namespace LuduStack.Web.Areas.Member.Controllers
         [HttpGet]
         public async Task<IActionResult> Languages()
         {
-            UserPreferencesViewModel vm = userPreferencesAppService.GetByUserId(CurrentUserId);
+            UserPreferencesViewModel vm = await userPreferencesAppService.GetByUserId(CurrentUserId);
             vm.StatusMessage = StatusMessage;
 
             return await Task.Run(() => View(vm));

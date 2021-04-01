@@ -101,7 +101,7 @@ namespace LuduStack.Web.Controllers.Base
                 }
             }
 
-            CurrentLocale = GetAspNetCultureCookie();
+            CurrentLocale = await GetAspNetCultureCookie();
             ViewBag.Locale = CurrentLocale;
 
             EnvName = string.Format("env-{0}", HostEnvironment.EnvironmentName);
@@ -170,7 +170,7 @@ namespace LuduStack.Web.Controllers.Base
             SetCookieValue(SessionValues.UserProfileImageUrl, profileImageUrl, 7, true);
         }
 
-        protected ProfileViewModel SetAuthorDetails(UserGeneratedBaseViewModel vm)
+        protected async Task<ProfileViewModel> SetAuthorDetails(UserGeneratedBaseViewModel vm)
         {
             if (vm == null)
             {
@@ -182,7 +182,7 @@ namespace LuduStack.Web.Controllers.Base
                 vm.UserId = CurrentUserId;
             }
 
-            ProfileViewModel profile = ProfileAppService.GetUserProfileWithCache(vm.UserId);
+            ProfileViewModel profile = await ProfileAppService.GetUserProfileWithCache(vm.UserId);
 
             if (profile != null)
             {
@@ -241,7 +241,7 @@ namespace LuduStack.Web.Controllers.Base
             SetCookieValue(CookieRequestCultureProvider.DefaultCookieName, CookieRequestCultureProvider.MakeCookieValue(culture), 365);
         }
 
-        protected string GetAspNetCultureCookie()
+        protected async Task<string> GetAspNetCultureCookie()
         {
             RequestCulture requestLanguage = Request.HttpContext.Features.Get<IRequestCultureFeature>().RequestCulture;
 
@@ -259,7 +259,7 @@ namespace LuduStack.Web.Controllers.Base
             {
                 if (cookie == null || !cookie.Cultures.Any())
                 {
-                    UserPreferencesViewModel userPrefs = UserPreferencesAppService.GetByUserId(CurrentUserId);
+                    UserPreferencesViewModel userPrefs = await UserPreferencesAppService.GetByUserId(CurrentUserId);
 
                     if (userPrefs != null && userPrefs.Id != Guid.Empty)
                     {

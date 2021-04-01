@@ -19,7 +19,7 @@ namespace LuduStack.Domain.Messaging.Queries.Game
         }
     }
 
-    public class GetGameQueryHandler : SearchBaseQueryHandler<GetGameQuery, Models.Game, IGameRepository>
+    public class GetGameQueryHandler : GetBaseQueryHandler<GetGameQuery, Models.Game, IGameRepository>
     {
         public GetGameQueryHandler(IGameRepository repository) : base(repository)
         {

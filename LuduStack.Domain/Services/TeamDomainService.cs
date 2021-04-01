@@ -19,13 +19,6 @@ namespace LuduStack.Domain.Services
             this.gameRepository = gameRepository;
         }
 
-        public override IEnumerable<Team> GetAll()
-        {
-            IQueryable<Team> qry = repository.Get();
-
-            return qry.OrderByDescending(x => x.CreateDate).ToList();
-        }
-
         public override void Remove(Guid id)
         {
             List<Game> games = gameRepository.Get(x => x.TeamId == id).ToList();

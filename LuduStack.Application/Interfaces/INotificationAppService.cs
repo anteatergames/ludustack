@@ -18,7 +18,7 @@ namespace LuduStack.Application.Interfaces
 
         Task<OperationResultVo<Guid>> Save(Guid currentUserId, NotificationItemViewModel viewModel);
 
-        OperationResultListVo<NotificationItemViewModel> GetByUserId(Guid userId, int count);
+        Task<OperationResultListVo<NotificationItemViewModel>> GetByUserId(Guid userId, int count);
 
         Task<OperationResultVo> Notify(Guid originUserId, string originUserName, Guid targetUserId, NotificationType notificationType, Guid targetId);
 

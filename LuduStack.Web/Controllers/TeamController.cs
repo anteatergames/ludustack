@@ -116,9 +116,9 @@ namespace LuduStack.Web.Controllers
 
         [Authorize]
         [Route("new")]
-        public IActionResult New()
+        public async Task<IActionResult> New()
         {
-            OperationResultVo<TeamViewModel> service = (OperationResultVo<TeamViewModel>)teamAppService.GenerateNewTeam(CurrentUserId);
+            OperationResultVo<TeamViewModel> service = (OperationResultVo<TeamViewModel>)await teamAppService.GenerateNewTeam(CurrentUserId);
 
             return PartialView("_CreateEdit", service.Value);
         }

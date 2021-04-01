@@ -19,7 +19,7 @@ namespace LuduStack.Domain.Messaging.Queries.UserContent
         }
     }
 
-    public class GetUserContentQueryHandler : SearchBaseQueryHandler<GetUserContentQuery, Models.UserContent, IUserContentRepository>
+    public class GetUserContentQueryHandler : GetBaseQueryHandler<GetUserContentQuery, Models.UserContent, IUserContentRepository>
     {
         public GetUserContentQueryHandler(IUserContentRepository repository) : base(repository)
         {

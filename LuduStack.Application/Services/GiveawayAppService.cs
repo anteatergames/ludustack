@@ -58,7 +58,7 @@ namespace LuduStack.Application.Services
 
                 GiveawayViewModel vm = mapper.Map<GiveawayViewModel>(existing);
 
-                SetAuthorDetails(vm);
+                await SetAuthorDetails(vm);
 
                 SetViewModelState(currentUserId, vm);
 
@@ -72,7 +72,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo GetForEdit(Guid currentUserId, Guid giveawayId)
+        public async Task<OperationResultVo> GetForEdit(Guid currentUserId, Guid giveawayId)
         {
             try
             {
@@ -80,7 +80,7 @@ namespace LuduStack.Application.Services
 
                 GiveawayViewModel vm = mapper.Map<GiveawayViewModel>(existing);
 
-                SetAuthorDetails(vm);
+                await SetAuthorDetails(vm);
 
                 SetViewModelState(currentUserId, vm);
 
@@ -94,7 +94,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo GetForDetails(Guid currentUserId, Guid giveawayId)
+        public async Task<OperationResultVo> GetForDetails(Guid currentUserId, Guid giveawayId)
         {
             try
             {
@@ -102,7 +102,7 @@ namespace LuduStack.Application.Services
 
                 GiveawayViewModel vm = mapper.Map<GiveawayViewModel>(existing);
 
-                SetAuthorDetails(vm);
+                await SetAuthorDetails(vm);
 
                 SetViewModelState(currentUserId, vm);
 

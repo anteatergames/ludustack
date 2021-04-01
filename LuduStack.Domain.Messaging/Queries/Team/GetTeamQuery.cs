@@ -2,6 +2,7 @@
 using LuduStack.Domain.Messaging.Queries.Base;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -19,7 +20,7 @@ namespace LuduStack.Domain.Messaging.Queries.Team
         }
     }
 
-    public class GetTeamQueryHandler : SearchBaseQueryHandler<GetTeamQuery, Models.Team, ITeamRepository>
+    public class GetTeamQueryHandler : GetBaseQueryHandler<GetTeamQuery, Models.Team, ITeamRepository>
     {
         public GetTeamQueryHandler(ITeamRepository repository) : base(repository)
         {
@@ -29,7 +30,7 @@ namespace LuduStack.Domain.Messaging.Queries.Team
         {
             IEnumerable<Models.Team> all = await base.Handle(request, cancellationToken);
 
-            return all;
+            return all.OrderByDescending(x => x.CreateDate);
         }
     }
 }
