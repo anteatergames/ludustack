@@ -349,7 +349,7 @@ namespace LuduStack.Web.Controllers
 
             // Future
 
-            model.Items.Add(GenerateTimeLineItem(new DateTime(2099, 11, 01), "fas fa-bug", "danger", "Soon", "Open Beta", "At this point, we hope to have a consistent beta tester base so we can polish the platform and fix every possible bug tha shows up."));
+            model.Items.Add(GenerateTimeLineItem(new DateTime(2098, 11, 01), "fas fa-bug", "danger", "Soon", "Open Beta", "At this point, we hope to have a consistent beta tester base so we can polish the platform and fix every possible bug tha shows up."));
 
             model.Items.Add(GenerateTimeLineItem(new DateTime(2099, 01, 01), "fas fa-star", "success", "Near Future", "Launch day!", "This is the launch day. On this day, all the core features will be implemented."));
 
