@@ -68,10 +68,6 @@ var ACTIVITYFEED = (function () {
                     if (response.success) {
                         var elementToDelete = btn.closest('.box-content');
                         elementToDelete.remove();
-
-                        if (response.message) {
-                            ALERTSYSTEM.ShowSuccessMessage(response.message);
-                        }
                     }
                     else {
                         ALERTSYSTEM.ShowWarningMessage(response.message);

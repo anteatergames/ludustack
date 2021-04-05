@@ -342,13 +342,17 @@ namespace LuduStack.Web.Areas.Tools.Controllers
 
                 OperationResultVo<Guid> saveResult = await translationAppService.Save(CurrentUserId, vm);
 
-                if (saveResult.Success)
+                if (!saveResult.Success)
                 {
-                    string url = Url.Action("details", "localization", new { area = "tools", id = vm.Id });
+                    return Json(new OperationResultVo(saveResult.Message));
+                }
+                else
+                {
+                    string url = Url.Action("details", "localization", new { area = "tools", id = saveResult.Value });
 
                     if (isNew)
                     {
-                        url = Url.Action("edit", "localization", new { area = "tools", id = vm.Id, pointsEarned = saveResult.PointsEarned });
+                        url = Url.Action("edit", "localization", new { area = "tools", id = saveResult.Value, pointsEarned = saveResult.PointsEarned });
 
                         if (EnvName.Equals(ConstantHelper.ProductionEnvironmentName))
                         {
@@ -357,10 +361,6 @@ namespace LuduStack.Web.Areas.Tools.Controllers
                     }
 
                     return Json(new OperationResultRedirectVo<Guid>(saveResult, url));
-                }
-                else
-                {
-                    return Json(new OperationResultVo(false));
                 }
             }
             catch (Exception ex)

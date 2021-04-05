@@ -6,6 +6,8 @@ namespace LuduStack.Infra.CrossCutting.Messaging
     {
         public bool Success { get; set; }
 
+        public int PointsEarned { get; set; }
+
         public ValidationResult Validation { get; set; }
 
         public CommandResult() : this(true)
@@ -32,6 +34,13 @@ namespace LuduStack.Infra.CrossCutting.Messaging
         public CommandResult(T result)
         {
             Result = result;
+        }
+
+        public CommandResult(T result, ValidationResult validationResult)
+        {
+            Result = result;
+            Success = validationResult.IsValid;
+            Validation = validationResult;
         }
     }
 }

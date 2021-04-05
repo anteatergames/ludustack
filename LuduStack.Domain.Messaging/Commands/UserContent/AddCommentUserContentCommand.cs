@@ -10,17 +10,14 @@ using System.Threading.Tasks;
 
 namespace LuduStack.Domain.Messaging
 {
-    public class AddCommentUserContentCommand : BaseCommand
+    public class AddCommentUserContentCommand : BaseUserCommand
     {
-        public Guid UserId { get; set; }
-
         public Guid? ParentCommentId { get; set; }
 
         public string Text { get; set; }
 
-        public AddCommentUserContentCommand(Guid userId, Guid userContentId, Guid? parentCommentId, string text) : base(userContentId)
+        public AddCommentUserContentCommand(Guid userId, Guid userContentId, Guid? parentCommentId, string text) : base(userId, userContentId)
         {
-            UserId = userId;
             ParentCommentId = parentCommentId;
             Text = text;
         }

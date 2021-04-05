@@ -141,11 +141,11 @@ namespace LuduStack.Infra.Data.MongoDb.Repository.Base
             if (obj.CreateDate == DateTime.MinValue)
             {
                 obj.CreateDate = DateTime.Now;
+            }
 
-                if (obj.PublishDate == DateTime.MinValue)
-                {
-                    obj.PublishDate = obj.CreateDate;
-                }
+            if (obj.PublishDate == DateTime.MinValue)
+            {
+                obj.PublishDate = obj.CreateDate;
             }
         }
     }

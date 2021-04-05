@@ -9,6 +9,7 @@ using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Core.Extensions;
 using LuduStack.Domain.Core.Interfaces;
 using LuduStack.Domain.Interfaces.Services;
+using LuduStack.Domain.Messaging;
 using LuduStack.Domain.Messaging.Queries.Game;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.Specifications;
@@ -28,11 +29,10 @@ namespace LuduStack.Application.Services
 
         private readonly IGameDomainService gameDomainService;
 
-        public GameAppService(IMediatorHandler mediator
-            , IProfileBaseAppServiceCommon profileBaseAppServiceCommon
+        public GameAppService(IProfileBaseAppServiceCommon profileBaseAppServiceCommon
             , ITeamDomainService teamDomainService
             , IGameDomainService gameDomainService
-            , IGamificationDomainService gamificationDomainService) : base(mediator, profileBaseAppServiceCommon)
+            , IGamificationDomainService gamificationDomainService) : base(profileBaseAppServiceCommon)
         {
             this.gameDomainService = gameDomainService;
             this.teamDomainService = teamDomainService;
@@ -102,7 +102,7 @@ namespace LuduStack.Application.Services
                 vm.CurrentUserLiked = model.Likes.SafeAny(x => x.GameId == vm.Id && x.UserId == currentUserId);
                 vm.CurrentUserFollowing = model.Followers.SafeAny(x => x.GameId == vm.Id && x.UserId == currentUserId);
 
-                UserProfile authorProfile = await GetCachedProfileByUserId (vm.UserId);
+                UserProfile authorProfile = await GetCachedProfileByUserId(vm.UserId);
                 vm.AuthorName = authorProfile.Name;
 
                 if (forEdit)
@@ -150,8 +150,7 @@ namespace LuduStack.Application.Services
 
             try
             {
-                Game game;
-                Team newTeam = null;
+                Game model;
                 bool createTeam = viewModel.TeamId == Guid.Empty;
 
                 ISpecification<GameViewModel> spec = new UserMustBeAuthenticatedSpecification<GameViewModel>(currentUserId)
@@ -162,48 +161,28 @@ namespace LuduStack.Application.Services
                     return new OperationResultVo<Guid>(spec.ErrorMessage);
                 }
 
-                if (createTeam)
-                {
-                    newTeam = teamDomainService.GenerateNewTeam(currentUserId);
-                    newTeam.Name = String.Format("Team {0}", viewModel.Title);
-                    teamDomainService.Add(newTeam);
-                }
-
-                viewModel.ExternalLinks.RemoveAll(x => String.IsNullOrWhiteSpace(x.Value));
-
                 Game existing = await mediator.Query<GetGameByIdQuery, Game>(new GetGameByIdQuery(viewModel.Id));
 
                 if (existing != null)
                 {
-                    game = mapper.Map(viewModel, existing);
+                    model = mapper.Map(viewModel, existing);
                 }
                 else
                 {
-                    game = mapper.Map<Game>(viewModel);
+                    model = mapper.Map<Game>(viewModel);
                 }
 
-                if (viewModel.Id == Guid.Empty)
+                CommandResult result = await mediator.SendCommand(new SaveGameCommand(currentUserId, model, createTeam));
+
+                if (!result.Validation.IsValid)
                 {
-                    gameDomainService.Add(game);
-
-                    pointsEarned += gamificationDomainService.ProcessAction(viewModel.UserId, PlatformAction.GameAdd);
-                }
-                else
-                {
-                    gameDomainService.Update(game);
+                    string message = result.Validation.Errors.FirstOrDefault().ErrorMessage;
+                    return new OperationResultVo<Guid>(model.Id, false, message);
                 }
 
-                await unitOfWork.Commit();
-                viewModel.Id = game.Id;
+                pointsEarned += result.PointsEarned;
 
-                if (createTeam && newTeam != null)
-                {
-                    game.TeamId = newTeam.Id;
-                    gameDomainService.Update(game);
-                    await unitOfWork.Commit();
-                }
-
-                return new OperationResultVo<Guid>(game.Id, pointsEarned);
+                return new OperationResultVo<Guid>(model.Id, pointsEarned);
             }
             catch (Exception ex)
             {
@@ -243,7 +222,7 @@ namespace LuduStack.Application.Services
                 item.ThumbnailLquip = SetFeaturedImage(item.UserId, item.ThumbnailUrl, ImageRenderType.LowQuality);
                 item.DeveloperImageUrl = UrlFormatter.ProfileImage(item.UserId, 40);
 
-                UserProfile authorProfile = await GetCachedProfileByUserId (item.UserId);
+                UserProfile authorProfile = await GetCachedProfileByUserId(item.UserId);
                 item.DeveloperName = authorProfile?.Name;
             }
 

@@ -21,14 +21,6 @@ namespace LuduStack.Domain.Services
             this.userConnectionRepository = userConnectionRepository;
         }
 
-        public override Guid Add(UserProfile model)
-        {
-            model.HasCoverImage = false;
-            model.Handler = model.Handler.ToLower();
-
-            return base.Add(model);
-        }
-
         public override Guid Update(UserProfile model)
         {
             model.Handler = model.Handler.ToLower();
@@ -266,8 +258,8 @@ namespace LuduStack.Domain.Services
                 return null;
             }
 
-            var connectionDirection = fromUser ? UserConnectionDirection.FromUser : UserConnectionDirection.ToUser;
-            var connectionType = typePupil ? UserConnectionType.Pupil : UserConnectionType.WorkedTogether;
+            UserConnectionDirection connectionDirection = fromUser ? UserConnectionDirection.FromUser : UserConnectionDirection.ToUser;
+            UserConnectionType connectionType = typePupil ? UserConnectionType.Pupil : UserConnectionType.WorkedTogether;
 
             UserConnectionVo model = new UserConnectionVo
             {

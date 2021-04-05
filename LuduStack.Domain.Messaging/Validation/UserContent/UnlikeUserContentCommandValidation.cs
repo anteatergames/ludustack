@@ -1,20 +1,11 @@
-﻿using FluentValidation;
-using System;
-
-namespace LuduStack.Domain.Messaging
+﻿namespace LuduStack.Domain.Messaging
 {
-    public class UnlikeUnlikeUserContentCommandValidation : UserContentValidation<UnlikeUserContentCommand>
+    public class UnlikeUnlikeUserContentCommandValidation : BaseUserCommandValidation<UnlikeUserContentCommand>
     {
         public UnlikeUnlikeUserContentCommandValidation()
         {
             ValidateId();
             ValidateUserId();
-        }
-
-        protected void ValidateUserId()
-        {
-            RuleFor(c => c.UserId)
-                .NotEqual(Guid.Empty);
         }
     }
 }

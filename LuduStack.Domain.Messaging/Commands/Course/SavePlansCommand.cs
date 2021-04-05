@@ -11,16 +11,16 @@ using System.Threading.Tasks;
 
 namespace LuduStack.Domain.Messaging
 {
-    public class SavePlansCommand : BaseCommand
+    public class SavePlansCommand : BaseUserCommand
     {
         public Guid CourseId { get; }
         public List<StudyPlan> Plans { get; }
 
-        public SavePlansCommand(Guid courseId) : base(courseId)
+        public SavePlansCommand(Guid userId, Guid courseId) : base(userId, courseId)
         {
         }
 
-        public SavePlansCommand(Guid courseId, List<StudyPlan> plans) : base(courseId)
+        public SavePlansCommand(Guid userId, Guid courseId, List<StudyPlan> plans) : base(userId, courseId)
         {
             Plans = plans;
         }

@@ -12,13 +12,10 @@ using System.Threading.Tasks;
 
 namespace LuduStack.Domain.Messaging
 {
-    public class LikeUserContentCommand : BaseCommand
+    public class LikeUserContentCommand : BaseUserCommand
     {
-        public Guid UserId { get; }
-
-        public LikeUserContentCommand(Guid userId, Guid courseId) : base(courseId)
+        public LikeUserContentCommand(Guid userId, Guid courseId) : base(userId, courseId)
         {
-            UserId = userId;
         }
 
         public override bool IsValid()

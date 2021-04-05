@@ -2,6 +2,7 @@
 using LuduStack.Application.ViewModels.UserPreferences;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Interfaces.Services;
+using LuduStack.Domain.Messaging;
 using LuduStack.Domain.Messaging.Queries.UserPreferences;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
@@ -26,6 +27,8 @@ namespace LuduStack.Application.Services
 
         public async Task<OperationResultVo<Guid>> Save(Guid currentUserId, UserPreferencesViewModel viewModel)
         {
+            int pointsEarned = 0;
+
             try
             {
                 UserPreferences model;
@@ -46,19 +49,17 @@ namespace LuduStack.Application.Services
                     model = mapper.Map<UserPreferences>(viewModel);
                 }
 
-                if (viewModel.Id == Guid.Empty)
+                CommandResult result = await mediator.SendCommand(new SaveUserPreferencesCommand(currentUserId, model));
+
+                if (!result.Validation.IsValid)
                 {
-                    userPreferencesDomainService.Add(model);
-                    viewModel.Id = model.Id;
-                }
-                else
-                {
-                    userPreferencesDomainService.Update(model);
+                    string message = result.Validation.Errors.FirstOrDefault().ErrorMessage;
+                    return new OperationResultVo<Guid>(model.Id, false, message);
                 }
 
-                await unitOfWork.Commit();
+                pointsEarned += result.PointsEarned;
 
-                return new OperationResultVo<Guid>(model.Id);
+                return new OperationResultVo<Guid>(model.Id, pointsEarned);
             }
             catch (Exception ex)
             {

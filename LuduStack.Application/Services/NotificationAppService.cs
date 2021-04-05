@@ -2,9 +2,11 @@
 using LuduStack.Application.ViewModels.Notification;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Interfaces.Services;
+using LuduStack.Domain.Messaging;
 using LuduStack.Domain.Messaging.Queries.Notification;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
+using LuduStack.Infra.CrossCutting.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,35 +21,6 @@ namespace LuduStack.Application.Services
         public NotificationAppService(IBaseAppServiceCommon baseAppServiceCommon, INotificationDomainService notificationDomainService) : base(baseAppServiceCommon)
         {
             this.notificationDomainService = notificationDomainService;
-        }
-
-        public Task<OperationResultVo<int>> Count(Guid currentUserId)
-        {
-            return Task.FromResult(new OperationResultVo<int>(string.Empty));
-        }
-
-        public Task<OperationResultListVo<NotificationItemViewModel>> GetAll(Guid currentUserId)
-        {
-            return Task.FromResult(new OperationResultListVo<NotificationItemViewModel>(string.Empty));
-        }
-
-        public async Task<OperationResultListVo<Guid>> GetAllIds(Guid currentUserId)
-        {
-            try
-            {
-                IEnumerable<Guid> allIds = await mediator.Query<GetNotificationIdsQuery, IEnumerable<Guid>>(new GetNotificationIdsQuery());
-
-                return new OperationResultListVo<Guid>(allIds);
-            }
-            catch (Exception ex)
-            {
-                return new OperationResultListVo<Guid>(ex.Message);
-            }
-        }
-
-        public Task<OperationResultVo<NotificationItemViewModel>> GetById(Guid currentUserId, Guid id)
-        {
-            throw new NotImplementedException();
         }
 
         public async Task<OperationResultVo<Guid>> Save(Guid currentUserId, NotificationItemViewModel viewModel)
@@ -67,17 +40,13 @@ namespace LuduStack.Application.Services
                     model = mapper.Map<Notification>(viewModel);
                 }
 
-                if (viewModel.Id == Guid.Empty)
-                {
-                    notificationDomainService.Add(model);
-                    viewModel.Id = model.Id;
-                }
-                else
-                {
-                    notificationDomainService.Update(model);
-                }
+                CommandResult result = await mediator.SendCommand(new SaveNotificationCommand(currentUserId, model));
 
-                await unitOfWork.Commit();
+                if (!result.Validation.IsValid)
+                {
+                    string message = result.Validation.Errors.FirstOrDefault().ErrorMessage;
+                    return new OperationResultVo<Guid>(model.Id, false, message);
+                }
 
                 return new OperationResultVo<Guid>(model.Id);
             }

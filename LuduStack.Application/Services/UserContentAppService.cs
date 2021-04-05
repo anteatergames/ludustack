@@ -30,10 +30,10 @@ namespace LuduStack.Application.Services
         private readonly IGamificationDomainService gamificationDomainService;
         private readonly IPollDomainService pollDomainService;
 
-        public UserContentAppService(IMediatorHandler mediator, IProfileBaseAppServiceCommon profileBaseAppServiceCommon, ILogger<UserContentAppService> logger
+        public UserContentAppService(IProfileBaseAppServiceCommon profileBaseAppServiceCommon, ILogger<UserContentAppService> logger
             , IUserContentDomainService userContentDomainService
             , IGamificationDomainService gamificationDomainService
-            , IPollDomainService pollDomainService) : base(mediator, profileBaseAppServiceCommon)
+            , IPollDomainService pollDomainService) : base(profileBaseAppServiceCommon)
         {
             this.logger = logger;
             this.userContentDomainService = userContentDomainService;
@@ -92,7 +92,7 @@ namespace LuduStack.Application.Services
             {
                 UserContent model = await mediator.Query<GetUserContentByIdQuery, UserContent>(new GetUserContentByIdQuery(id));
 
-                UserProfile authorProfile = await GetCachedProfileByUserId (model.UserId);
+                UserProfile authorProfile = await GetCachedProfileByUserId(model.UserId);
 
                 UserContentViewModel vm = mapper.Map<UserContentViewModel>(model);
 
@@ -156,6 +156,7 @@ namespace LuduStack.Application.Services
                 int pointsEarned = 0;
 
                 UserContent model;
+                Poll pollModel = null;
 
                 bool isSpam = await CheckSpam(viewModel.Id, viewModel.Content);
 
@@ -165,18 +166,6 @@ namespace LuduStack.Application.Services
                 {
                     return new OperationResultVo<Guid>("Calm down! You cannot post the same content twice in a row.");
                 }
-
-                string youtubePattern = @"(https?\:\/\/)?(www\.youtube\.com|youtu\.?be)\/.+";
-
-                viewModel.Content = Regex.Replace(viewModel.Content, youtubePattern, delegate (Match match)
-                {
-                    string v = match.ToString();
-                    if (match.Index == 0 && String.IsNullOrWhiteSpace(viewModel.FeaturedImage))
-                    {
-                        viewModel.FeaturedImage = v;
-                    }
-                    return v;
-                });
 
                 UserContent existing = await mediator.Query<GetUserContentByIdQuery, UserContent>(new GetUserContentByIdQuery(viewModel.Id));
                 if (existing != null)
@@ -188,36 +177,24 @@ namespace LuduStack.Application.Services
                     model = mapper.Map<UserContent>(viewModel);
                 }
 
-                if (model.PublishDate == DateTime.MinValue)
+                if (isNew && viewModel.Poll != null && viewModel.Poll.PollOptions != null && viewModel.Poll.PollOptions.Any())
                 {
-                    model.PublishDate = model.CreateDate;
+                    pollModel = mapper.Map<Poll>(viewModel.Poll);
                 }
 
-                if (isNew)
+                CommandResult result = await mediator.SendCommand(new SaveUserContentCommand(currentUserId, model, pollModel));
+
+                if (!result.Validation.IsValid)
                 {
-                    userContentDomainService.Add(model);
-
-                    PlatformAction action = viewModel.IsComplex ? PlatformAction.ComplexPost : PlatformAction.SimplePost;
-                    pointsEarned += gamificationDomainService.ProcessAction(viewModel.UserId, action);
-
-                    unitOfWork.Commit().Wait();
-                    viewModel.Id = model.Id;
-
-                    if (viewModel.Poll != null && viewModel.Poll.PollOptions != null && viewModel.Poll.PollOptions.Any())
-                    {
-                        CreatePoll(viewModel);
-
-                        pointsEarned += gamificationDomainService.ProcessAction(viewModel.UserId, PlatformAction.PollPost);
-                    }
+                    string message = result.Validation.Errors.FirstOrDefault().ErrorMessage;
+                    return new OperationResultVo<Guid>(model.Id, false, message);
                 }
                 else
                 {
-                    userContentDomainService.Update(model);
+                    pointsEarned += result.PointsEarned;
+
+                    return new OperationResultVo<Guid>(model.Id, pointsEarned);
                 }
-
-                await unitOfWork.Commit();
-
-                return new OperationResultVo<Guid>(model.Id, pointsEarned);
             }
             catch (Exception ex)
             {
@@ -241,28 +218,6 @@ namespace LuduStack.Application.Services
             {
                 return false;
             }
-        }
-
-        private void CreatePoll(UserContentViewModel contentVm)
-        {
-            Poll newPoll = new Poll
-            {
-                UserId = contentVm.UserId,
-                UserContentId = contentVm.Id
-            };
-
-            foreach (PollOptionViewModel o in contentVm.Poll.PollOptions)
-            {
-                PollOption newOption = new PollOption
-                {
-                    UserId = contentVm.UserId,
-                    Text = o.Text
-                };
-
-                newPoll.Options.Add(newOption);
-            }
-
-            pollDomainService.Add(newPoll);
         }
 
         public async Task<int> CountArticles()
@@ -401,7 +356,7 @@ namespace LuduStack.Application.Services
 
                 foreach (CommentViewModel comment in item.Comments)
                 {
-                    UserProfile commenterProfile = await GetCachedProfileByUserId (comment.UserId);
+                    UserProfile commenterProfile = await GetCachedProfileByUserId(comment.UserId);
                     if (commenterProfile == null)
                     {
                         comment.AuthorName = Constants.UnknownSoul;

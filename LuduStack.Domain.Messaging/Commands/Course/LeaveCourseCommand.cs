@@ -9,13 +9,10 @@ using System.Threading.Tasks;
 
 namespace LuduStack.Domain.Messaging
 {
-    public class LeaveCourseCommand : BaseCommand
+    public class LeaveCourseCommand : BaseUserCommand
     {
-        public Guid UserId { get; }
-
-        public LeaveCourseCommand(Guid userId, Guid courseId) : base(courseId)
+        public LeaveCourseCommand(Guid userId, Guid courseId) : base(userId, courseId)
         {
-            UserId = userId;
         }
 
         public override bool IsValid()

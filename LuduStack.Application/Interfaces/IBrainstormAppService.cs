@@ -29,7 +29,7 @@ namespace LuduStack.Application.Interfaces
 
         Task<OperationResultListVo<BrainstormSessionViewModel>> GetSessions(Guid userId);
 
-        Task<OperationResultVo<Guid>> SaveSession(BrainstormSessionViewModel vm);
+        Task<OperationResultVo<Guid>> SaveSession(Guid currentUserId, BrainstormSessionViewModel viewModel);
 
         OperationResultListVo<BrainstormIdeaViewModel> GetAllBySessionId(Guid userId, Guid sessionId);
 

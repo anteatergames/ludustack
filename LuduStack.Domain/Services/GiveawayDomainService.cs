@@ -18,20 +18,6 @@ namespace LuduStack.Domain.Services
         {
         }
 
-        public override Guid Add(Giveaway model)
-        {
-            SetRequiredProperties(model);
-
-            return base.Add(model);
-        }
-
-        public override Guid Update(Giveaway model)
-        {
-            SetRequiredProperties(model);
-
-            return base.Update(model);
-        }
-
         public Giveaway GenerateNewGiveaway(Guid userId)
         {
             Giveaway model = new Giveaway
@@ -349,14 +335,6 @@ namespace LuduStack.Domain.Services
             }
 
             return effectiveStatus;
-        }
-
-        private static void SetRequiredProperties(Giveaway model)
-        {
-            if (model.Status == 0)
-            {
-                model.Status = GiveawayStatus.Draft;
-            }
         }
     }
 }

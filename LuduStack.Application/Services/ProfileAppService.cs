@@ -7,7 +7,7 @@ using LuduStack.Domain.Core.Attributes;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Core.Extensions;
 using LuduStack.Domain.Core.Interfaces;
-using LuduStack.Domain.Interfaces.Services;
+using LuduStack.Domain.Messaging;
 using LuduStack.Domain.Messaging.Queries.Game;
 using LuduStack.Domain.Messaging.Queries.UserContent;
 using LuduStack.Domain.Messaging.Queries.UserProfile;
@@ -26,10 +26,7 @@ namespace LuduStack.Application.Services
 {
     public class ProfileAppService : ProfileBaseAppService, IProfileAppService
     {
-        public ProfileAppService(IMediatorHandler mediator
-            , IProfileBaseAppServiceCommon profileBaseAppServiceCommon
-            , IUserContentDomainService userContentDomainService
-            , IGameDomainService gameDomainService) : base(mediator, profileBaseAppServiceCommon)
+        public ProfileAppService(IProfileBaseAppServiceCommon profileBaseAppServiceCommon) : base(profileBaseAppServiceCommon)
         {
         }
 
@@ -143,19 +140,25 @@ namespace LuduStack.Application.Services
 
         public async Task<OperationResultVo<Guid>> Save(Guid currentUserId, ProfileViewModel viewModel)
         {
+            int pointsEarned = 0;
+
             try
             {
                 UserProfile model;
 
                 if (viewModel.Bio.Contains(Constants.DefaultProfileDescription))
                 {
-                    viewModel.Bio = String.Format("{0} {1}", viewModel.Name, Constants.DefaultProfileDescription);
+                    viewModel.Bio = string.Format("{0} {1}", viewModel.Name, Constants.DefaultProfileDescription);
                 }
 
-                viewModel.ExternalLinks.RemoveAll(x => String.IsNullOrWhiteSpace(x.Value));
+                viewModel.ExternalLinks.RemoveAll(x => string.IsNullOrWhiteSpace(x.Value));
 
                 UserProfile existing = await mediator.Query<GetUserProfileByIdQuery, UserProfile>(new GetUserProfileByIdQuery(viewModel.Id));
-                if (existing != null)
+                if (existing == null)
+                {
+                    model = mapper.Map<UserProfile>(viewModel);
+                }
+                else
                 {
                     model = mapper.Map(viewModel, existing);
 
@@ -164,33 +167,22 @@ namespace LuduStack.Application.Services
                         model.Handler = existing.Handler;
                     }
                 }
-                else
+
+                var hasCoverImage = !viewModel.CoverImageUrl.Equals(Constants.DefaultProfileCoverImage);
+
+                CommandResult result = await mediator.SendCommand(new SaveUserProfileCommand(currentUserId, model, hasCoverImage));
+
+                if (!result.Validation.IsValid)
                 {
-                    model = mapper.Map<UserProfile>(viewModel);
+                    string message = result.Validation.Errors.FirstOrDefault().ErrorMessage;
+                    return new OperationResultVo<Guid>(model.Id, false, message);
                 }
 
-                if (model.Type == 0)
-                {
-                    model.Type = ProfileType.Personal;
-                }
-
-                model.HasCoverImage = !viewModel.CoverImageUrl.Equals(Constants.DefaultProfileCoverImage);
-
-                if (viewModel.Id == Guid.Empty)
-                {
-                    profileDomainService.Add(model);
-                    viewModel.Id = model.Id;
-                }
-                else
-                {
-                    profileDomainService.Update(model);
-                }
-
-                await unitOfWork.Commit();
+                pointsEarned += result.PointsEarned;
 
                 SetProfileCache(viewModel.UserId, model);
 
-                return new OperationResultVo<Guid>(model.Id);
+                return new OperationResultVo<Guid>(model.Id, pointsEarned);
             }
             catch (Exception ex)
             {

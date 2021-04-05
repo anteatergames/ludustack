@@ -83,7 +83,10 @@ namespace LuduStack.Web.Controllers
 
         public PartialViewResult NewSession()
         {
-            BrainstormSessionViewModel vm = new BrainstormSessionViewModel();
+            BrainstormSessionViewModel vm = new BrainstormSessionViewModel
+            {
+                Type = BrainstormSessionType.Generic
+            };
 
             return PartialView("_CreateEditSession", vm);
         }
@@ -139,22 +142,29 @@ namespace LuduStack.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> SaveSession(BrainstormSessionViewModel vm)
         {
+            bool isNew = vm.Id == Guid.Empty;
+
             try
             {
-                bool isNew = vm.Id == Guid.Empty;
-
                 vm.UserId = CurrentUserId;
 
-                await brainstormAppService.SaveSession(vm);
+                OperationResultVo<Guid> saveResult = await brainstormAppService.SaveSession(CurrentUserId, vm);
 
-                string url = Url.Action("Index", "Brainstorm", new { area = string.Empty, id = vm.Id.ToString() });
-
-                if (isNew && EnvName.Equals(ConstantHelper.ProductionEnvironmentName))
+                if (!saveResult.Success)
                 {
-                    await NotificationSender.SendTeamNotificationAsync($"New brainstorm session created: {vm.Title}");
+                    return Json(new OperationResultVo(saveResult.Message));
                 }
+                else
+                {
+                    string url = Url.Action("Index", "Brainstorm", new { area = string.Empty, id = saveResult.Value.ToString() });
 
-                return Json(new OperationResultRedirectVo(url));
+                    if (isNew && EnvName.Equals(ConstantHelper.ProductionEnvironmentName))
+                    {
+                        await NotificationSender.SendTeamNotificationAsync($"New brainstorm session created: {vm.Title}");
+                    }
+
+                    return Json(new OperationResultRedirectVo(url));
+                }
             }
             catch (Exception ex)
             {

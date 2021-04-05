@@ -7,10 +7,12 @@ using LuduStack.Application.ViewModels.FeaturedContent;
 using LuduStack.Application.ViewModels.Home;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Interfaces.Services;
+using LuduStack.Domain.Messaging;
 using LuduStack.Domain.Messaging.Queries.FeaturedContent;
 using LuduStack.Domain.Messaging.Queries.UserContent;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
+using LuduStack.Infra.CrossCutting.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -83,9 +85,14 @@ namespace LuduStack.Application.Services
                 newFeaturedContent.UserId = userId;
                 newFeaturedContent.OriginalUserId = content.UserId;
 
-                featuredContentDomainService.Add(newFeaturedContent);
 
-                await unitOfWork.Commit();
+                CommandResult result = await mediator.SendCommand(new SaveFeaturedContentCommand(userId, newFeaturedContent));
+
+                if (!result.Validation.IsValid)
+                {
+                    string message = result.Validation.Errors.FirstOrDefault().ErrorMessage;
+                    return new OperationResultVo<Guid>(newFeaturedContent.Id, false, message);
+                }
 
                 return new OperationResultVo<Guid>(newFeaturedContent.Id);
             }

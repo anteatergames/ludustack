@@ -135,7 +135,7 @@ namespace LuduStack.Web.Controllers
                 }
                 else
                 {
-                    string url = Url.Action("Details", "Game", new { area = string.Empty, id = vm.Id.ToString(), pointsEarned = saveResult.PointsEarned });
+                    string url = Url.Action("Details", "Game", new { area = string.Empty, id = saveResult.Value.ToString(), pointsEarned = saveResult.PointsEarned });
 
                     if (isNew && EnvName.Equals(ConstantHelper.ProductionEnvironmentName))
                     {

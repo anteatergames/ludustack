@@ -1,9 +1,6 @@
 ﻿using LuduStack.Domain.Core.Models;
 using LuduStack.Domain.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace LuduStack.Domain.Services
 {
@@ -14,13 +11,6 @@ namespace LuduStack.Domain.Services
         protected BaseDomainMongoService(TRepository repository)
         {
             this.repository = repository;
-        }
-
-        public virtual Guid Add(T model)
-        {
-            repository.Add(model);
-
-            return model.Id;
         }
 
         public virtual void Remove(Guid id)

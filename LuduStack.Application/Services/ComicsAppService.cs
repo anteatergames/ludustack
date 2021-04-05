@@ -4,7 +4,6 @@ using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels;
 using LuduStack.Application.ViewModels.Comics;
 using LuduStack.Domain.Core.Enums;
-using LuduStack.Domain.Interfaces.Services;
 using LuduStack.Domain.Messaging;
 using LuduStack.Domain.Messaging.Queries.UserContent;
 using LuduStack.Domain.Models;
@@ -19,11 +18,8 @@ namespace LuduStack.Application.Services
 {
     public class ComicsAppService : ProfileBaseAppService, IComicsAppService
     {
-        private readonly IUserContentDomainService userContentDomainService;
-
-        public ComicsAppService(IMediatorHandler mediator, IProfileBaseAppServiceCommon profileBaseAppServiceCommon, IUserContentDomainService userContentDomainService) : base(mediator, profileBaseAppServiceCommon)
+        public ComicsAppService(IProfileBaseAppServiceCommon profileBaseAppServiceCommon) : base(profileBaseAppServiceCommon)
         {
-            this.userContentDomainService = userContentDomainService;
         }
 
         public Task<OperationResultVo<int>> Count(Guid currentUserId)
@@ -50,7 +46,7 @@ namespace LuduStack.Application.Services
         {
             try
             {
-                CommandResult result = await mediator.SendCommand(new DeleteUserContentCommand(id));
+                CommandResult result = await mediator.SendCommand(new DeleteUserContentCommand(currentUserId, id));
 
                 if (!result.Validation.IsValid)
                 {
@@ -87,19 +83,15 @@ namespace LuduStack.Application.Services
 
                 FormatImagesToSave(model);
 
-                if (viewModel.Id == Guid.Empty)
+                CommandResult result = await mediator.SendCommand(new SaveUserContentCommand(currentUserId, model, true));
+
+                if (!result.Validation.IsValid)
                 {
-                    userContentDomainService.Add(model);
-                    viewModel.Id = model.Id;
-                }
-                else
-                {
-                    userContentDomainService.Update(model);
+                    string message = result.Validation.Errors.FirstOrDefault().ErrorMessage;
+                    return new OperationResultVo<Guid>(model.Id, false, message);
                 }
 
-                await unitOfWork.Commit();
-
-                viewModel.Id = model.Id;
+                pointsEarned += result.PointsEarned;
 
                 return new OperationResultVo<Guid>(model.Id, pointsEarned);
             }

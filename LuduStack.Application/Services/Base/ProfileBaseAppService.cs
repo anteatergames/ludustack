@@ -6,14 +6,12 @@ using LuduStack.Application.ViewModels.User;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Core.Extensions;
 using LuduStack.Domain.Core.Models;
-using LuduStack.Domain.Interfaces;
 using LuduStack.Domain.Interfaces.Models;
 using LuduStack.Domain.Interfaces.Services;
 using LuduStack.Domain.Messaging.Queries.Game;
 using LuduStack.Domain.Messaging.Queries.UserProfile;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
-using LuduStack.Infra.CrossCutting.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +23,8 @@ namespace LuduStack.Application.Services
     {
         protected readonly IProfileDomainService profileDomainService;
 
-        protected ProfileBaseAppService(IMediatorHandler mediator, IProfileBaseAppServiceCommon profileBaseAppServiceCommon) : base(profileBaseAppServiceCommon.Mapper, profileBaseAppServiceCommon.UnitOfWork, profileBaseAppServiceCommon.Mediator, profileBaseAppServiceCommon.CacheService)
+
+        protected ProfileBaseAppService(IProfileBaseAppServiceCommon profileBaseAppServiceCommon) : base(profileBaseAppServiceCommon.Mapper, profileBaseAppServiceCommon.UnitOfWork, profileBaseAppServiceCommon.Mediator, profileBaseAppServiceCommon.CacheService)
         {
             profileDomainService = profileBaseAppServiceCommon.ProfileDomainService;
         }
@@ -164,13 +163,13 @@ namespace LuduStack.Application.Services
             SetGameCache(id, model);
         }
 
-        public async Task<GameViewModel> GetGameWithCache(IDomainService<Game> domainService, Guid id)
+        public async Task<GameViewModel> GetGameWithCache(Guid gameId)
         {
-            Game model = GetObjectFromCache<Game>(id, "game");
+            Game model = GetObjectFromCache<Game>(gameId, "game");
 
             if (model == null)
             {
-                model = await mediator.Query<GetGameByIdQuery, Game>(new GetGameByIdQuery(id));
+                model = await mediator.Query<GetGameByIdQuery, Game>(new GetGameByIdQuery(gameId));
             }
 
             GameViewModel viewModel = mapper.Map<GameViewModel>(model);

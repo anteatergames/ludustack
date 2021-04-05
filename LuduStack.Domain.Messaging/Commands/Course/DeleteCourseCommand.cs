@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace LuduStack.Domain.Messaging
 {
-    public class DeleteCourseCommand : BaseCommand
+    public class DeleteCourseCommand : BaseUserCommand
     {
-        public DeleteCourseCommand(Guid id) : base(id)
+        public DeleteCourseCommand(Guid userId, Guid id) : base(userId, id)
         {
         }
 

@@ -8,12 +8,6 @@ namespace LuduStack.Application.Interfaces
 {
     public interface INotificationAppService
     {
-        Task<OperationResultVo<int>> Count(Guid currentUserId);
-
-        Task<OperationResultListVo<Guid>> GetAllIds(Guid currentUserId);
-
-        Task<OperationResultVo<NotificationItemViewModel>> GetById(Guid currentUserId, Guid id);
-
         Task<OperationResultVo> Remove(Guid currentUserId, Guid id);
 
         Task<OperationResultVo<Guid>> Save(Guid currentUserId, NotificationItemViewModel viewModel);

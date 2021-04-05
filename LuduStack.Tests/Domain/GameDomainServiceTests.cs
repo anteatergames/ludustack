@@ -1,15 +1,5 @@
 using AutoFixture;
 using AutoFixture.AutoNSubstitute;
-using FluentAssertions;
-using LuduStack.Domain.Interfaces.Repository;
-using LuduStack.Domain.Messaging.Queries.Game;
-using LuduStack.Domain.Models;
-using LuduStack.Domain.Services;
-using LuduStack.Infra.CrossCutting.Messaging;
-using LuduStack.Tests.Attributes;
-using NSubstitute;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace LuduStack.Tests.Domain

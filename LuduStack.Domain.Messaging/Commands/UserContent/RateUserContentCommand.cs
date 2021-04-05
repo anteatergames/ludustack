@@ -12,14 +12,12 @@ using System.Threading.Tasks;
 
 namespace LuduStack.Domain.Messaging
 {
-    public class RateUserContentCommand : BaseCommand
+    public class RateUserContentCommand : BaseUserCommand
     {
-        public Guid UserId { get; }
         public decimal Score { get; }
 
-        public RateUserContentCommand(Guid userId, Guid id, decimal score) : base(id)
+        public RateUserContentCommand(Guid userId, Guid id, decimal score) : base(userId, id)
         {
-            UserId = userId;
             Score = score;
         }
 

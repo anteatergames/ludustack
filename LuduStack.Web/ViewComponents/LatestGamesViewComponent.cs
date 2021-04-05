@@ -26,7 +26,7 @@ namespace LuduStack.Web.ViewComponents
                 qtd = 3;
             }
 
-            var latestGames = await _gameAppService.GetLatest(CurrentUserId, qtd, userId, null, 0);
+            IEnumerable<GameListItemViewModel> latestGames = await _gameAppService.GetLatest(CurrentUserId, qtd, userId, null, 0);
 
             List<GameListItemViewModel> model = latestGames.ToList();
 

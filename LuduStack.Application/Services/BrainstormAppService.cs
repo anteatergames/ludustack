@@ -5,6 +5,7 @@ using LuduStack.Application.ViewModels;
 using LuduStack.Application.ViewModels.Brainstorm;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Interfaces.Services;
+using LuduStack.Domain.Messaging;
 using LuduStack.Domain.Messaging.Queries.Brainstorm;
 using LuduStack.Domain.Messaging.Queries.BrainstormSession;
 using LuduStack.Domain.Models;
@@ -23,9 +24,9 @@ namespace LuduStack.Application.Services
 
         private readonly IBrainstormDomainService brainstormDomainService;
 
-        public BrainstormAppService(IMediatorHandler mediator, IProfileBaseAppServiceCommon profileBaseAppServiceCommon
+        public BrainstormAppService(IProfileBaseAppServiceCommon profileBaseAppServiceCommon
             , IGamificationDomainService gamificationDomainService
-            , IBrainstormDomainService brainstormDomainService) : base(mediator, profileBaseAppServiceCommon)
+            , IBrainstormDomainService brainstormDomainService) : base(profileBaseAppServiceCommon)
         {
             this.gamificationDomainService = gamificationDomainService;
 
@@ -279,36 +280,36 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public async Task<OperationResultVo<Guid>> SaveSession(BrainstormSessionViewModel vm)
+        public async Task<OperationResultVo<Guid>> SaveSession(Guid currentUserId, BrainstormSessionViewModel viewModel)
         {
+            int pointsEarned = 0;
+
             try
             {
                 BrainstormSession model;
 
-                BrainstormSession existing = await mediator.Query<GetBrainstormSessionByIdQuery, BrainstormSession>(new GetBrainstormSessionByIdQuery(vm.Id));
+                BrainstormSession existing = await mediator.Query<GetBrainstormSessionByIdQuery, BrainstormSession>(new GetBrainstormSessionByIdQuery(viewModel.Id));
 
                 if (existing != null)
                 {
-                    model = mapper.Map(vm, existing);
+                    model = mapper.Map(viewModel, existing);
                 }
                 else
                 {
-                    model = mapper.Map<BrainstormSession>(vm);
+                    model = mapper.Map<BrainstormSession>(viewModel);
                 }
 
-                if (vm.Id == Guid.Empty)
+                CommandResult result = await mediator.SendCommand(new SaveBrainstormSessionCommand(currentUserId, model));
+
+                if (!result.Validation.IsValid)
                 {
-                    brainstormDomainService.Add(model);
-                }
-                else
-                {
-                    brainstormDomainService.Update(model);
+                    string message = result.Validation.Errors.FirstOrDefault().ErrorMessage;
+                    return new OperationResultVo<Guid>(model.Id, false, message);
                 }
 
-                await unitOfWork.Commit();
+                pointsEarned += result.PointsEarned;
 
-                vm.Id = model.Id;
-                return new OperationResultVo<Guid>(model.Id);
+                return new OperationResultVo<Guid>(model.Id, pointsEarned);
             }
             catch (Exception ex)
             {

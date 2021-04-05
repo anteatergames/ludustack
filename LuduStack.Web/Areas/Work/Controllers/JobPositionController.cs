@@ -43,7 +43,7 @@ namespace LuduStack.Web.Areas.Work.Controllers
 
                 if (string.IsNullOrWhiteSpace(jobProfile))
                 {
-                    UserPreferencesViewModel userPreferences = await UserPreferencesAppService .GetByUserId(CurrentUserId);
+                    UserPreferencesViewModel userPreferences = await UserPreferencesAppService.GetByUserId(CurrentUserId);
                     if (userPreferences == null || userPreferences.JobProfile == 0)
                     {
                         return View("NoJobProfile");
@@ -71,7 +71,7 @@ namespace LuduStack.Web.Areas.Work.Controllers
                     type = JobProfile.Applicant;
                 }
 
-                UserPreferencesViewModel userPreferences = await UserPreferencesAppService .GetByUserId(CurrentUserId);
+                UserPreferencesViewModel userPreferences = await UserPreferencesAppService.GetByUserId(CurrentUserId);
 
                 if (userPreferences == null)
                 {
@@ -282,11 +282,16 @@ namespace LuduStack.Web.Areas.Work.Controllers
 
                 OperationResultVo<Guid> saveResult = await jobPositionAppService.Save(CurrentUserId, vm);
 
-                if (saveResult.Success)
+                if (!saveResult.Success)
                 {
+                    return Json(new OperationResultVo(false));
+                }
+                else
+                {
+                    vm.Id = saveResult.Value;
                     await GenerateFeedPost(vm);
 
-                    string url = Url.Action("Details", "JobPosition", new { area = "Work", id = vm.Id, pointsEarned = saveResult.PointsEarned });
+                    string url = Url.Action("Details", "JobPosition", new { area = "Work", id = saveResult.Value, pointsEarned = saveResult.PointsEarned });
 
                     if (isNew && EnvName.Equals(ConstantHelper.ProductionEnvironmentName))
                     {
@@ -294,10 +299,6 @@ namespace LuduStack.Web.Areas.Work.Controllers
                     }
 
                     return Json(new OperationResultRedirectVo(saveResult, url));
-                }
-                else
-                {
-                    return Json(new OperationResultVo(false));
                 }
             }
             catch (Exception ex)

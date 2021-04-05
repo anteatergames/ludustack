@@ -139,9 +139,13 @@ namespace LuduStack.Web.Areas.Member.Controllers
 
                 OperationResultVo<Guid> saveResult = await comicsAppService.Save(CurrentUserId, vm);
 
-                if (saveResult.Success)
+                if (!saveResult.Success)
                 {
-                    string url = Url.Action("edit", "comics", new { area = "member", id = vm.Id, pointsEarned = saveResult.PointsEarned });
+                    return Json(new OperationResultVo(false));
+                }
+                else
+                {
+                    string url = Url.Action("edit", "comics", new { area = "member", id = saveResult.Value, pointsEarned = saveResult.PointsEarned });
 
                     if (isNew && EnvName.Equals(ConstantHelper.ProductionEnvironmentName))
                     {
@@ -149,10 +153,6 @@ namespace LuduStack.Web.Areas.Member.Controllers
                     }
 
                     return Json(new OperationResultRedirectVo<Guid>(saveResult, url));
-                }
-                else
-                {
-                    return Json(new OperationResultVo(false));
                 }
             }
             catch (Exception ex)

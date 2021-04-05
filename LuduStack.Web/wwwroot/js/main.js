@@ -413,7 +413,6 @@
         });
     }
 
-
     function postOrDeleteWithConfirmation(btn, httpmethod, callback) {
         var url = btn.data('url');
 
@@ -475,6 +474,16 @@
         }
     }
 
+    function handleErrorResponse(response) {
+        if (response.message) {
+            ALERTSYSTEM.ShowWarningMessage(response.message);
+        }
+        else {
+            ALERTSYSTEM.ShowWarningMessage("An error occurred! Check the console!");
+            console.log(response);
+        }
+    }
+
     return {
         Init: init,
         GetLocale: getLocale,
@@ -486,7 +495,8 @@
             GetHtml: getHtml,
             LoadHtml: loadHtml,
             CallBackendAction: callBackendAction,
-            HandleUrlResponse: handleUrlResponse
+            HandleUrlResponse: handleUrlResponse,
+            HandleErrorResponse: handleErrorResponse
         },
         Common: {
             HandlePointsEarned: handlePointsEarned,

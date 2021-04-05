@@ -4,6 +4,7 @@ using LuduStack.Application.ViewModels.Jobs;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Core.Extensions;
 using LuduStack.Domain.Interfaces.Services;
+using LuduStack.Domain.Messaging;
 using LuduStack.Domain.Messaging.Queries.JobPosition;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
@@ -20,10 +21,9 @@ namespace LuduStack.Application.Services
         private readonly IJobPositionDomainService jobPositionDomainService;
         private readonly IGamificationDomainService gamificationDomainService;
 
-        public JobPositionAppService(IMediatorHandler mediator
-            , IProfileBaseAppServiceCommon profileBaseAppServiceCommon
+        public JobPositionAppService(IProfileBaseAppServiceCommon profileBaseAppServiceCommon
             , IJobPositionDomainService jobPositionDomainService
-            , IGamificationDomainService gamificationDomainService) : base(mediator, profileBaseAppServiceCommon)
+            , IGamificationDomainService gamificationDomainService) : base(profileBaseAppServiceCommon)
         {
             this.jobPositionDomainService = jobPositionDomainService;
             this.gamificationDomainService = gamificationDomainService;
@@ -88,7 +88,7 @@ namespace LuduStack.Application.Services
 
                 foreach (JobApplicantViewModel applicant in vm.Applicants)
                 {
-                    UserProfile profile = await GetCachedProfileByUserId (applicant.UserId);
+                    UserProfile profile = await GetCachedProfileByUserId(applicant.UserId);
                     if (profile != null)
                     {
                         applicant.JobPositionId = id;
@@ -166,21 +166,15 @@ namespace LuduStack.Application.Services
                     model = mapper.Map<JobPosition>(viewModel);
                 }
 
-                if (viewModel.Id == Guid.Empty)
-                {
-                    jobPositionDomainService.Add(model);
-                    viewModel.Id = model.Id;
+                CommandResult result = await mediator.SendCommand(new SaveJobPositionCommand(currentUserId, model));
 
-                    pointsEarned += gamificationDomainService.ProcessAction(currentUserId, PlatformAction.JobPositionPost);
-                }
-                else
+                if (!result.Validation.IsValid)
                 {
-                    jobPositionDomainService.Update(model);
+                    string message = result.Validation.Errors.FirstOrDefault().ErrorMessage;
+                    return new OperationResultVo<Guid>(model.Id, false, message);
                 }
 
-                await unitOfWork.Commit();
-
-                viewModel.Id = model.Id;
+                pointsEarned += result.PointsEarned;
 
                 return new OperationResultVo<Guid>(model.Id, pointsEarned);
             }

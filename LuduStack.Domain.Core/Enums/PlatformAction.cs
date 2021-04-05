@@ -19,6 +19,7 @@
         LocalizationRequest = 15,
         LocalizationHelp = 16,
         CourseAdd = 17,
-        GiveawayAdd = 18
+        GiveawayAdd = 18,
+        BrainstormSessionAdd = 19
     }
 }

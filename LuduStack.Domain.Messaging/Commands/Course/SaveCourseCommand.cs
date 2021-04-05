@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 
 namespace LuduStack.Domain.Messaging
 {
-    public class SaveCourseCommand : BaseCommand
+    public class SaveCourseCommand : BaseUserCommand
     {
         public StudyCourse Course { get; }
 
-        public SaveCourseCommand(StudyCourse course) : base(course.Id)
+        public SaveCourseCommand(Guid userId, StudyCourse course) : base(userId, course.Id)
         {
             Course = course;
         }
@@ -54,9 +54,7 @@ namespace LuduStack.Domain.Messaging
                 studyCourseRepository.Update(request.Course);
             }
 
-            FluentValidation.Results.ValidationResult commitResult = await Commit(unitOfWork);
-
-            result.Validation = commitResult;
+            request.Result.Validation = await Commit(unitOfWork);
 
             return result;
         }

@@ -1,6 +1,6 @@
 ﻿namespace LuduStack.Domain.Messaging
 {
-    public class DeleteUserContentCommandValidation : UserContentValidation<DeleteUserContentCommand>
+    public class DeleteUserContentCommandValidation : BaseCommandValidation<DeleteUserContentCommand>
     {
         public DeleteUserContentCommandValidation()
         {

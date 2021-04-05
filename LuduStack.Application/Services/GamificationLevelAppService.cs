@@ -1,11 +1,14 @@
 ﻿using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels.Gamification;
 using LuduStack.Domain.Interfaces.Services;
+using LuduStack.Domain.Messaging;
 using LuduStack.Domain.Messaging.Queries.GamificationLevel;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
+using LuduStack.Infra.CrossCutting.Messaging;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace LuduStack.Application.Services
@@ -55,7 +58,6 @@ namespace LuduStack.Application.Services
             {
                 GamificationLevel model = await mediator.Query<GetGamificationLevelByIdQuery, GamificationLevel>(new GetGamificationLevelByIdQuery(id));
 
-
                 if (model == null)
                 {
                     return new OperationResultVo<GamificationLevelViewModel>("Entity not found!");
@@ -103,19 +105,13 @@ namespace LuduStack.Application.Services
                     model = mapper.Map<GamificationLevel>(viewModel);
                 }
 
-                if (viewModel.Id == Guid.Empty)
-                {
-                    gamificationLevelDomainService.Add(model);
-                    viewModel.Id = model.Id;
-                }
-                else
-                {
-                    gamificationLevelDomainService.Update(model);
-                }
+                CommandResult result = await mediator.SendCommand(new SaveGamificationLevelCommand(model));
 
-                await unitOfWork.Commit();
-
-                viewModel.Id = model.Id;
+                if (!result.Validation.IsValid)
+                {
+                    string message = result.Validation.Errors.FirstOrDefault().ErrorMessage;
+                    return new OperationResultVo<Guid>(model.Id, false, message);
+                }
 
                 return new OperationResultVo<Guid>(model.Id);
             }

@@ -155,7 +155,7 @@
             removeFromArray(changedEntries, termId);
         }
         else {
-            ALERTSYSTEM.ShowWarningMessage("An error occurred! Check the console!");
+            MAINMODULE.Ajax.HandleErrorResponse(response);
         }
 
         if (response.message) {
@@ -212,7 +212,7 @@
             }
         }
         else {
-            ALERTSYSTEM.ShowWarningMessage("An error occurred! Check the console!");
+            MAINMODULE.Ajax.HandleErrorResponse(response);
         }
     }
 
@@ -300,7 +300,7 @@
                 }
             }
             else {
-                ALERTSYSTEM.ShowWarningMessage("An error occurred! Check the console!");
+                MAINMODULE.Ajax.HandleErrorResponse(response);
             }
         });
     }

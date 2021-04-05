@@ -18,4 +18,14 @@ namespace LuduStack.Domain.Messaging
             return Result.Validation.IsValid;
         }
     }
+
+    public abstract class BaseUserCommand : BaseCommand
+    {
+        public Guid UserId { get; internal set; }
+
+        protected BaseUserCommand(Guid userId, Guid id) : base(id)
+        {
+            UserId = userId;
+        }
+    }
 }

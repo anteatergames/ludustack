@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace LuduStack.Domain.ValueObjects
 {
@@ -25,6 +26,7 @@ namespace LuduStack.Domain.ValueObjects
         {
             Message = message;
         }
+        
 
         public OperationResultVo(string message) : this(false)
         {
@@ -127,6 +129,11 @@ namespace LuduStack.Domain.ValueObjects
         }
 
         public OperationResultVo(T item, string message) : base(true, message)
+        {
+            Value = item;
+        }
+
+        public OperationResultVo(T item, bool success, string message) : base(success, message)
         {
             Value = item;
         }

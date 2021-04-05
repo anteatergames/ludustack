@@ -49,8 +49,7 @@
             loadList();
         }
         else {
-            ALERTSYSTEM.ShowWarningMessage("An error occurred! Check the console!");
-            console.log(response);
+            MAINMODULE.Ajax.HandleErrorResponse(response);
         }
     }
 

@@ -23,9 +23,9 @@ namespace LuduStack.Application.Services
         private readonly IStudyDomainService studyDomainService;
         private readonly IGamificationDomainService gamificationDomainService;
 
-        public StudyAppService(IMediatorHandler mediator, IProfileBaseAppServiceCommon profileBaseAppServiceCommon
+        public StudyAppService(IProfileBaseAppServiceCommon profileBaseAppServiceCommon
             , IStudyDomainService studyDomainService
-            , IGamificationDomainService gamificationDomainService) : base(mediator, profileBaseAppServiceCommon)
+            , IGamificationDomainService gamificationDomainService) : base(profileBaseAppServiceCommon)
         {
             this.studyDomainService = studyDomainService;
             this.gamificationDomainService = gamificationDomainService;
@@ -43,7 +43,7 @@ namespace LuduStack.Application.Services
                 {
                     if (!finalList.Any(x => x.UserId == mentorId))
                     {
-                        UserProfile profile = await GetCachedProfileByUserId (mentorId);
+                        UserProfile profile = await GetCachedProfileByUserId(mentorId);
 
                         if (profile != null)
                         {
@@ -77,7 +77,7 @@ namespace LuduStack.Application.Services
                 {
                     if (!finalList.Any(x => x.UserId == studentId))
                     {
-                        UserProfile profile = await GetCachedProfileByUserId (studentId);
+                        UserProfile profile = await GetCachedProfileByUserId(studentId);
 
                         if (profile != null)
                         {
@@ -200,7 +200,7 @@ namespace LuduStack.Application.Services
                     model = mapper.Map<StudyCourse>(vm);
                 }
 
-                CommandResult result = await mediator.SendCommand(new SaveCourseCommand(model));
+                CommandResult result = await mediator.SendCommand(new SaveCourseCommand(currentUserId, model));
 
                 if (model.Id == Guid.Empty && result.Validation.IsValid)
                 {
@@ -219,7 +219,7 @@ namespace LuduStack.Application.Services
         {
             try
             {
-                CommandResult result = await mediator.SendCommand(new DeleteCourseCommand(id));
+                CommandResult result = await mediator.SendCommand(new DeleteCourseCommand(currentUserId, id));
 
                 if (result.Validation.IsValid)
                 {
@@ -287,7 +287,7 @@ namespace LuduStack.Application.Services
                     term.UserId = currentUserId;
                 }
 
-                await mediator.SendCommand(new SavePlansCommand(courseId, entities));
+                await mediator.SendCommand(new SavePlansCommand(currentUserId, courseId, entities));
 
                 return new OperationResultVo(true, "Plans Updated!");
             }
@@ -345,7 +345,7 @@ namespace LuduStack.Application.Services
 
         private async Task SetAuthorDetails(CourseViewModel vm)
         {
-            UserProfile authorProfile = await GetCachedProfileByUserId (vm.UserId);
+            UserProfile authorProfile = await GetCachedProfileByUserId(vm.UserId);
             if (authorProfile != null)
             {
                 vm.AuthorPicture = UrlFormatter.ProfileImage(vm.UserId, 40);

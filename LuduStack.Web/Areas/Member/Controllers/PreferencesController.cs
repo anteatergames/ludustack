@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels.UserPreferences;
+using LuduStack.Domain.ValueObjects;
 using LuduStack.Infra.CrossCutting.Abstractions;
 using LuduStack.Infra.CrossCutting.Identity.Models;
 using LuduStack.Infra.CrossCutting.Identity.Models.ManageViewModels;
@@ -129,7 +130,7 @@ namespace LuduStack.Web.Areas.Member.Controllers
         }
 
         [HttpPost]
-        public IActionResult Languages(UserPreferencesViewModel vm)
+        public async Task<IActionResult> Languages(UserPreferencesViewModel vm)
         {
             if (!ModelState.IsValid)
             {
@@ -140,7 +141,7 @@ namespace LuduStack.Web.Areas.Member.Controllers
             {
                 vm.UserId = CurrentUserId;
 
-                userPreferencesAppService.Save(CurrentUserId, vm);
+                await userPreferencesAppService.Save(CurrentUserId, vm);
 
                 SetPreferencesCookies(vm);
 

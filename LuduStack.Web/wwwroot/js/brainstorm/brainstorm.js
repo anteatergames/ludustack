@@ -68,7 +68,7 @@
                     });
                 }
                 else {
-                    ALERTSYSTEM.ShowWarningMessage("An error occurred! Check the console!");
+                    MAINMODULE.Ajax.HandleErrorResponse(response);
                 }
             });
         });
@@ -123,7 +123,7 @@
                         location.reload();
                     }
                     else {
-                        ALERTSYSTEM.ShowWarningMessage("An error occurred! Check the console!");
+                        MAINMODULE.Ajax.HandleErrorResponse(response);
                     }
                 });
             }
@@ -180,7 +180,7 @@
                 });
             }
             else {
-                ALERTSYSTEM.ShowWarningMessage("An error occurred! Check the console!");
+                MAINMODULE.Ajax.HandleErrorResponse(response);
             }
         });
     }

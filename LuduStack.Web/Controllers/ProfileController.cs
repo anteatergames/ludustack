@@ -97,15 +97,21 @@ namespace LuduStack.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Save(ProfileViewModel vm, IFormFile avatar)
+        public async Task<IActionResult> Save(ProfileViewModel vm, IFormFile avatar)
         {
             try
             {
-                profileAppService.Save(CurrentUserId, vm);
+                var saveResult = await profileAppService.Save(CurrentUserId, vm);
+                if (!saveResult.Success)
+                {
+                    return Json(new OperationResultVo(false, saveResult.Message));
+                }
+                else
+                {
+                    string url = Url.Action("Details", "Profile", new { area = string.Empty, id = vm.UserId.ToString() });
 
-                string url = Url.Action("Details", "Profile", new { area = string.Empty, id = vm.UserId.ToString() });
-
-                return Json(new OperationResultRedirectVo(url));
+                    return Json(new OperationResultRedirectVo(url));
+                }
             }
             catch (Exception ex)
             {

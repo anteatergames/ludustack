@@ -5,6 +5,7 @@ using LuduStack.Application.ViewModels.Localization;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Core.Extensions;
 using LuduStack.Domain.Interfaces.Services;
+using LuduStack.Domain.Messaging;
 using LuduStack.Domain.Messaging.Queries.Game;
 using LuduStack.Domain.Messaging.Queries.Localization;
 using LuduStack.Domain.Models;
@@ -25,16 +26,13 @@ namespace LuduStack.Application.Services
     public class LocalizationAppService : ProfileBaseAppService, ILocalizationAppService
     {
         private readonly ILocalizationDomainService translationDomainService;
-        private readonly IGameDomainService gameDomainService;
         private readonly IGamificationDomainService gamificationDomainService;
 
-        public LocalizationAppService(IMediatorHandler mediator, IProfileBaseAppServiceCommon profileBaseAppServiceCommon
+        public LocalizationAppService(IProfileBaseAppServiceCommon profileBaseAppServiceCommon
             , ILocalizationDomainService translationDomainService
-            , IGameDomainService gameDomainService
-            , IGamificationDomainService gamificationDomainService) : base(mediator, profileBaseAppServiceCommon)
+            , IGamificationDomainService gamificationDomainService) : base(profileBaseAppServiceCommon)
         {
             this.translationDomainService = translationDomainService;
-            this.gameDomainService = gameDomainService;
             this.gamificationDomainService = gamificationDomainService;
         }
 
@@ -112,7 +110,7 @@ namespace LuduStack.Application.Services
                 {
                     item.TermCount = item.Terms.Count;
 
-                    GameViewModel game = await GetGameWithCache(gameDomainService, item.Game.Id);
+                    GameViewModel game = await GetGameWithCache(item.Game.Id);
                     item.Game.Title = game.Title;
 
                     SetPermissions(userId, item);
@@ -223,21 +221,15 @@ namespace LuduStack.Application.Services
                     }
                 }
 
-                if (viewModel.Id == Guid.Empty)
-                {
-                    translationDomainService.Add(model);
-                    viewModel.Id = model.Id;
+                CommandResult result = await mediator.SendCommand(new SaveLocalizationCommand(currentUserId, model));
 
-                    pointsEarned += gamificationDomainService.ProcessAction(currentUserId, PlatformAction.LocalizationRequest);
-                }
-                else
+                if (!result.Validation.IsValid)
                 {
-                    translationDomainService.Update(model);
+                    string message = result.Validation.Errors.FirstOrDefault().ErrorMessage;
+                    return new OperationResultVo<Guid>(model.Id, false, message);
                 }
 
-                await unitOfWork.Commit();
-
-                viewModel.Id = model.Id;
+                pointsEarned += result.PointsEarned;
 
                 return new OperationResultVo<Guid>(model.Id, pointsEarned);
             }
@@ -650,7 +642,7 @@ namespace LuduStack.Application.Services
             foreach (IGrouping<Guid, LocalizationEntry> contributorGroup in contributors)
             {
                 ContributorViewModel contributor = new ContributorViewModel();
-                UserProfile profile = await GetCachedProfileByUserId (contributorGroup.Key);
+                UserProfile profile = await GetCachedProfileByUserId(contributorGroup.Key);
                 contributor.UserId = contributorGroup.Key;
                 contributor.AuthorName = profile.Name;
                 contributor.AuthorPicture = UrlFormatter.ProfileImage(contributorGroup.Key);
@@ -695,7 +687,7 @@ namespace LuduStack.Application.Services
 
         private async Task SetGameViewModel(Guid gameId, LocalizationViewModel vm)
         {
-            GameViewModel game = await GetGameWithCache(gameDomainService, gameId);
+            GameViewModel game = await GetGameWithCache(gameId);
             if (game != null)
             {
                 vm.Game.Title = game.Title;

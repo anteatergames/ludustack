@@ -136,9 +136,15 @@ namespace LuduStack.Web.Controllers
 
                 OperationResultVo<Guid> saveResult = await teamAppService.Save(CurrentUserId, vm);
 
-                if (saveResult.Success)
+                if (!saveResult.Success)
                 {
-                    string url = Url.Action("Index", "Team", new { area = string.Empty, id = vm.Id.ToString(), pointsEarned = saveResult.PointsEarned });
+                    return Json(new OperationResultVo(saveResult.Message));
+                }
+                else
+                {
+                    vm.Id = saveResult.Value;
+
+                    string url = Url.Action("Index", "Team", new { area = string.Empty, id = saveResult.Value, pointsEarned = saveResult.PointsEarned });
 
                     Notify(vm, oldMembers);
 
@@ -151,10 +157,6 @@ namespace LuduStack.Web.Controllers
                     }
 
                     return Json(new OperationResultRedirectVo(saveResult, url));
-                }
-                else
-                {
-                    return Json(new OperationResultVo(false));
                 }
             }
             catch (Exception ex)

@@ -16,16 +16,6 @@ namespace LuduStack.Domain.Services
         {
         }
 
-        public override Guid Add(JobPosition model)
-        {
-            if (model.Status == 0)
-            {
-                model.Status = JobPositionStatus.Draft;
-            }
-
-            return base.Add(model);
-        }
-
         public IEnumerable<JobPosition> GetAllAvailable()
         {
             IQueryable<JobPosition> all = repository.Get(x => x.Status == JobPositionStatus.OpenForApplication);

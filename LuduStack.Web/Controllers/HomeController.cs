@@ -162,7 +162,7 @@ namespace LuduStack.Web.Controllers
 
             model.Items.Add(GenerateTimeLineItem(new DateTime(2018, 09, 13), "fas fa-play", "success", "The First Commit", "Every journey starts with a first step.", "A simple README file added to start the repository."));
 
-            var september2018 = GenerateTimeLineItem(new DateTime(2018, 09, 14), "fas fa-cloud", "warning", "September 2018", "A month full of tasks", "September 2018 was a busy month for us. We setup our CI/CD pipeline and also:");
+            TimeLineItemViewModel september2018 = GenerateTimeLineItem(new DateTime(2018, 09, 14), "fas fa-cloud", "warning", "September 2018", "A month full of tasks", "September 2018 was a busy month for us. We setup our CI/CD pipeline and also:");
             september2018.Items = new List<string>() {
                 "Archtecture defined",
                     "Menu defined",
@@ -174,7 +174,7 @@ namespace LuduStack.Web.Controllers
 
             model.Items.Add(GenerateTimeLineItem(new DateTime(2018, 10, 01), "fas fa-shield-alt", "info", "October 2018", "Security first", "October was a month to work on the security system. Several improvements were made on the Register and Login workflows."));
 
-            var november2018 = GenerateTimeLineItem(new DateTime(2018, 11, 01), "fas fa-cloud", "danger", "November 2018", "A really busy month!", "November was awesome for LUDUSTACK. We manage to implement several core systems that are used across the whole platform.");
+            TimeLineItemViewModel november2018 = GenerateTimeLineItem(new DateTime(2018, 11, 01), "fas fa-cloud", "danger", "November 2018", "A really busy month!", "November was awesome for LUDUSTACK. We manage to implement several core systems that are used across the whole platform.");
             november2018.Items = new List<string>() {
                     "Forgot password, password reset, email verification",
                     "Front page improvements",
@@ -198,7 +198,7 @@ namespace LuduStack.Web.Controllers
             };
             model.Items.Add(november2018);
 
-            var december2018 = GenerateTimeLineItem(new DateTime(2018, 12, 01), "fas fa-cloud", "success", "December 2018", "To close the year.", "In December we implemented a few things needed for the launch day.");
+            TimeLineItemViewModel december2018 = GenerateTimeLineItem(new DateTime(2018, 12, 01), "fas fa-cloud", "success", "December 2018", "To close the year.", "In December we implemented a few things needed for the launch day.");
             december2018.Items = new List<string>() {
                 "Language selection",
                 "Game activity feed",
@@ -210,7 +210,7 @@ namespace LuduStack.Web.Controllers
             };
             model.Items.Add(december2018);
 
-            var january2019 = GenerateTimeLineItem(new DateTime(2019, 01, 01), "fas fa-globe", "primary", "January 2019", "Happy new year! Let's work!", "We started the year by optimizing the whole platform.");
+            TimeLineItemViewModel january2019 = GenerateTimeLineItem(new DateTime(2019, 01, 01), "fas fa-globe", "primary", "January 2019", "Happy new year! Let's work!", "We started the year by optimizing the whole platform.");
             january2019.Items = new List<string>() {
                 "Page speed improvements",
                 "Search Engine Optimization (title, description, sitemap, etc",
@@ -222,7 +222,7 @@ namespace LuduStack.Web.Controllers
             };
             model.Items.Add(january2019);
 
-            var february2019 = GenerateTimeLineItem(new DateTime(2019, 02, 01), "fas fa-globe", "success", "February 2019", "Some tweaks", "LuduStack is for everyone!");
+            TimeLineItemViewModel february2019 = GenerateTimeLineItem(new DateTime(2019, 02, 01), "fas fa-globe", "success", "February 2019", "Some tweaks", "LuduStack is for everyone!");
             february2019.Items = new List<string>() {
                 "Image size descriptions",
                 "Accessibility improvements",
@@ -230,7 +230,7 @@ namespace LuduStack.Web.Controllers
             };
             model.Items.Add(february2019);
 
-            var march2019 = GenerateTimeLineItem(new DateTime(2019, 03, 01), "fas fa-vote-yea", "primary", "March 2019", "Democracy", "The voting system! Users can now:");
+            TimeLineItemViewModel march2019 = GenerateTimeLineItem(new DateTime(2019, 03, 01), "fas fa-vote-yea", "primary", "March 2019", "Democracy", "The voting system! Users can now:");
             march2019.Items = new List<string>() {
                 "Suggest ideas",
                 "Vote on other people's ideas",
@@ -239,7 +239,7 @@ namespace LuduStack.Web.Controllers
             };
             model.Items.Add(march2019);
 
-            var april2019 = GenerateTimeLineItem(new DateTime(2019, 04, 01), "fas fa-comment", "primary", "April 2019", "Fast posting", "Like a good social network you can now:");
+            TimeLineItemViewModel april2019 = GenerateTimeLineItem(new DateTime(2019, 04, 01), "fas fa-comment", "primary", "April 2019", "Fast posting", "Like a good social network you can now:");
             april2019.Items = new List<string>() {
                 "Post directly from the front page",
                 "Add a image to post",
@@ -248,7 +248,7 @@ namespace LuduStack.Web.Controllers
             };
             model.Items.Add(april2019);
 
-            var may2019 = GenerateTimeLineItem(new DateTime(2019, 05, 01), "fas fa-trophy", "success", "May 2019", "Game On!", "Climb the LuduStack Ranks to the glory");
+            TimeLineItemViewModel may2019 = GenerateTimeLineItem(new DateTime(2019, 05, 01), "fas fa-trophy", "success", "May 2019", "Game On!", "Climb the LuduStack Ranks to the glory");
             may2019.Items = new List<string>() {
                 "Ranking System",
                 "Experience Points",
@@ -256,7 +256,7 @@ namespace LuduStack.Web.Controllers
             };
             model.Items.Add(may2019);
 
-            var june2019 = GenerateTimeLineItem(new DateTime(2019, 06, 01), "fas fa-connectdevelop", "info", "June 2019", "Social Interaction", "Follow games and users and connect to users to increase your social network!");
+            TimeLineItemViewModel june2019 = GenerateTimeLineItem(new DateTime(2019, 06, 01), "fas fa-connectdevelop", "info", "June 2019", "Social Interaction", "Follow games and users and connect to users to increase your social network!");
             june2019.Items = new List<string>() {
                 "Notifications!",
                 "Game Follow",
@@ -265,7 +265,7 @@ namespace LuduStack.Web.Controllers
             };
             model.Items.Add(june2019);
 
-            var july2019 = GenerateTimeLineItem(new DateTime(2019, 07, 01), "fas fa-poll", "success", "July 2019", "This or that?", "Polls, preferences and more!");
+            TimeLineItemViewModel july2019 = GenerateTimeLineItem(new DateTime(2019, 07, 01), "fas fa-poll", "success", "July 2019", "This or that?", "Polls, preferences and more!");
             july2019.Items = new List<string>() {
                 "Basic Polls - Get opinions from your fellow devs!",
                 "Better preferences - Now you can change your email, set your phone and more!",
@@ -280,7 +280,7 @@ namespace LuduStack.Web.Controllers
 
             model.Items.Add(GenerateTimeLineItem(new DateTime(2019, 08, 01), "fas fa-question", "primary", "August 2019", "...", "Nothing to see here, keep scrolling!"));
 
-            var september2019 = GenerateTimeLineItem(new DateTime(2019, 09, 01), "fas fa-trash-alt", "danger", "September 2019", "You got the power!", "Must have features!");
+            TimeLineItemViewModel september2019 = GenerateTimeLineItem(new DateTime(2019, 09, 01), "fas fa-trash-alt", "danger", "September 2019", "You got the power!", "Must have features!");
             september2019.Items = new List<string>() {
                 "You can now delete your own posts",
                 "Share your game!",
@@ -288,7 +288,7 @@ namespace LuduStack.Web.Controllers
             };
             model.Items.Add(september2019);
 
-            var october2019 = GenerateTimeLineItem(new DateTime(2019, 10, 01), "fas fa-users", "info", "October 2019", "Team up!", "Join forces to make games.");
+            TimeLineItemViewModel october2019 = GenerateTimeLineItem(new DateTime(2019, 10, 01), "fas fa-users", "info", "October 2019", "Team up!", "Join forces to make games.");
             october2019.Items = new List<string>() {
                 "Team Management",
                 "Points Earned notification",
@@ -302,7 +302,7 @@ namespace LuduStack.Web.Controllers
 
             model.Items.Add(GenerateTimeLineItem(new DateTime(2019, 12, 01), "fas fa-bolt", "danger", "December 2019", "Optimizations!", "Now the whole web rendering is blazing fast!"));
 
-            var january2020 = GenerateTimeLineItem(new DateTime(2020, 01, 01), "fas fa-briefcase", "warning", "January 2020", "It is time to work! Seriously!", "The job management is here!");
+            TimeLineItemViewModel january2020 = GenerateTimeLineItem(new DateTime(2020, 01, 01), "fas fa-briefcase", "warning", "January 2020", "It is time to work! Seriously!", "The job management is here!");
             january2020.Items = new List<string>() {
                 "Create job position",
                 "List existing positions",
@@ -310,13 +310,13 @@ namespace LuduStack.Web.Controllers
                 "See who applied to your posted job positions"
             };
 
-            var march2020 = GenerateTimeLineItem(new DateTime(2020, 03, 01), "fas fa-heart", "danger", "March 2020", "Thank you all!", "We reached the mark of 300 users and  100 games. Thank you all for your love!");
+            TimeLineItemViewModel march2020 = GenerateTimeLineItem(new DateTime(2020, 03, 01), "fas fa-heart", "danger", "March 2020", "Thank you all!", "We reached the mark of 300 users and  100 games. Thank you all for your love!");
             march2020.Items = new List<string>() {
                 "A Special Thanks page"
             };
             model.Items.Add(march2020);
 
-            var april2020 = GenerateTimeLineItem(new DateTime(2020, 04, 01), "fas fa-language", "primary", "April 2020", "Localize your games!", "The localization tool has arrived!");
+            TimeLineItemViewModel april2020 = GenerateTimeLineItem(new DateTime(2020, 04, 01), "fas fa-language", "primary", "April 2020", "Localize your games!", "The localization tool has arrived!");
             april2020.Items = new List<string>() {
                 "Ask for translation from the community",
                 "Help others, translating terms to your own language",
@@ -329,7 +329,7 @@ namespace LuduStack.Web.Controllers
 
             model.Items.Add(GenerateTimeLineItem(new DateTime(2020, 06, 01), "fas fa-rocket", "secondary", "June 2020", "New name!", "Now we are called LUDUSTACK! The one stop place for game developers."));
 
-            var july2020 = GenerateTimeLineItem(new DateTime(2020, 07, 01), "fas fa-fw fa-ticket-alt", "success", "July 2020", "It is time for sweepstakes!", "You can now run your own giveaways!");
+            TimeLineItemViewModel july2020 = GenerateTimeLineItem(new DateTime(2020, 07, 01), "fas fa-fw fa-ticket-alt", "success", "July 2020", "It is time for sweepstakes!", "You can now run your own giveaways!");
             july2020.Items = new List<string>() {
                 "GDPR compliant",
                 "Email confirmation",
@@ -341,7 +341,7 @@ namespace LuduStack.Web.Controllers
             model.Items.Add(GenerateTimeLineItem(new DateTime(2020, 08, 01), "fas fa-dice", "primary", "August 2020", "New Ideas!", "Random Game Idea added to the front page to overcome your creative block!"));
 
             model.Items.Add(GenerateTimeLineItem(new DateTime(2020, 09, 01), "fas fa-dollar-sign", "success", "September 2020", "Calculations!", "The Rate Calculator will help you charge correctly for jobs with your skillset!"));
-            var march2021 = GenerateTimeLineItem(new DateTime(2021, 03, 01), "fas fa-cogs", "info", "March 2021", "Back to basics", "We decided to take a step back and redesign some architectural aspects of our software.");
+            TimeLineItemViewModel march2021 = GenerateTimeLineItem(new DateTime(2021, 03, 01), "fas fa-cogs", "info", "March 2021", "Back to basics", "We decided to take a step back and redesign some architectural aspects of our software.");
             march2021.Items = new List<string>() {
                 "CQRS migration started"
             };

@@ -4,6 +4,7 @@ using LuduStack.Application.ViewModels.Team;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Core.Extensions;
 using LuduStack.Domain.Interfaces.Services;
+using LuduStack.Domain.Messaging;
 using LuduStack.Domain.Messaging.Queries.Team;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
@@ -20,10 +21,9 @@ namespace LuduStack.Application.Services
         private readonly ITeamDomainService teamDomainService;
         private readonly IGamificationDomainService gamificationDomainService;
 
-        public TeamAppService(IMediatorHandler mediator
-            , IProfileBaseAppServiceCommon profileBaseAppServiceCommon
+        public TeamAppService(IProfileBaseAppServiceCommon profileBaseAppServiceCommon
             , ITeamDomainService teamDomainService
-            , IGamificationDomainService gamificationDomainService) : base(mediator, profileBaseAppServiceCommon)
+            , IGamificationDomainService gamificationDomainService) : base(profileBaseAppServiceCommon)
         {
             this.teamDomainService = teamDomainService;
             this.gamificationDomainService = gamificationDomainService;
@@ -131,21 +131,15 @@ namespace LuduStack.Application.Services
                     model = mapper.Map<Team>(viewModel);
                 }
 
-                if (viewModel.Id == Guid.Empty)
-                {
-                    teamDomainService.Add(model);
-                    viewModel.Id = model.Id;
+                CommandResult result = await mediator.SendCommand(new SaveTeamCommand(currentUserId, model));
 
-                    pointsEarned += gamificationDomainService.ProcessAction(viewModel.UserId, PlatformAction.TeamAdd);
-                }
-                else
+                if (!result.Validation.IsValid)
                 {
-                    teamDomainService.Update(model);
+                    string message = result.Validation.Errors.FirstOrDefault().ErrorMessage;
+                    return new OperationResultVo<Guid>(model.Id, false, message);
                 }
 
-                await unitOfWork.Commit();
-
-                viewModel.Id = model.Id;
+                pointsEarned += result.PointsEarned;
 
                 return new OperationResultVo<Guid>(model.Id, pointsEarned);
             }

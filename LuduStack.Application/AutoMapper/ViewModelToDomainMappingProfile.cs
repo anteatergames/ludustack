@@ -11,6 +11,7 @@ using LuduStack.Application.ViewModels.Giveaway;
 using LuduStack.Application.ViewModels.Jobs;
 using LuduStack.Application.ViewModels.Localization;
 using LuduStack.Application.ViewModels.Notification;
+using LuduStack.Application.ViewModels.Poll;
 using LuduStack.Application.ViewModels.ShortUrl;
 using LuduStack.Application.ViewModels.Study;
 using LuduStack.Application.ViewModels.Team;
@@ -71,6 +72,14 @@ namespace LuduStack.Application.AutoMapper
             CreateMap<UserContentViewModel, Domain.Models.UserContent>();
 
             #endregion Content
+
+            #region Poll
+
+            CreateMap<PollViewModel, Domain.Models.Poll>()
+                .ForMember(dest => dest.Options, opt => opt.MapFrom(src => src.PollOptions));
+            CreateMap<PollOptionViewModel, Domain.Models.PollOption>();
+
+            #endregion Poll
 
             #region Brainstorm
 

@@ -5,6 +5,7 @@ using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Core.Extensions;
 using LuduStack.Domain.Interfaces.Models;
 using LuduStack.Domain.Interfaces.Services;
+using LuduStack.Domain.Messaging;
 using LuduStack.Domain.Messaging.Queries.Giveaway;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
@@ -19,16 +20,13 @@ namespace LuduStack.Application.Services
     public class GiveawayAppService : ProfileBaseAppService, IGiveawayAppService
     {
         private readonly IGiveawayDomainService giveawayDomainService;
-        private readonly IGamificationDomainService gamificationDomainService;
         private readonly IShortUrlDomainService shortUrlDomainService;
 
-        public GiveawayAppService(IMediatorHandler mediator, IProfileBaseAppServiceCommon profileBaseAppServiceCommon
+        public GiveawayAppService(IProfileBaseAppServiceCommon profileBaseAppServiceCommon
             , IGiveawayDomainService giveawayDomainService
-            , IGamificationDomainService gamificationDomainService
-            , IShortUrlDomainService shortUrlDomainService) : base(mediator, profileBaseAppServiceCommon)
+            , IShortUrlDomainService shortUrlDomainService) : base(profileBaseAppServiceCommon)
         {
             this.giveawayDomainService = giveawayDomainService;
-            this.gamificationDomainService = gamificationDomainService;
             this.shortUrlDomainService = shortUrlDomainService;
         }
 
@@ -130,7 +128,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public async Task<OperationResultVo<Guid>> SaveGiveaway(Guid currentUserId, GiveawayViewModel vm)
+        public async Task<OperationResultVo<Guid>> SaveGiveaway(Guid currentUserId, GiveawayViewModel viewModel)
         {
             int pointsEarned = 0;
 
@@ -138,33 +136,27 @@ namespace LuduStack.Application.Services
             {
                 Giveaway model;
 
-                Giveaway existing = await mediator.Query<GetGiveawayByIdQuery, Giveaway>(new GetGiveawayByIdQuery(vm.Id));
+                Giveaway existing = await mediator.Query<GetGiveawayByIdQuery, Giveaway>(new GetGiveawayByIdQuery(viewModel.Id));
                 if (existing != null)
                 {
-                    model = mapper.Map(vm, existing);
+                    model = mapper.Map(viewModel, existing);
                 }
                 else
                 {
-                    model = mapper.Map<Giveaway>(vm);
+                    model = mapper.Map<Giveaway>(viewModel);
                 }
 
                 FormatImagesToSave(model);
 
-                if (vm.Id == Guid.Empty)
-                {
-                    giveawayDomainService.Add(model);
-                    vm.Id = model.Id;
+                CommandResult result = await mediator.SendCommand(new SaveGiveawayCommand(currentUserId, model));
 
-                    pointsEarned += gamificationDomainService.ProcessAction(currentUserId, PlatformAction.GiveawayAdd);
-                }
-                else
+                if (!result.Validation.IsValid)
                 {
-                    giveawayDomainService.Update(model);
+                    string message = result.Validation.Errors.FirstOrDefault().ErrorMessage;
+                    return new OperationResultVo<Guid>(model.Id, false, message);
                 }
 
-                await unitOfWork.Commit();
-
-                vm.Id = model.Id;
+                pointsEarned += result.PointsEarned;
 
                 return new OperationResultVo<Guid>(model.Id, pointsEarned);
             }

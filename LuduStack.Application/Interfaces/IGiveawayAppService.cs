@@ -19,7 +19,7 @@ namespace LuduStack.Application.Interfaces
 
         OperationResultVo GetGiveawaysByMe(Guid currentUserId);
 
-        Task<OperationResultVo<Guid>> SaveGiveaway(Guid currentUserId, GiveawayViewModel vm);
+        Task<OperationResultVo<Guid>> SaveGiveaway(Guid currentUserId, GiveawayViewModel viewModel);
 
         OperationResultVo DeleteGiveaway(Guid currentUserId, Guid giveawayId);
 

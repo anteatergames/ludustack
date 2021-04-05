@@ -1,9 +1,8 @@
 ﻿using FluentValidation;
-using System;
 
 namespace LuduStack.Domain.Messaging
 {
-    public class AddCommentUserContentCommandValidation : UserContentValidation<AddCommentUserContentCommand>
+    public class AddCommentUserContentCommandValidation : BaseUserCommandValidation<AddCommentUserContentCommand>
     {
         public AddCommentUserContentCommandValidation()
         {
@@ -12,16 +11,11 @@ namespace LuduStack.Domain.Messaging
             ValidateText();
         }
 
-        protected void ValidateUserId()
-        {
-            RuleFor(c => c.UserId)
-                .NotEqual(Guid.Empty);
-        }
-
         protected void ValidateText()
         {
             RuleFor(c => c.Text)
-                .NotEmpty();
+                .NotEmpty()
+                .WithMessage("You can't send an empty comment.");
         }
     }
 }
