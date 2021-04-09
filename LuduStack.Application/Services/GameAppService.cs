@@ -24,19 +24,11 @@ namespace LuduStack.Application.Services
 {
     public class GameAppService : ProfileBaseAppService, IGameAppService
     {
-        private readonly IGamificationDomainService gamificationDomainService;
-        private readonly ITeamDomainService teamDomainService;
-
         private readonly IGameDomainService gameDomainService;
 
-        public GameAppService(IProfileBaseAppServiceCommon profileBaseAppServiceCommon
-            , ITeamDomainService teamDomainService
-            , IGameDomainService gameDomainService
-            , IGamificationDomainService gamificationDomainService) : base(profileBaseAppServiceCommon)
+        public GameAppService(IProfileBaseAppServiceCommon profileBaseAppServiceCommon, IGameDomainService gameDomainService) : base(profileBaseAppServiceCommon)
         {
             this.gameDomainService = gameDomainService;
-            this.teamDomainService = teamDomainService;
-            this.gamificationDomainService = gamificationDomainService;
         }
 
         public async Task<OperationResultVo<int>> Count(Guid currentUserId)
@@ -187,21 +179,6 @@ namespace LuduStack.Application.Services
             catch (Exception ex)
             {
                 return new OperationResultVo<Guid>(ex.Message);
-            }
-        }
-
-        public async Task<OperationResultVo> Remove(Guid currentUserId, Guid id)
-        {
-            try
-            {
-                gameDomainService.Remove(id);
-                await unitOfWork.Commit();
-
-                return new OperationResultVo(true);
-            }
-            catch (Exception ex)
-            {
-                return new OperationResultVo(ex.Message);
             }
         }
 

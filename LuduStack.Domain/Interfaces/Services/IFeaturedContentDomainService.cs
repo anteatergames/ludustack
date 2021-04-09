@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace LuduStack.Domain.Interfaces.Services
 {
-    public interface IFeaturedContentDomainService : IDomainService<FeaturedContent>
+    public interface IFeaturedContentDomainService
     {
         IQueryable<FeaturedContent> GetFeaturedNow();
     }

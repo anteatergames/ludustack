@@ -183,9 +183,7 @@ namespace LuduStack.Application.Services
         {
             try
             {
-                translationDomainService.Remove(id);
-
-                await unitOfWork.Commit();
+                await mediator.SendCommand(new DeleteLocalizationCommand(currentUserId, id));
 
                 return new OperationResultVo(true, "That Translation Project is gone now!");
             }

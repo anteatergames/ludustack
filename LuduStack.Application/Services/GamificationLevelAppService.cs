@@ -77,9 +77,7 @@ namespace LuduStack.Application.Services
         {
             try
             {
-                gamificationLevelDomainService.Remove(id);
-
-                await unitOfWork.Commit();
+                await mediator.SendCommand(new DeleteGamificationLevelCommand(currentUserId, id));
 
                 return new OperationResultVo(true, "That Gamification Level is gone now!");
             }

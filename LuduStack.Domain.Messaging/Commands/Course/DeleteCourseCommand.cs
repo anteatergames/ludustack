@@ -40,7 +40,7 @@ namespace LuduStack.Domain.Messaging
 
             if (course is null)
             {
-                AddError("The course doesn't exists.");
+                AddError("The course doesn't exist.");
                 return request.Result;
             }
 

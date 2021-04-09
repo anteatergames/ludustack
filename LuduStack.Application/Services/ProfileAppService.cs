@@ -126,9 +126,7 @@ namespace LuduStack.Application.Services
         {
             try
             {
-                profileDomainService.Remove(id);
-
-                await unitOfWork.Commit();
+                await mediator.SendCommand(new DeleteUserProfileCommand(currentUserId, id));
 
                 return new OperationResultVo(true);
             }
@@ -168,7 +166,7 @@ namespace LuduStack.Application.Services
                     }
                 }
 
-                var hasCoverImage = !viewModel.CoverImageUrl.Equals(Constants.DefaultProfileCoverImage);
+                bool hasCoverImage = !viewModel.CoverImageUrl.Equals(Constants.DefaultProfileCoverImage);
 
                 CommandResult result = await mediator.SendCommand(new SaveUserProfileCommand(currentUserId, model, hasCoverImage));
 

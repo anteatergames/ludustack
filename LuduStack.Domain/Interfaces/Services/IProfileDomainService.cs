@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace LuduStack.Domain.Interfaces.Services
 {
-    public interface IProfileDomainService : IDomainService<UserProfile>
+    public interface IProfileDomainService
     {
         Task<UserProfile> Get(Guid userId, string userHandler, ProfileType type);
 

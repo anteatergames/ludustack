@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace LuduStack.Domain.Interfaces.Services
 {
-    public interface IBrainstormDomainService : IDomainService<BrainstormSession>
+    public interface IBrainstormDomainService
     {
         BrainstormIdea GetIdea(Guid ideaId);
 

@@ -60,9 +60,7 @@ namespace LuduStack.Application.Services
         {
             try
             {
-                notificationDomainService.Remove(id);
-
-                await unitOfWork.Commit();
+                await mediator.SendCommand(new DeleteNotificationCommand(currentUserId, id));
 
                 return new OperationResultVo(true, "That Notification is gone now!");
             }

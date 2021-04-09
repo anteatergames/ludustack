@@ -16,13 +16,8 @@ namespace LuduStack.Application.Services
 {
     public class UserPreferencesAppService : BaseAppService, IUserPreferencesAppService
     {
-        private readonly IUserPreferencesDomainService userPreferencesDomainService;
-
-        public UserPreferencesAppService(IMediatorHandler mediator
-            , IBaseAppServiceCommon baseAppServiceCommon
-            , IUserPreferencesDomainService userPreferencesDomainService) : base(baseAppServiceCommon)
+        public UserPreferencesAppService(IBaseAppServiceCommon baseAppServiceCommon) : base(baseAppServiceCommon)
         {
-            this.userPreferencesDomainService = userPreferencesDomainService;
         }
 
         public async Task<OperationResultVo<Guid>> Save(Guid currentUserId, UserPreferencesViewModel viewModel)

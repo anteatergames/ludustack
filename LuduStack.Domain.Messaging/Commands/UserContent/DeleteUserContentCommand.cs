@@ -36,18 +36,18 @@ namespace LuduStack.Domain.Messaging
         {
             if (!request.IsValid()) return request.Result;
 
-            Models.UserContent course = await userContentRepository.GetById(request.Id);
+            Models.UserContent userContent = await userContentRepository.GetById(request.Id);
 
-            if (course is null)
+            if (userContent is null)
             {
-                AddError("The course doesn't exists.");
+                AddError("The User Content doesn't exist.");
 
                 return new CommandResult(ValidationResult);
             }
 
             // AddDomainEvent here
 
-            userContentRepository.Remove(course.Id);
+            userContentRepository.Remove(userContent.Id);
 
             FluentValidation.Results.ValidationResult validation = await Commit(unitOfWork);
 

@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace LuduStack.Domain.Interfaces.Services
 {
-    public interface ITeamDomainService : IDomainService<Team>
+    public interface ITeamDomainService
     {
         TeamMember GetMemberByUserId(Guid teamId, Guid userId);
 

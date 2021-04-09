@@ -19,14 +19,10 @@ namespace LuduStack.Application.Services
     public class JobPositionAppService : ProfileBaseAppService, IJobPositionAppService
     {
         private readonly IJobPositionDomainService jobPositionDomainService;
-        private readonly IGamificationDomainService gamificationDomainService;
 
-        public JobPositionAppService(IProfileBaseAppServiceCommon profileBaseAppServiceCommon
-            , IJobPositionDomainService jobPositionDomainService
-            , IGamificationDomainService gamificationDomainService) : base(profileBaseAppServiceCommon)
+        public JobPositionAppService(IProfileBaseAppServiceCommon profileBaseAppServiceCommon, IJobPositionDomainService jobPositionDomainService) : base(profileBaseAppServiceCommon)
         {
             this.jobPositionDomainService = jobPositionDomainService;
-            this.gamificationDomainService = gamificationDomainService;
         }
 
         public async Task<OperationResultVo<int>> Count(Guid currentUserId)
@@ -137,9 +133,7 @@ namespace LuduStack.Application.Services
         {
             try
             {
-                jobPositionDomainService.Remove(id);
-
-                await unitOfWork.Commit();
+                await mediator.SendCommand(new DeleteJobPositionCommand(currentUserId, id));
 
                 return new OperationResultVo(true, "That Job Position is gone now!");
             }

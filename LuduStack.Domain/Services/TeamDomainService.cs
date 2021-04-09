@@ -19,19 +19,6 @@ namespace LuduStack.Domain.Services
             this.gameRepository = gameRepository;
         }
 
-        public override void Remove(Guid id)
-        {
-            List<Game> games = gameRepository.Get(x => x.TeamId == id).ToList();
-
-            foreach (Game game in games)
-            {
-                game.TeamId = null;
-                gameRepository.Update(game);
-            }
-
-            base.Remove(id);
-        }
-
         public IQueryable<TeamMember> GetAllMembershipsByUser(Guid userId)
         {
             IQueryable<TeamMember> qry = repository.GetMemberships(x => x.UserId == userId);

@@ -40,7 +40,7 @@ namespace LuduStack.Domain.Messaging
             StudyCourse course = await studyCourseRepository.GetById(request.Id);
             if (course is null)
             {
-                AddError("The course doesn't exists.");
+                AddError("The course doesn't exist.");
                 return request.Result;
             }
 

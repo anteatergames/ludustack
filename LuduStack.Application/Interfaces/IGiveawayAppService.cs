@@ -21,7 +21,7 @@ namespace LuduStack.Application.Interfaces
 
         Task<OperationResultVo<Guid>> SaveGiveaway(Guid currentUserId, GiveawayViewModel viewModel);
 
-        OperationResultVo DeleteGiveaway(Guid currentUserId, Guid giveawayId);
+        Task<OperationResultVo> DeleteGiveaway(Guid currentUserId, Guid giveawayId);
 
         OperationResultVo CheckParticipant(Guid currentUserId, Guid giveawayId, string sessionEmail);
 

@@ -166,13 +166,11 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo DeleteGiveaway(Guid currentUserId, Guid giveawayId)
+        public async Task<OperationResultVo> DeleteGiveaway(Guid currentUserId, Guid giveawayId)
         {
             try
             {
-                giveawayDomainService.Remove(giveawayId);
-
-                unitOfWork.Commit();
+                await mediator.SendCommand(new DeleteGiveawayCommand(currentUserId, giveawayId));
 
                 return new OperationResultVo(true, "That Giveaway is gone now!");
             }

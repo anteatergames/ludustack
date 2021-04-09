@@ -18,7 +18,6 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace LuduStack.Application.Services
@@ -26,18 +25,12 @@ namespace LuduStack.Application.Services
     public class UserContentAppService : ProfileBaseAppService, IUserContentAppService
     {
         private readonly ILogger logger;
-        private readonly IUserContentDomainService userContentDomainService;
-        private readonly IGamificationDomainService gamificationDomainService;
         private readonly IPollDomainService pollDomainService;
 
         public UserContentAppService(IProfileBaseAppServiceCommon profileBaseAppServiceCommon, ILogger<UserContentAppService> logger
-            , IUserContentDomainService userContentDomainService
-            , IGamificationDomainService gamificationDomainService
             , IPollDomainService pollDomainService) : base(profileBaseAppServiceCommon)
         {
             this.logger = logger;
-            this.userContentDomainService = userContentDomainService;
-            this.gamificationDomainService = gamificationDomainService;
             this.pollDomainService = pollDomainService;
             this.pollDomainService = pollDomainService;
         }
@@ -137,9 +130,7 @@ namespace LuduStack.Application.Services
             {
                 pollDomainService.RemoveByContentId(id);
 
-                userContentDomainService.Remove(id);
-
-                await unitOfWork.Commit();
+                await mediator.SendCommand(new DeleteUserContentCommand(currentUserId, id));
 
                 return new OperationResultVo(true);
             }

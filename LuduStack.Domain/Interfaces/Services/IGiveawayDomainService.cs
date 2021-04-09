@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace LuduStack.Domain.Interfaces.Services
 {
-    public interface IGiveawayDomainService : IDomainService<Giveaway>
+    public interface IGiveawayDomainService
     {
         Giveaway GenerateNewGiveaway(Guid userId);
 

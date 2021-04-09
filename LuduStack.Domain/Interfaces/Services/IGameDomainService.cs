@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace LuduStack.Domain.Interfaces.Services
 {
-    public interface IGameDomainService : IDomainService<Game>
+    public interface IGameDomainService
     {
         IQueryable<Game> Get(GameGenre genre, Guid userId, Guid? teamId);
 

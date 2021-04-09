@@ -148,11 +148,11 @@ namespace LuduStack.Web.Areas.Tools.Controllers
 
         [Authorize]
         [HttpDelete("tools/giveaway/{id:guid}")]
-        public IActionResult Delete(Guid id, bool edit)
+        public async Task<IActionResult> Delete(Guid id, bool edit)
         {
             try
             {
-                OperationResultVo deleteResult = giveawayAppService.DeleteGiveaway(CurrentUserId, id);
+                OperationResultVo deleteResult = await giveawayAppService.DeleteGiveaway(CurrentUserId, id);
 
                 if (deleteResult.Success)
                 {

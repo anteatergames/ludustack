@@ -101,7 +101,7 @@ namespace LuduStack.Web.Controllers
         {
             try
             {
-                var saveResult = await profileAppService.Save(CurrentUserId, vm);
+                OperationResultVo<Guid> saveResult = await profileAppService.Save(CurrentUserId, vm);
                 if (!saveResult.Success)
                 {
                     return Json(new OperationResultVo(false, saveResult.Message));

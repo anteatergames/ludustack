@@ -50,7 +50,7 @@ namespace LuduStack.Domain.Messaging
             UserContent userContent = await repository.GetById(request.Id);
             if (userContent is null)
             {
-                AddError("The content doesn't exists.");
+                AddError("The content doesn't exist.");
                 return request.Result;
             }
 

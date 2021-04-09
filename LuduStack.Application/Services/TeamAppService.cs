@@ -153,9 +153,7 @@ namespace LuduStack.Application.Services
         {
             try
             {
-                teamDomainService.Remove(id);
-
-                await unitOfWork.Commit();
+                await mediator.SendCommand(new DeleteTeamCommand(currentUserId, id));
 
                 return new OperationResultVo(true);
             }

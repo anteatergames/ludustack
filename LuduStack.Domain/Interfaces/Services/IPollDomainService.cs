@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace LuduStack.Domain.Interfaces.Services
 {
-    public interface IPollDomainService : IDomainService<Poll>
+    public interface IPollDomainService
     {
         Poll GetByUserContentId(Guid userContentId);
 

@@ -36,7 +36,7 @@ namespace LuduStack.Domain.Messaging
         public SaveJobPositionCommandHandler(IUnitOfWork unitOfWork, IJobPositionRepository jobPositionReopsitory, IGamificationDomainService gamificationDomainService)
         {
             this.unitOfWork = unitOfWork;
-            this.jobPositionRepository = jobPositionReopsitory;
+            jobPositionRepository = jobPositionReopsitory;
             this.gamificationDomainService = gamificationDomainService;
         }
 

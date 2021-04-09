@@ -1,8 +1,6 @@
-﻿using LuduStack.Domain.Models;
-
-namespace LuduStack.Domain.Interfaces.Services
+﻿namespace LuduStack.Domain.Interfaces.Services
 {
-    public interface IUserPreferencesDomainService : IDomainService<UserPreferences>
+    public interface IUserPreferencesDomainService
     {
     }
 }
