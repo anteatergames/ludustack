@@ -1,7 +1,6 @@
 ﻿using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels.Notification;
 using LuduStack.Domain.Core.Enums;
-using LuduStack.Domain.Interfaces.Services;
 using LuduStack.Domain.Messaging;
 using LuduStack.Domain.Messaging.Queries.Notification;
 using LuduStack.Domain.Models;
