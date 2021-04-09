@@ -55,8 +55,6 @@ namespace LuduStack.Domain.Messaging
 
             if (!request.IsValid()) return request.Result;
 
-
-
             if (request.CreateTeam)
             {
                 newTeam = teamDomainService.GenerateNewTeam(request.UserId);

@@ -1,7 +1,6 @@
 ﻿using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels.UserPreferences;
 using LuduStack.Domain.Core.Enums;
-using LuduStack.Domain.Interfaces.Services;
 using LuduStack.Domain.Messaging;
 using LuduStack.Domain.Messaging.Queries.UserPreferences;
 using LuduStack.Domain.Models;

@@ -12,11 +12,8 @@ namespace LuduStack.Domain.Services
 {
     public class TeamDomainService : BaseDomainMongoService<Team, ITeamRepository>, ITeamDomainService
     {
-        private readonly IGameRepository gameRepository;
-
-        public TeamDomainService(ITeamRepository repository, IGameRepository gameRepository) : base(repository)
+        public TeamDomainService(ITeamRepository repository) : base(repository)
         {
-            this.gameRepository = gameRepository;
         }
 
         public IQueryable<TeamMember> GetAllMembershipsByUser(Guid userId)

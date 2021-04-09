@@ -587,7 +587,7 @@ namespace LuduStack.Application.Services
 
             if (entriesUpdated)
             {
-                CommandResult result = await mediator.SendCommand(new SaveLocalizationCommand(currentUserId, model));
+                await mediator.SendCommand(new SaveLocalizationCommand(currentUserId, model));
             }
         }
 

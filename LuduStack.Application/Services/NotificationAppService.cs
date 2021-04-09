@@ -16,11 +16,8 @@ namespace LuduStack.Application.Services
 {
     public class NotificationAppService : BaseAppService, INotificationAppService
     {
-        private readonly INotificationDomainService notificationDomainService;
-
-        public NotificationAppService(IBaseAppServiceCommon baseAppServiceCommon, INotificationDomainService notificationDomainService) : base(baseAppServiceCommon)
+        public NotificationAppService(IBaseAppServiceCommon baseAppServiceCommon) : base(baseAppServiceCommon)
         {
-            this.notificationDomainService = notificationDomainService;
         }
 
         public async Task<OperationResultVo<Guid>> Save(Guid currentUserId, NotificationItemViewModel viewModel)

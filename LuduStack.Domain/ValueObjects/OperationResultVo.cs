@@ -25,7 +25,6 @@ namespace LuduStack.Domain.ValueObjects
         {
             Message = message;
         }
-        
 
         public OperationResultVo(string message) : this(false)
         {

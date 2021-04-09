@@ -23,7 +23,6 @@ namespace LuduStack.Application.Services
     {
         protected readonly IProfileDomainService profileDomainService;
 
-
         protected ProfileBaseAppService(IProfileBaseAppServiceCommon profileBaseAppServiceCommon) : base(profileBaseAppServiceCommon.Mapper, profileBaseAppServiceCommon.UnitOfWork, profileBaseAppServiceCommon.Mediator, profileBaseAppServiceCommon.CacheService)
         {
             profileDomainService = profileBaseAppServiceCommon.ProfileDomainService;

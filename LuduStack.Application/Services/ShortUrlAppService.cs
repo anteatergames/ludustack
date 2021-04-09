@@ -13,12 +13,9 @@ namespace LuduStack.Application.Services
 {
     public class ShortUrlAppService : BaseAppService, IShortUrlAppService
     {
-        private readonly IShortUrlDomainService shortUrlDomainService;
-
-        public ShortUrlAppService(IMediatorHandler mediator, IBaseAppServiceCommon baseAppServiceCommon, IShortUrlDomainService shortUrlDomainService) : base(baseAppServiceCommon)
+        public ShortUrlAppService(IMediatorHandler mediator, IBaseAppServiceCommon baseAppServiceCommon) : base(baseAppServiceCommon)
         {
             this.mediator = mediator;
-            this.shortUrlDomainService = shortUrlDomainService;
         }
 
         public async Task<OperationResultVo> GetFullUrlByToken(string token)

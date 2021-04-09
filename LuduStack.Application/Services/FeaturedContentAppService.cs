@@ -85,7 +85,6 @@ namespace LuduStack.Application.Services
                 newFeaturedContent.UserId = userId;
                 newFeaturedContent.OriginalUserId = content.UserId;
 
-
                 CommandResult result = await mediator.SendCommand(new SaveFeaturedContentCommand(userId, newFeaturedContent));
 
                 if (!result.Validation.IsValid)

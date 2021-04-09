@@ -63,8 +63,6 @@ namespace LuduStack.Domain.Messaging
 
             if (!request.IsValid()) return request.Result;
 
-
-
             string youtubePattern = @"(https?\:\/\/)?(www\.youtube\.com|youtu\.?be)\/.+";
 
             request.UserContent.Content = Regex.Replace(request.UserContent.Content, youtubePattern, delegate (Match match)

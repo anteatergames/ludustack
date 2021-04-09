@@ -1,8 +1,14 @@
-<svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 6.39 1.5"><defs><style>
-                                                                                                          .cls-1 {
-                                                                                                              fill: none;
-                                                                                                              stroke: #edf1f4;
-                                                                                                              stroke-miterlimit: 10;
-                                                                                                              stroke-width: 1.5px
-                                                                                                          }
-</style></defs><title>hr</title><line x2="6.39" y1=".75" y2=".75" class="cls-1" /></svg>
+<svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 6.39 1.5">
+    <defs>
+        <style>
+            .cls-1 {
+                fill: none;
+                stroke: #edf1f4;
+                stroke-miterlimit: 10;
+                stroke-width: 1.5px
+            }
+        </style>
+    </defs>
+    <title>hr</title>
+    <line x2="6.39" y1=".75" y2=".75" class="cls-1" />
+</svg>
