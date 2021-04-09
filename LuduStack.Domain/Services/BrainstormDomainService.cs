@@ -9,59 +9,62 @@ using System.Threading.Tasks;
 
 namespace LuduStack.Domain.Services
 {
-    public class BrainstormDomainService : BaseDomainMongoService<BrainstormSession, IBrainstormRepository>, IBrainstormDomainService
+    public class BrainstormDomainService : IBrainstormDomainService
     {
-        public BrainstormDomainService(IBrainstormRepository repository) : base(repository)
+        protected readonly IBrainstormRepository brainstormRepository;
+
+        public BrainstormDomainService(IBrainstormRepository brainstormRepository)
         {
+            this.brainstormRepository = brainstormRepository;
         }
 
         public BrainstormSession Get(BrainstormSessionType type)
         {
-            return repository.Get(x => x.Type == type).FirstOrDefault();
+            return brainstormRepository.Get(x => x.Type == type).FirstOrDefault();
         }
 
         public void AddComment(BrainstormComment model)
         {
-            repository.AddComment(model);
+            brainstormRepository.AddComment(model);
         }
 
         public void AddIdea(BrainstormIdea model)
         {
-            repository.AddIdea(model);
+            brainstormRepository.AddIdea(model);
         }
 
         public void AddVote(BrainstormVote model)
         {
-            repository.AddVote(model);
+            brainstormRepository.AddVote(model);
         }
 
         public BrainstormIdea GetIdea(Guid ideaId)
         {
-            Task<BrainstormIdea> task = Task.Run(async () => await repository.GetIdea(ideaId));
+            Task<BrainstormIdea> task = Task.Run(async () => await brainstormRepository.GetIdea(ideaId));
 
             return task.Result;
         }
 
         public IEnumerable<BrainstormIdea> GetIdeasBySession(Guid sessionId)
         {
-            Task<IEnumerable<BrainstormIdea>> task = Task.Run(async () => await repository.GetIdeasBySession(sessionId));
+            Task<IEnumerable<BrainstormIdea>> task = Task.Run(async () => await brainstormRepository.GetIdeasBySession(sessionId));
 
             return task.Result;
         }
 
         public void UpdateIdea(BrainstormIdea idea)
         {
-            repository.UpdateIdea(idea);
+            brainstormRepository.UpdateIdea(idea);
         }
 
         public void UpdateVote(BrainstormVote model)
         {
-            repository.UpdateVote(model);
+            brainstormRepository.UpdateVote(model);
         }
 
         public Guid GetUserId(Guid sessionId)
         {
-            BrainstormSession obj = repository.Get().FirstOrDefault(x => x.Id == sessionId);
+            BrainstormSession obj = brainstormRepository.Get().FirstOrDefault(x => x.Id == sessionId);
 
             if (obj != null)
             {

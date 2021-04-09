@@ -4,10 +4,13 @@ using LuduStack.Domain.Models;
 
 namespace LuduStack.Domain.Services
 {
-    public class UserPreferencesDomainService : BaseDomainMongoService<UserPreferences, IUserPreferencesRepository>, IUserPreferencesDomainService
+    public class UserPreferencesDomainService : IUserPreferencesDomainService
     {
-        public UserPreferencesDomainService(IUserPreferencesRepository repository) : base(repository)
+        protected readonly IUserPreferencesRepository userPreferencesRepository;
+
+        public UserPreferencesDomainService(IUserPreferencesRepository userPreferencesRepository)
         {
+            this.userPreferencesRepository = userPreferencesRepository;
         }
     }
 }

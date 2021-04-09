@@ -11,13 +11,15 @@ using System.Threading.Tasks;
 
 namespace LuduStack.Domain.Services
 {
-    public class ProfileDomainService : BaseDomainMongoService<UserProfile, IUserProfileRepository>, IProfileDomainService
+    public class ProfileDomainService :IProfileDomainService
     {
+        protected readonly IUserProfileRepository userProfileRepository;
+
         private readonly IUserConnectionRepository userConnectionRepository;
 
-        public ProfileDomainService(IUserProfileRepository repository
-            , IUserConnectionRepository userConnectionRepository) : base(repository)
+        public ProfileDomainService(IUserProfileRepository userProfileRepository, IUserConnectionRepository userConnectionRepository)
         {
+            this.userProfileRepository = userProfileRepository;
             this.userConnectionRepository = userConnectionRepository;
         }
 
@@ -25,13 +27,13 @@ namespace LuduStack.Domain.Services
         {
             if (userId != Guid.Empty)
             {
-                UserProfile profileById = repository.Get(x => x.UserId == userId && x.Type == type).FirstOrDefault();
+                UserProfile profileById = userProfileRepository.Get(x => x.UserId == userId && x.Type == type).FirstOrDefault();
 
                 return Task.FromResult(profileById);
             }
             else if (!string.IsNullOrWhiteSpace(userHandler))
             {
-                UserProfile profileByHandler = repository.Get(x => x.Handler.Equals(userHandler.ToLower()) && x.Type == type).FirstOrDefault();
+                UserProfile profileByHandler = userProfileRepository.Get(x => x.Handler.Equals(userHandler.ToLower()) && x.Type == type).FirstOrDefault();
 
                 return Task.FromResult(profileByHandler);
             }
@@ -43,28 +45,28 @@ namespace LuduStack.Domain.Services
 
         public virtual IQueryable<UserProfile> Search(Expression<Func<UserProfile, bool>> where)
         {
-            IQueryable<UserProfile> objs = repository.Get(where);
+            IQueryable<UserProfile> objs = userProfileRepository.Get(where);
 
             return objs;
         }
 
         public IEnumerable<Guid> GetAllUserIds()
         {
-            Task<IEnumerable<Guid>> allIds = Task.Run(async () => await repository.GetAllUserIds());
+            Task<IEnumerable<Guid>> allIds = Task.Run(async () => await userProfileRepository.GetAllUserIds());
 
             return allIds.Result;
         }
 
         public void AddFollow(UserFollow model)
         {
-            Task<bool> task = repository.AddFollow(model.UserId, model.FollowUserId.Value);
+            Task<bool> task = userProfileRepository.AddFollow(model.UserId, model.FollowUserId.Value);
 
             task.Wait();
         }
 
         public bool CheckFollowing(Guid userId, Guid followerId)
         {
-            Task<IQueryable<UserFollow>> task = repository.GetFollows(userId, followerId);
+            Task<IQueryable<UserFollow>> task = userProfileRepository.GetFollows(userId, followerId);
 
             task.Wait();
 
@@ -75,7 +77,7 @@ namespace LuduStack.Domain.Services
 
         public int CountFollows(Guid userId)
         {
-            Task<int> task = repository.CountFollowers(userId);
+            Task<int> task = userProfileRepository.CountFollowers(userId);
 
             task.Wait();
 
@@ -84,7 +86,7 @@ namespace LuduStack.Domain.Services
 
         public UserProfileEssentialVo GetBasicDataByUserId(Guid targetUserId)
         {
-            Task<UserProfileEssentialVo> task = repository.GetBasicDataByUserId(targetUserId);
+            Task<UserProfileEssentialVo> task = userProfileRepository.GetBasicDataByUserId(targetUserId);
 
             task.Wait();
 
@@ -93,14 +95,14 @@ namespace LuduStack.Domain.Services
 
         public IEnumerable<UserFollow> GetFollows(Guid userId, Guid followerId)
         {
-            Task<IQueryable<UserFollow>> task = Task.Run(async () => await repository.GetFollows(userId, followerId));
+            Task<IQueryable<UserFollow>> task = Task.Run(async () => await userProfileRepository.GetFollows(userId, followerId));
 
             return task.Result;
         }
 
         public void RemoveFollow(UserFollow existingFollow, Guid userFollowed)
         {
-            Task<bool> task = Task.Run(async () => await repository.RemoveFollower(existingFollow.UserId, userFollowed));
+            Task<bool> task = Task.Run(async () => await userProfileRepository.RemoveFollower(existingFollow.UserId, userFollowed));
 
             task.Wait();
         }

@@ -12,10 +12,13 @@ using System.Threading.Tasks;
 
 namespace LuduStack.Domain.Services
 {
-    public class TranslationDomainService : BaseDomainMongoService<Localization, ILocalizationRepository>, ILocalizationDomainService
+    public class TranslationDomainService : ILocalizationDomainService
     {
-        public TranslationDomainService(ILocalizationRepository repository) : base(repository)
+        protected readonly ILocalizationRepository localizationRepository;
+
+        public TranslationDomainService(ILocalizationRepository localizationRepository)
         {
+            this.localizationRepository = localizationRepository;
         }
 
         public Localization GenerateNewProject(Guid userId)
@@ -30,27 +33,27 @@ namespace LuduStack.Domain.Services
 
         public IEnumerable<Guid> GetTranslatedGamesByUserId(Guid userId)
         {
-            IEnumerable<Guid> gameIds = repository.GetTranslatedGamesByUserId(userId);
+            IEnumerable<Guid> gameIds = localizationRepository.GetTranslatedGamesByUserId(userId);
 
             return gameIds;
         }
 
         public IEnumerable<LocalizationEntry> GetEntries(Guid projectId, SupportedLanguage language)
         {
-            List<LocalizationEntry> entries = repository.GetEntries(projectId, language).ToList();
+            List<LocalizationEntry> entries = localizationRepository.GetEntries(projectId, language).ToList();
 
             return entries;
         }
 
         public DomainActionPerformed AddEntry(Guid projectId, LocalizationEntry entry)
         {
-            IQueryable<LocalizationEntry> existing = repository.GetEntries(projectId, entry.Language, entry.TermId);
+            IQueryable<LocalizationEntry> existing = localizationRepository.GetEntries(projectId, entry.Language, entry.TermId);
             bool oneIsMine = existing.Any(x => x.UserId == entry.UserId);
 
             if (oneIsMine)
             {
                 entry.Id = existing.First(x => x.UserId == entry.UserId).Id;
-                repository.UpdateEntry(projectId, entry);
+                localizationRepository.UpdateEntry(projectId, entry);
 
                 return DomainActionPerformed.Update;
             }
@@ -61,7 +64,7 @@ namespace LuduStack.Domain.Services
                 bool existsWithSameValue = existing.Any(x => x.Value.Equals(entry.Value));
                 if (!existing.Any() || !existsWithSameValue)
                 {
-                    repository.AddEntry(projectId, entry);
+                    localizationRepository.AddEntry(projectId, entry);
 
                     return DomainActionPerformed.Create;
                 }
@@ -72,7 +75,7 @@ namespace LuduStack.Domain.Services
 
         public void SaveEntries(Guid projectId, IEnumerable<LocalizationEntry> entries)
         {
-            List<LocalizationEntry> existingEntrys = repository.GetEntries(projectId).ToList();
+            List<LocalizationEntry> existingEntrys = localizationRepository.GetEntries(projectId).ToList();
 
             foreach (LocalizationEntry entry in entries)
             {
@@ -80,28 +83,28 @@ namespace LuduStack.Domain.Services
                 if (existing == null)
                 {
                     entry.CreateDate = DateTime.Now;
-                    repository.AddEntry(projectId, entry);
+                    localizationRepository.AddEntry(projectId, entry);
                 }
                 else
                 {
                     existing.Value = entry.Value;
                     existing.LastUpdateDate = DateTime.Now;
 
-                    repository.UpdateEntry(projectId, existing);
+                    localizationRepository.UpdateEntry(projectId, existing);
                 }
             }
         }
 
         public IEnumerable<LocalizationTerm> GetTerms(Guid projectId)
         {
-            List<LocalizationTerm> terms = repository.GetTerms(projectId).ToList();
+            List<LocalizationTerm> terms = localizationRepository.GetTerms(projectId).ToList();
 
             return terms;
         }
 
         public LocalizationStatsVo GetPercentageByGameId(Guid gameId)
         {
-            LocalizationStatsVo model = repository.GetStatsByGameId(gameId);
+            LocalizationStatsVo model = localizationRepository.GetStatsByGameId(gameId);
 
             if (model == null)
             {
@@ -119,14 +122,14 @@ namespace LuduStack.Domain.Services
 
         public void SetTerms(Guid projectId, IEnumerable<LocalizationTerm> terms)
         {
-            List<LocalizationTerm> existingTerms = repository.GetTerms(projectId).ToList();
+            List<LocalizationTerm> existingTerms = localizationRepository.GetTerms(projectId).ToList();
 
             foreach (LocalizationTerm term in terms)
             {
                 LocalizationTerm existing = existingTerms.FirstOrDefault(x => x.Id == term.Id);
                 if (existing == null)
                 {
-                    repository.AddTerm(projectId, term);
+                    localizationRepository.AddTerm(projectId, term);
                 }
                 else
                 {
@@ -135,7 +138,7 @@ namespace LuduStack.Domain.Services
                     existing.Obs = term.Obs;
                     existing.LastUpdateDate = DateTime.Now;
 
-                    repository.UpdateTerm(projectId, existing);
+                    localizationRepository.UpdateTerm(projectId, existing);
                 }
             }
 
@@ -143,15 +146,15 @@ namespace LuduStack.Domain.Services
 
             if (deleteTerms.Any())
             {
-                List<LocalizationEntry> existingEntries = repository.GetEntries(projectId).ToList();
+                List<LocalizationEntry> existingEntries = localizationRepository.GetEntries(projectId).ToList();
                 foreach (LocalizationTerm term in deleteTerms)
                 {
                     IEnumerable<LocalizationEntry> entries = existingEntries.Where(x => x.TermId == term.Id);
-                    repository.RemoveTerm(projectId, term.Id);
+                    localizationRepository.RemoveTerm(projectId, term.Id);
 
                     foreach (LocalizationEntry entry in entries)
                     {
-                        repository.RemoveEntry(projectId, entry.Id);
+                        localizationRepository.RemoveEntry(projectId, entry.Id);
                     }
                 }
             }
@@ -159,28 +162,28 @@ namespace LuduStack.Domain.Services
 
         public Localization GetBasicInfoById(Guid id)
         {
-            Localization obj = repository.GetBasicInfoById(id);
+            Localization obj = localizationRepository.GetBasicInfoById(id);
 
             return obj;
         }
 
         public void AcceptEntry(Guid projectId, Guid entryId)
         {
-            LocalizationEntry entry = repository.GetEntry(projectId, entryId);
+            LocalizationEntry entry = localizationRepository.GetEntry(projectId, entryId);
             if (entry != null)
             {
                 entry.Accepted = true;
-                repository.UpdateEntry(projectId, entry);
+                localizationRepository.UpdateEntry(projectId, entry);
             }
         }
 
         public void RejectEntry(Guid projectId, Guid entryId)
         {
-            LocalizationEntry entry = repository.GetEntry(projectId, entryId);
+            LocalizationEntry entry = localizationRepository.GetEntry(projectId, entryId);
             if (entry != null)
             {
                 entry.Accepted = false;
-                repository.UpdateEntry(projectId, entry);
+                localizationRepository.UpdateEntry(projectId, entry);
             }
         }
 
@@ -188,7 +191,7 @@ namespace LuduStack.Domain.Services
         {
             List<InMemoryFileVo> xmlTexts = new List<InMemoryFileVo>();
 
-            Localization project = await repository.GetById(projectId);
+            Localization project = await localizationRepository.GetById(projectId);
 
             List<SupportedLanguage> languages = project.Entries.Select(x => x.Language).Distinct().ToList();
             languages.Add(project.PrimaryLanguage);
@@ -209,7 +212,7 @@ namespace LuduStack.Domain.Services
 
         public async Task<InMemoryFileVo> GetXmlById(Guid projectId, SupportedLanguage language, bool fillGaps)
         {
-            Localization project = await repository.GetById(projectId);
+            Localization project = await localizationRepository.GetById(projectId);
 
             string xmlText = GenerateLanguageXml(project, language, fillGaps);
 
@@ -222,7 +225,7 @@ namespace LuduStack.Domain.Services
 
         public Task<List<Guid>> GetContributors(Guid projectId, ExportContributorsType type)
         {
-            List<Guid> contributorsIds = repository.GetEntries(projectId).Select(x => x.UserId).Distinct().ToList();
+            List<Guid> contributorsIds = localizationRepository.GetEntries(projectId).Select(x => x.UserId).Distinct().ToList();
 
             return Task.FromResult(contributorsIds);
         }

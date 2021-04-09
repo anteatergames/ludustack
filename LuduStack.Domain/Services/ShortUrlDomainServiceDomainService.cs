@@ -7,16 +7,19 @@ using System.Linq;
 
 namespace LuduStack.Domain.Services
 {
-    public class ShortUrlDomainService : BaseDomainMongoService<ShortUrl, IShortUrlRepository>, IShortUrlDomainService
+    public class ShortUrlDomainService : IShortUrlDomainService
     {
+        protected readonly IShortUrlRepository shortUrlRepository;
+
         private static Random random = new Random();
 
         private const string BASEURL = "/go/";
 
         private const String ALPHABET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
-        public ShortUrlDomainService(IShortUrlRepository repository) : base(repository)
+        public ShortUrlDomainService(IShortUrlRepository shortUrlRepository)
         {
+            this.shortUrlRepository = shortUrlRepository;
         }
 
         private string Encode(int length)
@@ -38,21 +41,21 @@ namespace LuduStack.Domain.Services
                 DestinationType = type
             };
 
-            while (repository.CountDirectly(x => x.Token.Equals(newToken)) > 1)
+            while (shortUrlRepository.CountDirectly(x => x.Token.Equals(newToken)) > 1)
             {
                 newToken = Encode(5);
                 newShortUrl.Token = newToken;
                 newShortUrl.NewUrl = string.Format("{0}{1}", BASEURL, newToken);
             }
 
-            repository.AddDirectly(newShortUrl);
+            shortUrlRepository.AddDirectly(newShortUrl);
 
             return newShortUrl.NewUrl;
         }
 
         public ShortUrl GetByToken(string token)
         {
-            IQueryable<ShortUrl> obj = repository.Get().Where(x => x.Token.Equals(token));
+            IQueryable<ShortUrl> obj = shortUrlRepository.Get().Where(x => x.Token.Equals(token));
 
             return obj.FirstOrDefault();
         }

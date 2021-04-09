@@ -6,17 +6,20 @@ using System.Linq;
 
 namespace LuduStack.Domain.Services
 {
-    public class FeaturedContentDomainService : BaseDomainMongoService<FeaturedContent, IFeaturedContentRepository>, IFeaturedContentDomainService
+    public class FeaturedContentDomainService : IFeaturedContentDomainService
     {
-        public FeaturedContentDomainService(IFeaturedContentRepository repository) : base(repository)
+        protected readonly IFeaturedContentRepository featuredContentRepository;
+
+        public FeaturedContentDomainService(IFeaturedContentRepository featuredContentRepository)
         {
+            this.featuredContentRepository = featuredContentRepository;
         }
 
         public IQueryable<FeaturedContent> GetFeaturedNow()
         {
             DateTime now = DateTime.Now;
 
-            IQueryable<FeaturedContent> objs = repository.Get(x => x.StartDate <= now && (!x.EndDate.HasValue || x.EndDate > now));
+            IQueryable<FeaturedContent> objs = featuredContentRepository.Get(x => x.StartDate <= now && (!x.EndDate.HasValue || x.EndDate > now));
 
             return objs;
         }

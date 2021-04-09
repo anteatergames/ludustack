@@ -1,13 +1,15 @@
 ﻿using LuduStack.Domain.Interfaces.Repository;
 using LuduStack.Domain.Interfaces.Services;
-using LuduStack.Domain.Models;
 
 namespace LuduStack.Domain.Services
 {
-    public class UserContentDomainService : BaseDomainMongoService<UserContent, IUserContentRepository>, IUserContentDomainService
+    public class UserContentDomainService : IUserContentDomainService
     {
-        public UserContentDomainService(IUserContentRepository repository) : base(repository)
+        protected readonly IUserContentRepository userContentRepository;
+
+        public UserContentDomainService(IUserContentRepository userContentRepository)
         {
+            this.userContentRepository = userContentRepository;
         }
     }
 }

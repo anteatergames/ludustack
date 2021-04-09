@@ -4,10 +4,13 @@ using LuduStack.Domain.Models;
 
 namespace LuduStack.Domain.Services
 {
-    public class NotificationDomainService : BaseDomainMongoService<Notification, INotificationRepository>, INotificationDomainService
+    public class NotificationDomainService : INotificationDomainService
     {
-        public NotificationDomainService(INotificationRepository repository) : base(repository)
+        protected readonly INotificationRepository notificationRepository;
+
+        public NotificationDomainService(INotificationRepository notificationRepository)
         {
+            this.notificationRepository = notificationRepository;
         }
     }
 }
