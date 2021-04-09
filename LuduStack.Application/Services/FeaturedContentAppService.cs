@@ -136,7 +136,7 @@ namespace LuduStack.Application.Services
             return vms;
         }
 
-        public async Task<OperationResultVo> Unfeature(Guid id)
+        public async Task<OperationResultVo> Unfeature(Guid userId, Guid id)
         {
             try
             {
@@ -148,9 +148,17 @@ namespace LuduStack.Application.Services
 
                     existing.Active = false;
 
-                    featuredContentDomainService.Update(existing);
+                    CommandResult result = await mediator.SendCommand(new SaveFeaturedContentCommand(userId, existing));
 
-                    await unitOfWork.Commit();
+                    if (!result.Validation.IsValid)
+                    {
+                        string message = result.Validation.Errors.FirstOrDefault().ErrorMessage;
+                        return new OperationResultVo<Guid>(existing.Id, false, message);
+                    }
+                    else
+                    {
+                        return new OperationResultVo<Guid>(existing.Id, 0);
+                    }
                 }
 
                 return new OperationResultVo(true);

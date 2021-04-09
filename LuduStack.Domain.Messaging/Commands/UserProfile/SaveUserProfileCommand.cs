@@ -62,6 +62,7 @@ namespace LuduStack.Domain.Messaging
             else
             {
                 request.UserProfile.HasCoverImage = request.HasCoverImage;
+                request.UserProfile.Handler = request.UserProfile.Handler.ToLower();
                 userProfileRepository.Update(request.UserProfile);
             }
 

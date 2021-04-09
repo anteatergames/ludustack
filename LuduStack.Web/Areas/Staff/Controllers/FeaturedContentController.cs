@@ -47,7 +47,7 @@ namespace LuduStack.Web.Areas.Staff.Controllers
 
             try
             {
-                operationResult = await featuredContentAppService.Unfeature(id);
+                operationResult = await featuredContentAppService.Unfeature(CurrentUserId, id);
             }
             catch (Exception ex)
             {

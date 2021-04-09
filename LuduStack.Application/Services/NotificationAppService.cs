@@ -111,9 +111,14 @@ namespace LuduStack.Application.Services
                 if (notification != null)
                 {
                     notification.IsRead = true;
-                    notificationDomainService.Update(notification);
 
-                    await unitOfWork.Commit();
+                    CommandResult result = await mediator.SendCommand(new SaveNotificationCommand(notification.UserId, notification));
+
+                    if (!result.Validation.IsValid)
+                    {
+                        string message = result.Validation.Errors.FirstOrDefault().ErrorMessage;
+                        return new OperationResultVo(false, message);
+                    }
                 }
 
                 return new OperationResultVo(true);

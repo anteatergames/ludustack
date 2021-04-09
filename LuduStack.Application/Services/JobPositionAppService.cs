@@ -338,9 +338,13 @@ namespace LuduStack.Application.Services
 
                 jobPosition.Status = selectedStatus;
 
-                jobPositionDomainService.Update(jobPosition);
+                CommandResult result = await mediator.SendCommand(new SaveJobPositionCommand(currentUserId, jobPosition));
 
-                await unitOfWork.Commit();
+                if (!result.Validation.IsValid)
+                {
+                    string message = result.Validation.Errors.FirstOrDefault().ErrorMessage;
+                    return new OperationResultVo(false, message);
+                }
 
                 return new OperationResultVo(true);
             }
@@ -369,9 +373,13 @@ namespace LuduStack.Application.Services
                     }
                 }
 
-                jobPositionDomainService.Update(jobPosition);
+                CommandResult result = await mediator.SendCommand(new SaveJobPositionCommand(currentUserId, jobPosition));
 
-                await unitOfWork.Commit();
+                if (!result.Validation.IsValid)
+                {
+                    string message = result.Validation.Errors.FirstOrDefault().ErrorMessage;
+                    return new OperationResultVo(false, message);
+                }
 
                 return new OperationResultVo(true, "Applicant rated!");
             }

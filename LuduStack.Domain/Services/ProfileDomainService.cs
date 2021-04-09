@@ -21,13 +21,6 @@ namespace LuduStack.Domain.Services
             this.userConnectionRepository = userConnectionRepository;
         }
 
-        public override Guid Update(UserProfile model)
-        {
-            model.Handler = model.Handler.ToLower();
-
-            return base.Update(model);
-        }
-
         public Task<UserProfile> Get(Guid userId, string userHandler, ProfileType type)
         {
             if (userId != Guid.Empty)

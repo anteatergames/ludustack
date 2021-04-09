@@ -556,9 +556,13 @@ namespace LuduStack.Application.Services
 
                         if (termsUpdated)
                         {
-                            translationDomainService.Update(model);
+                            CommandResult result = await mediator.SendCommand(new SaveLocalizationCommand(currentUserId, model));
 
-                            await unitOfWork.Commit();
+                            if (!result.Validation.IsValid)
+                            {
+                                string message = result.Validation.Errors.FirstOrDefault().ErrorMessage;
+                                return new OperationResultVo(false, message);
+                            }
 
                             FillEntries(dataTable, model.Terms, loadedEntries, columns);
 
@@ -585,9 +589,7 @@ namespace LuduStack.Application.Services
 
             if (entriesUpdated)
             {
-                translationDomainService.Update(model);
-
-                await unitOfWork.Commit();
+                CommandResult result = await mediator.SendCommand(new SaveLocalizationCommand(currentUserId, model));
             }
         }
 

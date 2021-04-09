@@ -17,12 +17,5 @@ namespace LuduStack.Domain.Services
         {
             repository.Remove(id);
         }
-
-        public virtual Guid Update(T model)
-        {
-            repository.Update(model);
-
-            return model.Id;
-        }
     }
 }
