@@ -20,14 +20,10 @@ namespace LuduStack.Application.Services
     public class GiveawayAppService : ProfileBaseAppService, IGiveawayAppService
     {
         private readonly IGiveawayDomainService giveawayDomainService;
-        private readonly IShortUrlDomainService shortUrlDomainService;
 
-        public GiveawayAppService(IProfileBaseAppServiceCommon profileBaseAppServiceCommon
-            , IGiveawayDomainService giveawayDomainService
-            , IShortUrlDomainService shortUrlDomainService) : base(profileBaseAppServiceCommon)
+        public GiveawayAppService(IProfileBaseAppServiceCommon profileBaseAppServiceCommon, IGiveawayDomainService giveawayDomainService) : base(profileBaseAppServiceCommon)
         {
             this.giveawayDomainService = giveawayDomainService;
-            this.shortUrlDomainService = shortUrlDomainService;
         }
 
         public OperationResultVo GenerateNew(Guid currentUserId)
@@ -215,7 +211,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo EnterGiveaway(Guid currentUserId, GiveawayEnterViewModel vm, string urlReferralBase)
+        public async Task<OperationResultVo> EnterGiveaway(Guid currentUserId, GiveawayEnterViewModel vm, string urlReferralBase)
         {
             try
             {
@@ -223,22 +219,32 @@ namespace LuduStack.Application.Services
 
                 DomainOperationVo<GiveawayParticipant> domainActionPerformed = giveawayDomainService.AddParticipant(vm.GiveawayId, vm.Email, vm.GdprConsent, vm.WantNotifications, myCode, vm.ReferralCode, vm.EntryType);
 
-                unitOfWork.Commit();
+                await unitOfWork.Commit();
 
                 if (domainActionPerformed.Action == DomainActionPerformed.Create)
                 {
                     string urlReferral = string.Format("{0}?referralCode={1}", urlReferralBase, myCode);
 
-                    string shortUrl = shortUrlDomainService.Add(urlReferral, ShortUrlDestinationType.Giveaway);
+                    var saveShortUrlCommand = new SaveShortUrlCommand(urlReferral, ShortUrlDestinationType.Giveaway);
 
-                    if (!string.IsNullOrWhiteSpace(shortUrl))
+                    CommandResult result = await mediator.SendCommand(saveShortUrlCommand);
+
+                    if (!result.Validation.IsValid)
                     {
-                        giveawayDomainService.UpdateParticipantShortUrl(vm.GiveawayId, vm.Email, shortUrl);
-
-                        unitOfWork.Commit();
+                        string message = result.Validation.Errors.FirstOrDefault().ErrorMessage;
+                        return new OperationResultVo<string>(saveShortUrlCommand.ShortUrl.OriginalUrl, false, message);
                     }
+                    else
+                    {
+                        if (!string.IsNullOrWhiteSpace(saveShortUrlCommand.ShortUrl.NewUrl))
+                        {
+                            giveawayDomainService.UpdateParticipantShortUrl(vm.GiveawayId, vm.Email, saveShortUrlCommand.ShortUrl.NewUrl);
 
-                    return new OperationResultVo<string>(myCode, 0, "You are in!");
+                            await unitOfWork.Commit();
+                        }
+
+                        return new OperationResultVo<string>(myCode, 0, "You are in!");
+                    }
                 }
 
                 return new OperationResultVo<string>(string.Empty, 0, "You are in!");

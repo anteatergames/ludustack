@@ -1,9 +1,11 @@
-﻿using LuduStack.Domain.Interfaces;
+﻿using LuduStack.Domain.Core.Enums;
+using LuduStack.Domain.Interfaces;
 using LuduStack.Domain.Interfaces.Repository;
 using LuduStack.Domain.Models;
 using LuduStack.Infra.CrossCutting.Messaging;
 using MediatR;
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -18,6 +20,17 @@ namespace LuduStack.Domain.Messaging
             ShortUrl = shortUrl;
         }
 
+        public SaveShortUrlCommand(string urlReferal, ShortUrlDestinationType type) : base(Guid.Empty)
+        {
+            ShortUrl newShortUrl = new ShortUrl
+            {
+                OriginalUrl = urlReferal,
+                DestinationType = type
+            };
+
+            ShortUrl = newShortUrl;
+        }
+
         public override bool IsValid()
         {
             Result.Validation = new SaveShortUrlCommandValidation().Validate(this);
@@ -29,6 +42,12 @@ namespace LuduStack.Domain.Messaging
     {
         protected readonly IUnitOfWork unitOfWork;
         protected readonly IShortUrlRepository shortUrlRepository;
+
+        private static Random random = new Random();
+
+        private const string BASEURL = "/go/";
+
+        private const String ALPHABET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
         public SaveShortUrlCommandHandler(IUnitOfWork unitOfWork, IShortUrlRepository shortUrlRepository)
         {
@@ -44,6 +63,16 @@ namespace LuduStack.Domain.Messaging
 
             if (request.ShortUrl.Id == Guid.Empty)
             {
+                string newToken = Encode(5);
+
+                while (shortUrlRepository.CountDirectly(x => x.Token.Equals(newToken)) > 1)
+                {
+                    newToken = Encode(5);
+                }
+
+                request.ShortUrl.Token = newToken;
+                request.ShortUrl.NewUrl = string.Format("{0}{1}", BASEURL, newToken);
+
                 await shortUrlRepository.Add(request.ShortUrl);
             }
             else
@@ -54,6 +83,13 @@ namespace LuduStack.Domain.Messaging
             result.Validation = await Commit(unitOfWork);
 
             return result;
+        }
+
+        private string Encode(int length)
+        {
+            string newToken = new string(Enumerable.Repeat(ALPHABET, length).Select(s => s[random.Next(s.Length)]).ToArray());
+
+            return newToken;
         }
     }
 }

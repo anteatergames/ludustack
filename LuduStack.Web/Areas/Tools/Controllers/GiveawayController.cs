@@ -286,7 +286,7 @@ namespace LuduStack.Web.Areas.Tools.Controllers
             {
                 string urlReferalBase = Url.Action("details", "giveaway", new { area = "tools", id = enter.GiveawayId });
 
-                OperationResultVo result = giveawayAppService.EnterGiveaway(CurrentUserId, enter, urlReferalBase);
+                OperationResultVo result = await giveawayAppService.EnterGiveaway(CurrentUserId, enter, urlReferalBase);
 
                 if (result.Success)
                 {

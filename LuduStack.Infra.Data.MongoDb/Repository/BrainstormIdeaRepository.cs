@@ -52,7 +52,7 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
             FilterDefinition<BrainstormIdea> filter = Builders<BrainstormIdea>.Filter.Where(x => x.Id == model.IdeaId);
             UpdateDefinition<BrainstormIdea> add = Builders<BrainstormIdea>.Update.AddToSet(c => c.Votes, model);
 
-            UpdateResult result = await GetCollection<BrainstormIdea>().UpdateOneAsync(filter, add);
+            await DbSet.UpdateOneAsync(filter, add);
 
             await Context.AddCommand(() => DbSet.UpdateOneAsync(filter, add));
         }
@@ -78,7 +78,7 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
 
             UpdateDefinition<BrainstormIdea> update = Builders<BrainstormIdea>.Update.Set(c => c.Votes[-1].VoteValue, model.VoteValue);
 
-            UpdateResult result = await GetCollection<BrainstormIdea>().UpdateOneAsync(filter, update);
+            await DbSet.UpdateOneAsync(filter, update);
 
             await Context.AddCommand(() => DbSet.UpdateOneAsync(filter, update));
         }
