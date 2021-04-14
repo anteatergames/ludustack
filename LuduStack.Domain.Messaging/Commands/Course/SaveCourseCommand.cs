@@ -47,7 +47,7 @@ namespace LuduStack.Domain.Messaging
 
             if (request.Course.Id == Guid.Empty)
             {
-                studyCourseRepository.Add(request.Course);
+                await studyCourseRepository.Add(request.Course);
             }
             else
             {

@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace LuduStack.Infra.Data.MongoDb.Repository
 {
-    public class BrainstormRepository : BaseRepository<BrainstormSession>, IBrainstormRepository
+    public class BrainstormIdeaRepository : BaseRepository<BrainstormIdea>, IBrainstormIdeaRepository
     {
-        public BrainstormRepository(IMongoContext context) : base(context)
+        public BrainstormIdeaRepository(IMongoContext context) : base(context)
         {
         }
 
@@ -37,7 +37,7 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
             return result.IsAcknowledged && result.ModifiedCount > 0;
         }
 
-        public async Task<bool> AddVote(BrainstormVote model)
+        public async Task<bool> AddVoteDirectly(BrainstormVote model)
         {
             FilterDefinition<BrainstormIdea> filter = Builders<BrainstormIdea>.Filter.Where(x => x.Id == model.IdeaId);
             UpdateDefinition<BrainstormIdea> add = Builders<BrainstormIdea>.Update.AddToSet(c => c.Votes, model);
@@ -47,7 +47,17 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
             return result.IsAcknowledged && result.MatchedCount > 0;
         }
 
-        public async Task<bool> UpdateVote(BrainstormVote model)
+        public async Task AddVote(BrainstormVote model)
+        {
+            FilterDefinition<BrainstormIdea> filter = Builders<BrainstormIdea>.Filter.Where(x => x.Id == model.IdeaId);
+            UpdateDefinition<BrainstormIdea> add = Builders<BrainstormIdea>.Update.AddToSet(c => c.Votes, model);
+
+            UpdateResult result = await GetCollection<BrainstormIdea>().UpdateOneAsync(filter, add);
+
+            await Context.AddCommand(() => DbSet.UpdateOneAsync(filter, add));
+        }
+
+        public async Task<bool> UpdateVoteDirectly(BrainstormVote model)
         {
             FilterDefinition<BrainstormIdea> filter = Builders<BrainstormIdea>.Filter.And(
                 Builders<BrainstormIdea>.Filter.Eq(x => x.Id, model.IdeaId),
@@ -60,7 +70,28 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
             return result.IsAcknowledged && result.ModifiedCount > 0;
         }
 
-        public async Task<bool> AddComment(BrainstormComment model)
+        public async Task UpdateVote(BrainstormVote model)
+        {
+            FilterDefinition<BrainstormIdea> filter = Builders<BrainstormIdea>.Filter.And(
+                Builders<BrainstormIdea>.Filter.Eq(x => x.Id, model.IdeaId),
+                Builders<BrainstormIdea>.Filter.ElemMatch(x => x.Votes, x => x.UserId == model.UserId));
+
+            UpdateDefinition<BrainstormIdea> update = Builders<BrainstormIdea>.Update.Set(c => c.Votes[-1].VoteValue, model.VoteValue);
+
+            UpdateResult result = await GetCollection<BrainstormIdea>().UpdateOneAsync(filter, update);
+
+            await Context.AddCommand(() => DbSet.UpdateOneAsync(filter, update));
+        }
+
+        public async Task AddComment(BrainstormComment model)
+        {
+            FilterDefinition<BrainstormIdea> filter = Builders<BrainstormIdea>.Filter.Where(x => x.Id == model.IdeaId);
+            UpdateDefinition<BrainstormIdea> add = Builders<BrainstormIdea>.Update.AddToSet(c => c.Comments, model);
+
+            await Context.AddCommand(() => GetCollection<BrainstormIdea>().UpdateOneAsync(filter, add));
+        }
+
+        public async Task<bool> AddCommentDirectly(BrainstormComment model)
         {
             FilterDefinition<BrainstormIdea> filter = Builders<BrainstormIdea>.Filter.Where(x => x.Id == model.IdeaId);
             UpdateDefinition<BrainstormIdea> add = Builders<BrainstormIdea>.Update.AddToSet(c => c.Comments, model);
@@ -70,14 +101,14 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
             return result.IsAcknowledged && result.MatchedCount > 0;
         }
 
-        public async Task AddIdea(BrainstormIdea model)
+        public override async Task Add(BrainstormIdea obj)
         {
-            if (model.Status == 0)
+            if (obj.Status == 0)
             {
-                model.Status = BrainstormIdeaStatus.Proposed;
+                obj.Status = BrainstormIdeaStatus.Proposed;
             }
 
-            await GetCollection<BrainstormIdea>().InsertOneAsync(model);
+            await base.Add(obj);
         }
     }
 }

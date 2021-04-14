@@ -32,11 +32,11 @@ namespace LuduStack.Infra.Data.MongoDb.Repository.Base
             return Context.GetCollection<Type>(typeof(Type).Name);
         }
 
-        public virtual void Add(TEntity obj)
+        public virtual async Task Add(TEntity obj)
         {
             SetDefaultDates(obj);
 
-            Context.AddCommand(() => DbSet.InsertOneAsync(obj));
+            await Context.AddCommand(() => DbSet.InsertOneAsync(obj));
         }
 
         public virtual void AddDirectly(TEntity obj)

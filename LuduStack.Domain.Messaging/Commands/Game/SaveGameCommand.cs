@@ -78,7 +78,7 @@ namespace LuduStack.Domain.Messaging
 
             if (request.Game.Id == Guid.Empty)
             {
-                gameRepository.Add(request.Game);
+                await gameRepository.Add(request.Game);
                 result.PointsEarned += gamificationDomainService.ProcessAction(request.UserId, PlatformAction.GameAdd);
             }
             else

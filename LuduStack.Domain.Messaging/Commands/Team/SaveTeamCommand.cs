@@ -49,7 +49,7 @@ namespace LuduStack.Domain.Messaging
 
             if (request.Team.Id == Guid.Empty)
             {
-                teamRepository.Add(request.Team);
+                await teamRepository.Add(request.Team);
                 pointsEarned += gamificationDomainService.ProcessAction(request.UserId, PlatformAction.TeamAdd);
             }
             else

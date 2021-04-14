@@ -44,7 +44,7 @@ namespace LuduStack.Domain.Messaging
 
             if (request.ShortUrl.Id == Guid.Empty)
             {
-                shortUrlRepository.Add(request.ShortUrl);
+                await shortUrlRepository.Add(request.ShortUrl);
             }
             else
             {

@@ -126,6 +126,7 @@ namespace LuduStack.Web.Controllers.Base
                 if (profile != null)
                 {
                     SetSessionValue(SessionValues.FullName, profile.Name);
+                    SetCookieValue(SessionValues.FullName.ToString(), profile.Name, 365);
                 }
             }
         }

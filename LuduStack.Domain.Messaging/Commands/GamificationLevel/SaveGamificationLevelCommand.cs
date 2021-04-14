@@ -29,13 +29,13 @@ namespace LuduStack.Domain.Messaging
     public class SaveGamificationLevelCommandHandler : CommandHandler, IRequestHandler<SaveGamificationLevelCommand, CommandResult>
     {
         protected readonly IUnitOfWork unitOfWork;
-        protected readonly IGamificationLevelRepository GamificationLevelRepository;
+        protected readonly IGamificationLevelRepository gamificationLevelRepository;
         protected readonly IGamificationDomainService gamificationDomainService;
 
         public SaveGamificationLevelCommandHandler(IUnitOfWork unitOfWork, IGamificationLevelRepository GamificationLevelRepository, IGamificationDomainService gamificationDomainService)
         {
             this.unitOfWork = unitOfWork;
-            this.GamificationLevelRepository = GamificationLevelRepository;
+            gamificationLevelRepository = GamificationLevelRepository;
             this.gamificationDomainService = gamificationDomainService;
         }
 
@@ -47,11 +47,11 @@ namespace LuduStack.Domain.Messaging
 
             if (request.GamificationLevel.Id == Guid.Empty)
             {
-                GamificationLevelRepository.Add(request.GamificationLevel);
+                await gamificationLevelRepository.Add(request.GamificationLevel);
             }
             else
             {
-                GamificationLevelRepository.Update(request.GamificationLevel);
+                gamificationLevelRepository.Update(request.GamificationLevel);
             }
 
             result.Validation = await Commit(unitOfWork);

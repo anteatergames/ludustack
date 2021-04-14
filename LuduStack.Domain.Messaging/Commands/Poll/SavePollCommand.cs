@@ -49,7 +49,7 @@ namespace LuduStack.Domain.Messaging
 
             if (request.Poll.Id == Guid.Empty)
             {
-                pollRepository.Add(request.Poll);
+                await pollRepository.Add(request.Poll);
                 pointsEarned += gamificationDomainService.ProcessAction(request.UserId, PlatformAction.PollPost);
             }
             else

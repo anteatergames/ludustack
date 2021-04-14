@@ -19,9 +19,9 @@ namespace LuduStack.Application.Interfaces
 
         Task<OperationResultVo<Guid>> Save(Guid currentUserId, BrainstormIdeaViewModel viewModel);
 
-        OperationResultVo Vote(Guid userId, Guid ideaId, VoteValue vote);
+        Task<OperationResultVo> Vote(Guid userId, Guid ideaId, VoteValue vote);
 
-        OperationResultVo Comment(CommentViewModel vm);
+        Task<OperationResultVo> Comment(CommentViewModel vm);
 
         Task<OperationResultVo<BrainstormSessionViewModel>> GetSession(Guid sessionId);
 
@@ -31,10 +31,10 @@ namespace LuduStack.Application.Interfaces
 
         Task<OperationResultVo<Guid>> SaveSession(Guid currentUserId, BrainstormSessionViewModel viewModel);
 
-        OperationResultListVo<BrainstormIdeaViewModel> GetAllBySessionId(Guid userId, Guid sessionId);
+        Task<OperationResultListVo<BrainstormIdeaViewModel>> GetAllBySessionId(Guid userId, Guid sessionId);
 
-        OperationResultVo<BrainstormSessionViewModel> GetMainSession();
+        Task<OperationResultVo<BrainstormSessionViewModel>> GetMainSession();
 
-        OperationResultVo ChangeStatus(Guid currentUserId, Guid ideaId, BrainstormIdeaStatus selectedStatus);
+        Task<OperationResultVo> ChangeStatus(Guid currentUserId, Guid ideaId, BrainstormIdeaStatus selectedStatus);
     }
 }

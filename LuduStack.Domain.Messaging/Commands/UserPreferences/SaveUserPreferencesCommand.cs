@@ -47,7 +47,7 @@ namespace LuduStack.Domain.Messaging
 
             if (request.UserPreferences.Id == Guid.Empty)
             {
-                userPreferencesRepository.Add(request.UserPreferences);
+                await userPreferencesRepository.Add(request.UserPreferences);
             }
             else
             {

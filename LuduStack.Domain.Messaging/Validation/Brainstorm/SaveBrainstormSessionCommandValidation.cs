@@ -8,7 +8,7 @@ namespace LuduStack.Domain.Messaging
         {
             ValidateUserId();
             ValidateEntity();
-            ValdateType();
+            ValidateType();
         }
 
         protected void ValidateEntity()
@@ -18,7 +18,7 @@ namespace LuduStack.Domain.Messaging
                 .WithMessage("No Brainstorm Session to save.");
         }
 
-        protected void ValdateType()
+        protected void ValidateType()
         {
             RuleFor(c => c.BrainstormSession.Type)
                 .NotNull()

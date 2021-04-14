@@ -51,7 +51,7 @@ namespace LuduStack.Domain.Messaging
 
             if (request.JobPosition.Id == Guid.Empty)
             {
-                jobPositionRepository.Add(request.JobPosition);
+                await jobPositionRepository.Add(request.JobPosition);
                 pointsEarned += gamificationDomainService.ProcessAction(request.UserId, PlatformAction.JobPositionPost);
             }
             else

@@ -56,8 +56,8 @@ namespace LuduStack.Infra.CrossCutting.IoC
             #region Brainstorm
 
             services.AddScoped<IBrainstormAppService, BrainstormAppService>();
-            services.AddScoped<IBrainstormDomainService, BrainstormDomainService>();
-            services.AddScoped<IBrainstormRepository, BrainstormRepository>();
+            services.AddScoped<IBrainstormSessionRepository, BrainstormSessionRepository>();
+            services.AddScoped<IBrainstormIdeaRepository, BrainstormIdeaRepository>();
 
             #endregion Brainstorm
 

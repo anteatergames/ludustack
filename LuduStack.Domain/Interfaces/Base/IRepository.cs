@@ -9,7 +9,7 @@ namespace LuduStack.Domain.Interfaces
 {
     public interface IRepository<TEntity> : IDisposable where TEntity : Entity
     {
-        void Add(TEntity obj);
+        Task Add(TEntity obj);
 
         void AddDirectly(TEntity obj);
 

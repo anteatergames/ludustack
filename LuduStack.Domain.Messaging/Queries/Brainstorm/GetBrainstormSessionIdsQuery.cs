@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace LuduStack.Domain.Messaging.Queries.BrainstormSession
+namespace LuduStack.Domain.Messaging.Queries.Brainstorm
 {
     public class GetBrainstormSessionIdsQuery : GetIdsBaseQuery<Models.BrainstormSession>
     {
@@ -19,9 +19,9 @@ namespace LuduStack.Domain.Messaging.Queries.BrainstormSession
         }
     }
 
-    public class GetBrainstormSessionIdsQueryHandler : GetIdsBaseQueryHandler<GetBrainstormSessionIdsQuery, Models.BrainstormSession, IBrainstormRepository>
+    public class GetBrainstormSessionIdsQueryHandler : GetIdsBaseQueryHandler<GetBrainstormSessionIdsQuery, Models.BrainstormSession, IBrainstormSessionRepository>
     {
-        public GetBrainstormSessionIdsQueryHandler(IBrainstormRepository repository) : base(repository)
+        public GetBrainstormSessionIdsQueryHandler(IBrainstormSessionRepository repository) : base(repository)
         {
         }
 

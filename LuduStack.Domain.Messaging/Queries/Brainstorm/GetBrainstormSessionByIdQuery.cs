@@ -2,7 +2,7 @@
 using LuduStack.Domain.Messaging.Queries.Base;
 using System;
 
-namespace LuduStack.Domain.Messaging.Queries.BrainstormSession
+namespace LuduStack.Domain.Messaging.Queries.Brainstorm
 {
     public class GetBrainstormSessionByIdQuery : GetByIdBaseQuery<Models.BrainstormSession>
     {
@@ -11,9 +11,9 @@ namespace LuduStack.Domain.Messaging.Queries.BrainstormSession
         }
     }
 
-    public class GetBrainstormSessionByIdQueryHandler : GetByIdBaseQueryHandler<GetBrainstormSessionByIdQuery, Models.BrainstormSession, IBrainstormRepository>
+    public class GetBrainstormSessionByIdQueryHandler : GetByIdBaseQueryHandler<GetBrainstormSessionByIdQuery, Models.BrainstormSession, IBrainstormSessionRepository>
     {
-        public GetBrainstormSessionByIdQueryHandler(IBrainstormRepository repository) : base(repository)
+        public GetBrainstormSessionByIdQueryHandler(IBrainstormSessionRepository repository) : base(repository)
         {
         }
     }

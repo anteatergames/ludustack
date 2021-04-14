@@ -15,14 +15,14 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
         {
         }
 
-        public override void Add(Poll obj)
+        public override Task Add(Poll obj)
         {
             foreach (PollOption option in obj.Options)
             {
                 option.Id = Guid.NewGuid();
             }
 
-            base.Add(obj);
+            return base.Add(obj);
         }
 
         public void RemoveByContentId(Guid contentId)

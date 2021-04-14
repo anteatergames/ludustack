@@ -19,14 +19,14 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
         {
         }
 
-        public override void Add(UserContent obj)
+        public override Task Add(UserContent obj)
         {
             if (obj.Language == 0)
             {
                 obj.Language = SupportedLanguage.English;
             }
 
-            base.Add(obj);
+            return base.Add(obj);
         }
 
         public Task<int> CountComments(Expression<Func<UserContentComment, bool>> where)

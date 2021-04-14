@@ -51,7 +51,7 @@ namespace LuduStack.Domain.Messaging
 
             if (request.Giveaway.Id == Guid.Empty)
             {
-                giveawayRepository.Add(request.Giveaway);
+                await giveawayRepository.Add(request.Giveaway);
                 pointsEarned += gamificationDomainService.ProcessAction(request.UserId, PlatformAction.GiveawayAdd);
             }
             else

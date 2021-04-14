@@ -49,7 +49,7 @@ namespace LuduStack.Domain.Messaging
 
             if (request.Localization.Id == Guid.Empty)
             {
-                jobPositionRepository.Add(request.Localization);
+                await jobPositionRepository.Add(request.Localization);
                 pointsEarned += gamificationDomainService.ProcessAction(request.UserId, PlatformAction.LocalizationRequest);
             }
             else

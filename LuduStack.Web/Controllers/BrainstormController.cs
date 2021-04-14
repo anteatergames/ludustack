@@ -52,7 +52,7 @@ namespace LuduStack.Web.Controllers
 
             if (sessionId == Guid.Empty)
             {
-                sessionResult = brainstormAppService.GetMainSession();
+                sessionResult = await brainstormAppService.GetMainSession();
             }
             else
             {
@@ -104,9 +104,9 @@ namespace LuduStack.Web.Controllers
 
         [Route("brainstorm/list/{sessionId:guid}")]
         [Route("brainstorm/list")]
-        public PartialViewResult List(Guid sessionId)
+        public async Task<PartialViewResult> List(Guid sessionId)
         {
-            OperationResultListVo<BrainstormIdeaViewModel> serviceResult = brainstormAppService.GetAllBySessionId(CurrentUserId, sessionId);
+            OperationResultListVo<BrainstormIdeaViewModel> serviceResult = await brainstormAppService.GetAllBySessionId(CurrentUserId, sessionId);
 
             IEnumerable<BrainstormIdeaViewModel> items = serviceResult.Value;
 
@@ -114,7 +114,7 @@ namespace LuduStack.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Save(BrainstormIdeaViewModel vm)
+        public async Task<IActionResult> Save(BrainstormIdeaViewModel vm)
         {
             try
             {
@@ -122,13 +122,13 @@ namespace LuduStack.Web.Controllers
 
                 vm.UserId = CurrentUserId;
 
-                brainstormAppService.Save(CurrentUserId, vm);
+                await brainstormAppService.Save(CurrentUserId, vm);
 
                 string url = Url.Action("Index", "Brainstorm", new { area = string.Empty, id = vm.SessionId.ToString() });
 
                 if (isNew && EnvName.Equals(ConstantHelper.ProductionEnvironmentName))
                 {
-                    NotificationSender.SendTeamNotificationAsync($"New idea posted: {vm.Title}");
+                    await NotificationSender.SendTeamNotificationAsync($"New idea posted: {vm.Title}");
                 }
 
                 return Json(new OperationResultRedirectVo(url));
@@ -173,11 +173,11 @@ namespace LuduStack.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Vote(BrainstormVoteViewModel vm)
+        public async Task<IActionResult> Vote(BrainstormVoteViewModel vm)
         {
             try
             {
-                brainstormAppService.Vote(CurrentUserId, vm.VotingItemId, vm.VoteValue);
+                await brainstormAppService.Vote(CurrentUserId, vm.VotingItemId, vm.VoteValue);
 
                 string url = Url.Action("Index", "Brainstorm", new { area = string.Empty });
 
@@ -196,7 +196,7 @@ namespace LuduStack.Web.Controllers
 
             await SetAuthorDetails(vm);
 
-            response = brainstormAppService.Comment(vm);
+            response = await brainstormAppService.Comment(vm);
 
             return Json(response);
         }

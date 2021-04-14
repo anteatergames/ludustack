@@ -47,7 +47,7 @@ namespace LuduStack.Domain.Messaging
 
             if (request.Notification.Id == Guid.Empty)
             {
-                notificationRepository.Add(request.Notification);
+                await notificationRepository.Add(request.Notification);
             }
             else
             {

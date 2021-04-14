@@ -47,7 +47,7 @@ namespace LuduStack.Domain.Messaging
 
             if (request.FeaturedContent.Id == Guid.Empty)
             {
-                featuredContentRepository.Add(request.FeaturedContent);
+                await featuredContentRepository.Add(request.FeaturedContent);
             }
             else
             {

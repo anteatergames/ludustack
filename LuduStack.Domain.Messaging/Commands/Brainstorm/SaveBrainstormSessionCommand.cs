@@ -31,10 +31,10 @@ namespace LuduStack.Domain.Messaging
     public class SaveBrainstormSessionCommandHandler : CommandHandler, IRequestHandler<SaveBrainstormSessionCommand, CommandResult>
     {
         protected readonly IUnitOfWork unitOfWork;
-        protected readonly IBrainstormRepository brainstormSessionRepository;
+        protected readonly IBrainstormSessionRepository brainstormSessionRepository;
         protected readonly IGamificationDomainService gamificationDomainService;
 
-        public SaveBrainstormSessionCommandHandler(IUnitOfWork unitOfWork, IBrainstormRepository brainstormSessionRepository, IGamificationDomainService gamificationDomainService)
+        public SaveBrainstormSessionCommandHandler(IUnitOfWork unitOfWork, IBrainstormSessionRepository brainstormSessionRepository, IGamificationDomainService gamificationDomainService)
         {
             this.unitOfWork = unitOfWork;
             this.brainstormSessionRepository = brainstormSessionRepository;
@@ -52,7 +52,7 @@ namespace LuduStack.Domain.Messaging
 
             if (request.BrainstormSession.Id == Guid.Empty)
             {
-                brainstormSessionRepository.Add(request.BrainstormSession);
+                await brainstormSessionRepository.Add(request.BrainstormSession);
                 pointsEarned += gamificationDomainService.ProcessAction(request.UserId, PlatformAction.BrainstormSessionAdd);
             }
             else

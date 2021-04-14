@@ -77,7 +77,7 @@ namespace LuduStack.Domain.Messaging
 
             if (request.UserContent.Id == Guid.Empty)
             {
-                userContentRepository.Add(request.UserContent);
+                await userContentRepository.Add(request.UserContent);
 
                 PlatformAction action = request.IsComplex ? PlatformAction.ComplexPost : PlatformAction.SimplePost;
                 result.PointsEarned += gamificationDomainService.ProcessAction(request.UserId, action);

@@ -4,10 +4,8 @@ using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels;
 using LuduStack.Application.ViewModels.Brainstorm;
 using LuduStack.Domain.Core.Enums;
-using LuduStack.Domain.Interfaces.Services;
 using LuduStack.Domain.Messaging;
 using LuduStack.Domain.Messaging.Queries.Brainstorm;
-using LuduStack.Domain.Messaging.Queries.BrainstormSession;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
 using LuduStack.Infra.CrossCutting.Messaging;
@@ -20,17 +18,8 @@ namespace LuduStack.Application.Services
 {
     public class BrainstormAppService : ProfileBaseAppService, IBrainstormAppService
     {
-        private readonly IGamificationDomainService gamificationDomainService;
-
-        private readonly IBrainstormDomainService brainstormDomainService;
-
-        public BrainstormAppService(IProfileBaseAppServiceCommon profileBaseAppServiceCommon
-            , IGamificationDomainService gamificationDomainService
-            , IBrainstormDomainService brainstormDomainService) : base(profileBaseAppServiceCommon)
+        public BrainstormAppService(IProfileBaseAppServiceCommon profileBaseAppServiceCommon) : base(profileBaseAppServiceCommon)
         {
-            this.gamificationDomainService = gamificationDomainService;
-
-            this.brainstormDomainService = brainstormDomainService;
         }
 
         public async Task<OperationResultVo<int>> Count(Guid currentUserId)
@@ -65,8 +54,9 @@ namespace LuduStack.Application.Services
         {
             try
             {
-                BrainstormIdea idea = brainstormDomainService.GetIdea(id);
-                Guid sessionUserId = brainstormDomainService.GetUserId(idea.SessionId);
+                BrainstormIdea idea = await mediator.Query<GetBrainstormIdeaByIdQuery, BrainstormIdea>(new GetBrainstormIdeaByIdQuery(id));
+
+                BrainstormSession session = await mediator.Query<GetBrainstormSessionByIdQuery, BrainstormSession>(new GetBrainstormSessionByIdQuery(idea.SessionId));
 
                 BrainstormIdeaViewModel vm = mapper.Map<BrainstormIdeaViewModel>(idea);
 
@@ -97,7 +87,7 @@ namespace LuduStack.Application.Services
                     comment.Text = string.IsNullOrWhiteSpace(comment.Text) ? Constants.SoundOfSilence : comment.Text;
                 }
 
-                vm.Permissions.CanEdit = currentUserId == sessionUserId;
+                vm.Permissions.CanEdit = currentUserId == session?.UserId;
 
                 return new OperationResultVo<BrainstormIdeaViewModel>(vm);
             }
@@ -120,7 +110,7 @@ namespace LuduStack.Application.Services
 
                 BrainstormIdea model;
 
-                BrainstormIdea existing = brainstormDomainService.GetIdea(viewModel.Id);
+                BrainstormIdea existing = await mediator.Query<GetBrainstormIdeaByIdQuery, BrainstormIdea>(new GetBrainstormIdeaByIdQuery(viewModel.Id));
                 if (existing != null)
                 {
                     model = mapper.Map(viewModel, existing);
@@ -132,20 +122,15 @@ namespace LuduStack.Application.Services
 
                 model.SessionId = session.Id;
 
-                if (model.Id == Guid.Empty)
+                CommandResult result = await mediator.SendCommand(new SaveBrainstormIdeaCommand(currentUserId, model));
+
+                if (!result.Validation.IsValid)
                 {
-                    brainstormDomainService.AddIdea(model);
-                }
-                else
-                {
-                    brainstormDomainService.UpdateIdea(model);
+                    string message = result.Validation.Errors.FirstOrDefault().ErrorMessage;
+                    return new OperationResultVo<Guid>(model.Id, false, message);
                 }
 
-                gamificationDomainService.ProcessAction(viewModel.UserId, PlatformAction.IdeaSuggested);
-
-                await unitOfWork.Commit();
-
-                return new OperationResultVo<Guid>(model.Id);
+                return new OperationResultVo<Guid>(model.Id, result.PointsEarned);
             }
             catch (Exception ex)
             {
@@ -153,54 +138,31 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo Vote(Guid userId, Guid ideaId, VoteValue vote)
+        public async Task<OperationResultVo> Vote(Guid userId, Guid ideaId, VoteValue vote)
         {
             try
             {
-                BrainstormVote model;
-                BrainstormIdea idea = brainstormDomainService.GetIdea(ideaId);
+                CommandResult result = await mediator.SendCommand(new SaveBrainstormIdeaVoteCommand(userId, ideaId, vote));
 
-                BrainstormVote existing = idea.Votes.FirstOrDefault(x => x.UserId == userId);
-                if (existing != null)
+                if (!result.Validation.IsValid)
                 {
-                    model = existing;
-                    model.VoteValue = vote;
-                }
-                else
-                {
-                    model = new BrainstormVote
-                    {
-                        UserId = userId,
-                        IdeaId = ideaId,
-                        SessionId = idea.SessionId,
-                        VoteValue = vote
-                    };
+                    string message = result.Validation.Errors.FirstOrDefault().ErrorMessage;
+                    return new OperationResultVo(false, message);
                 }
 
-                if (model.Id == Guid.Empty)
-                {
-                    brainstormDomainService.AddVote(model);
-                }
-                else
-                {
-                    brainstormDomainService.UpdateVote(model);
-                }
-
-                unitOfWork.Commit();
-
-                return new OperationResultVo<Guid>(model.Id);
+                return new OperationResultVo(true, "You have voted!");
             }
             catch (Exception ex)
             {
-                return new OperationResultVo<Guid>(ex.Message);
+                return new OperationResultVo(ex.Message);
             }
         }
 
-        public OperationResultVo Comment(CommentViewModel vm)
+        public async Task<OperationResultVo> Comment(CommentViewModel vm)
         {
             try
             {
-                BrainstormIdea idea = brainstormDomainService.GetIdea(vm.UserContentId);
+                BrainstormIdea idea = await mediator.Query<GetBrainstormIdeaByIdQuery, BrainstormIdea>(new GetBrainstormIdeaByIdQuery(vm.UserContentId));
                 BrainstormComment model = new BrainstormComment
                 {
                     UserId = vm.UserId,
@@ -211,11 +173,15 @@ namespace LuduStack.Application.Services
                     AuthorPicture = vm.AuthorPicture
                 };
 
-                brainstormDomainService.AddComment(model);
+                CommandResult result = await mediator.SendCommand(new AddBrainstormIdeaCommentCommand(vm.UserId, model));
 
-                unitOfWork.Commit();
+                if (!result.Validation.IsValid)
+                {
+                    string message = result.Validation.Errors.FirstOrDefault().ErrorMessage;
+                    return new OperationResultVo<Guid>(model.Id, false, message);
+                }
 
-                return new OperationResultVo<Guid>(model.Id);
+                return new OperationResultVo<Guid>(model.IdeaId, 0);
             }
             catch (Exception ex)
             {
@@ -317,11 +283,11 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultListVo<BrainstormIdeaViewModel> GetAllBySessionId(Guid userId, Guid sessionId)
+        public async Task<OperationResultListVo<BrainstormIdeaViewModel>> GetAllBySessionId(Guid userId, Guid sessionId)
         {
             try
             {
-                IEnumerable<BrainstormIdea> allIdeas = brainstormDomainService.GetIdeasBySession(sessionId);
+                IEnumerable<BrainstormIdea> allIdeas = await mediator.Query<GetBrainstormIdeaQuery, IEnumerable<BrainstormIdea>>(new GetBrainstormIdeaQuery(x => x.SessionId == sessionId));
 
                 IEnumerable<BrainstormIdeaViewModel> vms = mapper.Map<IEnumerable<BrainstormIdea>, IEnumerable<BrainstormIdeaViewModel>>(allIdeas);
 
@@ -345,11 +311,12 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo<BrainstormSessionViewModel> GetMainSession()
+        public async Task<OperationResultVo<BrainstormSessionViewModel>> GetMainSession()
         {
             try
             {
-                BrainstormSession main = brainstormDomainService.Get(BrainstormSessionType.Main);
+                IEnumerable<BrainstormSession> allModels = await mediator.Query<GetBrainstormSessionQuery, IEnumerable<BrainstormSession>>(new GetBrainstormSessionQuery(x => x.Type == BrainstormSessionType.Main));
+                BrainstormSession main = allModels.LastOrDefault();
 
                 BrainstormSessionViewModel vm = mapper.Map<BrainstormSessionViewModel>(main);
 
@@ -361,11 +328,11 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo ChangeStatus(Guid currentUserId, Guid ideaId, BrainstormIdeaStatus selectedStatus)
+        public async Task<OperationResultVo> ChangeStatus(Guid currentUserId, Guid ideaId, BrainstormIdeaStatus selectedStatus)
         {
             try
             {
-                BrainstormIdea idea = brainstormDomainService.GetIdea(ideaId);
+                BrainstormIdea idea = await mediator.Query<GetBrainstormIdeaByIdQuery, BrainstormIdea>(new GetBrainstormIdeaByIdQuery(ideaId));
 
                 if (idea == null)
                 {
@@ -374,11 +341,15 @@ namespace LuduStack.Application.Services
 
                 idea.Status = selectedStatus;
 
-                brainstormDomainService.UpdateIdea(idea);
+                CommandResult result = await mediator.SendCommand(new SaveBrainstormIdeaCommand(currentUserId, idea));
 
-                unitOfWork.Commit();
+                if (!result.Validation.IsValid)
+                {
+                    string message = result.Validation.Errors.FirstOrDefault().ErrorMessage;
+                    return new OperationResultVo(false, message);
+                }
 
-                return new OperationResultVo(true);
+                return new OperationResultVo(true, result.PointsEarned);
             }
             catch (Exception ex)
             {
