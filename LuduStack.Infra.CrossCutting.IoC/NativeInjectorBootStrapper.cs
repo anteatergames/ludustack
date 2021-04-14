@@ -48,7 +48,6 @@ namespace LuduStack.Infra.CrossCutting.IoC
             #region Content
 
             services.AddScoped<IUserContentAppService, UserContentAppService>();
-            services.AddScoped<IUserContentDomainService, UserContentDomainService>();
             services.AddScoped<IUserContentRepository, UserContentRepository>();
 
             #endregion Content
@@ -64,7 +63,6 @@ namespace LuduStack.Infra.CrossCutting.IoC
             #region Featuring
 
             services.AddScoped<IFeaturedContentAppService, FeaturedContentAppService>();
-            services.AddScoped<IFeaturedContentDomainService, FeaturedContentDomainService>();
             services.AddScoped<IFeaturedContentRepository, FeaturedContentRepository>();
 
             #endregion Featuring
@@ -72,7 +70,6 @@ namespace LuduStack.Infra.CrossCutting.IoC
             #region Preferences
 
             services.AddScoped<IUserPreferencesAppService, UserPreferencesAppService>();
-            services.AddScoped<IUserPreferencesDomainService, UserPreferencesDomainService>();
             services.AddScoped<IUserPreferencesRepository, UserPreferencesRepository>();
 
             #endregion Preferences
@@ -80,7 +77,6 @@ namespace LuduStack.Infra.CrossCutting.IoC
             #region Notifications
 
             services.AddScoped<INotificationAppService, NotificationAppService>();
-            services.AddScoped<INotificationDomainService, NotificationDomainService>();
             services.AddScoped<INotificationRepository, NotificationRepository>();
 
             #endregion Notifications

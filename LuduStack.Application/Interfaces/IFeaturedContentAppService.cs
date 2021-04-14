@@ -9,7 +9,7 @@ namespace LuduStack.Application.Interfaces
 {
     public interface IFeaturedContentAppService
     {
-        CarouselViewModel GetFeaturedNow();
+        Task<CarouselViewModel> GetFeaturedNow();
 
         Task<OperationResultVo<Guid>> Add(Guid userId, Guid contentId, string title, string introduction);
 

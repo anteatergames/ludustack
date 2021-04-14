@@ -33,7 +33,7 @@ namespace LuduStack.Web.Controllers
 
         public async Task<IActionResult> Index(int? pointsEarned)
         {
-            CarouselViewModel featured = featuredContentAppService.GetFeaturedNow();
+            CarouselViewModel featured = await featuredContentAppService.GetFeaturedNow();
             ViewBag.Carousel = featured;
 
             SetLanguage();

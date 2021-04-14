@@ -22,17 +22,15 @@ namespace LuduStack.Application.Services
 {
     public class FeaturedContentAppService : BaseAppService, IFeaturedContentAppService
     {
-        private readonly IFeaturedContentDomainService featuredContentDomainService;
-
-        public FeaturedContentAppService(IBaseAppServiceCommon baseAppServiceCommon
-            , IFeaturedContentDomainService featuredContentDomainService) : base(baseAppServiceCommon)
+        public FeaturedContentAppService(IBaseAppServiceCommon baseAppServiceCommon) : base(baseAppServiceCommon)
         {
-            this.featuredContentDomainService = featuredContentDomainService;
         }
 
-        public CarouselViewModel GetFeaturedNow()
+        public async Task<CarouselViewModel> GetFeaturedNow()
         {
-            IQueryable<FeaturedContent> allModels = featuredContentDomainService.GetFeaturedNow();
+            DateTime now = DateTime.Now;
+
+            IQueryable<FeaturedContent> allModels = (await mediator.Query<GetFeaturedContentQuery, IEnumerable<FeaturedContent>>(new GetFeaturedContentQuery(x => x.StartDate <= now && (!x.EndDate.HasValue || x.EndDate > now)))).AsQueryable();
 
             if (allModels.Any())
             {
