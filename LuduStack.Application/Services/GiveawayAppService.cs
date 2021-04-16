@@ -225,7 +225,7 @@ namespace LuduStack.Application.Services
                 {
                     string urlReferral = string.Format("{0}?referralCode={1}", urlReferralBase, myCode);
 
-                    var saveShortUrlCommand = new SaveShortUrlCommand(urlReferral, ShortUrlDestinationType.Giveaway);
+                    SaveShortUrlCommand saveShortUrlCommand = new SaveShortUrlCommand(urlReferral, ShortUrlDestinationType.Giveaway);
 
                     CommandResult result = await mediator.SendCommand(saveShortUrlCommand);
 

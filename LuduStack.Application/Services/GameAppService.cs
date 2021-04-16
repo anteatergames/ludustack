@@ -8,7 +8,6 @@ using LuduStack.Domain.Core.Attributes;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Core.Extensions;
 using LuduStack.Domain.Core.Interfaces;
-using LuduStack.Domain.Interfaces.Services;
 using LuduStack.Domain.Messaging;
 using LuduStack.Domain.Messaging.Queries.Game;
 using LuduStack.Domain.Models;
@@ -24,11 +23,8 @@ namespace LuduStack.Application.Services
 {
     public class GameAppService : ProfileBaseAppService, IGameAppService
     {
-        private readonly IGameDomainService gameDomainService;
-
-        public GameAppService(IProfileBaseAppServiceCommon profileBaseAppServiceCommon, IGameDomainService gameDomainService) : base(profileBaseAppServiceCommon)
+        public GameAppService(IProfileBaseAppServiceCommon profileBaseAppServiceCommon) : base(profileBaseAppServiceCommon)
         {
-            this.gameDomainService = gameDomainService;
         }
 
         public async Task<OperationResultVo<int>> Count(Guid currentUserId)
@@ -184,13 +180,9 @@ namespace LuduStack.Application.Services
 
         public async Task<IEnumerable<GameListItemViewModel>> GetLatest(Guid currentUserId, int count, Guid userId, Guid? teamId, GameGenre genre)
         {
-            IQueryable<Game> allModels = gameDomainService.Get(genre, userId, teamId);
+            IEnumerable<Game> allModels = await mediator.Query<GetGameQuery, IEnumerable<Game>>(new GetGameQuery(count, genre, userId, teamId));
 
-            IOrderedQueryable<Game> ordered = allModels.OrderByDescending(x => x.CreateDate);
-
-            IQueryable<Game> taken = ordered.Take(count);
-
-            List<GameListItemViewModel> vms = taken.ProjectTo<GameListItemViewModel>(mapper.ConfigurationProvider).ToList();
+            List<GameListItemViewModel> vms = allModels.AsQueryable().ProjectTo<GameListItemViewModel>(mapper.ConfigurationProvider).ToList();
 
             foreach (GameListItemViewModel item in vms)
             {
@@ -238,7 +230,7 @@ namespace LuduStack.Application.Services
             return vms;
         }
 
-        public OperationResultVo GameFollow(Guid currentUserId, Guid gameId)
+        public async Task<OperationResultVo> GameFollow(Guid currentUserId, Guid gameId)
         {
             try
             {
@@ -247,13 +239,15 @@ namespace LuduStack.Application.Services
                     return new OperationResultVo("You must be logged in to follow a game");
                 }
 
-                gameDomainService.Follow(currentUserId, gameId);
+                CommandResult<int> result = await mediator.SendCommand<FollowGameCommand, int>(new FollowGameCommand(currentUserId, gameId));
 
-                unitOfWork.Commit();
+                if (!result.Validation.IsValid)
+                {
+                    string message = result.Validation.Errors.FirstOrDefault().ErrorMessage;
+                    return new OperationResultVo<int>(0, false, message);
+                }
 
-                int newCount = gameDomainService.CountFollowers(gameId);
-
-                return new OperationResultVo<int>(newCount);
+                return new OperationResultVo<int>(result.Result);
             }
             catch (Exception ex)
             {
@@ -261,7 +255,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo GameUnfollow(Guid currentUserId, Guid gameId)
+        public async Task<OperationResultVo> GameUnfollow(Guid currentUserId, Guid gameId)
         {
             try
             {
@@ -270,13 +264,15 @@ namespace LuduStack.Application.Services
                     return new OperationResultVo("You must be logged in to unfollow a game");
                 }
 
-                gameDomainService.Unfollow(currentUserId, gameId);
+                CommandResult<int> result = await mediator.SendCommand<UnfollowGameCommand, int>(new UnfollowGameCommand(currentUserId, gameId));
 
-                unitOfWork.Commit();
+                if (!result.Validation.IsValid)
+                {
+                    string message = result.Validation.Errors.FirstOrDefault().ErrorMessage;
+                    return new OperationResultVo<int>(0, false, message);
+                }
 
-                int newCount = gameDomainService.CountFollowers(gameId);
-
-                return new OperationResultVo<int>(newCount);
+                return new OperationResultVo<int>(result.Result);
             }
             catch (Exception ex)
             {
@@ -284,17 +280,19 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo GameLike(Guid currentUserId, Guid gameId)
+        public async Task<OperationResultVo> GameLike(Guid currentUserId, Guid gameId)
         {
             try
             {
-                gameDomainService.Like(currentUserId, gameId);
+                CommandResult<int> result = await mediator.SendCommand<LikeGameCommand, int>(new LikeGameCommand(currentUserId, gameId));
 
-                unitOfWork.Commit();
+                if (!result.Validation.IsValid)
+                {
+                    string message = result.Validation.Errors.FirstOrDefault().ErrorMessage;
+                    return new OperationResultVo<int>(0, false, message);
+                }
 
-                int newCount = gameDomainService.CountLikes(gameId);
-
-                return new OperationResultVo<int>(newCount);
+                return new OperationResultVo<int>(result.Result);
             }
             catch (Exception ex)
             {
@@ -302,17 +300,19 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo GameUnlike(Guid currentUserId, Guid gameId)
+        public async Task<OperationResultVo> GameUnlike(Guid currentUserId, Guid gameId)
         {
             try
             {
-                gameDomainService.Unlike(currentUserId, gameId);
+                CommandResult<int> result = await mediator.SendCommand<UnlikeGameCommand, int>(new UnlikeGameCommand(currentUserId, gameId));
 
-                unitOfWork.Commit();
+                if (!result.Validation.IsValid)
+                {
+                    string message = result.Validation.Errors.FirstOrDefault().ErrorMessage;
+                    return new OperationResultVo<int>(0, false, message);
+                }
 
-                int newCount = gameDomainService.CountLikes(gameId);
-
-                return new OperationResultVo<int>(newCount);
+                return new OperationResultVo<int>(result.Result);
             }
             catch (Exception ex)
             {

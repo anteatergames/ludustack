@@ -25,12 +25,12 @@ namespace LuduStack.Application.Interfaces
 
         Task<IEnumerable<SelectListItemVo>> GetByUser(Guid userId);
 
-        OperationResultVo GameFollow(Guid currentUserId, Guid gameId);
+        Task<OperationResultVo> GameFollow(Guid currentUserId, Guid gameId);
 
-        OperationResultVo GameUnfollow(Guid currentUserId, Guid gameId);
+        Task<OperationResultVo> GameUnfollow(Guid currentUserId, Guid gameId);
 
-        OperationResultVo GameLike(Guid currentUserId, Guid gameId);
+        Task<OperationResultVo> GameLike(Guid currentUserId, Guid gameId);
 
-        OperationResultVo GameUnlike(Guid currentUserId, Guid gameId);
+        Task<OperationResultVo> GameUnlike(Guid currentUserId, Guid gameId);
     }
 }

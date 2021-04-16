@@ -32,7 +32,6 @@ namespace LuduStack.Infra.CrossCutting.IoC
             #region Game
 
             services.AddScoped<IGameAppService, GameAppService>();
-            services.AddScoped<IGameDomainService, GameDomainService>();
             services.AddScoped<IGameRepository, GameRepository>();
 
             #endregion Game

@@ -15,7 +15,7 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
         {
         }
 
-        public async Task<bool> Follow(Guid userId, Guid gameId)
+        public async Task<bool> FollowDirectly(Guid userId, Guid gameId)
         {
             FilterDefinition<Game> gameFilter = Builders<Game>.Filter.Where(x => x.Id == gameId);
             UpdateDefinition<Game> followerRemove = Builders<Game>.Update.AddToSet(c => c.Followers, new GameFollow { UserId = userId, GameId = gameId });
@@ -25,7 +25,15 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
             return result.IsAcknowledged && result.MatchedCount > 0;
         }
 
-        public async Task<bool> Unfollow(Guid userId, Guid gameId)
+        public async Task Follow(Guid userId, Guid gameId)
+        {
+            FilterDefinition<Game> gameFilter = Builders<Game>.Filter.Where(x => x.Id == gameId);
+            UpdateDefinition<Game> follow = Builders<Game>.Update.AddToSet(c => c.Followers, new GameFollow { UserId = userId, GameId = gameId });
+
+            await Context.AddCommand(() => DbSet.UpdateOneAsync(gameFilter, follow));
+        }
+
+        public async Task<bool> UnfollowDirectly(Guid userId, Guid gameId)
         {
             FilterDefinition<Game> gameFilter = Builders<Game>.Filter.Where(x => x.Id == gameId);
             UpdateDefinition<Game> followerRemove = Builders<Game>.Update.PullFilter(c => c.Followers, m => m.UserId == userId);
@@ -35,24 +43,48 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
             return result.IsAcknowledged && result.MatchedCount > 0;
         }
 
-        public async Task<bool> Like(Guid userId, Guid gameId)
+        public async Task Unfollow(Guid userId, Guid gameId)
         {
             FilterDefinition<Game> gameFilter = Builders<Game>.Filter.Where(x => x.Id == gameId);
-            UpdateDefinition<Game> followerRemove = Builders<Game>.Update.AddToSet(c => c.Likes, new GameLike { UserId = userId, GameId = gameId });
+            UpdateDefinition<Game> unfollow = Builders<Game>.Update.PullFilter(c => c.Followers, m => m.UserId == userId);
 
-            UpdateResult result = await DbSet.UpdateOneAsync(gameFilter, followerRemove);
+            await Context.AddCommand(() => DbSet.UpdateOneAsync(gameFilter, unfollow));
+        }
+
+        public async Task<bool> LikeDirectly(Guid userId, Guid gameId)
+        {
+            FilterDefinition<Game> gameFilter = Builders<Game>.Filter.Where(x => x.Id == gameId);
+            UpdateDefinition<Game> like = Builders<Game>.Update.AddToSet(c => c.Likes, new GameLike { UserId = userId, GameId = gameId });
+
+            UpdateResult result = await DbSet.UpdateOneAsync(gameFilter, like);
 
             return result.IsAcknowledged && result.MatchedCount > 0;
         }
 
-        public async Task<bool> Unlike(Guid userId, Guid gameId)
+        public async Task Like(Guid userId, Guid gameId)
         {
             FilterDefinition<Game> gameFilter = Builders<Game>.Filter.Where(x => x.Id == gameId);
-            UpdateDefinition<Game> followerRemove = Builders<Game>.Update.PullFilter(c => c.Likes, m => m.UserId == userId);
+            UpdateDefinition<Game> like = Builders<Game>.Update.AddToSet(c => c.Likes, new GameLike { UserId = userId, GameId = gameId });
 
-            UpdateResult result = await DbSet.UpdateOneAsync(gameFilter, followerRemove);
+            await Context.AddCommand(() => DbSet.UpdateOneAsync(gameFilter, like));
+        }
+
+        public async Task<bool> UnlikeDirectly(Guid userId, Guid gameId)
+        {
+            FilterDefinition<Game> gameFilter = Builders<Game>.Filter.Where(x => x.Id == gameId);
+            UpdateDefinition<Game> unlike = Builders<Game>.Update.PullFilter(c => c.Likes, m => m.UserId == userId);
+
+            UpdateResult result = await DbSet.UpdateOneAsync(gameFilter, unlike);
 
             return result.IsAcknowledged && result.MatchedCount > 0;
+        }
+
+        public async Task Unlike(Guid userId, Guid gameId)
+        {
+            FilterDefinition<Game> gameFilter = Builders<Game>.Filter.Where(x => x.Id == gameId);
+            UpdateDefinition<Game> unlike = Builders<Game>.Update.PullFilter(c => c.Likes, m => m.UserId == userId);
+
+            await Context.AddCommand(() => DbSet.UpdateOneAsync(gameFilter, unlike));
         }
 
         public Task<int> CountFollowers(Guid gameId)

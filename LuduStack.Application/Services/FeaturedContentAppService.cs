@@ -6,7 +6,6 @@ using LuduStack.Application.ViewModels.Content;
 using LuduStack.Application.ViewModels.FeaturedContent;
 using LuduStack.Application.ViewModels.Home;
 using LuduStack.Domain.Core.Enums;
-using LuduStack.Domain.Interfaces.Services;
 using LuduStack.Domain.Messaging;
 using LuduStack.Domain.Messaging.Queries.FeaturedContent;
 using LuduStack.Domain.Messaging.Queries.UserContent;

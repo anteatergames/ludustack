@@ -167,7 +167,7 @@ namespace LuduStack.Web.Controllers
         [Route("game/like")]
         public async Task<IActionResult> LikeGame(Guid likedId)
         {
-            OperationResultVo response = gameAppService.GameLike(CurrentUserId, likedId);
+            OperationResultVo response = await gameAppService.GameLike(CurrentUserId, likedId);
 
             OperationResultVo<GameViewModel> gameResult = await gameAppService.GetById(CurrentUserId, likedId);
 
@@ -180,9 +180,9 @@ namespace LuduStack.Web.Controllers
 
         [HttpPost]
         [Route("game/unlike")]
-        public IActionResult UnLikeGame(Guid likedId)
+        public async Task<IActionResult> UnLikeGame(Guid likedId)
         {
-            OperationResultVo response = gameAppService.GameUnlike(CurrentUserId, likedId);
+            OperationResultVo response = await gameAppService.GameUnlike(CurrentUserId, likedId);
 
             return Json(response);
         }
@@ -195,7 +195,7 @@ namespace LuduStack.Web.Controllers
         [Route("game/follow")]
         public async Task<IActionResult> FollowGame(Guid gameId)
         {
-            OperationResultVo response = gameAppService.GameFollow(CurrentUserId, gameId);
+            OperationResultVo response = await gameAppService.GameFollow(CurrentUserId, gameId);
 
             OperationResultVo<GameViewModel> gameResult = await gameAppService.GetById(CurrentUserId, gameId);
 
@@ -208,9 +208,9 @@ namespace LuduStack.Web.Controllers
 
         [HttpPost]
         [Route("game/unfollow")]
-        public IActionResult UnFollowGame(Guid gameId)
+        public async Task<IActionResult> UnFollowGame(Guid gameId)
         {
-            OperationResultVo response = gameAppService.GameUnfollow(CurrentUserId, gameId);
+            OperationResultVo response = await gameAppService.GameUnfollow(CurrentUserId, gameId);
 
             return Json(response);
         }

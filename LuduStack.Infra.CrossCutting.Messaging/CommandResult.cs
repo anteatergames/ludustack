@@ -31,6 +31,10 @@ namespace LuduStack.Infra.CrossCutting.Messaging
     {
         public T Result { get; set; }
 
+        public CommandResult()
+        {
+        }
+
         public CommandResult(T result)
         {
             Result = result;
