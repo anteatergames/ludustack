@@ -219,7 +219,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo AcceptInvite(Guid teamId, Guid currentUserId, string quote)
+        public async Task<OperationResultVo> AcceptInvite(Guid teamId, Guid currentUserId, string quote)
         {
             int pointsEarned = 0;
 
@@ -229,7 +229,7 @@ namespace LuduStack.Application.Services
 
                 pointsEarned += gamificationDomainService.ProcessAction(currentUserId, PlatformAction.TeamJoin);
 
-                unitOfWork.Commit();
+                await unitOfWork.Commit();
 
                 return new OperationResultVo(true, pointsEarned);
             }

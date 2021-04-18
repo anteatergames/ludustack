@@ -305,12 +305,7 @@ namespace LuduStack.Application.Services
 
                 if (!currentUserHelped && !currentUserIsOwner)
                 {
-                    bool badgeUpdated = gamificationDomainService.SetBadgeOccurence(currentUserId, BadgeType.Babel, projectId);
-
-                    if (badgeUpdated)
-                    {
-                        await unitOfWork.Commit();
-                    }
+                    await mediator.SendCommand(new SaveUserBadgeCommand(currentUserId, BadgeType.Babel, projectId));
                 }
 
                 UserProfile profile = await GetCachedProfileByUserId(entry.UserId);

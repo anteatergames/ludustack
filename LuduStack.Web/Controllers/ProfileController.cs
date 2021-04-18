@@ -52,7 +52,7 @@ namespace LuduStack.Web.Controllers
                 vm = profile;
             }
 
-            gamificationAppService.FillProfileGamificationDetails(CurrentUserId, ref vm);
+            await gamificationAppService.FillProfileGamificationDetails(CurrentUserId, vm);
 
             if (CurrentUserId != Guid.Empty)
             {

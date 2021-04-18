@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace LuduStack.Web.Areas.Gamification.Controllers
 {
@@ -34,9 +35,9 @@ namespace LuduStack.Web.Areas.Gamification.Controllers
         }
 
         [Route("list/{id}")]
-        public IActionResult ListByUser(Guid id)
+        public async Task<IActionResult> ListByUser(Guid id)
         {
-            OperationResultListVo<UserBadgeViewModel> badges = gamificationAppService.GetBadgesByUserId(id);
+            OperationResultListVo<UserBadgeViewModel> badges = await gamificationAppService.GetBadgesByUserId(id);
 
             return View("_List", badges.Value);
         }

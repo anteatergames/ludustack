@@ -166,9 +166,9 @@ namespace LuduStack.Web.Controllers
         }
 
         [Route("{teamId:guid}/invitation/accept")]
-        public IActionResult AcceptInvitation(Guid teamId, string quote)
+        public async Task<IActionResult> AcceptInvitation(Guid teamId, string quote)
         {
-            OperationResultVo serviceResult = teamAppService.AcceptInvite(teamId, CurrentUserId, quote);
+            OperationResultVo serviceResult = await teamAppService.AcceptInvite(teamId, CurrentUserId, quote);
 
             return Json(serviceResult);
         }

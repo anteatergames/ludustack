@@ -23,7 +23,7 @@ namespace LuduStack.Application.Interfaces
 
         Task<OperationResultVo> GenerateNewTeam(Guid currentUserId);
 
-        OperationResultVo AcceptInvite(Guid teamId, Guid currentUserId, string quote);
+        Task<OperationResultVo> AcceptInvite(Guid teamId, Guid currentUserId, string quote);
 
         OperationResultVo RejectInvite(Guid teamId, Guid currentUserId);
 

@@ -43,6 +43,11 @@ namespace LuduStack.Domain.Messaging
         {
             UserId = userId;
         }
+
+        protected BaseUserCommand(Guid userId) : base(Guid.Empty)
+        {
+            UserId = userId;
+        }
     }
 
     public abstract class BaseUserCommand<T> : BaseCommand<T>

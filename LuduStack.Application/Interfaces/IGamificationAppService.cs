@@ -2,17 +2,18 @@
 using LuduStack.Application.ViewModels.User;
 using LuduStack.Domain.ValueObjects;
 using System;
+using System.Threading.Tasks;
 
 namespace LuduStack.Application.Interfaces
 {
     public interface IGamificationAppService
     {
-        OperationResultListVo<RankingViewModel> GetAll();
+        Task<OperationResultListVo<RankingViewModel>> GetAll();
 
-        OperationResultVo FillProfileGamificationDetails(Guid currentUserId, ref ProfileViewModel vm);
+        Task<OperationResultVo> FillProfileGamificationDetails(Guid currentUserId, ProfileViewModel vm);
 
-        OperationResultListVo<GamificationLevelViewModel> GetAllLevels();
+        Task<OperationResultListVo<GamificationLevelViewModel>> GetAllLevels();
 
-        OperationResultListVo<UserBadgeViewModel> GetBadgesByUserId(Guid userId);
+        Task<OperationResultListVo<UserBadgeViewModel>> GetBadgesByUserId(Guid userId);
     }
 }

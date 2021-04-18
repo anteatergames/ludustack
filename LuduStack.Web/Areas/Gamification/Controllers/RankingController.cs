@@ -24,16 +24,16 @@ namespace LuduStack.Web.Areas.Gamification.Controllers
         }
 
         [Route("help")]
-        public IActionResult Help()
+        public async Task<IActionResult> Help()
         {
-            OperationResultListVo<GamificationLevelViewModel> objs = gamificationAppService.GetAllLevels();
+            OperationResultListVo<GamificationLevelViewModel> objs = await gamificationAppService.GetAllLevels();
 
             return View(objs.Value);
         }
 
         public async Task<IActionResult> Index()
         {
-            OperationResultListVo<RankingViewModel> serviceResult = gamificationAppService.GetAll();
+            OperationResultListVo<RankingViewModel> serviceResult = await gamificationAppService.GetAll();
 
             List<RankingViewModel> objs = serviceResult.Value.ToList();
 

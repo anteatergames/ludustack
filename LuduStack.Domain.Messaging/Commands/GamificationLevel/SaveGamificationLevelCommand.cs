@@ -32,10 +32,10 @@ namespace LuduStack.Domain.Messaging
         protected readonly IGamificationLevelRepository gamificationLevelRepository;
         protected readonly IGamificationDomainService gamificationDomainService;
 
-        public SaveGamificationLevelCommandHandler(IUnitOfWork unitOfWork, IGamificationLevelRepository GamificationLevelRepository, IGamificationDomainService gamificationDomainService)
+        public SaveGamificationLevelCommandHandler(IUnitOfWork unitOfWork, IGamificationLevelRepository gamificationLevelRepository, IGamificationDomainService gamificationDomainService)
         {
             this.unitOfWork = unitOfWork;
-            gamificationLevelRepository = GamificationLevelRepository;
+            this.gamificationLevelRepository = gamificationLevelRepository;
             this.gamificationDomainService = gamificationDomainService;
         }
 
