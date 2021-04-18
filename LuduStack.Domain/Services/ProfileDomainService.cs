@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace LuduStack.Domain.Services
 {
-    public class ProfileDomainService :IProfileDomainService
+    public class ProfileDomainService : IProfileDomainService
     {
         protected readonly IUserProfileRepository userProfileRepository;
 

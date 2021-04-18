@@ -15,6 +15,7 @@ namespace LuduStack.Infra.CrossCutting.Messaging
             Result = new CommandResult();
         }
     }
+
     public abstract class Command<T> : Message, IRequest<CommandResult<T>>
     {
         public DateTime Timestamp { get; private set; }

@@ -12,6 +12,7 @@ namespace LuduStack.Domain.Messaging
                 .WithMessage("The Id must be provided.");
         }
     }
+
     public abstract class BaseCommandValidation<T, TResult> : AbstractValidator<T> where T : BaseCommand<TResult>
     {
         protected void ValidateId()

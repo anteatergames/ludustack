@@ -7,6 +7,7 @@ namespace LuduStack.Domain.Interfaces.Repository
     public interface IGameRepository : IRepository<Game>
     {
         Task<bool> FollowDirectly(Guid userId, Guid gameId);
+
         Task Follow(Guid userId, Guid gameId);
 
         Task<bool> UnfollowDirectly(Guid userId, Guid gameId);

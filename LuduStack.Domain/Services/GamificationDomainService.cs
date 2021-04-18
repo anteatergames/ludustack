@@ -14,17 +14,14 @@ namespace LuduStack.Domain.Services
         private readonly IGamificationRepository gamificationRepository;
         private readonly IGamificationActionRepository gamificationActionRepository;
         private readonly IGamificationLevelRepository gamificationLevelRepository;
-        private readonly IUserBadgeRepository userBadgeRepository;
 
         public GamificationDomainService(IGamificationRepository gamificationRepository
             , IGamificationActionRepository gamificationActionRepository
-            , IGamificationLevelRepository gamificationLevelRepository
-            , IUserBadgeRepository userBadgeRepository)
+            , IGamificationLevelRepository gamificationLevelRepository)
         {
             this.gamificationRepository = gamificationRepository;
             this.gamificationActionRepository = gamificationActionRepository;
             this.gamificationLevelRepository = gamificationLevelRepository;
-            this.userBadgeRepository = userBadgeRepository;
         }
 
         public int ProcessAction(Guid userId, PlatformAction action)
