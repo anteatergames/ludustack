@@ -3,10 +3,6 @@
 var ALERTSYSTEM = (function () {
     "use strict";
 
-    function init() {
-        console.log('ALERTSYSTEM.init');
-    }
-
     function showInfoAlert(text, callback) {
         showAlert(text, 'info', callback);
     }
@@ -97,7 +93,6 @@ var ALERTSYSTEM = (function () {
     }
 
     return {
-        Init: init,
         ShowSuccessMessage: showSuccessMessage,
         ShowWarningMessage: showWarningMessage,
         ShowConfirmMessage: showConfirmMessage,
@@ -109,7 +104,3 @@ var ALERTSYSTEM = (function () {
         }
     };
 }());
-
-$(function () {
-    ALERTSYSTEM.Init();
-});
