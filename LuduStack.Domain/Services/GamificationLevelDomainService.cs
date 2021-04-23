@@ -2,6 +2,7 @@
 using LuduStack.Domain.Interfaces.Services;
 using LuduStack.Domain.Models;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -23,7 +24,7 @@ namespace LuduStack.Domain.Services
                 UserId = userId
             };
 
-            System.Collections.Generic.IEnumerable<GamificationLevel> all = await gamificationLevelRepository.GetAll();
+            IEnumerable<GamificationLevel> all = await gamificationLevelRepository.GetAll();
 
             int maxNumber = all.Max(x => x.Number);
             model.Number = maxNumber + 1;
@@ -36,7 +37,7 @@ namespace LuduStack.Domain.Services
 
         public async Task<bool> ValidateXp(int xpToAchieve, Guid id)
         {
-            System.Collections.Generic.IEnumerable<GamificationLevel> all = await gamificationLevelRepository.GetAll();
+            IEnumerable<GamificationLevel> all = await gamificationLevelRepository.GetAll();
 
             int maxXp = all.Max(x => x.XpToAchieve);
             Guid? maxId = all.FirstOrDefault(x => x.XpToAchieve == maxXp)?.Id;

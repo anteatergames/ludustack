@@ -385,6 +385,21 @@
         });
     }
 
+    function get(url, callback) {
+        $.get(url).done(function (response) {
+            if (response.success === true) {
+                if (callback) {
+                    callback(response);
+                }
+            }
+            else {
+                if (response.message) {
+                    ALERTSYSTEM.ShowWarningMessage(response.message);
+                }
+            }
+        });
+    }
+
     function deleteEntity(btn, callback) {
         postOrDeleteWithConfirmation(btn, 'DELETE', callback);
     }
@@ -492,6 +507,7 @@
         },
         Ajax: {
             Post: post,
+            Get: get,
             GetHtml: getHtml,
             LoadHtml: loadHtml,
             CallBackendAction: callBackendAction,

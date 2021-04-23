@@ -161,6 +161,14 @@ namespace LuduStack.Infra.CrossCutting.IoC
 
             #endregion Comics
 
+            #region BillRate
+
+            services.AddScoped<ICostCalculatorAppService, CostCalculatorAppService>();
+            services.AddScoped<IBillRateAppService, BillRateAppService>();
+            services.AddScoped<IBillRateRepository, BillRateRepository>();
+
+            #endregion BillRate
+
             #region Common
 
             services.AddScoped<IBaseAppServiceCommon, BaseAppServiceCommon>();

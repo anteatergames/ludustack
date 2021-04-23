@@ -26,6 +26,7 @@ namespace LuduStack.Infra.Data.MongoDb.Maps
                 map.AddKnownType(typeof(Poll));
                 map.AddKnownType(typeof(PollOption));
                 map.AddKnownType(typeof(PollVote));
+                map.AddKnownType(typeof(BillRate));
             });
         }
     }

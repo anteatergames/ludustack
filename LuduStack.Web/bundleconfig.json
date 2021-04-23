@@ -433,9 +433,9 @@
     ]
   },
   {
-    "outputFileName": "wwwroot/css/staff.min.css",
+    "outputFileName": "wwwroot/css/memberpowers.min.css",
     "inputFiles": [
-      "wwwroot/css/staff.css"
+      "wwwroot/css/memberpowers.css"
     ]
   },
   {
@@ -466,6 +466,34 @@
     "outputFileName": "wwwroot/js/calculators/costcalculator.min.js",
     "inputFiles": [
       "wwwroot/js/calculators/costcalculator.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/billrate.min.css",
+    "inputFiles": [
+      "wwwroot/css/billrate.css",
+      "wwwroot/css/billrate.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/billrate/billratedashboard.min.js",
+    "inputFiles": [
+      "wwwroot/js/billrate/billratecommon.js",
+      "wwwroot/js/billrate/billratedashboard.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/billrate/billrateedit.min.js",
+    "inputFiles": [
+      "wwwroot/js/shared/common-edit.js",
+      "wwwroot/js/billrate/billratecommon.js",
+      "wwwroot/js/billrate/billrateedit.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/billrate/billratedetails.min.js",
+    "inputFiles": [
+      "wwwroot/js/billrate/billratedetails.js"
     ]
   }
 ]

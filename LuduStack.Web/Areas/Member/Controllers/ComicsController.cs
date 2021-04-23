@@ -12,8 +12,7 @@ using System.Threading.Tasks;
 
 namespace LuduStack.Web.Areas.Member.Controllers
 {
-    [Authorize]
-    [Route("comics")]
+    [Route("member/comics")]
     public class ComicsController : MemberBaseController
     {
         private readonly IComicsAppService comicsAppService;

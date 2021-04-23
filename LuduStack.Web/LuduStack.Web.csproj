@@ -19,6 +19,7 @@
     <Compile Remove="Areas\Work\Data\**" />
     <Compile Remove="Areas\Work\Models\**" />
     <Compile Remove="wwwroot\assets\**" />
+    <Compile Remove="wwwroot\js\NewFolder\**" />
     <Content Remove="Areas\Member\Data\**" />
     <Content Remove="Areas\Member\Models\**" />
     <Content Remove="Areas\Staff\Data\**" />
@@ -26,6 +27,7 @@
     <Content Remove="Areas\Work\Data\**" />
     <Content Remove="Areas\Work\Models\**" />
     <Content Remove="wwwroot\assets\**" />
+    <Content Remove="wwwroot\js\NewFolder\**" />
     <EmbeddedResource Remove="Areas\Member\Data\**" />
     <EmbeddedResource Remove="Areas\Member\Models\**" />
     <EmbeddedResource Remove="Areas\Staff\Data\**" />
@@ -33,6 +35,7 @@
     <EmbeddedResource Remove="Areas\Work\Data\**" />
     <EmbeddedResource Remove="Areas\Work\Models\**" />
     <EmbeddedResource Remove="wwwroot\assets\**" />
+    <EmbeddedResource Remove="wwwroot\js\NewFolder\**" />
     <None Remove="Areas\Member\Data\**" />
     <None Remove="Areas\Member\Models\**" />
     <None Remove="Areas\Staff\Data\**" />
@@ -40,6 +43,7 @@
     <None Remove="Areas\Work\Data\**" />
     <None Remove="Areas\Work\Models\**" />
     <None Remove="wwwroot\assets\**" />
+    <None Remove="wwwroot\js\NewFolder\**" />
   </ItemGroup>
 
 
@@ -90,6 +94,9 @@
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Areas\Learn\Views\_ViewStart.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Areas\Member\Views\BillRate\CreateEditWrapper.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Areas\Member\Views\Comics\CreateEditWrapper.cshtml">

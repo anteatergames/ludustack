@@ -818,6 +818,18 @@
                     </div>
                 }
 
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <div class="col-12 mb-2">
+                        <h3>@SharedLocalizer["Member Actions"]</h3>
+                    </div>
+                    <div class="col-12 mb-2">
+                        <a asp-area="member" asp-controller="memberpowers" asp-action="index" class="btn bg-transparent btn-block btn-outline-warning">
+                            <i class="fa fa-star-o" aria-hidden="true">&nbsp;</i>@SharedLocalizer["Member Area"]
+                        </a>
+                    </div>
+                }
+
                 <div class="col-12 mb-2">
                     @if (ViewData["ControlSidebarTitle"] != null)
                     {
@@ -836,7 +848,7 @@
                     @RenderSection("ControlSideBar", required: false)
                 </div>
                 <div class="col-12 mb-2">
-                    <h3>@SharedLocalizer["Quick Actions"]</h3>
+                    <h2>@SharedLocalizer["Quick Actions"]</h2>
                 </div>
 
                 <div class="col-12 mb-2">

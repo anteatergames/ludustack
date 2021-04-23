@@ -1,6 +1,7 @@
 ﻿using LuduStack.Application.AutoMapper.MappingActions;
 using LuduStack.Application.AutoMapper.Resolvers;
 using LuduStack.Application.ViewModels;
+using LuduStack.Application.ViewModels.BillRate;
 using LuduStack.Application.ViewModels.Brainstorm;
 using LuduStack.Application.ViewModels.Comics;
 using LuduStack.Application.ViewModels.Content;
@@ -171,6 +172,12 @@ namespace LuduStack.Application.AutoMapper
             CreateMap<ComicStripViewModel, Domain.Models.UserContent>();
 
             #endregion Comics
+
+            #region BillRate
+
+            CreateMap<BillRateViewModel, Domain.Models.BillRate>();
+
+            #endregion BillRate
         }
     }
 }
