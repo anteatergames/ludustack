@@ -22,12 +22,18 @@ namespace LuduStack.Application.ViewModels.BillRate
         [Display(Name = "Game Element", Description = "What would be the outcome of this service?")]
         public GameElement GameElement { get; set; }
 
+        [Required(ErrorMessage = "The Element Price is required!")]
+        [Display(Name = "Element Price (USD)", Description = "How much you bill (in US dolars) for one game element of this type?")]
+        public decimal ElementPrice { get; set; }
+
         [Required(ErrorMessage = "The Hour Price is required!")]
-        [Display(Name = "Hour Price", Description = "How much you bill for one hour working on this?")]
+        [Display(Name = "Hour Price (USD)", Description = "How much you bill (in US dolars) for one hour working on this?")]
         public decimal HourPrice { get; set; }
 
         [Required(ErrorMessage = "The Hour Quantity is required!")]
         [Display(Name = "Hour Quantity", Description = "How many hours it takes to accomplish one game element of this?")]
         public int HourQuantity { get; set; }
+
+        public string Icon { get; set; }
     }
 }

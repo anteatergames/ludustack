@@ -28,6 +28,13 @@ namespace LuduStack.Domain.ValueObjects
     {
         public GameElement GameElement { get; set; }
 
+        public ResultRateVo Price { get; set; }
+
+        public ResultRateVo Time { get; set; }
+    }
+
+    public class ResultRateVo
+    {
         public decimal Minimum { get; set; }
 
         public decimal Average { get; set; }

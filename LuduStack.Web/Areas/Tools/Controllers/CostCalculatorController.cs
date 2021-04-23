@@ -1,4 +1,6 @@
 ﻿using LuduStack.Application.Interfaces;
+using LuduStack.Application.ViewModels.CostCalculator;
+using LuduStack.Domain.ValueObjects;
 using LuduStack.Web.Areas.Tools.Controllers.Base;
 using LuduStack.Web.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -28,7 +30,7 @@ namespace LuduStack.Web.Areas.Tools.Controllers
         [Route("tools/costcalculator/getrates")]
         public async Task<IActionResult> GetRates()
         {
-            var rates = await costCalculatorAppService.GetRates(CurrentUserId);
+            OperationResultVo<CostsViewModel> rates = await costCalculatorAppService.GetRates(CurrentUserId);
 
             return Json(rates);
         }

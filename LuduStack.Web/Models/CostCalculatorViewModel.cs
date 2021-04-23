@@ -17,12 +17,12 @@ namespace LuduStack.Web.Models
         public int ConceptArtCount { get; set; }
 
         [Range(0, 9999, ErrorMessage = "Zero or more")]
-        [Display(Name = "Characters", Description = "How many characters the game has?")]
-        public int CharacterCount { get; set; }
+        [Display(Name = "2D Characters", Description = "How many 2D characters the game has?")]
+        public int CharacterCount2d { get; set; }
 
         [Range(0, 9999, ErrorMessage = "Zero or more.")]
-        [Display(Name = "Levels/Maps/Tracks", Description = "How many levels/maps/tracks the game has?")]
-        public int LevelCount { get; set; }
+        [Display(Name = "2D Levels/Maps/Tracks", Description = "How many 2D levels/maps/tracks the game has?")]
+        public int LevelCount2d { get; set; }
 
         [Range(0, 9999, ErrorMessage = "Zero or more")]
         [Display(Name = "Sound FX", Description = "How many sound effects you need in your game?")]

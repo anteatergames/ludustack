@@ -29,6 +29,13 @@ namespace LuduStack.Application.ViewModels.CostCalculator
     {
         public GameElement GameElement { get; set; }
 
+        public ResultRateBaseViewModel Price { get; set; }
+
+        public ResultRateBaseViewModel Time { get; set; }
+    }
+
+    public class ResultRateBaseViewModel
+    {
         public decimal Minimum { get; set; }
 
         public decimal Average { get; set; }

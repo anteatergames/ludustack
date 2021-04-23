@@ -41,25 +41,6 @@ namespace LuduStack.Web.Areas.Member.Controllers
             }
         }
 
-        [Route("{id:guid}")]
-        public async Task<IActionResult> Details(Guid id)
-        {
-            OperationResultVo result = await billRateAppService.GetForDetails(CurrentUserId, id);
-
-            if (result.Success)
-            {
-                OperationResultVo<BillRateViewModel> castRestult = result as OperationResultVo<BillRateViewModel>;
-
-                BillRateViewModel model = castRestult.Value;
-
-                return View("Details", model);
-            }
-            else
-            {
-                return RedirectToAction("index", "home", new { area = string.Empty });
-            }
-        }
-
         [Route("listbyme")]
         public async Task<PartialViewResult> ListByMe()
         {
@@ -79,6 +60,8 @@ namespace LuduStack.Web.Areas.Member.Controllers
             }
 
             ViewData["ListDescription"] = SharedLocalizer["My Bill Rates"].ToString();
+
+            SetIcons(model);
 
             return PartialView("_ListBillRates", model);
         }
@@ -192,6 +175,32 @@ namespace LuduStack.Web.Areas.Member.Controllers
         {
             Dictionary<GameElement, UiInfoAttribute> gameElements = Enum.GetValues(typeof(GameElement)).Cast<GameElement>().ToUiInfoDictionary();
             ViewData["GameElements"] = gameElements;
+        }
+
+
+        private void SetIcons(List<BillRateViewModel> rates)
+        {
+            foreach (var item in rates)
+            {
+                switch (item.BillRateType)
+                {
+                    case BillRateType.Visual:
+                        item.Icon = "text-success fa-2x fas fa-eye";
+                        break;
+                    case BillRateType.Audio:
+                        item.Icon = "text-warning fa-2x fas fa-music";
+                        break;
+                    case BillRateType.Code:
+                        item.Icon = "text-danger fa-2x fas fa-code";
+                        break;
+                    case BillRateType.Text:
+                        item.Icon = "text-dark fa-2x fas fa-paragraph";
+                        break;
+                    default:
+                        item.Icon = "text-muted fa-2x fas fa-question";
+                        break;
+                }
+            }
         }
     }
 }

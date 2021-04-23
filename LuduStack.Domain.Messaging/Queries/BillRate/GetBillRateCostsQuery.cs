@@ -52,25 +52,25 @@ namespace LuduStack.Domain.Messaging.Queries.BillRate
 
         private static void SetPixelArtElementRates(CostCalculatorVo vo, IQueryable<Models.BillRate> rates)
         {
-            VisualRateVo pixelArtConceptArtVo = CreateVisualRateVo(rates, GameElement.ConceptArt, ArtStyle.PixelArt);
+            VisualRateVo pixelArtConceptArtVo = CreateVisualRateVo(rates, GameElement.ConceptArt, ArtStyle.Pixel);
             vo.VisualRates.Add(pixelArtConceptArtVo);
 
-            VisualRateVo pixelArtCharacterVo = CreateVisualRateVo(rates, GameElement.Character, ArtStyle.PixelArt);
+            VisualRateVo pixelArtCharacterVo = CreateVisualRateVo(rates, GameElement.Character2d, ArtStyle.Pixel);
             vo.VisualRates.Add(pixelArtCharacterVo);
 
-            VisualRateVo pixelArtLevelVo = CreateVisualRateVo(rates, GameElement.Level, ArtStyle.PixelArt);
+            VisualRateVo pixelArtLevelVo = CreateVisualRateVo(rates, GameElement.Level2d, ArtStyle.Pixel);
             vo.VisualRates.Add(pixelArtLevelVo);
         }
 
         private static void SetVectorElementRates(CostCalculatorVo vo, IQueryable<Models.BillRate> rates)
         {
-            VisualRateVo vectorConceptArtVo = CreateVisualRateVo(rates, GameElement.ConceptArt, ArtStyle.Vector);
+            VisualRateVo vectorConceptArtVo = CreateVisualRateVo(rates, GameElement.ConceptArt, ArtStyle.Flat);
             vo.VisualRates.Add(vectorConceptArtVo);
 
-            VisualRateVo vectorCharacterVo = CreateVisualRateVo(rates, GameElement.Character, ArtStyle.Vector);
+            VisualRateVo vectorCharacterVo = CreateVisualRateVo(rates, GameElement.Character2d, ArtStyle.Flat);
             vo.VisualRates.Add(vectorCharacterVo);
 
-            VisualRateVo vectorLevelVo = CreateVisualRateVo(rates, GameElement.Level, ArtStyle.Vector);
+            VisualRateVo vectorLevelVo = CreateVisualRateVo(rates, GameElement.Level2d, ArtStyle.Flat);
             vo.VisualRates.Add(vectorLevelVo);
         }
 
@@ -79,10 +79,10 @@ namespace LuduStack.Domain.Messaging.Queries.BillRate
             VisualRateVo artisticConceptArtVo = CreateVisualRateVo(rates, GameElement.ConceptArt, ArtStyle.Artistic);
             vo.VisualRates.Add(artisticConceptArtVo);
 
-            VisualRateVo artisticCharacterVo = CreateVisualRateVo(rates, GameElement.Character, ArtStyle.Artistic);
+            VisualRateVo artisticCharacterVo = CreateVisualRateVo(rates, GameElement.Character2d, ArtStyle.Artistic);
             vo.VisualRates.Add(artisticCharacterVo);
 
-            VisualRateVo artisticLevelVo = CreateVisualRateVo(rates, GameElement.Level, ArtStyle.Artistic);
+            VisualRateVo artisticLevelVo = CreateVisualRateVo(rates, GameElement.Level2d, ArtStyle.Artistic);
             vo.VisualRates.Add(artisticLevelVo);
         }
 
@@ -91,10 +91,10 @@ namespace LuduStack.Domain.Messaging.Queries.BillRate
             VisualRateVo realisticConceptArtVo = CreateVisualRateVo(rates, GameElement.ConceptArt, ArtStyle.Realistic);
             vo.VisualRates.Add(realisticConceptArtVo);
 
-            VisualRateVo realisticCharacterVo = CreateVisualRateVo(rates, GameElement.Character, ArtStyle.Realistic);
+            VisualRateVo realisticCharacterVo = CreateVisualRateVo(rates, GameElement.Character2d, ArtStyle.Realistic);
             vo.VisualRates.Add(realisticCharacterVo);
 
-            VisualRateVo realisticLevelVo = CreateVisualRateVo(rates, GameElement.Level, ArtStyle.Realistic);
+            VisualRateVo realisticLevelVo = CreateVisualRateVo(rates, GameElement.Level2d, ArtStyle.Realistic);
             vo.VisualRates.Add(realisticLevelVo);
         }
 
@@ -127,7 +127,7 @@ namespace LuduStack.Domain.Messaging.Queries.BillRate
 
         private static void SetCodeElementRates(CostCalculatorVo vo, IQueryable<Models.BillRate> rates)
         {
-            CodeRateVo gameplayCodeVo = CreateCodeRateVo(rates, GameElement.GameplayCode);
+            CodeRateVo gameplayCodeVo = CreateCodeRateVo(rates, GameElement.GameplayCode2d);
             vo.CodeRates.Add(gameplayCodeVo);
 
             CodeRateVo uiCodeVo = CreateCodeRateVo(rates, GameElement.UiCode);
@@ -153,9 +153,18 @@ namespace LuduStack.Domain.Messaging.Queries.BillRate
             {
                 GameElement = element,
                 ArtStyle = style,
-                Minimum = elementQuery.Any() ? elementQuery.Min(x => x.HourPrice) : 0,
-                Average = elementQuery.Any() ? elementQuery.Median(x => x.HourPrice) : 0,
-                Maximum = elementQuery.Any() ? elementQuery.Max(x => x.HourPrice) : 0
+                Price = new ResultRateVo
+                {
+                    Minimum = elementQuery.Any() ? elementQuery.Min(x => x.HourPrice) : 0,
+                    Average = elementQuery.Any() ? elementQuery.Median(x => x.HourPrice) : 0,
+                    Maximum = elementQuery.Any() ? elementQuery.Max(x => x.HourPrice) : 0
+                },
+                Time = new ResultRateVo
+                {
+                    Minimum = elementQuery.Any() ? elementQuery.Min(x => x.HourQuantity) : 0,
+                    Average = elementQuery.Any() ? elementQuery.Median(x => (decimal)x.HourQuantity) : 0,
+                    Maximum = elementQuery.Any() ? elementQuery.Max(x => x.HourQuantity) : 0
+                }
             };
         }
 
@@ -169,9 +178,18 @@ namespace LuduStack.Domain.Messaging.Queries.BillRate
             {
                 GameElement = element,
                 SoundStyle = style,
-                Minimum = elementQuery.Any() ? elementQuery.Min(x => x.HourPrice) : 0,
-                Average = elementQuery.Any() ? elementQuery.Median(x => x.HourPrice) : 0,
-                Maximum = elementQuery.Any() ? elementQuery.Max(x => x.HourPrice) : 0
+                Price = new ResultRateVo
+                {
+                    Minimum = elementQuery.Any() ? elementQuery.Min(x => x.HourPrice) : 0,
+                    Average = elementQuery.Any() ? elementQuery.Median(x => x.HourPrice) : 0,
+                    Maximum = elementQuery.Any() ? elementQuery.Max(x => x.HourPrice) : 0
+                },
+                Time = new ResultRateVo
+                {
+                    Minimum = elementQuery.Any() ? elementQuery.Min(x => x.HourQuantity) : 0,
+                    Average = elementQuery.Any() ? elementQuery.Median(x => (decimal)x.HourQuantity) : 0,
+                    Maximum = elementQuery.Any() ? elementQuery.Max(x => x.HourQuantity) : 0
+                }
             };
         }
 
@@ -183,9 +201,18 @@ namespace LuduStack.Domain.Messaging.Queries.BillRate
             return new CodeRateVo
             {
                 GameElement = element,
-                Minimum = elementQuery.Any() ? elementQuery.Min(x => x.HourPrice) : 0,
-                Average = elementQuery.Any() ? elementQuery.Median(x => x.HourPrice) : 0,
-                Maximum = elementQuery.Any() ? elementQuery.Max(x => x.HourPrice) : 0
+                Price = new ResultRateVo
+                {
+                    Minimum = elementQuery.Any() ? elementQuery.Min(x => x.HourPrice) : 0,
+                    Average = elementQuery.Any() ? elementQuery.Median(x => x.HourPrice) : 0,
+                    Maximum = elementQuery.Any() ? elementQuery.Max(x => x.HourPrice) : 0
+                },
+                Time = new ResultRateVo
+                {
+                    Minimum = elementQuery.Any() ? elementQuery.Min(x => x.HourQuantity) : 0,
+                    Average = elementQuery.Any() ? elementQuery.Median(x => (decimal)x.HourQuantity) : 0,
+                    Maximum = elementQuery.Any() ? elementQuery.Max(x => x.HourQuantity) : 0
+                }
             };
         }
 
@@ -197,9 +224,18 @@ namespace LuduStack.Domain.Messaging.Queries.BillRate
             return new TextRateVo
             {
                 GameElement = element,
-                Minimum = elementQuery.Any() ? elementQuery.Min(x => x.HourPrice) : 0,
-                Average = elementQuery.Any() ? elementQuery.Median(x => x.HourPrice) : 0,
-                Maximum = elementQuery.Any() ? elementQuery.Max(x => x.HourPrice) : 0
+                Price = new ResultRateVo
+                {
+                    Minimum = elementQuery.Any() ? elementQuery.Min(x => x.HourPrice) : 0,
+                    Average = elementQuery.Any() ? elementQuery.Median(x => x.HourPrice) : 0,
+                    Maximum = elementQuery.Any() ? elementQuery.Max(x => x.HourPrice) : 0
+                },
+                Time = new ResultRateVo
+                {
+                    Minimum = elementQuery.Any() ? elementQuery.Min(x => x.HourQuantity) : 0,
+                    Average = elementQuery.Any() ? elementQuery.Median(x => (decimal)x.HourQuantity) : 0,
+                    Maximum = elementQuery.Any() ? elementQuery.Max(x => x.HourQuantity) : 0
+                }
             };
         }
     }

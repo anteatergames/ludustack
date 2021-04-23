@@ -49,8 +49,8 @@
         selectors.btnCalculate = '#btnCalculate';
 
         selectors.conceptArtCount = '#ConceptArtCount';
-        selectors.characterCount = '#CharacterCount';
-        selectors.levelCount = '#LevelCount';
+        selectors.characterCount = '#CharacterCount2d';
+        selectors.levelCount = '#LevelCount2d';
         selectors.soundFxCount = '#SoundEffectCount';
         selectors.musicCount = '#MusicTrackCount';
 
@@ -179,8 +179,9 @@
         });
     }
 
-    function formatTableText(baseValue, quantity) {
-        return quantity === 0 || baseValue === 0 ? 0 : `(x${baseValue}) ${baseValue * quantity}`
+    function formatTableText(priceValue, timeValue, quantity) {
+        var multiplier = priceValue * timeValue;
+        return quantity === 0 || priceValue === 0 ? 0 : `(x${multiplier}) ${multiplier * quantity}`
     }
 
     function setRates() {
@@ -191,13 +192,13 @@
             $(selectors.rowConcept + ' ' + selectors.tableValue).text('-');
         }
         else {
-            minimumConceptCost = conceptArtRates[0].minimum * conceptCount;
-            averageConceptCost = conceptArtRates[0].average * conceptCount;
-            maximumConceptCost = conceptArtRates[0].maximum * conceptCount;
+            minimumConceptCost = conceptArtRates[0].price.minimum * conceptArtRates[0].time.minimum * conceptCount;
+            averageConceptCost = conceptArtRates[0].price.average * conceptArtRates[0].time.average * conceptCount;
+            maximumConceptCost = conceptArtRates[0].price.maximum * conceptArtRates[0].time.maximum * conceptCount;
 
-            objs.txtConceptMinimum.text(formatTableText(conceptArtRates[0].minimum, conceptCount));
-            objs.txtConceptAverage.text(formatTableText(conceptArtRates[0].average, conceptCount));
-            objs.txtConceptMaximum.text(formatTableText(conceptArtRates[0].maximum, conceptCount));
+            objs.txtConceptMinimum.text(formatTableText(conceptArtRates[0].price.minimum, conceptArtRates[0].time.minimum, conceptCount));
+            objs.txtConceptAverage.text(formatTableText(conceptArtRates[0].price.average, conceptArtRates[0].time.average, conceptCount));
+            objs.txtConceptMaximum.text(formatTableText(conceptArtRates[0].price.maximum, conceptArtRates[0].time.maximum, conceptCount));
         }
 
         var characterRates = rates.visualRates.filter(x => x.gameElement === objs.characterCount.data('gameelement') && x.artStyle === selectedArtStyle);
@@ -206,13 +207,13 @@
             $(selectors.rowCharacter + ' ' + selectors.tableValue).text('-');
         }
         else {
-            minimumCharacterCost = characterRates[0].minimum * characterCount;
-            averageCharacterCost = characterRates[0].average * characterCount;
-            maximumCharacterCost = characterRates[0].maximum * characterCount;
+            minimumCharacterCost = characterRates[0].price.minimum * characterRates[0].time.minimum * characterCount;
+            averageCharacterCost = characterRates[0].price.average * characterRates[0].time.average * characterCount;
+            maximumCharacterCost = characterRates[0].price.maximum * characterRates[0].time.maximum * characterCount;
 
-            objs.txtCharacterMinimum.text(formatTableText(characterRates[0].minimum, characterCount));
-            objs.txtCharacterAverage.text(formatTableText(characterRates[0].average, characterCount));
-            objs.txtCharacterMaximum.text(formatTableText(characterRates[0].maximum, characterCount));
+            objs.txtCharacterMinimum.text(formatTableText(characterRates[0].price.minimum, characterRates[0].time.minimum, characterCount));
+            objs.txtCharacterAverage.text(formatTableText(characterRates[0].price.average, characterRates[0].time.average, characterCount));
+            objs.txtCharacterMaximum.text(formatTableText(characterRates[0].price.maximum, characterRates[0].time.maximum, characterCount));
         }
 
         var levelRates = rates.visualRates.filter(x => x.gameElement === objs.levelCount.data('gameelement') && x.artStyle === selectedArtStyle);
@@ -221,13 +222,13 @@
             $(selectors.rowLevel + ' ' + selectors.tableValue).text('-');
         }
         else {
-            minimumLevelCost = levelRates[0].minimum * levelCount;
-            averageLevelCost = levelRates[0].average * levelCount;
-            maximumLevelCost = levelRates[0].maximum * levelCount;
+            minimumLevelCost = levelRates[0].price.minimum * levelRates[0].time.minimum * levelCount;
+            averageLevelCost = levelRates[0].price.average * levelRates[0].time.average * levelCount;
+            maximumLevelCost = levelRates[0].price.maximum * levelRates[0].time.maximum * levelCount;
 
-            objs.txtLevelMinimum.text(formatTableText(levelRates[0].minimum, levelCount));
-            objs.txtLevelAverage.text(formatTableText(levelRates[0].average, levelCount));
-            objs.txtLevelMaximum.text(formatTableText(levelRates[0].maximum, levelCount));
+            objs.txtLevelMinimum.text(formatTableText(levelRates[0].price.minimum, levelRates[0].time.minimum, levelCount));
+            objs.txtLevelAverage.text(formatTableText(levelRates[0].price.average, levelRates[0].time.average, levelCount));
+            objs.txtLevelMaximum.text(formatTableText(levelRates[0].price.maximum, levelRates[0].time.maximum, levelCount));
         }
 
         var soundFxRates = rates.audioRates.filter(x => x.gameElement === objs.soundFxCount.data('gameelement') && x.soundStyle === selectedSoundStyle);
@@ -236,13 +237,13 @@
             $(selectors.rowSoundFx + ' ' + selectors.tableValue).text('-');
         }
         else {
-            minimumSoundFxCost = soundFxRates[0].minimum * soundFxCount;
-            averageSoundFxCost = soundFxRates[0].average * soundFxCount;
-            maximumSoundFxCost = soundFxRates[0].maximum * soundFxCount;
+            minimumSoundFxCost = soundFxRates[0].price.minimum * soundFxRates[0].time.minimum * soundFxCount;
+            averageSoundFxCost = soundFxRates[0].price.average * soundFxRates[0].time.average * soundFxCount;
+            maximumSoundFxCost = soundFxRates[0].price.maximum * soundFxRates[0].time.maximum * soundFxCount;
 
-            objs.txtSoundFxMinimum.text(formatTableText(soundFxRates[0].minimum, soundFxCount));
-            objs.txtSoundFxAverage.text(formatTableText(soundFxRates[0].average, soundFxCount));
-            objs.txtSoundFxMaximum.text(formatTableText(soundFxRates[0].maximum, soundFxCount));
+            objs.txtSoundFxMinimum.text(formatTableText(soundFxRates[0].price.minimum, soundFxRates[0].time.minimum, soundFxCount));
+            objs.txtSoundFxAverage.text(formatTableText(soundFxRates[0].price.average, soundFxRates[0].time.average, soundFxCount));
+            objs.txtSoundFxMaximum.text(formatTableText(soundFxRates[0].price.maximum, soundFxRates[0].time.maximum, soundFxCount));
         }
 
         var musicRates = rates.audioRates.filter(x => x.gameElement === objs.musicCount.data('gameelement') && x.soundStyle === selectedSoundStyle);
@@ -251,13 +252,13 @@
             $(selectors.rowMusic + ' ' + selectors.tableValue).text('-');
         }
         else {
-            minimumMusicCost = musicRates[0].minimum * musicCount;
-            averageMusicCost = musicRates[0].average * musicCount;
-            maximumMusicCost = musicRates[0].maximum * musicCount;
+            minimumMusicCost = musicRates[0].price.minimum * musicRates[0].time.minimum * musicCount;
+            averageMusicCost = musicRates[0].price.average * musicRates[0].time.average * musicCount;
+            maximumMusicCost = musicRates[0].price.maximum * musicRates[0].time.maximum * musicCount;
 
-            objs.txtMusicMinimum.text(formatTableText(musicRates[0].minimum, musicCount));
-            objs.txtMusicAverage.text(formatTableText(musicRates[0].average, musicCount));
-            objs.txtMusicMaximum.text(formatTableText(musicRates[0].maximum, musicCount));
+            objs.txtMusicMinimum.text(formatTableText(musicRates[0].price.minimum, musicRates[0].time.minimum, musicCount));
+            objs.txtMusicAverage.text(formatTableText(musicRates[0].price.average, musicRates[0].time.average, musicCount));
+            objs.txtMusicMaximum.text(formatTableText(musicRates[0].price.maximum, musicRates[0].time.maximum, musicCount));
         }
 
         var finalElemensCount = conceptCount + characterCount + levelCount + soundFxCount + musicCount;

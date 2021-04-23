@@ -124,28 +124,13 @@ namespace LuduStack.Application.Services
                     ArtStyle = x.ArtStyle,
                     SoundStyle = x.SoundStyle,
                     HourPrice = x.HourPrice,
-                    HourQuantity = x.HourQuantity
+                    HourQuantity = x.HourQuantity,
+                    ElementPrice = x.HourPrice * x.HourQuantity
                 });
 
-                var orderedList = voList.OrderBy(x => x.BillRateType).ThenBy(x => x.GameElement);
+                var orderedList = voList.OrderBy(x => x.GameElement).ThenBy(x => x.ArtStyle).ThenBy(x => x.SoundStyle);
 
                 return new OperationResultListVo<BillRateViewModel>(orderedList);
-            }
-            catch (Exception ex)
-            {
-                return new OperationResultVo(ex.Message);
-            }
-        }
-
-        public async Task<OperationResultVo> GetForDetails(Guid currentUserId, Guid id)
-        {
-            try
-            {
-                BillRate existing = await mediator.Query<GetBillRateByIdQuery, BillRate>(new GetBillRateByIdQuery(id));
-
-                BillRateViewModel vm = mapper.Map<BillRateViewModel>(existing);
-
-                return new OperationResultVo<BillRateViewModel>(vm);
             }
             catch (Exception ex)
             {

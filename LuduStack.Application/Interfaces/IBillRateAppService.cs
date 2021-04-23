@@ -22,7 +22,5 @@ namespace LuduStack.Application.Interfaces
         OperationResultVo GenerateNew(Guid currentUserId);
 
         Task<OperationResultVo> GetForEdit(Guid currentUserId, Guid id);
-
-        Task<OperationResultVo> GetForDetails(Guid currentUserId, Guid id);
     }
 }

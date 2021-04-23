@@ -182,7 +182,8 @@ namespace LuduStack.Application.AutoMapper
 
             CreateMap<BillRate, BillRateViewModel>();
             CreateMap<CostCalculatorVo, CostsViewModel>();
-            //CreateMap<RateBaseVo, RateBaseViewModel>();
+            CreateMap<RateBaseVo, RateBaseViewModel>();
+            CreateMap<ResultRateVo, ResultRateBaseViewModel>();
             CreateMap<VisualRateVo, VisualRateCostsViewModel>();
             CreateMap<AudioRateVo, AudioRateCostsViewModel>();
             CreateMap<CodeRateVo, CodeRateCostsViewModel>();
