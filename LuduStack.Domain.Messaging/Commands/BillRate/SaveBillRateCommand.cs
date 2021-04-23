@@ -87,12 +87,6 @@ namespace LuduStack.Domain.Messaging
 
             BillRate billRate;
 
-            //request.UserId = new Guid("f4a291be-6324-4826-874a-aa71563628f3");
-            //request.UserId = new Guid("d450b343-326d-46cd-9c2b-05e89932cc72");
-            //request.UserId = new Guid("513a9988-3b91-4664-8b0b-b023b82aff2b");
-            //request.UserId = new Guid("cb924c29-1160-4696-bf72-747f27d1180a");
-            request.UserId = new Guid("5f9eeb34-22e2-43bf-9130-034a7997d2af");
-
             var artStyle = request.ArtStyle;
             if (request.Type != BillRateType.Visual)
             {
