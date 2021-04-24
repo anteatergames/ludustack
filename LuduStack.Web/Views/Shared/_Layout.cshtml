@@ -33,7 +33,7 @@
 
 <!DOCTYPE html>
 <html lang="en">
-<head>
+<head prefix="og: http://ogp.me/ns#">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -53,7 +53,6 @@
         <link rel="canonical" href="@ViewData["CanonicalUrl"]" />
     }
 
-    <meta property="og:type" content="website" />
     <meta property="fb:app_id" content="@ConfigOptions.Value.FacebookAppId" />
 
     <meta property="og:title" content="@title">
@@ -68,6 +67,8 @@
     <meta property="og:image" content="https://www.ludustack.com/images/og/logo512.png">
     <meta property="og:image:width" content="512">
     <meta property="og:image:height" content="512">
+    <meta property="og:type" content="@(ViewData["OgType"] ?? ConstantHelper.DefaultOgType)" />
+    @RenderSection("OpenGraphMeta", required: false)
 
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
     <link rel="preconnect" href="https://img.youtube.com">

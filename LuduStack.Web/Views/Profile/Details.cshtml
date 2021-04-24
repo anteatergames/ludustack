@@ -8,11 +8,17 @@
 @{
     ViewData["Title"] = Model.Name;
     ViewData["Description"] = String.Format("{0} - {1}", Model.Name, Model.Bio);
+    ViewData["OgType"] = "profile";
+
     string currentUserId = UserManager.GetUserId(User);
 
     var canFollowAndConnect = currentUserId != null ? !currentUserId.Equals(Model.UserId.ToString()) : false;
 
     var isAdmin = User.IsInRole(Roles.Administrator.ToString());
+}
+
+@section OpenGraphMeta {
+    <meta property="og:profile:first_name" content="@Model.Name">
 }
 
 @section Styles {

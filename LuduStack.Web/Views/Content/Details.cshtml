@@ -4,6 +4,11 @@
     ViewData["Description"] = Model.Introduction.Contains(SharedLocalizer["Content posted on"]) ? SharedLocalizer["Content posted on"] + " " + Model.CreateDate.ToString() : String.Format("{0} - {1}", Model.Title, Model.Introduction);
     ViewData["Url"] = ViewBag.BaseUrl + Url.Action("details", "content", new { id = Model.Id });
     ViewData["OgImage"] = Model.FeaturedImage;
+    ViewData["OgType"] = "article";
+}
+
+@section OpenGraphMeta {
+    <meta property="og:article:author" content="@Model.AuthorName">
 }
 
 @section Styles {
