@@ -90,8 +90,7 @@ namespace LuduStack.Web.Controllers
 
             if (!serviceResult.Success)
             {
-                TempData["Message"] = SharedLocalizer["Team not found!"].Value;
-                return RedirectToAction("Index");
+                return RedirectToAction("index", "team", new { area = string.Empty, msg = SharedLocalizer["Team not found!"] });
             }
 
             TeamViewModel model = serviceResult.Value;
