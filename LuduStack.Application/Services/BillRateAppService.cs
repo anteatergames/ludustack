@@ -3,14 +3,12 @@ using LuduStack.Application.ViewModels.BillRate;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Messaging;
 using LuduStack.Domain.Messaging.Queries.BillRate;
-using LuduStack.Domain.Messaging.Queries.Brainstorm;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
 using LuduStack.Infra.CrossCutting.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace LuduStack.Application.Services
@@ -114,7 +112,7 @@ namespace LuduStack.Application.Services
         {
             try
             {
-                var rates = await mediator.Query<GetBillRatesByUserIdQuery, IEnumerable<BillRate>>(new GetBillRatesByUserIdQuery(currentUserId));
+                IEnumerable<BillRate> rates = await mediator.Query<GetBillRatesByUserIdQuery, IEnumerable<BillRate>>(new GetBillRatesByUserIdQuery(currentUserId));
 
                 IEnumerable<BillRateViewModel> voList = rates.Select(x => new BillRateViewModel
                 {
@@ -128,7 +126,7 @@ namespace LuduStack.Application.Services
                     ElementPrice = x.HourPrice * x.HourQuantity
                 });
 
-                var orderedList = voList.OrderBy(x => x.GameElement).ThenBy(x => x.ArtStyle).ThenBy(x => x.SoundStyle);
+                IOrderedEnumerable<BillRateViewModel> orderedList = voList.OrderBy(x => x.GameElement).ThenBy(x => x.ArtStyle).ThenBy(x => x.SoundStyle);
 
                 return new OperationResultListVo<BillRateViewModel>(orderedList);
             }

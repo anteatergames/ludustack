@@ -1,8 +1,5 @@
 ﻿using LuduStack.Domain.Core.Enums;
-using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Text.Json.Serialization;
 
 namespace LuduStack.Application.ViewModels.CostCalculator
 {

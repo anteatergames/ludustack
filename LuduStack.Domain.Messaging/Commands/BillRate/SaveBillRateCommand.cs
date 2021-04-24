@@ -3,7 +3,6 @@ using LuduStack.Domain.Interfaces;
 using LuduStack.Domain.Interfaces.Repository;
 using LuduStack.Domain.Interfaces.Services;
 using LuduStack.Domain.Messaging.Queries.BillRate;
-using LuduStack.Domain.Messaging.Queries.UserContent;
 using LuduStack.Domain.Models;
 using LuduStack.Infra.CrossCutting.Messaging;
 using MediatR;
@@ -87,19 +86,19 @@ namespace LuduStack.Domain.Messaging
 
             BillRate billRate;
 
-            var artStyle = request.ArtStyle;
+            ArtStyle? artStyle = request.ArtStyle;
             if (request.Type != BillRateType.Visual)
             {
                 artStyle = null;
             }
-            var soundStyle = request.SoundStyle;
+            SoundStyle? soundStyle = request.SoundStyle;
             if (request.Type != BillRateType.Audio)
             {
                 soundStyle = null;
             }
 
             IEnumerable<BillRate> existing = await mediator.Query<GetBillRateQuery, IEnumerable<BillRate>>(new GetBillRateQuery(
-                x => x.UserId == request.UserId 
+                x => x.UserId == request.UserId
                 && x.BillRateType == request.Type
                 && x.ArtStyle == artStyle
                 && x.SoundStyle == soundStyle

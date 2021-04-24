@@ -185,7 +185,6 @@
     }
 
     function setRates() {
-
         var conceptArtRates = rates.visualRates.filter(x => x.gameElement === objs.conceptArtCount.data('gameelement') && x.artStyle === selectedArtStyle);
 
         if (conceptArtRates.length === 0) {
@@ -293,10 +292,7 @@
             setRates();
             $(selectors.tableValue).fadeIn();
         });
-        
     }
-
-
 
     const initRangeSlider = (context) => {
         $('input[type="range"]', context).each(function () {
@@ -314,7 +310,6 @@
             });
         });
     };
-
 
     function setSliderHandler(handle, range, value) {
         if (handle === undefined) {

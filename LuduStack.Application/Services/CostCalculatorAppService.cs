@@ -1,16 +1,10 @@
 ﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels.CostCalculator;
-using LuduStack.Domain.Core.Enums;
-using LuduStack.Domain.Messaging;
 using LuduStack.Domain.Messaging.Queries.BillRate;
-using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
 using LuduStack.Infra.CrossCutting.Messaging;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace LuduStack.Application.Services
@@ -31,9 +25,9 @@ namespace LuduStack.Application.Services
         {
             try
             {
-                var rates = (await mediator.Query<GetBillRateCostsQuery, CostCalculatorVo>(new GetBillRateCostsQuery()));
+                CostCalculatorVo rates = (await mediator.Query<GetBillRateCostsQuery, CostCalculatorVo>(new GetBillRateCostsQuery()));
 
-                var vm = mapper.Map<CostsViewModel>(rates);
+                CostsViewModel vm = mapper.Map<CostsViewModel>(rates);
 
                 return new OperationResultVo<CostsViewModel>(vm);
             }

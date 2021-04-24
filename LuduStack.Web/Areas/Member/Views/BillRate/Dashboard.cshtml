@@ -45,6 +45,11 @@
         <div class="col-12 mb-2">
             <h1><i class="fas fa-fw fa-dollar-sign" aria-hidden="true"></i> @ViewData["Title"]</h1>
         </div>
+
+        <div class="col">
+            <p class="alert alert-warning text-center">@Html.Raw(SharedLocalizer["The values you put in here are used only under the hood by the {0} and we will not publish them anywhere.", string.Format("<a href=\"{0}\">Cost Calculator</a>", Url.Action("index", "costcalculator", new { area = "tools" }))])</p>
+        </div>
+
         <div class="col-12 mb-3">
             @if (canInteract)
             {

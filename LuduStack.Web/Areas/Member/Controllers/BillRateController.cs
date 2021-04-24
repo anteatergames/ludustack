@@ -5,7 +5,6 @@ using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Core.Extensions;
 using LuduStack.Domain.ValueObjects;
 using LuduStack.Web.Areas.Member.Controllers.Base;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -177,25 +176,28 @@ namespace LuduStack.Web.Areas.Member.Controllers
             ViewData["GameElements"] = gameElements;
         }
 
-
         private void SetIcons(List<BillRateViewModel> rates)
         {
-            foreach (var item in rates)
+            foreach (BillRateViewModel item in rates)
             {
                 switch (item.BillRateType)
                 {
                     case BillRateType.Visual:
                         item.Icon = "text-success fa-2x fas fa-eye";
                         break;
+
                     case BillRateType.Audio:
                         item.Icon = "text-warning fa-2x fas fa-music";
                         break;
+
                     case BillRateType.Code:
                         item.Icon = "text-danger fa-2x fas fa-code";
                         break;
+
                     case BillRateType.Text:
                         item.Icon = "text-dark fa-2x fas fa-paragraph";
                         break;
+
                     default:
                         item.Icon = "text-muted fa-2x fas fa-question";
                         break;

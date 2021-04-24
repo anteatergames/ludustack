@@ -4,8 +4,6 @@ using LuduStack.Domain.Interfaces.Repository;
 using LuduStack.Domain.ValueObjects;
 using LuduStack.Infra.CrossCutting.Messaging;
 using MediatR;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -30,9 +28,9 @@ namespace LuduStack.Domain.Messaging.Queries.BillRate
 
         public async Task<CostCalculatorVo> Handle(GetBillRateCostsQuery request, CancellationToken cancellationToken)
         {
-            var vo = new CostCalculatorVo();
+            CostCalculatorVo vo = new CostCalculatorVo();
 
-            var rates = (await repository.GetAll()).AsQueryable();
+            IQueryable<Models.BillRate> rates = (await repository.GetAll()).AsQueryable();
 
             SetPixelArtElementRates(vo, rates);
             SetVectorElementRates(vo, rates);
@@ -145,9 +143,9 @@ namespace LuduStack.Domain.Messaging.Queries.BillRate
 
         private static VisualRateVo CreateVisualRateVo(IQueryable<Models.BillRate> rates, GameElement element, ArtStyle style)
         {
-            var typeQuery = rates.Where(x => x.BillRateType == BillRateType.Visual);
-            var styleQuery = typeQuery.Where(x => x.ArtStyle == style);
-            var elementQuery = styleQuery.Where(x => x.GameElement == element);
+            IQueryable<Models.BillRate> typeQuery = rates.Where(x => x.BillRateType == BillRateType.Visual);
+            IQueryable<Models.BillRate> styleQuery = typeQuery.Where(x => x.ArtStyle == style);
+            IQueryable<Models.BillRate> elementQuery = styleQuery.Where(x => x.GameElement == element);
 
             return new VisualRateVo
             {
@@ -170,9 +168,9 @@ namespace LuduStack.Domain.Messaging.Queries.BillRate
 
         private static AudioRateVo CreateAudioRateVo(IQueryable<Models.BillRate> rates, GameElement element, SoundStyle style)
         {
-            var typeQuery = rates.Where(x => x.BillRateType == BillRateType.Audio);
-            var styleQuery = typeQuery.Where(x => x.SoundStyle == style);
-            var elementQuery = styleQuery.Where(x => x.GameElement == element);
+            IQueryable<Models.BillRate> typeQuery = rates.Where(x => x.BillRateType == BillRateType.Audio);
+            IQueryable<Models.BillRate> styleQuery = typeQuery.Where(x => x.SoundStyle == style);
+            IQueryable<Models.BillRate> elementQuery = styleQuery.Where(x => x.GameElement == element);
 
             return new AudioRateVo
             {
@@ -195,8 +193,8 @@ namespace LuduStack.Domain.Messaging.Queries.BillRate
 
         private static CodeRateVo CreateCodeRateVo(IQueryable<Models.BillRate> rates, GameElement element)
         {
-            var typeQuery = rates.Where(x => x.BillRateType == BillRateType.Code);
-            var elementQuery = typeQuery.Where(x => x.GameElement == element);
+            IQueryable<Models.BillRate> typeQuery = rates.Where(x => x.BillRateType == BillRateType.Code);
+            IQueryable<Models.BillRate> elementQuery = typeQuery.Where(x => x.GameElement == element);
 
             return new CodeRateVo
             {
@@ -218,8 +216,8 @@ namespace LuduStack.Domain.Messaging.Queries.BillRate
 
         private static TextRateVo CreateTextRateVo(IQueryable<Models.BillRate> rates, GameElement element)
         {
-            var typeQuery = rates.Where(x => x.BillRateType == BillRateType.Text);
-            var elementQuery = typeQuery.Where(x => x.GameElement == element);
+            IQueryable<Models.BillRate> typeQuery = rates.Where(x => x.BillRateType == BillRateType.Text);
+            IQueryable<Models.BillRate> elementQuery = typeQuery.Where(x => x.GameElement == element);
 
             return new TextRateVo
             {

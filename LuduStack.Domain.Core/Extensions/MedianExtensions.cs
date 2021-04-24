@@ -10,7 +10,7 @@ namespace LuduStack.Domain.Core.Extensions
         {
             if (source == null)
                 throw new ArgumentNullException("source");
-            var data = source.OrderBy(n => n).ToArray();
+            int[] data = source.OrderBy(n => n).ToArray();
             if (data.Length == 0)
                 throw new InvalidOperationException();
             if (data.Length % 2 == 0)
@@ -22,7 +22,7 @@ namespace LuduStack.Domain.Core.Extensions
         {
             if (source == null)
                 throw new ArgumentNullException("source");
-            var data = source.Where(n => n.HasValue).Select(n => n.Value).OrderBy(n => n).ToArray();
+            int[] data = source.Where(n => n.HasValue).Select(n => n.Value).OrderBy(n => n).ToArray();
             if (data.Length == 0)
                 return null;
             if (data.Length % 2 == 0)
@@ -34,7 +34,7 @@ namespace LuduStack.Domain.Core.Extensions
         {
             if (source == null)
                 throw new ArgumentNullException("source");
-            var data = source.OrderBy(n => n).ToArray();
+            long[] data = source.OrderBy(n => n).ToArray();
             if (data.Length == 0)
                 throw new InvalidOperationException();
             if (data.Length % 2 == 0)
@@ -46,7 +46,7 @@ namespace LuduStack.Domain.Core.Extensions
         {
             if (source == null)
                 throw new ArgumentNullException("source");
-            var data = source.Where(n => n.HasValue).Select(n => n.Value).OrderBy(n => n).ToArray();
+            long[] data = source.Where(n => n.HasValue).Select(n => n.Value).OrderBy(n => n).ToArray();
             if (data.Length == 0)
                 return null;
             if (data.Length % 2 == 0)
@@ -58,7 +58,7 @@ namespace LuduStack.Domain.Core.Extensions
         {
             if (source == null)
                 throw new ArgumentNullException("source");
-            var data = source.OrderBy(n => n).ToArray();
+            float[] data = source.OrderBy(n => n).ToArray();
             if (data.Length == 0)
                 throw new InvalidOperationException();
             if (data.Length % 2 == 0)
@@ -70,7 +70,7 @@ namespace LuduStack.Domain.Core.Extensions
         {
             if (source == null)
                 throw new ArgumentNullException("source");
-            var data = source.Where(n => n.HasValue).Select(n => n.Value).OrderBy(n => n).ToArray();
+            float[] data = source.Where(n => n.HasValue).Select(n => n.Value).OrderBy(n => n).ToArray();
             if (data.Length == 0)
                 return null;
             if (data.Length % 2 == 0)
@@ -82,7 +82,7 @@ namespace LuduStack.Domain.Core.Extensions
         {
             if (source == null)
                 throw new ArgumentNullException("source");
-            var data = source.OrderBy(n => n).ToArray();
+            double[] data = source.OrderBy(n => n).ToArray();
             if (data.Length == 0)
                 throw new InvalidOperationException();
             if (data.Length % 2 == 0)
@@ -94,7 +94,7 @@ namespace LuduStack.Domain.Core.Extensions
         {
             if (source == null)
                 throw new ArgumentNullException("source");
-            var data = source.Where(n => n.HasValue).Select(n => n.Value).OrderBy(n => n).ToArray();
+            double[] data = source.Where(n => n.HasValue).Select(n => n.Value).OrderBy(n => n).ToArray();
             if (data.Length == 0)
                 return null;
             if (data.Length % 2 == 0)
@@ -106,7 +106,7 @@ namespace LuduStack.Domain.Core.Extensions
         {
             if (source == null)
                 throw new ArgumentNullException("source");
-            var data = source.OrderBy(n => n).ToArray();
+            decimal[] data = source.OrderBy(n => n).ToArray();
             if (data.Length == 0)
                 throw new InvalidOperationException();
             if (data.Length % 2 == 0)
@@ -118,7 +118,7 @@ namespace LuduStack.Domain.Core.Extensions
         {
             if (source == null)
                 throw new ArgumentNullException("source");
-            var data = source.Where(n => n.HasValue).Select(n => n.Value).OrderBy(n => n).ToArray();
+            decimal[] data = source.Where(n => n.HasValue).Select(n => n.Value).OrderBy(n => n).ToArray();
             if (data.Length == 0)
                 return null;
             if (data.Length % 2 == 0)

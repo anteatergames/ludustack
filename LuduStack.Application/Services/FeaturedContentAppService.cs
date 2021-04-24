@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
+﻿using AutoMapper.QueryableExtensions;
 using LuduStack.Application.Formatters;
 using LuduStack.Application.Helpers;
 using LuduStack.Application.Interfaces;

@@ -85,21 +85,19 @@
                     <div class="form-group">
                         <label asp-for="GameElement" class="col-form-label"></label>
                         <span asp-description-for="GameElement" class="col-form-label" />
-                        @*<select asp-for="GameElement" asp-items="Html.GetEnumSelectList<GameElement>()" class="form-control" data-placeholder="@SharedLocalizer["Set the Game Element"]"></select>*@
-
-                    <select asp-for="GameElement" class="form-control" data-placeholder="@SharedLocalizer["Set the Game Element"]">
-                        @foreach (var element in gameElements)
-                        {
-                            if (element.Key == Model.GameElement)
+                        <select asp-for="GameElement" class="form-control" data-placeholder="@SharedLocalizer["Set the Game Element"]">
+                            @foreach (var element in gameElements)
                             {
-                                <option value="@((int)element.Key)" class="conditionalbytype" data-visiblewhentype="@element.Value.Type" selected="selected">@element.Value.Display</option>
+                                if (element.Key == Model.GameElement)
+                                {
+                                    <option value="@((int)element.Key)" class="conditionalbytype" data-visiblewhentype="@element.Value.Type" selected="selected">@element.Value.Display</option>
+                                }
+                                else
+                                {
+                                    <option value="@((int)element.Key)" class="conditionalbytype" data-visiblewhentype="@element.Value.Type">@element.Value.Display</option>
+                                }
                             }
-                            else
-                            {
-                                <option value="@((int)element.Key)" class="conditionalbytype" data-visiblewhentype="@element.Value.Type">@element.Value.Display</option>
-                            }
-                        }
-                    </select>
+                        </select>
                         <span asp-validation-for="GameElement" class="text-danger"></span>
                     </div>
                 </div>

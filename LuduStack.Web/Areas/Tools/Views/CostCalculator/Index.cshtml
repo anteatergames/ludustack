@@ -5,9 +5,9 @@
     var canInteract = User.Identity.IsAuthenticated;
 
     ViewData["Title"] = SharedLocalizer["Cost Calculator"];
-    //ViewData["Description"] = SharedLocalizer["Calculate how much you should charge for freelance jobs."];
-    //ViewData["Url"] = ViewBag.BaseUrl + Url.Action("index", "ratecalculator", new { area = "tools" });
-    //ViewData["OgImage"] = ViewBag.BaseUrl + "/images/og/ogcostcalculator.png";
+    ViewData["Description"] = SharedLocalizer["Estimate how much your idea for a game would cost approximately."];
+    ViewData["Url"] = ViewBag.BaseUrl + Url.Action("index", "costcalculator", new { area = "tools" });
+    ViewData["OgImage"] = ViewBag.BaseUrl + "/images/og/ogcostcalculator.png";
 
     var artStyles = Html.GetEnumSelectList<ArtStyle>();
     var soundStyles = Html.GetEnumSelectList<SoundStyle>();
@@ -46,12 +46,9 @@
 
         <div class="box bg-white">
             <div class="box-header with-border">
-                <div class="float-left mr-3">
-                    <a asp-area="tools" asp-controller="costcalculator" asp-action="index" class="btn btn-default"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
-                </div>
-                <h2 class="card-title">@SharedLocalizer["You are calculating the cost of a videogame"]</h2>
+                <h2 class="card-title">@SharedLocalizer["You are estimating the cost of a videogame"]</h2>
                 <span class="card-subtitle">
-                    @SharedLocalizer["Play around to find how much a game would cost."]
+                    @SharedLocalizer["Play around to estimate how much a game would cost."]
                 </span>
             </div>
 
@@ -132,7 +129,7 @@
 
                 <div class="row mt-2">
                     <div class="col">
-                        <button id="btnCalculate" class="btn btn-block btn-success text-uppercase">@SharedLocalizer["calculate"]</button>
+                        <button id="btnCalculate" class="btn btn-lg btn-block btn-success text-uppercase">@SharedLocalizer["calculate"]</button>
                     </div>
                 </div>
 

@@ -1,6 +1,5 @@
 ﻿using LuduStack.Domain.Core.Enums;
 using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
 
 namespace LuduStack.Web.Models
 {
