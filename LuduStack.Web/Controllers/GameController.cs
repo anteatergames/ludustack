@@ -50,7 +50,7 @@ namespace LuduStack.Web.Controllers
 
             if (vm == null)
             {
-                return RedirectToAction("index", "home", new { area = string.Empty, msg = SharedLocalizer["Game not found!"] });
+                return RedirectToAction("list", "game", new { area = string.Empty, msg = SharedLocalizer["Game not found!"] });
             }
 
             await SetGameTeam(vm);
