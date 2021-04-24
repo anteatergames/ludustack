@@ -48,6 +48,11 @@ namespace LuduStack.Web.Controllers
 
             GameViewModel vm = serviceResult.Value;
 
+            if (vm == null)
+            {
+                return RedirectToAction("index", "home", new { area = string.Empty, msg = SharedLocalizer["Game not found!"] });
+            }
+
             await SetGameTeam(vm);
 
             SetTranslationPercentage(vm);
