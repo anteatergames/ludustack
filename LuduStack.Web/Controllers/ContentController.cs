@@ -44,8 +44,7 @@ namespace LuduStack.Web.Controllers
 
             if (!serviceResult.Success)
             {
-                TempData["Message"] = SharedLocalizer["Content not found!"].Value;
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("index", "home", new { area = string.Empty, msg = SharedLocalizer["Content not found!"] });
             }
 
             UserContentViewModel vm = serviceResult.Value;
