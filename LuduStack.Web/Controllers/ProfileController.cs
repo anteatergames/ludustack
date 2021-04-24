@@ -45,8 +45,7 @@ namespace LuduStack.Web.Controllers
                 }
                 else
                 {
-                    TempData["Message"] = SharedLocalizer["User not found!"].Value;
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("index", "home", new { area = string.Empty, msg = SharedLocalizer["User not found!"] });
                 }
 
                 vm = profile;
