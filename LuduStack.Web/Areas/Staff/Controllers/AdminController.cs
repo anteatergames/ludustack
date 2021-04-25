@@ -39,23 +39,26 @@ namespace LuduStack.Web.Areas.Staff.Controllers
 
             try
             {
-                IQueryable<ApplicationUser> allUsers = await GetUsersAsync();
-
                 OperationResultListVo<ProfileViewModel> profileResult = await ProfileAppService.GetAll(CurrentUserId, true);
 
                 if (!profileResult.Success)
                 {
-                    return View("TaskResult", profileResult);
+                    result.Message = "Fail to load user profiles.";
                 }
+
+                IQueryable<ApplicationUser> allUsers = await GetUsersAsync();
 
                 foreach (ApplicationUser user in allUsers)
                 {
                     AnalyseUser(messages, profileResult, user);
                 }
 
-                foreach (ProfileViewModel profile in profileResult.Value)
+                if (profileResult.Success)
                 {
-                    AnalyseProfile(messages, allUsers, profile);
+                    foreach (ProfileViewModel profile in profileResult.Value)
+                    {
+                        AnalyseProfile(messages, allUsers, profile);
+                    } 
                 }
             }
             catch (Exception ex)
@@ -79,14 +82,14 @@ namespace LuduStack.Web.Areas.Staff.Controllers
 
             try
             {
-                IQueryable<ApplicationUser> allUsers = await GetUsersAsync();
-
                 OperationResultListVo<ProfileViewModel> profileResult = await ProfileAppService.GetAll(CurrentUserId, true);
 
                 if (!profileResult.Success)
                 {
-                    return View("TaskResult", profileResult);
+                    result.Message = "Fail to load user profiles.";
                 }
+
+                IQueryable<ApplicationUser> allUsers = await GetUsersAsync();
 
                 IQueryable<ApplicationUser> usersWithoutDate = allUsers.Where(x => x.CreateDate == DateTime.MinValue);
                 foreach (ApplicationUser user in usersWithoutDate)
