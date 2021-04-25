@@ -160,7 +160,7 @@
                                                     var contributor = Model.Contributors.ElementAt(i);
 
                                                     <div class="bg-light border mt-1 mx-1 p-2">
-                                                        <a asp-area="" asp-controller="profile" asp-action="details" asp-route-id="@contributor.UserId">
+                                                        <a asp-area="" asp-controller="profile" asp-action="details" asp-route-userHandler="@contributor.UserHandler">
                                                             <img class="rounded-circle lazyload avatar" src="@contributor.AuthorPicture" alt="@contributor.AuthorName">
                                                             <span>@contributor.AuthorName</span> (<span>@contributor.EntryCount.ToString()</span>)
                                                         </a>

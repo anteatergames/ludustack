@@ -46,7 +46,7 @@
         "author":{
         "@@type":"Person",
         "name":"@Model.AuthorName",
-        "url":"@(ViewBag.BaseUrl + "/profile/" + Model.UserId)"
+        "url":"@(ViewBag.BaseUrl + "/u/" + Model.UserHandler)"
         }
         }
     </script>
@@ -114,17 +114,7 @@
                     </div>
                 </div>
                 <div class="mt-3 col-12 col-lg-3 order-lg-first mb-1">
-                    <div class="user-block">
-                        <a asp-area="" asp-controller="profile" asp-action="details" asp-route-id="@Model.UserId">
-                            <img class="rounded-circle" src="@Model.AuthorPicture" alt="This is @Model.AuthorName">
-                        </a>
-                        <a asp-area="" asp-controller="profile" asp-action="details" asp-route-id="@Model.UserId">
-                            <span class="username">@Model.AuthorName</span>
-                        </a>
-                        <a asp-area="member" asp-controller="comics" asp-action="details" asp-route-id="@Model.Id">
-                            <span class="description">@Model.PublishDate.ToString()</span>
-                        </a>
-                    </div>
+                    <partial name="_AuthorDetails" model="Model" />
                 </div>
             </div>
         </div>

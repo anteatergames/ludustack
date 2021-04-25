@@ -23,8 +23,6 @@ namespace LuduStack.Application.Interfaces
 
         Task<OperationResultListVo<ProfileViewModel>> GetAll(Guid currentUserId, bool noCache);
 
-        UserProfileEssentialVo GetBasicDataByUserId(Guid userId);
-
         Task<ProfileViewModel> GetByUserId(Guid userId, ProfileType type);
 
         Task<ProfileViewModel> GetByUserId(Guid userId, ProfileType type, bool forEdit);

@@ -6,6 +6,7 @@ using LuduStack.Domain.Core.Extensions;
 using LuduStack.Domain.Interfaces.Services;
 using LuduStack.Domain.Messaging;
 using LuduStack.Domain.Messaging.Queries.Team;
+using LuduStack.Domain.Messaging.Queries.UserProfile;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
 using LuduStack.Infra.CrossCutting.Messaging;
@@ -53,7 +54,7 @@ namespace LuduStack.Application.Services
 
                 foreach (TeamViewModel team in vms)
                 {
-                    SetUiData(currentUserId, team);
+                    await SetUiData(currentUserId, team);
                 }
 
                 return new OperationResultListVo<TeamViewModel>(vms);
@@ -82,6 +83,7 @@ namespace LuduStack.Application.Services
                 {
                     UserProfile profile = await GetCachedProfileByUserId(member.UserId);
                     member.Name = profile.Name;
+                    member.UserHandler = profile.Handler;
                     member.Permissions.IsMe = member.UserId == currentUserId;
                     member.WorkDictionary = member.Works.ToDisplayNameList();
                 }
@@ -98,12 +100,13 @@ namespace LuduStack.Application.Services
                         {
                             UserId = currentUserId,
                             InvitationStatus = InvitationStatus.Candidate,
-                            Name = myProfile.Name
+                            Name = myProfile.Name,
+                            UserHandler = myProfile.Handler
                         };
                     }
                 }
 
-                SetUiData(currentUserId, vm);
+                await SetUiData(currentUserId, vm);
 
                 return new OperationResultVo<TeamViewModel>(vm);
             }
@@ -177,7 +180,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultListVo<TeamViewModel> GetNotSingleMemberGroups(Guid currentUserId)
+        public async Task<OperationResultListVo<TeamViewModel>> GetNotSingleMemberGroups(Guid currentUserId)
         {
             try
             {
@@ -187,7 +190,7 @@ namespace LuduStack.Application.Services
 
                 foreach (TeamViewModel team in vms)
                 {
-                    SetUiData(currentUserId, team);
+                    await SetUiData (currentUserId, team);
                 }
 
                 return new OperationResultListVo<TeamViewModel>(vms);
@@ -209,6 +212,7 @@ namespace LuduStack.Application.Services
 
                 TeamMemberViewModel me = newVm.Members.FirstOrDefault(x => x.UserId == currentUserId);
                 me.Name = myProfile.Name;
+                me.UserHandler = myProfile.Handler;
                 me.ProfileImage = UrlFormatter.ProfileImage(currentUserId);
 
                 return new OperationResultVo<TeamViewModel>(newVm);
@@ -255,7 +259,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo GetByUserId(Guid userId)
+        public async Task<OperationResultListVo<TeamViewModel>> GetByUserId(Guid userId)
         {
             try
             {
@@ -263,9 +267,11 @@ namespace LuduStack.Application.Services
 
                 IEnumerable<TeamViewModel> vms = mapper.Map<IEnumerable<Team>, IEnumerable<TeamViewModel>>(allModels);
 
+
+
                 foreach (TeamViewModel team in vms)
                 {
-                    SetUiData(userId, team);
+                    await SetUiData(userId, team);
                 }
 
                 return new OperationResultListVo<TeamViewModel>(vms);
@@ -375,7 +381,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        private void SetUiData(Guid userId, TeamViewModel team)
+        private async Task SetUiData(Guid userId, TeamViewModel team)
         {
             bool userIsLeader = team.Members.Any(x => x.Leader && x.UserId == userId);
 
@@ -383,10 +389,16 @@ namespace LuduStack.Application.Services
             team.Permissions.CanDelete = userIsLeader && team.Members.Any(x => x.UserId == userId && x.Leader);
             team.Members = team.Members.OrderByDescending(x => x.Leader).ToList();
 
+            var ids = team.Members.Select(x => x.UserId);
+
+            IEnumerable<UserProfileEssentialVo> memberProfiles = await mediator.Query<GetBasicUserProfileDataByUserIdsQuery, IEnumerable<UserProfileEssentialVo>>(new GetBasicUserProfileDataByUserIdsQuery(ids));
+
             foreach (TeamMemberViewModel member in team.Members)
             {
+                var profile = memberProfiles.FirstOrDefault(x => x.UserId == member.UserId);
                 member.Permissions.CanDelete = member.UserId != userId && team.Permissions.CanDelete;
                 member.ProfileImage = UrlFormatter.ProfileImage(member.UserId);
+                member.UserHandler = profile.Handler;
             }
 
             if (team.Candidate != null)

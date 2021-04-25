@@ -58,19 +58,8 @@ namespace LuduStack.Application.Services
 
                 foreach (Guid userId in allIds)
                 {
-                    UserProfile profile = noCache ? null : await GetCachedProfileByUserId(userId);
+                    UserProfile profile = await GetCachedProfileByUserId(userId, noCache);
 
-                    if (profile == null)
-                    {
-                        IEnumerable<UserProfile> allUserProfiles = await mediator.Query<GetUserProfileByUserIdQuery, IEnumerable<UserProfile>>(new GetUserProfileByUserIdQuery(userId));
-                        UserProfile userProfile = allUserProfiles.FirstOrDefault();
-
-                        if (userProfile != null)
-                        {
-                            profile = userProfile;
-                            SetProfileCache(userId, profile);
-                        }
-                    }
                     profiles.Add(profile);
                 }
 
@@ -189,13 +178,6 @@ namespace LuduStack.Application.Services
         }
 
         #region IProfileAppService
-
-        public UserProfileEssentialVo GetBasicDataByUserId(Guid userId)
-        {
-            UserProfileEssentialVo profile = profileDomainService.GetBasicDataByUserId(userId);
-
-            return profile;
-        }
 
         public async Task<ProfileViewModel> GetByUserId(Guid userId, ProfileType type)
         {
@@ -553,6 +535,7 @@ namespace LuduStack.Application.Services
                     UserProfileEssentialVo profile = profileDomainService.GetBasicDataByUserId(item.TargetUserId);
 
                     item.UserId = userId;
+                    item.UserHandler = profile.Handler;
                     item.TargetUserName = profile.Name;
                     item.Location = profile.Location;
                     item.CreateDate = profile.CreateDate;
@@ -571,6 +554,7 @@ namespace LuduStack.Application.Services
 
                     item.TargetUserId = item.UserId;
                     item.UserId = userId;
+                    item.UserHandler = profile.Handler;
                     item.TargetUserName = profile.Name;
                     item.ProfileId = profile.Id;
                     item.Location = profile.Location;

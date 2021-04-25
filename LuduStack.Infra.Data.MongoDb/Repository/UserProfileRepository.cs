@@ -31,11 +31,39 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
             {
                 Id = x.Id,
                 UserId = targetUserId,
+                Handler = x.Handler,
                 Name = x.Name,
                 Location = x.Location,
                 CreateDate = x.CreateDate,
                 HasCoverImage = x.HasCoverImage
             }).FirstOrDefaultAsync();
+
+            return profile;
+        }
+
+        public async Task<IEnumerable<UserProfileEssentialVo>> GetBasicDataByUserIds(IEnumerable<Guid> userIds)
+        {
+            ProjectionDefinition<UserProfile, UserProfileEssentialVo> projection1 = 
+                Builders<UserProfile>.Projection.Expression(x => new UserProfileEssentialVo
+                {
+                    Id = x.Id,
+                    UserId = x.UserId,
+                    Handler = x.Handler,
+                    Name = x.Name,
+                    Location = x.Location,
+                    CreateDate = x.CreateDate,
+                    HasCoverImage = x.HasCoverImage
+                });
+
+            FindOptions<UserProfile, UserProfileEssentialVo> findOptions = new FindOptions<UserProfile, UserProfileEssentialVo>
+            {
+                Projection = projection1
+            };
+
+            FilterDefinition<UserProfile> filter = new ExpressionFilterDefinition<UserProfile>(x => userIds.Contains(x.UserId));
+
+
+            var profile = await (await DbSet.FindAsync(filter, findOptions)).ToListAsync();
 
             return profile;
         }

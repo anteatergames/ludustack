@@ -22,10 +22,10 @@
     <div class="box box-widget box-content p-0 bg-white" data-id="@item.Id">
         <div class="box-header with-border">
             <div class="user-block">
-                <a asp-area="" asp-controller="profile" asp-action="details" asp-route-id="@item.UserId">
+                <a asp-area="" asp-controller="profile" asp-action="details" asp-route-userHandler="@item.UserHandler">
                     <img class="rounded-circle" src="@item.AuthorPicture" alt="This is @item.AuthorName">
                 </a>
-                <span class="username"><a asp-area="" asp-controller="profile" asp-action="details" asp-route-id="@item.UserId">@item.AuthorName</a></span>
+                <span class="username"><a asp-area="" asp-controller="profile" asp-action="details" asp-route-userHandler="@item.UserHandler">@item.AuthorName</a></span>
 
                 @if (!String.IsNullOrWhiteSpace(item.Url))
                 {

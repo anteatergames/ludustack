@@ -8,6 +8,8 @@ namespace LuduStack.Domain.Interfaces.Services
     {
         void SetProfileCache(Guid userId, UserProfile value);
 
+        void SetProfileCache(Guid userId, UserProfileEssentialVo value);
+
         OperationResultVo GetCountries(Guid currentUserId);
     }
 }

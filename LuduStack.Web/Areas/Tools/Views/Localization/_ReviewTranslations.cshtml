@@ -40,7 +40,7 @@
 @foreach (var term in Model.Terms)
 {
     <div class="row pb-1 pb-sm-2 m-0 mt-2 m-md-2 mb-2 border translation-item" data-termid="@term.Id">
-        <div class="col-12 text-center bg-light rounded-0">
+        <div class="col-12 text-center bg-light">
             <label class="col-form-label">@term.Key</label>
         </div>
         <div class="col-6 border-right rounded-0">
@@ -75,8 +75,8 @@
     <div class="input-group pt-2">
         <textarea class="form-control entry-input" data-termid="x" data-entryid="x" placeholder="xpto" readonly></textarea>
     </div>
-    <div class=" mt-1 mr-1 entry-author user-block">
-        <a asp-area="" asp-controller="profile" asp-action="details" asp-route-id="" class="entry-author-btn">
+    <div class=" mt-1 mr-1 mb-1 entry-author user-block">
+        <a asp-area="" asp-controller="profile" asp-action="details" asp-route-userHandler="" class="entry-author-btn">
             <img class="rounded-circle lazyload avatar" data-src="@ConstantHelper.DefaultAvatar" src="@ConstantHelper.DefaultAvatar" alt="@SharedLocalizer["translator"]">
             <span class="username translator-name">@SharedLocalizer["nobody"]</span>
             <span class="description translation-date">...</span>

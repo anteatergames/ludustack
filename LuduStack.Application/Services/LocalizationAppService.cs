@@ -8,6 +8,7 @@ using LuduStack.Domain.Interfaces.Services;
 using LuduStack.Domain.Messaging;
 using LuduStack.Domain.Messaging.Queries.Game;
 using LuduStack.Domain.Messaging.Queries.Localization;
+using LuduStack.Domain.Messaging.Queries.UserProfile;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
 using LuduStack.Infra.CrossCutting.Messaging;
@@ -137,9 +138,13 @@ namespace LuduStack.Application.Services
                     return new OperationResultVo<LocalizationViewModel>("Translation Project not found!");
                 }
 
+                UserProfileEssentialVo profile = await mediator.Query<GetBasicUserProfileDataByUserIdQuery, UserProfileEssentialVo>(new GetBasicUserProfileDataByUserIdQuery(model.UserId));
+
                 LocalizationViewModel vm = mapper.Map<LocalizationViewModel>(model);
 
                 await SetGameViewModel(model.GameId, vm);
+
+                SetAuthorDetails(currentUserId, vm, profile);
 
                 SetPermissions(currentUserId, vm);
 
@@ -263,11 +268,16 @@ namespace LuduStack.Application.Services
             {
                 IEnumerable<LocalizationEntry> entries = translationDomainService.GetEntries(projectId, language);
 
+                var userIdList = entries.Select(x => x.UserId);
+
+                IEnumerable<UserProfileEssentialVo> userProfiles = await mediator.Query<GetBasicUserProfileDataByUserIdsQuery, IEnumerable<UserProfileEssentialVo>>(new GetBasicUserProfileDataByUserIdsQuery(userIdList));
+
                 List<LocalizationEntryViewModel> vms = mapper.Map<IEnumerable<LocalizationEntry>, IEnumerable<LocalizationEntryViewModel>>(entries).ToList();
 
                 foreach (LocalizationEntryViewModel entry in vms)
                 {
-                    UserProfile profile = await GetCachedProfileByUserId(entry.UserId);
+                    var  profile = userProfiles.FirstOrDefault(x => x.UserId == entry.UserId);
+                    entry.UserHandler = profile.Handler;
                     entry.AuthorName = profile.Name;
                     entry.AuthorPicture = UrlFormatter.ProfileImage(entry.UserId);
                 }
@@ -411,6 +421,11 @@ namespace LuduStack.Application.Services
                     return new OperationResultVo("Translation Project not found!");
                 }
 
+                var userIdList = model.Entries.GroupBy(x => x.UserId).Select(x => x.Key).ToList();
+                userIdList.Add(model.UserId);
+
+                var profiles = await mediator.Query<GetBasicUserProfileDataByUserIdsQuery, IEnumerable<UserProfileEssentialVo>>(new GetBasicUserProfileDataByUserIdsQuery(userIdList));
+
                 TranslationStatsViewModel vm = mapper.Map<TranslationStatsViewModel>(model);
 
                 vm.TermCount = model.Terms.Count;
@@ -429,11 +444,15 @@ namespace LuduStack.Application.Services
                     vm.Languages.Add(languageEntry);
                 }
 
+                SetAuthorDetails(currentUserId, vm, profiles);
+
                 SetPercentage(model, vm);
 
-                await SetContributors(model, vm);
+                await SetContributors(model, vm, profiles);
 
                 await SetGameViewModel(model.GameId, vm);
+
+
 
                 SetPermissions(currentUserId, vm);
 
@@ -630,15 +649,16 @@ namespace LuduStack.Application.Services
             SetBasePermissions(currentUserId, vm);
         }
 
-        private async Task SetContributors(Localization model, TranslationStatsViewModel vm)
+        private async Task SetContributors(Localization model, TranslationStatsViewModel vm, IEnumerable<UserProfileEssentialVo> userProfiles)
         {
             IEnumerable<IGrouping<Guid, LocalizationEntry>> contributors = model.Entries.GroupBy(x => x.UserId);
 
             foreach (IGrouping<Guid, LocalizationEntry> contributorGroup in contributors)
             {
                 ContributorViewModel contributor = new ContributorViewModel();
-                UserProfile profile = await GetCachedProfileByUserId(contributorGroup.Key);
+                var profile = userProfiles.FirstOrDefault(x => x.UserId == contributorGroup.Key);
                 contributor.UserId = contributorGroup.Key;
+                contributor.UserHandler = profile.Handler;
                 contributor.AuthorName = profile.Name;
                 contributor.AuthorPicture = UrlFormatter.ProfileImage(contributorGroup.Key);
                 contributor.EntryCount = contributorGroup.Count();

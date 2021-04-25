@@ -91,7 +91,11 @@ namespace LuduStack.Application.Services
                 vm.CurrentUserFollowing = model.Followers.SafeAny(x => x.GameId == vm.Id && x.UserId == currentUserId);
 
                 UserProfile authorProfile = await GetCachedProfileByUserId(vm.UserId);
-                vm.AuthorName = authorProfile.Name;
+                if (authorProfile != null)
+                {
+                    vm.AuthorName = authorProfile.Name;
+                    vm.UserHandler = authorProfile.Handler; 
+                }
 
                 if (forEdit)
                 {
@@ -184,6 +188,9 @@ namespace LuduStack.Application.Services
 
             List<GameListItemViewModel> vms = allModels.AsQueryable().ProjectTo<GameListItemViewModel>(mapper.ConfigurationProvider).ToList();
 
+            var userIds = vms.Select(x => x.UserId);
+            var authorProfiles = await GetCachedProfilesByUserIds(userIds);
+
             foreach (GameListItemViewModel item in vms)
             {
                 item.ThumbnailUrl = SetFeaturedImage(item.UserId, item.ThumbnailUrl, ImageRenderType.Full);
@@ -191,8 +198,12 @@ namespace LuduStack.Application.Services
                 item.ThumbnailLquip = SetFeaturedImage(item.UserId, item.ThumbnailUrl, ImageRenderType.LowQuality);
                 item.DeveloperImageUrl = UrlFormatter.ProfileImage(item.UserId, 40);
 
-                UserProfile authorProfile = await GetCachedProfileByUserId(item.UserId);
-                item.DeveloperName = authorProfile?.Name;
+                var authorProfile = authorProfiles.FirstOrDefault(x => x.UserId == item.UserId);
+                if (authorProfile != null)
+                {
+                    item.DeveloperName = authorProfile?.Name;
+                    item.DeveloperHandler = authorProfile?.Handler; 
+                }
             }
 
             return vms;

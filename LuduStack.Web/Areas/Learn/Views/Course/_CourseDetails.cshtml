@@ -71,13 +71,7 @@
                     <div class="border mb-3 p-2 bg-light">
                         <div class="row">
                             <div class="col-12">
-                                <div class="user-block">
-                                    <a asp-area="" asp-controller="profile" asp-action="details" asp-route-id="@Model.UserId">
-                                        <img class="rounded-circle" src="@Model.AuthorPicture" alt="This is @Model.AuthorName">
-                                    </a>
-                                    <span class="username"><a asp-area="" asp-controller="profile" asp-action="details" asp-route-id="@Model.UserId">@SharedLocalizer["by {0}", Model.AuthorName]</a></span>
-                                    <span class="description">@SharedLocalizer["at {0}", Model.CreateDate.ToString()]</span>
-                                </div>
+                                <partial name="_AuthorDetails" model="Model" />
                             </div>
 
                             <div class="col-12">

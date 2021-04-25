@@ -27,7 +27,7 @@
                 }
                 @if (!String.IsNullOrWhiteSpace(Model.DeveloperName))
                 {
-                    <a asp-area="" asp-controller="profile" asp-action="details" asp-route-id="@Model.UserId">
+                    <a asp-area="" asp-controller="profile" asp-action="details" asp-route-userHandler="@Model.DeveloperHandler">
                         <img class="rounded-circle img-sm" src="@Model.DeveloperImageUrl" alt="@Model.DeveloperName">
                         <div class="gamebox-description-text">
                             <span class="gamebox-description-number">@Model.DeveloperName</span>

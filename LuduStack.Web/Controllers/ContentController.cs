@@ -51,8 +51,6 @@ namespace LuduStack.Web.Controllers
 
             vm.Content = ContentFormatter.FormatContentToShow(vm.Content);
 
-            await SetAuthorDetails(vm);
-
             if (vm.GameId.HasValue && vm.GameId.Value != Guid.Empty)
             {
                 OperationResultVo<GameViewModel> gameServiceResult = await gameAppService.GetById(CurrentUserId, vm.GameId.Value);

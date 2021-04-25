@@ -6,6 +6,7 @@ using LuduStack.Application.ViewModels.User;
 using LuduStack.Domain.Messaging.Queries.Gamification;
 using LuduStack.Domain.Messaging.Queries.GamificationLevel;
 using LuduStack.Domain.Messaging.Queries.UserBadge;
+using LuduStack.Domain.Messaging.Queries.UserProfile;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
 using LuduStack.Infra.CrossCutting.Messaging;
@@ -42,6 +43,7 @@ namespace LuduStack.Application.Services
                     RankingViewModel vm = new RankingViewModel
                     {
                         UserId = item.Gamification.UserId,
+                        UserHandler = item.UserHandler,
                         CurrentLevelNumber = item.Gamification.CurrentLevelNumber,
                         XpCurrentLevel = item.Gamification.XpCurrentLevel,
                         XpToNextLevel = item.Gamification.XpToNextLevel,

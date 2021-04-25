@@ -71,16 +71,8 @@
                     </div>
                     <div class="author-details">
                         <div class="col-12">
-                            <div class="user-block">
-                                <a asp-area="" asp-controller="profile" asp-action="details" asp-route-id="@Model.UserId">
-                                    <img class="rounded-circle" src="@Model.AuthorPicture" alt="This is @Model.AuthorName">
-                                </a>
-                                <span class="username"><a asp-area="" asp-controller="profile" asp-action="details" asp-route-id="@Model.UserId">@Model.AuthorName</a></span>
 
-                                <a asp-area="" asp-controller="content" asp-action="details" asp-route-id="@Model.Id" class="contenturl">
-                                    <span class="description">@Model.CreateDate.ToString()</span>
-                                </a>
-                            </div>
+                            <partial name="_AuthorDetails" model="Model" />
                         </div>
                     </div>
 
@@ -108,13 +100,13 @@
                     @foreach (var comment in Model.Comments)
                     {
                         <div class="box-comment">
-                            <a asp-area="" asp-controller="profile" asp-action="details" asp-route-id="@Model.UserId">
+                            <a asp-area="" asp-controller="profile" asp-action="details" asp-route-userHandler="@Model.UserHandler">
                                 <img class="rounded img-sm rounded-circle" src="@comment.AuthorPicture" alt="User Image">
                             </a>
 
                             <div class="comment-text">
                                 <span class="username">
-                                    <span class="comment-authorname"><a asp-area="" asp-controller="profile" asp-action="details" asp-route-id="@Model.UserId">@comment.AuthorName</a></span>
+                                    <span class="comment-authorname"><a asp-area="" asp-controller="profile" asp-action="details" asp-route-userHandler="@Model.UserHandler">@comment.AuthorName</a></span>
                                     <span class="text-muted pull-right comment-date">@comment.CreateDate.ToString()</span>
                                 </span>
                                 <div class="comment-content">

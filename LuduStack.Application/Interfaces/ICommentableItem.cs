@@ -9,6 +9,8 @@ namespace LuduStack.Application.Interfaces
     {
         Guid Id { get; set; }
 
+        public string UserHandler { get; set; }
+
         UserContentType UserContentType { get; set; }
 
         string Url { get; set; }

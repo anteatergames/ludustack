@@ -6,6 +6,7 @@ using LuduStack.Application.ViewModels.Comics;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Messaging;
 using LuduStack.Domain.Messaging.Queries.UserContent;
+using LuduStack.Domain.Messaging.Queries.UserProfile;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
 using LuduStack.Infra.CrossCutting.Messaging;
@@ -163,7 +164,14 @@ namespace LuduStack.Application.Services
             {
                 UserContent existing = await mediator.Query<GetUserContentByIdQuery, UserContent>(new GetUserContentByIdQuery(id));
 
+                UserProfileEssentialVo profile = await mediator.Query<GetBasicUserProfileDataByUserIdQuery, UserProfileEssentialVo>(new GetBasicUserProfileDataByUserIdQuery(existing.UserId));
+
                 ComicStripViewModel vm = mapper.Map<ComicStripViewModel>(existing);
+
+                if (profile != null)
+                {
+                    vm.UserHandler = profile.Handler;
+                }
 
                 UserContentRating currentUserRate = existing.Ratings.FirstOrDefault(x => x.UserId == currentUserId);
 
@@ -300,9 +308,11 @@ namespace LuduStack.Application.Services
             {
                 item.CurrentUserLiked = item.Likes.Any(x => x == currentUserId);
 
+                IEnumerable<UserProfileEssentialVo> commenterProfiles = await mediator.Query<GetBasicUserProfileDataByUserIdsQuery, IEnumerable<UserProfileEssentialVo>>(new GetBasicUserProfileDataByUserIdsQuery(item.Comments.Select(x => x.UserId)));
+
                 foreach (CommentViewModel comment in item.Comments)
                 {
-                    UserProfile commenterProfile = await GetCachedProfileByUserId(comment.UserId);
+                    var commenterProfile = commenterProfiles.FirstOrDefault(x => x.UserId == comment.UserId);
                     if (commenterProfile == null)
                     {
                         comment.AuthorName = Constants.UnknownSoul;
@@ -310,6 +320,7 @@ namespace LuduStack.Application.Services
                     else
                     {
                         comment.AuthorName = commenterProfile.Name;
+                        comment.UserHandler = commenterProfile.Handler;
                     }
 
                     comment.AuthorPicture = UrlFormatter.ProfileImage(comment.UserId);

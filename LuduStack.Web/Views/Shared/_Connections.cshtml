@@ -20,7 +20,7 @@ else
             <div class="col-12 col-sm-6 col-lg-4">
                 <div class="box box-widget widget-user">
                     <div class="widget-user-image">
-                        <a asp-area="" asp-controller="profile" asp-action="details" asp-route-id="@item.TargetUserId">
+                        <a asp-area="" asp-controller="profile" asp-action="details" asp-route-userHandler="@item.UserHandler">
                             <img class="rounded-circle lazyload" data-src="@item.ProfileImageUrl" src="~/images/profileimages/developer.png" alt="User Avatar">
                         </a>
                     </div>

@@ -8,6 +8,8 @@ namespace LuduStack.Domain.Interfaces.Models
 
         string AuthorName { get; set; }
 
+        string UserHandler { get; set; }
+
         UserContentType UserContentType { get; set; }
     }
 }

@@ -214,7 +214,7 @@ namespace LuduStack.Web.Areas.Work.Controllers
             JobPositionViewModel vm = op.Value;
 
             SetLocalization(vm);
-            await SetAuthorDetails(vm);
+
             vm.Description = ContentFormatter.FormatContentToShow(vm.Description);
 
             SetGamificationMessage(pointsEarned);

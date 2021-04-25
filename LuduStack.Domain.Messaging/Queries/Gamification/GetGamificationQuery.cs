@@ -44,14 +44,16 @@ namespace LuduStack.Domain.Messaging.Queries.Gamification
     {
         protected readonly IGamificationRepository repository;
         protected readonly IGamificationLevelRepository gamificationLevelRepository;
+        protected readonly IUserProfileRepository userProfileRepository;
 
-        public GetGamificationQueryHandler(IGamificationRepository repository, IGamificationLevelRepository gamificationLevelRepository)
+        public GetGamificationQueryHandler(IGamificationRepository repository, IGamificationLevelRepository gamificationLevelRepository, IUserProfileRepository userProfileRepository)
         {
             this.repository = repository;
             this.gamificationLevelRepository = gamificationLevelRepository;
+            this.userProfileRepository = userProfileRepository;
         }
 
-        public Task<IEnumerable<RankingVo>> Handle(GetGamificationQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<RankingVo>> Handle(GetGamificationQuery request, CancellationToken cancellationToken)
         {
             List<Models.Gamification> models = null;
             List<RankingVo> finalResult = new List<RankingVo>();
@@ -85,10 +87,15 @@ namespace LuduStack.Domain.Messaging.Queries.Gamification
                 }
             }
 
+            IEnumerable<Guid> userIds = models.Select(x => x.UserId);
+            IEnumerable<UserProfileEssentialVo> userProfiles = await userProfileRepository.GetBasicDataByUserIds(userIds);
+
             foreach (Models.Gamification item in models)
             {
+                UserProfileEssentialVo userProfile = userProfiles.Where(x => x.UserId == item.UserId).FirstOrDefault();
                 RankingVo newVo = new RankingVo
                 {
+                    UserHandler = userProfile == null ? string.Empty : userProfile?.Handler,
                     Gamification = item,
                     Level = levels.FirstOrDefault(x => x.Number == item.CurrentLevelNumber)
                 };
@@ -96,7 +103,7 @@ namespace LuduStack.Domain.Messaging.Queries.Gamification
                 finalResult.Add(newVo);
             }
 
-            return Task.FromResult(finalResult.AsEnumerable());
+            return finalResult.AsEnumerable();
         }
     }
 }

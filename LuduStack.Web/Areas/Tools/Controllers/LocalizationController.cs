@@ -117,7 +117,6 @@ namespace LuduStack.Web.Areas.Tools.Controllers
                 TranslationStatsViewModel model = castRestult.Value;
 
                 SetLocalization(model);
-                await SetAuthorDetails(model);
 
                 return View("Details", model);
             }

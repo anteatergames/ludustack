@@ -11,6 +11,7 @@ using LuduStack.Domain.Core.Extensions;
 using LuduStack.Domain.Interfaces.Services;
 using LuduStack.Domain.Messaging;
 using LuduStack.Domain.Messaging.Queries.UserContent;
+using LuduStack.Domain.Messaging.Queries.UserProfile;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
 using LuduStack.Infra.CrossCutting.Messaging;
@@ -85,7 +86,13 @@ namespace LuduStack.Application.Services
             {
                 UserContent model = await mediator.Query<GetUserContentByIdQuery, UserContent>(new GetUserContentByIdQuery(id));
 
-                UserProfile authorProfile = await GetCachedProfileByUserId(model.UserId);
+
+                List<Guid> finalUserIdList = model.Comments.Select(y => y.UserId).ToList();
+                finalUserIdList.Add(model.UserId);
+
+                IEnumerable<UserProfileEssentialVo> userProfiles = await mediator.Query<GetBasicUserProfileDataByUserIdsQuery, IEnumerable<UserProfileEssentialVo>>(new GetBasicUserProfileDataByUserIdsQuery(finalUserIdList));
+
+                UserProfileEssentialVo authorProfile = userProfiles.FirstOrDefault();
 
                 UserContentViewModel vm = mapper.Map<UserContentViewModel>(model);
 
@@ -97,6 +104,8 @@ namespace LuduStack.Application.Services
                 {
                     vm.AuthorName = authorProfile.Name;
                 }
+
+                SetAuthorDetails(currentUserId, vm, userProfiles);
 
                 vm.HasFeaturedImage = !string.IsNullOrWhiteSpace(vm.FeaturedImage) && !vm.FeaturedImage.Contains(Constants.DefaultFeaturedImage);
 
@@ -114,7 +123,7 @@ namespace LuduStack.Application.Services
 
                 vm.Poll = SetPoll(currentUserId, vm.Id);
 
-                await LoadAuthenticatedData(currentUserId, vm);
+                LoadAuthenticatedData(currentUserId, vm, userProfiles);
 
                 return new OperationResultVo<UserContentViewModel>(vm);
             }
@@ -226,13 +235,19 @@ namespace LuduStack.Application.Services
 
                 IEnumerable<UserContentViewModel> viewModels = mapper.Map<IEnumerable<UserContent>, IEnumerable<UserContentViewModel>>(allModels);
 
+                IEnumerable<Guid> userIds = viewModels.Select(x => x.UserId);
+                IEnumerable<Guid> commenterUserIds = viewModels.SelectMany(x => x.Comments.Select(y => y.UserId));
+                IEnumerable<Guid> finalUserIdList = userIds.Concat(commenterUserIds);
+
+                IEnumerable<UserProfileEssentialVo> userProfiles = await mediator.Query<GetBasicUserProfileDataByUserIdsQuery, IEnumerable<UserProfileEssentialVo>>(new GetBasicUserProfileDataByUserIdsQuery(finalUserIdList));
+
                 foreach (UserContentViewModel item in viewModels)
                 {
                     item.CreateDate = item.CreateDate.ToLocalTime();
 
                     item.PublishDate = item.PublishDate.ToLocalTime();
 
-                    UserProfile authorProfile = await GetCachedProfileByUserId(item.UserId);
+                    UserProfileEssentialVo authorProfile = userProfiles.FirstOrDefault(x => x.UserId == item.UserId);
                     if (authorProfile == null)
                     {
                         item.AuthorName = Constants.UnknownSoul;
@@ -240,6 +255,7 @@ namespace LuduStack.Application.Services
                     else
                     {
                         item.AuthorName = authorProfile.Name;
+                        item.UserHandler = authorProfile.Handler;
                     }
 
                     item.AuthorPicture = UrlFormatter.ProfileImage(item.UserId, 40);
@@ -265,7 +281,7 @@ namespace LuduStack.Application.Services
 
                     item.Poll = SetPoll(vm.CurrentUserId, item.Id);
 
-                    await LoadAuthenticatedData(vm.CurrentUserId, item);
+                    LoadAuthenticatedData(vm.CurrentUserId, item, userProfiles);
 
                     item.Content = item.Content.ReplaceCloudname();
                 }
@@ -339,7 +355,7 @@ namespace LuduStack.Application.Services
             return pollVm;
         }
 
-        private async Task LoadAuthenticatedData(Guid currentUserId, UserGeneratedCommentBaseViewModel item)
+        private void LoadAuthenticatedData(Guid currentUserId, UserGeneratedCommentBaseViewModel item, IEnumerable<UserProfileEssentialVo> userProfiles)
         {
             if (currentUserId != Guid.Empty)
             {
@@ -347,7 +363,7 @@ namespace LuduStack.Application.Services
 
                 foreach (CommentViewModel comment in item.Comments)
                 {
-                    UserProfile commenterProfile = await GetCachedProfileByUserId(comment.UserId);
+                    UserProfileEssentialVo commenterProfile = userProfiles.FirstOrDefault(x => x.UserId == comment.UserId);
                     if (commenterProfile == null)
                     {
                         comment.AuthorName = Constants.UnknownSoul;
@@ -355,6 +371,7 @@ namespace LuduStack.Application.Services
                     else
                     {
                         comment.AuthorName = commenterProfile.Name;
+                        comment.UserHandler = commenterProfile.Handler;
                     }
 
                     comment.AuthorPicture = UrlFormatter.ProfileImage(comment.UserId);

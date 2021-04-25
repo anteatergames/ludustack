@@ -6,6 +6,7 @@ using LuduStack.Application.ViewModels.Brainstorm;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Messaging;
 using LuduStack.Domain.Messaging.Queries.Brainstorm;
+using LuduStack.Domain.Messaging.Queries.UserProfile;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
 using LuduStack.Infra.CrossCutting.Messaging;
@@ -58,12 +59,23 @@ namespace LuduStack.Application.Services
 
                 BrainstormSession session = await mediator.Query<GetBrainstormSessionByIdQuery, BrainstormSession>(new GetBrainstormSessionByIdQuery(idea.SessionId));
 
+                var userIdList = idea.Comments.Select(x => x.UserId).ToList();
+                userIdList.Add(idea.UserId);
+
+                var profiles = await mediator.Query<GetBasicUserProfileDataByUserIdsQuery, IEnumerable<UserProfileEssentialVo>>(new GetBasicUserProfileDataByUserIdsQuery(userIdList));
+
                 BrainstormIdeaViewModel vm = mapper.Map<BrainstormIdeaViewModel>(idea);
 
                 vm.UserContentType = UserContentType.Idea;
                 vm.VoteCount = idea.Votes.Count;
                 vm.Score = idea.Votes.Sum(x => (int)x.VoteValue);
                 vm.CurrentUserVote = idea.Votes.FirstOrDefault(x => x.UserId == currentUserId)?.VoteValue ?? VoteValue.Neutral;
+
+                var authorProfile = profiles.FirstOrDefault(x => x.UserId == vm.UserId);
+                if (authorProfile != null)
+                {
+                    vm.UserHandler = authorProfile.Handler;
+                }
 
                 vm.CommentCount = idea.Comments.Count;
 
@@ -73,7 +85,7 @@ namespace LuduStack.Application.Services
 
                 foreach (CommentViewModel comment in vm.Comments)
                 {
-                    UserProfile commenterProfile = await GetCachedProfileByUserId(comment.UserId);
+                    var commenterProfile = profiles.FirstOrDefault(x => x.UserId == comment.UserId);
                     if (commenterProfile == null)
                     {
                         comment.AuthorName = Constants.UnknownSoul;
@@ -81,6 +93,7 @@ namespace LuduStack.Application.Services
                     else
                     {
                         comment.AuthorName = commenterProfile.Name;
+                        comment.UserHandler = commenterProfile.Handler;
                     }
 
                     comment.AuthorPicture = UrlFormatter.ProfileImage(comment.UserId);

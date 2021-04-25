@@ -35,6 +35,11 @@ namespace LuduStack.Application.Services
             cacheService.Set<string, UserProfile>(FormatProfileCacheId(userId), value);
         }
 
+        public void SetProfileCache(Guid userId, UserProfileEssentialVo value)
+        {
+            cacheService.Set<string, UserProfileEssentialVo>(FormatProfileCacheId(userId), value);
+        }
+
         public void SetProfileCache(Guid userId, ProfileViewModel viewModel)
         {
             UserProfile model = mapper.Map<UserProfile>(viewModel);
@@ -49,9 +54,21 @@ namespace LuduStack.Application.Services
             return fromCache;
         }
 
+        private UserProfileEssentialVo GetEssentialProfileFromCache(Guid userId)
+        {
+            UserProfileEssentialVo fromCache = cacheService.Get<string, UserProfileEssentialVo>(FormatProfileCacheId(userId));
+
+            return fromCache;
+        }
+
         protected async Task<UserProfile> GetCachedProfileByUserId(Guid userId)
         {
-            UserProfile profile = GetProfileFromCache(userId);
+            return await GetCachedProfileByUserId(userId, false);
+        }
+
+        protected async Task<UserProfile> GetCachedProfileByUserId(Guid userId, bool noCache)
+        {
+            UserProfile profile = noCache ? null : GetProfileFromCache(userId);
 
             if (profile == null)
             {
@@ -67,6 +84,57 @@ namespace LuduStack.Application.Services
             }
 
             return profile;
+        }
+
+        protected async Task<List<UserProfileEssentialVo>> GetCachedProfilesByUserIds(Guid userIds)
+        {
+            return await GetCachedProfilesByUserIds(new List<Guid> { userIds }, false);
+        }
+
+        protected async Task<List<UserProfileEssentialVo>> GetCachedProfilesByUserIds(Guid userIds, bool noCache)
+        {
+            return await GetCachedProfilesByUserIds(new List<Guid> { userIds }, noCache);
+        }
+
+        protected async Task<List<UserProfileEssentialVo>> GetCachedProfilesByUserIds(IEnumerable<Guid> userIds)
+        {
+            return await GetCachedProfilesByUserIds(userIds, false);
+        }
+
+        protected async Task<List<UserProfileEssentialVo>> GetCachedProfilesByUserIds(IEnumerable<Guid> userIds, bool noCache)
+        {
+            List<UserProfileEssentialVo> profiles = new List<UserProfileEssentialVo>();
+
+            var userIdsToCache = new List<Guid>();
+            foreach (var userId in userIds)
+            {
+                var profile = noCache ? null : GetEssentialProfileFromCache(userId);
+
+                if (profile == null)
+                {
+                    userIdsToCache.Add(userId);
+                }
+                else
+                {
+                    profiles.Add(profile);
+                }
+            }
+
+            IEnumerable<UserProfileEssentialVo> userProfiles = await mediator.Query<GetBasicUserProfileDataByUserIdsQuery, IEnumerable<UserProfileEssentialVo>>(new GetBasicUserProfileDataByUserIdsQuery(userIdsToCache));
+
+            foreach (var profile in userProfiles)
+            {
+                var profileFromDb = userProfiles.FirstOrDefault(x => x.UserId == profile.UserId);
+
+                if (profileFromDb != null)
+                {
+                    SetProfileCache(profile.UserId, profileFromDb);
+
+                    profiles.Add(profileFromDb);
+                }
+            }
+
+            return profiles;
         }
 
         public async Task<ProfileViewModel> GetUserProfileWithCache(Guid userId)
@@ -143,6 +211,28 @@ namespace LuduStack.Application.Services
             {
                 vm.AuthorPicture = UrlFormatter.ProfileImage(vm.UserId, 40);
                 vm.AuthorName = authorProfile.Name;
+                vm.UserHandler = authorProfile.Handler;
+            }
+        }
+
+        protected void SetAuthorDetails(Guid currentUserId, IUserGeneratedContent vm, UserProfileEssentialVo userProfile)
+        {
+            SetAuthorDetails(currentUserId, vm, new List<UserProfileEssentialVo> { userProfile });
+        }
+
+        protected void SetAuthorDetails(Guid currentUserId, IUserGeneratedContent vm, IEnumerable<UserProfileEssentialVo> userProfiles)
+        {
+            if (vm.Id == Guid.Empty || vm.UserId == Guid.Empty)
+            {
+                vm.UserId = currentUserId;
+            }
+
+            var authorProfile = userProfiles.FirstOrDefault(x => x.UserId == vm.UserId);
+            if (authorProfile != null)
+            {
+                vm.AuthorPicture = UrlFormatter.ProfileImage(vm.UserId, 40);
+                vm.AuthorName = authorProfile.Name;
+                vm.UserHandler = authorProfile.Handler;
             }
         }
 

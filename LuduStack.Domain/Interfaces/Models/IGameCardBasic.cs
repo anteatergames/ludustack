@@ -8,6 +8,8 @@
 
         string DeveloperName { get; set; }
 
+        public string DeveloperHandler { get; set; }
+
         string ThumbnailUrl { get; set; }
 
         string ThumbnailResponsive { get; set; }

@@ -30,42 +30,49 @@ namespace LuduStack.Web.Controllers
         [Route("profile/{id:guid}")]
         public async Task<IActionResult> Details(Guid id, string userHandler)
         {
-            ProfileViewModel vm = await profileAppService.Get(CurrentUserId, id, userHandler, ProfileType.Personal);
-
-            if (vm == null)
+            try
             {
-                ProfileViewModel profile = profileAppService.GenerateNewOne(ProfileType.Personal);
+                ProfileViewModel vm = await profileAppService.Get(CurrentUserId, id, userHandler, ProfileType.Personal);
 
-                ApplicationUser user = await UserManager.FindByIdAsync(id.ToString());
-
-                if (user != null)
+                if (vm == null)
                 {
-                    profile.UserId = id;
-                    await profileAppService.Save(CurrentUserId, profile);
-                }
-                else
-                {
-                    return RedirectToAction("index", "home", new { area = string.Empty, msg = SharedLocalizer["User not found!"] });
+                    ProfileViewModel profile = profileAppService.GenerateNewOne(ProfileType.Personal);
+
+                    ApplicationUser user = await UserManager.FindByIdAsync(id.ToString());
+
+                    if (user != null)
+                    {
+                        profile.UserId = id;
+                        await profileAppService.Save(CurrentUserId, profile);
+                    }
+                    else
+                    {
+                        return RedirectToAction("index", "home", new { area = string.Empty, msg = SharedLocalizer["User not found!"] });
+                    }
+
+                    vm = profile;
                 }
 
-                vm = profile;
+                await gamificationAppService.FillProfileGamificationDetails(CurrentUserId, vm);
+
+                if (CurrentUserId != Guid.Empty)
+                {
+                    ApplicationUser user = await UserManager.FindByIdAsync(CurrentUserId.ToString());
+                    bool userIsAdmin = await UserManager.IsInRoleAsync(user, Roles.Administrator.ToString());
+                    vm.Permissions.IsAdmin = userIsAdmin;
+                    vm.Permissions.CanEdit = vm.UserId == CurrentUserId;
+                    vm.Permissions.CanFollow = vm.UserId != CurrentUserId;
+                    vm.Permissions.CanConnect = vm.UserId != CurrentUserId;
+                }
+
+                ViewData["ConnecionTypes"] = EnumExtensions.ToJson(UserConnectionType.Mentor);
+
+                return View(vm);
             }
-
-            await gamificationAppService.FillProfileGamificationDetails(CurrentUserId, vm);
-
-            if (CurrentUserId != Guid.Empty)
+            catch
             {
-                ApplicationUser user = await UserManager.FindByIdAsync(CurrentUserId.ToString());
-                bool userIsAdmin = await UserManager.IsInRoleAsync(user, Roles.Administrator.ToString());
-                vm.Permissions.IsAdmin = userIsAdmin;
-                vm.Permissions.CanEdit = vm.UserId == CurrentUserId;
-                vm.Permissions.CanFollow = vm.UserId != CurrentUserId;
-                vm.Permissions.CanConnect = vm.UserId != CurrentUserId;
+                return RedirectToAction("index", "home", new { area = string.Empty, msg = SharedLocalizer["Unable to get the user!"] });
             }
-
-            ViewData["ConnecionTypes"] = EnumExtensions.ToJson(UserConnectionType.Mentor);
-
-            return View(vm);
         }
 
         [Route("profile/edit/{userId:guid}")]
@@ -107,7 +114,7 @@ namespace LuduStack.Web.Controllers
                 }
                 else
                 {
-                    string url = Url.Action("Details", "Profile", new { area = string.Empty, id = vm.UserId.ToString() });
+                    string url = Url.Action("Details", "Profile", new { area = string.Empty, userHandler = vm.Handler });
 
                     return Json(new OperationResultRedirectVo(url));
                 }

@@ -6,6 +6,7 @@ using LuduStack.Domain.Core.Extensions;
 using LuduStack.Domain.Interfaces.Services;
 using LuduStack.Domain.Messaging;
 using LuduStack.Domain.Messaging.Queries.JobPosition;
+using LuduStack.Domain.Messaging.Queries.UserProfile;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
 using LuduStack.Infra.CrossCutting.Messaging;
@@ -80,13 +81,21 @@ namespace LuduStack.Application.Services
                     return new OperationResultVo<JobPositionViewModel>("JobPosition not found!");
                 }
 
+                List<Guid> finalUserIdList = model.Applicants.Select(y => y.UserId).ToList();
+                finalUserIdList.Add(model.UserId);
+
+                IEnumerable<UserProfileEssentialVo> userProfiles = await mediator.Query<GetBasicUserProfileDataByUserIdsQuery, IEnumerable<UserProfileEssentialVo>>(new GetBasicUserProfileDataByUserIdsQuery(finalUserIdList));
+
+                UserProfileEssentialVo authorProfile = userProfiles.FirstOrDefault();
+
                 JobPositionViewModel vm = mapper.Map<JobPositionViewModel>(model);
 
                 foreach (JobApplicantViewModel applicant in vm.Applicants)
                 {
-                    UserProfile profile = await GetCachedProfileByUserId(applicant.UserId);
+                    var  profile = userProfiles.FirstOrDefault(x => x.UserId == applicant.UserId);
                     if (profile != null)
                     {
+                        applicant.Handler = profile.Handler;
                         applicant.JobPositionId = id;
                         applicant.Name = profile.Name;
                         applicant.Location = profile.Location;
@@ -113,6 +122,8 @@ namespace LuduStack.Application.Services
                         vm.Benefits.Add(new JobPositionBenefitVo { Benefit = benefit, Available = false });
                     }
                 }
+
+                SetAuthorDetails(currentUserId, vm, userProfiles);
 
                 SetPermissions(currentUserId, vm);
 

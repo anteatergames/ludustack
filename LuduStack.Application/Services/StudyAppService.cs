@@ -7,6 +7,7 @@ using LuduStack.Domain.Interfaces.Services;
 using LuduStack.Domain.Messaging;
 using LuduStack.Domain.Messaging.Queries.Course;
 using LuduStack.Domain.Messaging.Queries.Study;
+using LuduStack.Domain.Messaging.Queries.UserProfile;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
 using LuduStack.Domain.ValueObjects.Study;
@@ -242,9 +243,11 @@ namespace LuduStack.Application.Services
             {
                 StudyCourse existing = await mediator.Query<GetCourseByIdQuery, StudyCourse>(new GetCourseByIdQuery(id));
 
+                UserProfileEssentialVo profile = await mediator.Query<GetBasicUserProfileDataByUserIdQuery, UserProfileEssentialVo>(new GetBasicUserProfileDataByUserIdQuery(existing.UserId));
+
                 CourseViewModel vm = mapper.Map<CourseViewModel>(existing);
 
-                await SetAuthorDetails(vm);
+                SetAuthorDetails(currentUserId, vm, profile);
 
                 SetPermissions(currentUserId, vm);
 
