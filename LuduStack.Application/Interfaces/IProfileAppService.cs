@@ -13,6 +13,8 @@ namespace LuduStack.Application.Interfaces
 
         Task<OperationResultListVo<Guid>> GetAllIds(Guid currentUserId);
 
+        Task<OperationResultListVo<string>> GetAllHandlers(Guid currentUserId);
+
         Task<OperationResultVo<ProfileViewModel>> GetById(Guid currentUserId, Guid id);
 
         Task<OperationResultVo> Remove(Guid currentUserId, Guid id);

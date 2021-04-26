@@ -351,6 +351,7 @@ namespace LuduStack.Web.Controllers
             april2021.Items = new List<string>() {
                 "Cost Calculator",
                 "Bill Rate management",
+                "Users handlers",
                 "Speed improvement on several pages"
             };
             model.Items.Add(april2021);

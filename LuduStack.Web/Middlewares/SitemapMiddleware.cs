@@ -272,51 +272,63 @@ namespace LuduStack.Web.Middlewares
         private async Task<List<string>> CheckDetailsMethod(Type controller)
         {
             string pattern = String.Empty;
-            OperationResultVo ids = null;
+            OperationResultListVo<Guid> result = null;
+            OperationResultListVo<string> handlersResult = null;
             List<string> methodList = new List<string>();
+            List<string> handlers = new List<string>();
 
             if (controller.Name.Equals("ProfileController"))
             {
-                pattern = "profile/{0}";
-                ids = await ProfileAppService.GetAllIds(Guid.Empty);
+                pattern = "u/{0}";
+                handlersResult = await ProfileAppService.GetAllHandlers(Guid.Empty);
             }
             else if (controller.Name.Equals("GameController"))
             {
                 pattern = "game/{0}";
-                ids = await GameAppService.GetAllIds(Guid.Empty);
+                result = await GameAppService.GetAllIds(Guid.Empty);
             }
             else if (controller.Name.Equals("ContentController"))
             {
                 pattern = "content/{0}";
-                ids = await ContentAppService.GetAllIds(Guid.Empty);
+                result = await ContentAppService.GetAllIds(Guid.Empty);
             }
 
-            if (ids != null && !string.IsNullOrWhiteSpace(pattern))
-            {
-                List<string> urls = GetDetailUrls(controller, ids, pattern);
 
-                methodList.AddRange(urls);
+            if (!string.IsNullOrWhiteSpace(pattern))
+            {
+                if (result != null && result.Success)
+                {
+                    foreach (Guid item in result.Value)
+                    {
+                        handlers.Add(item.ToString());
+                    }
+
+                    List<string> urls = GetDetailUrls(controller, handlers, pattern);
+
+                    methodList.AddRange(urls);
+                }
+                else if (handlersResult != null && handlersResult.Success)
+                {
+                    List<string> urls = GetDetailUrls(controller, handlersResult.Value, pattern);
+
+                    methodList.AddRange(urls);
+                }
             }
 
             return methodList;
         }
 
-        private List<string> GetDetailUrls(Type controller, OperationResultVo result, string patternUrl)
+        private List<string> GetDetailUrls(Type controller, IEnumerable<string> result, string patternUrl)
         {
             List<string> methodList = new List<string>();
 
-            if (result.Success)
+            foreach (string handler in result)
             {
-                OperationResultListVo<Guid> castResult = result as OperationResultListVo<Guid>;
+                string route = string.Format(patternUrl, handler);
 
-                foreach (Guid userId in castResult.Value)
-                {
-                    string route = string.Format(patternUrl, userId.ToString());
+                string sitemapItem = CheckMethod(controller, "details", false, false, false, true, route);
 
-                    string sitemapItem = CheckMethod(controller, "details", false, false, false, true, route);
-
-                    methodList.Add(sitemapItem);
-                }
+                methodList.Add(sitemapItem);
             }
 
             return methodList;

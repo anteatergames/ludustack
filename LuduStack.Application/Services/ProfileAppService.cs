@@ -107,6 +107,20 @@ namespace LuduStack.Application.Services
             }
         }
 
+        public async Task<OperationResultListVo<string>> GetAllHandlers(Guid currentUserId)
+        {
+            try
+            {
+                IEnumerable<string> allHandlers = await mediator.Query<GetUserProfileHandlersQuery, IEnumerable<string>>(new GetUserProfileHandlersQuery());
+
+                return new OperationResultListVo<string>(allHandlers);
+            }
+            catch (Exception ex)
+            {
+                return new OperationResultListVo<string>(ex.Message);
+            }
+        }
+
         public async Task<OperationResultVo<ProfileViewModel>> GetById(Guid currentUserId, Guid id)
         {
             try
