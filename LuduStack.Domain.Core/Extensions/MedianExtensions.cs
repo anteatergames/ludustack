@@ -14,7 +14,7 @@ namespace LuduStack.Domain.Core.Extensions
             if (data.Length == 0)
                 throw new InvalidOperationException();
             if (data.Length % 2 == 0)
-                return (data[data.Length / 2 - 1] + data[data.Length / 2]) / 2.0;
+                return (data[(data.Length / 2) - 1] + data[data.Length / 2]) / 2.0;
             return data[data.Length / 2];
         }
 
@@ -26,7 +26,7 @@ namespace LuduStack.Domain.Core.Extensions
             if (data.Length == 0)
                 return null;
             if (data.Length % 2 == 0)
-                return (data[data.Length / 2 - 1] + data[data.Length / 2]) / 2.0;
+                return (data[(data.Length / 2) - 1] + data[data.Length / 2]) / 2.0;
             return data[data.Length / 2];
         }
 
@@ -38,7 +38,7 @@ namespace LuduStack.Domain.Core.Extensions
             if (data.Length == 0)
                 throw new InvalidOperationException();
             if (data.Length % 2 == 0)
-                return (data[data.Length / 2 - 1] + data[data.Length / 2]) / 2.0;
+                return (data[(data.Length / 2) - 1] + data[data.Length / 2]) / 2.0;
             return data[data.Length / 2];
         }
 
@@ -50,7 +50,7 @@ namespace LuduStack.Domain.Core.Extensions
             if (data.Length == 0)
                 return null;
             if (data.Length % 2 == 0)
-                return (data[data.Length / 2 - 1] + data[data.Length / 2]) / 2.0;
+                return (data[(data.Length / 2) - 1] + data[data.Length / 2]) / 2.0;
             return data[data.Length / 2];
         }
 
@@ -62,7 +62,7 @@ namespace LuduStack.Domain.Core.Extensions
             if (data.Length == 0)
                 throw new InvalidOperationException();
             if (data.Length % 2 == 0)
-                return (data[data.Length / 2 - 1] + data[data.Length / 2]) / 2.0f;
+                return (data[(data.Length / 2) - 1] + data[data.Length / 2]) / 2.0f;
             return data[data.Length / 2];
         }
 
@@ -74,7 +74,7 @@ namespace LuduStack.Domain.Core.Extensions
             if (data.Length == 0)
                 return null;
             if (data.Length % 2 == 0)
-                return (data[data.Length / 2 - 1] + data[data.Length / 2]) / 2.0f;
+                return (data[(data.Length / 2) - 1] + data[data.Length / 2]) / 2.0f;
             return data[data.Length / 2];
         }
 
@@ -86,7 +86,7 @@ namespace LuduStack.Domain.Core.Extensions
             if (data.Length == 0)
                 throw new InvalidOperationException();
             if (data.Length % 2 == 0)
-                return (data[data.Length / 2 - 1] + data[data.Length / 2]) / 2.0;
+                return (data[(data.Length / 2) - 1] + data[data.Length / 2]) / 2.0;
             return data[data.Length / 2];
         }
 
@@ -98,7 +98,7 @@ namespace LuduStack.Domain.Core.Extensions
             if (data.Length == 0)
                 return null;
             if (data.Length % 2 == 0)
-                return (data[data.Length / 2 - 1] + data[data.Length / 2]) / 2.0;
+                return (data[(data.Length / 2) - 1] + data[data.Length / 2]) / 2.0;
             return data[data.Length / 2];
         }
 
@@ -110,7 +110,7 @@ namespace LuduStack.Domain.Core.Extensions
             if (data.Length == 0)
                 throw new InvalidOperationException();
             if (data.Length % 2 == 0)
-                return (data[data.Length / 2 - 1] + data[data.Length / 2]) / 2.0m;
+                return (data[(data.Length / 2) - 1] + data[data.Length / 2]) / 2.0m;
             return data[data.Length / 2];
         }
 
@@ -122,7 +122,7 @@ namespace LuduStack.Domain.Core.Extensions
             if (data.Length == 0)
                 return null;
             if (data.Length % 2 == 0)
-                return (data[data.Length / 2 - 1] + data[data.Length / 2]) / 2.0m;
+                return (data[(data.Length / 2) - 1] + data[data.Length / 2]) / 2.0m;
             return data[data.Length / 2];
         }
 
