@@ -139,7 +139,6 @@ namespace LuduStack.Web.Areas.Tools.Controllers
                 LocalizationViewModel model = castRestult.Value;
 
                 SetLocalization(model);
-                await SetAuthorDetails(model);
 
                 SetGamificationMessage(pointsEarned);
 
@@ -165,7 +164,6 @@ namespace LuduStack.Web.Areas.Tools.Controllers
                 LocalizationViewModel model = castRestult.Value;
 
                 SetLocalization(model);
-                await SetAuthorDetails(model);
 
                 SetGamificationMessage(pointsEarned);
 
@@ -191,7 +189,6 @@ namespace LuduStack.Web.Areas.Tools.Controllers
                 TranslationStatsViewModel model = castRestult.Value;
 
                 SetLocalization(model);
-                await SetAuthorDetails(model);
 
                 return View("Export", model);
             }

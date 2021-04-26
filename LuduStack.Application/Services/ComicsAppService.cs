@@ -164,14 +164,7 @@ namespace LuduStack.Application.Services
             {
                 UserContent existing = await mediator.Query<GetUserContentByIdQuery, UserContent>(new GetUserContentByIdQuery(id));
 
-                UserProfileEssentialVo profile = await mediator.Query<GetBasicUserProfileDataByUserIdQuery, UserProfileEssentialVo>(new GetBasicUserProfileDataByUserIdQuery(existing.UserId));
-
                 ComicStripViewModel vm = mapper.Map<ComicStripViewModel>(existing);
-
-                if (profile != null)
-                {
-                    vm.UserHandler = profile.Handler;
-                }
 
                 UserContentRating currentUserRate = existing.Ratings.FirstOrDefault(x => x.UserId == currentUserId);
 
@@ -188,7 +181,7 @@ namespace LuduStack.Application.Services
                 vm.LikeCount = vm.Likes.Count;
                 vm.CommentCount = vm.Comments.Count;
 
-                await SetAuthorDetails(vm);
+                await SetAuthorDetails(currentUserId, vm);
 
                 await LoadAuthenticatedData(currentUserId, vm);
 
@@ -210,7 +203,7 @@ namespace LuduStack.Application.Services
 
                 ComicStripViewModel vm = mapper.Map<ComicStripViewModel>(existing);
 
-                await SetAuthorDetails(vm);
+                await SetAuthorDetails(currentUserId, vm);
 
                 SetImagesToShow(vm, true);
 
@@ -312,7 +305,7 @@ namespace LuduStack.Application.Services
 
                 foreach (CommentViewModel comment in item.Comments)
                 {
-                    var commenterProfile = commenterProfiles.FirstOrDefault(x => x.UserId == comment.UserId);
+                    UserProfileEssentialVo commenterProfile = commenterProfiles.FirstOrDefault(x => x.UserId == comment.UserId);
                     if (commenterProfile == null)
                     {
                         comment.AuthorName = Constants.UnknownSoul;

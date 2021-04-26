@@ -52,7 +52,7 @@ namespace LuduStack.Application.Services
 
                 GiveawayViewModel vm = mapper.Map<GiveawayViewModel>(existing);
 
-                await SetAuthorDetails(vm);
+                await SetAuthorDetails(currentUserId, vm);
 
                 SetViewModelState(currentUserId, vm);
 
@@ -74,7 +74,7 @@ namespace LuduStack.Application.Services
 
                 GiveawayViewModel vm = mapper.Map<GiveawayViewModel>(existing);
 
-                await SetAuthorDetails(vm);
+                await SetAuthorDetails(currentUserId, vm);
 
                 SetViewModelState(currentUserId, vm);
 
@@ -96,7 +96,7 @@ namespace LuduStack.Application.Services
 
                 GiveawayViewModel vm = mapper.Map<GiveawayViewModel>(existing);
 
-                await SetAuthorDetails(vm);
+                await SetAuthorDetails(currentUserId, vm);
 
                 SetViewModelState(currentUserId, vm);
 

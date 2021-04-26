@@ -2,7 +2,6 @@
 using LuduStack.Application.Formatters;
 using LuduStack.Application.Interfaces;
 using LuduStack.Application.Requests.Notification;
-using LuduStack.Application.ViewModels;
 using LuduStack.Application.ViewModels.User;
 using LuduStack.Application.ViewModels.UserPreferences;
 using LuduStack.Domain.Core.Attributes;
@@ -169,29 +168,6 @@ namespace LuduStack.Web.Controllers.Base
         protected void SetAvatar(string profileImageUrl)
         {
             SetCookieValue(SessionValues.UserProfileImageUrl, profileImageUrl, 7, true);
-        }
-
-        protected async Task<ProfileViewModel> SetAuthorDetails(UserGeneratedBaseViewModel vm)
-        {
-            if (vm == null)
-            {
-                return null;
-            }
-
-            if (vm.Id == Guid.Empty || vm.UserId == Guid.Empty)
-            {
-                vm.UserId = CurrentUserId;
-            }
-
-            ProfileViewModel profile = await ProfileAppService.GetUserProfileWithCache(vm.UserId);
-
-            if (profile != null)
-            {
-                vm.AuthorName = profile.Name;
-                vm.AuthorPicture = UrlFormatter.ProfileImage(vm.UserId);
-            }
-
-            return profile;
         }
 
         protected SupportedLanguage SetLanguageFromCulture(string languageCode)

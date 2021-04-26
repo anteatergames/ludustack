@@ -46,28 +46,40 @@ namespace LuduStack.Application.Services
 
         public async Task<OperationResultListVo<ProfileViewModel>> GetAll(Guid currentUserId)
         {
-            return await GetAll(currentUserId, false);
-        }
-
-        public async Task<OperationResultListVo<ProfileViewModel>> GetAll(Guid currentUserId, bool noCache)
-        {
             try
             {
-                List<UserProfile> profiles = new List<UserProfile>();
-                IEnumerable<Guid> allIds = profileDomainService.GetAllUserIds();
-
-                foreach (Guid userId in allIds)
-                {
-                    UserProfile profile = await GetCachedProfileByUserId(userId, noCache);
-
-                    profiles.Add(profile);
-                }
+                IEnumerable<UserProfile> profiles = await mediator.Query<GetAllUserProfilesQuery, IEnumerable<UserProfile>>(new GetAllUserProfilesQuery());
 
                 IEnumerable<ProfileViewModel> vms = mapper.Map<IEnumerable<UserProfile>, IEnumerable<ProfileViewModel>>(profiles);
 
                 foreach (ProfileViewModel vm in vms)
                 {
                     UserProfile model = profiles.First(x => x.UserId == vm.UserId);
+
+                    vm.ProfileImageUrl = UrlFormatter.ProfileImage(vm.UserId, 84);
+                    vm.CoverImageUrl = UrlFormatter.ProfileCoverImage(vm.UserId, vm.Id, vm.LastUpdateDate, model.HasCoverImage, 300);
+                }
+
+                return new OperationResultListVo<ProfileViewModel>(vms);
+            }
+            catch (Exception ex)
+            {
+                return new OperationResultListVo<ProfileViewModel>(ex.Message);
+            }
+        }
+
+        public async Task<OperationResultListVo<ProfileViewModel>> GetAllEssential(Guid currentUserId, bool noCache)
+        {
+            try
+            {
+                IEnumerable<Guid> allIds = profileDomainService.GetAllUserIds();
+
+                List<UserProfileEssentialVo> profiles = await GetCachedEssentialProfilesByUserIds(allIds, noCache);
+                IEnumerable<ProfileViewModel> vms = mapper.Map<IEnumerable<UserProfileEssentialVo>, IEnumerable<ProfileViewModel>>(profiles);
+
+                foreach (ProfileViewModel vm in vms)
+                {
+                    UserProfileEssentialVo model = profiles.First(x => x.UserId == vm.UserId);
 
                     vm.ProfileImageUrl = UrlFormatter.ProfileImage(vm.UserId, 84);
                     vm.CoverImageUrl = UrlFormatter.ProfileCoverImage(vm.UserId, vm.Id, vm.LastUpdateDate, model.HasCoverImage, 300);

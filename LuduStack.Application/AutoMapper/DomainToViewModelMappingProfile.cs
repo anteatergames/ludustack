@@ -66,6 +66,10 @@ namespace LuduStack.Application.AutoMapper
                     .ForMember(x => x.Counters, opt => opt.Ignore())
                     .ForMember(x => x.IndieXp, opt => opt.Ignore());
 
+            CreateMap<UserProfileEssentialVo, ProfileViewModel>()
+                    .ForMember(x => x.Counters, opt => opt.Ignore())
+                    .ForMember(x => x.IndieXp, opt => opt.Ignore());
+
             CreateMap<ExternalLinkVo, ExternalLinkBaseViewModel>();
 
             #endregion Profile

@@ -43,7 +43,7 @@ namespace LuduStack.Web.Controllers
         [Route("list")]
         public async Task<IActionResult> List()
         {
-            OperationResultListVo<ProfileViewModel> serviceResult = await profileAppService.GetAll(CurrentUserId);
+            OperationResultListVo<ProfileViewModel> serviceResult = await profileAppService.GetAllEssential(CurrentUserId, false);
 
             List<ProfileViewModel> profiles = serviceResult.Value.OrderByDescending(x => x.CreateDate).ToList();
 

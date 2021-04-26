@@ -132,11 +132,6 @@ namespace LuduStack.Web.Controllers
             try
             {
                 bool isNew = vm.Id == Guid.Empty;
-
-                ProfileViewModel profile = await ProfileAppService.GetByUserId(CurrentUserId, ProfileType.Personal);
-
-                await SetAuthorDetails(vm);
-
                 OperationResultVo<Guid> saveResult = await userContentAppService.Save(CurrentUserId, vm);
 
                 if (!saveResult.Success)
@@ -145,6 +140,8 @@ namespace LuduStack.Web.Controllers
                 }
                 else
                 {
+                    ProfileViewModel profile = await ProfileAppService.GetByUserId(CurrentUserId, ProfileType.Personal);
+
                     await NotifyFollowers(profile, vm.GameId);
 
                     string url = Url.Action("Index", "Home", new { area = string.Empty, id = vm.Id, pointsEarned = saveResult.PointsEarned });
@@ -194,22 +191,27 @@ namespace LuduStack.Web.Controllers
                 GameId = gameId
             };
 
-            ProfileViewModel profile = await ProfileAppService.GetByUserId(CurrentUserId, ProfileType.Personal);
-
-            await SetAuthorDetails(vm);
-
             SetContentImages(vm, images);
 
-            OperationResultVo<Guid> result = await userContentAppService.Save(CurrentUserId, vm);
+            OperationResultVo<Guid> saveResult = await userContentAppService.Save(CurrentUserId, vm);
 
-            await NotifyFollowers(profile, vm.GameId);
-
-            if (EnvName.Equals(ConstantHelper.ProductionEnvironmentName))
+            if (!saveResult.Success)
             {
-                await NotificationSender.SendTeamNotificationAsync("New simple post!");
+                return Json(saveResult);
             }
+            else
+            {
+                ProfileViewModel profile = await ProfileAppService.GetByUserId(CurrentUserId, ProfileType.Personal);
 
-            return Json(result);
+                await NotifyFollowers(profile, vm.GameId);
+
+                if (EnvName.Equals(ConstantHelper.ProductionEnvironmentName))
+                {
+                    await NotificationSender.SendTeamNotificationAsync("New simple post!");
+                }
+
+                return Json(saveResult);
+            }
         }
 
         [HttpPost]
@@ -252,9 +254,7 @@ namespace LuduStack.Web.Controllers
         {
             OperationResultVo response;
 
-            await SetAuthorDetails(vm);
-
-            response = await userContentAppService.Comment(vm);
+            response = await userContentAppService.Comment(CurrentUserId, vm);
 
             return Json(response);
         }

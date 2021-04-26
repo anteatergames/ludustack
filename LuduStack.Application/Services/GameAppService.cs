@@ -3,13 +3,13 @@ using LuduStack.Application.Formatters;
 using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels;
 using LuduStack.Application.ViewModels.Game;
-using LuduStack.Application.ViewModels.User;
 using LuduStack.Domain.Core.Attributes;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Core.Extensions;
 using LuduStack.Domain.Core.Interfaces;
 using LuduStack.Domain.Messaging;
 using LuduStack.Domain.Messaging.Queries.Game;
+using LuduStack.Domain.Messaging.Queries.UserProfile;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.Specifications;
 using LuduStack.Domain.ValueObjects;
@@ -90,7 +90,7 @@ namespace LuduStack.Application.Services
                 vm.CurrentUserLiked = model.Likes.SafeAny(x => x.GameId == vm.Id && x.UserId == currentUserId);
                 vm.CurrentUserFollowing = model.Followers.SafeAny(x => x.GameId == vm.Id && x.UserId == currentUserId);
 
-                UserProfile authorProfile = await GetCachedProfileByUserId(vm.UserId);
+                UserProfileEssentialVo authorProfile = await GetCachedEssentialProfileByUserId(vm.UserId);
                 if (authorProfile != null)
                 {
                     vm.AuthorName = authorProfile.Name;
@@ -188,8 +188,8 @@ namespace LuduStack.Application.Services
 
             List<GameListItemViewModel> vms = allModels.AsQueryable().ProjectTo<GameListItemViewModel>(mapper.ConfigurationProvider).ToList();
 
-            var userIds = vms.Select(x => x.UserId);
-            var authorProfiles = await GetCachedProfilesByUserIds(userIds);
+            IEnumerable<Guid> userIds = vms.Select(x => x.UserId);
+            List<UserProfileEssentialVo> authorProfiles = await GetCachedEssentialProfilesByUserIds(userIds);
 
             foreach (GameListItemViewModel item in vms)
             {
@@ -198,7 +198,7 @@ namespace LuduStack.Application.Services
                 item.ThumbnailLquip = SetFeaturedImage(item.UserId, item.ThumbnailUrl, ImageRenderType.LowQuality);
                 item.DeveloperImageUrl = UrlFormatter.ProfileImage(item.UserId, 40);
 
-                var authorProfile = authorProfiles.FirstOrDefault(x => x.UserId == item.UserId);
+                UserProfileEssentialVo authorProfile = authorProfiles.FirstOrDefault(x => x.UserId == item.UserId);
                 if (authorProfile != null)
                 {
                     item.DeveloperName = authorProfile?.Name;
@@ -333,8 +333,9 @@ namespace LuduStack.Application.Services
 
         private async Task FormatExternalLinks(GameViewModel vm)
         {
-            ProfileViewModel authorProfile = await GetUserProfileWithCache(vm.UserId);
-            ExternalLinkBaseViewModel itchProfile = authorProfile.ExternalLinks.FirstOrDefault(x => x.Provider == ExternalLinkProvider.ItchIo);
+            IEnumerable<UserProfile> profiles = await mediator.Query<GetUserProfileByUserIdQuery, IEnumerable<UserProfile>>(new GetUserProfileByUserIdQuery(vm.UserId));
+            UserProfile authorProfile = profiles.FirstOrDefault();
+            ExternalLinkVo itchProfile = authorProfile.ExternalLinks.FirstOrDefault(x => x.Provider == ExternalLinkProvider.ItchIo);
 
             foreach (ExternalLinkBaseViewModel item in vm.ExternalLinks)
             {

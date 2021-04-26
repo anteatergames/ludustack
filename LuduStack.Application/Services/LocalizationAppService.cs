@@ -268,7 +268,7 @@ namespace LuduStack.Application.Services
             {
                 IEnumerable<LocalizationEntry> entries = translationDomainService.GetEntries(projectId, language);
 
-                var userIdList = entries.Select(x => x.UserId);
+                IEnumerable<Guid> userIdList = entries.Select(x => x.UserId);
 
                 IEnumerable<UserProfileEssentialVo> userProfiles = await mediator.Query<GetBasicUserProfileDataByUserIdsQuery, IEnumerable<UserProfileEssentialVo>>(new GetBasicUserProfileDataByUserIdsQuery(userIdList));
 
@@ -276,7 +276,7 @@ namespace LuduStack.Application.Services
 
                 foreach (LocalizationEntryViewModel entry in vms)
                 {
-                    var  profile = userProfiles.FirstOrDefault(x => x.UserId == entry.UserId);
+                    UserProfileEssentialVo profile = userProfiles.FirstOrDefault(x => x.UserId == entry.UserId);
                     entry.UserHandler = profile.Handler;
                     entry.AuthorName = profile.Name;
                     entry.AuthorPicture = UrlFormatter.ProfileImage(entry.UserId);
@@ -421,10 +421,10 @@ namespace LuduStack.Application.Services
                     return new OperationResultVo("Translation Project not found!");
                 }
 
-                var userIdList = model.Entries.GroupBy(x => x.UserId).Select(x => x.Key).ToList();
+                List<Guid> userIdList = model.Entries.GroupBy(x => x.UserId).Select(x => x.Key).ToList();
                 userIdList.Add(model.UserId);
 
-                var profiles = await mediator.Query<GetBasicUserProfileDataByUserIdsQuery, IEnumerable<UserProfileEssentialVo>>(new GetBasicUserProfileDataByUserIdsQuery(userIdList));
+                IEnumerable<UserProfileEssentialVo> profiles = await mediator.Query<GetBasicUserProfileDataByUserIdsQuery, IEnumerable<UserProfileEssentialVo>>(new GetBasicUserProfileDataByUserIdsQuery(userIdList));
 
                 TranslationStatsViewModel vm = mapper.Map<TranslationStatsViewModel>(model);
 
@@ -656,7 +656,7 @@ namespace LuduStack.Application.Services
             foreach (IGrouping<Guid, LocalizationEntry> contributorGroup in contributors)
             {
                 ContributorViewModel contributor = new ContributorViewModel();
-                var profile = userProfiles.FirstOrDefault(x => x.UserId == contributorGroup.Key);
+                UserProfileEssentialVo profile = userProfiles.FirstOrDefault(x => x.UserId == contributorGroup.Key);
                 contributor.UserId = contributorGroup.Key;
                 contributor.UserHandler = profile.Handler;
                 contributor.AuthorName = profile.Name;

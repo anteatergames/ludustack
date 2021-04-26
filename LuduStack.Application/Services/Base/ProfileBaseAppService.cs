@@ -86,29 +86,33 @@ namespace LuduStack.Application.Services
             return profile;
         }
 
-        protected async Task<List<UserProfileEssentialVo>> GetCachedProfilesByUserIds(Guid userIds)
+        protected async Task<UserProfileEssentialVo> GetCachedEssentialProfileByUserId(Guid userIds)
         {
-            return await GetCachedProfilesByUserIds(new List<Guid> { userIds }, false);
+            List<UserProfileEssentialVo> profiles = await GetCachedEssentialProfilesByUserIds(new List<Guid> { userIds }, false);
+
+            return profiles.FirstOrDefault();
         }
 
-        protected async Task<List<UserProfileEssentialVo>> GetCachedProfilesByUserIds(Guid userIds, bool noCache)
+        protected async Task<UserProfileEssentialVo> GetCachedEssentialProfileByUserId(Guid userIds, bool noCache)
         {
-            return await GetCachedProfilesByUserIds(new List<Guid> { userIds }, noCache);
+            List<UserProfileEssentialVo> profiles = await GetCachedEssentialProfilesByUserIds(new List<Guid> { userIds }, noCache);
+
+            return profiles.FirstOrDefault();
         }
 
-        protected async Task<List<UserProfileEssentialVo>> GetCachedProfilesByUserIds(IEnumerable<Guid> userIds)
+        protected async Task<List<UserProfileEssentialVo>> GetCachedEssentialProfilesByUserIds(IEnumerable<Guid> userIds)
         {
-            return await GetCachedProfilesByUserIds(userIds, false);
+            return await GetCachedEssentialProfilesByUserIds(userIds, false);
         }
 
-        protected async Task<List<UserProfileEssentialVo>> GetCachedProfilesByUserIds(IEnumerable<Guid> userIds, bool noCache)
+        protected async Task<List<UserProfileEssentialVo>> GetCachedEssentialProfilesByUserIds(IEnumerable<Guid> userIds, bool noCache)
         {
             List<UserProfileEssentialVo> profiles = new List<UserProfileEssentialVo>();
 
-            var userIdsToCache = new List<Guid>();
-            foreach (var userId in userIds)
+            List<Guid> userIdsToCache = new List<Guid>();
+            foreach (Guid userId in userIds)
             {
-                var profile = noCache ? null : GetEssentialProfileFromCache(userId);
+                UserProfileEssentialVo profile = noCache ? null : GetEssentialProfileFromCache(userId);
 
                 if (profile == null)
                 {
@@ -122,9 +126,9 @@ namespace LuduStack.Application.Services
 
             IEnumerable<UserProfileEssentialVo> userProfiles = await mediator.Query<GetBasicUserProfileDataByUserIdsQuery, IEnumerable<UserProfileEssentialVo>>(new GetBasicUserProfileDataByUserIdsQuery(userIdsToCache));
 
-            foreach (var profile in userProfiles)
+            foreach (UserProfileEssentialVo profile in userProfiles)
             {
-                var profileFromDb = userProfiles.FirstOrDefault(x => x.UserId == profile.UserId);
+                UserProfileEssentialVo profileFromDb = userProfiles.FirstOrDefault(x => x.UserId == profile.UserId);
 
                 if (profileFromDb != null)
                 {
@@ -151,6 +155,19 @@ namespace LuduStack.Application.Services
             ProfileViewModel viewModel = mapper.Map<ProfileViewModel>(model);
 
             return viewModel;
+        }
+
+
+        public async Task<UserProfileEssentialVo> GetEssentialUserProfileWithCache(Guid userId)
+        {
+            UserProfileEssentialVo model = GetEssentialProfileFromCache(userId);
+
+            if (model == null)
+            {
+                model = await mediator.Query<GetBasicUserProfileDataByUserIdQuery, UserProfileEssentialVo>(new GetBasicUserProfileDataByUserIdQuery(userId));
+            }
+
+            return model;
         }
 
         #endregion Profile
@@ -204,9 +221,15 @@ namespace LuduStack.Application.Services
             }
         }
 
-        protected async Task SetAuthorDetails(IUserGeneratedContent vm)
+        protected async Task SetAuthorDetails(Guid currentUserId, IUserGeneratedContent vm)
         {
-            UserProfile authorProfile = await GetCachedProfileByUserId(vm.UserId);
+
+            if (vm.Id == Guid.Empty || vm.UserId == Guid.Empty)
+            {
+                vm.UserId = currentUserId;
+            }
+
+            UserProfileEssentialVo authorProfile = await GetCachedEssentialProfileByUserId(vm.UserId);
             if (authorProfile != null)
             {
                 vm.AuthorPicture = UrlFormatter.ProfileImage(vm.UserId, 40);
@@ -227,7 +250,7 @@ namespace LuduStack.Application.Services
                 vm.UserId = currentUserId;
             }
 
-            var authorProfile = userProfiles.FirstOrDefault(x => x.UserId == vm.UserId);
+            UserProfileEssentialVo authorProfile = userProfiles.FirstOrDefault(x => x.UserId == vm.UserId);
             if (authorProfile != null)
             {
                 vm.AuthorPicture = UrlFormatter.ProfileImage(vm.UserId, 40);

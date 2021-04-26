@@ -39,7 +39,7 @@ namespace LuduStack.Web.Areas.Staff.Controllers
 
             try
             {
-                OperationResultListVo<ProfileViewModel> profileResult = await ProfileAppService.GetAll(CurrentUserId, true);
+                OperationResultListVo<ProfileViewModel> profileResult = await ProfileAppService.GetAll(CurrentUserId);
 
                 if (!profileResult.Success)
                 {
@@ -82,7 +82,7 @@ namespace LuduStack.Web.Areas.Staff.Controllers
 
             try
             {
-                OperationResultListVo<ProfileViewModel> profileResult = await ProfileAppService.GetAll(CurrentUserId, true);
+                OperationResultListVo<ProfileViewModel> profileResult = await ProfileAppService.GetAll(CurrentUserId);
 
                 if (!profileResult.Success)
                 {

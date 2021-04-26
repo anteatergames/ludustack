@@ -21,7 +21,7 @@ namespace LuduStack.Application.Interfaces
 
         Task<OperationResultVo> Vote(Guid userId, Guid ideaId, VoteValue vote);
 
-        Task<OperationResultVo> Comment(CommentViewModel vm);
+        Task<OperationResultVo> Comment(Guid currentUserId, CommentViewModel vm);
 
         Task<OperationResultVo<BrainstormSessionViewModel>> GetSession(Guid sessionId);
 

@@ -100,13 +100,13 @@
                     @foreach (var comment in Model.Comments)
                     {
                         <div class="box-comment">
-                            <a asp-area="" asp-controller="profile" asp-action="details" asp-route-userHandler="@Model.UserHandler">
+                            <a asp-area="" asp-controller="profile" asp-action="details" asp-route-userHandler="@comment.UserHandler">
                                 <img class="rounded img-sm rounded-circle" src="@comment.AuthorPicture" alt="User Image">
                             </a>
 
                             <div class="comment-text">
                                 <span class="username">
-                                    <span class="comment-authorname"><a asp-area="" asp-controller="profile" asp-action="details" asp-route-userHandler="@Model.UserHandler">@comment.AuthorName</a></span>
+                                    <span class="comment-authorname"><a asp-area="" asp-controller="profile" asp-action="details" asp-route-userHandler="@comment.UserHandler">@comment.AuthorName</a></span>
                                     <span class="text-muted pull-right comment-date">@comment.CreateDate.ToString()</span>
                                 </span>
                                 <div class="comment-content">

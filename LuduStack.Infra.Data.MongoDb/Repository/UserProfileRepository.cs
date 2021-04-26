@@ -63,7 +63,7 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
             FilterDefinition<UserProfile> filter = new ExpressionFilterDefinition<UserProfile>(x => userIds.Contains(x.UserId));
 
 
-            var profile = await (await DbSet.FindAsync(filter, findOptions)).ToListAsync();
+            List<UserProfileEssentialVo> profile = await (await DbSet.FindAsync(filter, findOptions)).ToListAsync();
 
             return profile;
         }

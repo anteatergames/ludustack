@@ -59,10 +59,10 @@ namespace LuduStack.Application.Services
 
                 BrainstormSession session = await mediator.Query<GetBrainstormSessionByIdQuery, BrainstormSession>(new GetBrainstormSessionByIdQuery(idea.SessionId));
 
-                var userIdList = idea.Comments.Select(x => x.UserId).ToList();
+                List<Guid> userIdList = idea.Comments.Select(x => x.UserId).ToList();
                 userIdList.Add(idea.UserId);
 
-                var profiles = await mediator.Query<GetBasicUserProfileDataByUserIdsQuery, IEnumerable<UserProfileEssentialVo>>(new GetBasicUserProfileDataByUserIdsQuery(userIdList));
+                IEnumerable<UserProfileEssentialVo> profiles = await mediator.Query<GetBasicUserProfileDataByUserIdsQuery, IEnumerable<UserProfileEssentialVo>>(new GetBasicUserProfileDataByUserIdsQuery(userIdList));
 
                 BrainstormIdeaViewModel vm = mapper.Map<BrainstormIdeaViewModel>(idea);
 
@@ -71,11 +71,7 @@ namespace LuduStack.Application.Services
                 vm.Score = idea.Votes.Sum(x => (int)x.VoteValue);
                 vm.CurrentUserVote = idea.Votes.FirstOrDefault(x => x.UserId == currentUserId)?.VoteValue ?? VoteValue.Neutral;
 
-                var authorProfile = profiles.FirstOrDefault(x => x.UserId == vm.UserId);
-                if (authorProfile != null)
-                {
-                    vm.UserHandler = authorProfile.Handler;
-                }
+                SetAuthorDetails(currentUserId, vm, profiles);
 
                 vm.CommentCount = idea.Comments.Count;
 
@@ -85,7 +81,7 @@ namespace LuduStack.Application.Services
 
                 foreach (CommentViewModel comment in vm.Comments)
                 {
-                    var commenterProfile = profiles.FirstOrDefault(x => x.UserId == comment.UserId);
+                    UserProfileEssentialVo commenterProfile = profiles.FirstOrDefault(x => x.UserId == comment.UserId);
                     if (commenterProfile == null)
                     {
                         comment.AuthorName = Constants.UnknownSoul;
@@ -171,10 +167,11 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public async Task<OperationResultVo> Comment(CommentViewModel vm)
+        public async Task<OperationResultVo> Comment(Guid currentUserId, CommentViewModel vm)
         {
             try
             {
+                await SetAuthorDetails(currentUserId, vm);
                 BrainstormIdea idea = await mediator.Query<GetBrainstormIdeaByIdQuery, BrainstormIdea>(new GetBrainstormIdeaByIdQuery(vm.UserContentId));
                 BrainstormComment model = new BrainstormComment
                 {

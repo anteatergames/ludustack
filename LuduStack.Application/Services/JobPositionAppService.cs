@@ -92,7 +92,7 @@ namespace LuduStack.Application.Services
 
                 foreach (JobApplicantViewModel applicant in vm.Applicants)
                 {
-                    var  profile = userProfiles.FirstOrDefault(x => x.UserId == applicant.UserId);
+                    UserProfileEssentialVo profile = userProfiles.FirstOrDefault(x => x.UserId == applicant.UserId);
                     if (profile != null)
                     {
                         applicant.Handler = profile.Handler;

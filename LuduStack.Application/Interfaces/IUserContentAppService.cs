@@ -31,7 +31,7 @@ namespace LuduStack.Application.Interfaces
 
         Task<OperationResultVo> ContentUnlike(Guid currentUserId, Guid targetId);
 
-        Task<OperationResultVo> Comment(CommentViewModel vm);
+        Task<OperationResultVo> Comment(Guid currentUserId, CommentViewModel vm);
 
         Task<OperationResultVo> GetCommentsByUserId(Guid currentUserId, Guid userId);
     }

@@ -221,8 +221,6 @@ namespace LuduStack.Web.Areas.Tools.Controllers
 
                 GiveawayViewModel model = castRestult.Value;
 
-                await SetAuthorDetails(model);
-
                 SetLocalization(model);
 
                 ViewData["giveawayId"] = model.Id;
@@ -266,8 +264,6 @@ namespace LuduStack.Web.Areas.Tools.Controllers
                     ReferralCode = referralCode,
                     EntryType = Enum.TryParse(source, out entryType) ? entryType : new GiveawayEntryType?()
                 };
-
-                await SetAuthorDetails(model);
 
                 SetLocalization(model);
 

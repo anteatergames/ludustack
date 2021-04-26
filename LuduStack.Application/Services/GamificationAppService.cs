@@ -6,7 +6,6 @@ using LuduStack.Application.ViewModels.User;
 using LuduStack.Domain.Messaging.Queries.Gamification;
 using LuduStack.Domain.Messaging.Queries.GamificationLevel;
 using LuduStack.Domain.Messaging.Queries.UserBadge;
-using LuduStack.Domain.Messaging.Queries.UserProfile;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
 using LuduStack.Infra.CrossCutting.Messaging;

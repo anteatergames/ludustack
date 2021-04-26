@@ -97,8 +97,6 @@ namespace LuduStack.Web.Controllers
 
             BrainstormIdeaViewModel vm = op.Value;
 
-            await SetAuthorDetails(vm);
-
             return View("_Details", vm);
         }
 
@@ -194,9 +192,7 @@ namespace LuduStack.Web.Controllers
         {
             OperationResultVo response;
 
-            await SetAuthorDetails(vm);
-
-            response = await brainstormAppService.Comment(vm);
+            response = await brainstormAppService.Comment(CurrentUserId, vm);
 
             return Json(response);
         }
