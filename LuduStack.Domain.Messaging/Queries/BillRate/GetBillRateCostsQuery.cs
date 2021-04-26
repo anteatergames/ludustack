@@ -34,6 +34,7 @@ namespace LuduStack.Domain.Messaging.Queries.BillRate
 
             SetPixelArtElementRates(vo, rates);
             SetVectorElementRates(vo, rates);
+            SetCartoonElementRates(vo, rates);
             SetArtisticElementRates(vo, rates);
             SetRealisticElementRates(vo, rates);
 
@@ -69,6 +70,18 @@ namespace LuduStack.Domain.Messaging.Queries.BillRate
             vo.VisualRates.Add(vectorCharacterVo);
 
             VisualRateVo vectorLevelVo = CreateVisualRateVo(rates, GameElement.Level2d, ArtStyle.Flat);
+            vo.VisualRates.Add(vectorLevelVo);
+        }
+
+        private static void SetCartoonElementRates(CostCalculatorVo vo, IQueryable<Models.BillRate> rates)
+        {
+            VisualRateVo vectorConceptArtVo = CreateVisualRateVo(rates, GameElement.ConceptArt, ArtStyle.Cartoon);
+            vo.VisualRates.Add(vectorConceptArtVo);
+
+            VisualRateVo vectorCharacterVo = CreateVisualRateVo(rates, GameElement.Character2d, ArtStyle.Cartoon);
+            vo.VisualRates.Add(vectorCharacterVo);
+
+            VisualRateVo vectorLevelVo = CreateVisualRateVo(rates, GameElement.Level2d, ArtStyle.Cartoon);
             vo.VisualRates.Add(vectorLevelVo);
         }
 
