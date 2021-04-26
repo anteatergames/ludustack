@@ -86,7 +86,6 @@ namespace LuduStack.Application.Services
             {
                 UserContent model = await mediator.Query<GetUserContentByIdQuery, UserContent>(new GetUserContentByIdQuery(id));
 
-
                 List<Guid> finalUserIdList = model.Comments.Select(y => y.UserId).ToList();
                 finalUserIdList.Add(model.UserId);
 

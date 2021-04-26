@@ -94,7 +94,7 @@ namespace LuduStack.Application.Services
                 if (authorProfile != null)
                 {
                     vm.AuthorName = authorProfile.Name;
-                    vm.UserHandler = authorProfile.Handler; 
+                    vm.UserHandler = authorProfile.Handler;
                 }
 
                 if (forEdit)
@@ -202,7 +202,7 @@ namespace LuduStack.Application.Services
                 if (authorProfile != null)
                 {
                     item.DeveloperName = authorProfile?.Name;
-                    item.DeveloperHandler = authorProfile?.Handler; 
+                    item.DeveloperHandler = authorProfile?.Handler;
                 }
             }
 

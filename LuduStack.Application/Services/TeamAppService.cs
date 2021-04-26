@@ -202,7 +202,7 @@ namespace LuduStack.Application.Services
 
                 foreach (TeamViewModel team in vms)
                 {
-                    await SetUiData (currentUserId, team, profiles);
+                    await SetUiData(currentUserId, team, profiles);
                 }
 
                 return new OperationResultListVo<TeamViewModel>(vms);

@@ -58,7 +58,7 @@ namespace LuduStack.Web.Areas.Staff.Controllers
                     foreach (ProfileViewModel profile in profileResult.Value)
                     {
                         AnalyseProfile(messages, allUsers, profile);
-                    } 
+                    }
                 }
             }
             catch (Exception ex)

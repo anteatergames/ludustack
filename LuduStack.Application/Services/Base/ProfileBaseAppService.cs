@@ -132,7 +132,6 @@ namespace LuduStack.Application.Services
             return viewModel;
         }
 
-
         public async Task<UserProfileEssentialVo> GetEssentialUserProfileWithCache(Guid userId)
         {
             UserProfileEssentialVo model = GetEssentialProfileFromCache(userId);
@@ -198,7 +197,6 @@ namespace LuduStack.Application.Services
 
         protected async Task SetAuthorDetails(Guid currentUserId, IUserGeneratedContent vm)
         {
-
             if (vm.Id == Guid.Empty || vm.UserId == Guid.Empty)
             {
                 vm.UserId = currentUserId;

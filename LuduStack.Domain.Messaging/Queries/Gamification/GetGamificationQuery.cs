@@ -92,7 +92,7 @@ namespace LuduStack.Domain.Messaging.Queries.Gamification
 
             foreach (Models.Gamification item in models)
             {
-                UserProfileEssentialVo userProfile = userProfiles.Where(x => x.UserId == item.UserId).FirstOrDefault();
+                UserProfileEssentialVo userProfile = userProfiles.FirstOrDefault(x => x.UserId == item.UserId);
                 RankingVo newVo = new RankingVo
                 {
                     UserHandler = userProfile == null ? string.Empty : userProfile?.Handler,

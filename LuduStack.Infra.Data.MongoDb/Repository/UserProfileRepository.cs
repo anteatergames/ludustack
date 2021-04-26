@@ -43,7 +43,7 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
 
         public async Task<IEnumerable<UserProfileEssentialVo>> GetBasicDataByUserIds(IEnumerable<Guid> userIds)
         {
-            ProjectionDefinition<UserProfile, UserProfileEssentialVo> projection1 = 
+            ProjectionDefinition<UserProfile, UserProfileEssentialVo> projection1 =
                 Builders<UserProfile>.Projection.Expression(x => new UserProfileEssentialVo
                 {
                     Id = x.Id,
@@ -61,7 +61,6 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
             };
 
             FilterDefinition<UserProfile> filter = new ExpressionFilterDefinition<UserProfile>(x => userIds.Contains(x.UserId));
-
 
             List<UserProfileEssentialVo> profile = await (await DbSet.FindAsync(filter, findOptions)).ToListAsync();
 

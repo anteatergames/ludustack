@@ -452,8 +452,6 @@ namespace LuduStack.Application.Services
 
                 await SetGameViewModel(model.GameId, vm);
 
-
-
                 SetPermissions(currentUserId, vm);
 
                 return new OperationResultVo<TranslationStatsViewModel>(vm);

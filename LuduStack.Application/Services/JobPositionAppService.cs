@@ -86,8 +86,6 @@ namespace LuduStack.Application.Services
 
                 IEnumerable<UserProfileEssentialVo> userProfiles = await mediator.Query<GetBasicUserProfileDataByUserIdsQuery, IEnumerable<UserProfileEssentialVo>>(new GetBasicUserProfileDataByUserIdsQuery(finalUserIdList));
 
-                UserProfileEssentialVo authorProfile = userProfiles.FirstOrDefault();
-
                 JobPositionViewModel vm = mapper.Map<JobPositionViewModel>(model);
 
                 foreach (JobApplicantViewModel applicant in vm.Applicants)
