@@ -347,6 +347,14 @@ namespace LuduStack.Web.Controllers
             };
             model.Items.Add(march2021);
 
+            TimeLineItemViewModel april2021 = GenerateTimeLineItem(new DateTime(2021, 04, 01), "fas fa-calculator", "success", "April 2021", "How much?", "Now that most of the platform migration to CQRS is done, we are releasing a new tool and several improvements to the platform.");
+            april2021.Items = new List<string>() {
+                "Cost Calculator",
+                "Bill Rate management",
+                "Speed improvement on several pages"
+            };
+            model.Items.Add(april2021);
+
             // Future
 
             model.Items.Add(GenerateTimeLineItem(new DateTime(2098, 11, 01), "fas fa-bug", "danger", "Soon", "Open Beta", "At this point, we hope to have a consistent beta tester base so we can polish the platform and fix every possible bug tha shows up."));
