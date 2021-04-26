@@ -73,7 +73,7 @@
 
     .badge-wrapper .counter {
         position: absolute;
-        bottom: 0px;
+        bottom: 0;
     }
 
 .user-profile-header .user-social-acount {
