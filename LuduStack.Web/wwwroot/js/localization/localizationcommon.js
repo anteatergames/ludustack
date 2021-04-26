@@ -52,14 +52,6 @@
         });
     }
 
-    function setSelectedTranslator(btn) {
-        btn.closest(selectors.entry).find(selectors.entryAuthorButton + ' img').addClass('grayscale');
-
-        btn.find('img').removeClass('grayscale');
-
-        btn.closest(selectors.entry).find(selectors.entryAuthorName).html(btn.attr('title'));
-    }
-
     function deleteProject(btn, callback) {
         var url = btn.data('url');
 

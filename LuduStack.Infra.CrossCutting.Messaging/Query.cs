@@ -4,7 +4,7 @@ using System;
 
 namespace LuduStack.Infra.CrossCutting.Messaging
 {
-    public abstract class Query<TResult> : Message, IRequest<TResult>, IBaseRequest
+    public abstract class Query<TResult> : Message, IRequest<TResult>
     {
         public DateTime Timestamp { get; private set; }
         public ValidationResult ValidationResult { get; set; }

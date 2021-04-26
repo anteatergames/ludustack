@@ -9,6 +9,7 @@ namespace LuduStack.Application.ViewModels.Jobs
         public string Email { get; set; }
         public string CoverLetter { get; set; }
 
+        public string Handler { get; set; }
         public string Name { get; set; }
         public string ProfileImageUrl { get; set; }
         public string CoverImageUrl { get; set; }

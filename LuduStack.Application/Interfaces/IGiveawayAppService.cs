@@ -1,6 +1,7 @@
 ﻿using LuduStack.Application.ViewModels.Giveaway;
 using LuduStack.Domain.ValueObjects;
 using System;
+using System.Threading.Tasks;
 
 namespace LuduStack.Application.Interfaces
 {
@@ -8,23 +9,23 @@ namespace LuduStack.Application.Interfaces
     {
         OperationResultVo GenerateNew(Guid currentUserId);
 
-        OperationResultVo GetGiveawayForManagement(Guid currentUserId, Guid id);
+        Task<OperationResultVo> GetGiveawayForManagement(Guid currentUserId, Guid giveawayId);
 
-        OperationResultVo GetForEdit(Guid currentUserId, Guid giveawayId);
+        Task<OperationResultVo> GetForEdit(Guid currentUserId, Guid giveawayId);
 
-        OperationResultVo GetForDetails(Guid currentUserId, Guid id);
+        Task<OperationResultVo> GetForDetails(Guid currentUserId, Guid giveawayId);
 
         OperationResultVo GetGiveawayParticipantInfo(Guid currentUserId, Guid giveawayId, string email);
 
         OperationResultVo GetGiveawaysByMe(Guid currentUserId);
 
-        OperationResultVo<Guid> SaveGiveaway(Guid currentUserId, GiveawayViewModel vm);
+        Task<OperationResultVo<Guid>> SaveGiveaway(Guid currentUserId, GiveawayViewModel viewModel);
 
-        OperationResultVo DeleteGiveaway(Guid currentUserId, Guid giveawayId);
+        Task<OperationResultVo> DeleteGiveaway(Guid currentUserId, Guid giveawayId);
 
         OperationResultVo CheckParticipant(Guid currentUserId, Guid giveawayId, string sessionEmail);
 
-        OperationResultVo EnterGiveaway(Guid currentUserId, GiveawayEnterViewModel vm, string urlReferralBase);
+        Task<OperationResultVo> EnterGiveaway(Guid currentUserId, GiveawayEnterViewModel vm, string urlReferralBase);
 
         OperationResultVo DailyEntry(Guid currentUserId, Guid giveawayId, Guid participantId);
 

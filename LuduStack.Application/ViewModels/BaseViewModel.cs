@@ -11,6 +11,8 @@ namespace LuduStack.Application.ViewModels
 
         public Guid UserId { get; set; }
 
+        public string UserHandler { get; set; }
+
         public DateTime CreateDate { get; set; }
 
         public DateTime? LastUpdateDate { get; set; }

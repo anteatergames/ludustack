@@ -2,6 +2,7 @@
 using LuduStack.Domain.ValueObjects;
 using LuduStack.Web.Controllers.Base;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace LuduStack.Web.Controllers
 {
@@ -15,9 +16,9 @@ namespace LuduStack.Web.Controllers
         }
 
         [Route("go/{token}")]
-        public IActionResult Go(string token, string source)
+        public async Task<IActionResult> Go(string token, string source)
         {
-            OperationResultVo result = shortUrlAppService.GetFullUrlByToken(token);
+            OperationResultVo result = await shortUrlAppService.GetFullUrlByToken(token);
 
             if (result.Success)
             {

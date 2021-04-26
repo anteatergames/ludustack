@@ -66,5 +66,7 @@
                 <span class="rounded-0 border-0">@SharedLocalizer["If you like this tool, consider joining our community by"] <a asp-area="" asp-controller="account" asp-action="register" asp-route-returnUrl="@Url.Action("index", "gameidea", new { area = "tools" })" class="text-uppercase">@SharedLocalizer["clicking here"]</a>.</span>
             </div>
         }
+
+        <div class="col-12 text-center"><span>@SharedLocalizer["Wanna know how much it would cost to produce this game?"]</span> <span class="font-weight-bold">@Html.ActionLink("Check it out!", "index", "costcalculator", new { area = "tools" })</span></div>
     </div>
 </div>

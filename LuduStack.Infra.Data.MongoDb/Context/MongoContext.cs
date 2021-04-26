@@ -40,31 +40,24 @@ namespace LuduStack.Infra.Data.MongoDb.Context
 
         public async Task<int> SaveChanges()
         {
-            try
+            ConfigureMongo();
+
+            using (Session = await MongoClient.StartSessionAsync())
             {
-                ConfigureMongo();
+                Session.StartTransaction();
 
-                using (Session = await MongoClient.StartSessionAsync())
-                {
-                    Session.StartTransaction();
+                IEnumerable<Task> commandTasks = _commands.Select(c => c());
 
-                    IEnumerable<Task> commandTasks = _commands.Select(c => c());
+                await Task.WhenAll(commandTasks);
 
-                    await Task.WhenAll(commandTasks);
-
-                    await Session.CommitTransactionAsync();
-                }
-
-                int count = _commands.Count;
-
-                _commands.Clear();
-
-                return count;
+                await Session.CommitTransactionAsync();
             }
-            catch (Exception ex)
-            {
-                throw;
-            }
+
+            int count = _commands.Count;
+
+            _commands.Clear();
+
+            return count;
         }
 
         public IMongoCollection<T> GetCollection<T>(string name)

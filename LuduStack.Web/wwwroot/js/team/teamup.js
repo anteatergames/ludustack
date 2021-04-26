@@ -3,8 +3,8 @@
 
     var rootUrl = '/team';
     var avatarBaseUrl = "https://res.cloudinary.com/ludustack/image/upload/f_auto,q_auto/v1/";
-    var propPrefixId = "Members_0__";
-    var propPrefixName = "Members[0].";
+
+    var propPrefix = 'Members';
 
     var selectors = {};
     var objs = {};
@@ -111,21 +111,21 @@
     }
 
     function bindSelect2() {
-        $('#divMemberManagement select.select2').each(function () {
-            if ($(this).data('select2') === undefined) {
-                $(this).select2({
-                    width: 'element'
-                });
-            }
-        });
+        $('#frmTeamSave select.select2').each(function () {
+            const hasSelect2 = $(this).hasClass("select2-hidden-accessible");
 
-        $('#divApplication select.select2').each(function () {
-            if ($(this).data('select2') === undefined) {
-                $(this).select2({
-                    width: 'element'
-                });
+            if (!hasSelect2) {
+                selectTwoBinder(this);
             }
         });
+    }
+
+    function selectTwoBinder(element) {
+        if ($(element).data('select2') === undefined) {
+            $(element).select2({
+                width: 'element'
+            });
+        }
     }
 
     function bindSelect2Search() {
@@ -190,13 +190,7 @@
 
     function bindRejectInvitation() {
         objs.divMembers.on('click', selectors.btnRejectInvitation, function () {
-            var btn = $(this);
-            var url = $(this).data('url');
-
-            $.post(url)
-                .done(function () {
-                    btn.closest(selectors.teamMember).remove();
-                });
+            postReject(this);
         });
     }
 
@@ -217,9 +211,7 @@
 
                         if (response.message) {
                             ALERTSYSTEM.ShowSuccessMessage(response.message, function () {
-                                if (response.url) {
-                                    window.location = response.url;
-                                }
+                                MAINMODULE.Ajax.HandleUrlResponse(response);
                             });
                         }
                     }
@@ -240,9 +232,7 @@
                     else {
                         if (response.message) {
                             ALERTSYSTEM.ShowSuccessMessage(response.message, function () {
-                                if (response.url) {
-                                    window.location = response.url;
-                                }
+                                MAINMODULE.Ajax.HandleUrlResponse(response);
                             });
                         }
                     }
@@ -252,13 +242,7 @@
 
     function bindRejectCandidate() {
         objs.divMembers.on('click', selectors.btnRejectCandidate, function () {
-            var btn = $(this);
-            var url = $(this).data('url');
-
-            $.post(url)
-                .done(function () {
-                    btn.closest(selectors.teamMember).remove();
-                });
+            postReject(this);
         });
     }
 
@@ -278,40 +262,55 @@
             e.preventDefault();
 
             var btn = $(this);
-            var url = $(this).data('url');
             var msg = btn.data('confirmationmessage');
             var confirmationTitle = btn.data('confirmationtitle');
             var confirmationButtonText = btn.data('confirmationbuttontext');
             var cancelButtonText = btn.data('cancelbuttontext');
 
             ALERTSYSTEM.ShowConfirmMessage(confirmationTitle, msg, confirmationButtonText, cancelButtonText, function () {
-                $.ajax({
-                    url: url,
-                    type: 'DELETE'
-                }).done(function (response) {
-                    if (response.success) {
-                        btn.closest(selectors.divteamItem).remove();
-                        loadMyTeams();
-
-                        if (response.message) {
-                            ALERTSYSTEM.ShowSuccessMessage(response.message, function () {
-                                if (response.url) {
-                                    window.location = response.url;
-                                }
-                            });
-                        }
-                    }
-                    else {
-                        ALERTSYSTEM.ShowWarningMessage(response.message);
-                    }
-                });
+                deleteTeam(btn);
             });
         });
     }
 
+    function postReject(element) {
+        var btn = $(element);
+        var url = $(element).data('url');
+
+        $.post(url)
+            .done(function () {
+                btn.closest(selectors.teamMember).remove();
+            });
+    }
+
+    function deleteTeam(btn) {
+        var url = btn.data('url');
+        $.ajax({
+            url: url,
+            type: 'DELETE'
+        }).done(function (response) {
+            deleteTeamCallback(response, btn);
+        });
+    }
+
+    function deleteTeamCallback(response, btn) {
+        if (response.success) {
+            btn.closest(selectors.divteamItem).parent().remove();
+            loadMyTeams();
+
+            if (response.message) {
+                ALERTSYSTEM.ShowSuccessMessage(response.message, function () {
+                    MAINMODULE.Ajax.HandleUrlResponse(response);
+                });
+            }
+        }
+        else {
+            ALERTSYSTEM.ShowWarningMessage(response.message);
+        }
+    }
+
     function bindDeleteMember() {
         objs.container.on('click', selectors.btnDeleteMember, function (e) {
-            console.log('meh');
             e.preventDefault();
 
             var btn = $(this);
@@ -328,7 +327,7 @@
                 }).done(function (response) {
                     if (response.success) {
                         btn.closest(selectors.teamMember).remove();
-                        renameInputs();
+                        MAINMODULE.Common.RenameInputs(objs.divMembers, selectors.teamMember, propPrefix);
 
                         if (response.message) {
                             ALERTSYSTEM.ShowSuccessMessage(response.message);
@@ -365,7 +364,7 @@
 
     function loadEditForm(url) {
         MAINMODULE.Ajax.LoadHtml(url, objs.container).then(() => {
-            renameInputs();
+            MAINMODULE.Common.RenameInputs(objs.divMembers, selectors.teamMember, propPrefix);
 
             cacheAjaxObjs();
 
@@ -413,7 +412,7 @@
 
         newMemberObj.appendTo(selectors.divMembers);
 
-        renameInputs();
+        MAINMODULE.Common.RenameInputs(objs.divMembers, selectors.teamMember, propPrefix);
 
         bindSelect2();
     }
@@ -422,9 +421,8 @@
         if (!result.id) {
             return result.text;
         }
-        var resultHtml = $('<span><img class="rounded-circle lazyload avatar" data-src="' + avatarBaseUrl + result.id + '/profileimage_' + result.id + '_Personal' + '" src="/images/profileimages/developer.png" alt="meh"> ' + result.text + '</span>');
 
-        return resultHtml;
+        return $('<span><img class="rounded-circle lazyload avatar" data-src="' + avatarBaseUrl + result.id + '/profileimage_' + result.id + '_Personal' + '" src="/images/profileimages/developer.png" alt="meh"> ' + result.text + '</span>');
     }
 
     function cacheAjaxObjs() {
@@ -448,30 +446,8 @@
                 });
             }
             else {
-                ALERTSYSTEM.ShowWarningMessage("An error occurred! Check the console!");
+                MAINMODULE.Ajax.HandleErrorResponse(response);
             }
-        });
-    }
-
-    function renameInputs() {
-        var count = 0;
-        objs.divMembers.find(selectors.teamMember).each(function () {
-            $(this).find(':input').each(function () {
-                var inputId = $(this).attr('id');
-                var inputName = $(this).attr('name');
-
-                if (inputId !== undefined && inputName !== undefined) {
-                    var idProp = inputId.split('__')[1];
-                    var newId = propPrefixId.replace('0', count) + idProp;
-                    $(this).attr('id', newId);
-
-                    var nameProp = inputName.split('].')[1];
-                    var newName = propPrefixName.replace('0', count) + nameProp;
-                    $(this).attr('name', newName);
-                }
-            });
-
-            count++;
         });
     }
 

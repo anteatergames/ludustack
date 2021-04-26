@@ -2,6 +2,8 @@
 {
     public interface IUserProfileBasic : IEntityBase
     {
+        string Handler { get; set; }
+
         string ProfileImageUrl { get; set; }
 
         string CoverImageUrl { get; set; }

@@ -50,8 +50,3 @@
 .widget-user .box-footer {
     padding-top: 30px !important;
 }
-
-@media (max-width: 575px) {
-    .widget-user.box {
-    }
-}

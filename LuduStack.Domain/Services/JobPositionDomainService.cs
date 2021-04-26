@@ -10,32 +10,25 @@ using System.Threading.Tasks;
 
 namespace LuduStack.Domain.Services
 {
-    public class JobPositionDomainService : BaseDomainMongoService<JobPosition, IJobPositionRepository>, IJobPositionDomainService
+    public class JobPositionDomainService : IJobPositionDomainService
     {
-        public JobPositionDomainService(IJobPositionRepository repository) : base(repository)
-        {
-        }
+        protected readonly IJobPositionRepository jobPositionRepository;
 
-        public override Guid Add(JobPosition model)
+        public JobPositionDomainService(IJobPositionRepository jobPositionRepository)
         {
-            if (model.Status == 0)
-            {
-                model.Status = JobPositionStatus.Draft;
-            }
-
-            return base.Add(model);
+            this.jobPositionRepository = jobPositionRepository;
         }
 
         public IEnumerable<JobPosition> GetAllAvailable()
         {
-            IQueryable<JobPosition> all = repository.Get(x => x.Status == JobPositionStatus.OpenForApplication);
+            IQueryable<JobPosition> all = jobPositionRepository.Get(x => x.Status == JobPositionStatus.OpenForApplication);
 
             return all;
         }
 
         public Dictionary<JobPositionStatus, int> GetPositionsStats(Guid userId)
         {
-            var all = from x in repository.Get(x => x.UserId == userId)
+            var all = from x in jobPositionRepository.Get(x => x.UserId == userId)
                       group x by x.Status into grouped
                       select new
                       {
@@ -48,7 +41,7 @@ namespace LuduStack.Domain.Services
 
         public List<JobPositionApplicationVo> GetApplicationsByUserId(Guid userId)
         {
-            IQueryable<JobPositionApplicationVo> all = repository.Get(x => x.Applicants.Any(y => y.UserId == userId)).Select(x => new JobPositionApplicationVo { JobPositionId = x.Id, WorkType = x.WorkType, Location = (x.Remote ? "remote" : x.Location), ApplicationDate = x.Applicants.First(y => y.UserId == userId).CreateDate });
+            IQueryable<JobPositionApplicationVo> all = jobPositionRepository.Get(x => x.Applicants.Any(y => y.UserId == userId)).Select(x => new JobPositionApplicationVo { JobPositionId = x.Id, WorkType = x.WorkType, Location = (x.Remote ? "remote" : x.Location), ApplicationDate = x.Applicants.First(y => y.UserId == userId).CreateDate });
 
             return all.ToList();
         }
@@ -62,7 +55,7 @@ namespace LuduStack.Domain.Services
                 CoverLetter = coverLetter
             };
 
-            Task<bool> task = repository.AddApplicant(jobPositionId, applicant);
+            Task<bool> task = jobPositionRepository.AddApplicant(jobPositionId, applicant);
 
             task.Wait();
         }

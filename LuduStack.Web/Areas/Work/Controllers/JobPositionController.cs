@@ -33,7 +33,7 @@ namespace LuduStack.Web.Areas.Work.Controllers
             this.userContentAppService = userContentAppService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             string jobProfile = JobProfile.Applicant.ToString();
 
@@ -43,7 +43,7 @@ namespace LuduStack.Web.Areas.Work.Controllers
 
                 if (string.IsNullOrWhiteSpace(jobProfile))
                 {
-                    UserPreferencesViewModel userPreferences = UserPreferencesAppService.GetByUserId(CurrentUserId);
+                    UserPreferencesViewModel userPreferences = await UserPreferencesAppService.GetByUserId(CurrentUserId);
                     if (userPreferences == null || userPreferences.JobProfile == 0)
                     {
                         return View("NoJobProfile");
@@ -62,7 +62,7 @@ namespace LuduStack.Web.Areas.Work.Controllers
         }
 
         [HttpPost("work/jobposition/setjobprofile/{type}")]
-        public IActionResult SetJobProfile(JobProfile type)
+        public async Task<IActionResult> SetJobProfile(JobProfile type)
         {
             try
             {
@@ -71,7 +71,7 @@ namespace LuduStack.Web.Areas.Work.Controllers
                     type = JobProfile.Applicant;
                 }
 
-                UserPreferencesViewModel userPreferences = UserPreferencesAppService.GetByUserId(CurrentUserId);
+                UserPreferencesViewModel userPreferences = await UserPreferencesAppService.GetByUserId(CurrentUserId);
 
                 if (userPreferences == null)
                 {
@@ -82,7 +82,7 @@ namespace LuduStack.Web.Areas.Work.Controllers
                 }
                 userPreferences.JobProfile = type;
 
-                OperationResultVo<Guid> saveResult = UserPreferencesAppService.Save(CurrentUserId, userPreferences);
+                OperationResultVo<Guid> saveResult = await UserPreferencesAppService.Save(CurrentUserId, userPreferences);
 
                 if (!saveResult.Success)
                 {
@@ -103,7 +103,7 @@ namespace LuduStack.Web.Areas.Work.Controllers
 
         [Route("work/jobposition/list/{employerId:guid?}")]
         [Route("work/jobposition/list")]
-        public PartialViewResult List(Guid? employerId)
+        public async Task<PartialViewResult> List(Guid? employerId)
         {
             IEnumerable<JobPositionViewModel> model;
             OperationResultVo serviceResult;
@@ -111,7 +111,7 @@ namespace LuduStack.Web.Areas.Work.Controllers
             if (employerId.HasValue)
             {
                 ViewData["ListDescription"] = "These are the job positions you posted.";
-                serviceResult = jobPositionAppService.GetAllMine(employerId.Value);
+                serviceResult = await jobPositionAppService.GetAllMine(employerId.Value);
             }
             else
             {
@@ -139,11 +139,11 @@ namespace LuduStack.Web.Areas.Work.Controllers
         }
 
         [Route("work/jobposition/listmine")]
-        public PartialViewResult ListMine()
+        public async Task<PartialViewResult> ListMine()
         {
             List<JobPositionViewModel> model;
 
-            OperationResultVo serviceResult = jobPositionAppService.GetAllMine(CurrentUserId);
+            OperationResultVo serviceResult = await jobPositionAppService.GetAllMine(CurrentUserId);
 
             if (serviceResult.Success)
             {
@@ -207,14 +207,14 @@ namespace LuduStack.Web.Areas.Work.Controllers
         }
 
         [Route("work/jobposition/details/{id:guid}")]
-        public IActionResult Details(Guid id, int? pointsEarned)
+        public async Task<IActionResult> Details(Guid id, int? pointsEarned)
         {
-            OperationResultVo<JobPositionViewModel> op = jobPositionAppService.GetById(CurrentUserId, id);
+            OperationResultVo<JobPositionViewModel> op = await jobPositionAppService.GetById(CurrentUserId, id);
 
             JobPositionViewModel vm = op.Value;
 
             SetLocalization(vm);
-            SetAuthorDetails(vm);
+
             vm.Description = ContentFormatter.FormatContentToShow(vm.Description);
 
             SetGamificationMessage(pointsEarned);
@@ -244,9 +244,9 @@ namespace LuduStack.Web.Areas.Work.Controllers
 
         [Authorize]
         [Route("work/jobposition/edit/{jobPositionId:guid}")]
-        public IActionResult Edit(Guid jobPositionId)
+        public async Task<IActionResult> Edit(Guid jobPositionId)
         {
-            OperationResultVo serviceResult = jobPositionAppService.GetById(CurrentUserId, jobPositionId);
+            OperationResultVo serviceResult = await jobPositionAppService.GetById(CurrentUserId, jobPositionId);
 
             if (serviceResult.Success)
             {
@@ -267,7 +267,7 @@ namespace LuduStack.Web.Areas.Work.Controllers
 
         [Authorize]
         [HttpPost("work/jobposition/save")]
-        public IActionResult Save(JobPositionViewModel vm)
+        public async Task<IActionResult> Save(JobPositionViewModel vm)
         {
             try
             {
@@ -280,24 +280,25 @@ namespace LuduStack.Web.Areas.Work.Controllers
                     vm.ClosingDate = DateTime.Parse(vm.ClosingDateText);
                 }
 
-                OperationResultVo<Guid> saveResult = jobPositionAppService.Save(CurrentUserId, vm);
+                OperationResultVo<Guid> saveResult = await jobPositionAppService.Save(CurrentUserId, vm);
 
-                if (saveResult.Success)
+                if (!saveResult.Success)
                 {
-                    GenerateFeedPost(vm);
-
-                    string url = Url.Action("Details", "JobPosition", new { area = "Work", id = vm.Id, pointsEarned = saveResult.PointsEarned });
-
-                    if (isNew && EnvName.Equals(ConstantHelper.ProductionEnvironmentName))
-                    {
-                        NotificationSender.SendTeamNotificationAsync("New Job Position posted!");
-                    }
-
-                    return Json(new OperationResultRedirectVo(saveResult, url));
+                    return Json(new OperationResultVo(false));
                 }
                 else
                 {
-                    return Json(new OperationResultVo(false));
+                    vm.Id = saveResult.Value;
+                    await GenerateFeedPost(vm);
+
+                    string url = Url.Action("Details", "JobPosition", new { area = "Work", id = saveResult.Value, pointsEarned = saveResult.PointsEarned });
+
+                    if (isNew && EnvName.Equals(ConstantHelper.ProductionEnvironmentName))
+                    {
+                        await NotificationSender.SendTeamNotificationAsync("New Job Position posted!");
+                    }
+
+                    return Json(new OperationResultRedirectVo(saveResult, url));
                 }
             }
             catch (Exception ex)
@@ -307,13 +308,13 @@ namespace LuduStack.Web.Areas.Work.Controllers
         }
 
         [HttpDelete("work/jobposition/deletejobposition/{jobPositionId:guid}")]
-        public IActionResult DeleteJobPosition(Guid jobPositionId)
+        public async Task<IActionResult> DeleteJobPosition(Guid jobPositionId)
         {
             try
             {
-                OperationResultVo serviceResult = jobPositionAppService.Remove(CurrentUserId, jobPositionId);
+                OperationResultVo serviceResult = await jobPositionAppService.Remove(CurrentUserId, jobPositionId);
 
-                OperationResultListVo<Application.ViewModels.Search.UserContentSearchViewModel> searchContentResult = userContentAppService.Search(CurrentUserId, jobPositionId.ToString());
+                OperationResultListVo<Application.ViewModels.Search.UserContentSearchViewModel> searchContentResult = await userContentAppService.Search(CurrentUserId, jobPositionId.ToString());
 
                 if (searchContentResult.Success && searchContentResult.Value.Any())
                 {
@@ -321,7 +322,7 @@ namespace LuduStack.Web.Areas.Work.Controllers
 
                     if (existing != null)
                     {
-                        userContentAppService.Remove(CurrentUserId, existing.ContentId);
+                        await userContentAppService.Remove(CurrentUserId, existing.ContentId);
                     }
                 }
 
@@ -359,7 +360,7 @@ namespace LuduStack.Web.Areas.Work.Controllers
             {
                 Infra.CrossCutting.Identity.Models.ApplicationUser user = await UserManager.GetUserAsync(User);
 
-                OperationResultVo serviceResult = jobPositionAppService.Apply(CurrentUserId, jobPositionId, user.Email, coverLetter);
+                OperationResultVo serviceResult = await jobPositionAppService.Apply(CurrentUserId, jobPositionId, user.Email, coverLetter);
 
                 if (serviceResult.Success)
                 {
@@ -384,13 +385,13 @@ namespace LuduStack.Web.Areas.Work.Controllers
         }
 
         [HttpPost("work/jobposition/rateapplicant/{jobPositionId:guid}/{userId:guid}")]
-        public IActionResult RateApplicant(Guid jobPositionId, Guid userId, string score)
+        public async Task<IActionResult> RateApplicant(Guid jobPositionId, Guid userId, string score)
         {
             try
             {
                 decimal scoreDecimal = decimal.Parse(score, CultureInfo.InvariantCulture);
 
-                OperationResultVo serviceResult = jobPositionAppService.RateApplicant(CurrentUserId, jobPositionId, userId, scoreDecimal);
+                OperationResultVo serviceResult = await jobPositionAppService.RateApplicant(CurrentUserId, jobPositionId, userId, scoreDecimal);
 
                 return Json(new OperationResultVo(serviceResult.Success, serviceResult.Message));
             }
@@ -429,7 +430,7 @@ namespace LuduStack.Web.Areas.Work.Controllers
             }
         }
 
-        private void GenerateFeedPost(JobPositionViewModel vm)
+        private async Task GenerateFeedPost(JobPositionViewModel vm)
         {
             if (vm != null && vm.Status == JobPositionStatus.OpenForApplication)
             {
@@ -443,7 +444,7 @@ namespace LuduStack.Web.Areas.Work.Controllers
                     Language = vm.Language
                 };
 
-                OperationResultListVo<Application.ViewModels.Search.UserContentSearchViewModel> searchContentResult = userContentAppService.Search(CurrentUserId, vm.Id.ToString());
+                OperationResultListVo<Application.ViewModels.Search.UserContentSearchViewModel> searchContentResult = await userContentAppService.Search(CurrentUserId, vm.Id.ToString());
 
                 if (searchContentResult.Success && searchContentResult.Value.Any())
                 {
@@ -455,7 +456,7 @@ namespace LuduStack.Web.Areas.Work.Controllers
                     }
                 }
 
-                userContentAppService.Save(CurrentUserId, newContent);
+                await userContentAppService.Save(CurrentUserId, newContent);
             }
         }
     }

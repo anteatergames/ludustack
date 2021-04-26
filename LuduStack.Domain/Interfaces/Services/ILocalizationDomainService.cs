@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LuduStack.Domain.Interfaces.Services
 {
-    public interface ILocalizationDomainService : IDomainService<Localization>
+    public interface ILocalizationDomainService
     {
         Localization GenerateNewProject(Guid userId);
 

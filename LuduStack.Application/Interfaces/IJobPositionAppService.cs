@@ -2,24 +2,35 @@
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.ValueObjects;
 using System;
+using System.Threading.Tasks;
 
 namespace LuduStack.Application.Interfaces
 {
-    public interface IJobPositionAppService : ICrudAppService<JobPositionViewModel>
+    public interface IJobPositionAppService
     {
+        Task<OperationResultVo<int>> Count(Guid currentUserId);
+
+        Task<OperationResultListVo<Guid>> GetAllIds(Guid currentUserId);
+
+        Task<OperationResultVo<JobPositionViewModel>> GetById(Guid currentUserId, Guid id);
+
+        Task<OperationResultVo> Remove(Guid currentUserId, Guid id);
+
+        Task<OperationResultVo<Guid>> Save(Guid currentUserId, JobPositionViewModel viewModel);
+
         OperationResultVo GetAllAvailable(Guid currentUserId);
 
-        OperationResultVo Apply(Guid currentUserId, Guid jobPositionId, string email, string coverLetter);
+        Task<OperationResultVo> Apply(Guid currentUserId, Guid jobPositionId, string email, string coverLetter);
 
         OperationResultVo GenerateNew(Guid currentUserId, JobPositionOrigin origin);
 
-        OperationResultVo GetAllMine(Guid currentUserId);
+        Task<OperationResultVo> GetAllMine(Guid currentUserId);
 
-        OperationResultVo ChangeStatus(Guid currentUserId, Guid jobPositionId, JobPositionStatus selectedStatus);
+        Task<OperationResultVo> ChangeStatus(Guid currentUserId, Guid jobPositionId, JobPositionStatus selectedStatus);
 
         OperationResultVo GetMyPositionsStats(Guid currentUserId);
 
-        OperationResultVo RateApplicant(Guid currentUserId, Guid jobPositionId, Guid userId, decimal score);
+        Task<OperationResultVo> RateApplicant(Guid currentUserId, Guid jobPositionId, Guid userId, decimal score);
 
         OperationResultVo GetMyApplications(Guid currentUserId);
     }

@@ -15,6 +15,8 @@ namespace LuduStack.Web
 
         public static string DefaultDescription { get { return "The one stop place for game developers, artists and musicians. Helping making gamedev dreams come true."; } }
 
+        public static string DefaultOgType { get { return "website"; } }
+
         public static string DefaultAvatar { get { return Constants.DefaultAvatar; } }
 
         public static IEnumerable<SelectListItem> TimeZones

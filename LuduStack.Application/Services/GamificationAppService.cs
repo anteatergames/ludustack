@@ -3,33 +3,37 @@ using AutoMapper.QueryableExtensions;
 using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels.Gamification;
 using LuduStack.Application.ViewModels.User;
-using LuduStack.Domain.Interfaces.Services;
+using LuduStack.Domain.Messaging.Queries.Gamification;
+using LuduStack.Domain.Messaging.Queries.GamificationLevel;
+using LuduStack.Domain.Messaging.Queries.UserBadge;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
+using LuduStack.Infra.CrossCutting.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace LuduStack.Application.Services
 {
     public class GamificationAppService : IGamificationAppService
     {
+        private readonly IMediatorHandler mediator;
         private readonly IMapper mapper;
-        private readonly IGamificationDomainService gamificationDomainService;
 
         public Guid CurrentUserId { get; set; }
 
-        public GamificationAppService(IMapper mapper, IGamificationDomainService gamificationDomainService)
+        public GamificationAppService(IMediatorHandler mediator, IMapper mapper)
         {
+            this.mediator = mediator;
             this.mapper = mapper;
-            this.gamificationDomainService = gamificationDomainService;
         }
 
-        public OperationResultListVo<RankingViewModel> GetAll()
+        public async Task<OperationResultListVo<RankingViewModel>> GetAll()
         {
             try
             {
-                IEnumerable<RankingVo> allModels = gamificationDomainService.Get(20);
+                IEnumerable<RankingVo> allModels = await mediator.Query<GetGamificationQuery, IEnumerable<RankingVo>>(new GetGamificationQuery(20));
 
                 List<RankingViewModel> vms = new List<RankingViewModel>();
 
@@ -38,6 +42,7 @@ namespace LuduStack.Application.Services
                     RankingViewModel vm = new RankingViewModel
                     {
                         UserId = item.Gamification.UserId,
+                        UserHandler = item.UserHandler,
                         CurrentLevelNumber = item.Gamification.CurrentLevelNumber,
                         XpCurrentLevel = item.Gamification.XpCurrentLevel,
                         XpToNextLevel = item.Gamification.XpToNextLevel,
@@ -57,13 +62,13 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo FillProfileGamificationDetails(Guid currentUserId, ref ProfileViewModel vm)
+        public async Task<OperationResultVo> FillProfileGamificationDetails(Guid currentUserId, ProfileViewModel vm)
         {
             try
             {
-                Gamification gamification = gamificationDomainService.GetByUserId(vm.UserId);
+                Gamification gamification = await mediator.Query<GetGamificationByUserIdQuery, Gamification>(new GetGamificationByUserIdQuery(vm.UserId));
 
-                GamificationLevel currentLevel = gamificationDomainService.GetLevel(gamification.CurrentLevelNumber);
+                GamificationLevel currentLevel = await mediator.Query<GetGamificationLevelByNumberQuery, GamificationLevel>(new GetGamificationLevelByNumberQuery(gamification.CurrentLevelNumber));
 
                 if (currentLevel == null)
                 {
@@ -82,24 +87,24 @@ namespace LuduStack.Application.Services
             }
             catch (Exception ex)
             {
-                return new OperationResultVo(ex.Message);
+                return new OperationResultVo(false, ex.Message);
             }
         }
 
-        public OperationResultListVo<GamificationLevelViewModel> GetAllLevels()
+        public async Task<OperationResultListVo<GamificationLevelViewModel>> GetAllLevels()
         {
-            IQueryable<GamificationLevel> levels = gamificationDomainService.GetAllLevels().OrderBy(x => x.Number);
+            IEnumerable<GamificationLevel> levels = await mediator.Query<GetGamificationLevelQuery, IEnumerable<GamificationLevel>>(new GetGamificationLevelQuery());
 
-            IQueryable<GamificationLevelViewModel> vms = levels.ProjectTo<GamificationLevelViewModel>(mapper.ConfigurationProvider);
+            IQueryable<GamificationLevelViewModel> vms = levels.OrderBy(x => x.Number).AsQueryable().ProjectTo<GamificationLevelViewModel>(mapper.ConfigurationProvider);
 
             return new OperationResultListVo<GamificationLevelViewModel>(vms);
         }
 
-        public OperationResultListVo<UserBadgeViewModel> GetBadgesByUserId(Guid userId)
+        public async Task<OperationResultListVo<UserBadgeViewModel>> GetBadgesByUserId(Guid userId)
         {
             try
             {
-                IEnumerable<UserBadge> allModels = gamificationDomainService.GetBadgesByUserId(userId);
+                IEnumerable<UserBadge> allModels = await mediator.Query<GetBadgesByUserIdQuery, IEnumerable<UserBadge>>(new GetBadgesByUserIdQuery(userId));
 
                 IEnumerable<UserBadgeViewModel> vms = mapper.Map<IEnumerable<UserBadge>, IEnumerable<UserBadgeViewModel>>(allModels);
 

@@ -161,7 +161,7 @@ namespace LuduStack.Web.Middlewares
 
                 foreach (Type controller in controllers)
                 {
-                    sb.AppendLine(CheckController(controller));
+                    sb.AppendLine(await CheckController(controller));
                 }
 
                 sb.AppendLine("</urlset>");
@@ -179,7 +179,7 @@ namespace LuduStack.Web.Middlewares
             }
         }
 
-        private string CheckController(Type controller)
+        private async Task<string> CheckController(Type controller)
         {
             StringBuilder sb = new StringBuilder();
 
@@ -191,7 +191,7 @@ namespace LuduStack.Web.Middlewares
                 sb.AppendLine(CheckMethod(controller, method));
             }
 
-            List<string> detailMethods = CheckDetailsMethod(controller);
+            List<string> detailMethods = await CheckDetailsMethod(controller);
 
             foreach (string method in detailMethods)
             {
@@ -230,87 +230,105 @@ namespace LuduStack.Web.Middlewares
 
             if (!isPost && !isDelete && !isPut && !areaForbidden && !isForbidden)
             {
-                sitemapContent += "<url>";
-
-                if (hasParameter)
-                {
-                    sitemapContent += string.Format("<loc>{0}/{1}/</loc>", _rootUrl.Trim('/'), routeTemplate);
-                }
-                else
-                {
-                    string methodName = actionName.Equals("index") ? string.Empty : actionName;
-                    if (string.IsNullOrWhiteSpace(methodName))
-                    {
-                        if (controllerName.Equals("home") && actionName.Equals("index"))
-                        {
-                            sitemapContent += string.Format("<loc>{0}/</loc>", _rootUrl.Trim('/'));
-                        }
-                        else
-                        {
-                            sitemapContent += string.Format("<loc>{0}/{1}/</loc>", _rootUrl.Trim('/'), controllerName.Trim('/'));
-                        }
-                    }
-                    else
-                    {
-                        sitemapContent += string.Format("<loc>{0}/{1}/{2}/</loc>", _rootUrl.Trim('/'), controllerName.Trim('/'), methodName.Trim('/'));
-                    }
-                }
-
-                sitemapContent += string.Format("<lastmod>{0}</lastmod>", DateTime.UtcNow.ToString("yyyy-MM-dd"));
-                sitemapContent += "</url>";
+                sitemapContent = FillUrl(actionName, hasParameter, routeTemplate, sitemapContent, controllerName);
             }
 
             return sitemapContent;
         }
 
-        private List<string> CheckDetailsMethod(Type controller)
+        private string FillUrl(string actionName, bool hasParameter, string routeTemplate, string sitemapContent, string controllerName)
         {
-            string pattern = string.Empty;
-            OperationResultVo ids = null;
+            sitemapContent += "<url>";
+
+            if (hasParameter)
+            {
+                sitemapContent += string.Format("<loc>{0}/{1}/</loc>", _rootUrl.Trim('/'), routeTemplate);
+            }
+            else
+            {
+                string methodName = actionName.Equals("index") ? string.Empty : actionName;
+                if (string.IsNullOrWhiteSpace(methodName))
+                {
+                    if (controllerName.Equals("home") && actionName.Equals("index"))
+                    {
+                        sitemapContent += string.Format("<loc>{0}/</loc>", _rootUrl.Trim('/'));
+                    }
+                    else
+                    {
+                        sitemapContent += string.Format("<loc>{0}/{1}/</loc>", _rootUrl.Trim('/'), controllerName.Trim('/'));
+                    }
+                }
+                else
+                {
+                    sitemapContent += string.Format("<loc>{0}/{1}/{2}/</loc>", _rootUrl.Trim('/'), controllerName.Trim('/'), methodName.Trim('/'));
+                }
+            }
+
+            sitemapContent += string.Format("<lastmod>{0}</lastmod>", DateTime.UtcNow.ToString("yyyy-MM-dd"));
+            sitemapContent += "</url>";
+            return sitemapContent;
+        }
+
+        private async Task<List<string>> CheckDetailsMethod(Type controller)
+        {
+            string pattern = String.Empty;
+            OperationResultListVo<Guid> result = null;
+            OperationResultListVo<string> handlersResult = null;
             List<string> methodList = new List<string>();
+            List<string> handlers = new List<string>();
 
             if (controller.Name.Equals("ProfileController"))
             {
-                pattern = "profile/{0}";
-                ids = ProfileAppService.GetAllIds(Guid.Empty);
+                pattern = "u/{0}";
+                handlersResult = await ProfileAppService.GetAllHandlers(Guid.Empty);
             }
             else if (controller.Name.Equals("GameController"))
             {
                 pattern = "game/{0}";
-                ids = GameAppService.GetAllIds(Guid.Empty);
+                result = await GameAppService.GetAllIds(Guid.Empty);
             }
             else if (controller.Name.Equals("ContentController"))
             {
                 pattern = "content/{0}";
-                ids = ContentAppService.GetAllIds(Guid.Empty);
+                result = await ContentAppService.GetAllIds(Guid.Empty);
             }
 
-            if (ids != null && !string.IsNullOrWhiteSpace(pattern))
-            {
-                List<string> urls = GetDetailUrls(controller, ids, pattern);
 
-                methodList.AddRange(urls);
+            if (!string.IsNullOrWhiteSpace(pattern))
+            {
+                if (result != null && result.Success)
+                {
+                    foreach (Guid item in result.Value)
+                    {
+                        handlers.Add(item.ToString());
+                    }
+
+                    List<string> urls = GetDetailUrls(controller, handlers, pattern);
+
+                    methodList.AddRange(urls);
+                }
+                else if (handlersResult != null && handlersResult.Success)
+                {
+                    List<string> urls = GetDetailUrls(controller, handlersResult.Value, pattern);
+
+                    methodList.AddRange(urls);
+                }
             }
 
             return methodList;
         }
 
-        private List<string> GetDetailUrls(Type controller, OperationResultVo result, string patternUrl)
+        private List<string> GetDetailUrls(Type controller, IEnumerable<string> result, string patternUrl)
         {
             List<string> methodList = new List<string>();
 
-            if (result.Success)
+            foreach (string handler in result)
             {
-                OperationResultListVo<Guid> castResult = result as OperationResultListVo<Guid>;
+                string route = string.Format(patternUrl, handler);
 
-                foreach (Guid userId in castResult.Value)
-                {
-                    string route = string.Format(patternUrl, userId.ToString());
+                string sitemapItem = CheckMethod(controller, "details", false, false, false, true, route);
 
-                    string sitemapItem = CheckMethod(controller, "details", false, false, false, true, route);
-
-                    methodList.Add(sitemapItem);
-                }
+                methodList.Add(sitemapItem);
             }
 
             return methodList;

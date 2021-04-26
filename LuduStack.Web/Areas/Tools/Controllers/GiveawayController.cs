@@ -95,11 +95,11 @@ namespace LuduStack.Web.Areas.Tools.Controllers
 
         [Authorize]
         [Route("tools/giveaway/edit/{id:guid}")]
-        public ViewResult Edit(Guid id)
+        public async Task<ViewResult> Edit(Guid id)
         {
             GiveawayViewModel model;
 
-            OperationResultVo serviceResult = giveawayAppService.GetForEdit(CurrentUserId, id);
+            OperationResultVo serviceResult = await giveawayAppService.GetForEdit(CurrentUserId, id);
 
             OperationResultVo<GiveawayViewModel> castResult = serviceResult as OperationResultVo<GiveawayViewModel>;
 
@@ -114,7 +114,7 @@ namespace LuduStack.Web.Areas.Tools.Controllers
 
         [Authorize]
         [Route("tools/giveaway/save")]
-        public JsonResult SaveGiveaway(GiveawayViewModel vm)
+        public async Task<JsonResult> SaveGiveaway(GiveawayViewModel vm)
         {
             bool isNew = vm.Id == Guid.Empty;
 
@@ -122,22 +122,22 @@ namespace LuduStack.Web.Areas.Tools.Controllers
             {
                 vm.UserId = CurrentUserId;
 
-                OperationResultVo<Guid> saveResult = giveawayAppService.SaveGiveaway(CurrentUserId, vm);
+                OperationResultVo<Guid> saveResult = await giveawayAppService.SaveGiveaway(CurrentUserId, vm);
 
-                if (saveResult.Success)
+                if (!saveResult.Success)
                 {
-                    string url = Url.Action("edit", "giveaway", new { area = "tools", id = vm.Id, pointsEarned = saveResult.PointsEarned });
-
-                    if (isNew && EnvName.Equals(ConstantHelper.ProductionEnvironmentName))
-                    {
-                        NotificationSender.SendTeamNotificationAsync("New Giveaway created!");
-                    }
-
-                    return Json(new OperationResultRedirectVo<Guid>(saveResult, url));
+                    return Json(new OperationResultVo(saveResult.Message));
                 }
                 else
                 {
-                    return Json(new OperationResultVo(false));
+                    string url = Url.Action("edit", "giveaway", new { area = "tools", id = saveResult.Value, pointsEarned = saveResult.PointsEarned });
+
+                    if (isNew && EnvName.Equals(ConstantHelper.ProductionEnvironmentName))
+                    {
+                        await NotificationSender.SendTeamNotificationAsync("New Giveaway created!");
+                    }
+
+                    return Json(new OperationResultRedirectVo<Guid>(saveResult, url));
                 }
             }
             catch (Exception ex)
@@ -148,11 +148,11 @@ namespace LuduStack.Web.Areas.Tools.Controllers
 
         [Authorize]
         [HttpDelete("tools/giveaway/{id:guid}")]
-        public IActionResult Delete(Guid id, bool edit)
+        public async Task<IActionResult> Delete(Guid id, bool edit)
         {
             try
             {
-                OperationResultVo deleteResult = giveawayAppService.DeleteGiveaway(CurrentUserId, id);
+                OperationResultVo deleteResult = await giveawayAppService.DeleteGiveaway(CurrentUserId, id);
 
                 if (deleteResult.Success)
                 {
@@ -211,17 +211,15 @@ namespace LuduStack.Web.Areas.Tools.Controllers
 
         [Authorize]
         [Route("giveaway/{id:guid}/manage")]
-        public IActionResult Manage(Guid id)
+        public async Task<IActionResult> Manage(Guid id)
         {
-            OperationResultVo result = giveawayAppService.GetGiveawayForManagement(CurrentUserId, id);
+            OperationResultVo result = await giveawayAppService.GetGiveawayForManagement(CurrentUserId, id);
 
             if (result.Success)
             {
                 OperationResultVo<GiveawayViewModel> castRestult = result as OperationResultVo<GiveawayViewModel>;
 
                 GiveawayViewModel model = castRestult.Value;
-
-                SetAuthorDetails(model);
 
                 SetLocalization(model);
 
@@ -236,9 +234,9 @@ namespace LuduStack.Web.Areas.Tools.Controllers
         }
 
         [Route("giveaway/{id:guid}")]
-        public IActionResult Details(Guid id, string referralCode, string source)
+        public async Task<IActionResult> Details(Guid id, string referralCode, string source)
         {
-            OperationResultVo result = giveawayAppService.GetForDetails(CurrentUserId, id);
+            OperationResultVo result = await giveawayAppService.GetForDetails(CurrentUserId, id);
 
             if (result.Success)
             {
@@ -267,8 +265,6 @@ namespace LuduStack.Web.Areas.Tools.Controllers
                     EntryType = Enum.TryParse(source, out entryType) ? entryType : new GiveawayEntryType?()
                 };
 
-                SetAuthorDetails(model);
-
                 SetLocalization(model);
 
                 return View("Details", model);
@@ -286,7 +282,7 @@ namespace LuduStack.Web.Areas.Tools.Controllers
             {
                 string urlReferalBase = Url.Action("details", "giveaway", new { area = "tools", id = enter.GiveawayId });
 
-                OperationResultVo result = giveawayAppService.EnterGiveaway(CurrentUserId, enter, urlReferalBase);
+                OperationResultVo result = await giveawayAppService.EnterGiveaway(CurrentUserId, enter, urlReferalBase);
 
                 if (result.Success)
                 {
@@ -294,7 +290,7 @@ namespace LuduStack.Web.Areas.Tools.Controllers
 
                     SetSessionValue(SessionValues.Email, enter.Email);
 
-                    OperationResultVo resultGiveawayInfo = giveawayAppService.GetForEdit(CurrentUserId, enter.GiveawayId);
+                    OperationResultVo resultGiveawayInfo = await giveawayAppService.GetForEdit(CurrentUserId, enter.GiveawayId);
 
                     if (resultGiveawayInfo.Success)
                     {
@@ -525,9 +521,9 @@ namespace LuduStack.Web.Areas.Tools.Controllers
             SetLocalization(item, false);
         }
 
-        private void SetLocalization(GiveawayViewModel model, bool v)
+        private void SetLocalization(GiveawayViewModel model, bool editing)
         {
-            if (model != null)
+            if (model != null && !editing)
             {
                 DisplayAttribute displayStatus = model.Status.GetAttributeOfType<DisplayAttribute>();
                 model.StatusLocalized = SharedLocalizer[displayStatus != null ? displayStatus.Name : model.Status.ToString()];
@@ -536,7 +532,7 @@ namespace LuduStack.Web.Areas.Tools.Controllers
 
         private void SetLocalization(GiveawayListItemVo item, bool editing)
         {
-            if (item != null)
+            if (item != null && !editing)
             {
                 DisplayAttribute displayStatus = item.Status.GetAttributeOfType<DisplayAttribute>();
                 item.StatusLocalized = SharedLocalizer[displayStatus != null ? displayStatus.Name : item.Status.ToString()];

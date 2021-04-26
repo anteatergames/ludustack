@@ -1,10 +1,10 @@
-﻿using LuduStack.Application.ViewModels.ShortUrl;
-using LuduStack.Domain.ValueObjects;
+﻿using LuduStack.Domain.ValueObjects;
+using System.Threading.Tasks;
 
 namespace LuduStack.Application.Interfaces
 {
-    public interface IShortUrlAppService : ICrudAppService<ShortUrlViewModel>
+    public interface IShortUrlAppService
     {
-        OperationResultVo GetFullUrlByToken(string token);
+        Task<OperationResultVo> GetFullUrlByToken(string token);
     }
 }

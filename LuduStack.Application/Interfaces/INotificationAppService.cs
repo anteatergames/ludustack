@@ -2,17 +2,22 @@
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.ValueObjects;
 using System;
+using System.Threading.Tasks;
 
 namespace LuduStack.Application.Interfaces
 {
-    public interface INotificationAppService : ICrudAppService<NotificationItemViewModel>
+    public interface INotificationAppService
     {
-        OperationResultListVo<NotificationItemViewModel> GetByUserId(Guid userId, int count);
+        Task<OperationResultVo> Remove(Guid currentUserId, Guid id);
 
-        OperationResultVo Notify(Guid currentUserId, string originName, Guid targetUserId, NotificationType notificationType, Guid targetId);
+        Task<OperationResultVo<Guid>> Save(Guid currentUserId, NotificationItemViewModel viewModel);
 
-        OperationResultVo Notify(Guid currentUserId, string originName, Guid targetUserId, NotificationType notificationType, Guid targetId, string targetName);
+        Task<OperationResultListVo<NotificationItemViewModel>> GetByUserId(Guid userId, int count);
 
-        OperationResultVo MarkAsRead(Guid id);
+        Task<OperationResultVo> Notify(Guid originUserId, string originUserName, Guid targetUserId, NotificationType notificationType, Guid targetId);
+
+        Task<OperationResultVo> Notify(Guid originUserId, string originUserName, Guid targetUserId, NotificationType notificationType, Guid targetId, string targetName);
+
+        Task<OperationResultVo> MarkAsRead(Guid id);
     }
 }

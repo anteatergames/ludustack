@@ -11,9 +11,11 @@ namespace LuduStack.Domain.Interfaces.Repository
     {
         Task<int> CountComments(Expression<Func<UserContentComment, bool>> where);
 
+        Task<int> CountLikes(Expression<Func<UserContentLike, bool>> where);
+
         Task<List<UserContentComment>> GetComments(Expression<Func<UserContentComment, bool>> where);
 
-        Task<IQueryable<UserContentLike>> GetLikes(Func<UserContentLike, bool> where);
+        Task<IQueryable<UserContentLike>> GetLikes(Expression<Func<UserContentLike, bool>> where);
 
         Task<bool> AddLike(UserContentLike model);
 
@@ -23,8 +25,10 @@ namespace LuduStack.Domain.Interfaces.Repository
 
         IQueryable<UserContentRating> GetRatings(Guid id);
 
-        void UpdateRating(Guid id, UserContentRating rating);
+        IQueryable<UserContentRating> GetRatings(Expression<Func<UserContent, bool>> where);
 
-        void AddRating(Guid id, UserContentRating rating);
+        Task<bool> UpdateRating(Guid id, UserContentRating rating);
+
+        Task<bool> AddRating(Guid id, UserContentRating rating);
     }
 }

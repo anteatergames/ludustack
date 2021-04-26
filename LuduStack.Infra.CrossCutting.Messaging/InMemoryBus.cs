@@ -21,5 +21,10 @@ namespace LuduStack.Infra.CrossCutting.Messaging
         {
             return await mediator.Send<CommandResult>(command);
         }
+
+        public async Task<CommandResult<TResult>> SendCommand<T, TResult>(T command) where T : Command<TResult>
+        {
+            return await mediator.Send<CommandResult<TResult>>(command);
+        }
     }
 }

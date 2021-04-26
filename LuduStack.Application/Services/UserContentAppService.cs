@@ -9,13 +9,16 @@ using LuduStack.Application.ViewModels.Search;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Core.Extensions;
 using LuduStack.Domain.Interfaces.Services;
+using LuduStack.Domain.Messaging;
+using LuduStack.Domain.Messaging.Queries.UserContent;
+using LuduStack.Domain.Messaging.Queries.UserProfile;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
+using LuduStack.Infra.CrossCutting.Messaging;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace LuduStack.Application.Services
@@ -23,29 +26,21 @@ namespace LuduStack.Application.Services
     public class UserContentAppService : ProfileBaseAppService, IUserContentAppService
     {
         private readonly ILogger logger;
-        private readonly IUserContentDomainService userContentDomainService;
-        private readonly IGamificationDomainService gamificationDomainService;
         private readonly IPollDomainService pollDomainService;
 
         public UserContentAppService(IProfileBaseAppServiceCommon profileBaseAppServiceCommon, ILogger<UserContentAppService> logger
-            , IUserContentDomainService userContentDomainService
-            , IGamificationDomainService gamificationDomainService
             , IPollDomainService pollDomainService) : base(profileBaseAppServiceCommon)
         {
             this.logger = logger;
-            this.userContentDomainService = userContentDomainService;
-            this.gamificationDomainService = gamificationDomainService;
             this.pollDomainService = pollDomainService;
             this.pollDomainService = pollDomainService;
         }
 
-        #region ICrudAppService
-
-        public OperationResultVo<int> Count(Guid currentUserId)
+        public async Task<OperationResultVo<int>> Count(Guid currentUserId)
         {
             try
             {
-                int count = userContentDomainService.Count();
+                int count = await mediator.Query<CountUserContentQuery, int>(new CountUserContentQuery());
 
                 return new OperationResultVo<int>(count);
             }
@@ -55,11 +50,11 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultListVo<UserContentViewModel> GetAll(Guid currentUserId)
+        public async Task<OperationResultListVo<UserContentViewModel>> GetAll(Guid currentUserId)
         {
             try
             {
-                IEnumerable<UserContent> allModels = userContentDomainService.GetAll();
+                IEnumerable<UserContent> allModels = await mediator.Query<GetUserContentQuery, IEnumerable<UserContent>>(new GetUserContentQuery());
 
                 IEnumerable<UserContentViewModel> vms = mapper.Map<IEnumerable<UserContent>, IEnumerable<UserContentViewModel>>(allModels);
 
@@ -71,27 +66,32 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo GetAllIds(Guid currentUserId)
+        public async Task<OperationResultListVo<Guid>> GetAllIds(Guid currentUserId)
         {
             try
             {
-                IEnumerable<Guid> allIds = userContentDomainService.GetAllIds();
+                IEnumerable<Guid> allIds = await mediator.Query<GetUserContentIdsQuery, IEnumerable<Guid>>(new GetUserContentIdsQuery());
 
                 return new OperationResultListVo<Guid>(allIds);
             }
             catch (Exception ex)
             {
-                return new OperationResultVo(ex.Message);
+                return new OperationResultListVo<Guid>(ex.Message);
             }
         }
 
-        public OperationResultVo<UserContentViewModel> GetById(Guid currentUserId, Guid id)
+        public async Task<OperationResultVo<UserContentViewModel>> GetById(Guid currentUserId, Guid id)
         {
             try
             {
-                UserContent model = userContentDomainService.GetById(id);
+                UserContent model = await mediator.Query<GetUserContentByIdQuery, UserContent>(new GetUserContentByIdQuery(id));
 
-                UserProfile authorProfile = GetCachedProfileByUserId(model.UserId);
+                List<Guid> finalUserIdList = model.Comments.Select(y => y.UserId).ToList();
+                finalUserIdList.Add(model.UserId);
+
+                IEnumerable<UserProfileEssentialVo> userProfiles = await mediator.Query<GetBasicUserProfileDataByUserIdsQuery, IEnumerable<UserProfileEssentialVo>>(new GetBasicUserProfileDataByUserIdsQuery(finalUserIdList));
+
+                UserProfileEssentialVo authorProfile = userProfiles.FirstOrDefault();
 
                 UserContentViewModel vm = mapper.Map<UserContentViewModel>(model);
 
@@ -103,6 +103,8 @@ namespace LuduStack.Application.Services
                 {
                     vm.AuthorName = authorProfile.Name;
                 }
+
+                SetAuthorDetails(currentUserId, vm, userProfiles);
 
                 vm.HasFeaturedImage = !string.IsNullOrWhiteSpace(vm.FeaturedImage) && !vm.FeaturedImage.Contains(Constants.DefaultFeaturedImage);
 
@@ -120,7 +122,7 @@ namespace LuduStack.Application.Services
 
                 vm.Poll = SetPoll(currentUserId, vm.Id);
 
-                LoadAuthenticatedData(currentUserId, vm);
+                LoadAuthenticatedData(currentUserId, vm, userProfiles);
 
                 return new OperationResultVo<UserContentViewModel>(vm);
             }
@@ -130,15 +132,13 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo Remove(Guid currentUserId, Guid id)
+        public async Task<OperationResultVo> Remove(Guid currentUserId, Guid id)
         {
             try
             {
                 pollDomainService.RemoveByContentId(id);
 
-                userContentDomainService.Remove(id);
-
-                unitOfWork.Commit();
+                await mediator.SendCommand(new DeleteUserContentCommand(currentUserId, id));
 
                 return new OperationResultVo(true);
             }
@@ -148,15 +148,16 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo<Guid> Save(Guid currentUserId, UserContentViewModel viewModel)
+        public async Task<OperationResultVo<Guid>> Save(Guid currentUserId, UserContentViewModel viewModel)
         {
             try
             {
                 int pointsEarned = 0;
 
                 UserContent model;
+                Poll pollModel = null;
 
-                bool isSpam = CheckSpam(viewModel.Id, viewModel.Content);
+                bool isSpam = await CheckSpam(viewModel.Id, viewModel.Content);
 
                 bool isNew = viewModel.Id == Guid.Empty;
 
@@ -165,19 +166,9 @@ namespace LuduStack.Application.Services
                     return new OperationResultVo<Guid>("Calm down! You cannot post the same content twice in a row.");
                 }
 
-                string youtubePattern = @"(https?\:\/\/)?(www\.youtube\.com|youtu\.?be)\/.+";
+                await SetAuthorDetails(currentUserId, viewModel);
 
-                viewModel.Content = Regex.Replace(viewModel.Content, youtubePattern, delegate (Match match)
-                {
-                    string v = match.ToString();
-                    if (match.Index == 0 && String.IsNullOrWhiteSpace(viewModel.FeaturedImage))
-                    {
-                        viewModel.FeaturedImage = v;
-                    }
-                    return v;
-                });
-
-                UserContent existing = userContentDomainService.GetById(viewModel.Id);
+                UserContent existing = await mediator.Query<GetUserContentByIdQuery, UserContent>(new GetUserContentByIdQuery(viewModel.Id));
                 if (existing != null)
                 {
                     model = mapper.Map(viewModel, existing);
@@ -187,36 +178,24 @@ namespace LuduStack.Application.Services
                     model = mapper.Map<UserContent>(viewModel);
                 }
 
-                if (model.PublishDate == DateTime.MinValue)
+                if (isNew && viewModel.Poll != null && viewModel.Poll.PollOptions != null && viewModel.Poll.PollOptions.Any())
                 {
-                    model.PublishDate = model.CreateDate;
+                    pollModel = mapper.Map<Poll>(viewModel.Poll);
                 }
 
-                if (isNew)
+                CommandResult result = await mediator.SendCommand(new SaveUserContentCommand(currentUserId, model, pollModel));
+
+                if (!result.Validation.IsValid)
                 {
-                    userContentDomainService.Add(model);
-
-                    PlatformAction action = viewModel.IsComplex ? PlatformAction.ComplexPost : PlatformAction.SimplePost;
-                    pointsEarned += gamificationDomainService.ProcessAction(viewModel.UserId, action);
-
-                    unitOfWork.Commit().Wait();
-                    viewModel.Id = model.Id;
-
-                    if (viewModel.Poll != null && viewModel.Poll.PollOptions != null && viewModel.Poll.PollOptions.Any())
-                    {
-                        CreatePoll(viewModel);
-
-                        pointsEarned += gamificationDomainService.ProcessAction(viewModel.UserId, PlatformAction.PollPost);
-                    }
+                    string message = result.Validation.Errors.FirstOrDefault().ErrorMessage;
+                    return new OperationResultVo<Guid>(model.Id, false, message);
                 }
                 else
                 {
-                    userContentDomainService.Update(model);
+                    pointsEarned += result.PointsEarned;
+
+                    return new OperationResultVo<Guid>(model.Id, pointsEarned);
                 }
-
-                unitOfWork.Commit().Wait();
-
-                return new OperationResultVo<Guid>(model.Id, pointsEarned);
             }
             catch (Exception ex)
             {
@@ -224,11 +203,9 @@ namespace LuduStack.Application.Services
             }
         }
 
-        #endregion ICrudAppService
-
-        private bool CheckSpam(Guid id, string content)
+        private async Task<bool> CheckSpam(Guid id, string content)
         {
-            IEnumerable<UserContent> all = userContentDomainService.GetAll();
+            IEnumerable<UserContent> all = await mediator.Query<GetUserContentQuery, IEnumerable<UserContent>>(new GetUserContentQuery());
 
             if (all.Any())
             {
@@ -244,42 +221,26 @@ namespace LuduStack.Application.Services
             }
         }
 
-        private void CreatePoll(UserContentViewModel contentVm)
+        public async Task<int> CountArticles()
         {
-            Poll newPoll = new Poll
-            {
-                UserId = contentVm.UserId,
-                UserContentId = contentVm.Id
-            };
-
-            foreach (PollOptionViewModel o in contentVm.Poll.PollOptions)
-            {
-                PollOption newOption = new PollOption
-                {
-                    UserId = contentVm.UserId,
-                    Text = o.Text
-                };
-
-                newPoll.Options.Add(newOption);
-            }
-
-            pollDomainService.Add(newPoll);
-        }
-
-        public int CountArticles()
-        {
-            int count = userContentDomainService.Count(x => !string.IsNullOrEmpty(x.Title) && !string.IsNullOrEmpty(x.Introduction) && !string.IsNullOrEmpty(x.FeaturedImage) && x.Content.Length > 50);
+            int count = await mediator.Query<CountUserContentQuery, int>(new CountUserContentQuery(x => !string.IsNullOrEmpty(x.Title) && !string.IsNullOrEmpty(x.Introduction) && !string.IsNullOrEmpty(x.FeaturedImage) && x.Content.Length > 50));
 
             return count;
         }
 
-        public IEnumerable<UserContentViewModel> GetActivityFeed(ActivityFeedRequestViewModel vm)
+        public async Task<IEnumerable<UserContentViewModel>> GetActivityFeed(ActivityFeedRequestViewModel vm)
         {
             try
             {
-                List<UserContent> allModels = userContentDomainService.GetActivityFeed(vm.GameId, vm.UserId, vm.Languages, vm.OldestId, vm.OldestDate, vm.ArticlesOnly, vm.Count).ToList();
+                List<UserContent> allModels = await mediator.Query<GetActivityFeedQuery, List<UserContent>>(new GetActivityFeedQuery(vm.GameId, vm.UserId, vm.Languages, vm.OldestId, vm.OldestDate, vm.ArticlesOnly, vm.Count));
 
                 IEnumerable<UserContentViewModel> viewModels = mapper.Map<IEnumerable<UserContent>, IEnumerable<UserContentViewModel>>(allModels);
+
+                IEnumerable<Guid> userIds = viewModels.Select(x => x.UserId);
+                IEnumerable<Guid> commenterUserIds = viewModels.SelectMany(x => x.Comments.Select(y => y.UserId));
+                IEnumerable<Guid> finalUserIdList = userIds.Concat(commenterUserIds);
+
+                IEnumerable<UserProfileEssentialVo> userProfiles = await mediator.Query<GetBasicUserProfileDataByUserIdsQuery, IEnumerable<UserProfileEssentialVo>>(new GetBasicUserProfileDataByUserIdsQuery(finalUserIdList));
 
                 foreach (UserContentViewModel item in viewModels)
                 {
@@ -287,7 +248,7 @@ namespace LuduStack.Application.Services
 
                     item.PublishDate = item.PublishDate.ToLocalTime();
 
-                    UserProfile authorProfile = GetCachedProfileByUserId(item.UserId);
+                    UserProfileEssentialVo authorProfile = userProfiles.FirstOrDefault(x => x.UserId == item.UserId);
                     if (authorProfile == null)
                     {
                         item.AuthorName = Constants.UnknownSoul;
@@ -295,6 +256,7 @@ namespace LuduStack.Application.Services
                     else
                     {
                         item.AuthorName = authorProfile.Name;
+                        item.UserHandler = authorProfile.Handler;
                     }
 
                     item.AuthorPicture = UrlFormatter.ProfileImage(item.UserId, 40);
@@ -320,7 +282,7 @@ namespace LuduStack.Application.Services
 
                     item.Poll = SetPoll(vm.CurrentUserId, item.Id);
 
-                    LoadAuthenticatedData(vm.CurrentUserId, item);
+                    LoadAuthenticatedData(vm.CurrentUserId, item, userProfiles);
 
                     item.Content = item.Content.ReplaceCloudname();
                 }
@@ -335,13 +297,25 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultListVo<UserContentSearchViewModel> Search(Guid currentUserId, string q)
+        public async Task<OperationResultListVo<UserContentSearchViewModel>> Search(Guid currentUserId, string q)
         {
             try
             {
-                IQueryable<UserContentSearchVo> all = userContentDomainService.Search(x => x.Content.Contains(q) || x.Introduction.Contains(q)).AsQueryable();
+                IEnumerable<UserContent> all = await mediator.Query<SearchUserContentQuery, IEnumerable<UserContent>>(new SearchUserContentQuery(x => x.Content.Contains(q) || x.Introduction.Contains(q)));
 
-                IQueryable<UserContentSearchViewModel> vms = all.ProjectTo<UserContentSearchViewModel>(mapper.ConfigurationProvider);
+                IEnumerable<UserContentSearchVo> selected = all.OrderByDescending(x => x.CreateDate)
+                    .Select(x => new UserContentSearchVo
+                    {
+                        ContentId = x.Id,
+                        Title = x.Title,
+                        FeaturedImage = x.FeaturedImage,
+                        Content = (string.IsNullOrWhiteSpace(x.Introduction) ? x.Content : x.Introduction).GetFirstWords(20),
+                        Language = (x.Language == 0 ? SupportedLanguage.English : x.Language)
+                    });
+
+                IQueryable<UserContentSearchVo> queryable = selected.AsQueryable();
+
+                IQueryable<UserContentSearchViewModel> vms = queryable.ProjectTo<UserContentSearchViewModel>(mapper.ConfigurationProvider);
 
                 return new OperationResultListVo<UserContentSearchViewModel>(vms);
             }
@@ -382,7 +356,7 @@ namespace LuduStack.Application.Services
             return pollVm;
         }
 
-        private void LoadAuthenticatedData(Guid currentUserId, UserGeneratedCommentBaseViewModel item)
+        private void LoadAuthenticatedData(Guid currentUserId, UserGeneratedCommentBaseViewModel item, IEnumerable<UserProfileEssentialVo> userProfiles)
         {
             if (currentUserId != Guid.Empty)
             {
@@ -390,7 +364,7 @@ namespace LuduStack.Application.Services
 
                 foreach (CommentViewModel comment in item.Comments)
                 {
-                    UserProfile commenterProfile = GetCachedProfileByUserId(comment.UserId);
+                    UserProfileEssentialVo commenterProfile = userProfiles.FirstOrDefault(x => x.UserId == comment.UserId);
                     if (commenterProfile == null)
                     {
                         comment.AuthorName = Constants.UnknownSoul;
@@ -398,6 +372,7 @@ namespace LuduStack.Application.Services
                     else
                     {
                         comment.AuthorName = commenterProfile.Name;
+                        comment.UserHandler = commenterProfile.Handler;
                     }
 
                     comment.AuthorPicture = UrlFormatter.ProfileImage(comment.UserId);
@@ -406,60 +381,46 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo ContentLike(Guid currentUserId, Guid targetId)
+        public async Task<OperationResultVo> ContentLike(Guid currentUserId, Guid targetId)
         {
             try
             {
-                IEnumerable<UserContentLike> likes = userContentDomainService.GetLikes(x => x.ContentId == targetId);
-                bool alreadyLiked = likes.Any(x => x.UserId == currentUserId);
+                CommandResult result = await mediator.SendCommand(new LikeUserContentCommand(currentUserId, targetId));
 
-                if (alreadyLiked)
+                if (!result.Validation.IsValid)
                 {
-                    return new OperationResultVo("Content already liked");
+                    return new OperationResultVo(result.Validation.Errors.First().ErrorMessage);
                 }
                 else
                 {
-                    UserContentLike model = new UserContentLike
-                    {
-                        ContentId = targetId,
-                        UserId = currentUserId
-                    };
+                    int likeCount = await mediator.Query<CountLikesQuery, int>(new CountLikesQuery(x => x.ContentId == targetId));
 
-                    userContentDomainService.AddLike(model);
-
-                    unitOfWork.Commit();
-
-                    int newCount = likes.Count() + 1;
-
-                    return new OperationResultVo<int>(newCount);
+                    return new OperationResultVo<int>(likeCount);
                 }
             }
             catch (Exception ex)
             {
+                string msg = $"Unable Like the content.";
+                logger.Log(LogLevel.Error, ex, msg);
                 return new OperationResultVo(ex.Message);
             }
         }
 
-        public OperationResultVo ContentUnlike(Guid currentUserId, Guid targetId)
+        public async Task<OperationResultVo> ContentUnlike(Guid currentUserId, Guid targetId)
         {
             try
             {
-                IEnumerable<UserContentLike> likes = userContentDomainService.GetLikes(x => x.ContentId == targetId);
-                UserContentLike existingLike = likes.FirstOrDefault(x => x.ContentId == targetId && x.UserId == currentUserId);
+                CommandResult result = await mediator.SendCommand(new UnlikeUserContentCommand(currentUserId, targetId));
 
-                if (existingLike == null)
+                if (!result.Validation.IsValid)
                 {
-                    return new OperationResultVo("Content not liked");
+                    return new OperationResultVo(result.Validation.Errors.First().ErrorMessage);
                 }
                 else
                 {
-                    userContentDomainService.RemoveLike(currentUserId, targetId);
+                    int likeCount = await mediator.Query<CountLikesQuery, int>(new CountLikesQuery(x => x.ContentId == targetId));
 
-                    unitOfWork.Commit();
-
-                    int newCount = likes.Count() - 1;
-
-                    return new OperationResultVo<int>(newCount);
+                    return new OperationResultVo<int>(likeCount);
                 }
             }
             catch (Exception ex)
@@ -470,30 +431,25 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public async Task<OperationResultVo> Comment(CommentViewModel vm)
+        public async Task<OperationResultVo> Comment(Guid currentUserId, CommentViewModel vm)
         {
             try
             {
-                bool commentAlreadyExists = await userContentDomainService.CheckIfCommentExists<UserContentComment>(x => x.UserContentId == vm.UserContentId && x.UserId == vm.UserId && x.Text.Equals(vm.Text));
+                await SetAuthorDetails(currentUserId, vm);
 
-                if (commentAlreadyExists)
+                AddCommentUserContentCommand command = new AddCommentUserContentCommand(vm.UserId, vm.UserContentId, vm.ParentCommentId, vm.Text);
+
+                CommandResult result = await mediator.SendCommand(command);
+
+                if (result.Validation.IsValid)
                 {
-                    return new OperationResultVo(false)
-                    {
-                        Message = "Duplicated Comment"
-                    };
+                    int newCount = await mediator.Query<CountCommentsQuery, int>(new CountCommentsQuery(x => x.UserContentId == command.Id && x.UserId == command.UserId));
+
+                    return new OperationResultVo<int>(newCount, "Your comment was added");
                 }
                 else
                 {
-                    UserContentComment model = mapper.Map<UserContentComment>(vm);
-
-                    userContentDomainService.Comment(model);
-
-                    await unitOfWork.Commit();
-
-                    int newCount = userContentDomainService.CountComments(x => x.UserContentId == model.UserContentId && x.UserId == model.UserId);
-
-                    return new OperationResultVo<int>(newCount);
+                    return new OperationResultVo(false, result.Validation.Errors.FirstOrDefault().ErrorMessage);
                 }
             }
             catch (Exception ex)
@@ -506,9 +462,9 @@ namespace LuduStack.Application.Services
         {
             try
             {
-                var comments = await userContentDomainService.GetComments(x => x.UserId == userId);
+                IEnumerable<UserContentComment> comments = await mediator.Query<GetCommentsQuery, IEnumerable<UserContentComment>>(new GetCommentsQuery(x => x.UserId == userId));
 
-                var vms = mapper.Map<List<CommentViewModel>>(comments);
+                List<CommentViewModel> vms = mapper.Map<List<CommentViewModel>>(comments);
 
                 return new OperationResultListVo<CommentViewModel>(vms);
             }

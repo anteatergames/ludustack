@@ -34,11 +34,11 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
             return obj.FirstOrDefault();
         }
 
-        public override void Add(Localization obj)
+        public override Task Add(Localization obj)
         {
             SetChildIds(obj);
 
-            base.Add(obj);
+            return base.Add(obj);
         }
 
         public override void Update(Localization obj)

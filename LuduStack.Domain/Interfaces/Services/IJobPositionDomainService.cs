@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace LuduStack.Domain.Interfaces.Services
 {
-    public interface IJobPositionDomainService : IDomainService<JobPosition>
+    public interface IJobPositionDomainService
     {
         void AddApplicant(Guid userId, Guid jobPositionId, string email, string coverLetter);
 

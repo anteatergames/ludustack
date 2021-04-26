@@ -9,6 +9,7 @@
     var propPrefix = 'Plans';
 
     var croppers = [];
+    var imagesProcessed = 0;
 
     function setSelectors() {
         selectors.controlsidebar = '.control-sidebar';
@@ -173,28 +174,26 @@
     }
 
     function bindChangeImage() {
-        for (var i = 0; i < objs.inputImageListItem.length; i++) {
-            var element = objs.inputImageListItem[i];
+        objs.inputImageListItem.on('change', function (e) {
+            var image = document.getElementById(e.target.dataset.targetImg);
 
-            element.addEventListener('change', function (e) {
-                var image = document.getElementById(e.target.dataset.targetImg);
+            var files = e.target.files;
 
-                var files = e.target.files
-
-                var done = function (url2) {
-                    element.value = '';
-
-                    croppers[image.dataset.cropperIndex].replace(url2);
-
-                    image.src = url2;
-
-                    e.target.dataset.changed = true;
-                };
-
-                MAINMODULE.Utils.GetSelectedFileUrl(files, done);
+            MAINMODULE.Utils.GetSelectedFileUrl(files, function (url2) {
+                changeDone(url2, e.target, image);
             });
-        }
+        });
     }
+
+    var changeDone = function (url2, element, image) {
+        element.value = '';
+
+        croppers[image.dataset.cropperIndex].replace(url2);
+
+        image.src = url2;
+
+        element.dataset.changed = true;
+    };
 
     function bindCropper() {
         var images = document.querySelectorAll(selectors.imageListItem);
@@ -213,8 +212,6 @@
     }
 
     function uploadCroppedImages(callback) {
-        var imagesProcessed = 0;
-
         var imagesChanged = objs.inputImageListItem.filter(function (index) {
             return objs.inputImageListItem[index].dataset.changed === 'true';
         });
@@ -222,66 +219,73 @@
         var imagesToProcessCount = imagesChanged.length;
 
         if (imagesChanged.length > 0) {
-            for (var i = 0; i < imagesToProcessCount; i++) {
-                var element = imagesChanged[i];
-                var changed = element.dataset.changed === 'true';
-
-                if (!changed) {
-                    console.log('skipping...');
-                    imagesProcessed++;
-                    continue;
-                }
-                console.log('uploading...');
-
-                var image = document.getElementById(element.dataset.targetImg);
-                var hidden = document.getElementById(element.dataset.targetHidden);
-
-                var cropper = croppers[image.dataset.cropperIndex];
-
-                var canvas = cropper.getCroppedCanvas();
-
-                var dataUri = canvas.toDataURL();
-
-                var blob = MAINMODULE.Utils.DataURItoBlob(dataUri);
-
-                var formData = new FormData();
-                formData.append('userId', objs.userId.val());
-
-                formData.append('upload', blob);
-
-                formData.append("randomName", true);
-
-                $.ajax('/storage/uploadcontentimage', {
-                    method: "POST",
-                    data: formData,
-                    async: false,
-                    processData: false,
-                    contentType: false,
-                    success: function (response) {
-                        imagesProcessed++;
-                        hidden.value = response.url;
-
-                        console.log(imagesToProcessCount);
-                        console.log(imagesProcessed);
-
-                        if (imagesProcessed === imagesToProcessCount) {
-                            if (callback) {
-                                callback();
-                            }
-                        }
-                    },
-                    error: function (response) {
-                        console.log(response);
-                        imgFeaturedImage.src = initialUrl;
-                    }
-                });
-            }
+            processImages(imagesChanged, imagesToProcessCount, callback);
         }
         else {
             if (callback) {
                 callback();
             }
         }
+    }
+
+    function processImages(imagesChanged, imagesToProcessCount, callback) {
+        imagesProcessed = 0;
+
+        for (var i = 0; i < imagesToProcessCount; i++) {
+            var element = imagesChanged[i];
+            var changed = element.dataset.changed === 'true';
+
+            if (!changed) {
+                console.log('skipping...');
+                imagesProcessed++;
+                continue;
+            }
+            console.log('uploading...');
+
+            var image = document.getElementById(element.dataset.targetImg);
+            var hidden = document.getElementById(element.dataset.targetHidden);
+
+            var cropper = croppers[image.dataset.cropperIndex];
+
+            var canvas = cropper.getCroppedCanvas();
+
+            var dataUri = canvas.toDataURL();
+
+            var blob = MAINMODULE.Utils.DataURItoBlob(dataUri);
+
+            var formData = new FormData();
+            formData.append('userId', objs.userId.val());
+
+            formData.append('upload', blob);
+
+            formData.append("randomName", true);
+
+            uploadImage(formData, imagesToProcessCount, hidden, callback);
+        }
+    }
+
+    function uploadImage(formData, imagesToProcessCount, hidden, callback) {
+        $.ajax('/storage/uploadcontentimage', {
+            method: "POST",
+            data: formData,
+            async: false,
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                imagesProcessed++;
+                hidden.value = response.url;
+
+                if (imagesProcessed === imagesToProcessCount) {
+                    if (callback) {
+                        callback();
+                    }
+                }
+            },
+            error: function (response) {
+                console.log(response);
+                imgFeaturedImage.src = initialUrl;
+            }
+        });
     }
 
     function initSortable() {
@@ -345,7 +349,7 @@
                 });
             }
             else {
-                ALERTSYSTEM.ShowWarningMessage("An error occurred! Check the console!");
+                MAINMODULE.Ajax.HandleErrorResponse(response);
             }
         });
     }
@@ -419,7 +423,7 @@
                 });
             }
             else {
-                ALERTSYSTEM.ShowWarningMessage("An error occurred! Check the console!");
+                MAINMODULE.Ajax.HandleErrorResponse(response);
             }
         });
     }

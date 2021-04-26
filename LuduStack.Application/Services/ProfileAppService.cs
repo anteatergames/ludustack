@@ -7,11 +7,15 @@ using LuduStack.Domain.Core.Attributes;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Core.Extensions;
 using LuduStack.Domain.Core.Interfaces;
-using LuduStack.Domain.Interfaces.Services;
+using LuduStack.Domain.Messaging;
+using LuduStack.Domain.Messaging.Queries.Game;
+using LuduStack.Domain.Messaging.Queries.UserContent;
+using LuduStack.Domain.Messaging.Queries.UserProfile;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.Specifications;
 using LuduStack.Domain.Specifications.Follow;
 using LuduStack.Domain.ValueObjects;
+using LuduStack.Infra.CrossCutting.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,25 +26,15 @@ namespace LuduStack.Application.Services
 {
     public class ProfileAppService : ProfileBaseAppService, IProfileAppService
     {
-        private readonly IUserContentDomainService userContentDomainService;
-
-        private readonly IGameDomainService gameDomainService;
-
-        public ProfileAppService(IProfileBaseAppServiceCommon profileBaseAppServiceCommon
-            , IUserContentDomainService userContentDomainService
-            , IGameDomainService gameDomainService) : base(profileBaseAppServiceCommon)
+        public ProfileAppService(IProfileBaseAppServiceCommon profileBaseAppServiceCommon) : base(profileBaseAppServiceCommon)
         {
-            this.userContentDomainService = userContentDomainService;
-            this.gameDomainService = gameDomainService;
         }
 
-        #region ICrudAppService
-
-        public OperationResultVo<int> Count(Guid currentUserId)
+        public async Task<OperationResultVo<int>> Count(Guid currentUserId)
         {
             try
             {
-                int count = profileDomainService.Count();
+                int count = await mediator.Query<CountUserProfileQuery, int>(new CountUserProfileQuery());
 
                 return new OperationResultVo<int>(count);
             }
@@ -50,34 +44,11 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultListVo<ProfileViewModel> GetAll(Guid currentUserId)
-        {
-            return GetAll(currentUserId, false);
-        }
-
-        public OperationResultListVo<ProfileViewModel> GetAll(Guid currentUserId, bool noCache)
+        public async Task<OperationResultListVo<ProfileViewModel>> GetAll(Guid currentUserId)
         {
             try
             {
-                List<UserProfile> profiles = new List<UserProfile>();
-                IEnumerable<Guid> allIds = profileDomainService.GetAllUserIds();
-
-                foreach (Guid userId in allIds)
-                {
-                    UserProfile profile = noCache ? null : GetCachedProfileByUserId(userId);
-
-                    if (profile == null)
-                    {
-                        UserProfile userProfile = profileDomainService.GetByUserId(userId).FirstOrDefault();
-
-                        if (userProfile != null)
-                        {
-                            profile = userProfile;
-                            SetProfileCache(userId, profile);
-                        }
-                    }
-                    profiles.Add(profile);
-                }
+                IEnumerable<UserProfile> profiles = await mediator.Query<GetAllUserProfilesQuery, IEnumerable<UserProfile>>(new GetAllUserProfilesQuery());
 
                 IEnumerable<ProfileViewModel> vms = mapper.Map<IEnumerable<UserProfile>, IEnumerable<ProfileViewModel>>(profiles);
 
@@ -97,25 +68,64 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo GetAllIds(Guid currentUserId)
+        public async Task<OperationResultListVo<ProfileViewModel>> GetAllEssential(Guid currentUserId, bool noCache)
         {
             try
             {
-                IEnumerable<Guid> allIds = profileDomainService.GetAllIds();
+                IEnumerable<Guid> allIds = profileDomainService.GetAllUserIds();
+
+                List<UserProfileEssentialVo> profiles = await GetCachedEssentialProfilesByUserIds(allIds, noCache);
+                IEnumerable<ProfileViewModel> vms = mapper.Map<IEnumerable<UserProfileEssentialVo>, IEnumerable<ProfileViewModel>>(profiles);
+
+                foreach (ProfileViewModel vm in vms)
+                {
+                    UserProfileEssentialVo model = profiles.First(x => x.UserId == vm.UserId);
+
+                    vm.ProfileImageUrl = UrlFormatter.ProfileImage(vm.UserId, 84);
+                    vm.CoverImageUrl = UrlFormatter.ProfileCoverImage(vm.UserId, vm.Id, vm.LastUpdateDate, model.HasCoverImage, 300);
+                }
+
+                return new OperationResultListVo<ProfileViewModel>(vms);
+            }
+            catch (Exception ex)
+            {
+                return new OperationResultListVo<ProfileViewModel>(ex.Message);
+            }
+        }
+
+        public async Task<OperationResultListVo<Guid>> GetAllIds(Guid currentUserId)
+        {
+            try
+            {
+                IEnumerable<Guid> allIds = await mediator.Query<GetUserProfileIdsQuery, IEnumerable<Guid>>(new GetUserProfileIdsQuery());
 
                 return new OperationResultListVo<Guid>(allIds);
             }
             catch (Exception ex)
             {
-                return new OperationResultVo(ex.Message);
+                return new OperationResultListVo<Guid>(ex.Message);
             }
         }
 
-        public OperationResultVo<ProfileViewModel> GetById(Guid currentUserId, Guid id)
+        public async Task<OperationResultListVo<string>> GetAllHandlers(Guid currentUserId)
         {
             try
             {
-                UserProfile model = profileDomainService.GetById(id);
+                IEnumerable<string> allHandlers = await mediator.Query<GetUserProfileHandlersQuery, IEnumerable<string>>(new GetUserProfileHandlersQuery());
+
+                return new OperationResultListVo<string>(allHandlers);
+            }
+            catch (Exception ex)
+            {
+                return new OperationResultListVo<string>(ex.Message);
+            }
+        }
+
+        public async Task<OperationResultVo<ProfileViewModel>> GetById(Guid currentUserId, Guid id)
+        {
+            try
+            {
+                UserProfile model = await mediator.Query<GetUserProfileByIdQuery, UserProfile>(new GetUserProfileByIdQuery(id));
 
                 ProfileViewModel vm = mapper.Map<ProfileViewModel>(model);
 
@@ -127,13 +137,11 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo Remove(Guid currentUserId, Guid id)
+        public async Task<OperationResultVo> Remove(Guid currentUserId, Guid id)
         {
             try
             {
-                profileDomainService.Remove(id);
-
-                unitOfWork.Commit();
+                await mediator.SendCommand(new DeleteUserProfileCommand(currentUserId, id));
 
                 return new OperationResultVo(true);
             }
@@ -143,21 +151,27 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo<Guid> Save(Guid currentUserId, ProfileViewModel viewModel)
+        public async Task<OperationResultVo<Guid>> Save(Guid currentUserId, ProfileViewModel viewModel)
         {
+            int pointsEarned = 0;
+
             try
             {
                 UserProfile model;
 
                 if (viewModel.Bio.Contains(Constants.DefaultProfileDescription))
                 {
-                    viewModel.Bio = String.Format("{0} {1}", viewModel.Name, Constants.DefaultProfileDescription);
+                    viewModel.Bio = string.Format("{0} {1}", viewModel.Name, Constants.DefaultProfileDescription);
                 }
 
-                viewModel.ExternalLinks.RemoveAll(x => String.IsNullOrWhiteSpace(x.Value));
+                viewModel.ExternalLinks.RemoveAll(x => string.IsNullOrWhiteSpace(x.Value));
 
-                UserProfile existing = profileDomainService.GetById(viewModel.Id);
-                if (existing != null)
+                UserProfile existing = await mediator.Query<GetUserProfileByIdQuery, UserProfile>(new GetUserProfileByIdQuery(viewModel.Id));
+                if (existing == null)
+                {
+                    model = mapper.Map<UserProfile>(viewModel);
+                }
+                else
                 {
                     model = mapper.Map(viewModel, existing);
 
@@ -166,33 +180,22 @@ namespace LuduStack.Application.Services
                         model.Handler = existing.Handler;
                     }
                 }
-                else
+
+                bool hasCoverImage = !viewModel.CoverImageUrl.Equals(Constants.DefaultProfileCoverImage);
+
+                CommandResult result = await mediator.SendCommand(new SaveUserProfileCommand(currentUserId, model, hasCoverImage));
+
+                if (!result.Validation.IsValid)
                 {
-                    model = mapper.Map<UserProfile>(viewModel);
+                    string message = result.Validation.Errors.FirstOrDefault().ErrorMessage;
+                    return new OperationResultVo<Guid>(model.Id, false, message);
                 }
 
-                if (model.Type == 0)
-                {
-                    model.Type = ProfileType.Personal;
-                }
-
-                model.HasCoverImage = !viewModel.CoverImageUrl.Equals(Constants.DefaultProfileCoverImage);
-
-                if (viewModel.Id == Guid.Empty)
-                {
-                    profileDomainService.Add(model);
-                    viewModel.Id = model.Id;
-                }
-                else
-                {
-                    profileDomainService.Update(model);
-                }
-
-                unitOfWork.Commit();
+                pointsEarned += result.PointsEarned;
 
                 SetProfileCache(viewModel.UserId, model);
 
-                return new OperationResultVo<Guid>(model.Id);
+                return new OperationResultVo<Guid>(model.Id, pointsEarned);
             }
             catch (Exception ex)
             {
@@ -200,16 +203,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        #endregion ICrudAppService
-
         #region IProfileAppService
-
-        public UserProfileEssentialVo GetBasicDataByUserId(Guid userId)
-        {
-            UserProfileEssentialVo profile = profileDomainService.GetBasicDataByUserId(userId);
-
-            return profile;
-        }
 
         public async Task<ProfileViewModel> GetByUserId(Guid userId, ProfileType type)
         {
@@ -243,9 +237,9 @@ namespace LuduStack.Application.Services
 
             SetImages(vm, model.HasCoverImage);
 
-            vm.Counters.Games = gameDomainService.Count(x => x.UserId == vm.UserId);
-            vm.Counters.Posts = userContentDomainService.Count(x => x.UserId == vm.UserId);
-            vm.Counters.Comments = userContentDomainService.CountComments(x => x.UserId == vm.UserId);
+            vm.Counters.Games = await mediator.Query<CountGameQuery, int>(new CountGameQuery(x => x.UserId == vm.UserId));
+            vm.Counters.Posts = await mediator.Query<CountUserContentQuery, int>(new CountUserContentQuery(x => x.UserId == vm.UserId));
+            vm.Counters.Comments = await mediator.Query<CountCommentsQuery, int>(new CountCommentsQuery(x => x.UserId == vm.UserId));
 
             vm.Counters.Followers = model.Followers.SafeCount();
             vm.Counters.Following = profileDomainService.CountFollows(userId);
@@ -452,8 +446,6 @@ namespace LuduStack.Application.Services
         {
             try
             {
-                // validate before
-
                 UserConnection toMe = profileDomainService.GetConnection(currentUserId, userId);
                 UserConnection fromMe = profileDomainService.GetConnection(userId, currentUserId);
 
@@ -569,6 +561,7 @@ namespace LuduStack.Application.Services
                     UserProfileEssentialVo profile = profileDomainService.GetBasicDataByUserId(item.TargetUserId);
 
                     item.UserId = userId;
+                    item.UserHandler = profile.Handler;
                     item.TargetUserName = profile.Name;
                     item.Location = profile.Location;
                     item.CreateDate = profile.CreateDate;
@@ -587,6 +580,7 @@ namespace LuduStack.Application.Services
 
                     item.TargetUserId = item.UserId;
                     item.UserId = userId;
+                    item.UserHandler = profile.Handler;
                     item.TargetUserName = profile.Name;
                     item.ProfileId = profile.Id;
                     item.Location = profile.Location;

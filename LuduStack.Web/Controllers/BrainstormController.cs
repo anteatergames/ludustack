@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace LuduStack.Web.Controllers
 {
@@ -23,11 +24,11 @@ namespace LuduStack.Web.Controllers
 
         [Route("brainstorm/{id:guid}")]
         [Route("brainstorm")]
-        public IActionResult Index(Guid? id)
+        public async Task<IActionResult> Index(Guid? id)
         {
             BrainstormSessionViewModel currentSession;
 
-            OperationResultListVo<BrainstormSessionViewModel> sessions = brainstormAppService.GetSessions(CurrentUserId);
+            OperationResultListVo<BrainstormSessionViewModel> sessions = await brainstormAppService.GetSessions(CurrentUserId);
 
             ViewData["Sessions"] = sessions.Value;
 
@@ -45,17 +46,17 @@ namespace LuduStack.Web.Controllers
 
         [Route("brainstorm/{sessionId:guid}/newidea")]
         [Route("brainstorm/newidea")]
-        public IActionResult NewIdea(Guid sessionId)
+        public async Task<IActionResult> NewIdea(Guid sessionId)
         {
             OperationResultVo<BrainstormSessionViewModel> sessionResult;
 
             if (sessionId == Guid.Empty)
             {
-                sessionResult = brainstormAppService.GetMainSession();
+                sessionResult = await brainstormAppService.GetMainSession();
             }
             else
             {
-                sessionResult = brainstormAppService.GetSession(sessionId);
+                sessionResult = await brainstormAppService.GetSession(sessionId);
             }
 
             if (sessionResult.Success)
@@ -82,27 +83,28 @@ namespace LuduStack.Web.Controllers
 
         public PartialViewResult NewSession()
         {
-            BrainstormSessionViewModel vm = new BrainstormSessionViewModel();
+            BrainstormSessionViewModel vm = new BrainstormSessionViewModel
+            {
+                Type = BrainstormSessionType.Generic
+            };
 
             return PartialView("_CreateEditSession", vm);
         }
 
-        public IActionResult Details(Guid id)
+        public async Task<IActionResult> Details(Guid id)
         {
-            OperationResultVo<BrainstormIdeaViewModel> op = brainstormAppService.GetById(CurrentUserId, id);
+            OperationResultVo<BrainstormIdeaViewModel> op = await brainstormAppService.GetById(CurrentUserId, id);
 
             BrainstormIdeaViewModel vm = op.Value;
-
-            SetAuthorDetails(vm);
 
             return View("_Details", vm);
         }
 
         [Route("brainstorm/list/{sessionId:guid}")]
         [Route("brainstorm/list")]
-        public PartialViewResult List(Guid sessionId)
+        public async Task<PartialViewResult> List(Guid sessionId)
         {
-            OperationResultListVo<BrainstormIdeaViewModel> serviceResult = brainstormAppService.GetAllBySessionId(CurrentUserId, sessionId);
+            OperationResultListVo<BrainstormIdeaViewModel> serviceResult = await brainstormAppService.GetAllBySessionId(CurrentUserId, sessionId);
 
             IEnumerable<BrainstormIdeaViewModel> items = serviceResult.Value;
 
@@ -110,7 +112,7 @@ namespace LuduStack.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Save(BrainstormIdeaViewModel vm)
+        public async Task<IActionResult> Save(BrainstormIdeaViewModel vm)
         {
             try
             {
@@ -118,13 +120,13 @@ namespace LuduStack.Web.Controllers
 
                 vm.UserId = CurrentUserId;
 
-                brainstormAppService.Save(CurrentUserId, vm);
+                await brainstormAppService.Save(CurrentUserId, vm);
 
                 string url = Url.Action("Index", "Brainstorm", new { area = string.Empty, id = vm.SessionId.ToString() });
 
                 if (isNew && EnvName.Equals(ConstantHelper.ProductionEnvironmentName))
                 {
-                    NotificationSender.SendTeamNotificationAsync($"New idea posted: {vm.Title}");
+                    await NotificationSender.SendTeamNotificationAsync($"New idea posted: {vm.Title}");
                 }
 
                 return Json(new OperationResultRedirectVo(url));
@@ -136,24 +138,31 @@ namespace LuduStack.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult SaveSession(BrainstormSessionViewModel vm)
+        public async Task<IActionResult> SaveSession(BrainstormSessionViewModel vm)
         {
+            bool isNew = vm.Id == Guid.Empty;
+
             try
             {
-                bool isNew = vm.Id == Guid.Empty;
-
                 vm.UserId = CurrentUserId;
 
-                brainstormAppService.SaveSession(vm);
+                OperationResultVo<Guid> saveResult = await brainstormAppService.SaveSession(CurrentUserId, vm);
 
-                string url = Url.Action("Index", "Brainstorm", new { area = string.Empty, id = vm.Id.ToString() });
-
-                if (isNew && EnvName.Equals(ConstantHelper.ProductionEnvironmentName))
+                if (!saveResult.Success)
                 {
-                    NotificationSender.SendTeamNotificationAsync($"New brainstorm session created: {vm.Title}");
+                    return Json(new OperationResultVo(saveResult.Message));
                 }
+                else
+                {
+                    string url = Url.Action("Index", "Brainstorm", new { area = string.Empty, id = saveResult.Value.ToString() });
 
-                return Json(new OperationResultRedirectVo(url));
+                    if (isNew && EnvName.Equals(ConstantHelper.ProductionEnvironmentName))
+                    {
+                        await NotificationSender.SendTeamNotificationAsync($"New brainstorm session created: {vm.Title}");
+                    }
+
+                    return Json(new OperationResultRedirectVo(url));
+                }
             }
             catch (Exception ex)
             {
@@ -162,11 +171,11 @@ namespace LuduStack.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Vote(BrainstormVoteViewModel vm)
+        public async Task<IActionResult> Vote(BrainstormVoteViewModel vm)
         {
             try
             {
-                brainstormAppService.Vote(CurrentUserId, vm.VotingItemId, vm.VoteValue);
+                await brainstormAppService.Vote(CurrentUserId, vm.VotingItemId, vm.VoteValue);
 
                 string url = Url.Action("Index", "Brainstorm", new { area = string.Empty });
 
@@ -179,25 +188,23 @@ namespace LuduStack.Web.Controllers
         }
 
         [HttpPost("brainstorm/comment")]
-        public IActionResult Comment(CommentViewModel vm)
+        public async Task<IActionResult> Comment(CommentViewModel vm)
         {
             OperationResultVo response;
 
-            SetAuthorDetails(vm);
-
-            response = brainstormAppService.Comment(vm);
+            response = await brainstormAppService.Comment(CurrentUserId, vm);
 
             return Json(response);
         }
 
         [HttpPost("brainstorm/changestatus/{ideaId:guid}")]
-        public IActionResult ChangeStatus(Guid ideaId, BrainstormIdeaStatus selectedStatus)
+        public async Task<IActionResult> ChangeStatus(Guid ideaId, BrainstormIdeaStatus selectedStatus)
         {
             try
             {
-                brainstormAppService.ChangeStatus(CurrentUserId, ideaId, selectedStatus);
+                await brainstormAppService.ChangeStatus(CurrentUserId, ideaId, selectedStatus);
 
-                string url = Url.Action("Index", "Brainstorm", new { area = string.Empty });
+                string url = Url.Action("Details", "Brainstorm", new { area = string.Empty, id = ideaId });
 
                 return Json(new OperationResultRedirectVo(url));
             }

@@ -4,6 +4,11 @@
     ViewData["Description"] = Model.Introduction.Contains(SharedLocalizer["Content posted on"]) ? SharedLocalizer["Content posted on"] + " " + Model.CreateDate.ToString() : String.Format("{0} - {1}", Model.Title, Model.Introduction);
     ViewData["Url"] = ViewBag.BaseUrl + Url.Action("details", "content", new { id = Model.Id });
     ViewData["OgImage"] = Model.FeaturedImage;
+    ViewData["OgType"] = "article";
+}
+
+@section OpenGraphMeta {
+    <meta property="og:article:author" content="@Model.AuthorName">
 }
 
 @section Styles {
@@ -70,7 +75,7 @@
         "author":{
         "@@type":"Person",
         "name":"@Model.AuthorName",
-        "url":"@(ViewBag.BaseUrl + "/profile/" + Model.UserId)"
+        "url":"@(ViewBag.BaseUrl + "/u/" + Model.UserHandler)",
         },
         "sharedContent":{
         "@@type":"WebPage",
@@ -126,10 +131,10 @@
             <div class="row">
                 <div class="col-12 col-md-6">
                     <div class="user-block">
-                        <a asp-area="" asp-controller="profile" asp-action="details" asp-route-id="@Model.UserId">
+                        <a asp-area="" asp-controller="profile" asp-action="details" asp-route-userHandler="@Model.UserHandler">
                             <img class="rounded-circle" src="@Model.AuthorPicture" alt="This is @Model.AuthorName">
                         </a>
-                        <a asp-area="" asp-controller="profile" asp-action="details" asp-route-id="@Model.UserId">
+                        <a asp-area="" asp-controller="profile" asp-action="details" asp-route-userHandler="@Model.UserHandler">
                             <span class="username">@Model.AuthorName</span>
                         </a>
                         <a asp-area="" asp-controller="content" asp-action="details" asp-route-id="@Model.Id">

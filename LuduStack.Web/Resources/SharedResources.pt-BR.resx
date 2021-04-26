@@ -1170,7 +1170,7 @@
     <comment>WorkType</comment>
   </data>
   <data name="Sound FX" xml:space="preserve">
-    <value>Efeitos Sonoros</value>
+    <value>Efeito Sonoro</value>
     <comment>WorkType</comment>
   </data>
   <data name="Testing" xml:space="preserve">
@@ -2812,5 +2812,293 @@
   <data name="your pleasure" xml:space="preserve">
     <value>seu prazer</value>
     <comment>Rate Calculator</comment>
+  </data>
+  <data name="2D Asset" xml:space="preserve">
+    <value>Asset 2D</value>
+    <comment>GameElement</comment>
+  </data>
+  <data name="2D Character" xml:space="preserve">
+    <value>Personagem 2D</value>
+    <comment>GameElement</comment>
+  </data>
+  <data name="2D Characters" xml:space="preserve">
+    <value>Personagens 2D</value>
+    <comment>Cost Calculator</comment>
+  </data>
+  <data name="2D Gameplay Code" xml:space="preserve">
+    <value>Código de Gameplay 2D</value>
+    <comment>GameElement</comment>
+  </data>
+  <data name="2D Level Design" xml:space="preserve">
+    <value>Level Design 2D</value>
+    <comment>GameElement</comment>
+  </data>
+  <data name="2D Levels/Maps/Tracks" xml:space="preserve">
+    <value>Níveis/Mapas/Pistas 2D</value>
+    <comment>Cost Calculator</comment>
+  </data>
+  <data name="3D Asset" xml:space="preserve">
+    <value>Asset 3D</value>
+    <comment>GameElement</comment>
+  </data>
+  <data name="3D Character" xml:space="preserve">
+    <value>Personagem 3D</value>
+    <comment>GameElement</comment>
+  </data>
+  <data name="3D Gameplay Code" xml:space="preserve">
+    <value>Código de Gameplay 3D</value>
+    <comment>GameElement</comment>
+  </data>
+  <data name="3D Level Design" xml:space="preserve">
+    <value>Level Design 3D</value>
+    <comment>GameElement</comment>
+  </data>
+  <data name="Add your rates here" xml:space="preserve">
+    <value>Adicione suas taxas aqui</value>
+    <comment>Cost Calculator</comment>
+  </data>
+  <data name="Are you a freelancer? {0} to help us improve the cost estimates." xml:space="preserve">
+    <value>Você é um freelancer? {0} para nos ajudar a melhorar as estimativas de custo.</value>
+    <comment>Cost Calculator</comment>
+  </data>
+  <data name="Art Style" xml:space="preserve">
+    <value>Estilo de arte</value>
+    <comment>Cost Calculator</comment>
+  </data>
+  <data name="Artistic" xml:space="preserve">
+    <value>Artístico</value>
+    <comment>ArtStyle</comment>
+  </data>
+  <data name="Audio" xml:space="preserve">
+    <value>Áudio</value>
+    <comment>BillRateType</comment>
+  </data>
+  <data name="average" xml:space="preserve">
+    <value>média</value>
+    <comment>Cost Calculator</comment>
+  </data>
+  <data name="Bill Rate" xml:space="preserve">
+    <value>Taxa de Cobrança</value>
+    <comment>Bill Rate</comment>
+  </data>
+  <data name="calculate" xml:space="preserve">
+    <value>calcular</value>
+    <comment>Cost Calculator</comment>
+  </data>
+  <data name="Cartoon" xml:space="preserve">
+    <value>Cartunesco</value>
+    <comment>Cost Calculator</comment>
+  </data>
+  <data name="Concept Art Pieces" xml:space="preserve">
+    <value>Peças de arte conceitual</value>
+    <comment>Cost Calculator</comment>
+  </data>
+  <data name="Cost Calculator" xml:space="preserve">
+    <value>Calculadora de Custo</value>
+    <comment>Cost Calculator</comment>
+  </data>
+  <data name="element" xml:space="preserve">
+    <value>elemento</value>
+    <comment>Bill Rate</comment>
+  </data>
+  <data name="Estimate how much your idea for a game would cost approximately." xml:space="preserve">
+    <value>Calcule a estimativa de quanto custaria produzir sua ideia de jogo.</value>
+    <comment>Cost Calculator</comment>
+  </data>
+  <data name="Game Design Document" xml:space="preserve">
+    <value>Documento de Game Design</value>
+    <comment>GameElement</comment>
+  </data>
+  <data name="Game Element" xml:space="preserve">
+    <value>Elemento de Jogo</value>
+    <comment>Bill Rate</comment>
+  </data>
+  <data name="Here you must set what you are billing for." xml:space="preserve">
+    <value>Aqui você define sobre o que você está cobrando.</value>
+    <comment>Bill Rate</comment>
+  </data>
+  <data name="Hour Price (USD)" xml:space="preserve">
+    <value>Preço da Hora (em dólares)</value>
+    <comment>Bill Rate</comment>
+  </data>
+  <data name="Hour Quantity" xml:space="preserve">
+    <value>Quantidade de Horas</value>
+    <comment>Bill Rate</comment>
+  </data>
+  <data name="How do you want the game to look?" xml:space="preserve">
+    <value>Como você quer que seja a aparência do jogo?</value>
+    <comment>Cost Calculator</comment>
+  </data>
+  <data name="How do you want the game to sound?" xml:space="preserve">
+    <value>Como você quer que seja o som do jogo?</value>
+    <comment>Cost Calculator</comment>
+  </data>
+  <data name="How many 2D characters the game has?" xml:space="preserve">
+    <value>Quantos personagens 2D o jogo tem?</value>
+    <comment>Cost Calculator</comment>
+  </data>
+  <data name="How many 2D levels/maps/tracks the game has?" xml:space="preserve">
+    <value>Quantos níveis/mapas/pistas o jogo tem?</value>
+    <comment>Cost Calculator</comment>
+  </data>
+  <data name="How many concept arts you need for the project?" xml:space="preserve">
+    <value>Quantas artes conceituais você precisa para o projeto?</value>
+    <comment>Cost Calculator</comment>
+  </data>
+  <data name="How many hours it takes to accomplish one game element of this?" xml:space="preserve">
+    <value>Quantas horas costumam levar para realizar o trabalho para um elemento de jogo do tipo selecionado?</value>
+    <comment>Bill Rate</comment>
+  </data>
+  <data name="How many music tracks you need in your game?" xml:space="preserve">
+    <value>De quantas faixas musicais você precisa no seu jogo?</value>
+    <comment>Cost Calculator</comment>
+  </data>
+  <data name="How many sound effects you need in your game?" xml:space="preserve">
+    <value>De quantos efeitos sonoros você precisa no seu jogo?</value>
+    <comment>Cost Calculator</comment>
+  </data>
+  <data name="How much it would cost (in US Dolars)" xml:space="preserve">
+    <value>Quanto custaria (em dólares)</value>
+    <comment>Cost Calculator</comment>
+  </data>
+  <data name="How much you bill (in US dolars) for one game element of this type?" xml:space="preserve">
+    <value>Quanto você costuma cobrar (em dólares) por um elemento de jogo deste tipo?</value>
+    <comment>Bill Rate</comment>
+  </data>
+  <data name="How much you bill (in US dolars) for one hour working on this?" xml:space="preserve">
+    <value>Quanto você costuma cobrar (em dólares) por uma hora trabalhando nisto?</value>
+    <comment>Bill Rate</comment>
+  </data>
+  <data name="How would you describe the sound style? If you can't find an exact match, choose the closest one." xml:space="preserve">
+    <value>Como você descreveria o estilo de som? Se você não encontrar um estilo exato, escolha o que mais se aproxima.</value>
+    <comment>Bill Rate</comment>
+  </data>
+  <data name="If a Bill Rate for this kind of service already exists the values will just be updated." xml:space="preserve">
+    <value>Se uma Taxa de Cobrança para este tipo de serviço já existir, os valores serão apenas atualizados.</value>
+    <comment>Bill Rate</comment>
+  </data>
+  <data name="Manage your Bill Rates" xml:space="preserve">
+    <value>Gerencie suas Taxas de Cobrança</value>
+    <comment>Bill Rate</comment>
+  </data>
+  <data name="maximum" xml:space="preserve">
+    <value>máximo</value>
+    <comment>Cost Calculator</comment>
+  </data>
+  <data name="minimum" xml:space="preserve">
+    <value>mínimo</value>
+    <comment>Cost Calculator</comment>
+  </data>
+  <data name="Music Track" xml:space="preserve">
+    <value>Faixa Musical</value>
+    <comment>GameElement</comment>
+  </data>
+  <data name="Music Tracks" xml:space="preserve">
+    <value>Faixas Musicais</value>
+    <comment>Cost Calculator</comment>
+  </data>
+  <data name="My Bill Rates" xml:space="preserve">
+    <value>Minhas Taxas de Cobrança</value>
+    <comment>Bill Rate</comment>
+  </data>
+  <data name="New Bill Rate" xml:space="preserve">
+    <value>Nova Taxa de Cobrança</value>
+    <comment>Bill Rate</comment>
+  </data>
+  <data name="Orchestral" xml:space="preserve">
+    <value>Orquestral</value>
+    <comment>SoundStyle</comment>
+  </data>
+  <data name="Play around to estimate how much would cost some freelance work for your game." xml:space="preserve">
+    <value>Brinque com os valores para estimar quanto custaria terceirizar parte do trabalho para seu jogo.</value>
+    <comment>Cost Calculator</comment>
+  </data>
+  <data name="quantity" xml:space="preserve">
+    <value>quantidade</value>
+    <comment>Cost Calculator</comment>
+  </data>
+  <data name="Realistic" xml:space="preserve">
+    <value>Realista</value>
+    <comment>Cost Calculator</comment>
+  </data>
+  <data name="SNES Era" xml:space="preserve">
+    <value>Era do SNES</value>
+    <comment>SoundStyle</comment>
+  </data>
+  <data name="Sound Effects" xml:space="preserve">
+    <value>Efeitos Sonoros</value>
+    <comment>CostCalculator</comment>
+  </data>
+  <data name="Sound Style" xml:space="preserve">
+    <value>Estilo de som</value>
+    <comment>Cost Calculator</comment>
+  </data>
+  <data name="Story" xml:space="preserve">
+    <value>Estória</value>
+    <comment>GameElement</comment>
+  </data>
+  <data name="style" xml:space="preserve">
+    <value>estilo</value>
+    <comment>Bill Rate</comment>
+  </data>
+  <data name="Text" xml:space="preserve">
+    <value>Texto</value>
+    <comment>BillRateType</comment>
+  </data>
+  <data name="The values you put in here are used only under the hood by the {0} and we will not publish them anywhere." xml:space="preserve">
+    <value>Os valores que você insere aqui são usados apenas pelo motor da {0} e nós não publicaremos os valores em lugar algum.</value>
+    <comment>Bill Rate</comment>
+  </data>
+  <data name="These values come from our database. All LudusStack users can contribute by anonymously publishing their rates so we can keep the values always updated." xml:space="preserve">
+    <value>Os valores são calculados de nossa base de dados. Todos os usuários da plataforma podem contribuir de forma anônima, publicando suas taxas para que possamos manter os valores sempre atualizados.</value>
+    <comment>Cost Calculator</comment>
+  </data>
+  <data name="This game will cost:" xml:space="preserve">
+    <value>Este jogo custará:</value>
+    <comment>Cost Calculator</comment>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>Tipo</value>
+    <comment>Bill Rate</comment>
+  </data>
+  <data name="UI Code" xml:space="preserve">
+    <value>Código da UI</value>
+    <comment>GameElement</comment>
+  </data>
+  <data name="USD/element" xml:space="preserve">
+    <value>USD/elemento</value>
+    <comment>Bill Rate</comment>
+  </data>
+  <data name="USD/hour" xml:space="preserve">
+    <value>USD/hora</value>
+    <comment>Bill Rate</comment>
+  </data>
+  <data name="Voice Over" xml:space="preserve">
+    <value>Dublagem</value>
+    <comment>GameElement</comment>
+  </data>
+  <data name="What kind of visual art? If you can't find an exact match, choose the closest one." xml:space="preserve">
+    <value>Qual estilo de arte? Se você não encontrar um estilo exato, escolha o que mais se aproxima.</value>
+    <comment>Bill Rate</comment>
+  </data>
+  <data name="What would be the outcome of this service?" xml:space="preserve">
+    <value>Qual seria o entregável deste serviço?</value>
+    <comment>Bill Rate</comment>
+  </data>
+  <data name="You are estimating the cost of a videogame" xml:space="preserve">
+    <value>Você está estimando o custo de um jogo</value>
+    <comment>Cost Calculator</comment>
+  </data>
+  <data name="You are {0} a Bill Rate" xml:space="preserve">
+    <value>Você está {0} uma Taxa de Cobrabça</value>
+    <comment>Bill Rate</comment>
+  </data>
+  <data name="You don't have any Bill Rates!" xml:space="preserve">
+    <value>Você não tem nenhuma Taxa de Cobrança!</value>
+    <comment>Bill Rate</comment>
+  </data>
+  <data name="{0} Bill Rate" xml:space="preserve">
+    <value>{0} Taxa de Cobrança</value>
+    <comment>Bill Rate</comment>
   </data>
 </root>

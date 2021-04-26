@@ -267,19 +267,15 @@
 
         if (response.message) {
             if (successCallback) {
-                successCallback();
+                successCallback(response);
             }
 
-            ALERTSYSTEM.Toastr.ShowSuccess(response.message, function (result) {
-                if (response.url) {
-                    window.location = response.url;
-                }
+            ALERTSYSTEM.Toastr.ShowSuccess(response.message, function () {
+                MAINMODULE.Ajax.HandleUrlResponse(response);
             });
         }
         else {
-            if (response.url) {
-                window.location = response.url;
-            }
+            MAINMODULE.Ajax.HandleUrlResponse(response);
         }
     }
 
@@ -341,16 +337,12 @@
         else {
             document.querySelector(idList).innerHTML = MAINMODULE.Default.SpinnerTop;
 
-            const promise = getHtml(url)
+            return getHtml(url)
                 .then(function (body) {
                     document.querySelector(idList).innerHTML = body;
 
-                    //lazyLoadInstance.update();
-
                     return body;
                 });
-
-            return promise;
         }
     }
 
@@ -362,9 +354,7 @@
                 }
 
                 ALERTSYSTEM.ShowSuccessMessage(response.message, function () {
-                    if (response.url) {
-                        window.location = response.url;
-                    }
+                    MAINMODULE.Ajax.HandleUrlResponse(response);
                 });
             }
             else {
@@ -382,15 +372,11 @@
 
                 if (options !== undefined && options.showSuccessMessage === true) {
                     ALERTSYSTEM.ShowSuccessMessage(response.message, function () {
-                        if (response.url) {
-                            window.location = response.url;
-                        }
+                        MAINMODULE.Ajax.HandleUrlResponse(response);
                     });
                 }
                 else {
-                    if (response.url) {
-                        window.location = response.url;
-                    }
+                    MAINMODULE.Ajax.HandleUrlResponse(response);
                 }
             }
             else {
@@ -399,52 +385,27 @@
         });
     }
 
-    function deleteEntity(btn, callback) {
-        var url = btn.data('url');
-
-        var msgs = MAINMODULE.Common.GetDeleteMessages(btn);
-
-        ALERTSYSTEM.ShowConfirmMessage(msgs.confirmationTitle, msgs.msg, msgs.confirmationButtonText, msgs.cancelButtonText, function () {
-            $.ajax({
-                url: url,
-                type: 'DELETE'
-            }).done(function (response) {
-                if (response.success) {
-                    MAINMODULE.Common.HandleSuccessDefault(response);
-
-                    if (callback) {
-                        callback(response);
-                    }
+    function get(url, callback) {
+        $.get(url).done(function (response) {
+            if (response.success === true) {
+                if (callback) {
+                    callback(response);
                 }
-                else {
+            }
+            else {
+                if (response.message) {
                     ALERTSYSTEM.ShowWarningMessage(response.message);
                 }
-            });
+            }
         });
     }
 
+    function deleteEntity(btn, callback) {
+        postOrDeleteWithConfirmation(btn, 'DELETE', callback);
+    }
+
     function postWithConfirmation(btn, callback) {
-        var url = btn.data('url');
-
-        var msgs = MAINMODULE.Common.GetDeleteMessages(btn);
-
-        ALERTSYSTEM.ShowConfirmMessage(msgs.confirmationTitle, msgs.msg, msgs.confirmationButtonText, msgs.cancelButtonText, function () {
-            $.ajax({
-                url: url,
-                type: 'POST'
-            }).done(function (response) {
-                if (response.success) {
-                    MAINMODULE.Common.HandleSuccessDefault(response);
-
-                    if (callback) {
-                        callback(response);
-                    }
-                }
-                else {
-                    ALERTSYSTEM.ShowWarningMessage(response.message);
-                }
-            });
-        });
+        postOrDeleteWithConfirmation(btn, 'POST', callback);
     }
 
     function postWithoutConfirmation(btn, callback) {
@@ -467,6 +428,26 @@
         });
     }
 
+    function postOrDeleteWithConfirmation(btn, httpmethod, callback) {
+        var url = btn.data('url');
+
+        var msgs = MAINMODULE.Common.GetDeleteMessages(btn);
+
+        ALERTSYSTEM.ShowConfirmMessage(msgs.confirmationTitle, msgs.msg, msgs.confirmationButtonText, msgs.cancelButtonText, function () {
+            $.ajax({
+                url: url,
+                type: httpmethod
+            }).done(function (response) {
+                if (response.success) {
+                    MAINMODULE.Common.HandleSuccessDefault(response, null, callback);
+                }
+                else {
+                    ALERTSYSTEM.ShowWarningMessage(response.message);
+                }
+            });
+        });
+    }
+
     function getLocale() {
         if (!objs.locale) {
             objs.locale = $(selectors.locale);
@@ -477,23 +458,17 @@
 
     function getSelectedFileUrl(files, done) {
         if (files && files.length > 0) {
-            file = files[0];
-
             var reader;
-            var file;
+            var file = files[0];
 
-            if (files && files.length > 0) {
-                file = files[0];
-
-                if (URL) {
-                    done(URL.createObjectURL(file));
-                } else if (FileReader) {
-                    reader = new FileReader();
-                    reader.onloadend = function (e2) {
-                        done(reader.result);
-                    };
-                    reader.readAsDataURL(file);
-                }
+            if (URL) {
+                done(URL.createObjectURL(file));
+            } else if (FileReader) {
+                reader = new FileReader();
+                reader.onloadend = function (e2) {
+                    done(reader.result);
+                };
+                reader.readAsDataURL(file);
             }
         }
     }
@@ -508,6 +483,22 @@
         return new Blob([ab], { type: 'image/jpeg' });
     }
 
+    function handleUrlResponse(response) {
+        if (response.url) {
+            window.location = response.url;
+        }
+    }
+
+    function handleErrorResponse(response) {
+        if (response.message) {
+            ALERTSYSTEM.ShowWarningMessage(response.message);
+        }
+        else {
+            ALERTSYSTEM.ShowWarningMessage("An error occurred! Check the console!");
+            console.log(response);
+        }
+    }
+
     return {
         Init: init,
         GetLocale: getLocale,
@@ -516,9 +507,12 @@
         },
         Ajax: {
             Post: post,
+            Get: get,
             GetHtml: getHtml,
             LoadHtml: loadHtml,
-            CallBackendAction: callBackendAction
+            CallBackendAction: callBackendAction,
+            HandleUrlResponse: handleUrlResponse,
+            HandleErrorResponse: handleErrorResponse
         },
         Common: {
             HandlePointsEarned: handlePointsEarned,
@@ -550,8 +544,3 @@
 }());
 
 MAINMODULE.Init();
-
-//var lazyLoadInstance = new LazyLoad({
-//    elements_selector: ".lazyload",
-//    callback_loaded: (el) => { el.classList.remove("blur-up"); }
-//});

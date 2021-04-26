@@ -64,7 +64,7 @@
         "author": {
         "@@type":"Person",
         "name":"@Model.AuthorName",
-        "url":"@(ViewBag.BaseUrl + "/profile/" + Model.UserId)",
+        "url":"@(ViewBag.BaseUrl + "/u/" + Model.UserHandler)",
         "image": "@Model.ThumbnailUrl"
         },
         "sameAs": [ @(Html.Raw(string.Join(", ", Model.ExternalLinks.Select(x => string.Format("\"{0}\"", x.Value))))) ]
@@ -81,7 +81,7 @@
                     <div class="float-left">
                         <div class="widget-game-image">
                             <div class="avatar-wrapper">
-                                <a asp-area="" asp-controller="profile" asp-action="details" asp-route-id="@Model.UserId">
+                                <a asp-area="" asp-controller="profile" asp-action="details" asp-route-userHandler="@Model.UserHandler">
                                     <img class="rounded-circle" src="@Model.AuthorPicture" alt="User Avatar">
                                 </a>
                             </div>
@@ -92,7 +92,7 @@
                     </div>
                     <div class="text-left">
                         <span>
-                            <a asp-area="" asp-controller="profile" asp-action="details" asp-route-id="@Model.UserId">
+                            <a asp-area="" asp-controller="profile" asp-action="details" asp-route-userHandler="@Model.UserHandler">
                                 @SharedLocalizer["by"] @Model.AuthorName
                             </a>
                         </span>

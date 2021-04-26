@@ -10,7 +10,7 @@ namespace LuduStack.Web.Helpers
     {
         public static string FormatCFormatTextAreaBreaks(string content)
         {
-            return content.Replace("<br>", string.Empty);
+            return content?.Replace("<br>", string.Empty);
         }
 
         public static string FormatContentToShow(string content)

@@ -42,13 +42,18 @@ namespace LuduStack.Web.Controllers
         [Route("game/{id:guid}")]
         public async Task<IActionResult> Details(Guid id, int? pointsEarned, Guid notificationclicked)
         {
-            notificationAppService.MarkAsRead(notificationclicked);
+            await notificationAppService.MarkAsRead(notificationclicked);
 
-            OperationResultVo<GameViewModel> serviceResult = gameAppService.GetById(CurrentUserId, id);
+            OperationResultVo<GameViewModel> serviceResult = await gameAppService.GetById(CurrentUserId, id);
 
             GameViewModel vm = serviceResult.Value;
 
-            SetGameTeam(vm);
+            if (vm == null)
+            {
+                return RedirectToAction("list", "game", new { area = string.Empty, msg = SharedLocalizer["Game not found!"] });
+            }
+
+            await SetGameTeam(vm);
 
             SetTranslationPercentage(vm);
 
@@ -73,9 +78,9 @@ namespace LuduStack.Web.Controllers
         }
 
         [Route("games/{genre:alpha?}")]
-        public IActionResult List(GameGenre genre)
+        public async Task<IActionResult> List(GameGenre genre)
         {
-            IEnumerable<GameListItemViewModel> latest = gameAppService.GetLatest(CurrentUserId, 200, Guid.Empty, null, genre);
+            IEnumerable<GameListItemViewModel> latest = await gameAppService.GetLatest(CurrentUserId, 200, Guid.Empty, null, genre);
 
             ViewBag.Games = latest;
             ViewData["Genre"] = genre;
@@ -103,9 +108,9 @@ namespace LuduStack.Web.Controllers
         }
 
         [Authorize]
-        public IActionResult Edit(Guid id)
+        public async Task<IActionResult> Edit(Guid id)
         {
-            OperationResultVo<GameViewModel> serviceResult = gameAppService.GetById(CurrentUserId, id, true);
+            OperationResultVo<GameViewModel> serviceResult = await gameAppService.GetById(CurrentUserId, id, true);
 
             GameViewModel vm = serviceResult.Value;
 
@@ -118,16 +123,16 @@ namespace LuduStack.Web.Controllers
 
         [HttpPost]
         [Authorize]
-        public IActionResult Save(GameViewModel vm, IFormFile thumbnail)
+        public async Task<IActionResult> Save(GameViewModel vm, IFormFile thumbnail)
         {
             try
             {
                 bool isNew = vm.Id == Guid.Empty;
 
-                SetAuthorDetails(vm);
+                await SetAuthorDetails(vm);
                 ClearImagesUrl(vm);
 
-                OperationResultVo<Guid> saveResult = gameAppService.Save(CurrentUserId, vm);
+                OperationResultVo<Guid> saveResult = await gameAppService.Save(CurrentUserId, vm);
 
                 if (!saveResult.Success)
                 {
@@ -135,11 +140,11 @@ namespace LuduStack.Web.Controllers
                 }
                 else
                 {
-                    string url = Url.Action("Details", "Game", new { area = string.Empty, id = vm.Id.ToString(), pointsEarned = saveResult.PointsEarned });
+                    string url = Url.Action("Details", "Game", new { area = string.Empty, id = saveResult.Value.ToString(), pointsEarned = saveResult.PointsEarned });
 
                     if (isNew && EnvName.Equals(ConstantHelper.ProductionEnvironmentName))
                     {
-                        NotificationSender.SendTeamNotificationAsync($"New game Created: {vm.Title}");
+                        await NotificationSender.SendTeamNotificationAsync($"New game Created: {vm.Title}");
                     }
 
                     return Json(new OperationResultRedirectVo(url));
@@ -165,24 +170,24 @@ namespace LuduStack.Web.Controllers
 
         [HttpPost]
         [Route("game/like")]
-        public IActionResult LikeGame(Guid likedId)
+        public async Task<IActionResult> LikeGame(Guid likedId)
         {
-            OperationResultVo response = gameAppService.GameLike(CurrentUserId, likedId);
+            OperationResultVo response = await gameAppService.GameLike(CurrentUserId, likedId);
 
-            OperationResultVo<GameViewModel> gameResult = gameAppService.GetById(CurrentUserId, likedId);
+            OperationResultVo<GameViewModel> gameResult = await gameAppService.GetById(CurrentUserId, likedId);
 
             string fullName = GetSessionValue(SessionValues.FullName);
 
-            notificationAppService.Notify(CurrentUserId, fullName, gameResult.Value.UserId, NotificationType.GameLike, likedId, gameResult.Value.Title);
+            await notificationAppService.Notify(CurrentUserId, fullName, gameResult.Value.UserId, NotificationType.GameLike, likedId, gameResult.Value.Title);
 
             return Json(response);
         }
 
         [HttpPost]
         [Route("game/unlike")]
-        public IActionResult UnLikeGame(Guid likedId)
+        public async Task<IActionResult> UnLikeGame(Guid likedId)
         {
-            OperationResultVo response = gameAppService.GameUnlike(CurrentUserId, likedId);
+            OperationResultVo response = await gameAppService.GameUnlike(CurrentUserId, likedId);
 
             return Json(response);
         }
@@ -193,24 +198,24 @@ namespace LuduStack.Web.Controllers
 
         [HttpPost]
         [Route("game/follow")]
-        public IActionResult FollowGame(Guid gameId)
+        public async Task<IActionResult> FollowGame(Guid gameId)
         {
-            OperationResultVo response = gameAppService.GameFollow(CurrentUserId, gameId);
+            OperationResultVo response = await gameAppService.GameFollow(CurrentUserId, gameId);
 
-            OperationResultVo<GameViewModel> gameResult = gameAppService.GetById(CurrentUserId, gameId);
+            OperationResultVo<GameViewModel> gameResult = await gameAppService.GetById(CurrentUserId, gameId);
 
             string fullName = GetSessionValue(SessionValues.FullName);
 
-            notificationAppService.Notify(CurrentUserId, fullName, gameResult.Value.UserId, NotificationType.FollowYourGame, gameId);
+            await notificationAppService.Notify(CurrentUserId, fullName, gameResult.Value.UserId, NotificationType.FollowYourGame, gameId);
 
             return Json(response);
         }
 
         [HttpPost]
         [Route("game/unfollow")]
-        public IActionResult UnFollowGame(Guid gameId)
+        public async Task<IActionResult> UnFollowGame(Guid gameId)
         {
-            OperationResultVo response = gameAppService.GameUnfollow(CurrentUserId, gameId);
+            OperationResultVo response = await gameAppService.GameUnfollow(CurrentUserId, gameId);
 
             return Json(response);
         }
@@ -218,9 +223,9 @@ namespace LuduStack.Web.Controllers
         #endregion Game Follow/Unfollow
 
         [Route("game/byteam/{teamId:guid}")]
-        public IActionResult ByTeam(Guid teamId)
+        public async Task<IActionResult> ByTeam(Guid teamId)
         {
-            IEnumerable<GameListItemViewModel> games = gameAppService.GetLatest(CurrentUserId, 99, Guid.Empty, teamId, 0);
+            IEnumerable<GameListItemViewModel> games = await gameAppService.GetLatest(CurrentUserId, 99, Guid.Empty, teamId, 0);
 
             return View("_Games", games);
         }
@@ -284,11 +289,11 @@ namespace LuduStack.Web.Controllers
             }
         }
 
-        private void SetGameTeam(GameViewModel vm)
+        private async Task SetGameTeam(GameViewModel vm)
         {
             if (vm.Team == null && vm.TeamId.HasValue)
             {
-                OperationResultVo<Application.ViewModels.Team.TeamViewModel> teamResult = teamAppService.GetById(CurrentUserId, vm.TeamId.Value);
+                OperationResultVo<Application.ViewModels.Team.TeamViewModel> teamResult = await teamAppService.GetById(CurrentUserId, vm.TeamId.Value);
 
                 if (teamResult.Success)
                 {

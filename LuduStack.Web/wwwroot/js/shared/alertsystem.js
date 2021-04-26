@@ -1,26 +1,7 @@
-﻿var ALERTSYSTEM = (function () {
+﻿// https://sweetalert2.github.io
+
+var ALERTSYSTEM = (function () {
     "use strict";
-
-    //const toast = swal.mixin({
-    //    toast: true,
-    //    position: 'top-end',
-    //    showConfirmButton: false,
-    //    timer: 3000
-    //});
-
-    // https://sweetalert2.github.io
-
-    function init() {
-        cacheSelectors();
-
-        bindAll();
-    }
-
-    function cacheSelectors() {
-    }
-
-    function bindAll() {
-    }
 
     function showInfoAlert(text, callback) {
         showAlert(text, 'info', callback);
@@ -48,9 +29,7 @@
             timer: 3000
         }).then(
             function (result) {
-                if (callback) {
-                    callback(result);
-                }
+                callbackResult(callback, result);
             }
         );
     }
@@ -62,9 +41,7 @@
             type: "success"
         }).then(
             function (result) {
-                if (callback) {
-                    callback(result);
-                }
+                callbackResult(callback, result);
             }
         );
     }
@@ -76,12 +53,16 @@
             title: msg,
             type: "warning"
         }).then(
-            function () {
-                if (callback) {
-                    callback();
-                }
+            function (result) {
+                callbackResult(callback, result);
             }
         );
+    }
+
+    function callbackResult(callback, result) {
+        if (callback) {
+            callback(result);
+        }
     }
 
     function showConfirmMessage(title, msg, confirmButtonText, cancelButtonText, callbackYes, callbackCancel) {
@@ -112,7 +93,6 @@
     }
 
     return {
-        Init: init,
         ShowSuccessMessage: showSuccessMessage,
         ShowWarningMessage: showWarningMessage,
         ShowConfirmMessage: showConfirmMessage,
@@ -124,7 +104,3 @@
         }
     };
 }());
-
-$(function () {
-    ALERTSYSTEM.Init();
-});

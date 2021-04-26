@@ -3,27 +3,38 @@ using LuduStack.Application.ViewModels.Brainstorm;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.ValueObjects;
 using System;
+using System.Threading.Tasks;
 
 namespace LuduStack.Application.Interfaces
 {
-    public interface IBrainstormAppService : ICrudAppService<BrainstormIdeaViewModel>
+    public interface IBrainstormAppService
     {
-        OperationResultVo Vote(Guid userId, Guid ideaId, VoteValue vote);
+        Task<OperationResultVo<int>> Count(Guid currentUserId);
 
-        OperationResultVo Comment(CommentViewModel vm);
+        Task<OperationResultListVo<Guid>> GetAllIds(Guid currentUserId);
 
-        OperationResultVo<BrainstormSessionViewModel> GetSession(Guid sessionId);
+        Task<OperationResultVo<BrainstormIdeaViewModel>> GetById(Guid currentUserId, Guid id);
 
-        OperationResultVo<BrainstormSessionViewModel> GetSession(Guid userId, BrainstormSessionType type);
+        Task<OperationResultVo> Remove(Guid currentUserId, Guid id);
 
-        OperationResultListVo<BrainstormSessionViewModel> GetSessions(Guid userId);
+        Task<OperationResultVo<Guid>> Save(Guid currentUserId, BrainstormIdeaViewModel viewModel);
 
-        OperationResultVo<Guid> SaveSession(BrainstormSessionViewModel vm);
+        Task<OperationResultVo> Vote(Guid userId, Guid ideaId, VoteValue vote);
 
-        OperationResultListVo<BrainstormIdeaViewModel> GetAllBySessionId(Guid userId, Guid sessionId);
+        Task<OperationResultVo> Comment(Guid currentUserId, CommentViewModel vm);
 
-        OperationResultVo<BrainstormSessionViewModel> GetMainSession();
+        Task<OperationResultVo<BrainstormSessionViewModel>> GetSession(Guid sessionId);
 
-        OperationResultVo ChangeStatus(Guid currentUserId, Guid ideaId, BrainstormIdeaStatus selectedStatus);
+        Task<OperationResultVo<BrainstormSessionViewModel>> GetSession(Guid userId, BrainstormSessionType type);
+
+        Task<OperationResultListVo<BrainstormSessionViewModel>> GetSessions(Guid userId);
+
+        Task<OperationResultVo<Guid>> SaveSession(Guid currentUserId, BrainstormSessionViewModel viewModel);
+
+        Task<OperationResultListVo<BrainstormIdeaViewModel>> GetAllBySessionId(Guid userId, Guid sessionId);
+
+        Task<OperationResultVo<BrainstormSessionViewModel>> GetMainSession();
+
+        Task<OperationResultVo> ChangeStatus(Guid currentUserId, Guid ideaId, BrainstormIdeaStatus selectedStatus);
     }
 }

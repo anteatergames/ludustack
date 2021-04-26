@@ -8,11 +8,11 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace LuduStack.Web.Areas.Member.Controllers
 {
-    [Authorize]
-    [Route("comics")]
+    [Route("member/comics")]
     public class ComicsController : MemberBaseController
     {
         private readonly IComicsAppService comicsAppService;
@@ -40,17 +40,15 @@ namespace LuduStack.Web.Areas.Member.Controllers
 
         [AllowAnonymous]
         [Route("{id:guid}")]
-        public IActionResult Details(Guid id)
+        public async Task<IActionResult> Details(Guid id)
         {
-            OperationResultVo result = comicsAppService.GetForDetails(CurrentUserId, id);
+            OperationResultVo result = await comicsAppService.GetForDetails(CurrentUserId, id);
 
             if (result.Success)
             {
                 OperationResultVo<ComicStripViewModel> castRestult = result as OperationResultVo<ComicStripViewModel>;
 
                 ComicStripViewModel model = castRestult.Value;
-
-                SetAuthorDetails(model);
 
                 SetLocalization(model);
 
@@ -63,11 +61,11 @@ namespace LuduStack.Web.Areas.Member.Controllers
         }
 
         [Route("listbyme")]
-        public PartialViewResult ListByMe()
+        public async Task<PartialViewResult> ListByMe()
         {
             List<ComicsListItemVo> model;
 
-            OperationResultVo serviceResult = comicsAppService.GetComicsByMe(CurrentUserId);
+            OperationResultVo serviceResult = await comicsAppService.GetComicsByMe(CurrentUserId);
 
             if (serviceResult.Success)
             {
@@ -112,11 +110,11 @@ namespace LuduStack.Web.Areas.Member.Controllers
         }
 
         [Route("edit/{id:guid}")]
-        public ViewResult Edit(Guid id)
+        public async Task<ViewResult> Edit(Guid id)
         {
             ComicStripViewModel model;
 
-            OperationResultVo serviceResult = comicsAppService.GetForEdit(CurrentUserId, id);
+            OperationResultVo serviceResult = await comicsAppService.GetForEdit(CurrentUserId, id);
 
             OperationResultVo<ComicStripViewModel> castResult = serviceResult as OperationResultVo<ComicStripViewModel>;
 
@@ -128,7 +126,7 @@ namespace LuduStack.Web.Areas.Member.Controllers
         }
 
         [Route("save")]
-        public JsonResult Save(ComicStripViewModel vm)
+        public async Task<JsonResult> Save(ComicStripViewModel vm)
         {
             bool isNew = vm.Id == Guid.Empty;
 
@@ -136,22 +134,22 @@ namespace LuduStack.Web.Areas.Member.Controllers
             {
                 vm.UserId = CurrentUserId;
 
-                OperationResultVo<Guid> saveResult = comicsAppService.Save(CurrentUserId, vm);
+                OperationResultVo<Guid> saveResult = await comicsAppService.Save(CurrentUserId, vm);
 
-                if (saveResult.Success)
+                if (!saveResult.Success)
                 {
-                    string url = Url.Action("edit", "comics", new { area = "member", id = vm.Id, pointsEarned = saveResult.PointsEarned });
-
-                    if (isNew && EnvName.Equals(ConstantHelper.ProductionEnvironmentName))
-                    {
-                        NotificationSender.SendTeamNotificationAsync("New Comic Strip created!");
-                    }
-
-                    return Json(new OperationResultRedirectVo<Guid>(saveResult, url));
+                    return Json(new OperationResultVo(false));
                 }
                 else
                 {
-                    return Json(new OperationResultVo(false));
+                    string url = Url.Action("edit", "comics", new { area = "member", id = saveResult.Value, pointsEarned = saveResult.PointsEarned });
+
+                    if (isNew && EnvName.Equals(ConstantHelper.ProductionEnvironmentName))
+                    {
+                        await NotificationSender.SendTeamNotificationAsync("New Comic Strip created!");
+                    }
+
+                    return Json(new OperationResultRedirectVo<Guid>(saveResult, url));
                 }
             }
             catch (Exception ex)
@@ -161,11 +159,11 @@ namespace LuduStack.Web.Areas.Member.Controllers
         }
 
         [HttpDelete("{id:guid}")]
-        public IActionResult Delete(Guid id, bool edit)
+        public async Task<IActionResult> Delete(Guid id, bool edit)
         {
             try
             {
-                OperationResultVo deleteResult = comicsAppService.Remove(CurrentUserId, id);
+                OperationResultVo deleteResult = await comicsAppService.Remove(CurrentUserId, id);
 
                 if (deleteResult.Success)
                 {
@@ -191,13 +189,13 @@ namespace LuduStack.Web.Areas.Member.Controllers
         }
 
         [HttpPost("rate/{id:guid}")]
-        public IActionResult Rate(Guid id, string score)
+        public async Task<IActionResult> Rate(Guid id, string score)
         {
             try
             {
                 decimal scoreDecimal = decimal.Parse(score, CultureInfo.InvariantCulture);
 
-                OperationResultVo serviceResult = comicsAppService.Rate(CurrentUserId, id, scoreDecimal);
+                OperationResultVo serviceResult = await comicsAppService.Rate(CurrentUserId, id, scoreDecimal);
 
                 return Json(new OperationResultVo(serviceResult.Success, serviceResult.Message));
             }
@@ -214,15 +212,12 @@ namespace LuduStack.Web.Areas.Member.Controllers
 
         private void SetLocalization(ComicsListItemVo item)
         {
+            // Here goes the localization for each list VO
         }
 
         private void SetLocalization(ComicStripViewModel item, bool editing)
         {
-            //if (item != null)
-            //{
-            //    DisplayAttribute displayStatus = item.Status.GetAttributeOfType<DisplayAttribute>();
-            //    item.StatusLocalized = SharedLocalizer[displayStatus != null ? displayStatus.Name : item.Status.ToString()];
-            //}
+            // Here goes the localization for each ViewModel
         }
     }
 }

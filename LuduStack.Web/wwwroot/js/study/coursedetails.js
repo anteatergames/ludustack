@@ -40,33 +40,24 @@
     }
 
     function bindBtnEnroll() {
-        objs.container.on('click', selectors.btnEnroll, function (e) {
-            e.preventDefault();
-
-            var btn = $(this);
-            var url = btn.data('url');
-
-            if (canInteract) {
-                MAINMODULE.Ajax.CallBackendAction(url);
-            }
-
-            return false;
-        });
+        objs.container.on('click', selectors.btnEnroll, studentAction);
     }
 
     function bindBtnLeave() {
-        objs.container.on('click', selectors.btnLeaveCourse, function (e) {
-            e.preventDefault();
+        objs.container.on('click', selectors.btnLeaveCourse, studentAction);
+    }
 
-            var btn = $(this);
-            var url = btn.data('url');
+    function studentAction(e) {
+        e.preventDefault();
 
-            if (canInteract) {
-                MAINMODULE.Ajax.CallBackendAction(url);
-            }
+        var btn = $(this);
+        var url = btn.data('url');
 
-            return false;
-        });
+        if (canInteract) {
+            MAINMODULE.Ajax.CallBackendAction(url);
+        }
+
+        return false;
     }
 
     function listPlans(url) {

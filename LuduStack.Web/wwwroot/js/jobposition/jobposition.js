@@ -24,8 +24,7 @@
         selectors.containerList = '#containerlist';
         selectors.list = '#divList';
         selectors.divListItem = '.jobposition-item';
-        selectors.btnNewJobPosition = '#btn-jobposition-new';
-        selectors.btnNewExternalJobPosition = '#btn-jobposition-new-external';
+        selectors.btnNewJobPosition = '.btn-jobposition-new';
         selectors.btnListMine = '#btn-jobposition-listmine';
         selectors.form = '#frmJobPositionSave';
         selectors.btnSave = '#btnPostJobPosition';
@@ -99,7 +98,6 @@
     }
 
     function bindAll() {
-        bindBtnNewExternalJobPosition();
         bindBtnNewJobPosition();
         bindBtnSaveForm();
         bindBtnApply();
@@ -176,21 +174,9 @@
         objs.container.on('rating:change', selectors.applicantRating, function (event, value, caption) {
             var url = $(this).data('url');
 
-            console.log(event);
-            console.log(caption);
-
             var data = { score: value };
 
             genericPost(url, data);
-        });
-    }
-
-    function bindBtnNewExternalJobPosition() {
-        objs.container.on('click', selectors.btnNewExternalJobPosition, function () {
-            var url = $(this).data('url');
-            if (canInteract) {
-                loadNewJobPositionForm(url);
-            }
         });
     }
 
@@ -198,7 +184,7 @@
         objs.container.on('click', selectors.btnNewJobPosition, function () {
             var url = $(this).data('url');
             if (canInteract) {
-                loadNewJobPositionForm(url);
+                loadEditForm(url);
             }
         });
     }
@@ -250,36 +236,40 @@
                     url: url,
                     type: 'DELETE'
                 }).done(function (response) {
-                    if (response.success) {
-                        btn.closest(selectors.divListItem).remove();
-
-                        if (response.message) {
-                            ALERTSYSTEM.ShowSuccessMessage(response.message, function () {
-                                if (response.url) {
-                                    window.location = response.url;
-                                }
-                                else {
-                                    loadJobPositions(false, urlListDefault);
-                                    loadMyJobPositionStats(urlMyPositionStats);
-                                }
-                            });
-                        }
-                        else {
-                            if (response.url) {
-                                window.location = response.url;
-                            }
-                            else {
-                                loadJobPositions(false, urlListDefault);
-                                loadMyJobPositionStats(urlMyPositionStats);
-                            }
-                        }
-                    }
-                    else {
-                        ALERTSYSTEM.ShowWarningMessage(response.message);
-                    }
+                    deleteJobPositionCallback(response, btn);
                 });
             });
         });
+    }
+
+    function deleteJobPositionCallback(response, btn) {
+        if (response.success) {
+            btn.closest(selectors.divListItem).remove();
+
+            if (response.message) {
+                ALERTSYSTEM.ShowSuccessMessage(response.message, function () {
+                    if (response.url) {
+                        window.location = response.url;
+                    }
+                    else {
+                        loadJobPositions(false, urlListDefault);
+                        loadMyJobPositionStats(urlMyPositionStats);
+                    }
+                });
+            }
+            else {
+                if (response.url) {
+                    window.location = response.url;
+                }
+                else {
+                    loadJobPositions(false, urlListDefault);
+                    loadMyJobPositionStats(urlMyPositionStats);
+                }
+            }
+        }
+        else {
+            ALERTSYSTEM.ShowWarningMessage(response.message);
+        }
     }
 
     function bindRemoteChange() {
@@ -353,35 +343,8 @@
         MAINMODULE.Ajax.LoadHtml(url, objs.myApplications);
     }
 
-    function loadNewJobPositionForm(url) {
-        objs.containerDetails.html(MAINMODULE.Default.Spinner);
-        objs.containerList.hide();
-
-        MAINMODULE.Ajax.LoadHtml(url, objs.containerDetails).then(() => {
-            objs.containerDetails.show();
-            objs.form = $(selectors.form);
-
-            $.validator.unobtrusive.parse(selectors.form);
-            setCreateEdit();
-        });
-    }
-
     function apply(url, callback) {
-        $.post(url).done(function (response) {
-            if (response.success === true) {
-                if (callback) {
-                    callback(response);
-                }
-                ALERTSYSTEM.ShowSuccessMessage(response.message, function () {
-                    if (response.url) {
-                        window.location = response.url;
-                    }
-                });
-            }
-            else {
-                ALERTSYSTEM.ShowWarningMessage(response.message);
-            }
-        });
+        genericPost(url, null, callback);
     }
 
     function loadEditForm(url) {
@@ -411,11 +374,11 @@
                 }
 
                 ALERTSYSTEM.ShowSuccessMessage("Awesome!", function () {
-                    window.location = response.url;
+                    MAINMODULE.Ajax.HandleUrlResponse(response);
                 });
             }
             else {
-                ALERTSYSTEM.ShowWarningMessage("An error occurred! Check the console!");
+                MAINMODULE.Ajax.HandleErrorResponse(response);
             }
         });
     }
@@ -427,9 +390,7 @@
                     callback(response);
                 }
                 ALERTSYSTEM.ShowSuccessMessage(response.message, function () {
-                    if (response.url) {
-                        window.location = response.url;
-                    }
+                    MAINMODULE.Ajax.HandleUrlResponse(response);
                 });
             }
             else {

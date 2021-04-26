@@ -6,6 +6,7 @@ using LuduStack.Web.Controllers.Base;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace LuduStack.Web.Areas.Gamification.Controllers
 {
@@ -23,22 +24,22 @@ namespace LuduStack.Web.Areas.Gamification.Controllers
         }
 
         [Route("help")]
-        public IActionResult Help()
+        public async Task<IActionResult> Help()
         {
-            OperationResultListVo<GamificationLevelViewModel> objs = gamificationAppService.GetAllLevels();
+            OperationResultListVo<GamificationLevelViewModel> objs = await gamificationAppService.GetAllLevels();
 
             return View(objs.Value);
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            OperationResultListVo<RankingViewModel> serviceResult = gamificationAppService.GetAll();
+            OperationResultListVo<RankingViewModel> serviceResult = await gamificationAppService.GetAll();
 
             List<RankingViewModel> objs = serviceResult.Value.ToList();
 
             foreach (RankingViewModel obj in objs)
             {
-                Application.ViewModels.User.ProfileViewModel profile = profileAppService.GetUserProfileWithCache(obj.UserId);
+                UserProfileEssentialVo profile = await profileAppService.GetEssentialUserProfileWithCache(obj.UserId);
 
                 if (profile != null)
                 {

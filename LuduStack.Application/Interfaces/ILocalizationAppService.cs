@@ -8,21 +8,33 @@ using System.Threading.Tasks;
 
 namespace LuduStack.Application.Interfaces
 {
-    public interface ILocalizationAppService : ICrudAppService<LocalizationViewModel>, IPermissionControl<LocalizationViewModel>
+    public interface ILocalizationAppService : IPermissionControl<LocalizationViewModel>
     {
+        Task<OperationResultVo<int>> Count(Guid currentUserId);
+
+        Task<OperationResultListVo<Guid>> GetAllIds(Guid currentUserId);
+
+        Task<OperationResultVo<LocalizationViewModel>> GetById(Guid currentUserId, Guid id);
+
+        Task<OperationResultVo> Remove(Guid currentUserId, Guid id);
+
+        Task<OperationResultVo<Guid>> Save(Guid currentUserId, LocalizationViewModel viewModel);
+
+        Task<OperationResultListVo<LocalizationViewModel>> GetAll(Guid currentUserId);
+
         OperationResultVo GenerateNew(Guid currentUserId);
 
-        OperationResultVo GetByUserId(Guid currentUserId, Guid userId);
+        Task<OperationResultVo> GetByUserId(Guid currentUserId, Guid userId);
 
-        OperationResultVo GetBasicInfoById(Guid currentUserId, Guid id);
+        Task<OperationResultVo> GetBasicInfoById(Guid currentUserId, Guid id);
 
-        OperationResultVo GetMyUntranslatedGames(Guid currentUserId);
+        Task<OperationResultVo> GetMyUntranslatedGames(Guid currentUserId);
 
-        OperationResultVo GetTranslations(Guid currentUserId, Guid projectId, SupportedLanguage language);
+        Task<OperationResultVo> GetTranslations(Guid currentUserId, Guid projectId, SupportedLanguage language);
 
-        OperationResultVo GetTerms(Guid currentUserId, Guid projectId);
+        Task<OperationResultVo> GetTerms(Guid currentUserId, Guid projectId);
 
-        OperationResultVo SaveEntry(Guid currentUserId, Guid projectId, bool currentUserIsOwner, bool currentUserHelped, LocalizationEntryViewModel vm);
+        Task<OperationResultVo> SaveEntry(Guid currentUserId, Guid projectId, bool currentUserIsOwner, bool currentUserHelped, LocalizationEntryViewModel vm);
 
         Task<OperationResultVo> ReadTermsSheet(Guid currentUserId, Guid projectId, IEnumerable<KeyValuePair<int, SupportedLanguage>> columns, IFormFile termsFile);
 
@@ -30,13 +42,13 @@ namespace LuduStack.Application.Interfaces
 
         OperationResultVo SaveEntries(Guid currentUserId, Guid projectId, SupportedLanguage language, IEnumerable<LocalizationEntryViewModel> entries);
 
-        OperationResultVo GetStatsById(Guid currentUserId, Guid id);
+        Task<OperationResultVo> GetStatsById(Guid currentUserId, Guid id);
 
         OperationResultVo GetPercentageByGameId(Guid currentUserId, Guid gameId);
 
         OperationResultVo GetXml(Guid currentUserId, Guid projectId, SupportedLanguage? language, bool fillGaps);
 
-        OperationResultVo GetContributorsFile(Guid currentUserId, Guid projectId, ExportContributorsType type);
+        Task<OperationResultVo> GetContributorsFile(Guid currentUserId, Guid projectId, ExportContributorsType type);
 
         OperationResultVo EntryReview(Guid currentUserId, Guid projectId, Guid entryId, bool accept);
     }

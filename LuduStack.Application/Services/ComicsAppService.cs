@@ -4,57 +4,59 @@ using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels;
 using LuduStack.Application.ViewModels.Comics;
 using LuduStack.Domain.Core.Enums;
-using LuduStack.Domain.Interfaces.Services;
+using LuduStack.Domain.Messaging;
+using LuduStack.Domain.Messaging.Queries.UserContent;
+using LuduStack.Domain.Messaging.Queries.UserProfile;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
+using LuduStack.Infra.CrossCutting.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace LuduStack.Application.Services
 {
     public class ComicsAppService : ProfileBaseAppService, IComicsAppService
     {
-        private readonly IUserContentDomainService userContentDomainService;
-
-        public ComicsAppService(IProfileBaseAppServiceCommon profileBaseAppServiceCommon, IUserContentDomainService userContentDomainService) : base(profileBaseAppServiceCommon)
+        public ComicsAppService(IProfileBaseAppServiceCommon profileBaseAppServiceCommon) : base(profileBaseAppServiceCommon)
         {
-            this.userContentDomainService = userContentDomainService;
         }
 
-        #region ICrudAppService
-
-        public OperationResultVo<int> Count(Guid currentUserId)
+        public Task<OperationResultVo<int>> Count(Guid currentUserId)
         {
-            throw new NotImplementedException();
+            return Task.FromResult(new OperationResultVo<int>("Not Implemented"));
         }
 
-        public OperationResultListVo<ComicStripViewModel> GetAll(Guid currentUserId)
+        public Task<OperationResultListVo<ComicStripViewModel>> GetAll(Guid currentUserId)
         {
-            throw new NotImplementedException();
+            return Task.FromResult(new OperationResultListVo<ComicStripViewModel>("Not Implemented"));
         }
 
-        public OperationResultVo GetAllIds(Guid currentUserId)
+        public Task<OperationResultVo> GetAllIds(Guid currentUserId)
         {
-            throw new NotImplementedException();
+            return Task.FromResult(new OperationResultVo("Not Implemented"));
         }
 
-        public OperationResultVo<ComicStripViewModel> GetById(Guid currentUserId, Guid id)
+        public Task<OperationResultVo<ComicStripViewModel>> GetById(Guid currentUserId, Guid id)
         {
-            throw new NotImplementedException();
+            return Task.FromResult(new OperationResultVo<ComicStripViewModel>("Not Implemented"));
         }
 
-        public OperationResultVo Remove(Guid currentUserId, Guid id)
+        public async Task<OperationResultVo> Remove(Guid currentUserId, Guid id)
         {
             try
             {
-                // validate before
+                CommandResult result = await mediator.SendCommand(new DeleteUserContentCommand(currentUserId, id));
 
-                userContentDomainService.Remove(id);
-
-                unitOfWork.Commit();
-
-                return new OperationResultVo(true, "That Comic Strip is gone now!");
+                if (!result.Validation.IsValid)
+                {
+                    return new OperationResultVo(result.Validation.Errors.First().ErrorMessage);
+                }
+                else
+                {
+                    return new OperationResultVo(true, "That Comic Strip is gone now!");
+                }
             }
             catch (Exception ex)
             {
@@ -62,7 +64,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo<Guid> Save(Guid currentUserId, ComicStripViewModel viewModel)
+        public async Task<OperationResultVo<Guid>> Save(Guid currentUserId, ComicStripViewModel viewModel)
         {
             int pointsEarned = 0;
 
@@ -70,7 +72,7 @@ namespace LuduStack.Application.Services
             {
                 UserContent model;
 
-                UserContent existing = userContentDomainService.GetById(viewModel.Id);
+                UserContent existing = await mediator.Query<GetUserContentByIdQuery, UserContent>(new GetUserContentByIdQuery(viewModel.Id));
                 if (existing != null)
                 {
                     model = mapper.Map(viewModel, existing);
@@ -82,19 +84,15 @@ namespace LuduStack.Application.Services
 
                 FormatImagesToSave(model);
 
-                if (viewModel.Id == Guid.Empty)
+                CommandResult result = await mediator.SendCommand(new SaveUserContentCommand(currentUserId, model, true));
+
+                if (!result.Validation.IsValid)
                 {
-                    userContentDomainService.Add(model);
-                    viewModel.Id = model.Id;
-                }
-                else
-                {
-                    userContentDomainService.Update(model);
+                    string message = result.Validation.Errors.FirstOrDefault().ErrorMessage;
+                    return new OperationResultVo<Guid>(model.Id, false, message);
                 }
 
-                unitOfWork.Commit();
-
-                viewModel.Id = model.Id;
+                pointsEarned += result.PointsEarned;
 
                 return new OperationResultVo<Guid>(model.Id, pointsEarned);
             }
@@ -104,14 +102,10 @@ namespace LuduStack.Application.Services
             }
         }
 
-        #endregion ICrudAppService
-
         public OperationResultVo GenerateNew(Guid currentUserId)
         {
             try
             {
-                //int lastIssueNumber = userContentDomainService.GetMaxIssueNumber(currentUserId);
-
                 ComicStripViewModel newVm = new ComicStripViewModel
                 {
                     UserId = currentUserId,
@@ -140,13 +134,23 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo GetComicsByMe(Guid currentUserId)
+        public async Task<OperationResultVo> GetComicsByMe(Guid currentUserId)
         {
             try
             {
-                List<ComicsListItemVo> comics = userContentDomainService.GetComicsListByUserId(currentUserId);
+                IEnumerable<UserContent> comics = await mediator.Query<GetComicsByUserIdQuery, IEnumerable<UserContent>>(new GetComicsByUserIdQuery(currentUserId));
 
-                return new OperationResultListVo<ComicsListItemVo>(comics);
+                IEnumerable<ComicsListItemVo> voList = comics.Select(x => new ComicsListItemVo
+                {
+                    Id = x.Id,
+                    IssueNumber = x.IssueNumber.HasValue ? x.IssueNumber.Value : 0,
+                    Title = x.Title,
+                    Content = x.Content,
+                    FeaturedImage = x.FeaturedImage,
+                    CreateDate = x.CreateDate
+                });
+
+                return new OperationResultListVo<ComicsListItemVo>(voList);
             }
             catch (Exception ex)
             {
@@ -154,11 +158,11 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo GetForDetails(Guid currentUserId, Guid id)
+        public async Task<OperationResultVo> GetForDetails(Guid currentUserId, Guid id)
         {
             try
             {
-                UserContent existing = userContentDomainService.GetById(id);
+                UserContent existing = await mediator.Query<GetUserContentByIdQuery, UserContent>(new GetUserContentByIdQuery(id));
 
                 ComicStripViewModel vm = mapper.Map<ComicStripViewModel>(existing);
 
@@ -177,9 +181,9 @@ namespace LuduStack.Application.Services
                 vm.LikeCount = vm.Likes.Count;
                 vm.CommentCount = vm.Comments.Count;
 
-                SetAuthorDetails(vm);
+                await SetAuthorDetails(currentUserId, vm);
 
-                LoadAuthenticatedData(currentUserId, vm);
+                await LoadAuthenticatedData(currentUserId, vm);
 
                 SetImagesToShow(vm, false);
 
@@ -191,15 +195,15 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo GetForEdit(Guid currentUserId, Guid id)
+        public async Task<OperationResultVo> GetForEdit(Guid currentUserId, Guid id)
         {
             try
             {
-                UserContent existing = userContentDomainService.GetById(id);
+                UserContent existing = await mediator.Query<GetUserContentByIdQuery, UserContent>(new GetUserContentByIdQuery(id));
 
                 ComicStripViewModel vm = mapper.Map<ComicStripViewModel>(existing);
 
-                SetAuthorDetails(vm);
+                await SetAuthorDetails(currentUserId, vm);
 
                 SetImagesToShow(vm, true);
 
@@ -213,22 +217,13 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo Rate(Guid currentUserId, Guid id, decimal scoreDecimal)
+        public async Task<OperationResultVo> Rate(Guid currentUserId, Guid id, decimal scoreDecimal)
         {
             try
             {
-                DomainOperationVo<UserContentRating> domainActionPerformed = userContentDomainService.Rate(currentUserId, id, scoreDecimal);
+                await mediator.SendCommand(new RateUserContentCommand(currentUserId, id, scoreDecimal));
 
-                unitOfWork.Commit();
-
-                if (domainActionPerformed.Action == DomainActionPerformed.Update)
-                {
-                    return new OperationResultVo(true, "Your rate was updated!");
-                }
-                else
-                {
-                    return new OperationResultVo(true, "Comics rated!");
-                }
+                return new OperationResultVo(true, "Your rate has been registered!");
             }
             catch (Exception ex)
             {
@@ -300,15 +295,17 @@ namespace LuduStack.Application.Services
             vm.Images = vm.Images.OrderBy(x => x.Language).ToList();
         }
 
-        private void LoadAuthenticatedData(Guid currentUserId, UserGeneratedCommentBaseViewModel item)
+        private async Task LoadAuthenticatedData(Guid currentUserId, UserGeneratedCommentBaseViewModel item)
         {
             if (currentUserId != Guid.Empty)
             {
                 item.CurrentUserLiked = item.Likes.Any(x => x == currentUserId);
 
+                IEnumerable<UserProfileEssentialVo> commenterProfiles = await mediator.Query<GetBasicUserProfileDataByUserIdsQuery, IEnumerable<UserProfileEssentialVo>>(new GetBasicUserProfileDataByUserIdsQuery(item.Comments.Select(x => x.UserId)));
+
                 foreach (CommentViewModel comment in item.Comments)
                 {
-                    UserProfile commenterProfile = GetCachedProfileByUserId(comment.UserId);
+                    UserProfileEssentialVo commenterProfile = commenterProfiles.FirstOrDefault(x => x.UserId == comment.UserId);
                     if (commenterProfile == null)
                     {
                         comment.AuthorName = Constants.UnknownSoul;
@@ -316,6 +313,7 @@ namespace LuduStack.Application.Services
                     else
                     {
                         comment.AuthorName = commenterProfile.Name;
+                        comment.UserHandler = commenterProfile.Handler;
                     }
 
                     comment.AuthorPicture = UrlFormatter.ProfileImage(comment.UserId);

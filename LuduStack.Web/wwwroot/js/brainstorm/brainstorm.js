@@ -15,7 +15,7 @@
 
         bindAll();
 
-        canInteract = $('#caninteract').val();
+        canInteract = $(selectors.canInteract).val() === 'true';
         newIdea = window.location.href.indexOf('newidea') > -1;
         details = window.location.href.indexOf('details') > -1;
 
@@ -28,10 +28,11 @@
 
     function setSelectors() {
         selectors.container = '#contentwrapper';
+        selectors.canInteract = '#caninteract';
         selectors.toolbar = $("#divToolbar");
         selectors.list = $("#divList");
         selectors.btnPostVotingItem = $("#btnPostVotingItem");
-        selectors.btnPostBrainstormIdea = '#btnPostBrainstormIdea';
+        selectors.btnSave = '.btn-save';
         selectors.form = $("#frmBrainstormIdeaSave");
         selectors.ddlStatus = '#ddlStatus';
     }
@@ -39,14 +40,12 @@
     function cacheObjects() {
         objs.container = $(selectors.container);
         objs.ddlStatus = $(selectors.ddlStatus);
-        objs.btnPostBrainstormIdea = $(selectors.btnPostBrainstormIdea);
     }
 
     function bindAll() {
         bindBtnNewIdea();
         bindBtnNewSession();
-        bindBtnSaveIdea();
-        bindBtnSaveSession();
+        bindBtnSave();
         bindBtnVote();
         bindStatusChange();
     }
@@ -64,12 +63,10 @@
 
             $.post(url, data).done(function (response) {
                 if (response.success === true) {
-                    ALERTSYSTEM.ShowSuccessMessage("Awesome!", function () {
-                        window.location = response.url;
-                    });
+                    MAINMODULE.Ajax.HandleUrlResponse(response);
                 }
                 else {
-                    ALERTSYSTEM.ShowWarningMessage("An error occurred! Check the console!");
+                    MAINMODULE.Ajax.HandleErrorResponse(response);
                 }
             });
         });
@@ -91,25 +88,8 @@
         });
     }
 
-    function bindBtnSaveIdea() {
-        objs.container.on('click', selectors.btnPostBrainstormIdea, function (e) {
-            e.preventDefault();
-
-            var btn = $(this);
-
-            var valid = selectors.form.valid();
-            if (valid && canInteract) {
-                MAINMODULE.Common.DisableButton(btn);
-
-                submitForm(btn);
-            }
-
-            return false;
-        });
-    }
-
-    function bindBtnSaveSession() {
-        objs.container.on('click', '#btnPostBrainstormSession', function (e) {
+    function bindBtnSave() {
+        objs.container.on('click', selectors.btnSave, function (e) {
             e.preventDefault();
 
             var btn = $(this);
@@ -133,17 +113,15 @@
             var vote = btn.data('vote');
             var sameVote = item.data('currentuservote') === vote;
 
-            if (canInteract === 'true' && !sameVote) {
+            if (canInteract === true && !sameVote) {
                 var url = rootUrl + "/vote";
 
                 return $.post(url, { votingItemId: id, voteValue: vote }).then(function (response) {
                     if (response.success === true) {
-                        ALERTSYSTEM.ShowSuccessMessage("Awesome!", function () {
-                            location.reload();
-                        });
+                        location.reload();
                     }
                     else {
-                        ALERTSYSTEM.ShowWarningMessage("An error occurred! Check the console!");
+                        MAINMODULE.Ajax.HandleErrorResponse(response);
                     }
                 });
             }
@@ -195,12 +173,10 @@
                     callback();
                 }
 
-                ALERTSYSTEM.ShowSuccessMessage("Awesome!", function () {
-                    window.location = response.url;
-                });
+                MAINMODULE.Ajax.HandleUrlResponse(response);
             }
             else {
-                ALERTSYSTEM.ShowWarningMessage("An error occurred! Check the console!");
+                MAINMODULE.Ajax.HandleErrorResponse(response);
             }
         });
     }

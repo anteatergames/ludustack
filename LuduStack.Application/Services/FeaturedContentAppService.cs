@@ -6,150 +6,30 @@ using LuduStack.Application.ViewModels.Content;
 using LuduStack.Application.ViewModels.FeaturedContent;
 using LuduStack.Application.ViewModels.Home;
 using LuduStack.Domain.Core.Enums;
-using LuduStack.Domain.Interfaces.Services;
+using LuduStack.Domain.Messaging;
+using LuduStack.Domain.Messaging.Queries.FeaturedContent;
+using LuduStack.Domain.Messaging.Queries.UserContent;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
+using LuduStack.Infra.CrossCutting.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace LuduStack.Application.Services
 {
     public class FeaturedContentAppService : BaseAppService, IFeaturedContentAppService
     {
-        private readonly IFeaturedContentDomainService featuredContentDomainService;
-        private readonly IUserContentDomainService userContentDomainService;
-
-        public FeaturedContentAppService(IBaseAppServiceCommon baseAppServiceCommon
-            , IFeaturedContentDomainService featuredContentDomainService
-            , IUserContentDomainService userContentDomainService) : base(baseAppServiceCommon)
+        public FeaturedContentAppService(IBaseAppServiceCommon baseAppServiceCommon) : base(baseAppServiceCommon)
         {
-            this.featuredContentDomainService = featuredContentDomainService;
-            this.userContentDomainService = userContentDomainService;
         }
 
-        #region ICrudAppService
-
-        public OperationResultVo<int> Count(Guid currentUserId)
+        public async Task<CarouselViewModel> GetFeaturedNow()
         {
-            try
-            {
-                int count = featuredContentDomainService.Count();
+            DateTime now = DateTime.Now;
 
-                return new OperationResultVo<int>(count);
-            }
-            catch (Exception ex)
-            {
-                return new OperationResultVo<int>(ex.Message);
-            }
-        }
-
-        public OperationResultListVo<FeaturedContentViewModel> GetAll(Guid currentUserId)
-        {
-            try
-            {
-                IEnumerable<FeaturedContent> allModels = featuredContentDomainService.GetAll();
-
-                IEnumerable<FeaturedContentViewModel> vms = mapper.Map<IEnumerable<FeaturedContent>, IEnumerable<FeaturedContentViewModel>>(allModels);
-
-                return new OperationResultListVo<FeaturedContentViewModel>(vms);
-            }
-            catch (Exception ex)
-            {
-                return new OperationResultListVo<FeaturedContentViewModel>(ex.Message);
-            }
-        }
-
-        public OperationResultVo GetAllIds(Guid currentUserId)
-        {
-            try
-            {
-                IEnumerable<Guid> allIds = featuredContentDomainService.GetAllIds();
-
-                return new OperationResultListVo<Guid>(allIds);
-            }
-            catch (Exception ex)
-            {
-                return new OperationResultVo(ex.Message);
-            }
-        }
-
-        public OperationResultVo<FeaturedContentViewModel> GetById(Guid currentUserId, Guid id)
-        {
-            try
-            {
-                FeaturedContent model = featuredContentDomainService.GetById(id);
-
-                FeaturedContentViewModel vm = mapper.Map<FeaturedContentViewModel>(model);
-
-                return new OperationResultVo<FeaturedContentViewModel>(vm);
-            }
-            catch (Exception ex)
-            {
-                return new OperationResultVo<FeaturedContentViewModel>(ex.Message);
-            }
-        }
-
-        public OperationResultVo<Guid> Save(Guid currentUserId, FeaturedContentViewModel viewModel)
-        {
-            try
-            {
-                FeaturedContent model;
-
-                FeaturedContent existing = featuredContentDomainService.GetById(viewModel.Id);
-
-                if (existing != null)
-                {
-                    model = mapper.Map(viewModel, existing);
-                }
-                else
-                {
-                    model = mapper.Map<FeaturedContent>(viewModel);
-                }
-
-                if (viewModel.Id == Guid.Empty)
-                {
-                    featuredContentDomainService.Add(model);
-                    viewModel.Id = model.Id;
-                }
-                else
-                {
-                    featuredContentDomainService.Update(model);
-                }
-
-                unitOfWork.Commit();
-
-                return new OperationResultVo<Guid>(model.Id);
-            }
-            catch (Exception ex)
-            {
-                return new OperationResultVo<Guid>(ex.Message);
-            }
-        }
-
-        public OperationResultVo Remove(Guid currentUserId, Guid id)
-        {
-            try
-            {
-                // validate before
-
-                featuredContentDomainService.Remove(id);
-
-                unitOfWork.Commit();
-
-                return new OperationResultVo(true);
-            }
-            catch (Exception ex)
-            {
-                return new OperationResultVo(ex.Message);
-            }
-        }
-
-        #endregion ICrudAppService
-
-        public CarouselViewModel GetFeaturedNow()
-        {
-            IQueryable<FeaturedContent> allModels = featuredContentDomainService.GetFeaturedNow();
+            IQueryable<FeaturedContent> allModels = (await mediator.Query<GetFeaturedContentQuery, IEnumerable<FeaturedContent>>(new GetFeaturedContentQuery(x => x.StartDate <= now && (!x.EndDate.HasValue || x.EndDate > now)))).AsQueryable();
 
             if (allModels.Any())
             {
@@ -179,7 +59,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo<Guid> Add(Guid userId, Guid contentId, string title, string introduction)
+        public async Task<OperationResultVo<Guid>> Add(Guid userId, Guid contentId, string title, string introduction)
         {
             try
             {
@@ -188,7 +68,7 @@ namespace LuduStack.Application.Services
                     UserContentId = contentId
                 };
 
-                UserContent content = userContentDomainService.GetById(contentId);
+                UserContent content = await mediator.Query<GetUserContentByIdQuery, UserContent>(new GetUserContentByIdQuery(contentId));
 
                 newFeaturedContent.Title = string.IsNullOrWhiteSpace(title) ? content.Title : title;
                 newFeaturedContent.Introduction = string.IsNullOrWhiteSpace(introduction) ? content.Introduction : introduction;
@@ -202,9 +82,13 @@ namespace LuduStack.Application.Services
                 newFeaturedContent.UserId = userId;
                 newFeaturedContent.OriginalUserId = content.UserId;
 
-                featuredContentDomainService.Add(newFeaturedContent);
+                CommandResult result = await mediator.SendCommand(new SaveFeaturedContentCommand(userId, newFeaturedContent));
 
-                unitOfWork.Commit();
+                if (!result.Validation.IsValid)
+                {
+                    string message = result.Validation.Errors.FirstOrDefault().ErrorMessage;
+                    return new OperationResultVo<Guid>(newFeaturedContent.Id, false, message);
+                }
 
                 return new OperationResultVo<Guid>(newFeaturedContent.Id);
             }
@@ -214,16 +98,16 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public IEnumerable<UserContentToBeFeaturedViewModel> GetContentToBeFeatured()
+        public async Task<IEnumerable<UserContentToBeFeaturedViewModel>> GetContentToBeFeatured()
         {
-            IEnumerable<UserContent> finalList = userContentDomainService.GetAll();
-            IEnumerable<FeaturedContent> featured = featuredContentDomainService.GetAll();
+            IEnumerable<UserContent> finalList = await mediator.Query<GetUserContentQuery, IEnumerable<UserContent>>(new GetUserContentQuery());
+            IEnumerable<FeaturedContent> featured = await mediator.Query<GetFeaturedContentQuery, IEnumerable<FeaturedContent>>(new GetFeaturedContentQuery());
 
             IEnumerable<UserContentToBeFeaturedViewModel> vms = mapper.Map<IEnumerable<UserContent>, IEnumerable<UserContentToBeFeaturedViewModel>>(finalList);
 
             foreach (UserContentToBeFeaturedViewModel item in vms)
             {
-                FeaturedContent featuredNow = featured.FirstOrDefault(x => x.UserContentId == item.Id && x.StartDate.Date <= DateTime.Today && (!x.EndDate.HasValue || (x.EndDate.HasValue && x.EndDate.Value.Date > DateTime.Today)));
+                FeaturedContent featuredNow = featured.FirstOrDefault(x => x.UserContentId == item.Id && x.StartDate.ToLocalTime() <= DateTime.Now.ToLocalTime() && (!x.EndDate.HasValue || (x.EndDate.HasValue && x.EndDate.Value.ToLocalTime() > DateTime.Now.ToLocalTime())));
 
                 if (featuredNow != null)
                 {
@@ -248,11 +132,11 @@ namespace LuduStack.Application.Services
             return vms;
         }
 
-        public OperationResultVo Unfeature(Guid id)
+        public async Task<OperationResultVo> Unfeature(Guid userId, Guid id)
         {
             try
             {
-                FeaturedContent existing = featuredContentDomainService.GetById(id);
+                FeaturedContent existing = await mediator.Query<GetFeaturedContentByIdQuery, FeaturedContent>(new GetFeaturedContentByIdQuery(id));
 
                 if (existing != null)
                 {
@@ -260,9 +144,17 @@ namespace LuduStack.Application.Services
 
                     existing.Active = false;
 
-                    featuredContentDomainService.Update(existing);
+                    CommandResult result = await mediator.SendCommand(new SaveFeaturedContentCommand(userId, existing));
 
-                    unitOfWork.Commit();
+                    if (!result.Validation.IsValid)
+                    {
+                        string message = result.Validation.Errors.FirstOrDefault().ErrorMessage;
+                        return new OperationResultVo<Guid>(existing.Id, false, message);
+                    }
+                    else
+                    {
+                        return new OperationResultVo<Guid>(existing.Id, 0);
+                    }
                 }
 
                 return new OperationResultVo(true);

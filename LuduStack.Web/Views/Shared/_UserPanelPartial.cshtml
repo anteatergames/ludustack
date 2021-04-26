@@ -7,6 +7,7 @@
 
     var q = (string)ViewData["term"];
     string id = UserManager.GetUserId(User);
+    string userName = UserManager.GetUserName(User);
 }
 
 <div class="col-12">
@@ -19,7 +20,7 @@
             </div>
             <div class="info float-left">
                 <p>
-                    <a asp-area="" asp-controller="profile" asp-action="details" asp-route-id="@id">
+                    <a asp-area="" asp-controller="profile" asp-action="details" asp-route-userHandler="@userName">
                         @ViewBag.Username
                     </a>
                     <a asp-area="" asp-controller="profile" asp-action="edit" asp-route-id="@id" aria-label="@SharedLocalizer["Edit your profile"]" class="btn"><i class="fas fa-pencil-alt" aria-hidden="true"></i></a>

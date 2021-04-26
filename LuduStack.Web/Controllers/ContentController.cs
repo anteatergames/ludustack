@@ -40,23 +40,20 @@ namespace LuduStack.Web.Controllers
         [Route("content/{id:guid}")]
         public async Task<IActionResult> Details(Guid id)
         {
-            OperationResultVo<UserContentViewModel> serviceResult = userContentAppService.GetById(CurrentUserId, id);
+            OperationResultVo<UserContentViewModel> serviceResult = await userContentAppService.GetById(CurrentUserId, id);
 
             if (!serviceResult.Success)
             {
-                TempData["Message"] = SharedLocalizer["Content not found!"].Value;
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("index", "home", new { area = string.Empty, msg = SharedLocalizer["Content not found!"] });
             }
 
             UserContentViewModel vm = serviceResult.Value;
 
             vm.Content = ContentFormatter.FormatContentToShow(vm.Content);
 
-            SetAuthorDetails(vm);
-
             if (vm.GameId.HasValue && vm.GameId.Value != Guid.Empty)
             {
-                OperationResultVo<GameViewModel> gameServiceResult = gameAppService.GetById(CurrentUserId, vm.GameId.Value);
+                OperationResultVo<GameViewModel> gameServiceResult = await gameAppService.GetById(CurrentUserId, vm.GameId.Value);
 
                 GameViewModel game = gameServiceResult.Value;
 
@@ -91,13 +88,13 @@ namespace LuduStack.Web.Controllers
         }
 
         [Route("content/edit/{id:guid}")]
-        public IActionResult Edit(Guid id)
+        public async Task<IActionResult> Edit(Guid id)
         {
-            OperationResultVo<UserContentViewModel> serviceResult = userContentAppService.GetById(CurrentUserId, id);
+            OperationResultVo<UserContentViewModel> serviceResult = await userContentAppService.GetById(CurrentUserId, id);
 
             UserContentViewModel vm = serviceResult.Value;
 
-            IEnumerable<SelectListItemVo> games = gameAppService.GetByUser(vm.UserId);
+            IEnumerable<SelectListItemVo> games = await gameAppService.GetByUser(vm.UserId);
             List<SelectListItem> gamesDropDown = games.ToSelectList();
             ViewBag.UserGames = gamesDropDown;
 
@@ -109,7 +106,7 @@ namespace LuduStack.Web.Controllers
             return View("CreateEdit", vm);
         }
 
-        public IActionResult Add(Guid? gameId)
+        public async Task<IActionResult> Add(Guid? gameId)
         {
             UserContentViewModel vm = new UserContentViewModel
             {
@@ -117,7 +114,7 @@ namespace LuduStack.Web.Controllers
                 FeaturedImage = Constants.DefaultFeaturedImage
             };
 
-            IEnumerable<SelectListItemVo> games = gameAppService.GetByUser(vm.UserId);
+            IEnumerable<SelectListItemVo> games = await gameAppService.GetByUser(vm.UserId);
             List<SelectListItem> gamesDropDown = games.ToSelectList();
             ViewBag.UserGames = gamesDropDown;
 
@@ -135,12 +132,7 @@ namespace LuduStack.Web.Controllers
             try
             {
                 bool isNew = vm.Id == Guid.Empty;
-
-                ProfileViewModel profile = await ProfileAppService.GetByUserId(CurrentUserId, ProfileType.Personal);
-
-                SetAuthorDetails(vm);
-
-                OperationResultVo<Guid> saveResult = userContentAppService.Save(CurrentUserId, vm);
+                OperationResultVo<Guid> saveResult = await userContentAppService.Save(CurrentUserId, vm);
 
                 if (!saveResult.Success)
                 {
@@ -148,7 +140,9 @@ namespace LuduStack.Web.Controllers
                 }
                 else
                 {
-                    NotifyFollowers(profile, vm.GameId, vm.Id);
+                    ProfileViewModel profile = await ProfileAppService.GetByUserId(CurrentUserId, ProfileType.Personal);
+
+                    await NotifyFollowers(profile, vm.GameId);
 
                     string url = Url.Action("Index", "Home", new { area = string.Empty, id = vm.Id, pointsEarned = saveResult.PointsEarned });
 
@@ -167,9 +161,9 @@ namespace LuduStack.Web.Controllers
         }
 
         [HttpDelete("/content/{id:guid}")]
-        public IActionResult Delete(Guid id)
+        public async Task<IActionResult> Delete(Guid id)
         {
-            OperationResultVo result = userContentAppService.Remove(CurrentUserId, id);
+            OperationResultVo result = await userContentAppService.Remove(CurrentUserId, id);
 
             if (result.Success)
             {
@@ -197,22 +191,27 @@ namespace LuduStack.Web.Controllers
                 GameId = gameId
             };
 
-            ProfileViewModel profile = await ProfileAppService.GetByUserId(CurrentUserId, ProfileType.Personal);
-
-            SetAuthorDetails(vm);
-
             SetContentImages(vm, images);
 
-            OperationResultVo<Guid> result = userContentAppService.Save(CurrentUserId, vm);
+            OperationResultVo<Guid> saveResult = await userContentAppService.Save(CurrentUserId, vm);
 
-            NotifyFollowers(profile, vm.GameId, vm.Id);
-
-            if (EnvName.Equals(ConstantHelper.ProductionEnvironmentName))
+            if (!saveResult.Success)
             {
-                await NotificationSender.SendTeamNotificationAsync("New simple post!");
+                return Json(saveResult);
             }
+            else
+            {
+                ProfileViewModel profile = await ProfileAppService.GetByUserId(CurrentUserId, ProfileType.Personal);
 
-            return Json(result);
+                await NotifyFollowers(profile, vm.GameId);
+
+                if (EnvName.Equals(ConstantHelper.ProductionEnvironmentName))
+                {
+                    await NotificationSender.SendTeamNotificationAsync("New simple post!");
+                }
+
+                return Json(saveResult);
+            }
         }
 
         [HttpPost]
@@ -220,21 +219,21 @@ namespace LuduStack.Web.Controllers
         #region Content interactions
 
         [Route("content/like")]
-        public IActionResult LikeContent(Guid targetId, UserContentType contentType)
+        public async Task<IActionResult> LikeContent(Guid targetId, UserContentType contentType)
         {
-            OperationResultVo response = userContentAppService.ContentLike(CurrentUserId, targetId);
+            OperationResultVo response = await userContentAppService.ContentLike(CurrentUserId, targetId);
 
-            OperationResultVo<UserContentViewModel> content = userContentAppService.GetById(CurrentUserId, targetId);
+            OperationResultVo<UserContentViewModel> content = await userContentAppService.GetById(CurrentUserId, targetId);
 
             string myName = GetSessionValue(SessionValues.FullName);
 
             if (contentType == UserContentType.ComicStrip)
             {
-                notificationAppService.Notify(CurrentUserId, myName, content.Value.UserId, NotificationType.ComicsLike, targetId);
+                await notificationAppService.Notify(CurrentUserId, myName, content.Value.UserId, NotificationType.ComicsLike, targetId);
             }
             else
             {
-                notificationAppService.Notify(CurrentUserId, myName, content.Value.UserId, NotificationType.ContentLike, targetId);
+                await notificationAppService.Notify(CurrentUserId, myName, content.Value.UserId, NotificationType.ContentLike, targetId);
             }
 
             return Json(response);
@@ -242,9 +241,9 @@ namespace LuduStack.Web.Controllers
 
         [HttpPost]
         [Route("content/unlike")]
-        public IActionResult UnLikeContent(Guid targetId)
+        public async Task<IActionResult> UnLikeContent(Guid targetId)
         {
-            OperationResultVo response = userContentAppService.ContentUnlike(CurrentUserId, targetId);
+            OperationResultVo response = await userContentAppService.ContentUnlike(CurrentUserId, targetId);
 
             return Json(response);
         }
@@ -255,9 +254,7 @@ namespace LuduStack.Web.Controllers
         {
             OperationResultVo response;
 
-            SetAuthorDetails(vm);
-
-            response = await userContentAppService.Comment(vm);
+            response = await userContentAppService.Comment(CurrentUserId, vm);
 
             return Json(response);
         }
@@ -299,7 +296,7 @@ namespace LuduStack.Web.Controllers
             }
         }
 
-        private void NotifyFollowers(ProfileViewModel profile, Guid? gameId, Guid contentId)
+        private async Task NotifyFollowers(ProfileViewModel profile, Guid? gameId)
         {
             Dictionary<Guid, FollowType> followersToNotify = new Dictionary<Guid, FollowType>();
 
@@ -315,16 +312,16 @@ namespace LuduStack.Web.Controllers
                 }
             }
 
-            gameName = ProcessGamePost(gameId, followersToNotify, gameName);
+            gameName = await ProcessGamePost(gameId, followersToNotify, gameName);
 
             Notify(profile, followersToNotify, gameName, targetId);
         }
 
-        private string ProcessGamePost(Guid? gameId, Dictionary<Guid, FollowType> userFollowers, string gameName)
+        private async Task<string> ProcessGamePost(Guid? gameId, Dictionary<Guid, FollowType> userFollowers, string gameName)
         {
             if (gameId.HasValue)
             {
-                OperationResultVo<GameViewModel> gameResult = gameAppService.GetById(CurrentUserId, gameId.Value);
+                OperationResultVo<GameViewModel> gameResult = await gameAppService.GetById(CurrentUserId, gameId.Value);
 
                 if (gameResult.Success)
                 {
@@ -356,7 +353,6 @@ namespace LuduStack.Web.Controllers
                         notificationAppService.Notify(CurrentUserId, gameName, follower.Key, NotificationType.ContentPosted, targetId);
                         break;
 
-                    case FollowType.Content:
                     default:
                         notificationAppService.Notify(CurrentUserId, profile.Name, follower.Key, NotificationType.ContentPosted, targetId);
                         break;

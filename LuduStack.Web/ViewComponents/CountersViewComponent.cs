@@ -31,23 +31,23 @@ namespace LuduStack.Web.ViewComponents
         {
             CountersViewModel model = new CountersViewModel();
 
-            OperationResultVo<int> gamesCount = gameAppService.Count(CurrentUserId);
+            OperationResultVo<int> gamesCount = await gameAppService.Count(CurrentUserId);
 
             if (gamesCount.Success)
             {
                 model.GamesCount = gamesCount.Value;
             }
 
-            OperationResultVo<int> usersCount = profileAppService.Count(CurrentUserId);
+            OperationResultVo<int> usersCount = await profileAppService.Count(CurrentUserId);
 
             if (usersCount.Success)
             {
                 model.UsersCount = usersCount.Value;
             }
 
-            model.ArticlesCount = contentService.CountArticles();
+            model.ArticlesCount = await contentService.CountArticles();
 
-            OperationResultVo<int> teamCount = teamAppService.CountNotSingleMemberGroups(CurrentUserId);
+            OperationResultVo<int> teamCount = await teamAppService.Count(CurrentUserId);
 
             if (teamCount.Success)
             {

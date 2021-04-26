@@ -8,11 +8,18 @@
 @{
     ViewData["Title"] = Model.Name;
     ViewData["Description"] = String.Format("{0} - {1}", Model.Name, Model.Bio);
+    ViewData["Url"] = ViewBag.BaseUrl + Url.Action("details", "profile", new { area = string.Empty, userHandler = Model.Handler });
+    ViewData["OgType"] = "profile";
+
     string currentUserId = UserManager.GetUserId(User);
 
     var canFollowAndConnect = currentUserId != null ? !currentUserId.Equals(Model.UserId.ToString()) : false;
 
     var isAdmin = User.IsInRole(Roles.Administrator.ToString());
+}
+
+@section OpenGraphMeta {
+    <meta property="og:profile:first_name" content="@Model.Name">
 }
 
 @section Styles {
@@ -47,7 +54,6 @@
         }
     </script>
 }
-
 <section class="content container">
     <div class="col-12">
         <input type="hidden" asp-for="Id" />
@@ -230,7 +236,7 @@
                                                     <span class="info-box-number">@Model.IndieXp.XpCurrentLevel</span>
 
                                                     <div class="progress">
-                                                        <div class="progress-bar bg-white" style="width: @(Model.IndieXp.PercentageToNextLevel)%"></div>
+                                                        <div class="progress-bar bg-white" style="width: @String.Format("{0}%", Model.IndieXp.PercentageToNextLevel)"></div>
                                                     </div>
                                                     <span class="progress-description">
                                                         @SharedLocalizer["{0} to the next level", Model.IndieXp.XpToNextLevel]

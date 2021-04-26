@@ -10,52 +10,32 @@ using System.Threading.Tasks;
 
 namespace LuduStack.Domain.Services
 {
-    public class TeamDomainService : BaseDomainMongoService<Team, ITeamRepository>, ITeamDomainService
+    public class TeamDomainService : ITeamDomainService
     {
-        private readonly IGameRepository gameRepository;
+        protected readonly ITeamRepository teamRepository;
 
-        public TeamDomainService(ITeamRepository repository, IGameRepository gameRepository) : base(repository)
+        public TeamDomainService(ITeamRepository teamRepository)
         {
-            this.gameRepository = gameRepository;
-        }
-
-        public override IEnumerable<Team> GetAll()
-        {
-            IQueryable<Team> qry = repository.Get();
-
-            return qry.OrderByDescending(x => x.CreateDate).ToList();
-        }
-
-        public override void Remove(Guid id)
-        {
-            List<Game> games = gameRepository.Get(x => x.TeamId == id).ToList();
-
-            foreach (Game game in games)
-            {
-                game.TeamId = null;
-                gameRepository.Update(game);
-            }
-
-            base.Remove(id);
+            this.teamRepository = teamRepository;
         }
 
         public IQueryable<TeamMember> GetAllMembershipsByUser(Guid userId)
         {
-            IQueryable<TeamMember> qry = repository.GetMemberships(x => x.UserId == userId);
+            IQueryable<TeamMember> qry = teamRepository.GetMemberships(x => x.UserId == userId);
 
             return qry;
         }
 
         public TeamMember GetMemberByUserId(Guid teamId, Guid userId)
         {
-            TeamMember obj = repository.GetMembership(teamId, userId);
+            TeamMember obj = teamRepository.GetMembership(teamId, userId);
 
             return obj;
         }
 
         public void ChangeInvitationStatus(Guid teamId, Guid userId, InvitationStatus invitationStatus, string quote)
         {
-            TeamMember member = repository.GetMembership(teamId, userId);
+            TeamMember member = teamRepository.GetMembership(teamId, userId);
 
             if (member != null)
             {
@@ -63,29 +43,29 @@ namespace LuduStack.Domain.Services
                 member.Quote = quote;
             }
 
-            repository.UpdateMembership(teamId, member);
+            teamRepository.UpdateMembership(teamId, member);
         }
 
         public void RemoveMember(Guid teamId, Guid userId)
         {
-            TeamMember member = repository.GetMembership(teamId, userId);
+            TeamMember member = teamRepository.GetMembership(teamId, userId);
 
             if (member != null)
             {
-                repository.RemoveMember(teamId, userId);
+                teamRepository.RemoveMember(teamId, userId);
             }
         }
 
         public IEnumerable<Team> GetTeamsByMemberUserId(Guid userId)
         {
-            List<Team> teams = repository.GetTeamsByMemberUserId(userId).ToList();
+            List<Team> teams = teamRepository.GetTeamsByMemberUserId(userId).ToList();
 
             return teams;
         }
 
         public IEnumerable<SelectListItemVo<Guid>> GetTeamListByMemberUserId(Guid userId)
         {
-            var teams = repository.GetTeamsByMemberUserId(userId).Select(x => new { x.Name, x.Id }).ToList();
+            var teams = teamRepository.GetTeamsByMemberUserId(userId).Select(x => new { x.Name, x.Id }).ToList();
 
             IEnumerable<SelectListItemVo<Guid>> vos = teams.Select(x => new SelectListItemVo<Guid>
             {
@@ -117,7 +97,7 @@ namespace LuduStack.Domain.Services
 
         public int CountNotSingleMemberGroups()
         {
-            Task<int> count = repository.Count(x => x.Recruiting || x.Members.Count > 1);
+            Task<int> count = teamRepository.Count(x => x.Recruiting || x.Members.Count > 1);
 
             count.Wait();
 
@@ -126,7 +106,7 @@ namespace LuduStack.Domain.Services
 
         public IEnumerable<Team> GetNotSingleMemberGroups()
         {
-            IQueryable<Team> qry = repository.Get(x => x.Recruiting || x.Members.Count > 1);
+            IQueryable<Team> qry = teamRepository.Get(x => x.Recruiting || x.Members.Count > 1);
 
             return qry.OrderByDescending(x => x.CreateDate).ToList();
         }

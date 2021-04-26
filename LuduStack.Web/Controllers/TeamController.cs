@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace LuduStack.Web.Controllers
 {
@@ -37,9 +38,9 @@ namespace LuduStack.Web.Controllers
         }
 
         [Route("list")]
-        public IActionResult List()
+        public async Task<IActionResult> List()
         {
-            OperationResultListVo<TeamViewModel> serviceResult = teamAppService.GetNotSingleMemberGroups(CurrentUserId);
+            OperationResultListVo<TeamViewModel> serviceResult = await teamAppService.GetAll(CurrentUserId);
 
             List<TeamViewModel> model = serviceResult.Value.ToList();
 
@@ -47,9 +48,9 @@ namespace LuduStack.Web.Controllers
         }
 
         [Route("list/user/{userId:guid}")]
-        public IActionResult ListByUser(Guid userId)
+        public async Task<IActionResult> ListByUser(Guid userId)
         {
-            OperationResultListVo<TeamViewModel> serviceResult = (OperationResultListVo<TeamViewModel>)teamAppService.GetByUserId(userId);
+            OperationResultListVo<TeamViewModel> serviceResult = await teamAppService.GetByUserId(userId);
 
             List<TeamViewModel> model = serviceResult.Value.ToList();
 
@@ -81,16 +82,15 @@ namespace LuduStack.Web.Controllers
         }
 
         [Route("{teamId:guid}")]
-        public IActionResult Details(Guid teamId, int? pointsEarned, Guid notificationclicked)
+        public async Task<IActionResult> Details(Guid teamId, int? pointsEarned, Guid notificationclicked)
         {
-            notificationAppService.MarkAsRead(notificationclicked);
+            await notificationAppService.MarkAsRead(notificationclicked);
 
-            OperationResultVo<TeamViewModel> serviceResult = teamAppService.GetById(CurrentUserId, teamId);
+            OperationResultVo<TeamViewModel> serviceResult = await teamAppService.GetById(CurrentUserId, teamId);
 
             if (!serviceResult.Success)
             {
-                TempData["Message"] = SharedLocalizer["Team not found!"].Value;
-                return RedirectToAction("Index");
+                return RedirectToAction("index", "team", new { area = string.Empty, msg = SharedLocalizer["Team not found!"] });
             }
 
             TeamViewModel model = serviceResult.Value;
@@ -102,9 +102,9 @@ namespace LuduStack.Web.Controllers
 
         [Authorize]
         [Route("edit/{teamId:guid}")]
-        public IActionResult Edit(Guid teamId)
+        public async Task<IActionResult> Edit(Guid teamId)
         {
-            OperationResultVo<TeamViewModel> service = teamAppService.GetById(CurrentUserId, teamId);
+            OperationResultVo<TeamViewModel> service = await teamAppService.GetById(CurrentUserId, teamId);
 
             TeamViewModel model = service.Value;
 
@@ -115,16 +115,16 @@ namespace LuduStack.Web.Controllers
 
         [Authorize]
         [Route("new")]
-        public IActionResult New()
+        public async Task<IActionResult> New()
         {
-            OperationResultVo<TeamViewModel> service = (OperationResultVo<TeamViewModel>)teamAppService.GenerateNewTeam(CurrentUserId);
+            OperationResultVo<TeamViewModel> service = (OperationResultVo<TeamViewModel>)await teamAppService.GenerateNewTeam(CurrentUserId);
 
             return PartialView("_CreateEdit", service.Value);
         }
 
         [Authorize]
         [HttpPost("save")]
-        public IActionResult Save(TeamViewModel vm)
+        public async Task<IActionResult> Save(TeamViewModel vm)
         {
             try
             {
@@ -133,11 +133,17 @@ namespace LuduStack.Web.Controllers
 
                 IEnumerable<Guid> oldMembers = vm.Members.Where(x => x.Id != Guid.Empty).Select(x => x.Id);
 
-                OperationResultVo<Guid> saveResult = teamAppService.Save(CurrentUserId, vm);
+                OperationResultVo<Guid> saveResult = await teamAppService.Save(CurrentUserId, vm);
 
-                if (saveResult.Success)
+                if (!saveResult.Success)
                 {
-                    string url = Url.Action("Index", "Team", new { area = string.Empty, id = vm.Id.ToString(), pointsEarned = saveResult.PointsEarned });
+                    return Json(new OperationResultVo(saveResult.Message));
+                }
+                else
+                {
+                    vm.Id = saveResult.Value;
+
+                    string url = Url.Action("Index", "Team", new { area = string.Empty, id = saveResult.Value, pointsEarned = saveResult.PointsEarned });
 
                     Notify(vm, oldMembers);
 
@@ -146,14 +152,10 @@ namespace LuduStack.Web.Controllers
 
                     if (isNew && EnvName.Equals(ConstantHelper.ProductionEnvironmentName))
                     {
-                        NotificationSender.SendTeamNotificationAsync($"New team Created: {vm.Name}");
+                        await NotificationSender.SendTeamNotificationAsync($"New team Created: {vm.Name}");
                     }
 
                     return Json(new OperationResultRedirectVo(saveResult, url));
-                }
-                else
-                {
-                    return Json(new OperationResultVo(false));
                 }
             }
             catch (Exception ex)
@@ -163,9 +165,9 @@ namespace LuduStack.Web.Controllers
         }
 
         [Route("{teamId:guid}/invitation/accept")]
-        public IActionResult AcceptInvitation(Guid teamId, string quote)
+        public async Task<IActionResult> AcceptInvitation(Guid teamId, string quote)
         {
-            OperationResultVo serviceResult = teamAppService.AcceptInvite(teamId, CurrentUserId, quote);
+            OperationResultVo serviceResult = await teamAppService.AcceptInvite(teamId, CurrentUserId, quote);
 
             return Json(serviceResult);
         }
@@ -179,9 +181,9 @@ namespace LuduStack.Web.Controllers
         }
 
         [HttpDelete("{teamId:guid}")]
-        public IActionResult DeleteTeam(Guid teamId)
+        public async Task<IActionResult> DeleteTeam(Guid teamId)
         {
-            OperationResultVo serviceResult = teamAppService.Remove(CurrentUserId, teamId);
+            OperationResultVo serviceResult = await teamAppService.Remove(CurrentUserId, teamId);
 
             return Json(serviceResult);
         }
@@ -195,9 +197,9 @@ namespace LuduStack.Web.Controllers
         }
 
         [HttpPost("CandidateApply")]
-        public IActionResult CandidateApply(TeamMemberViewModel vm)
+        public async Task<IActionResult> CandidateApply(TeamMemberViewModel vm)
         {
-            OperationResultVo serviceResult = teamAppService.CandidateApply(CurrentUserId, vm);
+            OperationResultVo serviceResult = await teamAppService.CandidateApply(CurrentUserId, vm);
 
             string url = Url.Action("Details", "Team", new { area = string.Empty, teamId = vm.TeamId, pointsEarned = serviceResult.PointsEarned });
 
@@ -226,8 +228,6 @@ namespace LuduStack.Web.Controllers
 
         private void Notify(TeamViewModel vm, IEnumerable<Guid> oldMembers)
         {
-            TeamMemberViewModel meAsMember = vm.Members.FirstOrDefault(x => x.UserId == CurrentUserId);
-
             string fullName = GetSessionValue(SessionValues.FullName);
 
             foreach (TeamMemberViewModel member in vm.Members.Where(x => !x.Leader))

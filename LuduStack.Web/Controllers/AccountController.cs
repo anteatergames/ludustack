@@ -47,7 +47,7 @@ namespace LuduStack.Web.Controllers
 
         public IConfiguration Configuration { get; }
 
-        private string envName;
+        private readonly string envName;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
@@ -131,7 +131,7 @@ namespace LuduStack.Web.Controllers
 
                 await SetStaffRoles(user);
 
-                SetPreferences(user);
+                await SetPreferences(user);
 
                 await SetCache(user);
             }
@@ -282,7 +282,7 @@ namespace LuduStack.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(MvcRegisterViewModel model, string returnUrl = null)
         {
-            var reCaptchaValid = IsReCaptchValid();
+            bool reCaptchaValid = IsReCaptchValid();
 
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid && reCaptchaValid)
@@ -295,13 +295,13 @@ namespace LuduStack.Web.Controllers
                     ProfileViewModel profile = profileAppService.GenerateNewOne(ProfileType.Personal);
                     profile.UserId = new Guid(user.Id);
                     profile.Handler = model.UserName;
-                    profileAppService.Save(CurrentUserId, profile);
+                    await profileAppService.Save(CurrentUserId, profile);
 
                     UploadFirstAvatar(profile.UserId, ProfileType.Personal);
 
                     await SetStaffRoles(user);
 
-                    SetPreferences(user);
+                    await SetPreferences(user);
 
                     string logMessage = String.Format("User {0} created a new account with password.", model.UserName);
 
@@ -334,20 +334,20 @@ namespace LuduStack.Web.Controllers
                 return true;
             }
 
-            var result = false;
-            var captchaResponse = Request.Form["g-recaptcha-response"];
-            var secretKey = Configuration["ReCaptcha:SecretKey"];
-            var apiUrl = "https://www.google.com/recaptcha/api/siteverify?secret={0}&response={1}";
-            var requestUri = string.Format(apiUrl, secretKey, captchaResponse);
-            var request = (HttpWebRequest)WebRequest.Create(requestUri);
+            bool result = false;
+            Microsoft.Extensions.Primitives.StringValues captchaResponse = Request.Form["g-recaptcha-response"];
+            string secretKey = Configuration["ReCaptcha:SecretKey"];
+            string apiUrl = "https://www.google.com/recaptcha/api/siteverify?secret={0}&response={1}";
+            string requestUri = string.Format(apiUrl, secretKey, captchaResponse);
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(requestUri);
 
             using (WebResponse response = request.GetResponse())
             {
                 using (StreamReader stream = new StreamReader(response.GetResponseStream()))
                 {
                     JObject jResponse = JObject.Parse(stream.ReadToEnd());
-                    var isSuccess = jResponse.Value<bool>("success");
-                    result = (isSuccess) ? true : false;
+                    bool isSuccess = jResponse.Value<bool>("success");
+                    result = isSuccess;
                 }
             }
             return result;
@@ -410,7 +410,7 @@ namespace LuduStack.Web.Controllers
 
                     await SetStaffRoles(existingUser);
 
-                    SetPreferences(existingUser);
+                    await SetPreferences(existingUser);
                 }
 
                 return RedirectToLocal(returnUrl);
@@ -507,7 +507,7 @@ namespace LuduStack.Web.Controllers
                 await SetStaffRoles(user);
             }
 
-            SetPreferences(user);
+            await SetPreferences(user);
 
             Guid userGuid = new Guid(user.Id);
             ProfileViewModel profile = await profileAppService.GetByUserId(userGuid, ProfileType.Personal);
@@ -528,7 +528,7 @@ namespace LuduStack.Web.Controllers
                 UploadFirstAvatar(profile.UserId, ProfileType.Personal);
             }
 
-            profileAppService.Save(CurrentUserId, profile);
+            await profileAppService.Save(CurrentUserId, profile);
 
             await SetProfileOnSession(new Guid(user.Id), user.UserName);
 
@@ -695,9 +695,9 @@ namespace LuduStack.Web.Controllers
             return Json(result);
         }
 
-        private void SetPreferences(ApplicationUser user)
+        private async Task SetPreferences(ApplicationUser user)
         {
-            UserPreferencesViewModel preferences = UserPreferencesAppService.GetByUserId(new Guid(user.Id));
+            UserPreferencesViewModel preferences = await UserPreferencesAppService.GetByUserId(new Guid(user.Id));
             if (preferences == null || preferences.Id == Guid.Empty)
             {
                 RequestCulture requestLanguage = Request.HttpContext.Features.Get<IRequestCultureFeature>().RequestCulture;
@@ -821,11 +821,11 @@ namespace LuduStack.Web.Controllers
         private async Task SetCache(ApplicationUser user)
         {
             Guid key = new Guid(user.Id);
-            ProfileViewModel cachedProfile = profileAppService.GetUserProfileWithCache(key);
+            UserProfileEssentialVo cachedProfile = await profileAppService.GetEssentialUserProfileWithCache(key);
 
             if (cachedProfile == null)
             {
-                ProfileViewModel profile = await profileAppService.GetByUserId(key, ProfileType.Personal);
+                UserProfileEssentialVo profile = await profileAppService.GetEssentialUserProfileWithCache(key);
                 if (profile != null)
                 {
                     profileAppService.SetProfileCache(key, profile);

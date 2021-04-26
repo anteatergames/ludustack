@@ -2,15 +2,19 @@
 using LuduStack.Domain.Interfaces.Services;
 using LuduStack.Domain.Models;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace LuduStack.Domain.Services
 {
-    public class GamificationLevelDomainService : BaseDomainMongoService<GamificationLevel, IGamificationLevelRepository>, IGamificationLevelDomainService
+    public class GamificationLevelDomainService : IGamificationLevelDomainService
     {
-        public GamificationLevelDomainService(IGamificationLevelRepository repository) : base(repository)
+        protected readonly IGamificationLevelRepository gamificationLevelRepository;
+
+        public GamificationLevelDomainService(IGamificationLevelRepository gamificationLevelRepository)
         {
+            this.gamificationLevelRepository = gamificationLevelRepository;
         }
 
         public async Task<GamificationLevel> GenerateNew(Guid userId)
@@ -20,7 +24,7 @@ namespace LuduStack.Domain.Services
                 UserId = userId
             };
 
-            System.Collections.Generic.IEnumerable<GamificationLevel> all = await repository.GetAll();
+            IEnumerable<GamificationLevel> all = await gamificationLevelRepository.GetAll();
 
             int maxNumber = all.Max(x => x.Number);
             model.Number = maxNumber + 1;
@@ -33,7 +37,7 @@ namespace LuduStack.Domain.Services
 
         public async Task<bool> ValidateXp(int xpToAchieve, Guid id)
         {
-            System.Collections.Generic.IEnumerable<GamificationLevel> all = await repository.GetAll();
+            IEnumerable<GamificationLevel> all = await gamificationLevelRepository.GetAll();
 
             int maxXp = all.Max(x => x.XpToAchieve);
             Guid? maxId = all.FirstOrDefault(x => x.XpToAchieve == maxXp)?.Id;

@@ -2,7 +2,6 @@
 using LuduStack.Application.Formatters;
 using LuduStack.Application.Interfaces;
 using LuduStack.Application.Requests.Notification;
-using LuduStack.Application.ViewModels;
 using LuduStack.Application.ViewModels.User;
 using LuduStack.Application.ViewModels.UserPreferences;
 using LuduStack.Domain.Core.Attributes;
@@ -14,6 +13,7 @@ using LuduStack.Web.Enums;
 using LuduStack.Web.Services;
 using MediatR;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -58,16 +58,16 @@ namespace LuduStack.Web.Controllers.Base
 
         public string EnvName { get; private set; }
 
-        public override Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
+        public override async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            var notificationClicked = context.HttpContext.Request.Query["notificationclicked"].FirstOrDefault();
+            string notificationClicked = context.HttpContext.Request.Query["notificationclicked"].FirstOrDefault();
             if (notificationClicked != null)
             {
-                var notificationId = Guid.Parse(notificationClicked);
+                Guid notificationId = Guid.Parse(notificationClicked);
 
-                var mediator = Services.GetRequiredService<IMediator>();
+                IMediator mediator = Services.GetRequiredService<IMediator>();
 
-                Task.Run(async () => await mediator.Send(new SendNotificationRequest(notificationId)));
+                await mediator.Send(new SendNotificationRequest(notificationId));
             }
 
             if (User != null && User.Identity.IsAuthenticated)
@@ -89,23 +89,23 @@ namespace LuduStack.Web.Controllers.Base
                 {
                     string username = User.FindFirstValue(ClaimTypes.Name);
 
-                    SetProfileOnSession(CurrentUserId, username);
+                    await SetProfileOnSession(CurrentUserId, username);
                     ViewBag.Username = username ?? Constants.DefaultUsername;
                 }
 
-                var msg = context.HttpContext.Request.Query["msg"].FirstOrDefault();
+                string msg = context.HttpContext.Request.Query["msg"].FirstOrDefault();
                 if (!string.IsNullOrWhiteSpace(msg))
                 {
                     TempData["Message"] = SharedLocalizer[msg];
                 }
             }
 
-            CurrentLocale = GetAspNetCultureCookie();
+            CurrentLocale = await GetAspNetCultureCookie();
             ViewBag.Locale = CurrentLocale;
 
             EnvName = string.Format("env-{0}", HostEnvironment.EnvironmentName);
 
-            return base.OnActionExecutionAsync(context, next);
+            await base.OnActionExecutionAsync(context, next);
         }
 
         protected async Task SetProfileOnSession(Guid userId, string userName)
@@ -125,6 +125,7 @@ namespace LuduStack.Web.Controllers.Base
                 if (profile != null)
                 {
                     SetSessionValue(SessionValues.FullName, profile.Name);
+                    SetCookieValue(SessionValues.FullName.ToString(), profile.Name, 365);
                 }
             }
         }
@@ -167,29 +168,6 @@ namespace LuduStack.Web.Controllers.Base
         protected void SetAvatar(string profileImageUrl)
         {
             SetCookieValue(SessionValues.UserProfileImageUrl, profileImageUrl, 7, true);
-        }
-
-        protected ProfileViewModel SetAuthorDetails(UserGeneratedBaseViewModel vm)
-        {
-            if (vm == null)
-            {
-                return null;
-            }
-
-            if (vm.Id == Guid.Empty || vm.UserId == Guid.Empty)
-            {
-                vm.UserId = CurrentUserId;
-            }
-
-            ProfileViewModel profile = ProfileAppService.GetUserProfileWithCache(vm.UserId);
-
-            if (profile != null)
-            {
-                vm.AuthorName = profile.Name;
-                vm.AuthorPicture = UrlFormatter.ProfileImage(vm.UserId);
-            }
-
-            return profile;
         }
 
         protected SupportedLanguage SetLanguageFromCulture(string languageCode)
@@ -240,7 +218,7 @@ namespace LuduStack.Web.Controllers.Base
             SetCookieValue(CookieRequestCultureProvider.DefaultCookieName, CookieRequestCultureProvider.MakeCookieValue(culture), 365);
         }
 
-        protected string GetAspNetCultureCookie()
+        protected async Task<string> GetAspNetCultureCookie()
         {
             RequestCulture requestLanguage = Request.HttpContext.Features.Get<IRequestCultureFeature>().RequestCulture;
 
@@ -258,7 +236,7 @@ namespace LuduStack.Web.Controllers.Base
             {
                 if (cookie == null || !cookie.Cultures.Any())
                 {
-                    UserPreferencesViewModel userPrefs = UserPreferencesAppService.GetByUserId(CurrentUserId);
+                    UserPreferencesViewModel userPrefs = await UserPreferencesAppService.GetByUserId(CurrentUserId);
 
                     if (userPrefs != null && userPrefs.Id != Guid.Empty)
                     {
@@ -300,21 +278,6 @@ namespace LuduStack.Web.Controllers.Base
         private string DeleteImage(Guid userId, string filename)
         {
             Task<string> op = ImageStorageService.DeleteImageAsync(userId.ToString(), filename);
-            op.Wait();
-
-            if (!op.IsCompletedSuccessfully)
-            {
-                throw op.Exception;
-            }
-
-            string url = op.Result;
-
-            return url;
-        }
-
-        private string DeleteImage(Guid userId, string imageType, string filename)
-        {
-            Task<string> op = ImageStorageService.DeleteImageAsync(userId.ToString(), imageType.ToLower() + "_" + filename);
             op.Wait();
 
             if (!op.IsCompletedSuccessfully)
@@ -398,7 +361,7 @@ namespace LuduStack.Web.Controllers.Base
 
         protected void SetCookieValue(SessionValues key, string value, int? expireTime, bool isEssential)
         {
-            CookieMgrService.Set(key.ToString(), value, expireTime, isEssential);
+            CookieMgrService.Set(key.ToString(), value, expireTime, isEssential, null);
         }
 
         protected void SetCookieValue(string key, string value, int? expireTime)
@@ -408,7 +371,17 @@ namespace LuduStack.Web.Controllers.Base
 
         protected void SetCookieValue(string key, string value, int? expireTime, bool isEssential)
         {
-            CookieMgrService.Set(key, value, expireTime, isEssential);
+            CookieMgrService.Set(key, value, expireTime, isEssential, null);
+        }
+
+        protected void SetCookieValue(string key, string value, int? expireTime, bool isEssential, SameSiteMode sameSite)
+        {
+            CookieMgrService.Set(key, value, expireTime, isEssential, sameSite);
+        }
+
+        protected void SetCookieValue(string key, string value, int? expireTime, SameSiteMode sameSite)
+        {
+            CookieMgrService.Set(key, value, expireTime, false, sameSite);
         }
 
         #endregion Cookie Management

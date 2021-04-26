@@ -122,7 +122,7 @@
                     }
                 }
                 else {
-                    ALERTSYSTEM.ShowWarningMessage("An error occurred! Check the console!");
+                    MAINMODULE.Ajax.HandleErrorResponse(response);
                 }
             });
         }
@@ -140,12 +140,12 @@
             if (response.success === true) {
                 resetTranslationPlaces();
 
-                for (var i = 0; i < response.value.length; i++) {
-                    loadSingleTranslation(response.value[i]);
+                for (let translation of response.value) {
+                    loadSingleTranslation(translation);
                 }
             }
             else {
-                ALERTSYSTEM.ShowWarningMessage("An error occurred! Check the console!");
+                MAINMODULE.Ajax.HandleErrorResponse(response);
             }
         });
     }
@@ -176,7 +176,7 @@
         entryAuthorButton.attr('title', entry.authorName);
         entryAuthorButton.closest(selectors.entryAuthor).find(selectors.entryAuthorName).html(entry.authorName);
         entryAuthorButton.closest(selectors.entryAuthor).find(selectors.entryTranslationDate).html(entry.createDateText);
-        entryAuthorButton.attr('href', objs.urls.data('urlProfile') + entry.userId);
+        entryAuthorButton.attr('href', objs.urls.data('urlProfile') + entry.userHandler);
 
         var rejectBtn = newEntryObj.find(selectors.entryReject);
         var acceptBtn = newEntryObj.find(selectors.entryAccept);

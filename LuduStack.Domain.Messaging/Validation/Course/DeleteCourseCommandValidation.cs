@@ -1,6 +1,6 @@
 ﻿namespace LuduStack.Domain.Messaging
 {
-    public class DeleteCourseCommandValidation : CourseValidation<DeleteCourseCommand>
+    public class DeleteCourseCommandValidation : BaseCommandValidation<DeleteCourseCommand>
     {
         public DeleteCourseCommandValidation()
         {

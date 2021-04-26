@@ -3,6 +3,7 @@ using LuduStack.Application.ViewModels.Search;
 using LuduStack.Domain.ValueObjects;
 using LuduStack.Web.Controllers.Base;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace LuduStack.Web.Controllers
 {
@@ -23,7 +24,7 @@ namespace LuduStack.Web.Controllers
         }
 
         [Route("posts")]
-        public IActionResult SearchPosts(string q)
+        public async Task<IActionResult> SearchPosts(string q)
         {
             if (string.IsNullOrWhiteSpace(q))
             {
@@ -31,7 +32,7 @@ namespace LuduStack.Web.Controllers
             }
             else
             {
-                OperationResultListVo<UserContentSearchViewModel> result = userContentAppService.Search(CurrentUserId, q);
+                OperationResultListVo<UserContentSearchViewModel> result = await userContentAppService.Search(CurrentUserId, q);
                 return View("_SearchPostsResult", result.Value);
             }
         }

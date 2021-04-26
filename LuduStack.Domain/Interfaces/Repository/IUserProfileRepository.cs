@@ -19,6 +19,8 @@ namespace LuduStack.Domain.Interfaces.Repository
 
         Task<UserProfileEssentialVo> GetBasicDataByUserId(Guid targetUserId);
 
+        Task<IEnumerable<UserProfileEssentialVo>> GetBasicDataByUserIds(IEnumerable<Guid> userIds);
+
         Task<IEnumerable<Guid>> GetAllUserIds();
     }
 }

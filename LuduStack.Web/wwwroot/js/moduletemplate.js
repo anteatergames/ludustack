@@ -33,7 +33,7 @@
     }
 
     function cacheObjectsCreateEdit() {
-        //objs.xpto = $(selectors.xpto);
+        // cache objects exclusive to the created/edit mode
     }
 
     function setCreateEdit() {
@@ -127,7 +127,7 @@
                 });
             }
             else {
-                ALERTSYSTEM.ShowWarningMessage("An error occurred! Check the console!");
+                MAINMODULE.Ajax.HandleErrorResponse(response);
             }
         });
     }

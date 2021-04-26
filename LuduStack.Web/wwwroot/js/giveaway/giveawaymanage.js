@@ -47,7 +47,6 @@
     function bindBtnExportParticipantList() {
         objs.container.on('click', selectors.btnExportParticipantList, function (e) {
             e.preventDefault();
-            var btn = $(this);
 
             if (canInteract) {
                 EXPORTHELPER.TableToExcel('tblParticipantsExport', 'Participants');
@@ -58,68 +57,45 @@
     }
 
     function bindBtnDeleteParticipant() {
-        objs.container.on('click', selectors.btnDeleteParticipant, function (e) {
-            e.preventDefault();
-            var btn = $(this);
-
-            if (canInteract) {
-                MAINMODULE.Common.DeleteEntity(btn);
-            }
-
-            return false;
-        });
+        objs.container.on('click', selectors.btnDeleteParticipant, buttonDelete);
     }
 
     function bindBtnDeclareNotWinner() {
-        objs.container.on('click', selectors.btnDeclareNotWinner, function (e) {
-            e.preventDefault();
-            var btn = $(this);
-
-            if (canInteract) {
-                MAINMODULE.Common.PostWithConfirmation(btn);
-            }
-
-            return false;
-        });
+        objs.container.on('click', selectors.btnDeclareNotWinner, buttonPost);
     }
 
     function bindBtnClearParticipants() {
-        objs.container.on('click', selectors.btnClearParticipants, function (e) {
-            e.preventDefault();
-            var btn = $(this);
-
-            if (canInteract) {
-                MAINMODULE.Common.DeleteEntity(btn);
-            }
-
-            return false;
-        });
+        objs.container.on('click', selectors.btnClearParticipants, buttonDelete);
     }
 
     function bindBtnPickSingleWinner() {
-        objs.container.on('click', selectors.btnPickSingleWinner, function (e) {
-            e.preventDefault();
-            var btn = $(this);
-
-            if (canInteract) {
-                MAINMODULE.Common.PostWithConfirmation(btn);
-            }
-
-            return false;
-        });
+        objs.container.on('click', selectors.btnPickSingleWinner, buttonPost);
     }
 
     function bindBtnPickAllWinners() {
-        objs.container.on('click', selectors.btnPickAllWinners, function (e) {
-            e.preventDefault();
-            var btn = $(this);
+        objs.container.on('click', selectors.btnPickAllWinners, buttonPost);
+    }
 
-            if (canInteract) {
-                MAINMODULE.Common.PostWithConfirmation(btn);
-            }
+    function buttonDelete(e) {
+        e.preventDefault();
+        var btn = $(this);
 
-            return false;
-        });
+        if (canInteract) {
+            MAINMODULE.Common.DeleteEntity(btn);
+        }
+
+        return false;
+    }
+
+    function buttonPost(e) {
+        e.preventDefault();
+        var btn = $(this);
+
+        if (canInteract) {
+            MAINMODULE.Common.PostWithConfirmation(btn);
+        }
+
+        return false;
     }
 
     return {

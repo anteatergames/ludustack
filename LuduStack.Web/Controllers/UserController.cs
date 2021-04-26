@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace LuduStack.Web.Controllers
 {
@@ -40,40 +41,14 @@ namespace LuduStack.Web.Controllers
         }
 
         [Route("list")]
-        public IActionResult List()
+        public async Task<IActionResult> List()
         {
-            OperationResultListVo<ProfileViewModel> serviceResult = profileAppService.GetAll(CurrentUserId);
+            OperationResultListVo<ProfileViewModel> serviceResult = await profileAppService.GetAllEssential(CurrentUserId, false);
 
             List<ProfileViewModel> profiles = serviceResult.Value.OrderByDescending(x => x.CreateDate).ToList();
 
             return View(profiles);
         }
-
-        #region User Follow/Unfollow
-
-        [HttpPost]
-        [Route("follow")]
-        public IActionResult FollowUser(Guid userId)
-        {
-            OperationResultVo response = profileAppService.UserFollow(CurrentUserId, userId);
-
-            string fullName = GetSessionValue(SessionValues.FullName);
-
-            notificationAppService.Notify(CurrentUserId, fullName, userId, NotificationType.FollowYou, CurrentUserId);
-
-            return Json(response);
-        }
-
-        [HttpPost]
-        [Route("unfollow")]
-        public IActionResult UnFollowUser(Guid userId)
-        {
-            OperationResultVo response = profileAppService.UserUnfollow(CurrentUserId, userId);
-
-            return Json(response);
-        }
-
-        #endregion User Follow/Unfollow
 
         [Route("search")]
         public IActionResult Search(string term)
@@ -104,6 +79,32 @@ namespace LuduStack.Web.Controllers
                 return Json(serviceResult);
             }
         }
+
+        #region User Follow/Unfollow
+
+        [HttpPost]
+        [Route("follow")]
+        public IActionResult FollowUser(Guid userId)
+        {
+            OperationResultVo response = profileAppService.UserFollow(CurrentUserId, userId);
+
+            string fullName = GetSessionValue(SessionValues.FullName);
+
+            notificationAppService.Notify(CurrentUserId, fullName, userId, NotificationType.FollowYou, CurrentUserId);
+
+            return Json(response);
+        }
+
+        [HttpPost]
+        [Route("unfollow")]
+        public IActionResult UnFollowUser(Guid userId)
+        {
+            OperationResultVo response = profileAppService.UserUnfollow(CurrentUserId, userId);
+
+            return Json(response);
+        }
+
+        #endregion User Follow/Unfollow
 
         #region User Connection
 

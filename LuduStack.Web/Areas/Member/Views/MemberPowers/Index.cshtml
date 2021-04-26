@@ -1,0 +1,30 @@
+﻿@{
+    ViewData["Title"] = "Member Powers!";
+    var isAdmin = User.IsInRole(Roles.Administrator.ToString());
+}
+
+@section Styles {
+    <environment include="Development">
+        <link rel="stylesheet" href="~/css/memberpowers.css" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="~/css/memberpowers.min.css" asp-append-version="true" />
+    </environment>
+}
+
+<div class="col-12">
+    <div class="row">
+        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 p-2">
+            <div class="flex-square clickable rectangle bg-green">
+                <div class="flex-square-inner">
+                    <a asp-area="member" asp-controller="billrate" asp-action="index">
+                        <div class="flex-square-inner-content text-white">
+                            <div><i class="fas fa-3x fa-dollar-sign" aria-hidden="true"></i></div>
+                            <div>@SharedLocalizer["bill rates"]</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

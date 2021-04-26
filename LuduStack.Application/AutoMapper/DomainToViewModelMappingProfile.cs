@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using LuduStack.Application.AutoMapper.Resolvers;
 using LuduStack.Application.ViewModels;
+using LuduStack.Application.ViewModels.BillRate;
 using LuduStack.Application.ViewModels.Brainstorm;
 using LuduStack.Application.ViewModels.Comics;
 using LuduStack.Application.ViewModels.Content;
+using LuduStack.Application.ViewModels.CostCalculator;
 using LuduStack.Application.ViewModels.FeaturedContent;
 using LuduStack.Application.ViewModels.Game;
 using LuduStack.Application.ViewModels.Gamification;
@@ -61,6 +63,10 @@ namespace LuduStack.Application.AutoMapper
             #region Profile
 
             CreateMap<UserProfile, ProfileViewModel>()
+                    .ForMember(x => x.Counters, opt => opt.Ignore())
+                    .ForMember(x => x.IndieXp, opt => opt.Ignore());
+
+            CreateMap<UserProfileEssentialVo, ProfileViewModel>()
                     .ForMember(x => x.Counters, opt => opt.Ignore())
                     .ForMember(x => x.IndieXp, opt => opt.Ignore());
 
@@ -175,6 +181,19 @@ namespace LuduStack.Application.AutoMapper
                     .ForMember(x => x.LikeCount, opt => opt.MapFrom(x => x.Likes.Count));
 
             #endregion Comics
+
+            #region BillRate
+
+            CreateMap<BillRate, BillRateViewModel>();
+            CreateMap<CostCalculatorVo, CostsViewModel>();
+            CreateMap<RateBaseVo, RateBaseViewModel>();
+            CreateMap<ResultRateVo, ResultRateBaseViewModel>();
+            CreateMap<VisualRateVo, VisualRateCostsViewModel>();
+            CreateMap<AudioRateVo, AudioRateCostsViewModel>();
+            CreateMap<CodeRateVo, CodeRateCostsViewModel>();
+            CreateMap<TextRateVo, TextRateCostsViewModel>();
+
+            #endregion BillRate
         }
     }
 }

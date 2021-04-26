@@ -9,19 +9,29 @@ using System.Threading.Tasks;
 
 namespace LuduStack.Application.Interfaces
 {
-    public interface IUserContentAppService : ICrudAppService<UserContentViewModel>, IProfileBaseAppService
+    public interface IUserContentAppService : IProfileBaseAppService
     {
-        IEnumerable<UserContentViewModel> GetActivityFeed(ActivityFeedRequestViewModel vm);
+        Task<OperationResultVo<int>> Count(Guid currentUserId);
 
-        int CountArticles();
+        Task<OperationResultListVo<Guid>> GetAllIds(Guid currentUserId);
 
-        OperationResultListVo<UserContentSearchViewModel> Search(Guid currentUserId, string q);
+        Task<OperationResultVo<UserContentViewModel>> GetById(Guid currentUserId, Guid id);
 
-        OperationResultVo ContentLike(Guid currentUserId, Guid targetId);
+        Task<OperationResultVo> Remove(Guid currentUserId, Guid id);
 
-        OperationResultVo ContentUnlike(Guid currentUserId, Guid targetId);
+        Task<OperationResultVo<Guid>> Save(Guid currentUserId, UserContentViewModel viewModel);
 
-        Task<OperationResultVo> Comment(CommentViewModel vm);
+        Task<IEnumerable<UserContentViewModel>> GetActivityFeed(ActivityFeedRequestViewModel vm);
+
+        Task<int> CountArticles();
+
+        Task<OperationResultListVo<UserContentSearchViewModel>> Search(Guid currentUserId, string q);
+
+        Task<OperationResultVo> ContentLike(Guid currentUserId, Guid targetId);
+
+        Task<OperationResultVo> ContentUnlike(Guid currentUserId, Guid targetId);
+
+        Task<OperationResultVo> Comment(Guid currentUserId, CommentViewModel vm);
 
         Task<OperationResultVo> GetCommentsByUserId(Guid currentUserId, Guid userId);
     }

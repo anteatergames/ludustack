@@ -11,64 +11,62 @@ using System.Threading.Tasks;
 
 namespace LuduStack.Domain.Services
 {
-    public class ProfileDomainService : BaseDomainMongoService<UserProfile, IUserProfileRepository>, IProfileDomainService
+    public class ProfileDomainService : IProfileDomainService
     {
+        protected readonly IUserProfileRepository userProfileRepository;
+
         private readonly IUserConnectionRepository userConnectionRepository;
 
-        public ProfileDomainService(IUserProfileRepository repository
-            , IUserConnectionRepository userConnectionRepository) : base(repository)
+        public ProfileDomainService(IUserProfileRepository userProfileRepository, IUserConnectionRepository userConnectionRepository)
         {
+            this.userProfileRepository = userProfileRepository;
             this.userConnectionRepository = userConnectionRepository;
         }
 
-        public override Guid Add(UserProfile model)
-        {
-            model.HasCoverImage = false;
-            model.Handler = model.Handler.ToLower();
-
-            return base.Add(model);
-        }
-
-        public override Guid Update(UserProfile model)
-        {
-            model.Handler = model.Handler.ToLower();
-
-            return base.Update(model);
-        }
-
-        public async Task<UserProfile> Get(Guid userId, string userHandler, ProfileType type)
+        public Task<UserProfile> Get(Guid userId, string userHandler, ProfileType type)
         {
             if (userId != Guid.Empty)
             {
-                return repository.Get(x => x.UserId == userId && x.Type == type).FirstOrDefault();
+                UserProfile profileById = userProfileRepository.Get(x => x.UserId == userId && x.Type == type).FirstOrDefault();
+
+                return Task.FromResult(profileById);
             }
             else if (!string.IsNullOrWhiteSpace(userHandler))
             {
-                return repository.Get(x => x.Handler.Equals(userHandler.ToLower()) && x.Type == type).FirstOrDefault();
+                UserProfile profileByHandler = userProfileRepository.Get(x => x.Handler.Equals(userHandler.ToLower()) && x.Type == type).FirstOrDefault();
+
+                return Task.FromResult(profileByHandler);
             }
             else
             {
-                return default(UserProfile);
+                return default;
             }
+        }
+
+        public virtual IQueryable<UserProfile> Search(Expression<Func<UserProfile, bool>> where)
+        {
+            IQueryable<UserProfile> objs = userProfileRepository.Get(where);
+
+            return objs;
         }
 
         public IEnumerable<Guid> GetAllUserIds()
         {
-            Task<IEnumerable<Guid>> allIds = Task.Run(async () => await repository.GetAllUserIds());
+            Task<IEnumerable<Guid>> allIds = Task.Run(async () => await userProfileRepository.GetAllUserIds());
 
             return allIds.Result;
         }
 
         public void AddFollow(UserFollow model)
         {
-            Task<bool> task = repository.AddFollow(model.UserId, model.FollowUserId.Value);
+            Task<bool> task = userProfileRepository.AddFollow(model.UserId, model.FollowUserId.Value);
 
             task.Wait();
         }
 
         public bool CheckFollowing(Guid userId, Guid followerId)
         {
-            Task<IQueryable<UserFollow>> task = repository.GetFollows(userId, followerId);
+            Task<IQueryable<UserFollow>> task = userProfileRepository.GetFollows(userId, followerId);
 
             task.Wait();
 
@@ -79,7 +77,7 @@ namespace LuduStack.Domain.Services
 
         public int CountFollows(Guid userId)
         {
-            Task<int> task = repository.CountFollowers(userId);
+            Task<int> task = userProfileRepository.CountFollowers(userId);
 
             task.Wait();
 
@@ -88,7 +86,7 @@ namespace LuduStack.Domain.Services
 
         public UserProfileEssentialVo GetBasicDataByUserId(Guid targetUserId)
         {
-            Task<UserProfileEssentialVo> task = repository.GetBasicDataByUserId(targetUserId);
+            Task<UserProfileEssentialVo> task = userProfileRepository.GetBasicDataByUserId(targetUserId);
 
             task.Wait();
 
@@ -97,14 +95,14 @@ namespace LuduStack.Domain.Services
 
         public IEnumerable<UserFollow> GetFollows(Guid userId, Guid followerId)
         {
-            Task<IQueryable<UserFollow>> task = Task.Run(async () => await repository.GetFollows(userId, followerId));
+            Task<IQueryable<UserFollow>> task = Task.Run(async () => await userProfileRepository.GetFollows(userId, followerId));
 
             return task.Result;
         }
 
         public void RemoveFollow(UserFollow existingFollow, Guid userFollowed)
         {
-            Task<bool> task = Task.Run(async () => await repository.RemoveFollower(existingFollow.UserId, userFollowed));
+            Task<bool> task = Task.Run(async () => await userProfileRepository.RemoveFollower(existingFollow.UserId, userFollowed));
 
             task.Wait();
         }
@@ -255,11 +253,14 @@ namespace LuduStack.Domain.Services
                 return null;
             }
 
+            UserConnectionDirection connectionDirection = fromUser ? UserConnectionDirection.FromUser : UserConnectionDirection.ToUser;
+            UserConnectionType connectionType = typePupil ? UserConnectionType.Pupil : UserConnectionType.WorkedTogether;
+
             UserConnectionVo model = new UserConnectionVo
             {
                 Accepted = connections.Any(x => x.ApprovalDate.HasValue),
-                Direction = fromUser && toUser ? UserConnectionDirection.BothWays : (fromUser ? UserConnectionDirection.FromUser : UserConnectionDirection.ToUser),
-                ConnectionType = typeMentor ? UserConnectionType.Mentor : (typePupil ? UserConnectionType.Pupil : UserConnectionType.WorkedTogether)
+                Direction = fromUser && toUser ? UserConnectionDirection.BothWays : connectionDirection,
+                ConnectionType = typeMentor ? UserConnectionType.Mentor : connectionType
             };
 
             return model;
@@ -278,12 +279,5 @@ namespace LuduStack.Domain.Services
         }
 
         #endregion Connection
-
-        public override IEnumerable<Guid> GetAllIds()
-        {
-            IEnumerable<Guid> objs = repository.Get().Select(x => x.UserId);
-
-            return objs.ToList();
-        }
     }
 }

@@ -7,11 +7,23 @@ using System.Threading.Tasks;
 
 namespace LuduStack.Application.Interfaces
 {
-    public interface IProfileAppService : ICrudAppService<ProfileViewModel>, IProfileBaseAppService
+    public interface IProfileAppService : IProfileBaseAppService
     {
-        OperationResultListVo<ProfileViewModel> GetAll(Guid currentUserId, bool noCache);
+        Task<OperationResultVo<int>> Count(Guid currentUserId);
 
-        UserProfileEssentialVo GetBasicDataByUserId(Guid userId);
+        Task<OperationResultListVo<Guid>> GetAllIds(Guid currentUserId);
+
+        Task<OperationResultListVo<string>> GetAllHandlers(Guid currentUserId);
+
+        Task<OperationResultVo<ProfileViewModel>> GetById(Guid currentUserId, Guid id);
+
+        Task<OperationResultVo> Remove(Guid currentUserId, Guid id);
+
+        Task<OperationResultVo<Guid>> Save(Guid currentUserId, ProfileViewModel viewModel);
+
+        Task<OperationResultListVo<ProfileViewModel>> GetAll(Guid currentUserId);
+
+        Task<OperationResultListVo<ProfileViewModel>> GetAllEssential(Guid currentUserId, bool noCache);
 
         Task<ProfileViewModel> GetByUserId(Guid userId, ProfileType type);
 
@@ -41,9 +53,7 @@ namespace LuduStack.Application.Interfaces
 
         OperationResultVo GetConnectionsByUserId(Guid userId);
 
-        void SetProfileCache(Guid key, ProfileViewModel viewModel);
-
-        ProfileViewModel GetUserProfileWithCache(Guid userId);
+        Task<UserProfileEssentialVo> GetEssentialUserProfileWithCache(Guid userId);
 
         #endregion Connections
     }

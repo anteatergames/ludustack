@@ -72,7 +72,7 @@
                 else
                 {
                     <div class="col-12">
-                        <button id="btn-jobposition-new-external" class="btn btn-primary btn-block" data-url="@Url.Action("New", "JobPosition", new { area = "Work", origin = JobPositionOrigin.External })">@SharedLocalizer["New External Position"]</button>
+                        <button id="btn-jobposition-new-external" class="btn btn-primary btn-block btn-jobposition-new" data-url="@Url.Action("New", "JobPosition", new { area = "Work", origin = JobPositionOrigin.External })">@SharedLocalizer["New External Position"]</button>
                     </div>
                     if (jobProfile == JobProfile.Company)
                     {
@@ -87,7 +87,7 @@
                                     @if (canInteract)
                                     {
                                         <div id="divEmployerActions">
-                                            <button id="btn-jobposition-new" class="btn btn-outline-primary btn-block" data-url="@Url.Action("New", "JobPosition", new { area = "Work", origin = JobPositionOrigin.Internal })">@SharedLocalizer["New Position"]</button>
+                                            <button id="btn-jobposition-new" class="btn btn-outline-primary btn-block btn-jobposition-new" data-url="@Url.Action("New", "JobPosition", new { area = "Work", origin = JobPositionOrigin.Internal })">@SharedLocalizer["New Position"]</button>
                                         </div>
                                     }
                                     <div id="divMyPositionStats" class="mt-1 p-1"></div>

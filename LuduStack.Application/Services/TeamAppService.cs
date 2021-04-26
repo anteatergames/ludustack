@@ -4,11 +4,16 @@ using LuduStack.Application.ViewModels.Team;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Core.Extensions;
 using LuduStack.Domain.Interfaces.Services;
+using LuduStack.Domain.Messaging;
+using LuduStack.Domain.Messaging.Queries.Team;
+using LuduStack.Domain.Messaging.Queries.UserProfile;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
+using LuduStack.Infra.CrossCutting.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace LuduStack.Application.Services
 {
@@ -25,13 +30,11 @@ namespace LuduStack.Application.Services
             this.gamificationDomainService = gamificationDomainService;
         }
 
-        #region ICrudAppService
-
-        public OperationResultVo<int> Count(Guid currentUserId)
+        public async Task<OperationResultVo<int>> Count(Guid currentUserId)
         {
             try
             {
-                int count = teamDomainService.Count();
+                int count = await mediator.Query<CountTeamQuery, int>(new CountTeamQuery());
 
                 return new OperationResultVo<int>(count);
             }
@@ -41,17 +44,21 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultListVo<TeamViewModel> GetAll(Guid currentUserId)
+        public async Task<OperationResultListVo<TeamViewModel>> GetAll(Guid currentUserId)
         {
             try
             {
-                IEnumerable<Team> allModels = teamDomainService.GetAll();
+                IEnumerable<Team> allModels = await mediator.Query<GetTeamQuery, IEnumerable<Team>>(new GetTeamQuery());
 
                 IEnumerable<TeamViewModel> vms = mapper.Map<IEnumerable<Team>, IEnumerable<TeamViewModel>>(allModels);
 
+                IEnumerable<Guid> ids = vms.SelectMany(x => x.Members.Select(y => y.UserId));
+
+                IEnumerable<UserProfileEssentialVo> profiles = await mediator.Query<GetBasicUserProfileDataByUserIdsQuery, IEnumerable<UserProfileEssentialVo>>(new GetBasicUserProfileDataByUserIdsQuery(ids));
+
                 foreach (TeamViewModel team in vms)
                 {
-                    SetUiData(currentUserId, team);
+                    await SetUiData(currentUserId, team, profiles);
                 }
 
                 return new OperationResultListVo<TeamViewModel>(vms);
@@ -62,25 +69,11 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo GetAllIds(Guid currentUserId)
+        public async Task<OperationResultVo<TeamViewModel>> GetById(Guid currentUserId, Guid id)
         {
             try
             {
-                IEnumerable<Guid> allIds = teamDomainService.GetAllIds();
-
-                return new OperationResultListVo<Guid>(allIds);
-            }
-            catch (Exception ex)
-            {
-                return new OperationResultVo(ex.Message);
-            }
-        }
-
-        public OperationResultVo<TeamViewModel> GetById(Guid currentUserId, Guid id)
-        {
-            try
-            {
-                Team model = teamDomainService.GetById(id);
+                Team model = await mediator.Query<GetTeamByIdQuery, Team>(new GetTeamByIdQuery(id));
 
                 if (model == null)
                 {
@@ -89,11 +82,16 @@ namespace LuduStack.Application.Services
 
                 TeamViewModel vm = mapper.Map<TeamViewModel>(model);
 
+                IEnumerable<Guid> ids = vm.Members.Select(y => y.UserId);
+
+                IEnumerable<UserProfileEssentialVo> profiles = await mediator.Query<GetBasicUserProfileDataByUserIdsQuery, IEnumerable<UserProfileEssentialVo>>(new GetBasicUserProfileDataByUserIdsQuery(ids));
+
                 vm.Members = vm.Members.OrderByDescending(x => x.Leader).ToList();
                 foreach (TeamMemberViewModel member in vm.Members)
                 {
-                    UserProfile profile = GetCachedProfileByUserId(member.UserId);
+                    UserProfileEssentialVo profile = profiles.FirstOrDefault(x => x.UserId == member.UserId);
                     member.Name = profile.Name;
+                    member.UserHandler = profile.Handler;
                     member.Permissions.IsMe = member.UserId == currentUserId;
                     member.WorkDictionary = member.Works.ToDisplayNameList();
                 }
@@ -104,18 +102,19 @@ namespace LuduStack.Application.Services
 
                     if (vm.Recruiting)
                     {
-                        UserProfile myProfile = GetCachedProfileByUserId(currentUserId);
+                        UserProfileEssentialVo myProfile = profiles.FirstOrDefault(x => x.UserId == currentUserId);
 
                         vm.Candidate = new TeamMemberViewModel
                         {
                             UserId = currentUserId,
                             InvitationStatus = InvitationStatus.Candidate,
-                            Name = myProfile.Name
+                            Name = myProfile.Name,
+                            UserHandler = myProfile.Handler
                         };
                     }
                 }
 
-                SetUiData(currentUserId, vm);
+                await SetUiData(currentUserId, vm, profiles);
 
                 return new OperationResultVo<TeamViewModel>(vm);
             }
@@ -125,7 +124,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo<Guid> Save(Guid currentUserId, TeamViewModel viewModel)
+        public async Task<OperationResultVo<Guid>> Save(Guid currentUserId, TeamViewModel viewModel)
         {
             int pointsEarned = 0;
 
@@ -133,7 +132,7 @@ namespace LuduStack.Application.Services
             {
                 Team model;
 
-                Team existing = teamDomainService.GetById(viewModel.Id);
+                Team existing = await mediator.Query<GetTeamByIdQuery, Team>(new GetTeamByIdQuery(viewModel.Id));
                 if (existing != null)
                 {
                     model = mapper.Map(viewModel, existing);
@@ -143,21 +142,15 @@ namespace LuduStack.Application.Services
                     model = mapper.Map<Team>(viewModel);
                 }
 
-                if (viewModel.Id == Guid.Empty)
-                {
-                    teamDomainService.Add(model);
-                    viewModel.Id = model.Id;
+                CommandResult result = await mediator.SendCommand(new SaveTeamCommand(currentUserId, model));
 
-                    pointsEarned += gamificationDomainService.ProcessAction(viewModel.UserId, PlatformAction.TeamAdd);
-                }
-                else
+                if (!result.Validation.IsValid)
                 {
-                    teamDomainService.Update(model);
+                    string message = result.Validation.Errors.FirstOrDefault().ErrorMessage;
+                    return new OperationResultVo<Guid>(model.Id, false, message);
                 }
 
-                unitOfWork.Commit();
-
-                viewModel.Id = model.Id;
+                pointsEarned += result.PointsEarned;
 
                 return new OperationResultVo<Guid>(model.Id, pointsEarned);
             }
@@ -167,15 +160,11 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo Remove(Guid currentUserId, Guid id)
+        public async Task<OperationResultVo> Remove(Guid currentUserId, Guid id)
         {
             try
             {
-                // validate before
-
-                teamDomainService.Remove(id);
-
-                unitOfWork.Commit();
+                await mediator.SendCommand(new DeleteTeamCommand(currentUserId, id));
 
                 return new OperationResultVo(true);
             }
@@ -184,10 +173,6 @@ namespace LuduStack.Application.Services
                 return new OperationResultVo(ex.Message);
             }
         }
-
-        #endregion ICrudAppService
-
-        #region ITeamAppService
 
         public OperationResultVo<int> CountNotSingleMemberGroups(Guid currentUserId)
         {
@@ -203,7 +188,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultListVo<TeamViewModel> GetNotSingleMemberGroups(Guid currentUserId)
+        public async Task<OperationResultListVo<TeamViewModel>> GetNotSingleMemberGroups(Guid currentUserId)
         {
             try
             {
@@ -211,9 +196,13 @@ namespace LuduStack.Application.Services
 
                 IEnumerable<TeamViewModel> vms = mapper.Map<IEnumerable<Team>, IEnumerable<TeamViewModel>>(allModels);
 
+                IEnumerable<Guid> ids = vms.SelectMany(x => x.Members.Select(y => y.UserId));
+
+                IEnumerable<UserProfileEssentialVo> profiles = await mediator.Query<GetBasicUserProfileDataByUserIdsQuery, IEnumerable<UserProfileEssentialVo>>(new GetBasicUserProfileDataByUserIdsQuery(ids));
+
                 foreach (TeamViewModel team in vms)
                 {
-                    SetUiData(currentUserId, team);
+                    await SetUiData(currentUserId, team, profiles);
                 }
 
                 return new OperationResultListVo<TeamViewModel>(vms);
@@ -224,17 +213,18 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo GenerateNewTeam(Guid currentUserId)
+        public async Task<OperationResultVo> GenerateNewTeam(Guid currentUserId)
         {
             try
             {
                 Team newTeam = teamDomainService.GenerateNewTeam(currentUserId);
 
                 TeamViewModel newVm = mapper.Map<TeamViewModel>(newTeam);
-                UserProfile myProfile = GetCachedProfileByUserId(currentUserId);
+                UserProfileEssentialVo myProfile = await GetCachedEssentialProfileByUserId(currentUserId);
 
                 TeamMemberViewModel me = newVm.Members.FirstOrDefault(x => x.UserId == currentUserId);
                 me.Name = myProfile.Name;
+                me.UserHandler = myProfile.Handler;
                 me.ProfileImage = UrlFormatter.ProfileImage(currentUserId);
 
                 return new OperationResultVo<TeamViewModel>(newVm);
@@ -245,7 +235,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo AcceptInvite(Guid teamId, Guid currentUserId, string quote)
+        public async Task<OperationResultVo> AcceptInvite(Guid teamId, Guid currentUserId, string quote)
         {
             int pointsEarned = 0;
 
@@ -255,7 +245,7 @@ namespace LuduStack.Application.Services
 
                 pointsEarned += gamificationDomainService.ProcessAction(currentUserId, PlatformAction.TeamJoin);
 
-                unitOfWork.Commit();
+                await unitOfWork.Commit();
 
                 return new OperationResultVo(true, pointsEarned);
             }
@@ -281,7 +271,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo GetByUserId(Guid userId)
+        public async Task<OperationResultListVo<TeamViewModel>> GetByUserId(Guid userId)
         {
             try
             {
@@ -289,9 +279,13 @@ namespace LuduStack.Application.Services
 
                 IEnumerable<TeamViewModel> vms = mapper.Map<IEnumerable<Team>, IEnumerable<TeamViewModel>>(allModels);
 
+                IEnumerable<Guid> ids = vms.SelectMany(x => x.Members.Select(y => y.UserId));
+
+                IEnumerable<UserProfileEssentialVo> profiles = await mediator.Query<GetBasicUserProfileDataByUserIdsQuery, IEnumerable<UserProfileEssentialVo>>(new GetBasicUserProfileDataByUserIdsQuery(ids));
+
                 foreach (TeamViewModel team in vms)
                 {
-                    SetUiData(userId, team);
+                    await SetUiData(userId, team, profiles);
                 }
 
                 return new OperationResultListVo<TeamViewModel>(vms);
@@ -326,8 +320,6 @@ namespace LuduStack.Application.Services
         {
             try
             {
-                // validate before
-
                 teamDomainService.RemoveMember(teamId, userId);
 
                 unitOfWork.Commit();
@@ -340,13 +332,13 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo CandidateApply(Guid currentUserId, TeamMemberViewModel vm)
+        public async Task<OperationResultVo> CandidateApply(Guid currentUserId, TeamMemberViewModel vm)
         {
             int pointsEarned = 0;
 
             try
             {
-                Team team = teamDomainService.GetById(vm.TeamId);
+                Team team = await mediator.Query<GetTeamByIdQuery, Team>(new GetTeamByIdQuery(vm.TeamId));
 
                 if (team == null)
                 {
@@ -359,7 +351,7 @@ namespace LuduStack.Application.Services
 
                 pointsEarned += gamificationDomainService.ProcessAction(currentUserId, PlatformAction.TeamJoin);
 
-                unitOfWork.Commit();
+                await unitOfWork.Commit();
 
                 return new OperationResultVo(true, "Application sent! Now just sit and wait the team leader to accept you.", pointsEarned);
             }
@@ -403,9 +395,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        #endregion ITeamAppService
-
-        private void SetUiData(Guid userId, TeamViewModel team)
+        private Task SetUiData(Guid userId, TeamViewModel team, IEnumerable<UserProfileEssentialVo> profiles)
         {
             bool userIsLeader = team.Members.Any(x => x.Leader && x.UserId == userId);
 
@@ -415,14 +405,18 @@ namespace LuduStack.Application.Services
 
             foreach (TeamMemberViewModel member in team.Members)
             {
+                UserProfileEssentialVo profile = profiles.FirstOrDefault(x => x.UserId == member.UserId);
                 member.Permissions.CanDelete = member.UserId != userId && team.Permissions.CanDelete;
                 member.ProfileImage = UrlFormatter.ProfileImage(member.UserId);
+                member.UserHandler = profile.Handler;
             }
 
             if (team.Candidate != null)
             {
                 team.Candidate.ProfileImage = UrlFormatter.ProfileImage(team.Candidate.UserId);
             }
+
+            return Task.CompletedTask;
         }
     }
 }

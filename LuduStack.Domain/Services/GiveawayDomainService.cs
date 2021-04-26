@@ -12,24 +12,13 @@ using System.Threading.Tasks;
 
 namespace LuduStack.Domain.Services
 {
-    public class GiveawayDomainService : BaseDomainMongoService<Giveaway, IGiveawayRepository>, IGiveawayDomainService
+    public class GiveawayDomainService : IGiveawayDomainService
     {
-        public GiveawayDomainService(IGiveawayRepository repository) : base(repository)
+        protected readonly IGiveawayRepository giveawayRepository;
+
+        public GiveawayDomainService(IGiveawayRepository giveawayRepository)
         {
-        }
-
-        public override Guid Add(Giveaway model)
-        {
-            SetRequiredProperties(model);
-
-            return base.Add(model);
-        }
-
-        public override Guid Update(Giveaway model)
-        {
-            SetRequiredProperties(model);
-
-            return base.Update(model);
+            this.giveawayRepository = giveawayRepository;
         }
 
         public Giveaway GenerateNewGiveaway(Guid userId)
@@ -46,7 +35,7 @@ namespace LuduStack.Domain.Services
 
         public List<GiveawayListItemVo> GetGiveawayListByUserId(Guid userId)
         {
-            List<GiveawayListItemVo> objs = repository.GetGiveawayListByUserId(userId);
+            List<GiveawayListItemVo> objs = giveawayRepository.GetGiveawayListByUserId(userId);
 
             foreach (GiveawayListItemVo item in objs)
             {
@@ -56,24 +45,14 @@ namespace LuduStack.Domain.Services
             return objs;
         }
 
-        public override Giveaway GetById(Guid id)
-        {
-            Task<Giveaway> task = Task.Run(async () => await repository.GetById(id));
-            Giveaway model = task.Result;
-
-            SetDates(model);
-
-            return model;
-        }
-
         public GiveawayBasicInfo GetGiveawayBasicInfoById(Guid id)
         {
-            Task<GiveawayBasicInfo> task = Task.Run(async () => await repository.GetBasicGiveawayById(id));
+            Task<GiveawayBasicInfo> task = Task.Run(async () => await giveawayRepository.GetBasicGiveawayById(id));
             GiveawayBasicInfo model = task.Result;
 
             if (model.Status == GiveawayStatus.Ended)
             {
-                model.Winners = repository.GetParticipants(id).Where(x => x.IsWinner).ToList();
+                model.Winners = giveawayRepository.GetParticipants(id).Where(x => x.IsWinner).ToList();
             }
 
             SetDates(model);
@@ -83,7 +62,7 @@ namespace LuduStack.Domain.Services
 
         public Giveaway Duplicate(Guid giveawayId)
         {
-            Task<Giveaway> task = Task.Run(async () => await repository.GetById(giveawayId));
+            Task<Giveaway> task = Task.Run(async () => await giveawayRepository.GetById(giveawayId));
             Giveaway model = task.Result;
 
             Giveaway copy = model.Copy();
@@ -99,23 +78,23 @@ namespace LuduStack.Domain.Services
 
             copy.Participants = new List<GiveawayParticipant>();
 
-            repository.Add(copy);
+            giveawayRepository.Add(copy);
 
             return copy;
         }
 
-        public DomainOperationVo<GiveawayParticipant> AddParticipant(Guid giveawayId, string email, bool gdprConsent, bool wantNotifications, string referalCode, string referrer, GiveawayEntryType? entryType)
+        public DomainOperationVo<GiveawayParticipant> AddParticipant(Guid giveawayId, string email, bool gdprConsent, bool wantNotifications, string referralCode, string referrer, GiveawayEntryType? entryType)
         {
             GiveawayParticipant participant;
 
-            IQueryable<GiveawayParticipant> existing = repository.GetParticipants(giveawayId);
+            IQueryable<GiveawayParticipant> existing = giveawayRepository.GetParticipants(giveawayId);
             bool exists = existing.Any(x => x.Email == email);
 
             if (exists)
             {
                 participant = existing.First(x => x.Email == email);
 
-                repository.UpdateParticipant(giveawayId, participant);
+                giveawayRepository.UpdateParticipant(giveawayId, participant);
 
                 return new DomainOperationVo<GiveawayParticipant>(DomainActionPerformed.Update, participant);
             }
@@ -134,13 +113,13 @@ namespace LuduStack.Domain.Services
                     Points = 1
                 });
 
-                participant.ReferralCode = referalCode;
+                participant.ReferralCode = referralCode;
 
-                repository.AddParticipant(giveawayId, participant);
+                giveawayRepository.AddParticipant(giveawayId, participant);
 
                 if (!string.IsNullOrWhiteSpace(referrer))
                 {
-                    GiveawayParticipant referrerParticipant = repository.GetParticipantByReferralCode(giveawayId, referrer);
+                    GiveawayParticipant referrerParticipant = giveawayRepository.GetParticipantByReferralCode(giveawayId, referrer);
                     if (referrerParticipant != null)
                     {
                         referrerParticipant.Entries.Add(new GiveawayEntry
@@ -149,7 +128,7 @@ namespace LuduStack.Domain.Services
                             Points = 1
                         });
 
-                        repository.UpdateParticipant(giveawayId, referrerParticipant);
+                        giveawayRepository.UpdateParticipant(giveawayId, referrerParticipant);
                     }
                 }
 
@@ -159,7 +138,7 @@ namespace LuduStack.Domain.Services
 
         public DomainOperationVo<int> DailyEntry(Guid giveawayId, Guid participantId)
         {
-            GiveawayParticipant existing = repository.GetParticipantById(giveawayId, participantId);
+            GiveawayParticipant existing = giveawayRepository.GetParticipantById(giveawayId, participantId);
             if (existing == null)
             {
                 return new DomainOperationVo<int>(DomainActionPerformed.None, 0);
@@ -179,7 +158,7 @@ namespace LuduStack.Domain.Services
                 Points = 1
             });
 
-            repository.UpdateParticipant(giveawayId, existing);
+            giveawayRepository.UpdateParticipant(giveawayId, existing);
 
             int countDailyEntries = existing.Entries.Where(x => x.Type == GiveawayEntryType.Daily).Sum(x => x.Points);
 
@@ -188,33 +167,33 @@ namespace LuduStack.Domain.Services
 
         public GiveawayParticipant GetParticipantByEmail(Guid giveawayId, string email)
         {
-            GiveawayParticipant model = repository.GetParticipantByEmail(giveawayId, email);
+            GiveawayParticipant model = giveawayRepository.GetParticipantByEmail(giveawayId, email);
 
             return model;
         }
 
         public bool CheckParticipantByEmail(Guid giveawayId, string email)
         {
-            Guid guid = repository.CheckParticipantByEmail(giveawayId, email);
+            Guid guid = giveawayRepository.CheckParticipantByEmail(giveawayId, email);
 
             return guid != default;
         }
 
         public void UpdateParticipantShortUrl(Guid giveawayId, string email, string shortUrl)
         {
-            GiveawayParticipant existing = repository.GetParticipantByEmail(giveawayId, email);
+            GiveawayParticipant existing = giveawayRepository.GetParticipantByEmail(giveawayId, email);
 
             if (existing != null)
             {
                 existing.ShortUrl = shortUrl;
 
-                repository.UpdateParticipant(giveawayId, existing);
+                giveawayRepository.UpdateParticipant(giveawayId, existing);
             }
         }
 
         public void ConfirmParticipant(Guid giveawayId, string referralCode)
         {
-            GiveawayParticipant existing = repository.GetParticipantByReferralCode(giveawayId, referralCode);
+            GiveawayParticipant existing = giveawayRepository.GetParticipantByReferralCode(giveawayId, referralCode);
 
             if (existing != null && !existing.Entries.Any(x => x.Type == GiveawayEntryType.EmailConfirmed))
             {
@@ -224,35 +203,35 @@ namespace LuduStack.Domain.Services
                     Points = 1
                 });
 
-                repository.UpdateParticipant(giveawayId, existing);
+                giveawayRepository.UpdateParticipant(giveawayId, existing);
             }
         }
 
         public void RemoveParticipant(Guid giveawayId, Guid participantId)
         {
-            repository.RemoveParticipant(giveawayId, participantId);
+            giveawayRepository.RemoveParticipant(giveawayId, participantId);
         }
 
         public void DeclareNotWinner(Guid giveawayId, Guid participantId)
         {
-            GiveawayParticipant participant = repository.GetParticipantById(giveawayId, participantId);
+            GiveawayParticipant participant = giveawayRepository.GetParticipantById(giveawayId, participantId);
 
             if (participant != null)
             {
                 participant.IsWinner = false;
 
-                repository.UpdateParticipant(giveawayId, participant);
+                giveawayRepository.UpdateParticipant(giveawayId, participant);
             }
         }
 
         public void ClearParticipants(Guid giveawayId)
         {
-            repository.ClearParticipants(giveawayId);
+            giveawayRepository.ClearParticipants(giveawayId);
         }
 
         public void PickSingleWinner(Guid giveawayId)
         {
-            List<GiveawayParticipant> nonWinners = repository.GetParticipants(giveawayId).Where(x => !x.IsWinner).ToList();
+            List<GiveawayParticipant> nonWinners = giveawayRepository.GetParticipants(giveawayId).Where(x => !x.IsWinner).ToList();
 
             if (nonWinners.Any())
             {
@@ -264,19 +243,19 @@ namespace LuduStack.Domain.Services
 
                 winner.IsWinner = true;
 
-                repository.UpdateParticipant(giveawayId, winner);
+                giveawayRepository.UpdateParticipant(giveawayId, winner);
             }
         }
 
         public void PickAllWinners(Guid giveawayId)
         {
-            Task<GiveawayBasicInfo> task = Task.Run(async () => await repository.GetBasicGiveawayById(giveawayId));
+            Task<GiveawayBasicInfo> task = Task.Run(async () => await giveawayRepository.GetBasicGiveawayById(giveawayId));
 
             task.Wait();
 
             GiveawayBasicInfo basicInfo = task.Result;
 
-            List<GiveawayParticipant> allParticipants = repository.GetParticipants(giveawayId).ToList();
+            List<GiveawayParticipant> allParticipants = giveawayRepository.GetParticipants(giveawayId).ToList();
             List<GiveawayParticipant> winners = allParticipants.Where(x => x.IsWinner).ToList();
             List<GiveawayParticipant> nonWinners = allParticipants.Where(x => !x.IsWinner).ToList();
 
@@ -307,16 +286,16 @@ namespace LuduStack.Domain.Services
 
                     winner.IsWinner = true;
 
-                    repository.UpdateParticipant(giveawayId, winner);
+                    giveawayRepository.UpdateParticipant(giveawayId, winner);
 
                     allEntries = allEntries.Except(allEntries.Where(x => x.Participant.Id == winner.Id)).ToList();
                 }
             }
 
-            repository.UpdateGiveawayStatus(giveawayId, GiveawayStatus.Ended);
+            giveawayRepository.UpdateGiveawayStatus(giveawayId, GiveawayStatus.Ended);
         }
 
-        private static IGiveawayBasicInfo SetDates(IGiveawayBasicInfo model)
+        private static void SetDates(IGiveawayBasicInfo model)
         {
             if (model != null)
             {
@@ -325,45 +304,40 @@ namespace LuduStack.Domain.Services
                     model.StartDate = DateTime.Now;
                 }
 
-                //int timeZoneOffset = int.Parse(model.TimeZone ?? "0");
-
-                model.StartDate = model.StartDate.ToLocalTime(); //.AddHours(timeZoneOffset);
+                model.StartDate = model.StartDate.ToLocalTime();
 
                 if (model.EndDate.HasValue)
                 {
-                    model.EndDate = model.EndDate.Value.ToLocalTime(); //.AddHours(timeZoneOffset);
+                    model.EndDate = model.EndDate.Value.ToLocalTime();
                 }
 
-                GiveawayStatus effectiveStatus = model.Status;
-
-                if ((model.Status == GiveawayStatus.Draft || model.Status == GiveawayStatus.PendingStart) && model.StartDate <= DateTime.Now)
-                {
-                    effectiveStatus = GiveawayStatus.OpenForEntries;
-                }
-                else if ((model.Status == GiveawayStatus.Draft || model.Status == GiveawayStatus.OpenForEntries) && model.StartDate >= DateTime.Now)
-                {
-                    effectiveStatus = GiveawayStatus.PendingStart;
-                }
-                else if (model.Status != GiveawayStatus.Ended && model.EndDate.HasValue && DateTime.Now >= model.EndDate.Value)
-                {
-                    effectiveStatus = GiveawayStatus.PickingWinners;
-                }
+                GiveawayStatus effectiveStatus = ComputeEffectiveStatus(model);
 
                 if (effectiveStatus != GiveawayStatus.Draft)
                 {
                     model.Status = effectiveStatus;
                 }
             }
-
-            return model;
         }
 
-        private static void SetRequiredProperties(Giveaway model)
+        private static GiveawayStatus ComputeEffectiveStatus(IGiveawayBasicInfo model)
         {
-            if (model.Status == 0)
+            GiveawayStatus effectiveStatus = model.Status;
+
+            if ((model.Status == GiveawayStatus.Draft || model.Status == GiveawayStatus.PendingStart) && model.StartDate <= DateTime.Now)
             {
-                model.Status = GiveawayStatus.Draft;
+                effectiveStatus = GiveawayStatus.OpenForEntries;
             }
+            else if ((model.Status == GiveawayStatus.Draft || model.Status == GiveawayStatus.OpenForEntries) && model.StartDate >= DateTime.Now)
+            {
+                effectiveStatus = GiveawayStatus.PendingStart;
+            }
+            else if (model.Status != GiveawayStatus.Ended && model.EndDate.HasValue && DateTime.Now >= model.EndDate.Value)
+            {
+                effectiveStatus = GiveawayStatus.PickingWinners;
+            }
+
+            return effectiveStatus;
         }
     }
 }

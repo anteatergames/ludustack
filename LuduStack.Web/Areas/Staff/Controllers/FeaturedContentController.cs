@@ -5,6 +5,7 @@ using LuduStack.Web.Areas.Staff.Controllers.Base;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace LuduStack.Web.Areas.Staff.Controllers
 {
@@ -24,29 +25,29 @@ namespace LuduStack.Web.Areas.Staff.Controllers
         }
 
         [Route("list")]
-        public IActionResult List()
+        public async Task<IActionResult> List()
         {
-            IEnumerable<UserContentToBeFeaturedViewModel> model = featuredContentAppService.GetContentToBeFeatured();
+            IEnumerable<UserContentToBeFeaturedViewModel> model = await featuredContentAppService.GetContentToBeFeatured();
 
             return PartialView("_List", model);
         }
 
         [HttpPost("add")]
-        public IActionResult Add(Guid id, string title, string introduction)
+        public async Task<IActionResult> Add(Guid id, string title, string introduction)
         {
-            OperationResultVo<Guid> operationResult = featuredContentAppService.Add(CurrentUserId, id, title, introduction);
+            OperationResultVo<Guid> operationResult = await featuredContentAppService.Add(CurrentUserId, id, title, introduction);
 
             return Json(operationResult);
         }
 
         [HttpPost("remove")]
-        public IActionResult Remove(Guid id, string title, string introduction)
+        public async Task<IActionResult> Remove(Guid id, string title, string introduction)
         {
             OperationResultVo operationResult;
 
             try
             {
-                operationResult = featuredContentAppService.Unfeature(id);
+                operationResult = await featuredContentAppService.Unfeature(CurrentUserId, id);
             }
             catch (Exception ex)
             {

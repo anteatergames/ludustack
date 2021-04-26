@@ -5,28 +5,25 @@ using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Core.Extensions;
 using LuduStack.Domain.Interfaces.Models;
 using LuduStack.Domain.Interfaces.Services;
+using LuduStack.Domain.Messaging;
+using LuduStack.Domain.Messaging.Queries.Giveaway;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
+using LuduStack.Infra.CrossCutting.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace LuduStack.Application.Services
 {
     public class GiveawayAppService : ProfileBaseAppService, IGiveawayAppService
     {
         private readonly IGiveawayDomainService giveawayDomainService;
-        private readonly IGamificationDomainService gamificationDomainService;
-        private readonly IShortUrlDomainService shortUrlDomainService;
 
-        public GiveawayAppService(IProfileBaseAppServiceCommon profileBaseAppServiceCommon
-            , IGiveawayDomainService giveawayDomainService
-            , IGamificationDomainService gamificationDomainService
-            , IShortUrlDomainService shortUrlDomainService) : base(profileBaseAppServiceCommon)
+        public GiveawayAppService(IProfileBaseAppServiceCommon profileBaseAppServiceCommon, IGiveawayDomainService giveawayDomainService) : base(profileBaseAppServiceCommon)
         {
             this.giveawayDomainService = giveawayDomainService;
-            this.gamificationDomainService = gamificationDomainService;
-            this.shortUrlDomainService = shortUrlDomainService;
         }
 
         public OperationResultVo GenerateNew(Guid currentUserId)
@@ -47,15 +44,15 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo GetGiveawayForManagement(Guid currentUserId, Guid giveawayId)
+        public async Task<OperationResultVo> GetGiveawayForManagement(Guid currentUserId, Guid giveawayId)
         {
             try
             {
-                Giveaway existing = giveawayDomainService.GetById(giveawayId);
+                Giveaway existing = await mediator.Query<GetGiveawayByIdQuery, Giveaway>(new GetGiveawayByIdQuery(giveawayId));
 
                 GiveawayViewModel vm = mapper.Map<GiveawayViewModel>(existing);
 
-                SetAuthorDetails(vm);
+                await SetAuthorDetails(currentUserId, vm);
 
                 SetViewModelState(currentUserId, vm);
 
@@ -69,7 +66,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo GetForEdit(Guid currentUserId, Guid giveawayId)
+        public async Task<OperationResultVo> GetForEdit(Guid currentUserId, Guid giveawayId)
         {
             try
             {
@@ -77,7 +74,7 @@ namespace LuduStack.Application.Services
 
                 GiveawayViewModel vm = mapper.Map<GiveawayViewModel>(existing);
 
-                SetAuthorDetails(vm);
+                await SetAuthorDetails(currentUserId, vm);
 
                 SetViewModelState(currentUserId, vm);
 
@@ -91,7 +88,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo GetForDetails(Guid currentUserId, Guid giveawayId)
+        public async Task<OperationResultVo> GetForDetails(Guid currentUserId, Guid giveawayId)
         {
             try
             {
@@ -99,7 +96,7 @@ namespace LuduStack.Application.Services
 
                 GiveawayViewModel vm = mapper.Map<GiveawayViewModel>(existing);
 
-                SetAuthorDetails(vm);
+                await SetAuthorDetails(currentUserId, vm);
 
                 SetViewModelState(currentUserId, vm);
 
@@ -127,7 +124,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo<Guid> SaveGiveaway(Guid currentUserId, GiveawayViewModel vm)
+        public async Task<OperationResultVo<Guid>> SaveGiveaway(Guid currentUserId, GiveawayViewModel viewModel)
         {
             int pointsEarned = 0;
 
@@ -135,33 +132,27 @@ namespace LuduStack.Application.Services
             {
                 Giveaway model;
 
-                Giveaway existing = giveawayDomainService.GetById(vm.Id);
+                Giveaway existing = await mediator.Query<GetGiveawayByIdQuery, Giveaway>(new GetGiveawayByIdQuery(viewModel.Id));
                 if (existing != null)
                 {
-                    model = mapper.Map(vm, existing);
+                    model = mapper.Map(viewModel, existing);
                 }
                 else
                 {
-                    model = mapper.Map<Giveaway>(vm);
+                    model = mapper.Map<Giveaway>(viewModel);
                 }
 
                 FormatImagesToSave(model);
 
-                if (vm.Id == Guid.Empty)
-                {
-                    giveawayDomainService.Add(model);
-                    vm.Id = model.Id;
+                CommandResult result = await mediator.SendCommand(new SaveGiveawayCommand(currentUserId, model));
 
-                    pointsEarned += gamificationDomainService.ProcessAction(currentUserId, PlatformAction.GiveawayAdd);
-                }
-                else
+                if (!result.Validation.IsValid)
                 {
-                    giveawayDomainService.Update(model);
+                    string message = result.Validation.Errors.FirstOrDefault().ErrorMessage;
+                    return new OperationResultVo<Guid>(model.Id, false, message);
                 }
 
-                unitOfWork.Commit();
-
-                vm.Id = model.Id;
+                pointsEarned += result.PointsEarned;
 
                 return new OperationResultVo<Guid>(model.Id, pointsEarned);
             }
@@ -171,15 +162,11 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo DeleteGiveaway(Guid currentUserId, Guid giveawayId)
+        public async Task<OperationResultVo> DeleteGiveaway(Guid currentUserId, Guid giveawayId)
         {
             try
             {
-                // validate before
-
-                giveawayDomainService.Remove(giveawayId);
-
-                unitOfWork.Commit();
+                await mediator.SendCommand(new DeleteGiveawayCommand(currentUserId, giveawayId));
 
                 return new OperationResultVo(true, "That Giveaway is gone now!");
             }
@@ -224,7 +211,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo EnterGiveaway(Guid currentUserId, GiveawayEnterViewModel vm, string urlReferralBase)
+        public async Task<OperationResultVo> EnterGiveaway(Guid currentUserId, GiveawayEnterViewModel vm, string urlReferralBase)
         {
             try
             {
@@ -232,22 +219,32 @@ namespace LuduStack.Application.Services
 
                 DomainOperationVo<GiveawayParticipant> domainActionPerformed = giveawayDomainService.AddParticipant(vm.GiveawayId, vm.Email, vm.GdprConsent, vm.WantNotifications, myCode, vm.ReferralCode, vm.EntryType);
 
-                unitOfWork.Commit();
+                await unitOfWork.Commit();
 
                 if (domainActionPerformed.Action == DomainActionPerformed.Create)
                 {
                     string urlReferral = string.Format("{0}?referralCode={1}", urlReferralBase, myCode);
 
-                    string shortUrl = shortUrlDomainService.Add(urlReferral, ShortUrlDestinationType.Giveaway);
+                    SaveShortUrlCommand saveShortUrlCommand = new SaveShortUrlCommand(urlReferral, ShortUrlDestinationType.Giveaway);
 
-                    if (!string.IsNullOrWhiteSpace(shortUrl))
+                    CommandResult result = await mediator.SendCommand(saveShortUrlCommand);
+
+                    if (!result.Validation.IsValid)
                     {
-                        giveawayDomainService.UpdateParticipantShortUrl(vm.GiveawayId, vm.Email, shortUrl);
-
-                        unitOfWork.Commit();
+                        string message = result.Validation.Errors.FirstOrDefault().ErrorMessage;
+                        return new OperationResultVo<string>(saveShortUrlCommand.ShortUrl.OriginalUrl, false, message);
                     }
+                    else
+                    {
+                        if (!string.IsNullOrWhiteSpace(saveShortUrlCommand.ShortUrl.NewUrl))
+                        {
+                            giveawayDomainService.UpdateParticipantShortUrl(vm.GiveawayId, vm.Email, saveShortUrlCommand.ShortUrl.NewUrl);
 
-                    return new OperationResultVo<string>(myCode, 0, "You are in!");
+                            await unitOfWork.Commit();
+                        }
+
+                        return new OperationResultVo<string>(myCode, 0, "You are in!");
+                    }
                 }
 
                 return new OperationResultVo<string>(string.Empty, 0, "You are in!");
@@ -440,8 +437,6 @@ namespace LuduStack.Application.Services
                     vm.StatusMessage = "Thank you for participating!";
                     break;
 
-                case GiveawayStatus.Draft:
-                case GiveawayStatus.OpenForEntries:
                 default:
                     vm.StatusMessage = "Enter your email address below:";
                     break;
@@ -489,18 +484,7 @@ namespace LuduStack.Application.Services
 
             if (!string.IsNullOrWhiteSpace(vm.FeaturedImage))
             {
-                if (!editing)
-                {
-                    string imageInTheList = vm.ImageList.FirstOrDefault(x => x.Contains(vm.FeaturedImage));
-                    int index = vm.ImageList.IndexOf(imageInTheList);
-                    if (index >= 0)
-                    {
-                        vm.ImageList.RemoveAt(index);
-                        vm.ImageList.Insert(0, imageInTheList);
-                    }
-
-                    vm.FeaturedImage = UrlFormatter.Image(vm.UserId, ImageType.FeaturedImage, vm.FeaturedImage, 720, 0);
-                }
+                ReplaceImage(vm, editing);
             }
             else if (vm.ImageList != null && vm.ImageList.Any() && !firstIsPlaceholder)
             {
@@ -509,6 +493,22 @@ namespace LuduStack.Application.Services
             else
             {
                 vm.FeaturedImage = UrlFormatter.Image(vm.UserId, ImageType.FeaturedImage, Constants.DefaultGiveawayThumbnail, 720, 0);
+            }
+        }
+
+        private static void ReplaceImage(IGiveawayScreenViewModel vm, bool editing)
+        {
+            if (!editing)
+            {
+                string imageInTheList = vm.ImageList.FirstOrDefault(x => x.Contains(vm.FeaturedImage));
+                int index = vm.ImageList.IndexOf(imageInTheList);
+                if (index >= 0)
+                {
+                    vm.ImageList.RemoveAt(index);
+                    vm.ImageList.Insert(0, imageInTheList);
+                }
+
+                vm.FeaturedImage = UrlFormatter.Image(vm.UserId, ImageType.FeaturedImage, vm.FeaturedImage, 720, 0);
             }
         }
 

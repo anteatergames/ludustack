@@ -1,0 +1,129 @@
+﻿@model BillRateViewModel
+
+@{
+    Layout = null;
+
+    ViewData["Title"] = SharedLocalizer["{0} Bill Rate", (Model.Id == Guid.Empty ? "New" : "Edit")];
+
+    var userGames = ViewBag.UserGames as List<SelectListItem>;
+
+    var isNew = Model.Id == Guid.Empty;
+
+    var timeZoneList = (IEnumerable<SelectListItem>)ViewBag.TimeZones;
+
+    var gameElements = (Dictionary<GameElement, UiInfoAttribute>)ViewData["GameElements"];
+}
+
+<h1 class="sr-only">@ViewData["Title"]</h1>
+
+<div class="box bg-white">
+
+    <div class="box-header with-border">
+        <div class="float-left mr-3">
+            <a asp-area="member" asp-controller="billrate" asp-action="index" class="btn btn-default"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
+        </div>
+        <h3 class="card-title">@SharedLocalizer["You are {0} a Bill Rate", (Model.Id == Guid.Empty ? SharedLocalizer["creating"] : SharedLocalizer["editing"])]</h3>
+        <span class="card-subtitle">
+            @SharedLocalizer["If a Bill Rate for this kind of service already exists the values will just be updated."]
+        </span>
+        @if (!isNew)
+        {
+            <div class="box-tools">
+                <div class="btn-group">
+                    <button type="button" class="btn  btn-box-tool" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-ellipsis-v" aria-hidden="true"></i>
+                    </button>
+                    <div class="dropdown-menu text-capitalize" x-placement="bottom-start" style="position: absolute; transform: translate3d(-67px, 28px, 0px); top: 0px; left: 0px; will-change: transform;">
+                        @if (Model.Permissions.CanDelete)
+                        {
+                            <a class="dropdown-item" asp-area="member" asp-controller="billrate" asp-action="details" asp-route-id="@Model.Id" target="_blank">@SharedLocalizer["view"]</a>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="box-body p-0 px-md-2">
+        <form id="frmBillRateSave" asp-area="member" asp-controller="billrate" asp-action="save" method="post">
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="UserId" />
+            <input type="hidden" asp-for="CreateDate" />
+
+            <div class="row">
+                <div class="col-12 col-md-6 col-lg-6">
+                    <div class="form-group">
+                        <label asp-for="BillRateType" class="col-form-label"></label>
+                        <span asp-description-for="BillRateType" class="col-form-label" />
+                        <select asp-for="BillRateType" asp-items="Html.GetEnumSelectList<BillRateType>()" class="form-control" data-placeholder="@SharedLocalizer["Set the Bill Rate type."]"></select>
+                        <span asp-validation-for="BillRateType" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-6 col-lg-6 conditionalbytype" data-visiblewhentype="99">
+                </div>
+
+                <div class="col-12 col-md-6 col-lg-6 conditionalbytype" data-visiblewhentype="@((int)BillRateType.Visual)" style="display:none">
+                    <div class="form-group">
+                        <label asp-for="ArtStyle" class="col-form-label"></label>
+                        <span asp-description-for="ArtStyle" class="col-form-label" />
+                        <select asp-for="ArtStyle" asp-items="Html.GetEnumSelectList<ArtStyle>()" class="form-control" data-placeholder="@SharedLocalizer["Set the Art Style."]"></select>
+                        <span asp-validation-for="ArtStyle" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-6 col-lg-6 conditionalbytype" data-visiblewhentype="@((int)BillRateType.Audio)" style="display:none">
+                    <div class="form-group">
+                        <label asp-for="SoundStyle" class="col-form-label"></label>
+                        <span asp-description-for="SoundStyle" class="col-form-label" />
+                        <select asp-for="SoundStyle" asp-items="Html.GetEnumSelectList<SoundStyle>()" class="form-control" data-placeholder="@SharedLocalizer["Set the Sound Style."]"></select>
+                        <span asp-validation-for="SoundStyle" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-md-12 col-lg-6">
+                    <div class="form-group">
+                        <label asp-for="GameElement" class="col-form-label"></label>
+                        <span asp-description-for="GameElement" class="col-form-label" />
+                        <select asp-for="GameElement" class="form-control" data-placeholder="@SharedLocalizer["Set the Game Element"]">
+                            @foreach (var element in gameElements)
+                            {
+                                if (element.Key == Model.GameElement)
+                                {
+                                    <option value="@((int)element.Key)" class="conditionalbytype" data-visiblewhentype="@element.Value.Type" selected="selected">@SharedLocalizer[element.Value.Display]</option>
+                                }
+                                else
+                                {
+                                    <option value="@((int)element.Key)" class="conditionalbytype" data-visiblewhentype="@element.Value.Type">@SharedLocalizer[element.Value.Display]</option>
+                                }
+                            }
+                        </select>
+                        <span asp-validation-for="GameElement" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-6 col-lg-3">
+                    <div class="form-group">
+                        <label asp-for="HourPrice" class="col-form-label"></label>
+                        <span asp-description-for="HourPrice" class="col-form-label" />
+                        <input asp-for="HourPrice" type="number" min="1" step=".5" class="form-control" placeholder="@SharedLocalizer["The Hour Price"]" value="@Model.HourPrice.ToString(new System.Globalization.CultureInfo("en-US"))" />
+                        <span asp-validation-for="HourPrice" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-6 col-lg-3">
+                    <div class="form-group">
+                        <label asp-for="HourQuantity" class="col-form-label"></label>
+                        <span asp-description-for="HourQuantity" class="col-form-label" />
+                        <input asp-for="HourQuantity" type="number" min="1" step="1" class="form-control" placeholder="@SharedLocalizer["The Hour Quantity"]" />
+                        <span asp-validation-for="HourQuantity" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-6 offset-md-6 col-xl-4 offset-xl-8 mt-2 mb-2">
+                    <button type="button" id="btnSaveBillRate" class="btn btn-lg btn-primary btn-block" data-error-msg="<i class='fas fa-exclamation-circle' aria-hidden='true'></i> @SharedLocalizer["Something is missing!"]"><i class="fas fa-save" aria-hidden="true"></i> @SharedLocalizer["Save"]</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

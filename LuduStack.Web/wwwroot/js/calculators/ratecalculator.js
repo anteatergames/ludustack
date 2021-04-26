@@ -4,8 +4,6 @@
     var selectors = {};
     var objs = {};
 
-    var canInteract = false;
-
     function setSelectors() {
         selectors.canInteract = '#caninteract';
         selectors.container = '#featurecontainer';
@@ -69,8 +67,6 @@
         cacheObjs();
 
         bindAll();
-
-        canInteract = $(selectors.canInteract).val();
 
         MAINMODULE.Common.BindPopOvers();
 
@@ -157,7 +153,6 @@
         var revisionFactor = (objs.revisionFactor.val() / 100) + 1;
         var revisionDayRate = dayRate * revisionFactor;
         var revisionHourRate = revisionDayRate / 8;
-
 
         var rushFactor = (objs.rushFactor.val() / 100) + 1;
         var rushFactorDayRate = dayRate * rushFactor;

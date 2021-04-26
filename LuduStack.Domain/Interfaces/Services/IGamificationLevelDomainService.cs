@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace LuduStack.Domain.Interfaces.Services
 {
-    public interface IGamificationLevelDomainService : IDomainService<GamificationLevel>
+    public interface IGamificationLevelDomainService
     {
         Task<GamificationLevel> GenerateNew(Guid userId);
 

@@ -11,7 +11,12 @@ namespace LuduStack.Domain.Core.Extensions
         public static bool IsPrimitive(this Type type)
         {
             if (type == typeof(String)) return true;
-            return (type.IsValueType & type.IsPrimitive);
+            return (type.IsValueType && type.IsPrimitive);
+        }
+
+        public static T Copy<T>(this T original)
+        {
+            return (T)Copy((Object)original);
         }
 
         public static Object Copy(this Object originalObject)
@@ -30,7 +35,7 @@ namespace LuduStack.Domain.Core.Extensions
             if (typeToReflect.IsArray)
             {
                 Type arrayType = typeToReflect.GetElementType();
-                if (IsPrimitive(arrayType) == false)
+                if (!IsPrimitive(arrayType))
                 {
                     Array clonedArray = (Array)cloneObject;
                     clonedArray.ForEach((array, indices) => array.SetValue(InternalCopy(clonedArray.GetValue(indices), visited), indices));
@@ -55,17 +60,12 @@ namespace LuduStack.Domain.Core.Extensions
         {
             foreach (FieldInfo fieldInfo in typeToReflect.GetFields(bindingFlags))
             {
-                if (filter != null && filter(fieldInfo) == false) continue;
+                if (filter != null && !filter(fieldInfo)) continue;
                 if (IsPrimitive(fieldInfo.FieldType)) continue;
                 object originalFieldValue = fieldInfo.GetValue(originalObject);
                 object clonedFieldValue = InternalCopy(originalFieldValue, visited);
                 fieldInfo.SetValue(cloneObject, clonedFieldValue);
             }
-        }
-
-        public static T Copy<T>(this T original)
-        {
-            return (T)Copy((Object)original);
         }
     }
 
@@ -97,7 +97,7 @@ namespace LuduStack.Domain.Core.Extensions
     internal class ArrayTraverse
     {
         public int[] Position;
-        private int[] maxLengths;
+        private readonly int[] maxLengths;
 
         public ArrayTraverse(Array array)
         {

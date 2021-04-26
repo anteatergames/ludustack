@@ -114,7 +114,7 @@
                 ACTIVITYFEED.Methods.LoadActivityFeed();
             }
             else if (tabDestination === '#' + objs.tabGames.prop('id')) {
-                loadGameList(objs.Id.val());
+                loadGameList(objs.UserId.val());
             }
             else if (tabDestination === '#' + objs.tabConnections.prop('id')) {
                 loadConnections(objs.UserId.val());

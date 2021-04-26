@@ -131,6 +131,11 @@ namespace LuduStack.Domain.ValueObjects
             Value = item;
         }
 
+        public OperationResultVo(T item, bool success, string message) : base(success, message)
+        {
+            Value = item;
+        }
+
         public OperationResultVo(T item, int pointsEarned, string message) : base(true, message, pointsEarned)
         {
             Value = item;
