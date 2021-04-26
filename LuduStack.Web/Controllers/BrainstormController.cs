@@ -198,13 +198,13 @@ namespace LuduStack.Web.Controllers
         }
 
         [HttpPost("brainstorm/changestatus/{ideaId:guid}")]
-        public IActionResult ChangeStatus(Guid ideaId, BrainstormIdeaStatus selectedStatus)
+        public async Task<IActionResult> ChangeStatus(Guid ideaId, BrainstormIdeaStatus selectedStatus)
         {
             try
             {
-                brainstormAppService.ChangeStatus(CurrentUserId, ideaId, selectedStatus);
+                await brainstormAppService.ChangeStatus(CurrentUserId, ideaId, selectedStatus);
 
-                string url = Url.Action("Index", "Brainstorm", new { area = string.Empty });
+                string url = Url.Action("Details", "Brainstorm", new { area = string.Empty, id = ideaId });
 
                 return Json(new OperationResultRedirectVo(url));
             }

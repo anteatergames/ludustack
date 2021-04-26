@@ -30,11 +30,19 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
             return ideas;
         }
 
-        public async Task<bool> UpdateIdea(BrainstormIdea idea)
+        public async Task<bool> UpdateIdeaDirectly(BrainstormIdea idea)
         {
             ReplaceOneResult result = await GetCollection<BrainstormIdea>().ReplaceOneAsync(x => x.Id == idea.Id, idea);
 
             return result.IsAcknowledged && result.ModifiedCount > 0;
+        }
+
+
+        public async Task UpdateIdea(BrainstormIdea idea)
+        {
+            FilterDefinition<BrainstormIdea> filter = Builders<BrainstormIdea>.Filter.Where(x => x.Id == idea.Id);
+
+            await Context.AddCommand(() => DbSet.ReplaceOneAsync(filter, idea));
         }
 
         public async Task<bool> AddVoteDirectly(BrainstormVote model)

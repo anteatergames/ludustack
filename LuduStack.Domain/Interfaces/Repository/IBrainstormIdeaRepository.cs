@@ -9,7 +9,9 @@ namespace LuduStack.Domain.Interfaces.Repository
     {
         Task<BrainstormIdea> GetIdea(Guid ideaId);
 
-        Task<bool> UpdateIdea(BrainstormIdea idea);
+        Task<bool> UpdateIdeaDirectly(BrainstormIdea idea);
+        
+        Task UpdateIdea(BrainstormIdea idea);
 
         Task<IEnumerable<BrainstormIdea>> GetIdeasBySession(Guid sessionId);
 

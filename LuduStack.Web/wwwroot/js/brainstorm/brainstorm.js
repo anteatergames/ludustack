@@ -63,9 +63,7 @@
 
             $.post(url, data).done(function (response) {
                 if (response.success === true) {
-                    ALERTSYSTEM.ShowSuccessMessage("Awesome!", function () {
-                        MAINMODULE.Ajax.HandleUrlResponse(response);
-                    });
+                    MAINMODULE.Ajax.HandleUrlResponse(response);
                 }
                 else {
                     MAINMODULE.Ajax.HandleErrorResponse(response);
