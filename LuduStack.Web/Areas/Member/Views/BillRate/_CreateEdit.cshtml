@@ -3,7 +3,7 @@
 @{
     Layout = null;
 
-    ViewData["Title"] = SharedLocalizer["{0} BillRate", (Model.Id == Guid.Empty ? "New" : "Edit")];
+    ViewData["Title"] = SharedLocalizer["{0} Bill Rate", (Model.Id == Guid.Empty ? "New" : "Edit")];
 
     var userGames = ViewBag.UserGames as List<SelectListItem>;
 
@@ -90,11 +90,11 @@
                             {
                                 if (element.Key == Model.GameElement)
                                 {
-                                    <option value="@((int)element.Key)" class="conditionalbytype" data-visiblewhentype="@element.Value.Type" selected="selected">@element.Value.Display</option>
+                                    <option value="@((int)element.Key)" class="conditionalbytype" data-visiblewhentype="@element.Value.Type" selected="selected">@SharedLocalizer[element.Value.Display]</option>
                                 }
                                 else
                                 {
-                                    <option value="@((int)element.Key)" class="conditionalbytype" data-visiblewhentype="@element.Value.Type">@element.Value.Display</option>
+                                    <option value="@((int)element.Key)" class="conditionalbytype" data-visiblewhentype="@element.Value.Type">@SharedLocalizer[element.Value.Display]</option>
                                 }
                             }
                         </select>

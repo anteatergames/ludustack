@@ -5,10 +5,10 @@ namespace LuduStack.Web.Models
 {
     public class CostCalculatorViewModel
     {
-        [Display(Name = "Art Style", Description = "How you want the game to look?")]
+        [Display(Name = "Art Style", Description = "How do you want the game to look?")]
         public ArtStyle ArtStyle { get; set; }
 
-        [Display(Name = "Sound Style", Description = "How you want the game to sound?")]
+        [Display(Name = "Sound Style", Description = "How do you want the game to sound?")]
         public SoundStyle SoundStyle { get; set; }
 
         [Range(0, 9999, ErrorMessage = "Zero or more")]

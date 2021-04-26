@@ -48,7 +48,7 @@
             <div class="box-header with-border">
                 <h2 class="card-title">@SharedLocalizer["You are estimating the cost of a videogame"]</h2>
                 <span class="card-subtitle">
-                    @SharedLocalizer["Play around to estimate how much a game would cost."]
+                    @SharedLocalizer["Play around to estimate how much would cost some freelance work for your game."]
                 </span>
             </div>
 
@@ -59,14 +59,14 @@
                             <div class="form-group">
                                 <label asp-for="ArtStyle" class="col-form-label"></label>
                                 <span asp-description-for="ArtStyle" class="col-form-label" />
-                                <select asp-for="ArtStyle" asp-items="artStyles" class="form-control user-entry" data-placeholder="@SharedLocalizer["Select the art style"]"></select>
+                                <select asp-for="ArtStyle" asp-items="artStyles" class="form-control user-entry"></select>
                             </div>
                         </div>
                         <div class="col-12 col-sm-6">
                             <div class="form-group">
                                 <label asp-for="SoundStyle" class="col-form-label"></label>
                                 <span asp-description-for="SoundStyle" class="col-form-label" />
-                                <select asp-for="SoundStyle" asp-items="soundStyles" class="form-control" data-placeholder="@SharedLocalizer["Select the sound style"]"></select>
+                                <select asp-for="SoundStyle" asp-items="soundStyles" class="form-control"></select>
                             </div>
                         </div>
                     </div>
@@ -137,7 +137,7 @@
 
                 <div class="row">
                     <div class="col col-md-6">
-                        <h2>@SharedLocalizer["How much this game would cost (in US Dolars)"]</h2>
+                        <h2>@SharedLocalizer["How much it would cost (in US Dolars)"]</h2>
                     </div>
                 </div>
 
@@ -156,35 +156,35 @@
                             </thead>
                             <tbody>
                                 <tr class="row-concept">
-                                    <td class="text-uppercase">@SharedLocalizer["concepts"]</td>
+                                    <td class="text-uppercase">@SharedLocalizer["Concept Art Pieces"]</td>
                                     <td class="text-right"><span id="txtConceptQuantity">0</span></td>
                                     <td class="text-right"><span id="txtConceptMinimum" class="table-value">-</span></td>
                                     <td class="text-right"><span id="txtConceptAverage" class="table-value">-</span></td>
                                     <td class="text-right"><span id="txtConceptMaximum" class="table-value">-</span></td>
                                 </tr>
                                 <tr class="row-character">
-                                    <td class="text-uppercase">@SharedLocalizer["2d characters"]</td>
+                                    <td class="text-uppercase">@SharedLocalizer["2D Characters"]</td>
                                     <td class="text-right"><span id="txtCharacterQuantity">0</span></td>
                                     <td class="text-right"><span id="txtCharacterMinimum" class="table-value">-</span></td>
                                     <td class="text-right"><span id="txtCharacterAverage" class="table-value">-</span></td>
                                     <td class="text-right"><span id="txtCharacterMaximum" class="table-value">-</span></td>
                                 </tr>
                                 <tr class="row-level">
-                                    <td class="text-uppercase">@SharedLocalizer["2d levels"]</td>
+                                    <td class="text-uppercase">@SharedLocalizer["2D Levels/Maps/Tracks"]</td>
                                     <td class="text-right"><span id="txtLevelQuantity">0</span></td>
                                     <td class="text-right"><span id="txtLevelMinimum" class="table-value">-</span></td>
                                     <td class="text-right"><span id="txtLevelAverage" class="table-value">-</span></td>
                                     <td class="text-right"><span id="txtLevelMaximum" class="table-value">-</span></td>
                                 </tr>
                                 <tr class="row-soundfx">
-                                    <td class="text-uppercase">@SharedLocalizer["sound fx"]</td>
+                                    <td class="text-uppercase">@SharedLocalizer["Sound Effects"]</td>
                                     <td class="text-right"><span id="txtSoundFxQuantity">0</span></td>
                                     <td class="text-right"><span id="txtSoundFxMinimum" class="table-value">-</span></td>
                                     <td class="text-right"><span id="txtSoundFxAverage" class="table-value">-</span></td>
                                     <td class="text-right"><span id="txtSoundFxMaximum" class="table-value">-</span></td>
                                 </tr>
                                 <tr class="row-music">
-                                    <td class="text-uppercase">@SharedLocalizer["songs"]</td>
+                                    <td class="text-uppercase">@SharedLocalizer["Music Tracks"]</td>
                                     <td class="text-right"><span id="txtMusicQuantity">0</span></td>
                                     <td class="text-right"><span id="txtMusicMinimum" class="table-value">-</span></td>
                                     <td class="text-right"><span id="txtMusicAverage" class="table-value">-</span></td>
@@ -210,8 +210,18 @@
                 </div>
 
                 <div class="row">
-                    <div class="col">
-                        <p class="alert alert-warning text-center">@SharedLocalizer["These values come from our database. All LudusStack users can contribute by anonymously publishing their rates so we can keep the values always updated."]</p>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <div class="col-12">
+                            <p class="alert alert-secondary text-center">
+                                @Html.Raw(SharedLocalizer["Are you a freelancer? {0} to help us improve the cost estimates.", string.Format("<a href=\"{0}\">{1}</a>", Url.Action("index", "billrate", new { area = "member" }), SharedLocalizer["Add your rates here"])])
+                            </p>
+                        </div>
+                    }
+                    <div class="col-12">
+                        <p class="alert alert-warning text-center">
+                            @SharedLocalizer["These values come from our database. All LudusStack users can contribute by anonymously publishing their rates so we can keep the values always updated."]
+                        </p>
                     </div>
                 </div>
             </div>

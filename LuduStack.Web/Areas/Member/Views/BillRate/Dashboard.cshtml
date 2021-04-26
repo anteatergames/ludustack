@@ -8,7 +8,7 @@
     }
 
     ViewData["Title"] = SharedLocalizer["Bill Rate"];
-    ViewData["Description"] = SharedLocalizer["Manage Bill Rates"];
+    ViewData["Description"] = SharedLocalizer["Manage your Bill Rates"];
     ViewData["Url"] = ViewBag.BaseUrl + Url.Action("index", "billrate", new { area = "member" });
 }
 
@@ -47,7 +47,7 @@
         </div>
 
         <div class="col">
-            <p class="alert alert-warning text-center">@Html.Raw(SharedLocalizer["The values you put in here are used only under the hood by the {0} and we will not publish them anywhere.", string.Format("<a href=\"{0}\">Cost Calculator</a>", Url.Action("index", "costcalculator", new { area = "tools" }))])</p>
+            <p class="alert alert-warning text-center">@Html.Raw(SharedLocalizer["The values you put in here are used only under the hood by the {0} and we will not publish them anywhere.", string.Format("<a href=\"{0}\">{1}</a>", Url.Action("index", "costcalculator", new { area = "tools" }), SharedLocalizer["Cost Calculator"])])</p>
         </div>
 
         <div class="col-12 mb-3">

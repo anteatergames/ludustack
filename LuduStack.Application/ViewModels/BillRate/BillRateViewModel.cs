@@ -9,10 +9,10 @@ namespace LuduStack.Application.ViewModels.BillRate
         [Display(Name = "Type", Description = "Here you must set what you are billing for.")]
         public BillRateType BillRateType { get; set; }
 
-        [Display(Name = "Art Style", Description = "What kind of visual art is yours? If you can't find an exact match, choose the closest one.")]
+        [Display(Name = "Art Style", Description = "What kind of visual art? If you can't find an exact match, choose the closest one.")]
         public ArtStyle? ArtStyle { get; set; }
 
-        [Display(Name = "Sound Style", Description = "How would you describe your sound style? If you can't find an exact match, choose the closest one.")]
+        [Display(Name = "Sound Style", Description = "How would you describe the sound style? If you can't find an exact match, choose the closest one.")]
         public SoundStyle? SoundStyle { get; set; }
 
         [Required(ErrorMessage = "The Game Element is required!")]
