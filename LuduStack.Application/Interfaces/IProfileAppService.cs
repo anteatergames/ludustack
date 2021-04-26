@@ -51,10 +51,6 @@ namespace LuduStack.Application.Interfaces
 
         OperationResultVo GetConnectionsByUserId(Guid userId);
 
-        void SetProfileCache(Guid key, ProfileViewModel viewModel);
-
-        Task<ProfileViewModel> GetUserProfileWithCache(Guid userId);
-
         Task<UserProfileEssentialVo> GetEssentialUserProfileWithCache(Guid userId);
 
         #endregion Connections

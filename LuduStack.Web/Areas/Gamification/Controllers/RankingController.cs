@@ -39,7 +39,7 @@ namespace LuduStack.Web.Areas.Gamification.Controllers
 
             foreach (RankingViewModel obj in objs)
             {
-                Application.ViewModels.User.ProfileViewModel profile = await profileAppService.GetUserProfileWithCache(obj.UserId);
+                UserProfileEssentialVo profile = await profileAppService.GetEssentialUserProfileWithCache(obj.UserId);
 
                 if (profile != null)
                 {

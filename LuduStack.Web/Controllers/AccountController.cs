@@ -821,11 +821,11 @@ namespace LuduStack.Web.Controllers
         private async Task SetCache(ApplicationUser user)
         {
             Guid key = new Guid(user.Id);
-            ProfileViewModel cachedProfile = await profileAppService.GetUserProfileWithCache(key);
+            UserProfileEssentialVo cachedProfile = await profileAppService.GetEssentialUserProfileWithCache(key);
 
             if (cachedProfile == null)
             {
-                ProfileViewModel profile = await profileAppService.GetByUserId(key, ProfileType.Personal);
+                UserProfileEssentialVo profile = await profileAppService.GetEssentialUserProfileWithCache(key);
                 if (profile != null)
                 {
                     profileAppService.SetProfileCache(key, profile);

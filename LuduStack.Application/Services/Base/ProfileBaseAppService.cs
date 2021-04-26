@@ -40,20 +40,6 @@ namespace LuduStack.Application.Services
             cacheService.Set<string, UserProfileEssentialVo>(FormatProfileCacheId(userId), value);
         }
 
-        public void SetProfileCache(Guid userId, ProfileViewModel viewModel)
-        {
-            UserProfile model = mapper.Map<UserProfile>(viewModel);
-
-            SetProfileCache(viewModel.UserId, model);
-        }
-
-        private UserProfile GetProfileFromCache(Guid userId)
-        {
-            UserProfile fromCache = cacheService.Get<string, UserProfile>(FormatProfileCacheId(userId));
-
-            return fromCache;
-        }
-
         private UserProfileEssentialVo GetEssentialProfileFromCache(Guid userId)
         {
             UserProfileEssentialVo fromCache = cacheService.Get<string, UserProfileEssentialVo>(FormatProfileCacheId(userId));
@@ -114,22 +100,6 @@ namespace LuduStack.Application.Services
             }
 
             return profiles;
-        }
-
-        public async Task<ProfileViewModel> GetUserProfileWithCache(Guid userId)
-        {
-            UserProfile model = GetProfileFromCache(userId);
-
-            if (model == null)
-            {
-                IEnumerable<UserProfile> allUserProfiles = await mediator.Query<GetUserProfileByUserIdQuery, IEnumerable<UserProfile>>(new GetUserProfileByUserIdQuery(userId));
-
-                model = allUserProfiles.FirstOrDefault();
-            }
-
-            ProfileViewModel viewModel = mapper.Map<ProfileViewModel>(model);
-
-            return viewModel;
         }
 
         public async Task<UserProfileEssentialVo> GetEssentialUserProfileWithCache(Guid userId)
