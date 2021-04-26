@@ -318,7 +318,7 @@ namespace LuduStack.Application.Services
                     await mediator.SendCommand(new SaveUserBadgeCommand(currentUserId, BadgeType.Babel, projectId));
                 }
 
-                UserProfile profile = await GetCachedProfileByUserId(entry.UserId);
+                UserProfileEssentialVo profile = await GetCachedEssentialProfileByUserId(entry.UserId);
                 vm.AuthorName = profile.Name;
 
                 return new OperationResultVo<LocalizationEntryViewModel>(vm, pointsEarned, "Translation saved!");
@@ -367,7 +367,7 @@ namespace LuduStack.Application.Services
 
                 foreach (LocalizationTermViewModel entry in vms)
                 {
-                    UserProfile profile = await GetCachedProfileByUserId(entry.UserId);
+                    UserProfileEssentialVo profile = await GetCachedEssentialProfileByUserId(entry.UserId);
                     entry.AuthorName = profile.Name;
                     entry.AuthorPicture = UrlFormatter.ProfileImage(entry.UserId);
                 }
@@ -531,7 +531,7 @@ namespace LuduStack.Application.Services
 
                 foreach (Guid contributorId in contributorsIds)
                 {
-                    UserProfile profile = await GetCachedProfileByUserId(contributorId);
+                    UserProfileEssentialVo profile = await GetCachedEssentialProfileByUserId(contributorId);
                     dict.Add(new KeyValuePair<Guid, string>(contributorId, profile.Name));
                 }
 
@@ -649,7 +649,7 @@ namespace LuduStack.Application.Services
             SetBasePermissions(currentUserId, vm);
         }
 
-        private async Task SetContributors(Localization model, TranslationStatsViewModel vm, IEnumerable<UserProfileEssentialVo> userProfiles)
+        private Task SetContributors(Localization model, TranslationStatsViewModel vm, IEnumerable<UserProfileEssentialVo> userProfiles)
         {
             IEnumerable<IGrouping<Guid, LocalizationEntry>> contributors = model.Entries.GroupBy(x => x.UserId);
 
@@ -666,6 +666,8 @@ namespace LuduStack.Application.Services
             }
 
             vm.Contributors = vm.Contributors.OrderByDescending(x => x.EntryCount).ToList();
+
+            return Task.CompletedTask;
         }
 
         private void SetPercentage(Localization model, TranslationStatsViewModel vm)

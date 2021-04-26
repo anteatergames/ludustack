@@ -61,31 +61,6 @@ namespace LuduStack.Application.Services
             return fromCache;
         }
 
-        protected async Task<UserProfile> GetCachedProfileByUserId(Guid userId)
-        {
-            return await GetCachedProfileByUserId(userId, false);
-        }
-
-        protected async Task<UserProfile> GetCachedProfileByUserId(Guid userId, bool noCache)
-        {
-            UserProfile profile = noCache ? null : GetProfileFromCache(userId);
-
-            if (profile == null)
-            {
-                IEnumerable<UserProfile> allUserProfiles = await mediator.Query<GetUserProfileByUserIdQuery, IEnumerable<UserProfile>>(new GetUserProfileByUserIdQuery(userId));
-
-                UserProfile profileFromDb = allUserProfiles.FirstOrDefault();
-
-                if (profileFromDb != null)
-                {
-                    SetProfileCache(userId, profileFromDb);
-                    profile = profileFromDb;
-                }
-            }
-
-            return profile;
-        }
-
         protected async Task<UserProfileEssentialVo> GetCachedEssentialProfileByUserId(Guid userIds)
         {
             List<UserProfileEssentialVo> profiles = await GetCachedEssentialProfilesByUserIds(new List<Guid> { userIds }, false);

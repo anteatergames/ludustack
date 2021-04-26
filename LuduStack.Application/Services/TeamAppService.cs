@@ -220,7 +220,7 @@ namespace LuduStack.Application.Services
                 Team newTeam = teamDomainService.GenerateNewTeam(currentUserId);
 
                 TeamViewModel newVm = mapper.Map<TeamViewModel>(newTeam);
-                UserProfile myProfile = await GetCachedProfileByUserId(currentUserId);
+                UserProfileEssentialVo myProfile = await GetCachedEssentialProfileByUserId(currentUserId);
 
                 TeamMemberViewModel me = newVm.Members.FirstOrDefault(x => x.UserId == currentUserId);
                 me.Name = myProfile.Name;
@@ -395,7 +395,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        private async Task SetUiData(Guid userId, TeamViewModel team, IEnumerable<UserProfileEssentialVo> profiles)
+        private Task SetUiData(Guid userId, TeamViewModel team, IEnumerable<UserProfileEssentialVo> profiles)
         {
             bool userIsLeader = team.Members.Any(x => x.Leader && x.UserId == userId);
 
@@ -415,6 +415,8 @@ namespace LuduStack.Application.Services
             {
                 team.Candidate.ProfileImage = UrlFormatter.ProfileImage(team.Candidate.UserId);
             }
+
+            return Task.CompletedTask;
         }
     }
 }

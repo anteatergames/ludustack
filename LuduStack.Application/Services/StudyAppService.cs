@@ -44,7 +44,7 @@ namespace LuduStack.Application.Services
                 {
                     if (!finalList.Any(x => x.UserId == mentorId))
                     {
-                        UserProfile profile = await GetCachedProfileByUserId(mentorId);
+                        UserProfileEssentialVo profile = await GetCachedEssentialProfileByUserId(mentorId);
 
                         if (profile != null)
                         {
@@ -78,7 +78,7 @@ namespace LuduStack.Application.Services
                 {
                     if (!finalList.Any(x => x.UserId == studentId))
                     {
-                        UserProfile profile = await GetCachedProfileByUserId(studentId);
+                        UserProfileEssentialVo profile = await GetCachedEssentialProfileByUserId(studentId);
 
                         if (profile != null)
                         {
@@ -345,16 +345,6 @@ namespace LuduStack.Application.Services
         #endregion Course
 
         #region Private Methods
-
-        private async Task SetAuthorDetails(CourseViewModel vm)
-        {
-            UserProfile authorProfile = await GetCachedProfileByUserId(vm.UserId);
-            if (authorProfile != null)
-            {
-                vm.AuthorPicture = UrlFormatter.ProfileImage(vm.UserId, 40);
-                vm.AuthorName = authorProfile.Name;
-            }
-        }
 
         private void SetPermissions(Guid currentUserId, CourseViewModel vm)
         {
