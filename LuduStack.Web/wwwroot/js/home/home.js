@@ -13,6 +13,7 @@
     var defaultTxtPostContentHeight = 0;
     var selectors = {};
     var objs = {};
+    var iconPreviousClass = '';
 
     function setSelectors() {
         selectors.divCounters = '#divCounters';
@@ -31,6 +32,7 @@
         selectors.btnPostAddGame = '#btnPostAddGame';
         selectors.btnPostAddImage = '#btnPostAddImage';
         selectors.btnPostAddPoll = '#btnPostAddPoll';
+        selectors.btnSendSimpleContent = '#btnSendSimpleContent';
     }
 
     function cacheObjects() {
@@ -46,6 +48,7 @@
         objs.btnPostAddGame = $(selectors.btnPostAddGame);
         objs.btnPostAddImage = $(selectors.btnPostAddImage);
         objs.btnPostAddPoll = $(selectors.btnPostAddPoll);
+        objs.sendIcon = $(`${selectors.btnSendSimpleContent} i`);
     }
 
     function init() {
@@ -181,11 +184,15 @@
     }
 
     function bindSendSimpleContent() {
-        $('.content').on('click', '#btnSendSimpleContent', function () {
+        $('.content').on('click', selectors.btnSendSimpleContent, function () {
             var btn = $(this);
+            iconPreviousClass = objs.sendIcon.attr('class');
+            objs.sendIcon.attr('class', 'fas fa-2x fa-cog fa-spin');
+
             var txtArea = btn.closest('.simplecontentpostarea').find('.posttextarea');
             var text = txtArea.val().replace(/\n/g, '<br>\n');
             if (text.length === 0) {
+                icon.attr('class', iconPreviousClass);
                 ALERTSYSTEM.ShowWarningMessage("You must type a text to post!");
                 return false;
             }
@@ -383,6 +390,7 @@
     function sendSimpleContent(json) {
         return $.post("/content/post", json)
             .done(function (response) {
+                objs.sendIcon.attr('class', iconPreviousClass);
                 if (!response.success) {
                     ALERTSYSTEM.ShowWarningMessage(response.message);
                 }
