@@ -4,6 +4,7 @@ using LuduStack.Infra.Data.MongoDb.Interfaces;
 using LuduStack.Infra.Data.MongoDb.Repository.Base;
 using MongoDB.Driver;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -81,6 +82,18 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
         public PollVote GetVote(Guid userId, Guid pollId)
         {
             return DbSet.Find(x => x.Id == pollId).First().Votes.SingleOrDefault(x => x.UserId == userId);
+        }
+
+
+        public async Task<IEnumerable<Poll>> GetPollsByUserContentIds(List<Guid> userContentIds)
+        {
+            FindOptions<Poll> findOptions = new FindOptions<Poll>();
+
+            FilterDefinition<Poll> filter = new ExpressionFilterDefinition<Poll>(x => x.UserContentId.HasValue && userContentIds.Contains(x.UserContentId.Value));
+
+            List<Poll> polls = await (await DbSet.FindAsync(filter, findOptions)).ToListAsync();
+
+            return polls;
         }
     }
 }

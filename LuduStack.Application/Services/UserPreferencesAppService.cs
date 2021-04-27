@@ -80,5 +80,12 @@ namespace LuduStack.Application.Services
 
             return vm;
         }
+
+        public async Task<List<SupportedLanguage>> GetLanguagesByUserId(Guid userId)
+        {
+            IEnumerable<SupportedLanguage> list = await mediator.Query<GetUserLanguagesByUserIdQuery, IEnumerable<SupportedLanguage>>(new GetUserLanguagesByUserIdQuery(userId));
+
+            return list.ToList();
+        }
     }
 }
