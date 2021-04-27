@@ -3,10 +3,10 @@
 [![License](https://img.shields.io/github/license/anteatergames/indievisible)](https://github.com/anteatergames/ludustack/blob/master/LICENSE)
 
 
-| Name|Deploy|Code Factor|Better Code|
-|:-|:-:|:-:|:-:|
-|development|[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?branch=development&project=anteatergames_ludustack&metric=alert_status)](https://sonarcloud.io/dashboard?id=anteatergames_ludustack&branch=development)|[![CodeFactor](https://www.codefactor.io/repository/github/anteatergames/ludustack/badge)](https://www.codefactor.io/repository/github/anteatergames/ludustack)|[![BCH compliance](https://bettercodehub.com/edge/badge/anteatergames/indievisible?branch=development)](https://bettercodehub.com/)|
-|master|[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?branch=master&project=anteatergames_ludustack&metric=alert_status)](https://sonarcloud.io/dashboard?id=anteatergames_ludustack&branch=master)|[![CodeFactor](https://www.codefactor.io/repository/github/anteatergames/ludustack/badge)](https://www.codefactor.io/repository/github/anteatergames/ludustack)|[![BCH compliance](https://bettercodehub.com/edge/badge/anteatergames/indievisible?branch=master)](https://bettercodehub.com/)|
+| Name|Deploy|Code Factor|Better Code|Codacy|
+|:-|:-:|:-:|:-:|:-:|
+|development|[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?branch=development&project=anteatergames_ludustack&metric=alert_status)](https://sonarcloud.io/dashboard?id=anteatergames_ludustack&branch=development)|[![CodeFactor](https://www.codefactor.io/repository/github/anteatergames/ludustack/badge)](https://www.codefactor.io/repository/github/anteatergames/ludustack)|
+|master|[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?branch=master&project=anteatergames_ludustack&metric=alert_status)](https://sonarcloud.io/dashboard?id=anteatergames_ludustack&branch=master)|[![CodeFactor](https://www.codefactor.io/repository/github/anteatergames/ludustack/badge)](https://www.codefactor.io/repository/github/anteatergames/ludustack)|[![BCH compliance](https://bettercodehub.com/edge/badge/anteatergames/indievisible?branch=master)](https://bettercodehub.com/)|[![Codacy Badge](https://app.codacy.com/project/badge/Grade/d3db41f42938477499a591178186d3da)](https://www.codacy.com/gh/anteatergames/ludustack/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=anteatergames/ludustack&amp;utm_campaign=Badge_Grade)|
 
 ## Table Of Contents
 - [Technical Specifications](#technical-specifications)
