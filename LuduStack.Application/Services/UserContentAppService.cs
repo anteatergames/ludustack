@@ -331,7 +331,7 @@ namespace LuduStack.Application.Services
 
         private PollViewModel SetPoll(Guid currentUserId, Guid contentId)
         {
-            return SetPoll(currentUserId, contentId);
+            return SetPoll(currentUserId, contentId, null);
         }
 
         private PollViewModel SetPoll(Guid currentUserId, Guid contentId, IEnumerable<Poll> polls)
