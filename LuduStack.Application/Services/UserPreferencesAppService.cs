@@ -63,22 +63,42 @@ namespace LuduStack.Application.Services
 
         public async Task<UserPreferencesViewModel> GetByUserId(Guid userId)
         {
-            IEnumerable<UserPreferences> list = await mediator.Query<GetUserPreferencesByUserIdQuery, IEnumerable<UserPreferences>>(new GetUserPreferencesByUserIdQuery(userId));
+            UserPreferences model = CreateEmptyPreferences(userId);
 
-            UserPreferences model = list.FirstOrDefault();
-
-            if (model == null)
+            if (userId != Guid.Empty)
             {
-                model = new UserPreferences
+                IEnumerable<UserPreferences> list = await mediator.Query<GetUserPreferencesByUserIdQuery, IEnumerable<UserPreferences>>(new GetUserPreferencesByUserIdQuery(userId));
+
+                if (list.Any())
                 {
-                    UserId = userId,
-                    UiLanguage = SupportedLanguage.English
-                };
+                    model = list.FirstOrDefault();
+                }
             }
 
             UserPreferencesViewModel vm = mapper.Map<UserPreferencesViewModel>(model);
 
             return vm;
+        }
+
+        public async Task<List<SupportedLanguage>> GetLanguagesByUserId(Guid userId)
+        {
+            if (userId == Guid.Empty)
+            {
+                return new List<SupportedLanguage>();
+            }
+
+            IEnumerable<SupportedLanguage> list = await mediator.Query<GetUserLanguagesByUserIdQuery, IEnumerable<SupportedLanguage>>(new GetUserLanguagesByUserIdQuery(userId));
+
+            return list.ToList();
+        }
+
+        private static UserPreferences CreateEmptyPreferences(Guid userId)
+        {
+            return new UserPreferences
+            {
+                UserId = userId,
+                UiLanguage = SupportedLanguage.English
+            };
         }
     }
 }

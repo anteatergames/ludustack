@@ -1,5 +1,6 @@
 ﻿using LuduStack.Domain.Models;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -22,5 +23,7 @@ namespace LuduStack.Domain.Interfaces.Repository
         void RemoveByContentId(Guid contentId);
 
         PollVote GetVote(Guid userId, Guid pollId);
+
+        Task<IEnumerable<Poll>> GetPollsByUserContentIds(List<Guid> userContentIds);
     }
 }

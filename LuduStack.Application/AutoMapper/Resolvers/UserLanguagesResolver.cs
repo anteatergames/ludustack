@@ -29,12 +29,12 @@ namespace LuduStack.Application.AutoMapper.Resolvers
     {
         public List<SupportedLanguage> Resolve(UserPreferences source, UserPreferencesViewModel destination, List<SupportedLanguage> destMember, ResolutionContext context)
         {
-            string[] platforms = (source.ContentLanguages ?? string.Empty)
+            string[] languages = (source.ContentLanguages ?? string.Empty)
                 .Split(new Char[] { '|' });
 
-            IEnumerable<SupportedLanguage> platformsConverted = platforms.Where(x => !string.IsNullOrWhiteSpace(x)).Select(x => (SupportedLanguage)Enum.Parse(typeof(SupportedLanguage), x));
+            IEnumerable<SupportedLanguage> languagesConverted = languages.Where(x => !string.IsNullOrWhiteSpace(x)).Select(x => (SupportedLanguage)Enum.Parse(typeof(SupportedLanguage), x));
 
-            return platformsConverted.ToList();
+            return languagesConverted.ToList();
         }
     }
 }

@@ -4,7 +4,6 @@ using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels;
 using LuduStack.Application.ViewModels.Content;
 using LuduStack.Application.ViewModels.Jobs;
-using LuduStack.Application.ViewModels.UserPreferences;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Core.Extensions;
 using LuduStack.Infra.CrossCutting.Identity.Models;
@@ -39,7 +38,7 @@ namespace LuduStack.Web.ViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync(int count, Guid? gameId, Guid? userId, Guid? oldestId, DateTime? oldestDate, bool? articlesOnly)
         {
-            UserPreferencesViewModel preferences = await _userPreferencesAppService.GetByUserId(CurrentUserId);
+            List<SupportedLanguage> userLanguages = await _userPreferencesAppService.GetLanguagesByUserId(CurrentUserId);
 
             ActivityFeedRequestViewModel vm = new ActivityFeedRequestViewModel
             {
@@ -47,7 +46,7 @@ namespace LuduStack.Web.ViewComponents
                 Count = count,
                 GameId = gameId,
                 UserId = userId,
-                Languages = preferences.Languages,
+                Languages = userLanguages,
                 OldestId = oldestId,
                 OldestDate = oldestDate,
                 ArticlesOnly = articlesOnly

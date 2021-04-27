@@ -41,13 +41,21 @@ ul.poll {
         margin: 0;
     }
 
+    ul.poll .notvoted label {
+        margin: -1px;
+    }
+
+    ul.poll .voted label {
+        margin: 1px;
+    }
+
     ul.poll.cannotvote label {
         cursor: auto;
     }
 
     ul.poll label span {
         position: absolute;
-        top: 7px;
+        top: 6px;
         left: 35px;
     }
 
@@ -88,4 +96,6 @@ ul.poll {
 
     ul.poll .perc-number {
         float: right;
+        line-height: 23px;
+        margin-right: 5px;
     }

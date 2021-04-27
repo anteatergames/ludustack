@@ -293,7 +293,6 @@ namespace LuduStack.Web.Middlewares
                 result = await ContentAppService.GetAllIds(Guid.Empty);
             }
 
-
             if (!string.IsNullOrWhiteSpace(pattern))
             {
                 if (result != null && result.Success)

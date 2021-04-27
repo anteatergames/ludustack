@@ -242,6 +242,10 @@ namespace LuduStack.Application.Services
 
                 IEnumerable<UserProfileEssentialVo> userProfiles = await mediator.Query<GetBasicUserProfileDataByUserIdsQuery, IEnumerable<UserProfileEssentialVo>>(new GetBasicUserProfileDataByUserIdsQuery(finalUserIdList));
 
+                IEnumerable<Guid> userContentIds = viewModels.Select(x => x.Id);
+                IEnumerable<Poll> polls = await mediator.Query<GetPollsByUserContentIdsQuery, IEnumerable<Poll>>(new GetPollsByUserContentIdsQuery(userContentIds));
+
+
                 foreach (UserContentViewModel item in viewModels)
                 {
                     item.CreateDate = item.CreateDate.ToLocalTime();
@@ -280,7 +284,7 @@ namespace LuduStack.Application.Services
 
                     item.CommentCount = item.Comments.Count;
 
-                    item.Poll = SetPoll(vm.CurrentUserId, item.Id);
+                    item.Poll = SetPoll(vm.CurrentUserId, item.Id, polls);
 
                     LoadAuthenticatedData(vm.CurrentUserId, item, userProfiles);
 
@@ -327,8 +331,22 @@ namespace LuduStack.Application.Services
 
         private PollViewModel SetPoll(Guid currentUserId, Guid contentId)
         {
+            return SetPoll(currentUserId, contentId, null);
+        }
+
+        private PollViewModel SetPoll(Guid currentUserId, Guid contentId, IEnumerable<Poll> polls)
+        {
             PollViewModel pollVm = null;
-            Poll poll = pollDomainService.GetByUserContentId(contentId);
+            Poll poll = null;
+
+            if (polls != null)
+            {
+                poll = polls.FirstOrDefault(x => x.UserContentId == contentId);
+            }
+            else
+            {
+                poll = pollDomainService.GetByUserContentId(contentId);
+            }
 
             if (poll != null)
             {

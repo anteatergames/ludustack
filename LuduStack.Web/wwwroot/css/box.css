@@ -70,7 +70,7 @@
         color: #f9f9f9;
     }
 
-        .small-box:hover .icon {
+        .small-box.animated:hover .icon {
             font-size: 78px;
         }
 
