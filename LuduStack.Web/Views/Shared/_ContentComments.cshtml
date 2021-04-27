@@ -10,7 +10,7 @@
         {
             <span class="badge badge-dark lh-10">@SharedLocalizer[Model.Language.ToString()]</span>
         }
-        <span class="text-muted float-right lh-10@(User.Identity.IsAuthenticated ? String.Empty : " needlogin")" data-msg-id="msgNeedLoginToLikeAndComment"><span class="like-count lh-10">@Model.LikeCount</span> @SharedLocalizer["Likes"] - <span class="comment-count lh-10">@Model.CommentCount</span> @SharedLocalizer["Comments"]</span>
+        <span class="text-muted float-right p-1 lh-10@(User.Identity.IsAuthenticated ? String.Empty : " needlogin")" data-msg-id="msgNeedLoginToLikeAndComment"><span class="like-count lh-10">@Model.LikeCount</span> @SharedLocalizer["Likes"] - <span class="comment-count lh-10">@Model.CommentCount</span> @SharedLocalizer["Comments"]</span>
     </div>
 
     @if (User.Identity.IsAuthenticated)
