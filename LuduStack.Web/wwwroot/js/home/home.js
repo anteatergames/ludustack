@@ -344,6 +344,7 @@
 
     function hidePostModal() {
         postModalActive = false;
+        objs.btnPostAddImage.removeClass('btn-warning');
         $('.commentmodal .modal').css('padding-right', '');
         $('#modalPost').modal('hide');
         $('#modalPost').css('display', '');
