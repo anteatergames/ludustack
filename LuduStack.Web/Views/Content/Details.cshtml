@@ -70,6 +70,7 @@
         "@@type":"SocialMediaPosting",
         "@@id":"@(ViewData["Url"])",
         "headline":"@(JavaScriptEncoder.Default.Encode(Model.Title))",
+        "image": "@(Model.FeaturedImage.Contains("youtu") ? ViewBag.BaseUrl + "/images/og/img_facebook600x315.png" : ViewBag.BaseUrl + Model.FeaturedImage)",
         "image": "@(ViewBag.BaseUrl + Model.FeaturedImage)",
         "datePublished": "@Model.CreateDate.ToString("yyyy-MM-dd")",
         "author":{
