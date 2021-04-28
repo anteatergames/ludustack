@@ -261,9 +261,9 @@ namespace LuduStack.Web.Controllers
 
         #endregion Content interactions
 
-        public Task<IActionResult> Feed(Guid? gameId, Guid? userId, Guid? oldestId, DateTime? oldestDate, bool? articlesOnly)
+        public Task<IActionResult> Feed(Guid? gameId, Guid? userId, Guid? singleContentId, Guid? oldestId, DateTime? oldestDate, bool? articlesOnly, int? count)
         {
-            ViewComponentResult component = ViewComponent("Feed", new { count = 10, gameId, userId, oldestId, oldestDate, articlesOnly });
+            ViewComponentResult component = ViewComponent("Feed", new { count, gameId, userId, singleContentId, oldestId, oldestDate, articlesOnly });
 
             return Task.FromResult((IActionResult)component);
         }

@@ -14,16 +14,18 @@ namespace LuduStack.Domain.Messaging.Queries.UserContent
     {
         public Guid? GameId { get; }
         public Guid? UserId { get; }
+        public Guid? SingleContentId { get; }
         public List<SupportedLanguage> Languages { get; }
         public Guid? OldestId { get; }
         public DateTime? OldestDate { get; }
         public bool? ArticlesOnly { get; }
         public int Count { get; }
 
-        public GetActivityFeedQuery(Guid? gameId, Guid? userId, List<SupportedLanguage> languages, Guid? oldestId, DateTime? oldestDate, bool? articlesOnly, int count)
+        public GetActivityFeedQuery(Guid? gameId, Guid? userId, Guid? singleContentId, List<SupportedLanguage> languages, Guid? oldestId, DateTime? oldestDate, bool? articlesOnly, int count)
         {
             GameId = gameId;
             UserId = userId;
+            SingleContentId = singleContentId;
             Languages = languages;
             OldestId = oldestId;
             OldestDate = oldestDate;
@@ -47,38 +49,46 @@ namespace LuduStack.Domain.Messaging.Queries.UserContent
         {
             IQueryable<Models.UserContent> allModels = userContentRepository.Get();
 
-            allModels = allModels.Where(x => x.PublishDate <= DateTime.Now);
-
-            List<Guid> featuredIds = featuredContentRepository.Get(x => x.Active).Select(x => x.UserContentId).ToList();
-
-            if (featuredIds.Any())
+            if (request.SingleContentId.HasValue)
             {
-                allModels = allModels.Where(x => !featuredIds.Contains(x.Id));
+                allModels = allModels.Where(x => x.Id == request.SingleContentId.Value);
             }
-
-            if (request.ArticlesOnly.HasValue && request.ArticlesOnly.Value)
+            else
             {
-                allModels = allModels.Where(x => !string.IsNullOrEmpty(x.Title) && !string.IsNullOrEmpty(x.Introduction) && !string.IsNullOrEmpty(x.FeaturedImage) && x.Content.Length > 50);
-            }
 
-            if (request.UserId.HasValue && request.UserId != Guid.Empty)
-            {
-                allModels = allModels.Where(x => x.UserId != Guid.Empty && x.UserId == request.UserId);
-            }
+                allModels = allModels.Where(x => x.PublishDate <= DateTime.Now);
 
-            if (request.GameId.HasValue && request.GameId != Guid.Empty)
-            {
-                allModels = allModels.Where(x => x.GameId != Guid.Empty && x.GameId == request.GameId);
-            }
+                List<Guid> featuredIds = featuredContentRepository.Get(x => x.Active).Select(x => x.UserContentId).ToList();
 
-            if (request.Languages != null && request.Languages.Any())
-            {
-                allModels = allModels.Where(x => x.Language == 0 || request.Languages.Contains(x.Language));
-            }
+                if (featuredIds.Any())
+                {
+                    allModels = allModels.Where(x => !featuredIds.Contains(x.Id));
+                }
 
-            if (request.OldestDate.HasValue)
-            {
-                allModels = allModels.Where(x => x.CreateDate <= request.OldestDate && x.Id != request.OldestId);
+                if (request.ArticlesOnly.HasValue && request.ArticlesOnly.Value)
+                {
+                    allModels = allModels.Where(x => !string.IsNullOrEmpty(x.Title) && !string.IsNullOrEmpty(x.Introduction) && !string.IsNullOrEmpty(x.FeaturedImage) && x.Content.Length > 50);
+                }
+
+                if (request.UserId.HasValue && request.UserId != Guid.Empty)
+                {
+                    allModels = allModels.Where(x => x.UserId != Guid.Empty && x.UserId == request.UserId);
+                }
+
+                if (request.GameId.HasValue && request.GameId != Guid.Empty)
+                {
+                    allModels = allModels.Where(x => x.GameId != Guid.Empty && x.GameId == request.GameId);
+                }
+
+                if (request.Languages != null && request.Languages.Any())
+                {
+                    allModels = allModels.Where(x => x.Language == 0 || request.Languages.Contains(x.Language));
+                }
+
+                if (request.OldestDate.HasValue)
+                {
+                    allModels = allModels.Where(x => x.CreateDate <= request.OldestDate && x.Id != request.OldestId);
+                }
             }
 
             IOrderedQueryable<Models.UserContent> orderedList = allModels.OrderByDescending(x => x.PublishDate);

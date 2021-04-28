@@ -36,16 +36,18 @@ namespace LuduStack.Web.ViewComponents
             _userPreferencesAppService = userPreferencesAppService;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(int count, Guid? gameId, Guid? userId, Guid? oldestId, DateTime? oldestDate, bool? articlesOnly)
+        public async Task<IViewComponentResult> InvokeAsync(int? count, Guid? gameId, Guid? userId, Guid? singleContentId, Guid? oldestId, DateTime? oldestDate, bool? articlesOnly)
         {
+            int defaultCount = 10;
             List<SupportedLanguage> userLanguages = await _userPreferencesAppService.GetLanguagesByUserId(CurrentUserId);
 
             ActivityFeedRequestViewModel vm = new ActivityFeedRequestViewModel
             {
                 CurrentUserId = CurrentUserId,
-                Count = count,
+                Count = count ?? defaultCount,
                 GameId = gameId,
                 UserId = userId,
+                SingleContentId = singleContentId,
                 Languages = userLanguages,
                 OldestId = oldestId,
                 OldestDate = oldestDate,
@@ -72,6 +74,8 @@ namespace LuduStack.Web.ViewComponents
             ViewData["IsMorePosts"] = oldestId.HasValue;
 
             ViewData["UserId"] = userId;
+
+            ViewData["AddMoreButton"] = !singleContentId.HasValue && model.Count() >= defaultCount;
 
             return await Task.Run(() => View(model));
         }

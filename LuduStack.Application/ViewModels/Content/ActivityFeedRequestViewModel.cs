@@ -12,6 +12,8 @@ namespace LuduStack.Application.ViewModels.Content
 
         public Guid? UserId { get; set; }
 
+        public Guid? SingleContentId { get; set; }
+
         public List<SupportedLanguage> Languages { get; set; }
 
         public Guid? OldestId { get; set; }
