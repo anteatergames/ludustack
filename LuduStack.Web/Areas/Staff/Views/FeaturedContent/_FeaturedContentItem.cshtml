@@ -1,0 +1,33 @@
+﻿@model UserContentToBeFeaturedViewModel
+
+@{
+    var htmlYesNo = @"<i class="" text-{0} fa fa-2x fa-{1}-circle"" data-toggle=""tooltip"" data-placement=""top"" title=""{2}"" aria-hidden=""true"">&nbsp;</i>";
+}
+
+<tr data-id="@Model.Id" data-featureid="@Model.CurrentFeatureId">
+    @if (Model.IsFeatured)
+    {
+        <td class="text-left">@Model.Title</td>
+    }
+    else
+    {
+        <td class="text-left">@Model.Title</td>
+        <td>@Html.Raw(String.Format(htmlYesNo, (Model.TitleCompliant ? "green" : "red"), (Model.TitleCompliant ? "check" : "times"), String.Format("({0} characters)", Model.TitleLength)))</td>
+        <td style="max-width:10px">@Html.Raw(String.Format(htmlYesNo, (Model.IntroCompliant ? "green" : "red"), (Model.IntroCompliant ? "check" : "times"), String.Format("{0} ({1} characters)", Model.Introduction, Model.IntroLength)))</td>
+        <td style="max-width:10px">@Html.Raw(String.Format(htmlYesNo, (Model.ContentCompliant ? "green" : "red"), (Model.ContentCompliant ? "check" : "times"), String.Format("({0} characters)", Model.ContentLength)))</td>
+    }
+    <td style="white-space:nowrap">@Model.CreateDate.ToString()</td>
+    <td style="max-width:10px">@Model.LikeCount</td>
+    <td style="max-width:10px">@Model.CommentCount</td>
+    <td>
+        <a asp-area="" asp-controller="content" asp-action="details" asp-route-id="@Model.Id" target="_blank" class="btn btn-default btn-sm bg-blue text-white"><i class="fa fa-fw fa-2x fa-eye" aria-hidden="true"></i></a>
+        @if (Model.IsFeatured)
+        {
+            <button class="btn btn-default btn-sm bg-red text-white btn-feature-nok"><i class="fa fa-fw fa-2x fa-caret-down" aria-hidden="true"></i></button>
+        }
+        else
+        {
+            <button class="btn btn-default btn-sm bg-green text-white btn-feature-ok"><i class="fa fa-fw fa-2x fa-caret-up" aria-hidden="true"></i></button>
+        }
+    </td>
+</tr>

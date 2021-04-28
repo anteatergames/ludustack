@@ -13,7 +13,7 @@ namespace LuduStack.Application.Interfaces
 
         Task<OperationResultVo<Guid>> Add(Guid userId, Guid contentId, string title, string introduction);
 
-        Task<IEnumerable<UserContentToBeFeaturedViewModel>> GetContentToBeFeatured();
+        Task<OperationResultVo<FeaturedContentScreenViewModel>> GetContentToBeFeatured();
 
         Task<OperationResultVo> Unfeature(Guid userId, Guid id);
     }

@@ -45,7 +45,6 @@
 
     function featureActionCallback(response) {
         if (response.success === true) {
-            ALERTSYSTEM.ShowSuccessMessage("Awesome!");
             loadList();
         }
         else {
