@@ -270,3 +270,4 @@ __pycache__/
 **/wwwroot/js/**/*.min.js
 **/wwwroot/css/**/*.min.css
 **/wwwroot/css/*.min.css
+.DS_Store

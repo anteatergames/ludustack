@@ -4,7 +4,6 @@ using LuduStack.Domain.ValueObjects;
 using LuduStack.Web.Areas.Staff.Controllers.Base;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace LuduStack.Web.Areas.Staff.Controllers
@@ -27,9 +26,9 @@ namespace LuduStack.Web.Areas.Staff.Controllers
         [Route("list")]
         public async Task<IActionResult> List()
         {
-            IEnumerable<UserContentToBeFeaturedViewModel> model = await featuredContentAppService.GetContentToBeFeatured();
+            OperationResultVo<FeaturedContentScreenViewModel> model = await featuredContentAppService.GetContentToBeFeatured();
 
-            return PartialView("_List", model);
+            return PartialView("_List", model.Value);
         }
 
         [HttpPost("add")]

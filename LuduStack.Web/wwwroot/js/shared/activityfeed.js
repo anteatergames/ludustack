@@ -89,9 +89,9 @@ var ACTIVITYFEED = (function () {
         });
     }
 
-    function loadActivityFeed(first, callback) {
+    function loadActivityFeed(first, singleContentId, callback) {
         if (first !== false) {
-            selectors.divActivityFeed.append(MAINMODULE.Default.Spinner);
+            selectors.divActivityFeed.prepend(MAINMODULE.Default.SpinnerTop);
         }
 
         var url = "/content/feed?load=1";
@@ -105,6 +105,9 @@ var ACTIVITYFEED = (function () {
         if (feedType === FEEDTYPE.ARTICLES) {
             url += '&articlesOnly=True';
         }
+        if (singleContentId) {
+            url += '&singleContentId=' + singleContentId;
+        }
 
         if (oldestGuid) {
             url += '&oldestId=' + oldestGuid;
@@ -114,7 +117,11 @@ var ACTIVITYFEED = (function () {
         }
 
         MAINMODULE.Ajax.GetHtml(url).then((response) => {
-            if (oldestDate !== undefined && oldestGuid !== undefined) {
+            if (singleContentId) {
+                selectors.divActivityFeed.find('.spinner').remove();
+                selectors.divActivityFeed.prepend(response);
+            }
+            else if (oldestDate !== undefined && oldestGuid !== undefined) {
                 selectors.divActivityFeed.find('.spinner').remove();
                 $(selectorText.btnMorePosts).parent().remove();
                 selectors.divActivityFeed.append(response);

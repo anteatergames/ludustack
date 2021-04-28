@@ -6,6 +6,8 @@
     var morePosts = (bool)ViewData["IsMorePosts"];
     var noItemsText = morePosts ? SharedLocalizer["What? Apparently you found the bottom!"] : SharedLocalizer["What? Apparently there is no content here yet!"];
     var noItemsModel = new ListNoItemsViewModel("fas fa-exclamation-triangle", noItemsText);
+
+    var addMoreButton = (bool)(ViewData["AddMoreButton"] ?? true);
 }
 
 @if (!Model.Any())
@@ -16,7 +18,10 @@ else
 {
     <partial name="_Feed.cshtml" model="Model" />
 
-    <div class="col-12 mb-2 px-0">
-        <button type="button" id="btnMorePosts" class="btn btn-lg btn-default btn-block text-uppercase" data-oldestid="@ViewData["OldestPostGuid"]" data-oldestdate="@ViewData["OldestPostDate"]">@SharedLocalizer["more"]</button>
-    </div>
+    @if (addMoreButton)
+    {
+        <div class="col-12 mb-2 px-0">
+            <button type="button" id="btnMorePosts" class="btn btn-lg btn-default btn-block text-uppercase" data-oldestid="@ViewData["OldestPostGuid"]" data-oldestdate="@ViewData["OldestPostDate"]">@SharedLocalizer["more"]</button>
+        </div>
+    }
 }

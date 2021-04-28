@@ -232,7 +232,7 @@ namespace LuduStack.Application.Services
         {
             try
             {
-                List<UserContent> allModels = await mediator.Query<GetActivityFeedQuery, List<UserContent>>(new GetActivityFeedQuery(vm.GameId, vm.UserId, vm.Languages, vm.OldestId, vm.OldestDate, vm.ArticlesOnly, vm.Count));
+                List<UserContent> allModels = await mediator.Query<GetActivityFeedQuery, List<UserContent>>(new GetActivityFeedQuery(vm.GameId, vm.UserId, vm.SingleContentId, vm.Languages, vm.OldestId, vm.OldestDate, vm.ArticlesOnly, vm.Count));
 
                 IEnumerable<UserContentViewModel> viewModels = mapper.Map<IEnumerable<UserContent>, IEnumerable<UserContentViewModel>>(allModels);
 

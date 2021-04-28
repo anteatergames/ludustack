@@ -26,9 +26,22 @@ namespace LuduStack.Application.ViewModels.Content
 
         public bool TitleCompliant { get; set; }
 
+        public int TitleLength { get; set; }
+
         public bool IntroCompliant { get; set; }
-        public bool ContentCompliant { get; internal set; }
-        public bool IsFeatured { get; internal set; }
-        public Guid? CurrentFeatureId { get; internal set; }
+
+        public int IntroLength { get; set; }
+
+        public bool ContentCompliant { get; set; }
+
+        public int ContentLength { get; set; }
+
+        public bool IsFeatured { get; set; }
+
+        public Guid? CurrentFeatureId { get; set; }
+
+        public bool HasFeaturedImage { get; set; }
+
+        public int Score { get; set; }
     }
 }

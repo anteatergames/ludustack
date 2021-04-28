@@ -19,7 +19,7 @@
         url = Url.Action("details", "comics", new { area = "member", id = item.Id });
     }
 
-    <div class="box box-widget box-content p-0 bg-white" data-id="@item.Id">
+    <div class="box box-widget box-content p-0 bg-white mb-2" data-id="@item.Id">
         <div class="box-header with-border">
             <div class="user-block">
                 <a asp-area="" asp-controller="profile" asp-action="details" asp-route-userHandler="@item.UserHandler">

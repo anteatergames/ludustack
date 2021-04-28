@@ -344,6 +344,7 @@
 
     function hidePostModal() {
         postModalActive = false;
+        objs.btnPostAddImage.removeClass('btn-warning');
         $('.commentmodal .modal').css('padding-right', '');
         $('#modalPost').modal('hide');
         $('#modalPost').css('display', '');
@@ -407,7 +408,7 @@
         if (response.success === true) {
             txtArea.val('');
             CONTENTACTIONS.AutosizeTextArea(txtArea[0]);
-            ACTIVITYFEED.Methods.LoadActivityFeed();
+            ACTIVITYFEED.Methods.LoadActivityFeed(true, response.value);
             if (postImagesDropZone) {
                 postImagesDropZone.disable();
             }
