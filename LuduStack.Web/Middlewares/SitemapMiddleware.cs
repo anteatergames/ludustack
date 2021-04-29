@@ -65,6 +65,7 @@ namespace LuduStack.Web.Middlewares
                 { "home", "counters" },
                 { "home", "notifications" },
                 { "home", "errortest" },
+                { "home", "gameidea" },
 
                 { "user", "listprofiles" },
 

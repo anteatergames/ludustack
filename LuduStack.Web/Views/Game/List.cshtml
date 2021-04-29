@@ -1,8 +1,22 @@
 ﻿@{
+    var hasMessage = TempData["Message"] != null;
     var games = ViewBag.Games as List<GameListItemViewModel>;
     var genre = (GameGenre)(ViewData["Genre"] ?? 0);
     ViewData["Title"] = genre == 0 ? SharedLocalizer["Games"] : SharedLocalizer["{0} Games", genre.ToUiInfo().Display];
-    ViewData["Description"] = SharedLocalizer["Check awesome {0} Games. If this is the type of game you like, you are in the right place!", genre.ToString()];
+
+    var description = SharedLocalizer["Check these awesome Games made by our community members."];
+
+    if (genre != 0)
+    {
+        description = SharedLocalizer["Check awesome {0} Games. If this is the type of game you like, you are in the right place!", genre.ToString()];
+    }
+
+    if (hasMessage)
+    {
+        description = SharedLocalizer[string.Format("{0} {1}", description.ToString(), TempData["Message"].ToString())];
+    }
+
+    ViewData["Description"] = description;
 
     var noItems = new ListNoItemsViewModel("fas fa-dizzy", "No results to show!");
 }
