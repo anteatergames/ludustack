@@ -106,7 +106,7 @@ namespace LuduStack.Application.Services
 
                 FilCharacteristics(vm);
 
-                if (Constants.DefaultGameThumbnail.Contains(vm.ThumbnailUrl) || vm.ThumbnailUrl.Contains(Constants.DefaultGameThumbnail))
+                if (string.IsNullOrWhiteSpace(vm.ThumbnailUrl) || Constants.DefaultGameThumbnail.Contains(vm.ThumbnailUrl) || vm.ThumbnailUrl.Contains(Constants.DefaultGameThumbnail))
                 {
                     vm.ThumbnailUrl = Constants.DefaultGameThumbnail;
                 }
