@@ -65,6 +65,7 @@ namespace LuduStack.Web.Middlewares
                 { "home", "counters" },
                 { "home", "notifications" },
                 { "home", "errortest" },
+                { "home", "gameidea" },
 
                 { "user", "listprofiles" },
 
@@ -186,8 +187,12 @@ namespace LuduStack.Web.Middlewares
             IEnumerable<MethodInfo> methods = controller.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly)
                                     .Where(method => typeof(IActionResult).IsAssignableFrom(method.ReturnType));
 
+            var controllerName = controller.Name.ToLower();
+
             foreach (MethodInfo method in methods)
             {
+                var methodName = method.Name.ToLower();
+
                 sb.AppendLine(CheckMethod(controller, method));
             }
 

@@ -28,6 +28,7 @@ namespace LuduStack.Web.Areas.Tools.Controllers
             this.giveawayAppService = giveawayAppService;
         }
 
+        [Route("tools/giveaway")]
         public IActionResult Index()
         {
             if (User.Identity.IsAuthenticated)

@@ -43,9 +43,7 @@ namespace LuduStack.Application.ViewModels.Game
 
                 values.Where(x => !string.IsNullOrWhiteSpace(x)).ToList().ForEach(x =>
                 {
-                    GamePlatforms parsedValue;
-
-                    bool convertionOK = Enum.TryParse<GamePlatforms>(x, out parsedValue);
+                    bool convertionOK = Enum.TryParse<GamePlatforms>(x, out GamePlatforms parsedValue);
 
                     if (convertionOK)
                     {
