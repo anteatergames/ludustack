@@ -20,6 +20,10 @@ namespace LuduStack.Application.ViewModels
 
         public string ShareText { get; set; }
 
+        public string Area { get; set; }
+
+        public string Controller { get; set; }
+
         protected UserGeneratedBaseViewModel() : base()
         {
         }

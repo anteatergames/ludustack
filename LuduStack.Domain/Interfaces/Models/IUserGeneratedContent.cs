@@ -10,6 +10,10 @@ namespace LuduStack.Domain.Interfaces.Models
 
         string UserHandler { get; set; }
 
+        public string Area { get; set; }
+
+        public string Controller { get; set; }
+
         UserContentType UserContentType { get; set; }
     }
 }
