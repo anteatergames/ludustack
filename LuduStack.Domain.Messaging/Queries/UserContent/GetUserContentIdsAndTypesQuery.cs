@@ -16,7 +16,7 @@ namespace LuduStack.Domain.Messaging.Queries.UserContent
     {
         public Expression<Func<Models.UserContent, bool>> Where { get; set; }
 
-        public GetUserContentIdsAndTypesQuery() : base()
+        public GetUserContentIdsAndTypesQuery()
         {
         }
 

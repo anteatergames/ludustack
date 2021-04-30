@@ -82,7 +82,8 @@ namespace LuduStack.Application.Services
 
                 TeamViewModel vm = mapper.Map<TeamViewModel>(model);
 
-                IEnumerable<Guid> ids = vm.Members.Select(y => y.UserId);
+                List<Guid> ids = vm.Members.Select(y => y.UserId).ToList();
+                ids.Add(currentUserId);
 
                 IEnumerable<UserProfileEssentialVo> profiles = await mediator.Query<GetBasicUserProfileDataByUserIdsQuery, IEnumerable<UserProfileEssentialVo>>(new GetBasicUserProfileDataByUserIdsQuery(ids));
 

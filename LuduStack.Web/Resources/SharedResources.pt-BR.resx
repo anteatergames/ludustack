@@ -3101,4 +3101,8 @@
     <value>{0} Taxa de Cobrança</value>
     <comment>Bill Rate</comment>
   </data>
+  <data name="{0} Team" xml:space="preserve">
+    <value>Equipe {0}</value>
+    <comment>Team</comment>
+  </data>
 </root>
