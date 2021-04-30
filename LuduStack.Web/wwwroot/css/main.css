@@ -78,7 +78,7 @@ select.form-control {
     float: left;
 }
 
-.box-comments .box-comment img, .img-sm, .user-block.user-block-sm img {
+.box-comments .box-comment img, .box-comments .img-sm, #modalPost .img-sm {
     width: 38px !important;
     height: 38px !important;
 }

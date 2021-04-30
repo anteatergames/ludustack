@@ -196,7 +196,7 @@ namespace LuduStack.Application.Services
                 item.ThumbnailUrl = SetFeaturedImage(item.UserId, item.ThumbnailUrl, ImageRenderType.Full);
                 item.ThumbnailResponsive = SetFeaturedImage(item.UserId, item.ThumbnailUrl, ImageRenderType.Responsive);
                 item.ThumbnailLquip = SetFeaturedImage(item.UserId, item.ThumbnailUrl, ImageRenderType.LowQuality);
-                item.DeveloperImageUrl = UrlFormatter.ProfileImage(item.UserId, 40);
+                item.DeveloperImageUrl = UrlFormatter.ProfileImage(item.UserId, 30);
 
                 UserProfileEssentialVo authorProfile = authorProfiles.FirstOrDefault(x => x.UserId == item.UserId);
                 if (authorProfile != null)

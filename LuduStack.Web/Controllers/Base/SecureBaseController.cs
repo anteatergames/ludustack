@@ -76,7 +76,7 @@ namespace LuduStack.Web.Controllers.Base
                 CurrentUserId = new Guid(userId);
 
                 ViewBag.CurrentUserId = CurrentUserId;
-                ViewBag.ProfileImage = UrlFormatter.ProfileImage(CurrentUserId);
+                ViewBag.ProfileImage = UrlFormatter.ProfileImage(CurrentUserId, 38);
 
                 Claim userIsAdmin = User.FindFirst(x => x.Type == ClaimTypes.Role && x.Value.Equals(Roles.Administrator.ToString()));
 

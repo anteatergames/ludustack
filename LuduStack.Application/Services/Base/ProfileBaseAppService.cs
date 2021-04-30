@@ -174,7 +174,7 @@ namespace LuduStack.Application.Services
             UserProfileEssentialVo authorProfile = await GetCachedEssentialProfileByUserId(vm.UserId);
             if (authorProfile != null)
             {
-                vm.AuthorPicture = UrlFormatter.ProfileImage(vm.UserId, 40);
+                vm.AuthorPicture = UrlFormatter.ProfileImage(vm.UserId, 43);
                 vm.AuthorName = authorProfile.Name;
                 vm.UserHandler = authorProfile.Handler;
             }
@@ -195,7 +195,7 @@ namespace LuduStack.Application.Services
             UserProfileEssentialVo authorProfile = userProfiles.FirstOrDefault(x => x.UserId == vm.UserId);
             if (authorProfile != null)
             {
-                vm.AuthorPicture = UrlFormatter.ProfileImage(vm.UserId, 40);
+                vm.AuthorPicture = UrlFormatter.ProfileImage(vm.UserId, 43);
                 vm.AuthorName = authorProfile.Name;
                 vm.UserHandler = authorProfile.Handler;
             }
