@@ -63,7 +63,7 @@
                 <div class="overlay dark">
                     <div class="user-profile-image">
                         <div class="avatar-wrapper">
-                            <img class="rounded-circle" src="@Model.ProfileImageUrl" alt="User Avatar">
+                            <img class="rounded-circle" src="@Model.ProfileImageUrl" alt="@SharedLocalizer["This is {0}, believe it or not.", Model.Name]">
                         </div>
                     </div>
                     <h1 class="user-profile-username">@Model.Name</h1>
