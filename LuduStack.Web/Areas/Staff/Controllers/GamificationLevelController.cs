@@ -1,4 +1,5 @@
-﻿using LuduStack.Application.Interfaces;
+﻿using LuduStack.Application;
+using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels.Gamification;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.ValueObjects;
@@ -128,7 +129,7 @@ namespace LuduStack.Web.Areas.Staff.Controllers
                 {
                     string url = Url.Action("index", "gamificationlevel", new { area = "staff" });
 
-                    if (isNew && EnvName.Equals(ConstantHelper.ProductionEnvironmentName))
+                    if (isNew && EnvName.Equals(Constants.ProductionEnvironmentName))
                     {
                         await NotificationSender.SendTeamNotificationAsync("New Gamification Level created!");
                     }

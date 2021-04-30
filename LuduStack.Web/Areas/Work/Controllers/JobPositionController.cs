@@ -1,4 +1,5 @@
-﻿using LuduStack.Application.Interfaces;
+﻿using LuduStack.Application;
+using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels.Content;
 using LuduStack.Application.ViewModels.Jobs;
 using LuduStack.Application.ViewModels.UserPreferences;
@@ -293,7 +294,7 @@ namespace LuduStack.Web.Areas.Work.Controllers
 
                     string url = Url.Action("Details", "JobPosition", new { area = "Work", id = saveResult.Value, pointsEarned = saveResult.PointsEarned });
 
-                    if (isNew && EnvName.Equals(ConstantHelper.ProductionEnvironmentName))
+                    if (isNew && EnvName.Equals(Constants.ProductionEnvironmentName))
                     {
                         await NotificationSender.SendTeamNotificationAsync("New Job Position posted!");
                     }

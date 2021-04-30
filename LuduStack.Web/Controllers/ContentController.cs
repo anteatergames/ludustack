@@ -146,7 +146,7 @@ namespace LuduStack.Web.Controllers
 
                     string url = Url.Action("Index", "Home", new { area = string.Empty, id = vm.Id, pointsEarned = saveResult.PointsEarned });
 
-                    if (isNew && EnvName.Equals(ConstantHelper.ProductionEnvironmentName))
+                    if (isNew && EnvName.Equals(Constants.ProductionEnvironmentName))
                     {
                         await NotificationSender.SendTeamNotificationAsync("New complex post!");
                     }
@@ -205,7 +205,7 @@ namespace LuduStack.Web.Controllers
 
                 await NotifyFollowers(profile, vm.GameId);
 
-                if (EnvName.Equals(ConstantHelper.ProductionEnvironmentName))
+                if (EnvName.Equals(Constants.ProductionEnvironmentName))
                 {
                     await NotificationSender.SendTeamNotificationAsync("New simple post!");
                 }

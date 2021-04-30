@@ -1,4 +1,5 @@
-﻿using LuduStack.Application.Interfaces;
+﻿using LuduStack.Application;
+using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels.BillRate;
 using LuduStack.Domain.Core.Attributes;
 using LuduStack.Domain.Core.Enums;
@@ -126,7 +127,7 @@ namespace LuduStack.Web.Areas.Member.Controllers
                 {
                     string url = Url.Action("edit", "billrate", new { area = "member", id = saveResult.Value, pointsEarned = saveResult.PointsEarned, msg = saveResult.Message });
 
-                    if (isNew && EnvName.Equals(ConstantHelper.ProductionEnvironmentName))
+                    if (isNew && EnvName.Equals(Constants.ProductionEnvironmentName))
                     {
                         await NotificationSender.SendTeamNotificationAsync("New Bill Rate created!");
                     }

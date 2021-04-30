@@ -1,7 +1,29 @@
-﻿namespace LuduStack.Application
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Collections.Generic;
+using System.Text.Json;
+
+namespace LuduStack.Application
 {
     public static class Constants
     {
+        public static string ProductionEnvironmentName { get { return "env-production"; } }
+
+        public static string SiteName { get { return "LUDUSTACK"; } }
+
+        public static string DefaultTitle { get { return "LUDUSTACK - The one stop place for game developers"; } }
+
+        public static string DefaultDescription { get { return "The one stop place for game developers, artists and musicians. Helping making gamedev dreams come true."; } }
+
+        public static string DefaultOgType { get { return "website"; } }
+
+        public static IEnumerable<SelectListItem> TimeZoneSelectList
+        {
+            get
+            {
+                return JsonSerializer.Deserialize<IEnumerable<SelectListItem>>(Constants.TimeZones);
+            }
+        }
+
         public static string UnknownSoul
         {
             get
