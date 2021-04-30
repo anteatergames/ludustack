@@ -1,4 +1,5 @@
 ﻿using LuduStack.Application.Interfaces;
+using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.ValueObjects;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -272,46 +273,49 @@ namespace LuduStack.Web.Middlewares
 
         private async Task<List<string>> CheckDetailsMethod(Type controller)
         {
-            string pattern = String.Empty;
-            OperationResultListVo<Guid> result = null;
-            OperationResultListVo<string> handlersResult = null;
             List<string> methodList = new List<string>();
             List<string> handlers = new List<string>();
 
             if (controller.Name.Equals("ProfileController"))
             {
-                pattern = "u/{0}";
-                handlersResult = await ProfileAppService.GetAllHandlers(Guid.Empty);
-            }
-            else if (controller.Name.Equals("GameController"))
-            {
-                pattern = "game/{0}";
-                result = await GameAppService.GetAllIds(Guid.Empty);
-            }
-            else if (controller.Name.Equals("ContentController"))
-            {
-                pattern = "content/{0}";
-                result = await ContentAppService.GetAllIds(Guid.Empty);
-            }
+                OperationResultListVo<string> handlersResult = await ProfileAppService.GetAllHandlers(Guid.Empty);
 
-            if (!string.IsNullOrWhiteSpace(pattern))
-            {
-                if (result != null && result.Success)
+                if (handlersResult != null && handlersResult.Success && handlersResult.Value.Any())
                 {
-                    foreach (Guid item in result.Value)
-                    {
-                        handlers.Add(item.ToString());
-                    }
-
-                    List<string> urls = GetDetailUrls(controller, handlers, pattern);
+                    List<string> urls = GetDetailUrls(controller, handlersResult.Value, "u/{0}");
 
                     methodList.AddRange(urls);
                 }
-                else if (handlersResult != null && handlersResult.Success)
-                {
-                    List<string> urls = GetDetailUrls(controller, handlersResult.Value, pattern);
+            }
+            else if (controller.Name.Equals("GameController"))
+            {
+                OperationResultListVo<Guid> result = await GameAppService.GetAllIds(Guid.Empty);
 
+                if (result != null && result.Success && result.Value.Any())
+                {
+                    IEnumerable<string> stringIds = result.Value.Select(x => x.ToString());
+
+                    List<string> urls = GetDetailUrls(controller, stringIds, "game/{0}");
                     methodList.AddRange(urls);
+                }
+            }
+            else if (controller.Name.Equals("ContentController") || controller.Name.Equals("ComicsController"))
+            {
+                OperationResultListVo<UserContentIdAndTypeVo> allContent = await ContentAppService.GetAllContentIds();
+
+                if (allContent != null && allContent.Success && allContent.Value.Any())
+                {
+                    IEnumerable<UserContentIdAndTypeVo> allPosts = allContent.Value.Where(x => x.Type == UserContentType.Post);
+                    IEnumerable<UserContentIdAndTypeVo> allComics = allContent.Value.Where(x => x.Type == UserContentType.ComicStrip);
+
+                    var allPostIds = allPosts.Select(x => x.Id.ToString());
+                    var allComicsIds = allComics.Select(x => x.Id.ToString());
+
+                    List<string> postUrls = GetDetailUrls(controller, allPostIds, "content/{0}");
+                    methodList.AddRange(postUrls);
+
+                    List<string> comicsUrls = GetDetailUrls(controller, allComicsIds, "comics/{0}");
+                    methodList.AddRange(comicsUrls);
                 }
             }
 

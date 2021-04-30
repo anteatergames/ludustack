@@ -66,7 +66,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public async Task<OperationResultListVo<Guid>> GetAllIds(Guid currentUserId)
+        public async Task<OperationResultListVo<Guid>> GetAllIds()
         {
             try
             {
@@ -77,6 +77,20 @@ namespace LuduStack.Application.Services
             catch (Exception ex)
             {
                 return new OperationResultListVo<Guid>(ex.Message);
+            }
+        }
+
+        public async Task<OperationResultListVo<UserContentIdAndTypeVo>> GetAllContentIds()
+        {
+            try
+            {
+                IEnumerable<UserContentIdAndTypeVo> allIds = await mediator.Query<GetUserContentIdsAndTypesQuery, IEnumerable<UserContentIdAndTypeVo>>(new GetUserContentIdsAndTypesQuery());
+
+                return new OperationResultListVo<UserContentIdAndTypeVo>(allIds);
+            }
+            catch (Exception ex)
+            {
+                return new OperationResultListVo<UserContentIdAndTypeVo>(ex.Message);
             }
         }
 
