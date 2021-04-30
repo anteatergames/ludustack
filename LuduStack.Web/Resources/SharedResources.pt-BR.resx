@@ -3105,4 +3105,8 @@
     <value>Equipe {0}</value>
     <comment>Team</comment>
   </data>
+  <data name="An idea by {0} with {1} votes and {2} comments." xml:space="preserve">
+    <value>Uma ideia por {0} com {1} votos e {2} comentários.</value>
+    <comment>Brianstorm</comment>
+  </data>
 </root>
