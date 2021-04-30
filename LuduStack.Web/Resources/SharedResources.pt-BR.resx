@@ -3101,4 +3101,16 @@
     <value>{0} Taxa de Cobrança</value>
     <comment>Bill Rate</comment>
   </data>
+  <data name="{0} Team" xml:space="preserve">
+    <value>Equipe {0}</value>
+    <comment>Team</comment>
+  </data>
+  <data name="An idea by {0} with {1} votes and {2} comments." xml:space="preserve">
+    <value>Uma ideia por {0} com {1} votos e {2} comentários.</value>
+    <comment>Brianstorm</comment>
+  </data>
+  <data name="This is {0}, believe it or not." xml:space="preserve">
+    <value>Aqui está {0}, acredite se quiser.</value>
+    <comment>Profile</comment>
+  </data>
 </root>

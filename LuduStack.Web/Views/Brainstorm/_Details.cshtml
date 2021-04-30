@@ -1,6 +1,7 @@
 ﻿@model LuduStack.Application.ViewModels.Brainstorm.BrainstormIdeaViewModel
 @{
     ViewData["Title"] = Model.Title;
+    ViewData["Description"] = SharedLocalizer["An idea by {0} with {1} votes and {2} comments.", Model.AuthorName, Model.VoteCount, Model.CommentCount];
     var myFullName = CookieMgrService.Get(SessionValues.FullName.ToString());
     var canInteract = User.Identity.IsAuthenticated;
 }

@@ -82,7 +82,7 @@
                         <div class="widget-game-image">
                             <div class="avatar-wrapper">
                                 <a asp-area="" asp-controller="profile" asp-action="details" asp-route-userHandler="@Model.UserHandler">
-                                    <img class="rounded-circle" src="@Model.AuthorPicture" alt="User Avatar">
+                                    <img class="rounded-circle" src="@Model.AuthorPicture" alt="@SharedLocalizer["This is {0}, believe it or not.", Model.AuthorName]">
                                 </a>
                             </div>
                         </div>

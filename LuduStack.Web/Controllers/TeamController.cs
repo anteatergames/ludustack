@@ -95,6 +95,11 @@ namespace LuduStack.Web.Controllers
 
             TeamViewModel model = serviceResult.Value;
 
+            if (!model.Name.ToLower().Contains("team"))
+            {
+                model.Name = SharedLocalizer["{0} Team", model.Name];
+            }
+
             SetGamificationMessage(pointsEarned);
 
             return View(model);
