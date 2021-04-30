@@ -7,19 +7,19 @@
 
 @{
     var childTitle = ViewData["Title"]?.ToString();
-    var title = string.IsNullOrWhiteSpace(childTitle) || childTitle.Equals(ConstantHelper.DefaultTitle) ? ConstantHelper.DefaultTitle : ViewData["Title"].ToString();
+    var title = string.IsNullOrWhiteSpace(childTitle) || childTitle.Equals(Constants.DefaultTitle) ? Constants.DefaultTitle : ViewData["Title"].ToString();
 
     if (title.Length <= 5)
     {
-        title = string.Format("{0} - {1}", title, ConstantHelper.DefaultTitle);
+        title = string.Format("{0} - {1}", title, Constants.DefaultTitle);
     }
     else if (title.Length < 20)
     {
-        title = string.Format("{0} | {1}", title, ConstantHelper.SiteName);
+        title = string.Format("{0} | {1}", title, Constants.SiteName);
     }
     else if (title.Length > 50)
     {
-        title = title.Replace(ConstantHelper.DefaultTitle, ConstantHelper.SiteName);
+        title = title.Replace(Constants.DefaultTitle, Constants.SiteName);
     }
 
     string userId = UserManager.GetUserId(User);
@@ -37,7 +37,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="@(ViewData["Description"] ?? ConstantHelper.DefaultDescription)">
+    <meta name="description" content="@(ViewData["Description"] ?? Constants.DefaultDescription)">
     <meta name="keywords" content="indie game, indie game developers, development, game development, article, social networking, international collaboration" />
     <meta name="author" content="Anteater Games">
     <link rel="apple-touch-icon" sizes="180x180" href="~/images/icons/apple-touch-icon.png">
@@ -56,7 +56,7 @@
     <meta property="fb:app_id" content="@ConfigOptions.Value.FacebookAppId" />
 
     <meta property="og:title" content="@title">
-    <meta property="og:description" content="@(ViewData["Description"] ?? ConstantHelper.DefaultDescription)">
+    <meta property="og:description" content="@(ViewData["Description"] ?? Constants.DefaultDescription)">
     <meta property="og:url" content="@(ViewData["Url"] ?? "https://www.ludustack.com")">
     <meta property="og:image" content="@(ViewData["OgImage"] ?? "https://www.ludustack.com/images/og/img_facebook600x315.png")">
     <meta property="og:image:width" content="@(ViewData["OgImageWidth"] ?? 600)">
@@ -67,7 +67,7 @@
     <meta property="og:image" content="https://www.ludustack.com/images/og/logo512.png">
     <meta property="og:image:width" content="512">
     <meta property="og:image:height" content="512">
-    <meta property="og:type" content="@(ViewData["OgType"] ?? ConstantHelper.DefaultOgType)" />
+    <meta property="og:type" content="@(ViewData["OgType"] ?? Constants.DefaultOgType)" />
     @RenderSection("OpenGraphMeta", required: false)
 
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">

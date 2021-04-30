@@ -1,4 +1,5 @@
-﻿using LuduStack.Application.Interfaces;
+﻿using LuduStack.Application;
+using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels.Giveaway;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Core.Extensions;
@@ -133,7 +134,7 @@ namespace LuduStack.Web.Areas.Tools.Controllers
                 {
                     string url = Url.Action("edit", "giveaway", new { area = "tools", id = saveResult.Value, pointsEarned = saveResult.PointsEarned });
 
-                    if (isNew && EnvName.Equals(ConstantHelper.ProductionEnvironmentName))
+                    if (isNew && EnvName.Equals(Constants.ProductionEnvironmentName))
                     {
                         await NotificationSender.SendTeamNotificationAsync("New Giveaway created!");
                     }
@@ -303,7 +304,7 @@ namespace LuduStack.Web.Areas.Tools.Controllers
 
                             await NotificationSender.SendGiveawayEmailConfirmationAsync(enter.Email, emailConfirmationUrl, castRestultGiveawayInfo.Value.Name);
 
-                            if (EnvName.Equals(ConstantHelper.ProductionEnvironmentName))
+                            if (EnvName.Equals(Constants.ProductionEnvironmentName))
                             {
                                 await NotificationSender.SendTeamNotificationAsync(String.Format("{0} joined the giveaway {1}", enter.Email, castRestultGiveawayInfo.Value.Name));
                             }
@@ -542,7 +543,7 @@ namespace LuduStack.Web.Areas.Tools.Controllers
 
         private void SetTimeZoneDropdown(GiveawayViewModel model)
         {
-            List<SelectListItem> timeZones = ConstantHelper.TimeZones.ToList();
+            List<SelectListItem> timeZones = Constants.TimeZoneSelectList.ToList();
 
             foreach (SelectListItem timeZone in timeZones)
             {

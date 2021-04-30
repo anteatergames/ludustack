@@ -1,4 +1,5 @@
-﻿using LuduStack.Application.Interfaces;
+﻿using LuduStack.Application;
+using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels;
 using LuduStack.Application.ViewModels.Brainstorm;
 using LuduStack.Domain.Core.Enums;
@@ -124,7 +125,7 @@ namespace LuduStack.Web.Controllers
 
                 string url = Url.Action("Index", "Brainstorm", new { area = string.Empty, id = vm.SessionId.ToString() });
 
-                if (isNew && EnvName.Equals(ConstantHelper.ProductionEnvironmentName))
+                if (isNew && EnvName.Equals(Constants.ProductionEnvironmentName))
                 {
                     await NotificationSender.SendTeamNotificationAsync($"New idea posted: {vm.Title}");
                 }
@@ -156,7 +157,7 @@ namespace LuduStack.Web.Controllers
                 {
                     string url = Url.Action("Index", "Brainstorm", new { area = string.Empty, id = saveResult.Value.ToString() });
 
-                    if (isNew && EnvName.Equals(ConstantHelper.ProductionEnvironmentName))
+                    if (isNew && EnvName.Equals(Constants.ProductionEnvironmentName))
                     {
                         await NotificationSender.SendTeamNotificationAsync($"New brainstorm session created: {vm.Title}");
                     }

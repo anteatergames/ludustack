@@ -5,7 +5,7 @@
 
 @{
     ViewData["Title"] = SharedLocalizer["Register"];
-    ViewData["Description"] = String.Format("{0} - {1}", SharedLocalizer["Register"], ConstantHelper.DefaultTitle);
+    ViewData["Description"] = String.Format("{0} - {1}", SharedLocalizer["Register"], Constants.DefaultTitle);
     ViewData["CanonicalUrl"] = ViewBag.BaseUrl + Url.Action("register", "account");
     Layout = "~/Views/Shared/_LayoutLoginRegister.cshtml";
 }

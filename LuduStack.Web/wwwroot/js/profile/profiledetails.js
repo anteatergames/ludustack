@@ -14,7 +14,7 @@
 
         loadTeams();
 
-        ACTIVITYFEED.Init(objs.divActivityFeed, FEEDTYPE.USER, objs.Id.val());
+        ACTIVITYFEED.Init(objs.divActivityFeed, FEEDTYPE.USER, objs.UserId.val());
     }
     function setSelectors() {
         selectors.container = '.content-wrapper';

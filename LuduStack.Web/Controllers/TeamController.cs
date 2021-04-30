@@ -1,4 +1,5 @@
-﻿using LuduStack.Application.Interfaces;
+﻿using LuduStack.Application;
+using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels.Content;
 using LuduStack.Application.ViewModels.Team;
 using LuduStack.Domain.Core.Enums;
@@ -155,7 +156,7 @@ namespace LuduStack.Web.Controllers
                     bool recruiting = !vm.RecruitingBefore && vm.Recruiting;
                     GenerateTeamPost(vm, isNew, recruiting);
 
-                    if (isNew && EnvName.Equals(ConstantHelper.ProductionEnvironmentName))
+                    if (isNew && EnvName.Equals(Constants.ProductionEnvironmentName))
                     {
                         await NotificationSender.SendTeamNotificationAsync($"New team Created: {vm.Name}");
                     }

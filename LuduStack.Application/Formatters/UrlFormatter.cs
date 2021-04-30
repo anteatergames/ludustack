@@ -194,7 +194,7 @@ namespace LuduStack.Application.Formatters
 
                     if (quality > 0)
                     {
-                        transformation = transformation.Quality(quality);
+                        transformation = transformation.Quality(quality).Crop("crop");
                     }
                     else
                     {

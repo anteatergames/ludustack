@@ -1,4 +1,5 @@
-﻿using LuduStack.Application.Interfaces;
+﻿using LuduStack.Application;
+using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels.Comics;
 using LuduStack.Domain.ValueObjects;
 using LuduStack.Web.Areas.Member.Controllers.Base;
@@ -144,7 +145,7 @@ namespace LuduStack.Web.Areas.Member.Controllers
                 {
                     string url = Url.Action("edit", "comics", new { area = "member", id = saveResult.Value, pointsEarned = saveResult.PointsEarned });
 
-                    if (isNew && EnvName.Equals(ConstantHelper.ProductionEnvironmentName))
+                    if (isNew && EnvName.Equals(Constants.ProductionEnvironmentName))
                     {
                         await NotificationSender.SendTeamNotificationAsync("New Comic Strip created!");
                     }

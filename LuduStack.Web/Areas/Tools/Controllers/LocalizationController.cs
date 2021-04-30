@@ -1,4 +1,5 @@
-﻿using LuduStack.Application.Interfaces;
+﻿using LuduStack.Application;
+using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels.Localization;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.ValueObjects;
@@ -350,7 +351,7 @@ namespace LuduStack.Web.Areas.Tools.Controllers
                     {
                         url = Url.Action("edit", "localization", new { area = "tools", id = saveResult.Value, pointsEarned = saveResult.PointsEarned });
 
-                        if (EnvName.Equals(ConstantHelper.ProductionEnvironmentName))
+                        if (EnvName.Equals(Constants.ProductionEnvironmentName))
                         {
                             await NotificationSender.SendTeamNotificationAsync("New Localization Project created!");
                         }

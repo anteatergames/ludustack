@@ -1,4 +1,5 @@
-﻿using LuduStack.Application.Interfaces;
+﻿using LuduStack.Application;
+using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels.Study;
 using LuduStack.Domain.ValueObjects;
 using LuduStack.Web.Areas.Learn.Controllers.Base;
@@ -166,7 +167,7 @@ namespace LuduStack.Web.Areas.Learn.Controllers
                     {
                         url = Url.Action("edit", "course", new { area = "learn", id = saveResult.Value, pointsEarned = saveResult.PointsEarned });
 
-                        if (EnvName.Equals(ConstantHelper.ProductionEnvironmentName))
+                        if (EnvName.Equals(Constants.ProductionEnvironmentName))
                         {
                             await NotificationSender.SendTeamNotificationAsync("New Course created!");
                         }

@@ -277,7 +277,7 @@ namespace LuduStack.Application.Services
                         item.UserHandler = authorProfile.Handler;
                     }
 
-                    item.AuthorPicture = UrlFormatter.ProfileImage(item.UserId, 40);
+                    item.AuthorPicture = UrlFormatter.ProfileImage(item.UserId, 43);
 
                     item.IsArticle = !string.IsNullOrWhiteSpace(item.Title) && !string.IsNullOrWhiteSpace(item.Introduction);
 
@@ -407,7 +407,7 @@ namespace LuduStack.Application.Services
                         comment.UserHandler = commenterProfile.Handler;
                     }
 
-                    comment.AuthorPicture = UrlFormatter.ProfileImage(comment.UserId);
+                    comment.AuthorPicture = UrlFormatter.ProfileImage(comment.UserId, 38);
                     comment.Text = string.IsNullOrWhiteSpace(comment.Text) ? Constants.SoundOfSilence : comment.Text;
                 }
             }

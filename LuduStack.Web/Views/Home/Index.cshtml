@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = ConstantHelper.DefaultTitle;
+    ViewData["Title"] = Constants.DefaultTitle;
     ViewData["CanonicalUrl"] = "https://www.ludustack.com/";
 
     var postModel = ViewBag.PostFromHome as PostFromHomeViewModel;
@@ -56,7 +56,7 @@
         {
         "@@context": "http://schema.org",
         "@@type": "WebSite",
-        "name": "@ConstantHelper.DefaultTitle",
+        "name": "@Constants.DefaultTitle",
         "alternateName": "LuduStack",
         "url": "@(ViewBag.BaseUrl)",
         "sameAs" : ["https://www.facebook.com/ludustack/"],

@@ -6,7 +6,7 @@
 @inject IOptions<ConfigOptions> ConfigOptions
 
 @{
-    var title = string.IsNullOrWhiteSpace(ViewData["Title"]?.ToString()) ? ConstantHelper.DefaultTitle : ViewData["Title"];
+    var title = string.IsNullOrWhiteSpace(ViewData["Title"]?.ToString()) ? Constants.DefaultTitle : ViewData["Title"];
     string userId = UserManager.GetUserId(User);
 
     var consentFeature = Context.Features.Get<ITrackingConsentFeature>();
@@ -19,7 +19,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="@(ViewData["Description"] ?? ConstantHelper.DefaultDescription)">
+    <meta name="description" content="@(ViewData["Description"] ?? Constants.DefaultDescription)">
     <meta name="keywords" content="indie game, indie game developers, development, game development, article, social networking, international collaboration" />
     <meta name="author" content="Anteater Games">
     <link rel="apple-touch-icon" sizes="180x180" href="~/images/icons/apple-touch-icon.png">
@@ -39,7 +39,7 @@
     <meta property="fb:app_id" content="@ConfigOptions.Value.FacebookAppId" />
 
     <meta property="og:title" content="@title">
-    <meta property="og:description" content="@(ViewData["Description"] ?? ConstantHelper.DefaultDescription)">
+    <meta property="og:description" content="@(ViewData["Description"] ?? Constants.DefaultDescription)">
     <meta property="og:url" content="@(ViewData["Url"] ?? "https://www.ludustack.com")">
     <meta property="og:image" content="@(ViewData["OgImage"] ?? "https://www.ludustack.com/images/og/img_facebook600x315.png")">
     <meta property="og:image:width" content="@(ViewData["OgImageWidth"] ?? 600)">
