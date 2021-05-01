@@ -171,10 +171,6 @@
     }
 
 @media (max-width: 575px) {
-    .box.user-profile .overlay, .user-profile .user-profile-header {
-        border-radius: 0;
-    }
-
     .user-profile .user-profile-username {
         font-size: 1rem;
     }
@@ -183,7 +179,7 @@
         font-size: 1rem;
     }
 
-    .user-profile .nav-pills, .user-profile .nav-pills .nav-link {
+    .user-profile .nav-pills .nav-link {
         border-radius: 0 !important;
     }
 }

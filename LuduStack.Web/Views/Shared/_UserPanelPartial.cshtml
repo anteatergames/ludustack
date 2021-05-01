@@ -10,7 +10,7 @@
     string userName = UserManager.GetUserName(User);
 }
 
-<div class="col-12">
+<div class="col-12 sidebar">
     <div class="row mb-2">
         @if (SignInManager.IsSignedIn(User))
         {
@@ -37,7 +37,7 @@
                     <label for="q" aria-label="@SharedLocalizer["Search"]" class="sr-only"></label>
                     <input type="text" name="q" aria-label="@SharedLocalizer["Search"]" class="form-control searchTerm" placeholder="@SharedLocalizer["Search"]..." value="@q">
                     <span class="input-group-btn">
-                        <button type="submit" id="search-btn" class="btn btn-flat" aria-label="@SharedLocalizer["Search"]">
+                        <button type="submit" id="search-btn" class="btn" aria-label="@SharedLocalizer["Search"]">
                             <i class="fa fa-search" aria-hidden="true"></i>
                         </button>
                     </span>

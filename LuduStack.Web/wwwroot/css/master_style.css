@@ -157,7 +157,6 @@ a:active, a:focus, a:hover {
         margin-left: 230px;
         border: none;
         min-height: 50px;
-        border-radius: 0;
         padding: 0;
     }
 
@@ -256,6 +255,7 @@ a:active, a:focus, a:hover {
 
     .control-sidebar-open .control-sidebar, .control-sidebar-open .control-sidebar-bg, .control-sidebar.control-sidebar-open, .control-sidebar.control-sidebar-open + .control-sidebar-bg {
         right: 0;
+        border-radius: 0;
     }
 
 .control-sidebar-dark, .control-sidebar-dark a {
@@ -558,18 +558,23 @@ select:-webkit-autofill:focus {
             color: #263238;
             margin-bottom: 10px;
             border: 0;
-            border-radius: var(--border-radius) 0 0 var(--border-radius);
+            border-radius: 0;
             padding: 5px;
         }
 
             .vtabs .tabs-vertical li .nav-link.active,
             .vtabs .tabs-vertical li .nav-link:hover,
             .vtabs .tabs-vertical li .nav-link:focus {
-                background: #ffffff;
-                border: 0;
                 border-right: 2px solid #89ad87;
                 margin-right: -1px;
                 color: #89ad87;
+            }
+
+            .vtabs .tabs-vertical li .nav-link:hover,
+            .vtabs .tabs-vertical li .nav-link:focus {
+                border-right: 2px solid #89adbb;
+                margin-right: -1px;
+                color: #89adbb;
             }
 
             .vtabs .tabs-vertical li .nav-link.has-error {
@@ -779,7 +784,7 @@ ul.flexbox {
 
 .dropdown-menu:not(.datepicker), .dropdown-grid {
     color: #616a78;
-    border-radius: 2px;
+    border-radius: var(--border-radius);
     font-size: 13px;
     border-color: #f1f2f3;
     padding: 0;
@@ -1162,14 +1167,16 @@ ul.flexbox {
 
     .box-comments .box-comment img {
         float: left;
+        border: 2px solid #eee;
     }
 
 .box-comments .comment-text {
-    margin-left: 40px;
+    margin-left: 18px;
     color: #555;
     background-color: #eee;
-    border-radius: 1em;
-    padding: 10px;
+    border-radius: var(--border-radius);
+    padding: 10px 10px 10px 25px;
+    border-top-left-radius: 0;
 }
 
 .box-comments .username {
@@ -1300,17 +1307,6 @@ button.btn.dropdown-toggle::after, .wysihtml5-toolbar .btn.dropdown-toggle::afte
     display: inline-block;
 }
 
-.btn-group-vertical > .btn:first-child:not(:last-child), .btn-group-vertical > .btn:last-child:not(:first-child), .btn.btn-flat {
-    border-radius: 0;
-}
-
-.btn.btn-flat {
-    -webkit-box-shadow: none;
-    -moz-box-shadow: none;
-    box-shadow: none;
-    border-width: 1px;
-}
-
 .btn-app, .pagination li a, table.text-center, table.text-center td, table.text-center th {
     text-align: center;
 }
@@ -1332,7 +1328,6 @@ button.btn.dropdown-toggle::after, .wysihtml5-toolbar .btn.dropdown-toggle::afte
 /*tab*/
 .nav > li > a:active, .nav > li > a:focus, .nav > li > a:hover {
     color: #444;
-    background: #f7f7f7;
 }
 
 .nav-pills > li > a {
@@ -1874,10 +1869,6 @@ button.btn.dropdown-toggle::after, .wysihtml5-toolbar .btn.dropdown-toggle::afte
     text-align: center;
 }
 
-    .description-block.margin-bottom {
-        margin-bottom: 10px;
-    }
-
     .description-block > .description-header {
         margin: 0;
         padding: 0;
@@ -2083,12 +2074,11 @@ button.btn.dropdown-toggle::after, .wysihtml5-toolbar .btn.dropdown-toggle::afte
 .comment-send-button:focus {
     -webkit-box-shadow: none !important;
     box-shadow: none !important;
-    /*background-color: transparent !important;*/
 }
 
 .comment-send-button {
     margin-top: -38px;
-    z-index: 99999;
+    z-index: 50;
     position: absolute;
     right: 5px;
 }
