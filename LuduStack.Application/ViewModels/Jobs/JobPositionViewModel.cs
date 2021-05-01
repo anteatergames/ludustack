@@ -58,10 +58,6 @@ namespace LuduStack.Application.ViewModels.Jobs
         [Display(Name = "Origin")]
         public JobPositionOrigin Origin { get; set; }
 
-        [Display(Name = "Url")]
-        [RegularExpression(@"(http(s)?://)?([\w-]+\.)+[\w-]+(/[\w- ;,./?%&=]*)?", ErrorMessage = "Must be a valid URL")]
-        public string Url { get; set; }
-
         public List<JobApplicantViewModel> Applicants { get; set; }
 
         public List<JobPositionBenefitVo> Benefits { get; set; }

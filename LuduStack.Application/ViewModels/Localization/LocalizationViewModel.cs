@@ -29,8 +29,6 @@ namespace LuduStack.Application.ViewModels.Localization
         public LocalizationViewModel()
         {
             Game = new GameBaseViewModel();
-            Area = "tools";
-            Controller = "localization";
         }
 
         public double TranslationPercentage { get; set; }

@@ -29,10 +29,5 @@ namespace LuduStack.Application.ViewModels.Brainstorm
         public BrainstormIdeaStatus Status { get; set; }
 
         public List<BrainstormVoteViewModel> Votes { get; set; }
-
-        public BrainstormIdeaViewModel()
-        {
-            Controller = "brainstorm";
-        }
     }
 }

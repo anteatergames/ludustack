@@ -133,17 +133,7 @@
         <div class="box-body">
             <div class="row">
                 <div class="col-12 col-md-6">
-                    <div class="user-block">
-                        <a asp-area="" asp-controller="profile" asp-action="details" asp-route-userHandler="@Model.UserHandler">
-                            <img class="rounded-circle" src="@Model.AuthorPicture" alt="This is @Model.AuthorName">
-                        </a>
-                        <a asp-area="" asp-controller="profile" asp-action="details" asp-route-userHandler="@Model.UserHandler">
-                            <span class="username">@Model.AuthorName</span>
-                        </a>
-                        <a asp-area="" asp-controller="content" asp-action="details" asp-route-id="@Model.Id">
-                            <span class="description">@Model.CreateDate.ToString()</span>
-                        </a>
-                    </div>
+                    <partial name="_AuthorDetails" model="Model" />
                 </div>
                 @if (Model.GameId.HasValue)
                 {

@@ -154,7 +154,7 @@ namespace LuduStack.Web.Controllers
                     Notify(vm, oldMembers);
 
                     bool recruiting = !vm.RecruitingBefore && vm.Recruiting;
-                    GenerateTeamPost(vm, isNew, recruiting);
+                    await GenerateTeamPost(vm, isNew, recruiting);
 
                     if (isNew && EnvName.Equals(Constants.ProductionEnvironmentName))
                     {
@@ -245,7 +245,7 @@ namespace LuduStack.Web.Controllers
             }
         }
 
-        private void GenerateTeamPost(TeamViewModel vm, bool newTeam, bool recruiting)
+        private async Task GenerateTeamPost(TeamViewModel vm, bool newTeam, bool recruiting)
         {
             if ((newTeam && vm.Members.Count > 1) || recruiting)
             {
@@ -257,7 +257,7 @@ namespace LuduStack.Web.Controllers
                     Content = String.Format("{0}|{1}|{2}|{3}|{4}", vm.Id, vm.Name, vm.Motto, vm.Members.Count, recruiting)
                 };
 
-                userContentAppService.Save(CurrentUserId, newContent);
+                await userContentAppService.Save(CurrentUserId, newContent);
             }
         }
     }

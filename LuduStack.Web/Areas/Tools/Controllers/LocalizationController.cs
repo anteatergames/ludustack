@@ -115,11 +115,13 @@ namespace LuduStack.Web.Areas.Tools.Controllers
             {
                 OperationResultVo<TranslationStatsViewModel> castRestult = result as OperationResultVo<TranslationStatsViewModel>;
 
-                TranslationStatsViewModel model = castRestult.Value;
+                TranslationStatsViewModel viewModel = castRestult.Value;
 
-                SetLocalization(model);
+                viewModel.Url = Url.Action("details", "localization", new { area = "tools", id = viewModel.Id }, (string)ViewData["protocol"], (string)ViewData["host"]);
 
-                return View("Details", model);
+                SetLocalization(viewModel);
+
+                return View("Details", viewModel);
             }
             else
             {

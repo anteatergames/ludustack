@@ -7,18 +7,6 @@
 
 @foreach (var item in Model)
 {
-
-    var url = Url.Action("details", "content", new { area = string.Empty, id = item.Id });
-    var urlController = "content";
-    var urlArea = string.Empty;
-
-    @if (item.UserContentType == UserContentType.ComicStrip)
-    {
-        urlController = "comics";
-        urlArea = "member";
-        url = Url.Action("details", "comics", new { area = "member", id = item.Id });
-    }
-
     <div class="box box-widget box-content p-0 bg-white mb-2" data-id="@item.Id">
         <div class="box-header with-border">
             <div class="user-block">
@@ -27,18 +15,9 @@
                 </a>
                 <span class="username"><a asp-area="" asp-controller="profile" asp-action="details" asp-route-userHandler="@item.UserHandler">@item.AuthorName</a></span>
 
-                @if (!String.IsNullOrWhiteSpace(item.Url))
-                {
-                    <a href="@item.Url" class="contenturl" aria-label="@item.PublishDate.ToString()">
-                        <span class="description">@item.PublishDate.ToString()</span>
-                    </a>
-                }
-                else
-                {
-                    <a asp-protocol="@ViewData["protocol"]" asp-host="@ViewData["host"]" asp-area="@urlArea" asp-controller="@urlController" asp-action="details" asp-route-id="@item.Id" class="contenturl">
-                        <span class="description">@item.PublishDate.ToString()</span>
-                    </a>
-                }
+                <a href="@item.Url" class="contenturl" aria-label="@item.PublishDate.ToString()">
+                    <span class="description">@item.PublishDate.ToString()</span>
+                </a>
             </div>
             <div class="box-tools">
                 @if (item.Permissions.CanDelete || item.Permissions.CanEdit)
@@ -90,7 +69,7 @@
             {
 
                 <div class="col-12 text-center overflow-hidden rounded-0 featuredimage @item.FeaturedMediaType">
-                    <a href="@url">
+                    <a href="@item.Url">
                         @if (item.FeaturedMediaType == MediaType.Youtube)
                         {
                             <div class="videoWrapper" data-url="@item.FeaturedImage">
@@ -118,7 +97,7 @@
             @if (item.IsArticle)
             {
                 <div class="p-2 bottomcontent">
-                    <a href="@url">
+                    <a href="@item.Url">
                         <div class="row col-12 font-weight-bold text-uppercase">@item.Title</div>
                         <div class="row col-12">@Html.Raw(item.Introduction)</div>
                     </a>
@@ -136,7 +115,7 @@
                                 var option = item.Poll.PollOptions.ElementAt(i);
                                 var optionName = String.Format("poll_{0}_{1}", item.Id, option.Id);
                                 <li class="@(option.CurrentUserVoted ? "voted" : "notvoted") ">
-                                    <span class="perc-back" style="width: @(option.VotePercentageText)%"></span>
+                                    <span class="perc-back" style="width: @string.Format("{0}%", option.VotePercentageText)"></span>
                                     <input type="radio" class="poll-option" name="@pollName" id="@optionName" value="@option.Id">
                                     <label for="@optionName">
                                         <span>@option.Text</span>
