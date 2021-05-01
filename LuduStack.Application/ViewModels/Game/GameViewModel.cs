@@ -15,9 +15,6 @@ namespace LuduStack.Application.ViewModels.Game
         [Display(Name = "Title")]
         public string Title { get; set; }
 
-        [Display(Name = "Url")]
-        public string Url { get; set; }
-
         [Display(Name = "Genre")]
         public GameGenre Genre { get; set; }
 

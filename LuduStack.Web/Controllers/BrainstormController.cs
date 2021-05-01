@@ -96,9 +96,11 @@ namespace LuduStack.Web.Controllers
         {
             OperationResultVo<BrainstormIdeaViewModel> op = await brainstormAppService.GetById(CurrentUserId, id);
 
-            BrainstormIdeaViewModel vm = op.Value;
+            BrainstormIdeaViewModel viewModel = op.Value;
 
-            return View("_Details", vm);
+            viewModel.Url = Url.Action("details", "brainstorm", new { area = string.Empty, id = viewModel.Id }, (string)ViewData["protocol"], (string)ViewData["host"]);
+
+            return View("_Details", viewModel);
         }
 
         [Route("brainstorm/list/{sessionId:guid}")]

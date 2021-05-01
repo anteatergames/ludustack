@@ -94,9 +94,7 @@
             if (response.success === true) {
                 MAINMODULE.Common.PostSaveCallback(response, btn);
 
-                if (response.url) {
-                    window.location = response.url;
-                }
+                MAINMODULE.Ajax.HandleUrlResponse(response);
             }
             else {
                 MAINMODULE.Ajax.HandleErrorResponse(response);

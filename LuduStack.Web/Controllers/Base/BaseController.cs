@@ -1,4 +1,5 @@
-﻿using LuduStack.Domain.ValueObjects;
+﻿using LuduStack.Domain.Interfaces.Models;
+using LuduStack.Domain.ValueObjects;
 using LuduStack.Web.Enums;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -30,7 +31,7 @@ namespace LuduStack.Web.Controllers.Base
             string hostUrl = WebUtility.UrlDecode($"{Request.Scheme}://{Request.Host}{Request.PathBase}");
 
             ViewData["protocol"] = Request.IsHttps ? "https" : "http";
-            ViewData["host"] = Request.Host;
+            ViewData["host"] = Request.Host.ToString();
 
             return hostUrl;
         }

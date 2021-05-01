@@ -16,13 +16,13 @@ namespace LuduStack.Application.ViewModels
 
         public UserContentType UserContentType { get; set; }
 
+        [Display(Name = "Url")]
+        [RegularExpression(@"(http(s)?://)?([\w-]+\.)+[\w-]+(/[\w- ;,./?%&=]*)?", ErrorMessage = "Must be a valid URL")]
+        public string Url { get; set; }
+
         public string ShareUrl { get; set; }
 
         public string ShareText { get; set; }
-
-        public string Area { get; set; }
-
-        public string Controller { get; set; }
 
         protected UserGeneratedBaseViewModel() : base()
         {
@@ -34,8 +34,6 @@ namespace LuduStack.Application.ViewModels
         public List<CommentViewModel> Comments { get; set; }
 
         public List<Guid> Likes { get; set; }
-
-        public string Url { get; set; }
 
         [Display(Name = "Language")]
         public SupportedLanguage Language { get; set; }

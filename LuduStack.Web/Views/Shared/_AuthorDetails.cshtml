@@ -2,8 +2,7 @@
 @{
     Layout = null;
 
-    var area = Model.Area ?? string.Empty;
-    var controller = Model.Controller ?? "content";
+    var url = string.IsNullOrWhiteSpace(Model.Url) ? "#" : Model.Url;
 }
 
 <div class="user-block">
@@ -12,7 +11,7 @@
     </a>
     <span class="username"><a asp-area="" asp-controller="profile" asp-action="details" asp-route-userHandler="@Model.UserHandler">@SharedLocalizer["by {0}", Model.AuthorName]</a></span>
 
-    <a asp-area="@area" asp-controller="@controller" asp-action="details" asp-route-id="@Model.Id" class="contenturl">
+    <a href="@url" class="contenturl">
         <span class="description">@SharedLocalizer["at {0}", Model.CreateDate.ToString()]</span>
     </a>
 </div>

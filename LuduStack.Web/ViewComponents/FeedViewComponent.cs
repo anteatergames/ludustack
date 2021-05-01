@@ -82,24 +82,27 @@ namespace LuduStack.Web.ViewComponents
 
         private void FillMissingInformation(bool userIsAdmin, UserContentViewModel item)
         {
-            if (item.UserContentType == UserContentType.TeamCreation)
+            switch (item.UserContentType)
             {
-                FormatTeamCreationPost(item);
-            }
-            if (item.UserContentType == UserContentType.JobPosition)
-            {
-                FormatJobPositionPostForTheFeed(item);
-            }
-            else
-            {
-                item.Content = ContentFormatter.FormatContentToShow(item.Content);
-                if (item.FeaturedMediaType == MediaType.Youtube)
-                {
-                    item.FeaturedImageResponsive = ContentFormatter.GetYoutubeVideoId(item.FeaturedImage);
-                    item.FeaturedImageLquip = ContentHelper.SetFeaturedImage(Guid.Empty, Constants.DefaultFeaturedImageLquip, ImageRenderType.LowQuality);
-                }
+                case UserContentType.TeamCreation:
+                    FormatTeamCreationPost(item);
+                    break;
+                case UserContentType.JobPosition:
+                    FormatJobPositionPostForTheFeed(item);
+                    break;
+                case UserContentType.ComicStrip:
+                    FormatComicStripPost(item);
+                    break;
+                default:
+                    FormatPost(item);
+                    break;
             }
 
+            FormatCommon(userIsAdmin, item);
+        }
+
+        private void FormatCommon(bool userIsAdmin, UserContentViewModel item)
+        {
             foreach (CommentViewModel comment in item.Comments)
             {
                 comment.Text = ContentFormatter.FormatHashTagsToShow(comment.Text);
@@ -108,6 +111,24 @@ namespace LuduStack.Web.ViewComponents
             item.Permissions.CanEdit = !item.HasPoll && (item.UserId == CurrentUserId || userIsAdmin);
 
             item.Permissions.CanDelete = item.UserId == CurrentUserId || userIsAdmin;
+        }
+
+
+        private void FormatComicStripPost(UserContentViewModel item)
+        {
+            item.Url = Url.Action("details", "comics", new { area = "member", id = item.Id }, (string)ViewData["protocol"], (string)ViewData["host"]);
+        }
+
+        private void FormatPost(UserContentViewModel item)
+        {
+            item.Content = ContentFormatter.FormatContentToShow(item.Content);
+            if (item.FeaturedMediaType == MediaType.Youtube)
+            {
+                item.FeaturedImageResponsive = ContentFormatter.GetYoutubeVideoId(item.FeaturedImage);
+                item.FeaturedImageLquip = ContentHelper.SetFeaturedImage(Guid.Empty, Constants.DefaultFeaturedImageLquip, ImageRenderType.LowQuality);
+            }
+
+            item.Url = Url.Action("details", "content", new { area = string.Empty, id = item.Id }, (string)ViewData["protocol"], (string)ViewData["host"]);
         }
 
         private void FormatTeamCreationPost(UserContentViewModel item)
@@ -133,7 +154,7 @@ namespace LuduStack.Web.ViewComponents
             }
 
             item.Content = String.Format(postTemplate, translatedText, name, motto);
-            item.Url = Url.Action("Details", "Team", new { teamId = id });
+            item.Url = Url.Action("Details", "Team", new { area = string.Empty, teamId = id }, (string)ViewData["protocol"], (string)ViewData["host"]);
             item.Language = SupportedLanguage.English;
         }
 
@@ -157,7 +178,7 @@ namespace LuduStack.Web.ViewComponents
             string translatedText = SharedLocalizer["A new job position for {0}({1}) is open for applications.", SharedLocalizer[obj.WorkType.ToDisplayName()], obj.Location].ToString();
 
             item.Content = String.Format(postTemplate, translatedText, SharedLocalizer[obj.WorkType.ToDisplayName()], obj.Location);
-            item.Url = Url.Action("Details", "JobPosition", new { area = "Work", id = obj.Id.ToString() });
+            item.Url = Url.Action("Details", "JobPosition", new { area = "Work", id = obj.Id.ToString() }, (string)ViewData["protocol"], (string)ViewData["host"]);
             item.Language = language;
         }
     }

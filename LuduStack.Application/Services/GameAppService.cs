@@ -174,7 +174,7 @@ namespace LuduStack.Application.Services
 
                 pointsEarned += result.PointsEarned;
 
-                return new OperationResultVo<Guid>(model.Id, pointsEarned);
+                return new OperationResultVo<Guid>(model.Id, pointsEarned, "Game saved!");
             }
             catch (Exception ex)
             {

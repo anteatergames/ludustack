@@ -47,44 +47,46 @@ namespace LuduStack.Web.Controllers
                 return RedirectToAction("index", "home", new { area = string.Empty, msg = SharedLocalizer["Content not found!"] });
             }
 
-            UserContentViewModel vm = serviceResult.Value;
+            UserContentViewModel viewModel = serviceResult.Value;
 
-            vm.Content = ContentFormatter.FormatContentToShow(vm.Content);
+            viewModel.Url = Url.Action("details", "content", new { area = string.Empty, id = viewModel.Id }, (string)ViewData["protocol"], (string)ViewData["host"]);
 
-            if (vm.GameId.HasValue && vm.GameId.Value != Guid.Empty)
+            viewModel.Content = ContentFormatter.FormatContentToShow(viewModel.Content);
+
+            if (viewModel.GameId.HasValue && viewModel.GameId.Value != Guid.Empty)
             {
-                OperationResultVo<GameViewModel> gameServiceResult = await gameAppService.GetById(CurrentUserId, vm.GameId.Value);
+                OperationResultVo<GameViewModel> gameServiceResult = await gameAppService.GetById(CurrentUserId, viewModel.GameId.Value);
 
                 GameViewModel game = gameServiceResult.Value;
 
-                vm.GameTitle = game.Title;
-                vm.GameThumbnail = UrlFormatter.Image(game.UserId, ImageType.GameThumbnail, game.ThumbnailUrl);
+                viewModel.GameTitle = game.Title;
+                viewModel.GameThumbnail = UrlFormatter.Image(game.UserId, ImageType.GameThumbnail, game.ThumbnailUrl);
             }
 
-            vm.Content = vm.Content.Replace("image-style-align-right", "image-style-align-right float-right p-10");
-            vm.Content = vm.Content.Replace("image-style-align-left", "image-style-align-left float-left p-10");
-            vm.Content = vm.Content.Replace("<img src=", @"<img class=""img-fluid"" src=");
+            viewModel.Content = viewModel.Content.Replace("image-style-align-right", "image-style-align-right float-right p-10");
+            viewModel.Content = viewModel.Content.Replace("image-style-align-left", "image-style-align-left float-left p-10");
+            viewModel.Content = viewModel.Content.Replace("<img src=", @"<img class=""img-fluid"" src=");
 
-            if (string.IsNullOrEmpty(vm.Title))
+            if (string.IsNullOrEmpty(viewModel.Title))
             {
-                vm.Title = SharedLocalizer["Content posted on"] + " " + vm.CreateDate.ToString();
+                viewModel.Title = SharedLocalizer["Content posted on"] + " " + viewModel.CreateDate.ToString();
             }
 
-            if (string.IsNullOrWhiteSpace(vm.Introduction))
+            if (string.IsNullOrWhiteSpace(viewModel.Introduction))
             {
-                vm.Introduction = SharedLocalizer["Content posted on"] + " " + vm.CreateDate.ToShortDateString();
+                viewModel.Introduction = SharedLocalizer["Content posted on"] + " " + viewModel.CreateDate.ToShortDateString();
             }
 
             ApplicationUser user = await UserManager.FindByIdAsync(CurrentUserId.ToString());
 
             bool userIsAdmin = user != null && await UserManager.IsInRoleAsync(user, Roles.Administrator.ToString());
 
-            vm.Permissions.CanEdit = vm.UserId == CurrentUserId || userIsAdmin;
-            vm.Permissions.CanDelete = vm.UserId == CurrentUserId || userIsAdmin;
+            viewModel.Permissions.CanEdit = viewModel.UserId == CurrentUserId || userIsAdmin;
+            viewModel.Permissions.CanDelete = viewModel.UserId == CurrentUserId || userIsAdmin;
 
             ViewData["IsDetails"] = true;
 
-            return View(vm);
+            return View(viewModel);
         }
 
         [Route("content/edit/{id:guid}")]
@@ -144,7 +146,7 @@ namespace LuduStack.Web.Controllers
 
                     await NotifyFollowers(profile, vm.GameId);
 
-                    string url = Url.Action("Index", "Home", new { area = string.Empty, id = vm.Id, pointsEarned = saveResult.PointsEarned });
+                    string url = Url.Action("details", "content", new { area = string.Empty, id = vm.Id, pointsEarned = saveResult.PointsEarned, msg = SharedLocalizer[saveResult.Message] });
 
                     if (isNew && EnvName.Equals(Constants.ProductionEnvironmentName))
                     {

@@ -49,11 +49,13 @@ namespace LuduStack.Web.Areas.Member.Controllers
             {
                 OperationResultVo<ComicStripViewModel> castRestult = result as OperationResultVo<ComicStripViewModel>;
 
-                ComicStripViewModel model = castRestult.Value;
+                ComicStripViewModel viewModel = castRestult.Value;
 
-                SetLocalization(model);
+                viewModel.Url = Url.Action("details", "comics", new { area = "member", id = viewModel.Id }, (string)ViewData["protocol"], (string)ViewData["host"]);
 
-                return View("Details", model);
+                SetLocalization(viewModel);
+
+                return View("Details", viewModel);
             }
             else
             {
@@ -143,7 +145,7 @@ namespace LuduStack.Web.Areas.Member.Controllers
                 }
                 else
                 {
-                    string url = Url.Action("edit", "comics", new { area = "member", id = saveResult.Value, pointsEarned = saveResult.PointsEarned });
+                    string url = Url.Action("edit", "comics", new { area = "member", id = saveResult.Value, pointsEarned = saveResult.PointsEarned, msg = SharedLocalizer[saveResult.Message] });
 
                     if (isNew && EnvName.Equals(Constants.ProductionEnvironmentName))
                     {

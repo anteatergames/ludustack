@@ -38,28 +38,10 @@
             var url = btn.prop('href');
 
             if (canInteract) {
-                setStudyProfile(url);
+                MAINMODULE.Ajax.Post(url);
             }
 
             return false;
-        });
-    }
-
-    function setStudyProfile(url, callback) {
-        $.post(url).done(function (response) {
-            if (response.success === true) {
-                if (callback) {
-                    callback(response);
-                }
-                ALERTSYSTEM.ShowSuccessMessage(response.message, function () {
-                    if (response.url) {
-                        window.location = response.url;
-                    }
-                });
-            }
-            else {
-                ALERTSYSTEM.ShowWarningMessage(response.message);
-            }
         });
     }
 

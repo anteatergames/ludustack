@@ -212,15 +212,16 @@ namespace LuduStack.Web.Areas.Work.Controllers
         {
             OperationResultVo<JobPositionViewModel> op = await jobPositionAppService.GetById(CurrentUserId, id);
 
-            JobPositionViewModel vm = op.Value;
+            JobPositionViewModel viewModel = op.Value;
 
-            SetLocalization(vm);
+            viewModel.Description = ContentFormatter.FormatContentToShow(viewModel.Description);
+            viewModel.Url = Url.Action("details", "jobposition", new { area = "work", id = viewModel.Id }, (string)ViewData["protocol"], (string)ViewData["host"]);
 
-            vm.Description = ContentFormatter.FormatContentToShow(vm.Description);
+            SetLocalization(viewModel);
 
             SetGamificationMessage(pointsEarned);
 
-            return View("_Details", vm);
+            return View("_Details", viewModel);
         }
 
         [Authorize]

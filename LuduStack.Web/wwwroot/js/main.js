@@ -346,23 +346,6 @@
         }
     }
 
-    function callBackendAction(url, callback) {
-        $.post(url).done(function (response) {
-            if (response.success === true) {
-                if (callback) {
-                    callback(response);
-                }
-
-                ALERTSYSTEM.ShowSuccessMessage(response.message, function () {
-                    MAINMODULE.Ajax.HandleUrlResponse(response);
-                });
-            }
-            else {
-                ALERTSYSTEM.ShowWarningMessage(response.message);
-            }
-        });
-    }
-
     function post(url, data, options, callback) {
         $.post(url, data).done(function (response) {
             if (response.success === true) {
@@ -510,7 +493,6 @@
             Get: get,
             GetHtml: getHtml,
             LoadHtml: loadHtml,
-            CallBackendAction: callBackendAction,
             HandleUrlResponse: handleUrlResponse,
             HandleErrorResponse: handleErrorResponse
         },
