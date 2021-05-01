@@ -75,7 +75,7 @@
                                 <div class="col-lg-4">
                                     <div class="author-details">
                                         <div class="col-12">
-                                            <span>@SharedLocalizer["This translation was requested by"]</span>
+                                            <span>@SharedLocalizer["This translation was requested"]</span>
 
                                             <partial name="_AuthorDetails" model="Model" />
                                         </div>
@@ -103,9 +103,9 @@
                             </div>
 
                             <div class="row">
-                                <div class="col-12 text-center">
+                                <div class="col-12 text-center text-capitalize">
                                     <hr />
-                                    <h3>@SharedLocalizer["Translation Progress"]</h3>
+                                    <h3>@SharedLocalizer["translation progress"]</h3>
                                 </div>
 
                                 @if (!User.Identity.IsAuthenticated)
