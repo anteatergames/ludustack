@@ -1,5 +1,4 @@
 ﻿using LuduStack.Domain.Interfaces.Repository;
-using LuduStack.Domain.Messaging.Queries.Base;
 using LuduStack.Domain.ValueObjects;
 using LuduStack.Infra.CrossCutting.Messaging;
 using MediatR;

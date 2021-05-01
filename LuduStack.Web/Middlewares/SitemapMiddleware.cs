@@ -308,8 +308,8 @@ namespace LuduStack.Web.Middlewares
                     IEnumerable<UserContentIdAndTypeVo> allPosts = allContent.Value.Where(x => x.Type == UserContentType.Post);
                     IEnumerable<UserContentIdAndTypeVo> allComics = allContent.Value.Where(x => x.Type == UserContentType.ComicStrip);
 
-                    var allPostIds = allPosts.Select(x => x.Id.ToString());
-                    var allComicsIds = allComics.Select(x => x.Id.ToString());
+                    IEnumerable<string> allPostIds = allPosts.Select(x => x.Id.ToString());
+                    IEnumerable<string> allComicsIds = allComics.Select(x => x.Id.ToString());
 
                     List<string> postUrls = GetDetailUrls(controller, allPostIds, "content/{0}");
                     methodList.AddRange(postUrls);
