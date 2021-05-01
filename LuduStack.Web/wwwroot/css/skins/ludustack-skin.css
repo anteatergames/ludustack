@@ -78,7 +78,7 @@ a {
     color: var(--color-accent);
 }
 
-.skin-ludustack .col-form-label {
+.skin-ludustack .col-form-label, .skin-ludustack .form-label {
     color: var(--color-accent);
     font-size: 13px;
     font-weight: 600;
@@ -182,6 +182,7 @@ a {
 
 .skin-ludustack .sidebar-form {
     border: 1px solid #898989;
+    border-radius: var(--border-radius);
 }
 
     .skin-ludustack .sidebar-form input[type="text"],
@@ -194,24 +195,12 @@ a {
 
     .skin-ludustack .sidebar-form input[type="text"] {
         color: #fff;
-        border-top-left-radius: 2px;
-        border-top-right-radius: 0;
-        border-bottom-right-radius: 0;
-        border-bottom-left-radius: 2px;
     }
 
         .skin-ludustack .sidebar-form input[type="text"]:focus,
         .skin-ludustack .sidebar-form input[type="text"]:focus + .input-group-btn .btn {
             color: #fff;
         }
-
-    .skin-ludustack .sidebar-form .btn {
-        color: #898989;
-        border-top-left-radius: 0;
-        border-top-right-radius: 2px;
-        border-bottom-right-radius: 2px;
-        border-bottom-left-radius: 0;
-    }
 
 .skin-ludustack .search-form input[type="text"], .skin-ludustack .search-form .input-group-text {
     background-color: #242a33;

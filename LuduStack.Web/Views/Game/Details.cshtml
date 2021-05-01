@@ -171,12 +171,13 @@
                 <div class="box bg-white">
                     <div class="box-body">
                         <partial name="_GameInfoPanel" model="Model" />
+                        <hr />
                         <div class="row">
                             <div class="col-12">
                                 <partial name="_GameStoreBadges" model="Model.ExternalLinks.OrderBy(x => x.Order).ToList()" />
                             </div>
-                            <partial name="_QrCode" />
                         </div>
+                        <partial name="_QrCode" />
                     </div>
                 </div>
             </div>
@@ -283,9 +284,11 @@
                         <div class="box col-12 d-block d-lg-none bg-white mt-3 mt-lg-0">
                             <div class="box-body">
                                 <partial name="_GameInfoPanel" model="Model" />
-
-                                <div class="col-12 col-md-6 offset-md-3 mt-2 game-external-links-stores text-center">
-                                    <partial name="_GameStoreBadges" model="Model.ExternalLinks.OrderBy(x => x.Order).ToList()" />
+                                <hr />
+                                <div class="row">
+                                    <div class="col-12 col-md-6 offset-md-3 mt-2 game-external-links-stores text-center">
+                                        <partial name="_GameStoreBadges" model="Model.ExternalLinks.OrderBy(x => x.Order).ToList()" />
+                                    </div>
                                 </div>
 
                                 <partial name="_QrCode" />

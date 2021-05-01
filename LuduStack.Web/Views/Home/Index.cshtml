@@ -97,7 +97,7 @@
                     <div id="divCounters"></div>
 
                     <div class="col-12 p-0 d-sm-none d-xl-block">
-                        <partial name="_PayPalButton" model="@("donate")" />
+                        <partial name="_PayPalButton" model="@SharedLocalizer["donate"].ToString()" />
                     </div>
 
                     <div id="divGameIdea" class="mb-2"></div>
@@ -137,7 +137,7 @@
 
                 <div class="col-12 d-sm-block d-xl-none">
                     <div class="col-12 mt-2 px-1">
-                        <partial name="_PayPalButton" model="@("donate")" />
+                        <partial name="_PayPalButton" model="@SharedLocalizer["donate"].ToString()" />
                     </div>
                 </div>
 

@@ -3,16 +3,11 @@
 
     var selectors = {};
     var objs = {};
-
-    function init() {
-        setSelectors();
-        cacheObjects();
-
-        bindAll();
-    }
+    var canInteract = false;
 
     function setSelectors() {
         selectors.container = '.content-wrapper';
+        selectors.canInteract = '#caninteract';
         selectors.item = '.box-content';
         selectors.btnShare = '.btn-share';
         selectors.sharePopup = '.share-popup';
@@ -27,6 +22,16 @@
 
     function cacheObjects() {
         objs.container = $(selectors.container);
+        objs.canInteract = $(selectors.canInteract);
+    }
+
+    function init() {
+        setSelectors();
+        cacheObjects();
+
+        canInteract = objs.canInteract.val() === 'true';
+
+        bindAll();
     }
 
     function bindAll() {
@@ -45,11 +50,13 @@
             var targetId = btn.data('id');
             var type = btn.data('type');
 
-            if (btn.hasClass("like-liked")) {
-                unlike(targetId).done(function (response) { unlikeCallback(response, likeCount, btn); });
-            }
-            else {
-                like(targetId, type).done(function (response) { likeCallback(response, likeCount, btn); });
+            if (canInteract) {
+                if (btn.hasClass("like-liked")) {
+                    unlike(targetId).done(function (response) { unlikeCallback(response, likeCount, btn); });
+                }
+                else {
+                    like(targetId, type).done(function (response) { likeCallback(response, likeCount, btn); });
+                }
             }
         });
     }

@@ -17,8 +17,14 @@ else
     foreach (var item in Model)
     {
         <div class="col-12 p-3 box bg-white">
-            <a asp-area="" asp-controller="content" asp-action="details" asp-route-id="@item.ContentId"><h2>@item.Title</h2></a>
-            <p class="text-truncate">@Html.Raw(item.Content) ...</p>
+            @if (!string.IsNullOrWhiteSpace(item.Title))
+            {
+                <a asp-area="" asp-controller="content" asp-action="details" asp-route-id="@item.ContentId"><h3>@item.Title</h3></a>
+            }
+            @if (!string.IsNullOrWhiteSpace(item.Content))
+            {
+                <div class="text-truncate">@Html.Raw(item.Content) ...</div>
+            }
             <div class="searchresult-item-footer">
                 <span class="badge badge-dark">@SharedLocalizer[item.Language.ToString()]</span>
                 @if (String.IsNullOrEmpty(item.Title))
