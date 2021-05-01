@@ -127,10 +127,7 @@
                     MAINMODULE.Common.DisableButton(btn);
 
                     uploadTerms(btn, function (response) {
-                        console.log(response);
-                        ALERTSYSTEM.ShowSuccessMessage("Awesome!", function () {
-                            window.location = response.url;
-                        });
+                        MAINMODULE.Ajax.HandleUrlResponse(response);
                     });
                 }
             }
@@ -316,9 +313,7 @@
                     });
                 }
 
-                ALERTSYSTEM.ShowSuccessMessage("Awesome!", function () {
-                    window.location = response.url;
-                });
+                MAINMODULE.Ajax.HandleUrlResponse(response);
             }
             else {
                 MAINMODULE.Ajax.HandleErrorResponse(response);

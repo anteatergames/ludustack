@@ -122,9 +122,7 @@
                     callback();
                 }
 
-                ALERTSYSTEM.ShowSuccessMessage("Awesome!", function () {
-                    window.location = response.url;
-                });
+                MAINMODULE.Ajax.HandleUrlResponse(response);
             }
             else {
                 MAINMODULE.Ajax.HandleErrorResponse(response);

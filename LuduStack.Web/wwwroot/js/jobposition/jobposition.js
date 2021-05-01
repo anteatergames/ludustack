@@ -249,7 +249,7 @@
             if (response.message) {
                 ALERTSYSTEM.ShowSuccessMessage(response.message, function () {
                     if (response.url) {
-                        window.location = response.url;
+                        MAINMODULE.Ajax.HandleUrlResponse(response);
                     }
                     else {
                         loadJobPositions(false, urlListDefault);
@@ -259,7 +259,7 @@
             }
             else {
                 if (response.url) {
-                    window.location = response.url;
+                    MAINMODULE.Ajax.HandleUrlResponse(response);
                 }
                 else {
                     loadJobPositions(false, urlListDefault);
@@ -373,9 +373,7 @@
                     callback();
                 }
 
-                ALERTSYSTEM.ShowSuccessMessage("Awesome!", function () {
-                    MAINMODULE.Ajax.HandleUrlResponse(response);
-                });
+                MAINMODULE.Ajax.HandleUrlResponse(response);
             }
             else {
                 MAINMODULE.Ajax.HandleErrorResponse(response);
@@ -389,9 +387,8 @@
                 if (callback) {
                     callback(response);
                 }
-                ALERTSYSTEM.ShowSuccessMessage(response.message, function () {
-                    MAINMODULE.Ajax.HandleUrlResponse(response);
-                });
+
+                MAINMODULE.Ajax.HandleUrlResponse(response);
             }
             else {
                 ALERTSYSTEM.ShowWarningMessage(response.message);

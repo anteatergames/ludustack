@@ -51,11 +51,8 @@
                 if (callback) {
                     callback(response);
                 }
-                ALERTSYSTEM.ShowSuccessMessage(response.message, function () {
-                    if (response.url) {
-                        window.location = response.url;
-                    }
-                });
+
+                MAINMODULE.Ajax.HandleUrlResponse(response);
             }
             else {
                 ALERTSYSTEM.ShowWarningMessage(response.message);

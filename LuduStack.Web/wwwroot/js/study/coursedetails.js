@@ -54,7 +54,7 @@
         var url = btn.data('url');
 
         if (canInteract) {
-            MAINMODULE.Ajax.CallBackendAction(url);
+            MAINMODULE.Ajax.Post(url);
         }
 
         return false;

@@ -111,7 +111,7 @@ namespace LuduStack.Application.Services
                     return new OperationResultVo<Guid>(model.Id, false, message);
                 }
 
-                return new OperationResultVo<Guid>(model.Id);
+                return new OperationResultVo<Guid>(model.Id, 0, "Gamification Level saved!");
             }
             catch (Exception ex)
             {

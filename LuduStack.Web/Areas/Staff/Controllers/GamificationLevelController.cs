@@ -127,7 +127,7 @@ namespace LuduStack.Web.Areas.Staff.Controllers
 
                 if (saveResult.Success)
                 {
-                    string url = Url.Action("index", "gamificationlevel", new { area = "staff" });
+                    string url = Url.Action("index", "gamificationlevel", new { area = "staff", msg = SharedLocalizer[saveResult.Message] });
 
                     if (isNew && EnvName.Equals(Constants.ProductionEnvironmentName))
                     {

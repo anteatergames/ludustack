@@ -179,14 +179,14 @@
                 else {
                     if (cropped) {
                         uploadCroppedImage(function () {
-                            submitForm(function () {
+                            submitForm(btn, function () {
                                 icon.removeClass('fa-circle-notch fa-spin');
                                 icon.addClass('fa-save');
                             });
                         });
                     }
                     else {
-                        submitForm(function () {
+                        submitForm(btn, function () {
                             icon.removeClass('fa-circle-notch fa-spin');
                             icon.addClass('fa-save');
                         });
@@ -198,7 +198,7 @@
         });
     }
 
-    function submitForm(callback) {
+    function submitForm(btn, callback) {
         var form = $('#frmContentSave');
         var url = form.attr('action');
 
@@ -211,12 +211,13 @@
             enctype: 'multipart/form-data'
         }).done(function (response) {
             if (response.success === true) {
+                MAINMODULE.Common.PostSaveCallback(response, btn);
+
                 if (callback) {
                     callback();
                 }
-                ALERTSYSTEM.ShowSuccessMessage("Awesome!", function () {
-                    window.location = response.url;
-                });
+
+                MAINMODULE.Ajax.HandleUrlResponse(response);
             }
             else {
                 MAINMODULE.Ajax.HandleErrorResponse(response);

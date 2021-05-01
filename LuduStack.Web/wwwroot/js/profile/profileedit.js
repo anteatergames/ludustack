@@ -304,9 +304,7 @@
             if (response.success === true) {
                 MAINMODULE.Common.PostSaveCallback(response, btn);
 
-                ALERTSYSTEM.ShowSuccessMessage("Awesome!", function () {
-                    window.location = response.url;
-                });
+                MAINMODULE.Ajax.HandleUrlResponse(response);
             }
             else {
                 MAINMODULE.Ajax.HandleErrorResponse(response);

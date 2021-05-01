@@ -146,7 +146,7 @@ namespace LuduStack.Web.Controllers
 
                     await NotifyFollowers(profile, vm.GameId);
 
-                    string url = Url.Action("Index", "Home", new { area = string.Empty, id = vm.Id, pointsEarned = saveResult.PointsEarned });
+                    string url = Url.Action("details", "content", new { area = string.Empty, id = vm.Id, pointsEarned = saveResult.PointsEarned, msg = SharedLocalizer[saveResult.Message] });
 
                     if (isNew && EnvName.Equals(Constants.ProductionEnvironmentName))
                     {

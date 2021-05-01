@@ -209,11 +209,7 @@
                     else {
                         MAINMODULE.Common.HandlePointsEarned(response);
 
-                        if (response.message) {
-                            ALERTSYSTEM.ShowSuccessMessage(response.message, function () {
-                                MAINMODULE.Ajax.HandleUrlResponse(response);
-                            });
-                        }
+                        MAINMODULE.Ajax.HandleUrlResponse(response);
                     }
                 });
         });
@@ -230,11 +226,7 @@
                         ALERTSYSTEM.ShowWarningMessage(response.message);
                     }
                     else {
-                        if (response.message) {
-                            ALERTSYSTEM.ShowSuccessMessage(response.message, function () {
-                                MAINMODULE.Ajax.HandleUrlResponse(response);
-                            });
-                        }
+                        MAINMODULE.Ajax.HandleUrlResponse(response);
                     }
                 });
         });
@@ -298,11 +290,7 @@
             btn.closest(selectors.divteamItem).parent().remove();
             loadMyTeams();
 
-            if (response.message) {
-                ALERTSYSTEM.ShowSuccessMessage(response.message, function () {
-                    MAINMODULE.Ajax.HandleUrlResponse(response);
-                });
-            }
+            MAINMODULE.Ajax.HandleUrlResponse(response);
         }
         else {
             ALERTSYSTEM.ShowWarningMessage(response.message);
@@ -441,9 +429,7 @@
             if (response.success === true) {
                 MAINMODULE.Common.PostSaveCallback(response, btn);
 
-                ALERTSYSTEM.ShowSuccessMessage(response.message, function () {
-                    window.location = response.url;
-                });
+                MAINMODULE.Ajax.HandleUrlResponse(response);
             }
             else {
                 MAINMODULE.Ajax.HandleErrorResponse(response);

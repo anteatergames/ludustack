@@ -132,7 +132,7 @@ namespace LuduStack.Web.Areas.Tools.Controllers
                 }
                 else
                 {
-                    string url = Url.Action("edit", "giveaway", new { area = "tools", id = saveResult.Value, pointsEarned = saveResult.PointsEarned });
+                    string url = Url.Action("edit", "giveaway", new { area = "tools", id = saveResult.Value, pointsEarned = saveResult.PointsEarned, msg = SharedLocalizer[saveResult.Message] });
 
                     if (isNew && EnvName.Equals(Constants.ProductionEnvironmentName))
                     {
