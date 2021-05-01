@@ -3129,4 +3129,12 @@
     <value>progresso da tradução</value>
     <comment>Translation</comment>
   </data>
+  <data name="No teams to show" xml:space="preserve">
+    <value>Sem equipes para mostrar</value>
+    <comment>Teams</comment>
+  </data>
+  <data name="numbers" xml:space="preserve">
+    <value>números</value>
+    <comment>Generic</comment>
+  </data>
 </root>

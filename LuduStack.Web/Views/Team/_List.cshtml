@@ -6,6 +6,7 @@
 
 @if (!Model.Any())
 {
+    <h3 class="sr-only">@SharedLocalizer["No teams to show"]</h3>
     <partial name="_ListNoItems" model="noItemsModel" />
 }
 else
