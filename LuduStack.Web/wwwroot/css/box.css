@@ -29,7 +29,7 @@
             background: rgba(0, 0, 0, .15);
         }
 
-    .small-box h3 {
+    .small-box span {
         font-size: 38px;
         font-weight: 700;
         margin: 0 0 10px;
@@ -49,7 +49,7 @@
             margin-top: 5px;
         }
 
-    .small-box h3, .small-box p {
+    .small-box span, .small-box p {
         z-index: 5;
     }
 

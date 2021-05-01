@@ -225,20 +225,8 @@
 }
 
 .profile-user-info {
-    padding: 30px 15px;
     border-top: 1px solid #ccc;
-    margin-top: 30px;
 }
-
-    .profile-user-info p {
-        color: #999;
-        font-size: small;
-    }
-
-    .profile-user-info h5 {
-        color: #666;
-        margin-bottom: 25px;
-    }
 
     .profile-user-info .map-box {
         margin-top: 40px;
@@ -252,6 +240,15 @@
 
 .box-profile div {
     border-radius: 0;
+}
+
+.box-profile .item {
+    color: #999;
+    font-size: small;
+}
+
+.box-profile .itemvalue {
+    color: #666;
 }
 
 .box-profile .social-states {
