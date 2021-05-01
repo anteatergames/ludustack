@@ -810,7 +810,7 @@
                 @if (User.IsInRole(Roles.Administrator.ToString()))
                 {
                     <div class="col-12 mb-2">
-                        <h3>@SharedLocalizer["Staff Actions"]</h3>
+                        <span class="h4">@SharedLocalizer["Staff Actions"]</span>
                     </div>
                     <div class="col-12 mb-2">
                         <a asp-area="staff" asp-controller="superpowers" asp-action="index" class="btn bg-transparent btn-block btn-outline-danger">
@@ -822,7 +822,7 @@
                 @if (User.Identity.IsAuthenticated)
                 {
                     <div class="col-12 mb-2">
-                        <h3>@SharedLocalizer["Member Actions"]</h3>
+                        <span class="h4">@SharedLocalizer["Member Actions"]</span>
                     </div>
                     <div class="col-12 mb-2">
                         <a asp-area="member" asp-controller="memberpowers" asp-action="index" class="btn bg-transparent btn-block btn-outline-warning">
@@ -837,19 +837,19 @@
                         if (ViewData["ControlSidebarUrl"] != null)
                         {
                             <a href="@ViewData["ControlSidebarUrl"]">
-                                <h3>@ViewData["ControlSidebarTitle"]</h3>
+                                <span>@ViewData["ControlSidebarTitle"]</span>
                             </a>
                         }
                         else
                         {
-                            <h3>@ViewData["ControlSidebarTitle"]</h3>
+                            <span>@ViewData["ControlSidebarTitle"]</span>
                         }
                     }
 
                     @RenderSection("ControlSideBar", required: false)
                 </div>
                 <div class="col-12 mb-2">
-                    <h2>@SharedLocalizer["Quick Actions"]</h2>
+                    <span class="h4">@SharedLocalizer["Quick Actions"]</span>
                 </div>
 
                 <div class="col-12 mb-2">
