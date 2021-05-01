@@ -20,7 +20,7 @@ else
                         }
                     </div>
                     <div class="col">
-                        <h3>@Model.Name</h3>
+                        <span class="h3">@Model.Name</span>
                     </div>
                 </div>
             </a>
@@ -53,23 +53,23 @@ else
         </div>
         <div class="box-body">
             <div class="team-members">
-                <h4>@SharedLocalizer["{0} members", Model.Members.Count]</h4>
+                <span class="h4 d-block">@SharedLocalizer["{0} {1}", Model.Members.Count, (Model.Members.Count == 1 ? "member" : "members")]</span>
                 @{int i = 0;}
                 @foreach (var member in Model.Members)
                 {
                     var memberId = String.Format("{0}_{1}", Model.Id.ToString().Replace("-", string.Empty), member.UserId.ToString().Replace("-", string.Empty));
 
                     <a asp-area="" asp-controller="profile" asp-action="details" asp-route-userHandler="@member.UserHandler" data-toggle="popover" data-trigger="hover" data-target="#divPopOver@(memberId)">
-                        <img class="rounded-circle lazyload avatar" data-src="@member.ProfileImage" style="left: -@(i * 30)px; z-index: @(Model.Members.Count - i)" src="@member.ProfileImage" alt="@member.Quote">
+                        <img class="rounded-circle lazyload avatar" data-src="@member.ProfileImage" style="left: -@string.Format("{0}px", i * 30); z-index: @(Model.Members.Count - i)" src="@member.ProfileImage" alt="@member.Quote">
                     </a>
                     <div id="divPopOver@(memberId)" style="display:none">
                         @if (!string.IsNullOrWhiteSpace(member.Name))
                         {
-                            <h5>@member.Name</h5>
+                            <span class="h5">@member.Name</span>
                         }
                         @if (!string.IsNullOrWhiteSpace(member.Quote))
                         {
-                            <span>@member.Quote</span>
+                            <span class="small">@member.Quote</span>
                         }
                     </div>
                     i++;

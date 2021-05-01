@@ -39,9 +39,12 @@
                 <a asp-area="" asp-controller="team" asp-action="index" class="btn btn-lg btn-default"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
             </div>
             <h1>@ViewData["Title"]</h1>
-            <h3 class="card-subtitle">
-                @Model.Motto
-            </h3>
+            @if (!string.IsNullOrWhiteSpace(Model.Motto))
+            {
+                <span class="card-subtitle">
+                    @Model.Motto
+                </span>
+            }
         </div>
         <div class="box-body">
             <p>@Model.Description</p>
@@ -64,7 +67,7 @@
                             </a>
                             @if (member.Leader)
                             {
-                                <h5 class="text-center team-member-isleader">@SharedLocalizer["Team Leader"]</h5>
+                                <span class="d-block text-center team-member-isleader">@SharedLocalizer["Team Leader"]</span>
                             }
                             else
                             {
@@ -79,10 +82,10 @@
                         <div class="div-details col">
                             @if (!string.IsNullOrWhiteSpace(member.Name))
                             {
-                                <h5 class="text-center team-member-name">@member.Name</h5>
+                                <span class="h3 text-center team-member-name">@member.Name</span>
                             }
                             <div class="form-group">
-                                <span>@member.Role</span>
+                                <span class="small">@member.Role</span>
                             </div>
                             <div class="form-group">
                                 @foreach (var workType in member.WorkDictionary)
@@ -130,7 +133,7 @@
             </div>
             <div id="divGames" class="col-12 pt-5 border-top rounded-0" data-id="@Model.Id">
                 <div class="text-center">
-                    <h3>@SharedLocalizer["Games"]</h3>
+                    <h2>@SharedLocalizer["Games"]</h2>
                 </div>
                 <div id="divGamesList" class="row">
                 </div>
