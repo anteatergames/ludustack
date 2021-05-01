@@ -204,7 +204,8 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="p-3 profile-user-info">
+                                                    <hr />
+                                                    <div class="px-3 profile-user-info">
                                                         @if (!string.IsNullOrWhiteSpace(Model.StudioName))
                                                         {
                                                             <div class="row">
@@ -243,6 +244,7 @@
                                             </div>
                                         </div>
                                         <div class="user-profile-xp">
+                                            <hr />
                                             <span>
                                                 @SharedLocalizer["Rank"]
                                                 <a asp-area="gamification" asp-controller="ranking" asp-action="help">

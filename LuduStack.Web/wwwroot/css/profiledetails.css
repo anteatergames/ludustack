@@ -43,12 +43,6 @@
             background: rgba(0, 0, 0, 0);
         }
 
-.user-profile-xp {
-    border-radius: 0;
-    border-top: 1px solid #ccc;
-    padding-top: 10px;
-}
-
 .user-profile .box-footer {
     border: 0;
 }
@@ -225,7 +219,7 @@
 }
 
 .profile-user-info {
-    border-top: 1px solid #ccc;
+/*    border-top: 1px solid #ccc;*/
 }
 
     .profile-user-info .map-box {

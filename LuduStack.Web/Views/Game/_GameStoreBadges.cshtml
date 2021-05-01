@@ -2,13 +2,16 @@
 @{
     Layout = null;
 }
-<div class="col-12 mt-2 game-external-links-stores text-center">
-    @foreach (var item in Model.Where(x => x.IsStore))
-    {
-        <div class="mt-2">
-            <a href="@item.Value" target="_blank">
-                <img src="@string.Format("/images/stores/{0}.png", item.Provider.ToString())" alt="@item.Provider" class="img-fluid" />
-            </a>
-        </div>
-    }
-</div>
+@if (Model.Any())
+{
+    <div class="game-external-links-stores text-center">
+        @foreach (var item in Model.Where(x => x.IsStore))
+        {
+            <div class="mt-2">
+                <a href="@item.Value" target="_blank">
+                    <img src="@string.Format("/images/stores/{0}.png", item.Provider.ToString())" alt="@item.Provider" class="img-fluid" />
+                </a>
+            </div>
+        }
+    </div>
+}

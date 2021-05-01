@@ -78,7 +78,7 @@ a {
     color: var(--color-accent);
 }
 
-.skin-ludustack .col-form-label {
+.skin-ludustack .col-form-label, .skin-ludustack .form-label {
     color: var(--color-accent);
     font-size: 13px;
     font-weight: 600;

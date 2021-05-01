@@ -19,49 +19,85 @@
     }
 </div>
 
+<hr />
 <div class="game-info rounded-0 bg-white">
-    <div class="mb-1">
-        <label class="col col-form-label text-capitalize">@SharedLocalizer["Genre"]</label>
-        <span class="col">@SharedLocalizer[Model.Genre.ToUiInfo().Display]</span>
-    </div>
-    <div class="mb-1">
-        <label class="col col-form-label text-capitalize">@SharedLocalizer["Engine"]</label>
-        @if (Model.Engine == GameEngine.Custom)
-        {
-            <span class="col">@Model.Engine @(String.IsNullOrWhiteSpace(Model.CustomEngineName) ? String.Empty : String.Format("({0})", Model.CustomEngineName))</span>
-        }
-        else
-        {
-            <span class="col">@Model.Engine</span>
-        }
-    </div>
-    <div class="mb-1">
-        <label class="col col-form-label text-capitalize">@SharedLocalizer["Main Language"]</label>
-        <label class="col">@Model.Language.ToDisplayName()</label>
-    </div>
-    <div class="mb-1">
-        <label class="col col-form-label text-capitalize">@SharedLocalizer["Status"]</label>
-        <span class="col">@Model.Status</span>
-    </div>
-    @if (Model.ReleaseDate.HasValue)
-    {
-        <div class="mb-1">
-            <label class="col col-form-label text-capitalize">
-                @SharedLocalizer["Release Date"]
-            </label>
-            <span class="col">@Model.ReleaseDate.Value.ToShortDateString()</span>
-        </div>
-    }
-    @if (Model.Platforms.Any())
-    {
-        <div class="mb-1">
-            <label class="col col-form-label text-capitalize">@SharedLocalizer["Platforms"]</label>
-            <div class="col release-platforms">
-                @foreach (var platform in Model.Platforms)
-                {
-                    <i class="fab fa-2x fa-@(platform.GetAttributeOfType<UiInfoAttribute>().Class)" aria-hidden="true" title="@platform"></i>
-                }
+    <div class="row">
+        <div class="col-12">
+            <div class="row">
+                <div class="col-6 form-label text-uppercase item">
+                    @SharedLocalizer["Genre"]
+                </div>
+                <div class="col-6 itemvalue">
+                    @SharedLocalizer[Model.Genre.ToUiInfo().Display]
+                </div>
             </div>
         </div>
-    }
+        <div class="col-12">
+            <div class="row">
+                <div class="col-6 form-label text-uppercase item">
+                    @SharedLocalizer["Engine"]
+                </div>
+                <div class="col-6 itemvalue">
+                    @if (Model.Engine == GameEngine.Custom)
+                    {
+                        @(String.IsNullOrWhiteSpace(Model.CustomEngineName) ? SharedLocalizer["Custom"] : String.Format("({0})", Model.CustomEngineName))
+                    }
+                    else
+                    {
+                        @Model.Engine
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="row">
+                <div class="col-6 form-label text-uppercase item">
+                    @SharedLocalizer["Main Language"]
+                </div>
+                <div class="col-6 itemvalue">
+                    @Model.Language.ToDisplayName()
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="row">
+                <div class="col-6 form-label text-uppercase item">
+                    @SharedLocalizer["Status"]
+                </div>
+                <div class="col-6 itemvalue">
+                    @Model.Status
+                </div>
+            </div>
+        </div>
+        @if (Model.ReleaseDate.HasValue)
+        {
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-6 form-label text-uppercase item">
+                        @SharedLocalizer["Release Date"]
+                    </div>
+                    <div class="col-6 itemvalue">
+                        @Model.ReleaseDate.Value.ToShortDateString()
+                    </div>
+                </div>
+            </div>
+        }
+        @if (Model.Platforms.Any())
+        {
+            <div class="col-12">
+                <hr />
+                <div class="row">
+                    <div class="col-12 form-label text-uppercase item">
+                        @SharedLocalizer["Platforms"]
+                    </div>
+                    <div class="col-12 itemvalue release-platforms">
+                        @foreach (var platform in Model.Platforms)
+                        {
+                            <i class="fab fa-2x fa-@(platform.GetAttributeOfType<UiInfoAttribute>().Class)" aria-hidden="true" title="@platform"></i>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
 </div>
