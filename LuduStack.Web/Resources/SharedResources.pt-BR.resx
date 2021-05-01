@@ -589,8 +589,8 @@
     <value>Estatísticas</value>
     <comment>Profile Page</comment>
   </data>
-  <data name="Studio" xml:space="preserve">
-    <value>Estúdio</value>
+  <data name="studio" xml:space="preserve">
+    <value>estúdio</value>
     <comment>Profile Page</comment>
   </data>
   <data name="{0} to the next level" xml:space="preserve">

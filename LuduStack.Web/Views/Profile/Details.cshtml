@@ -146,6 +146,7 @@
 
                     <div class="tab-content pt-2">
                         <div class="active tab-pane" id="about">
+                            <h2 class="sr-only">@SharedLocalizer["User Details"]</h2>
                             <div class="row">
                                 <div class="col-xl-4 col-lg-5 col-sm-12">
                                     <div class="bg-white p-2 mb-3">
@@ -189,33 +190,49 @@
                                         <div class="box-profile">
                                             <div class="row">
                                                 <div class="col-12">
-                                                    <div class="user-profile-bio">
-                                                        <h6>
-                                                            @SharedLocalizer["Bio"]
-                                                        </h6>
-                                                        @Model.Bio
+                                                    <div class="p-2 user-profile-bio">
+                                                        <div class="row">
+                                                            <div class="col-12 item">
+                                                                @SharedLocalizer["Bio"]
+                                                            </div>
+                                                            <div class="col-12 itemvalue">
+                                                                @Model.Bio
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                    <div class="profile-user-info">
+                                                    <div class="p-3 profile-user-info">
                                                         @if (!string.IsNullOrWhiteSpace(Model.StudioName))
                                                         {
-                                                            <p>
-                                                                @SharedLocalizer["Studio"]
-                                                            </p>
-                                                            <h6 class="margin-bottom"><a href="#">@Model.StudioName</a></h6>
+                                                            <div class="row">
+                                                                <div class="col-12 col-sm-6 text-uppercase item">
+                                                                    @SharedLocalizer["studio"]
+                                                                </div>
+                                                                <div class="col-12 col-sm-6 itemvalue">
+                                                                    @Model.StudioName
+                                                                </div>
+                                                            </div>
                                                         }
                                                         @if (!string.IsNullOrWhiteSpace(Model.Country))
                                                         {
-                                                            <p class="text-capitalize">
-                                                                @SharedLocalizer["country"]
-                                                            </p>
-                                                            <h6 class="margin-bottom">@Model.Country</h6>
+                                                            <div class="row">
+                                                                <div class="col-12 col-sm-6 text-uppercase item">
+                                                                    @SharedLocalizer["country"]
+                                                                </div>
+                                                                <div class="col-12 col-sm-6 itemvalue">
+                                                                    @Model.Country
+                                                                </div>
+                                                            </div>
                                                         }
                                                         @if (!string.IsNullOrWhiteSpace(Model.Location))
                                                         {
-                                                            <p>
-                                                                @SharedLocalizer["location"]
-                                                            </p>
-                                                            <h6 class="margin-bottom">@Model.Location</h6>
+                                                            <div class="row">
+                                                                <div class="col-12 col-sm-6 text-uppercase item">
+                                                                    @SharedLocalizer["location"]
+                                                                </div>
+                                                                <div class="col-12 col-sm-6 itemvalue">
+                                                                    @Model.Location
+                                                                </div>
+                                                            </div>
                                                         }
                                                     </div>
                                                 </div>
@@ -262,7 +279,7 @@
                                         <div class="col-xl-3 col-md-6 col-6">
                                             <div class="small-box bg-green">
                                                 <div class="inner">
-                                                    <h3>@Model.Counters.Games</h3>
+                                                    <span>@Model.Counters.Games</span>
 
                                                     <p>@SharedLocalizer["Games"]</p>
                                                 </div>
@@ -274,7 +291,7 @@
                                         <div class="col-xl-3 col-md-6 col-6">
                                             <div class="small-box bg-yellow">
                                                 <div class="inner">
-                                                    <h3>@Model.Counters.Posts</h3>
+                                                    <span>@Model.Counters.Posts</span>
 
                                                     <p>@SharedLocalizer["Posts"]</p>
                                                 </div>
@@ -286,7 +303,7 @@
                                         <div class="col-xl-3 col-md-6 col-6">
                                             <div class="small-box bg-blue">
                                                 <div class="inner">
-                                                    <h3>@Model.Counters.Comments</h3>
+                                                    <span>@Model.Counters.Comments</span>
 
                                                     <p>@SharedLocalizer["Comments"]</p>
                                                 </div>
@@ -298,7 +315,7 @@
                                         <div class="col-xl-3 col-md-6 col-6">
                                             <div class="small-box bg-red">
                                                 <div class="inner">
-                                                    <h3>@Model.Counters.Jams</h3>
+                                                    <span>@Model.Counters.Jams</span>
 
                                                     <p>@SharedLocalizer["Jams"]</p>
                                                 </div>
@@ -311,19 +328,19 @@
                                     <div class="row status-secondary">
                                         <div class="col-6 col-md-4 border-right">
                                             <div class="description-block">
-                                                <h5 class="description-header follow-count">@Model.Counters.Followers</h5>
+                                                <span class="description-header follow-count">@Model.Counters.Followers</span>
                                                 <span class="description-text">@SharedLocalizer["followers"]</span>
                                             </div>
                                         </div>
                                         <div class="col-md-4 border-right d-none d-md-block">
                                             <div class="description-block">
-                                                <h5 class="description-header">@Model.Counters.Following</h5>
+                                                <span class="description-header">@Model.Counters.Following</span>
                                                 <span class="description-text">@SharedLocalizer["following"]</span>
                                             </div>
                                         </div>
                                         <div class="col-6 col-md-4">
                                             <div class="description-block">
-                                                <h5 class="description-header connection-count">@Model.Counters.Connections</h5>
+                                                <span class="description-header connection-count">@Model.Counters.Connections</span>
                                                 <span class="description-text">@SharedLocalizer["connections"]</span>
                                             </div>
                                         </div>
@@ -350,9 +367,9 @@
                                         </div>
                                     }
                                     <div class="status-teams">
-                                        <h6>
+                                        <h2>
                                             @SharedLocalizer["Teams"]
-                                        </h6>
+                                        </h2>
                                         <div id="divListUserTeams"></div>
                                     </div>
                                 </div>

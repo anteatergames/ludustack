@@ -1,5 +1,4 @@
-﻿using LuduStack.Domain.Interfaces.Models;
-using LuduStack.Domain.ValueObjects;
+﻿using LuduStack.Domain.ValueObjects;
 using LuduStack.Web.Enums;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

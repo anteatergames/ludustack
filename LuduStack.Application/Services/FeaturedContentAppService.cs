@@ -105,7 +105,7 @@ namespace LuduStack.Application.Services
 
             IEnumerable<UserContentToBeFeaturedViewModel> vms = mapper.Map<IEnumerable<UserContent>, IEnumerable<UserContentToBeFeaturedViewModel>>(finalList);
 
-            var featurable = vms.Where(x => !string.IsNullOrWhiteSpace(x.Title));
+            IEnumerable<UserContentToBeFeaturedViewModel> featurable = vms.Where(x => !string.IsNullOrWhiteSpace(x.Title));
 
             foreach (UserContentToBeFeaturedViewModel item in featurable)
             {
@@ -154,7 +154,7 @@ namespace LuduStack.Application.Services
 
             featurable = featurable.Where(x => x.HasFeaturedImage).ToList();
 
-            var resultVm = new FeaturedContentScreenViewModel
+            FeaturedContentScreenViewModel resultVm = new FeaturedContentScreenViewModel
             {
                 Featured = featurable.Where(x => x.IsFeatured).OrderByDescending(x => x.CreateDate).ToList(),
                 NotFeatured = featurable.Where(x => !x.IsFeatured).OrderByDescending(x => x.Score).ThenByDescending(x => x.CreateDate).ToList(),
