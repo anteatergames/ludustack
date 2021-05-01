@@ -26,9 +26,6 @@
 }
 
 <section class="content container">
-    <h1 class="sr-only">
-        @SharedLocalizer["idea details"]
-    </h1>
     <input type="hidden" asp-for="Id" />
     <div id="brainstormcontainer" class="mx-0">
         <div class="box bg-white" data-id="@Model.Id">
@@ -36,12 +33,10 @@
                 <div class="float-left mr-3 mb-3">
                     <a asp-area="" asp-controller="brainstorm" asp-action="index" asp-route-id="@Model.SessionId" class="btn btn-lg btn-default"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
                 </div>
-                <div class="float-left">
-                    <h2 class="card-title">@ViewData["Title"]</h2>
-                </div>
-                <h6 class="float-left card-subtitle col-12">
+                <h1 class="h2">@ViewData["Title"]</h1>
+                <span class="card-subtitle">
                     @SharedLocalizer["{0} votes", Model.VoteCount]
-                </h6>
+                </span>
             </div>
             <!-- /.box-header -->
             <div class="box-body p-0 p-md-2">
