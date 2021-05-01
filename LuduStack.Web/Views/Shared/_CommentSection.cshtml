@@ -17,28 +17,28 @@
         </div>
     </div>
 
-    <div class="text-lowercase lh-10 align-middle">
+    <div class="text-lowercase lh-10 align-middle text-right">
         @if (String.IsNullOrWhiteSpace(Model.Url))
         {
             <span class="badge badge-dark lh-10">@SharedLocalizer[Model.Language.ToString()]</span>
         }
-        <span class="text-muted float-right p-1 lh-10@(User.Identity.IsAuthenticated ? String.Empty : " needlogin")" data-msg-id="msgNeedLoginToLikeAndComment"><span class="like-count lh-10">@Model.LikeCount</span> @SharedLocalizer["Likes"] - <span class="comment-count lh-10">@Model.CommentCount</span> @SharedLocalizer["Comments"]</span>
+        <span class="text-muted p-1 lh-10@(User.Identity.IsAuthenticated ? String.Empty : " needlogin")" data-msg-id="msgNeedLoginToLikeAndComment"><span class="like-count lh-10">@Model.LikeCount</span> @SharedLocalizer["Likes"] - <span class="comment-count lh-10">@Model.CommentCount</span> @SharedLocalizer["Comments"]</span>
     </div>
 
-    @if (User.Identity.IsAuthenticated)
-    {
-        <div class="row no-gutters bb-1 mt-3">
-            <button type="button" class="col-4 btn btn-lg bg-transparent btn-interaction btn-interaction-like @(Model.CurrentUserLiked ? "text-blue like-liked" : string.Empty)" data-id="@Model.Id" data-type="@Model.UserContentType">
-                <i class="fa fa-thumbs-up" aria-hidden="true">&nbsp;</i>@SharedLocalizer["Like"]
+        <div class="row no-gutters bb-1 mt-1">
+            <button type="button" class="col-4 btn btn-lg bg-transparent btn-interaction btn-interaction-like @(Model.CurrentUserLiked ? "text-blue like-liked" : string.Empty)@(User.Identity.IsAuthenticated ? String.Empty : " needlogin disabled")" data-msg-id="msgNeedLoginToLikeAndComment" data-id="@Model.Id" data-type="@Model.UserContentType">
+                <i class="fa fa-thumbs-up" aria-hidden="true">&nbsp;</i><span class="d-none d-sm-block d-md-inline-block">@SharedLocalizer["Like"]</span>
             </button>
-            <button type="button" class="col-4 btn btn-lg bg-transparent btn-interaction btn-interaction-comment">
-                <i class="fa fa-comment" aria-hidden="true">&nbsp;</i>@SharedLocalizer["Comment"]
+            <button type="button" class="col-4 btn btn-lg bg-transparent btn-interaction btn-interaction-comment@(User.Identity.IsAuthenticated ? String.Empty : " needlogin disabled")" data-msg-id="msgNeedLoginToLikeAndComment">
+                <i class="fa fa-comment" aria-hidden="true">&nbsp;</i><span class="d-none d-sm-block d-md-inline-block">@SharedLocalizer["Comment"]</span>
             </button>
             <button type="button" data-target="#divPopOverShare@(Model.Id)" class="col-4 btn btn-lg bg-transparent btn-interaction btn-interaction-share">
-                <i class="fa fa-share" aria-hidden="true">&nbsp;</i>@SharedLocalizer["Share"]
+                <i class="fa fa-share" aria-hidden="true">&nbsp;</i><span class="d-none d-sm-block d-md-inline-block">@SharedLocalizer["Share"]</span>
             </button>
         </div>
 
+    @if (User.Identity.IsAuthenticated)
+    {
         <div class="box-commentsection mt-10 @(isDetails ? string.Empty : "d-none")">
             <div class="box-comment-template d-none">
                 <img class="rounded img-sm rounded-circle" src="@Constants.DefaultAvatar" alt="User Image">
