@@ -3137,4 +3137,8 @@
     <value>números</value>
     <comment>Generic</comment>
   </data>
+  <data name="donate" xml:space="preserve">
+    <value>doe</value>
+    <comment>Generic</comment>
+  </data>
 </root>
