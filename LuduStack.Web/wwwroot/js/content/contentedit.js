@@ -139,7 +139,7 @@
                         processData: false,
                         contentType: false,
                         success: function (response) {
-                            $('#FeaturedImage').val(response.imageUrl);
+                            $('#FeaturedImage').val(response.filename);
                             if (callback) {
                                 callback();
 

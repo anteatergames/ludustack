@@ -153,7 +153,6 @@
 
                     postImagesDropZone.on("addedfile", function (file) {
                         resizePostBox();
-                        console.log(file);
                     });
                 }
 
@@ -201,9 +200,9 @@
             var language = languageSelect.val();
             var gameId = objs.ddlPostGameId.val();
 
-            var pollOptions = document.getElementsByClassName("polloptioninput");
+            var pollOptionElements = document.getElementsByClassName("polloptioninput");
 
-            var options = $(pollOptions).map(function () {
+            var pollOptions = $(pollOptionElements).map(function () {
                 var imageBtn = $(this).next().children();
                 var img = imageBtn.data('image');
                 return this.value ? {
@@ -214,7 +213,7 @@
 
             if (!postImagesDropZone || postImagesDropZone.getQueuedFiles().length === 0) {
                 var images = objs.postImages.val();
-                var json = { text: text, gameId: gameId, images: images, pollOptions: options, language: language };
+                var json = { text: text, gameId: gameId, images: images, pollOptions: pollOptions, language: language };
 
                 sendSimpleContent(json).done(function (response) {
                     if (response.success) {
@@ -223,34 +222,37 @@
                 });
             }
             else {
-                uploadImages(text, gameId, options, txtArea);
+                uploadImages(text, gameId, pollOptions, txtArea);
             }
         });
     }
 
-    function uploadImages(text, gameId, options, txtArea) {
+    function uploadImages(text, gameId, pollOptions, txtArea) {
         postImagesDropZone.processQueue();
 
         var success = false;
 
         postImagesDropZone.on("success", function (file) {
             var response = JSON.parse(file.xhr.response);
-            if (response.uploaded) {
-                success = true;
-                objs.postImages.val(objs.postImages.val() + '|' + response.url);
+
+            success = response.success;
+
+            if (response.success) {
+                objs.postImages.val(objs.postImages.val() + '|' + response.filename);
             }
             else {
-                if (response.error) {
-                    ALERTSYSTEM.ShowWarningMessage(response.error);
+                if (response.message) {
+                    ALERTSYSTEM.ShowWarningMessage(response.message);
                 }
             }
         });
 
         postImagesDropZone.on("queuecomplete", function (file) {
             if (success === true) {
-                var images2 = objs.postImages.val();
-                var json2 = { text: text, gameId: gameId, images: images2, pollOptions: options };
-                sendSimpleContent(json2).done(function (response) {
+                var images = objs.postImages.val();
+                var json = { text: text, gameId: gameId, images: images, pollOptions: pollOptions };
+
+                sendSimpleContent(json).done(function (response) {
                     sendSimpleContentCallback(response, txtArea);
 
                     if (postImagesDropZone) {
@@ -260,7 +262,6 @@
 
                     instantiateDropZone();
                 });
-                console.log(file);
             }
         });
     }
@@ -285,7 +286,7 @@
 
     function instantiateDropZone() {
         postImagesDropZone = new Dropzone("div#divPostImages", {
-            url: '/storage/uploadcontentimage',
+            url: '/storage/uploadmedia',
             paramName: 'upload',
             addRemoveLinks: true,
             autoProcessQueue: false,
@@ -389,6 +390,10 @@
     }
 
     function sendSimpleContent(json) {
+        if (json.images && json.images.length > 1) {
+            json.images = json.images.substring(1);
+        }
+
         return $.post("/content/post", json)
             .done(function (response) {
                 objs.sendIcon.attr('class', iconPreviousClass);

@@ -36,39 +36,6 @@ namespace LuduStack.Application.Services
             cacheService = baseAppServiceCommon.CacheService;
         }
 
-        protected MediaType GetMediaType(string featuredImage)
-        {
-            if (string.IsNullOrWhiteSpace(featuredImage))
-            {
-                return MediaType.None;
-            }
-
-            string youtubePattern = @"(https?\:\/\/)?(www\.youtube\.com|youtu\.?be)\/.+";
-
-            Match match = Regex.Match(featuredImage, youtubePattern);
-
-            if (match.Success)
-            {
-                return MediaType.Youtube;
-            }
-
-            string[] imageExtensions = new string[] { "jpg", "png", "gif", "tiff", "webp", "svg", "jfif", "jpeg", "bmp" };
-            string[] videoExtensions = new string[] { "mp4", "avi", "mpeg", "vob", "webm", "mpg", "m4v", "wmv", "asf", "mov", "mpe", "3gp" };
-
-            string extension = featuredImage.Split('.').Last();
-
-            if (imageExtensions.Contains(extension.ToLower()))
-            {
-                return MediaType.Image;
-            }
-            else if (videoExtensions.Contains(extension.ToLower()))
-            {
-                return MediaType.Video;
-            }
-
-            return MediaType.Image;
-        }
-
         protected static void SetBasePermissions(Guid currentUserId, IBaseViewModel vm)
         {
             vm.Permissions.CanEdit = vm.UserId == currentUserId;

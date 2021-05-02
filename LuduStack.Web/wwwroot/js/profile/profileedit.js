@@ -144,7 +144,7 @@
                         processData: false,
                         contentType: false,
                         success: function (response) {
-                            objs.profileImageUrl.val(response.imageUrl);
+                            objs.profileImageUrl.val(response.filename);
                             if (callback) {
                                 callback();
 
@@ -238,7 +238,7 @@
                         processData: false,
                         contentType: false,
                         success: function (response) {
-                            objs.coverImage.val(response.imageUrl);
+                            objs.coverImage.val(response.filename);
                             if (callback) {
                                 callback();
 

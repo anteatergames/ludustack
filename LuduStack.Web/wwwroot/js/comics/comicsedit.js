@@ -169,7 +169,7 @@
     }
 
     function uploadImage(formData, imagesToProcessCount, hidden, callback) {
-        $.ajax('/storage/uploadcontentimage', {
+        $.ajax('/storage/uploadmedia', {
             method: "POST",
             data: formData,
             async: false,
@@ -177,7 +177,7 @@
             contentType: false,
             success: function (response) {
                 imagesProcessed++;
-                hidden.value = response.url;
+                hidden.value = response.filename;
 
                 if (imagesProcessed === imagesToProcessCount) {
                     if (callback) {

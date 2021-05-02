@@ -210,16 +210,16 @@
     function bindDropZoneSuccess() {
         IMAGEMANIPULAION.Dropzone.Get(0).on("success", function (file) {
             var response = JSON.parse(file.xhr.response);
-            if (response.uploaded) {
+            if (response.success) {
                 var newUrl = objs.urls.data('urlImage').replace(/xpto/g, objs.userId.val());
 
-                placeUploadedImage(newUrl + '/' + response.url);
+                placeUploadedImage(newUrl + '/' + response.filename);
 
                 calculateImagesToUpload();
             }
             else {
-                if (response.error) {
-                    ALERTSYSTEM.ShowWarningMessage(response.error);
+                if (response.message) {
+                    ALERTSYSTEM.ShowWarningMessage(response.message);
                 }
             }
         });
@@ -248,14 +248,14 @@
 
         IMAGEMANIPULAION.Dropzone.Get(0).on("success", function (file) {
             var response = JSON.parse(file.xhr.response);
-            if (response.uploaded) {
+            if (response.success) {
                 allImagesUploaded = true;
 
-                placeUploadedImage(response.url);
+                placeUploadedImage(response.filename);
             }
             else {
-                if (response.error) {
-                    ALERTSYSTEM.ShowWarningMessage(response.error);
+                if (response.message) {
+                    ALERTSYSTEM.ShowWarningMessage(response.message);
                 }
             }
         });

@@ -297,7 +297,7 @@ namespace LuduStack.Web.Controllers
                     profile.Handler = model.UserName;
                     await profileAppService.Save(CurrentUserId, profile);
 
-                    UploadFirstAvatar(profile.UserId, ProfileType.Personal);
+                    await UploadFirstAvatar(profile.UserId, ProfileType.Personal);
 
                     await SetStaffRoles(user);
 
@@ -525,7 +525,7 @@ namespace LuduStack.Web.Controllers
 
             if (string.IsNullOrWhiteSpace(profile.ProfileImageUrl) || profile.ProfileImageUrl == Constants.DefaultAvatar)
             {
-                UploadFirstAvatar(profile.UserId, ProfileType.Personal);
+                await UploadFirstAvatar (profile.UserId, ProfileType.Personal);
             }
 
             await profileAppService.Save(CurrentUserId, profile);
@@ -766,7 +766,8 @@ namespace LuduStack.Web.Controllers
 
         private async Task SetExternalProfilePicture(ExternalLoginInfo info, ApplicationUser user, ProfileViewModel profile)
         {
-            string imageUrl = String.Empty;
+            UploadResultVo result = new UploadResultVo(true, MediaType.Image, Constants.DefaultAvatar, "No external profile picture found. Setting default avatar.");
+
             if (string.IsNullOrWhiteSpace(profile.ProfileImageUrl) || profile.ProfileImageUrl.Equals(Constants.DefaultAvatar))
             {
                 if (info.LoginProvider == "Facebook")
@@ -774,32 +775,28 @@ namespace LuduStack.Web.Controllers
                     string nameIdentifier = info.Principal.FindFirstValue(ClaimTypes.NameIdentifier);
                     string pictureUrl = $"https://graph.facebook.com/{nameIdentifier}/picture?type=large";
 
-                    imageUrl = await UploadProfilePicture(user.Id, pictureUrl);
+                    result = await UploadProfilePicture(user.Id, pictureUrl);
                 }
                 else if (info.LoginProvider == "Google" && info.Principal.HasClaim(x => x.Type == "urn:google:picture"))
                 {
                     string pictureUrl = info.Principal.FindFirstValue("urn:google:picture");
-                    imageUrl = await UploadProfilePicture(user.Id, pictureUrl);
+
+                    result = await UploadProfilePicture(user.Id, pictureUrl);
                 }
                 else if (info.LoginProvider == "Github")
                 {
                     string nameIdentifier = info.Principal.FindFirstValue(ClaimTypes.NameIdentifier);
                     string pictureUrl = $"https://avatars.githubusercontent.com/u/{nameIdentifier}";
 
-                    imageUrl = await UploadProfilePicture(user.Id, pictureUrl);
-                }
-                else
-                {
-                    imageUrl = Constants.DefaultAvatar;
+                    result = await UploadProfilePicture(user.Id, pictureUrl);
                 }
             }
 
-            profile.ProfileImageUrl = imageUrl.Equals(Constants.DefaultAvatar) ? imageUrl : Constants.DefaultImagePath + imageUrl;
+            profile.ProfileImageUrl = result.Filename.Equals(Constants.DefaultAvatar) ? result.Filename : Constants.DefaultImagePath + result.Filename;
         }
 
-        private async Task<string> UploadProfilePicture(string userId, string pictureUrl)
+        private async Task<UploadResultVo> UploadProfilePicture(string userId, string pictureUrl)
         {
-            string imageUrl;
             byte[] thumbnailBytes;
 
             using (HttpClient httpClient = new HttpClient())
@@ -807,15 +804,17 @@ namespace LuduStack.Web.Controllers
                 string filename = userId + "_" + ProfileType.Personal.ToString();
                 thumbnailBytes = await httpClient.GetByteArrayAsync(pictureUrl);
 
-                imageUrl = base.UploadImage(new Guid(userId), ImageType.ProfileImage, filename, thumbnailBytes, envName);
-            }
+                string extension = GetFileExtension(pictureUrl);
 
-            if (string.IsNullOrWhiteSpace(imageUrl))
-            {
-                imageUrl = Constants.DefaultAvatar;
-            }
+                UploadResultVo result = await base.UploadImage(new Guid(userId), ImageType.ProfileImage, filename, extension, thumbnailBytes, envName);
 
-            return imageUrl;
+                if (!result.Success || string.IsNullOrWhiteSpace(result.Filename))
+                {
+                    result.Filename = Constants.DefaultAvatar;
+                }
+
+                return result;
+            }
         }
 
         private async Task SetCache(ApplicationUser user)
@@ -833,7 +832,7 @@ namespace LuduStack.Web.Controllers
             }
         }
 
-        private void UploadFirstAvatar(Guid userId, ProfileType type)
+        private async Task UploadFirstAvatar(Guid userId, ProfileType type)
         {
             string fileName = String.Format("{0}_{1}", userId, type);
 
@@ -845,7 +844,9 @@ namespace LuduStack.Web.Controllers
 
             fileName = fileName.Split('.').First();
 
-            base.UploadImage(userId, ImageType.ProfileImage, fileName, bytes, envName);
+            string extension = GetFileExtension(fileName);
+
+            await base.UploadImage(userId, ImageType.ProfileImage, fileName, extension, bytes, envName);
         }
 
         private static string SelectName(ExternalLoginInfo info)

@@ -170,7 +170,7 @@
                         processData: false,
                         contentType: false,
                         success: function (response) {
-                            selectors.gameThumbnail.val(response.imageUrl);
+                            selectors.gameThumbnail.val(response.filename);
                             if (callback) {
                                 callback();
 
@@ -264,7 +264,7 @@
                         processData: false,
                         contentType: false,
                         success: function (response) {
-                            selectors.gameCoverImage.val(response.imageUrl);
+                            selectors.gameCoverImage.val(response.filename);
                             if (callback) {
                                 callback();
 

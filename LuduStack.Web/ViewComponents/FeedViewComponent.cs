@@ -127,7 +127,7 @@ namespace LuduStack.Web.ViewComponents
             if (item.FeaturedMediaType == MediaType.Youtube)
             {
                 item.FeaturedImageResponsive = ContentFormatter.GetYoutubeVideoId(item.FeaturedImage);
-                item.FeaturedImageLquip = ContentHelper.SetFeaturedImage(Guid.Empty, Constants.DefaultFeaturedImageLquip, ImageRenderType.LowQuality);
+                item.FeaturedImageLquip = ContentHelper.FormatFeaturedImageUrl(Guid.Empty, Constants.DefaultFeaturedImageLquip, ImageRenderType.LowQuality);
             }
 
             item.Url = Url.Action("details", "content", new { area = string.Empty, id = item.Id }, (string)ViewData["protocol"], (string)ViewData["host"]);

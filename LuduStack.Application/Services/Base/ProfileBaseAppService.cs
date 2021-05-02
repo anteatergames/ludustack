@@ -29,11 +29,6 @@ namespace LuduStack.Application.Services
 
         #region Profile
 
-        public void SetProfileCache(Guid userId, UserProfile value)
-        {
-            cacheService.Set<string, UserProfile>(FormatProfileCacheId(userId), value);
-        }
-
         public void SetProfileCache(Guid userId, UserProfileEssentialVo value)
         {
             cacheService.Set<string, UserProfileEssentialVo>(FormatProfileCacheId(userId), value);

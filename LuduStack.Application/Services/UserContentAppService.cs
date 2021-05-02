@@ -122,13 +122,7 @@ namespace LuduStack.Application.Services
 
                 vm.HasFeaturedImage = !string.IsNullOrWhiteSpace(vm.FeaturedImage) && !vm.FeaturedImage.Contains(Constants.DefaultFeaturedImage);
 
-                vm.FeaturedMediaType = GetMediaType(vm.FeaturedImage);
-
-                if (vm.FeaturedMediaType != MediaType.Youtube)
-                {
-                    vm.FeaturedImage = ContentHelper.SetFeaturedImage(vm.UserId, vm.FeaturedImage, ImageRenderType.Full);
-                    vm.FeaturedImageLquip = ContentHelper.SetFeaturedImage(vm.UserId, vm.FeaturedImage, ImageRenderType.LowQuality);
-                }
+                SetFeaturedMedia(vm);
 
                 vm.LikeCount = vm.Likes.Count;
 
@@ -280,16 +274,7 @@ namespace LuduStack.Application.Services
 
                     item.IsArticle = !string.IsNullOrWhiteSpace(item.Title) && !string.IsNullOrWhiteSpace(item.Introduction);
 
-                    item.FeaturedMediaType = GetMediaType(item.FeaturedImage);
-                    if (item.FeaturedMediaType == MediaType.Youtube)
-                    {
-                        item.Content = string.Empty;
-                    }
-
-                    if (item.FeaturedMediaType != MediaType.Youtube)
-                    {
-                        SetFeaturedImage(item);
-                    }
+                    SetFeaturedMedia(item);
 
                     item.HasFeaturedImage = !string.IsNullOrWhiteSpace(item.FeaturedImage) && !item.FeaturedImage.Contains(Constants.DefaultFeaturedImage);
 
@@ -505,22 +490,42 @@ namespace LuduStack.Application.Services
             }
         }
 
-        private static void SetFeaturedImage(UserContentViewModel item)
+        private static void SetFeaturedMedia(UserContentViewModel item)
         {
-            string selectedFeaturedImage = item.FeaturedImage;
-
             if (string.IsNullOrWhiteSpace(item.FeaturedImage) && item.Images.Any(x => x.Language == item.Language))
             {
-                selectedFeaturedImage = item.Images.FirstOrDefault(x => x.Language == item.Language)?.Image;
+                item.FeaturedImage = item.Images.FirstOrDefault(x => x.Language == item.Language)?.Image;
             }
             else if (string.IsNullOrWhiteSpace(item.FeaturedImage) && item.Images.Any())
             {
-                selectedFeaturedImage = item.Images.FirstOrDefault()?.Image;
+                item.FeaturedImage = item.Images.FirstOrDefault()?.Image;
             }
 
-            item.FeaturedImage = ContentHelper.SetFeaturedImage(item.UserId, selectedFeaturedImage, ImageRenderType.Full);
-            item.FeaturedImageResponsive = ContentHelper.SetFeaturedImage(item.UserId, selectedFeaturedImage, ImageRenderType.Responsive);
-            item.FeaturedImageLquip = ContentHelper.SetFeaturedImage(item.UserId, selectedFeaturedImage, ImageRenderType.LowQuality);
+            item.FeaturedMediaType = ContentHelper.GetMediaType(item.FeaturedImage);
+
+            switch (item.FeaturedMediaType)
+            {
+                case MediaType.Image:
+                    SetFeaturedImageUrls(item, item.FeaturedImage);
+                    break;
+                case MediaType.Video:
+                    SetFeaturedVideoUrl(item, item.FeaturedImage);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private static void SetFeaturedImageUrls(UserContentViewModel item, string selectedFeaturedMedia)
+        {
+            item.FeaturedImage = ContentHelper.FormatFeaturedImageUrl(item.UserId, selectedFeaturedMedia, ImageRenderType.Full);
+            item.FeaturedImageResponsive = ContentHelper.FormatFeaturedImageUrl(item.UserId, selectedFeaturedMedia, ImageRenderType.Responsive);
+            item.FeaturedImageLquip = ContentHelper.FormatFeaturedImageUrl(item.UserId, selectedFeaturedMedia, ImageRenderType.LowQuality);
+        }
+
+        private static void SetFeaturedVideoUrl(UserContentViewModel item, string selectedFeaturedMedia)
+        {
+            item.FeaturedImage = ContentHelper.FormatFeaturedVideoUrl(item.UserId, selectedFeaturedMedia);
         }
     }
 }

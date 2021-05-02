@@ -30,7 +30,7 @@ namespace LuduStack.Application.ViewModels.Comics
 
         public string FeaturedImageResponsive { get; set; }
 
-        public List<ImageListItemVo> Images { get; set; }
+        public List<MediaListItemVo> Images { get; set; }
 
         public int RatingCount { get; set; }
 
@@ -41,7 +41,7 @@ namespace LuduStack.Application.ViewModels.Comics
         public ComicStripViewModel()
         {
             UserContentType = UserContentType.ComicStrip;
-            Images = new List<ImageListItemVo>();
+            Images = new List<MediaListItemVo>();
         }
     }
 }

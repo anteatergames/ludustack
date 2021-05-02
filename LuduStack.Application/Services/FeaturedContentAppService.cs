@@ -45,8 +45,8 @@ namespace LuduStack.Application.Services
                     string[] imageSplit = vm.ImageUrl.Split("/");
                     Guid userId = vm.OriginalUserId == Guid.Empty ? vm.UserId : vm.OriginalUserId;
 
-                    vm.FeaturedImage = ContentHelper.SetFeaturedImage(userId, imageSplit.Last(), ImageRenderType.Full);
-                    vm.FeaturedImageLquip = ContentHelper.SetFeaturedImage(userId, imageSplit.Last(), ImageRenderType.LowQuality);
+                    vm.FeaturedImage = ContentHelper.FormatFeaturedImageUrl(userId, imageSplit.Last(), ImageRenderType.Full);
+                    vm.FeaturedImageLquip = ContentHelper.FormatFeaturedImageUrl(userId, imageSplit.Last(), ImageRenderType.LowQuality);
                 }
 
                 return model;

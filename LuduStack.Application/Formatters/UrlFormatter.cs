@@ -70,7 +70,7 @@ namespace LuduStack.Application.Formatters
         {
             string fileName = String.Format("profileimage_{0}_Personal", userId);
 
-            string url = CdnCommon(userId, fileName, false, width, 0, Constants.DefaultAvatar);
+            string url = CdnImageCommon(userId, fileName, false, width, 0, Constants.DefaultAvatar);
 
             return url.ReplaceCloudname();
         }
@@ -97,7 +97,7 @@ namespace LuduStack.Application.Formatters
 
             if (hasCoverImage && !url.Equals(Constants.DefaultGameCoverImage))
             {
-                url = CdnCommon(userId, fileName, width);
+                url = CdnImageCommon(userId, fileName, width);
             }
 
             return url.ReplaceCloudname();
@@ -135,32 +135,38 @@ namespace LuduStack.Application.Formatters
                 return fileName;
             }
 
-            string url = CdnCommon(userId, fileName, responsive, width, quality, defaultImage);
+            string url = CdnImageCommon(userId, fileName, responsive, width, quality, defaultImage);
 
             return url.ReplaceCloudname();
         }
 
-        public static string CdnCommon(Guid userId, string fileName)
+        public static string Video(Guid userId, ImageType type, string featuredVideo)
         {
-            return CdnCommon(userId, fileName, false, 0, 0, Constants.DefaultFeaturedImage);
+            if (Constants.DefaultGameThumbnail.Contains(featuredVideo) || Constants.DefaultGiveawayThumbnail.Contains(featuredVideo))
+            {
+                return featuredVideo;
+            }
+
+            string url = CdnVideoCommon(userId, featuredVideo);
+
+            return url.ReplaceCloudname();
         }
 
-        public static string CdnCommon(Guid userId, string fileName, int width)
+        public static string CdnImageCommon(Guid userId, string fileName)
         {
-            return CdnCommon(userId, fileName, false, width, 0, Constants.DefaultFeaturedImage);
+            return CdnImageCommon(userId, fileName, false, 0, 0, Constants.DefaultFeaturedImage);
         }
 
-        public static string CdnCommon(Guid userId, string fileName, bool responsive, int width, int quality, string defaultImage)
+        public static string CdnImageCommon(Guid userId, string fileName, int width)
+        {
+            return CdnImageCommon(userId, fileName, false, width, 0, Constants.DefaultFeaturedImage);
+        }
+
+        public static string CdnImageCommon(Guid userId, string fileName, bool responsive, int width, int quality, string defaultImage)
         {
             try
             {
-                string[] fileNameSplit = fileName.Split('/');
-                if (fileNameSplit.Length > 1)
-                {
-                    fileName = fileNameSplit.Last();
-                }
-
-                string publicId = String.Format("{0}/{1}", userId, fileName.Split('.')[0]);
+                string publicId = GetPublicId(userId, ref fileName);
 
                 Cloudinary cloudinary = new Cloudinary();
 
@@ -201,9 +207,9 @@ namespace LuduStack.Application.Formatters
                         transformation = transformation.Quality("auto");
                     }
 
-                    string url2 = cloudinary.Api.UrlImgUp.Secure(true).Transform(transformation).BuildUrl(publicId);
+                    string finalUrl = cloudinary.Api.UrlImgUp.Secure(true).Transform(transformation).BuildUrl(publicId);
 
-                    return url2;
+                    return finalUrl;
                 }
             }
             catch (Exception ex)
@@ -211,6 +217,32 @@ namespace LuduStack.Application.Formatters
                 Console.WriteLine(ex.Message);
                 return defaultImage;
             }
+        }
+
+        private static string CdnVideoCommon(Guid userId, string featuredVideo)
+        {
+            string publicId = GetPublicId(userId, ref featuredVideo);
+
+            Cloudinary cloudinary = new Cloudinary();
+
+            Transformation transformation = new Transformation().FetchFormat("auto");
+
+            string finalUrl = cloudinary.Api.UrlVideoUp.Secure(true).Transform(transformation).BuildUrl(publicId);
+
+            return finalUrl;
+
+        }
+
+        private static string GetPublicId(Guid userId, ref string fileName)
+        {
+            string[] fileNameSplit = fileName.Split('/');
+            if (fileNameSplit.Length > 1)
+            {
+                fileName = fileNameSplit.Last();
+            }
+
+            string publicId = String.Format("{0}/{1}", userId, fileName.Split('.')[0]);
+            return publicId;
         }
 
         #endregion Internal
@@ -311,6 +343,11 @@ namespace LuduStack.Application.Formatters
                 handler = CompleteUrlCommon(handler);
                 return handler;
             }
+        }
+
+        public static string ReplaceCloudVersion(string thumbnailUrl)
+        {
+            return thumbnailUrl.Replace("/v1/", string.Format("/v{0}/", DateTime.Now.Ticks));
         }
 
         public static string AppleAppStoreProfile(string handler)

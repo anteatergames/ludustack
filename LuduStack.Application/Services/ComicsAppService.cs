@@ -114,13 +114,13 @@ namespace LuduStack.Application.Services
                     Language = SupportedLanguage.English
                 };
 
-                newVm.Images.Add(new ImageListItemVo
+                newVm.Images.Add(new MediaListItemVo
                 {
                     Language = newVm.Language,
                     Image = Constants.DefaultComicStripPlaceholder
                 });
 
-                newVm.Images.Add(new ImageListItemVo
+                newVm.Images.Add(new MediaListItemVo
                 {
                     Language = SupportedLanguage.Portuguese,
                     Image = Constants.DefaultComicStripPlaceholder
@@ -238,27 +238,27 @@ namespace LuduStack.Application.Services
 
         private void FormatImagesToSave(UserContent model)
         {
-            IEnumerable<ImageListItemVo> except = model.Images.Where(x => x.Image.Contains(Constants.DefaultComicStripPlaceholder) || Constants.DefaultComicStripPlaceholder.Contains(x.Image));
+            IEnumerable<MediaListItemVo> except = model.Images.Where(x => x.Image.Contains(Constants.DefaultComicStripPlaceholder) || Constants.DefaultComicStripPlaceholder.Contains(x.Image));
             model.Images = model.Images.Except(except).ToList();
         }
 
         private void SetImagesToShow(ComicStripViewModel vm, bool editing)
         {
-            vm.FeaturedImage = ContentHelper.SetFeaturedImage(vm.UserId, vm.FeaturedImage, ImageRenderType.Full);
-            vm.FeaturedImageLquip = ContentHelper.SetFeaturedImage(vm.UserId, vm.FeaturedImage, ImageRenderType.LowQuality);
+            vm.FeaturedImage = ContentHelper.FormatFeaturedImageUrl(vm.UserId, vm.FeaturedImage, ImageRenderType.Full);
+            vm.FeaturedImageLquip = ContentHelper.FormatFeaturedImageUrl(vm.UserId, vm.FeaturedImage, ImageRenderType.LowQuality);
 
-            foreach (ImageListItemVo image in vm.Images)
+            foreach (MediaListItemVo image in vm.Images)
             {
-                image.Image = ContentHelper.SetFeaturedImage(vm.UserId, image.Image, ImageRenderType.Full);
-                image.ImageResponsive = ContentHelper.SetFeaturedImage(vm.UserId, image.Image, ImageRenderType.Responsive);
-                image.ImageLquip = ContentHelper.SetFeaturedImage(vm.UserId, image.Image, ImageRenderType.LowQuality);
+                image.Image = ContentHelper.FormatFeaturedImageUrl(vm.UserId, image.Image, ImageRenderType.Full);
+                image.ImageResponsive = ContentHelper.FormatFeaturedImageUrl(vm.UserId, image.Image, ImageRenderType.Responsive);
+                image.ImageLquip = ContentHelper.FormatFeaturedImageUrl(vm.UserId, image.Image, ImageRenderType.LowQuality);
             }
 
             if (editing)
             {
                 if (!vm.Images.Any(x => x.Language == SupportedLanguage.English))
                 {
-                    vm.Images.Add(new ImageListItemVo
+                    vm.Images.Add(new MediaListItemVo
                     {
                         Language = SupportedLanguage.English,
                         Image = Constants.DefaultComicStripPlaceholder
@@ -267,7 +267,7 @@ namespace LuduStack.Application.Services
 
                 if (!vm.Images.Any(x => x.Language == SupportedLanguage.Portuguese))
                 {
-                    vm.Images.Add(new ImageListItemVo
+                    vm.Images.Add(new MediaListItemVo
                     {
                         Language = SupportedLanguage.Portuguese,
                         Image = Constants.DefaultComicStripPlaceholder
@@ -287,9 +287,9 @@ namespace LuduStack.Application.Services
                     selectedFeaturedImage = vm.Images.FirstOrDefault()?.Image;
                 }
 
-                vm.FeaturedImage = ContentHelper.SetFeaturedImage(vm.UserId, selectedFeaturedImage, ImageRenderType.Full);
-                vm.FeaturedImageResponsive = ContentHelper.SetFeaturedImage(vm.UserId, selectedFeaturedImage, ImageRenderType.Responsive);
-                vm.FeaturedImageLquip = ContentHelper.SetFeaturedImage(vm.UserId, selectedFeaturedImage, ImageRenderType.LowQuality);
+                vm.FeaturedImage = ContentHelper.FormatFeaturedImageUrl(vm.UserId, selectedFeaturedImage, ImageRenderType.Full);
+                vm.FeaturedImageResponsive = ContentHelper.FormatFeaturedImageUrl(vm.UserId, selectedFeaturedImage, ImageRenderType.Responsive);
+                vm.FeaturedImageLquip = ContentHelper.FormatFeaturedImageUrl(vm.UserId, selectedFeaturedImage, ImageRenderType.LowQuality);
             }
 
             vm.Images = vm.Images.OrderBy(x => x.Language).ToList();

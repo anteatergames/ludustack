@@ -193,7 +193,9 @@ namespace LuduStack.Application.Services
 
                 pointsEarned += result.PointsEarned;
 
-                SetProfileCache(viewModel.UserId, model);
+                UserProfileEssentialVo profileVo = mapper.Map<UserProfileEssentialVo>(model);
+
+                SetProfileCache(viewModel.UserId, profileVo);
 
                 return new OperationResultVo<Guid>(model.Id, pointsEarned);
             }

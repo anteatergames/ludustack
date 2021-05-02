@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Localization;
 using System;
 using System.Net;
+using System.Text.Json;
 
 namespace LuduStack.Web.Controllers.Base
 {
@@ -58,11 +59,12 @@ namespace LuduStack.Web.Controllers.Base
             }
         }
 
-        protected JsonResult Json(OperationResultVo data)
+        private void TranslateResponse(UploadResultVo response)
         {
-            TranslateResponse(data);
-
-            return base.Json(data);
+            if (response != null && !String.IsNullOrWhiteSpace(response.Message))
+            {
+                response.Message = SharedLocalizer[response.Message];
+            }
         }
 
         protected void SetGamificationMessage(int? pointsEarned)
@@ -71,6 +73,20 @@ namespace LuduStack.Web.Controllers.Base
             {
                 TempData["Message"] = SharedLocalizer["You earned {0} points. Awesome!", pointsEarned].Value;
             }
+        }
+
+        protected static string GetFileExtension(IFormFile uploadedFile)
+        {
+            string extension = GetFileExtension(uploadedFile.FileName);
+
+            return extension;
+        }
+
+        protected static string GetFileExtension(string fileUrl)
+        {
+            string[] split = fileUrl.Split('.');
+            string extension = split.Length > 1 ? split[1] : "jpg";
+            return extension;
         }
     }
 }

@@ -7,6 +7,7 @@ using LuduStack.Application.ViewModels.UserPreferences;
 using LuduStack.Domain.Core.Attributes;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Core.Extensions;
+using LuduStack.Domain.ValueObjects;
 using LuduStack.Infra.CrossCutting.Abstractions;
 using LuduStack.Infra.CrossCutting.Identity.Models;
 using LuduStack.Web.Enums;
@@ -260,19 +261,15 @@ namespace LuduStack.Web.Controllers.Base
 
         #region Main Methods
 
-        private string UploadImage(Guid userId, string imageType, string filename, byte[] fileBytes, params string[] tags)
+        private async Task<UploadResultVo> UploadImage(Guid userId, string imageType, string filename, string extension, byte[] fileBytes, params string[] tags)
         {
-            Task<string> op = ImageStorageService.StoreImageAsync(userId.ToString(), imageType.ToLower() + "_" + filename, fileBytes, tags);
-            op.Wait();
+            tags = tags.Where(x => x != null).ToArray();
 
-            if (!op.IsCompletedSuccessfully)
-            {
-                throw op.Exception;
-            }
+            string newFilename = imageType.ToLower() + "_" + filename;
 
-            string url = op.Result;
+            UploadResultVo op = await ImageStorageService.StoreMediaAsync(userId.ToString(), newFilename, extension, fileBytes, tags);
 
-            return url;
+            return op;
         }
 
         private string DeleteImage(Guid userId, string filename)
@@ -292,34 +289,25 @@ namespace LuduStack.Web.Controllers.Base
 
         #endregion Main Methods
 
-        protected string UploadImage(Guid userId, ImageType container, string filename, byte[] fileBytes, params string[] tags)
+        protected async Task<UploadResultVo> UploadImage(Guid userId, ImageType imageType, string filename, string extension, byte[] fileBytes, params string[] tags)
         {
-            string containerName = container.ToString().ToLower();
+            string type = imageType.ToString();
 
-            return UploadImage(userId, containerName, filename, fileBytes, tags);
+            return await UploadImage(userId, type, filename, extension, fileBytes, tags);
         }
 
-        protected string UploadGameImage(Guid userId, ImageType type, string filename, byte[] fileBytes, params string[] tags)
-        {
-            string result = UploadImage(userId, type.ToString().ToLower(), filename, fileBytes, tags);
-
-            return result;
-        }
-
-        protected string UploadContentImage(Guid userId, string filename, byte[] fileBytes, params string[] tags)
+        protected async Task<UploadResultVo> UploadContentMedia(Guid userId, string filename, string extension, byte[] fileBytes, params string[] tags)
         {
             string type = ImageType.ContentImage.ToString().ToLower();
-            string result = UploadImage(userId, type, filename, fileBytes, tags);
 
-            return result;
+            return await UploadImage(userId, type, filename, extension, fileBytes, tags);
         }
 
-        protected string UploadFeaturedImage(Guid userId, string filename, byte[] fileBytes, params string[] tags)
+        protected async Task<UploadResultVo> UploadFeaturedImage(Guid userId, string filename, string extension, byte[] fileBytes, params string[] tags)
         {
             string type = ImageType.FeaturedImage.ToString().ToLower();
-            string result = UploadImage(userId, type, filename, fileBytes, tags);
-
-            return result;
+            
+            return await UploadImage(userId, type, filename, extension, fileBytes, tags);
         }
 
         protected string DeleteGameImage(Guid userId, ImageType type, string filename)

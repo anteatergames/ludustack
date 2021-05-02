@@ -1,6 +1,7 @@
 ﻿using LuduStack.Application;
 using LuduStack.Application.Formatters;
 using LuduStack.Domain.Core.Enums;
+using LuduStack.Domain.ValueObjects;
 using LuduStack.Web.Controllers.Base;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -9,6 +10,7 @@ using Microsoft.Net.Http.Headers;
 using System;
 using System.IO;
 using System.Net;
+using System.Threading.Tasks;
 
 namespace LuduStack.Web.Controllers
 {
@@ -60,7 +62,7 @@ namespace LuduStack.Web.Controllers
             {
                 string storageBasePath = FormatBasePath(type, userId, baseUrl);
 
-                string url = UrlFormatter.CdnCommon(userId, name);
+                string url = UrlFormatter.CdnImageCommon(userId, name);
 
                 if (!string.IsNullOrWhiteSpace(v))
                 {
@@ -96,107 +98,7 @@ namespace LuduStack.Web.Controllers
 
         [HttpPost]
         [Route("uploadavatar")]
-        public IActionResult UploadProfileAvatar(IFormFile image, string currentImage, Guid userId)
-        {
-            try
-            {
-                string imageUrl = string.Empty;
-
-                if (image != null && image.Length > 0)
-                {
-                    using (MemoryStream ms = new MemoryStream())
-                    {
-                        image.CopyTo(ms);
-
-                        byte[] fileBytes = ms.ToArray();
-
-                        string filename = userId + "_Personal";
-
-                        imageUrl = base.UploadImage(userId, ImageType.ProfileImage, filename, fileBytes, EnvName);
-                    }
-                }
-
-                var json = new
-                {
-                    size = image?.Length,
-                    oldImage = currentImage,
-                    imageUrl = imageUrl
-                };
-
-                return Json(json);
-            }
-            catch (Exception ex)
-            {
-                var json = new
-                {
-                    error = ex.Message
-                };
-
-                return Json(json);
-            }
-        }
-
-        [HttpPost]
-        [Route("uploadprofilecoverimage")]
-        public IActionResult UploadProfileCoverImage(IFormFile image, string currentImage, Guid userId, Guid profileId)
-        {
-            try
-            {
-                string imageUrl = string.Empty;
-
-                if (image != null && image.Length > 0)
-                {
-                    using (MemoryStream ms = new MemoryStream())
-                    {
-                        image.CopyTo(ms);
-
-                        byte[] fileBytes = ms.ToArray();
-
-                        string filename = profileId.ToString();
-
-                        imageUrl = base.UploadImage(userId, ImageType.ProfileCover, filename, fileBytes, EnvName);
-                    }
-                }
-
-                var json = new
-                {
-                    size = image?.Length,
-                    oldImage = currentImage,
-                    imageUrl = imageUrl
-                };
-
-                return Json(json);
-            }
-            catch (Exception ex)
-            {
-                var json = new
-                {
-                    error = ex.Message
-                };
-
-                return Json(json);
-            }
-        }
-
-        #endregion Profile
-
-        #region Game
-
-        [HttpPost]
-        [Route("uploadgamethumbnail")]
-        public IActionResult UploadGameThumbnail(IFormFile image, Guid gameId, string currentImage, Guid userId)
-        {
-            return UploadGameImage(image, ImageType.GameThumbnail, Constants.DefaultGameThumbnail, gameId, currentImage, userId);
-        }
-
-        [HttpPost]
-        [Route("uploadgamecoverimage")]
-        public IActionResult UploadGameCoverImage(IFormFile image, Guid gameId, string currentImage, Guid userId)
-        {
-            return UploadGameImage(image, ImageType.GameCover, Constants.DefaultGameCoverImage, gameId, currentImage, userId);
-        }
-
-        private IActionResult UploadGameImage(IFormFile image, ImageType type, string defaultImage, Guid gameId, string currentImage, Guid userId)
+        public async Task<IActionResult> UploadProfileAvatar(IFormFile image, string currentImage, Guid userId)
         {
             try
             {
@@ -212,9 +114,109 @@ namespace LuduStack.Web.Controllers
 
                         string extension = GetFileExtension(image);
 
-                        string filename = DateTime.Now.ToString("yyyyMMddHHmmss") + "." + extension;
+                        string filename = userId + "_Personal";
 
-                        imageUrl = base.UploadGameImage(userId, type, filename, fileBytes, EnvName);
+                        UploadResultVo uploadResult = await base.UploadImage(userId, ImageType.ProfileImage, filename, extension, fileBytes, EnvName);
+
+                        uploadResult.FileSize = image?.Length;
+                        uploadResult.OldImage = currentImage;
+
+                        return Json(uploadResult);
+                    }
+                }
+
+                return Json(new UploadResultVo("No file to upload"));
+            }
+            catch (Exception ex)
+            {
+                return Json(new UploadResultVo(ex.Message));
+            }
+        }
+
+        [HttpPost]
+        [Route("uploadprofilecoverimage")]
+        public async Task<IActionResult> UploadProfileCoverImage(IFormFile image, string currentImage, Guid userId, Guid profileId)
+        {
+            try
+            {
+                string imageUrl = string.Empty;
+
+                if (image != null && image.Length > 0)
+                {
+                    using (MemoryStream ms = new MemoryStream())
+                    {
+                        image.CopyTo(ms);
+
+                        byte[] fileBytes = ms.ToArray();
+
+                        string extension = GetFileExtension(image);
+
+                        string filename = profileId.ToString();
+
+                        UploadResultVo uploadResult = await base.UploadImage(userId, ImageType.ProfileCover, filename, extension, fileBytes, EnvName);
+
+                        uploadResult.FileSize = image?.Length;
+                        uploadResult.OldImage = currentImage;
+
+                        return Json(uploadResult);
+                    }
+                }
+
+                return Json(new UploadResultVo("No file to upload"));
+            }
+            catch (Exception ex)
+            {
+                return Json(new UploadResultVo(ex.Message));
+            }
+        }
+
+        #endregion Profile
+
+        #region Game
+
+        [HttpPost]
+        [Route("uploadgamethumbnail")]
+        public async Task<IActionResult> UploadGameThumbnail(IFormFile image, Guid gameId, string currentImage, Guid userId)
+        {
+            return await UploadGameImage(image, ImageType.GameThumbnail, Constants.DefaultGameThumbnail, gameId, currentImage, userId);
+        }
+
+        [HttpPost]
+        [Route("uploadgamecoverimage")]
+        public async Task<IActionResult> UploadGameCoverImage(IFormFile image, Guid gameId, string currentImage, Guid userId)
+        {
+            return await UploadGameImage(image, ImageType.GameCover, Constants.DefaultGameCoverImage, gameId, currentImage, userId);
+        }
+
+        private async Task<IActionResult> UploadGameImage(IFormFile image, ImageType type, string defaultImage, Guid gameId, string currentImage, Guid userId)
+        {
+            try
+            {
+                if (image != null && image.Length > 0)
+                {
+                    using (MemoryStream ms = new MemoryStream())
+                    {
+                        image.CopyTo(ms);
+
+                        byte[] fileBytes = ms.ToArray();
+
+                        string extension = GetFileExtension(image);
+
+                        string filename = DateTime.Now.ToString("yyyyMMddHHmmss");
+
+
+                        if (type == ImageType.GameCover || type == ImageType.GameThumbnail)
+                        {
+                            filename = gameId.ToString();
+                        }
+
+                        UploadResultVo uploadResult = await base.UploadImage(userId, type, filename, extension, fileBytes, EnvName);
+
+                        uploadResult.FileSize = image?.Length;
+                        uploadResult.OldImage = currentImage;
+                        uploadResult.RelatedId = gameId;
+
+                        return Json(uploadResult);
                     }
                 }
 
@@ -225,24 +227,11 @@ namespace LuduStack.Web.Controllers
                     base.DeleteGameImage(userId, type, currentParam);
                 }
 
-                var json = new
-                {
-                    size = image?.Length,
-                    gameId = gameId,
-                    oldImage = currentImage,
-                    imageUrl = imageUrl
-                };
-
-                return Json(json);
+                return Json(new UploadResultVo("No file to upload"));
             }
             catch (Exception ex)
             {
-                var json = new
-                {
-                    error = ex.Message
-                };
-
-                return Json(json);
+                return Json(new UploadResultVo(ex.Message));
             }
         }
 
@@ -251,13 +240,11 @@ namespace LuduStack.Web.Controllers
         #region Content
 
         [HttpPost]
-        [Route("uploadcontentimage")]
-        public IActionResult UploadContentImage(IFormFile upload, bool randomName, string tag)
+        [Route("uploadmedia")]
+        public async Task<IActionResult> UploadMedia(IFormFile upload, bool randomName, string tag)
         {
             try
             {
-                string imageUrl = string.Empty;
-
                 if (upload != null && upload.Length > 0)
                 {
                     using (MemoryStream ms = new MemoryStream())
@@ -277,39 +264,26 @@ namespace LuduStack.Web.Controllers
                             filename += "-" + rand.Next().ToString();
                         }
 
-                        filename += "." + extension;
+                        UploadResultVo uploadResult = await base.UploadContentMedia(CurrentUserId, filename, extension, fileBytes, EnvName, tag);
 
-                        imageUrl = base.UploadContentImage(CurrentUserId, filename, fileBytes, EnvName, tag);
+                        return Json(uploadResult);
                     }
                 }
 
-                var json = new
-                {
-                    uploaded = true,
-                    url = imageUrl
-                };
-
-                return Json(json);
+                return Json(new UploadResultVo("No file to upload"));
             }
             catch (Exception ex)
             {
-                var json = new
-                {
-                    error = ex.Message
-                };
-
-                return Json(json);
+                return Json(new UploadResultVo(ex.Message));
             }
         }
 
         [HttpPost]
         [Route("uploadarticleimage")]
-        public IActionResult UploadArticleImage(IFormFile upload)
+        public async Task<IActionResult> UploadArticleImage(IFormFile upload)
         {
             try
             {
-                string imageUrl = string.Empty;
-
                 if (upload != null && upload.Length > 0)
                 {
                     using (MemoryStream ms = new MemoryStream())
@@ -320,39 +294,31 @@ namespace LuduStack.Web.Controllers
 
                         string extension = GetFileExtension(upload);
 
-                        string filename = DateTime.Now.ToString("yyyyMMddHHmmss") + "." + extension;
+                        string filename = DateTime.Now.ToString("yyyyMMddHHmmss");
 
-                        imageUrl = base.UploadContentImage(CurrentUserId, filename, fileBytes, EnvName);
+                        UploadResultVo uploadResult = await base.UploadContentMedia(CurrentUserId, filename, extension, fileBytes, EnvName);
+
+                        uploadResult.FileSize = upload.Length;
+                        uploadResult.Url = UrlFormatter.Image(CurrentUserId, ImageType.ContentImage, uploadResult.Filename);
+
+                        return Json(uploadResult);
                     }
                 }
 
-                var json = new
-                {
-                    uploaded = true,
-                    url = UrlFormatter.Image(CurrentUserId, ImageType.ContentImage, imageUrl)
-                };
-
-                return Json(json);
+                return Json(new UploadResultVo("No file to upload"));
             }
             catch (Exception ex)
             {
-                var json = new
-                {
-                    error = ex.Message
-                };
-
-                return Json(json);
+                return Json(new UploadResultVo(ex.Message));
             }
         }
 
         [HttpPost]
         [Route("uploadfeaturedimage")]
-        public IActionResult UploadFeaturedImage(IFormFile featuredimage, Guid id, string currentImage, Guid userId)
+        public async Task<IActionResult> UploadFeaturedImage(IFormFile featuredimage, Guid id, string currentImage, Guid userId)
         {
             try
             {
-                string imageUrl = string.Empty;
-
                 if (featuredimage != null && featuredimage.Length > 0)
                 {
                     using (MemoryStream ms = new MemoryStream())
@@ -363,14 +329,20 @@ namespace LuduStack.Web.Controllers
 
                         string extension = GetFileExtension(featuredimage);
 
-                        string filename = DateTime.Now.ToString("yyyyMMddHHmmss") + "." + extension;
+                        string filename = DateTime.Now.ToString("yyyyMMddHHmmss");
 
                         if (userId == Guid.Empty)
                         {
                             userId = CurrentUserId;
                         }
 
-                        imageUrl = base.UploadFeaturedImage(userId, filename, fileBytes, EnvName);
+                        UploadResultVo uploadResult = await base.UploadFeaturedImage(userId, filename, extension, fileBytes, EnvName);
+
+                        uploadResult.FileSize = featuredimage?.Length;
+                        uploadResult.RelatedId = id;
+                        uploadResult.Url = UrlFormatter.Image(CurrentUserId, ImageType.ContentImage, uploadResult.Filename);
+
+                        return Json(uploadResult);
                     }
                 }
 
@@ -381,24 +353,11 @@ namespace LuduStack.Web.Controllers
                     base.DeleteFeaturedImage(userId, currentParam);
                 }
 
-                var json = new
-                {
-                    size = featuredimage?.Length,
-                    id = id,
-                    oldImage = currentImage,
-                    imageUrl = imageUrl
-                };
-
-                return Json(json);
+                return Json(new UploadResultVo("No file to upload"));
             }
             catch (Exception ex)
             {
-                var json = new
-                {
-                    error = ex.Message
-                };
-
-                return Json(json);
+                return Json(new UploadResultVo(ex.Message));
             }
         }
 
@@ -415,13 +374,6 @@ namespace LuduStack.Web.Controllers
             byte[] bytes = System.IO.File.ReadAllBytes(retorno);
 
             return File(new MemoryStream(bytes), "image/png");
-        }
-
-        private static string GetFileExtension(IFormFile uploadedFile)
-        {
-            string[] split = uploadedFile.FileName.Split('.');
-            string extension = split.Length > 1 ? split[1] : "jpg";
-            return extension;
         }
 
         private static string GetImageNameFromUrl(string currentImage)
