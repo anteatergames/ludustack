@@ -89,7 +89,7 @@ namespace LuduStack.Application.Services
 
             IEnumerable<SupportedLanguage> list = await mediator.Query<GetUserLanguagesByUserIdQuery, IEnumerable<SupportedLanguage>>(new GetUserLanguagesByUserIdQuery(userId));
 
-            return list.ToList();
+            return list?.ToList();
         }
 
         private static UserPreferences CreateEmptyPreferences(Guid userId)
