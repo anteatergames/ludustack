@@ -287,7 +287,7 @@ namespace LuduStack.Web.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid && reCaptchaValid)
             {
-                ApplicationUser user = new ApplicationUser { UserName = model.UserName, Email = model.Email, CreateDate = DateTime.Now };
+                ApplicationUser user = new ApplicationUser { UserName = model.UserName, Email = model.Email };
 
                 IdentityResult result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)

@@ -28,6 +28,7 @@ namespace LuduStack.Infra.CrossCutting.Identity.Models
             Logins = new List<IdentityUserLogin<string>>();
             Tokens = new List<IdentityUserToken<string>>();
             RecoveryCodes = new List<TwoFactorRecoveryCode>();
+            CreateDate = DateTime.Now;
         }
     }
 }
