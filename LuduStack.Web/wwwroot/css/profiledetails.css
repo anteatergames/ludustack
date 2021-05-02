@@ -37,6 +37,8 @@
     .box.user-profile .overlay {
         z-index: 50;
         padding: 20px;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
     }
 
         .box.user-profile .overlay.overlay-none {
