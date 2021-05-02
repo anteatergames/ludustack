@@ -208,7 +208,6 @@ a {
     box-shadow: none;
     height: 35px;
     border: none;
-    border-radius: 0;
 }
 
     .skin-ludustack .search-form input[type="text"]:hover {
