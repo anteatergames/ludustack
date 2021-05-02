@@ -152,7 +152,7 @@ var ACTIVITYFEED = (function () {
 
     function loadSingleOembed(element) {
         var obj = $(element);
-        var wrapper = obj.closest('.videoWrapper');
+        var wrapper = obj.closest('.videowrapper');
         var oembed = wrapper.find('oembed');
         var videoUrl = wrapper.data('url');
 

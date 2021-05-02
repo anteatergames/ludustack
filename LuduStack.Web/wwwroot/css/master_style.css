@@ -1,52 +1,3 @@
-/*------------------------------------------------------------------
-[Master Stylesheet]
--------------------------------------------------------------------*/
-
-/*------------------------------------------------------------------
-[Table of contents]
-
-1. Body, layout
-2. Header
-6. User card
-7. tab
-8. google map
-9. wizard
-11. info-box
-12. timeline
-13. Button
-15. tab
-16. pagination
-17. data table
-19. modal
-20. widget
-22. mailbox
-26. color Skin
-
--------------------------------------------------------------------*/
-
-/*------------------------------------------------------------------
-# [Color codes]
-
-# Black (text): #333333
-# light Blue : #45aef1
-# Blue : #0092ee
-# Green : #22af47
-# Yellow : #ffbf36
-# Red : #dc2d27
-# Gray : #d2d6de
-# Navy : #001F3F
-# Teal : #39CCCC
-# Purple : #ab26aa
-# Orange : #89ad87
-# Maroon : #8C1919
-------------------------------------------------------------------*/
-
-/*------------------------------------------------------------------
-[Typography]
-
-Body :		Poppins, sans-serif;
--------------------------------------------------------------------*/
-
 html {
     --border-radius: 8px;
 }
@@ -55,7 +6,7 @@ body {
     overflow-y: auto;
     background-color: #dedada;
 }
-/*Body, layout*/
+/*body, layout*/
 .wrapper, body, html {
     padding-right: 0 !important;
 }
@@ -535,7 +486,7 @@ select:-webkit-autofill:focus {
     color: #67757c;
 }
 
-/*Vertical tabs*/
+/*vertical tabs*/
 .vtabs {
     display: table;
 }
@@ -598,7 +549,7 @@ select:-webkit-autofill:focus {
     padding: 0;
 }
 
-/*---Notification---*/
+/*---notification---*/
 .jq-icon-info {
     background-color: #0092ee;
     color: #d9edf7;
@@ -716,7 +667,7 @@ select:-webkit-autofill:focus {
         background-color: #465161;
     }
 
-/*---Statistic widgets---*/
+/*---statistic widgets---*/
 .flexbox {
     display: -webkit-box;
     display: flex;
@@ -1298,7 +1249,7 @@ ul.flexbox {
     font-size: 21px;
 }
 
-/*Button*/
+/*button*/
 .btn.dropdown-toggle::after, .btn-group-vertical .btn.dropdown-toggle::after {
     display: none;
 }
@@ -2096,15 +2047,3 @@ video {
     width: 100%;
     height: 100%;
 }
-
-.videoWrapper {
-    position: relative;
-}
-
-    .videoWrapper iframe {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-    }

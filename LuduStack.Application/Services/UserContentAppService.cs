@@ -259,7 +259,6 @@ namespace LuduStack.Application.Services
                 IEnumerable<Guid> userContentIds = viewModels.Select(x => x.Id);
                 IEnumerable<Poll> polls = await mediator.Query<GetPollsByUserContentIdsQuery, IEnumerable<Poll>>(new GetPollsByUserContentIdsQuery(userContentIds));
 
-
                 foreach (UserContentViewModel item in viewModels)
                 {
                     item.CreateDate = item.CreateDate.ToLocalTime();

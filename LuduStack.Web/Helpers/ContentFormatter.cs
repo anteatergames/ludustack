@@ -54,7 +54,7 @@ namespace LuduStack.Web.Helpers
                 }
                 else if (!string.IsNullOrWhiteSpace(oembedPrefix))
                 {
-                    newText = String.Format(@"<div class=""videoWrapper""><oembed>{0}</oembed></div>", url);
+                    newText = String.Format(@"<div class=""videowrapper""><oembed>{0}</oembed></div>", url);
                 }
                 else
                 {

@@ -206,9 +206,19 @@ img.grayscale {
 
 /*video play start*/
 /* Just a parent container for the videos */
-.videoWrapper {
+.videowrapper {
+    position: relative;
     margin: 0 auto;
 }
+
+    .videowrapper iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+
 /* Individual video container */
 .video-thumbnail {
     position: relative;

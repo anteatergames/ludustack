@@ -70,9 +70,9 @@
         color: #f9f9f9;
     }
 
-        .small-box.animated:hover .icon {
-            font-size: 78px;
-        }
+    .small-box.animated:hover .icon {
+        font-size: 78px;
+    }
 
 @media (max-width:767px) {
     .small-box {

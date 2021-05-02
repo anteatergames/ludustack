@@ -87,12 +87,15 @@ namespace LuduStack.Web.ViewComponents
                 case UserContentType.TeamCreation:
                     FormatTeamCreationPost(item);
                     break;
+
                 case UserContentType.JobPosition:
                     FormatJobPositionPostForTheFeed(item);
                     break;
+
                 case UserContentType.ComicStrip:
                     FormatComicStripPost(item);
                     break;
+
                 default:
                     FormatPost(item);
                     break;
@@ -112,7 +115,6 @@ namespace LuduStack.Web.ViewComponents
 
             item.Permissions.CanDelete = item.UserId == CurrentUserId || userIsAdmin;
         }
-
 
         private void FormatComicStripPost(UserContentViewModel item)
         {

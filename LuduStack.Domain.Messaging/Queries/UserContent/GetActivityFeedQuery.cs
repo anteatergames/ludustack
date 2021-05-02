@@ -55,7 +55,6 @@ namespace LuduStack.Domain.Messaging.Queries.UserContent
             }
             else
             {
-
                 allModels = allModels.Where(x => x.PublishDate <= DateTime.Now);
 
                 List<Guid> featuredIds = featuredContentRepository.Get(x => x.Active).Select(x => x.UserContentId).ToList();
