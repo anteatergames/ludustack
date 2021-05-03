@@ -26,13 +26,13 @@
     </div>
 
     <div class="row no-gutters bb-1 mt-1">
-        <button type="button" class="col-4 btn btn-lg bg-transparent btn-interaction btn-interaction-like @(Model.CurrentUserLiked ? "text-blue like-liked" : string.Empty)@(User.Identity.IsAuthenticated ? String.Empty : " needlogin disabled")" data-msg-id="msgNeedLoginToLikeAndComment" data-id="@Model.Id" data-type="@Model.UserContentType">
+        <button type="button" class="col-4 btn btn-lg bg-transparent btn-interaction btn-interaction-like @(Model.CurrentUserLiked ? "text-blue like-liked" : string.Empty)@(User.Identity.IsAuthenticated ? String.Empty : " needlogin disabled")" data-msg-id="msgNeedLoginToLikeAndComment" data-id="@Model.Id" data-type="@Model.UserContentType" aria-label="@SharedLocalizer["Like"]">
             <i class="fa fa-thumbs-up" aria-hidden="true">&nbsp;</i><span class="d-none d-sm-block d-md-inline-block">@SharedLocalizer["Like"]</span>
         </button>
-        <button type="button" class="col-4 btn btn-lg bg-transparent btn-interaction btn-interaction-comment@(User.Identity.IsAuthenticated ? String.Empty : " needlogin disabled")" data-msg-id="msgNeedLoginToLikeAndComment">
+        <button type="button" class="col-4 btn btn-lg bg-transparent btn-interaction btn-interaction-comment@(User.Identity.IsAuthenticated ? String.Empty : " needlogin disabled")" data-msg-id="msgNeedLoginToLikeAndComment" aria-label="@SharedLocalizer["Comment"]">
             <i class="fa fa-comment" aria-hidden="true">&nbsp;</i><span class="d-none d-sm-block d-md-inline-block">@SharedLocalizer["Comment"]</span>
         </button>
-        <button type="button" data-target="#divPopOverShare@(Model.Id)" class="col-4 btn btn-lg bg-transparent btn-interaction btn-interaction-share">
+        <button type="button" data-target="#divPopOverShare@(Model.Id)" class="col-4 btn btn-lg bg-transparent btn-interaction btn-interaction-share" aria-label="@SharedLocalizer["Share"]">
             <i class="fa fa-share" aria-hidden="true">&nbsp;</i><span class="d-none d-sm-block d-md-inline-block">@SharedLocalizer["Share"]</span>
         </button>
     </div>
@@ -57,7 +57,7 @@
             {
                 <div class="box-comment">
                     <a asp-area="" asp-controller="profile" asp-action="details" asp-route-userHandler="@comment.UserHandler">
-                        <img class="rounded img-sm rounded-circle lazyload" data-src="@comment.AuthorPicture" alt="User Image">
+                        <img class="rounded img-sm rounded-circle lazyload" data-src="@comment.AuthorPicture" alt="@SharedLocalizer["This is {0}, believe it or not.", comment.AuthorName]">
                     </a>
 
                     <div class="comment-text">

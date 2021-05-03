@@ -3153,4 +3153,8 @@
     <value>Você tem que aceitar os termos!</value>
     <comment>Register</comment>
   </data>
+  <data name="You" xml:space="preserve">
+    <value>Você</value>
+    <comment>Generic</comment>
+  </data>
 </root>

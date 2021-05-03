@@ -29,7 +29,8 @@
       "wwwroot/css/typography.css",
       "wwwroot/css/social.css",
       "wwwroot/css/sidebar.css",
-      "wwwroot/css/userwidgets.css"
+      "wwwroot/css/userwidgets.css",
+      "wwwroot/css/gameidea.css"
     ]
   },
   {
