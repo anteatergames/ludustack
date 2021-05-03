@@ -29,6 +29,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Security.Claims;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using static LuduStack.Infra.CrossCutting.Identity.Services.EmailSenderExtensions;
 
@@ -670,6 +671,15 @@ namespace LuduStack.Web.Controllers
 
             try
             {
+                var pattern = new Regex("^(?=.{3,32}$)(?![-.])(?!.*[-.]{2})[a-zA-Z0-9-.]+(?<![-.])$");
+
+                var match = pattern.Match(UserName);
+
+                if (!match.Success)
+                {
+                    return Json(SharedLocalizer["Username not available!"].ToString());
+                }
+
                 ApplicationUser user = await UserManager.FindByNameAsync(UserName);
 
                 if (user == null)
@@ -683,7 +693,7 @@ namespace LuduStack.Web.Controllers
                         return Json(true);
                     }
 
-                    return Json(false);
+                    return Json(SharedLocalizer["Oops! Someone already took that username!"].ToString());
                 }
             }
             catch (Exception ex)

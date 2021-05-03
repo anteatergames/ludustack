@@ -23,7 +23,7 @@ namespace LuduStack.Infra.CrossCutting.Identity.Models.AccountViewModels
         [Display(Name = "User Name")]
         public string UserName { get; set; }
 
-        [Range(typeof(bool), "true", "true", ErrorMessage = "You need to accept the terms")]
+        [Range(typeof(bool), "true", "true", ErrorMessage = "You need to accept the terms!")]
         public bool AcceptTerms { get; set; }
     }
 }
