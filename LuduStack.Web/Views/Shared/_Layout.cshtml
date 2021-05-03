@@ -672,15 +672,7 @@
               asp-fallback-test-value="absolute"
               integrity="sha256-/ykJw/wDxMa0AQhHDYfuMEwVb4JHMx9h4jD4XvHqVzU=" crossorigin="anonymous">
 
-        <link rel="stylesheet"
-              href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/brands.min.css"
-              asp-fallback-href="~/lib/font-awesome/css/brands.min.css"
-              asp-fallback-test-class="fa"
-              asp-fallback-test-property="display"
-              asp-fallback-test-value="inline-block"
-              integrity="sha512-LrBiPZ3DqJbvWrRvdLOkbgPAPCpwwK7aMoNKrnyhvpfAvUT3g53O7cdvW0up2aIuAjad0BS9mEiUQMnCz9b6EQ=="
-              crossorigin="anonymous" />
-        <link rel="stylesheet"
+        <link rel="preload stylesheet"
               href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/fontawesome.min.css"
               asp-fallback-href="~/lib/font-awesome/css/fontawesome.min.css"
               asp-fallback-test-class="fa"
@@ -688,7 +680,20 @@
               asp-fallback-test-value="inline-block"
               integrity="sha512-9NyfC2Lx+faLve4B168pWgTEHH3T50NBfVLF1aldvQxvwxjYdNNu7HQQKOehQW6r5v1r9QWDUe1BSFQPMbB5fw=="
               crossorigin="anonymous" />
-        <link rel="stylesheet"
+        <link rel="preload"
+              as="style"
+              onload="this.onload=null;this.rel='stylesheet'"
+              href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/brands.min.css"
+              asp-fallback-href="~/lib/font-awesome/css/brands.min.css"
+              asp-fallback-test-class="fa"
+              asp-fallback-test-property="display"
+              asp-fallback-test-value="inline-block"
+              integrity="sha512-LrBiPZ3DqJbvWrRvdLOkbgPAPCpwwK7aMoNKrnyhvpfAvUT3g53O7cdvW0up2aIuAjad0BS9mEiUQMnCz9b6EQ=="
+              crossorigin="anonymous" />
+        <noscript><link rel="stylesheet" href="~/lib/font-awesome/css/brands.min.css"></noscript>
+        <link rel="preload"
+              as="style"
+              onload="this.onload=null;this.rel='stylesheet'"
               href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/regular.min.css"
               asp-fallback-href="~/lib/font-awesome/css/regular.min.css"
               asp-fallback-test-class="fa"
@@ -696,7 +701,10 @@
               asp-fallback-test-value="inline-block"
               integrity="sha512-UMfyYhrK4rmIVgDeTOOvDutWqYv3sCbprjQd29z7eqVYWCA2eJ5dLiXdygsw0xDQvMqYU7ETNn0Xuv+uB7eYbA=="
               crossorigin="anonymous" />
-        <link rel="stylesheet"
+        <noscript><link rel="stylesheet" href="~/lib/font-awesome/css/regular.min.css"></noscript>
+        <link rel="preload"
+              as="style"
+              onload="this.onload=null;this.rel='stylesheet'"
               href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/solid.min.css"
               asp-fallback-href="~/lib/font-awesome/css/solid.min.css"
               asp-fallback-test-class="fa"
@@ -704,8 +712,11 @@
               asp-fallback-test-value="inline-block"
               integrity="sha512-uXb7T6PbdeZfKrD3eKLjlKZU95eciMqCRTKykwrrjAIYQUefedK+jRkyje5J9jQUYA6oFLTfe94Uj2pAMlUwZQ=="
               crossorigin="anonymous" />
+        <noscript><link rel="stylesheet" href="~/lib/font-awesome/css/solid.min.css"></noscript>
 
-        <link rel="stylesheet"
+        <link rel="preload"
+              as="style"
+              onload="this.onload=null;this.rel='stylesheet'"
               href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/themes/white/pace-theme-minimal.min.css"
               asp-fallback-href="~/lib/pace/themes/white/pace-theme-minimal.min.css"
               asp-fallback-test-class="pace"
@@ -713,6 +724,8 @@
               asp-fallback-test-value="none"
               integrity="sha256-E35gzLnIxEQ1I4i28fiuAR/kqvLZLqcCqvpefyJqjZs="
               crossorigin="anonymous" />
+        <noscript><link rel="stylesheet" href="~/lib/pace/themes/white/pace-theme-minimal.min.css"></noscript>
+
         <link rel="stylesheet" href="~/thirdparty/tinyDrawyer/css/tinyDrawer.min.css">
         @RenderSection("ComponentStyles", required: false)
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true">
