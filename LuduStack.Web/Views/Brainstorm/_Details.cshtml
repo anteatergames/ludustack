@@ -97,7 +97,7 @@
                     {
                         <div class="box-comment">
                             <a asp-area="" asp-controller="profile" asp-action="details" asp-route-userHandler="@comment.UserHandler">
-                                <img class="rounded img-sm rounded-circle" src="@comment.AuthorPicture" alt="User Image">
+                                <img class="rounded img-sm rounded-circle" src="@comment.AuthorPicture" alt="@SharedLocalizer["This is {0}, believe it or not.", comment.AuthorName]">
                             </a>
 
                             <div class="comment-text">
