@@ -3141,4 +3141,16 @@
     <value>doe</value>
     <comment>Generic</comment>
   </data>
+  <data name="Oops! Someone already took that username!" xml:space="preserve">
+    <value>Já tem alguém com esse nome de usuário!</value>
+    <comment>Register</comment>
+  </data>
+  <data name="Username not available!" xml:space="preserve">
+    <value>Nome de usuário não disponível!</value>
+    <comment>Register</comment>
+  </data>
+  <data name="You need to accept the terms!" xml:space="preserve">
+    <value>Você tem que aceitar os termos!</value>
+    <comment>Register</comment>
+  </data>
 </root>

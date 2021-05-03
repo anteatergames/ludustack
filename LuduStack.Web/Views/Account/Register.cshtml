@@ -98,7 +98,7 @@
                 }
             }
             else {
-                ALERTSYSTEM.ShowWarningMessage("You need to accept the terms to register!");
+                ALERTSYSTEM.ShowWarningMessage("@Html.Raw(SharedLocalizer["You need to accept the terms!"].ToString())");
             }
 
             return false;
