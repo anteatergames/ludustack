@@ -66,7 +66,7 @@
                     {
                         var image = Model.Images.ElementAt(i);
 
-                        <button class="btn btn-outline-info btn-changelanguage" data-target="@(String.Format("img-{0}", image.Language.ToString().ToLower()))">@SharedLocalizer[image.Language.ToDisplayName()]</button>
+                        <button class="btn btn-outline-info btn-changelanguage" data-target="@(String.Format("img-{0}", (image.Language ?? SupportedLanguage.English).ToString().ToLower()))">@SharedLocalizer[(image.Language ?? SupportedLanguage.English).ToDisplayName()]</button>
                     }
                 </div>
             </div>

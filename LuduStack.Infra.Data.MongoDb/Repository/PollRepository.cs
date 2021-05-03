@@ -84,7 +84,6 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
             return DbSet.Find(x => x.Id == pollId).First().Votes.SingleOrDefault(x => x.UserId == userId);
         }
 
-
         public async Task<IEnumerable<Poll>> GetPollsByUserContentIds(List<Guid> userContentIds)
         {
             FindOptions<Poll> findOptions = new FindOptions<Poll>();

@@ -124,7 +124,7 @@ namespace LuduStack.Application
         {
             get
             {
-                return "https://res.cloudinary.com/ludustack/image/upload/f_auto/";
+                return "https://res.cloudinary.com/ludustack/image/upload/f_auto";
             }
         }
 
@@ -132,7 +132,7 @@ namespace LuduStack.Application
         {
             get
             {
-                return string.Format("{0},q_auto/v1/xpto/profileimage_xpto_Personal", DefaultCloudinaryPath);
+                return string.Format("{0},q_auto/xpto/profileimage_xpto_Personal", DefaultCloudinaryPath);
             }
         }
 
@@ -140,7 +140,7 @@ namespace LuduStack.Application
         {
             get
             {
-                return string.Format("{0},q_auto/v1/xpto", DefaultCloudinaryPath);
+                return string.Format("{0},q_auto/xpto", DefaultCloudinaryPath);
             }
         }
 

@@ -1,9 +1,8 @@
 html {
-    /*basic*/
-    --color-bg-basic: #E0E0E2;
-    --color-accent: #7389AE;
-    --color-highlight: #81D2C7;
-    --color-shade: #B5BAD0;
+    --color-bg-basic: #e0e0e2;
+    --color-accent: #7389ae;
+    --color-highlight: #81d2c7;
+    --color-shade: #b5bad0;
     --color-border: #89ad87;
     --color-border-hover: #00ff21;
     --color-bg-dark: #111;
@@ -16,18 +15,15 @@ html {
     --color-red: #f83f37;
     --color-red-fx: #dc2d27;
     --color-purple: #ab26aa;
-    /*boostrap*/
     --color-primary: #45aef1;
     --color-primary-fx: #367fa9;
     --color-info: #0092ee;
     --color-info-border: #007ac7;
-    /*social*/
-    --reddit-color-bg: #FF5700;
-    --reddit-color-bg-hover: #1A1A1B;
+    --reddit-color-bg: #ff5700;
+    --reddit-color-bg-hover: #1a1a1b;
     --reddit-color-fg: #fff;
     --reddit-color-fg-hover: #fff;
     --facebook-color-bg: #1877f2;
-    /*game genres*/
     --game-genre-strategy: var(--color-red);
 }
 
@@ -41,11 +37,11 @@ a {
 
     .bordered:hover {
         border: 1px solid var(--color-border-hover);
-        box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
     }
 
 .hover:hover {
-    box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
 }
 
 .rating-container .filled-stars {
@@ -58,20 +54,20 @@ a {
 }
 
     .bg-primary:hover {
-        background-color: #B5BAD0 !important;
+        background-color: #b5bad0 !important;
         color: var(--color-accent);
     }
 
 .bg-label {
     background-color: #416788 !important;
     color: white;
-    border: 1px solid #B5BAD0 !important;
+    border: 1px solid #b5bad0 !important;
 }
 
     .bg-label:hover {
         background-color: #416788 !important;
         color: #ffbf36;
-        border: 1px solid #B5BAD0 !important;
+        border: 1px solid #b5bad0 !important;
     }
 
 .dropdown-item {
@@ -168,7 +164,7 @@ a {
 
 .skin-ludustack .sidebar-menu > li:hover > a {
     color: #ffffff;
-    background: rgba(0,0,0,0.1);
+    background: rgba(0, 0, 0, 0.1);
 }
 
 .skin-ludustack .sidebar-menu > li.active > a,
@@ -212,7 +208,6 @@ a {
     box-shadow: none;
     height: 35px;
     border: none;
-    border-radius: 0;
 }
 
     .skin-ludustack .search-form input[type="text"]:hover {
@@ -253,7 +248,7 @@ a {
     color: #fff !important;
 }
 
-/*color Skin*/
+/* color skin */
 .bg-gray {
     color: #000;
     background-color: #d2d6de;
@@ -324,7 +319,7 @@ a {
 }
 
 .bg-maroon {
-    background-color: #8C1919 !important;
+    background-color: #8c1919 !important;
 }
 
 .bg-gray-active {
@@ -429,19 +424,19 @@ a {
 }
 
     .badge-status.badge-proposed, .badge-status.badge-draft {
-        background-color: #9488AD;
+        background-color: #9488ad;
     }
 
     .badge-status.badge-inanalysis {
-        background-color: #BFA200;
+        background-color: #bfa200;
     }
 
     .badge-status.badge-accepted, .badge-status.badge-fulfilled {
-        background-color: #4582FC;
+        background-color: #4582fc;
     }
 
     .badge-status.badge-rejected, .badge-status.badge-closedforapplication, .badge-status.badge-cancelled {
-        background-color: #FB5012;
+        background-color: #fb5012;
     }
 
     .badge-status.badge-implemented, .badge-status.badge-openforapplication {

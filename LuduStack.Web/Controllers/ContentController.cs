@@ -1,5 +1,6 @@
 ﻿using LuduStack.Application;
 using LuduStack.Application.Formatters;
+using LuduStack.Application.Helpers;
 using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels;
 using LuduStack.Application.ViewModels.Content;
@@ -146,7 +147,7 @@ namespace LuduStack.Web.Controllers
 
                     await NotifyFollowers(profile, vm.GameId);
 
-                    string url = Url.Action("details", "content", new { area = string.Empty, id = vm.Id, pointsEarned = saveResult.PointsEarned, msg = SharedLocalizer[saveResult.Message] });
+                    string url = Url.Action("details", "content", new { area = string.Empty, id = saveResult.Value, pointsEarned = saveResult.PointsEarned, msg = SharedLocalizer[saveResult.Message] });
 
                     if (isNew && EnvName.Equals(Constants.ProductionEnvironmentName))
                     {
@@ -193,7 +194,7 @@ namespace LuduStack.Web.Controllers
                 GameId = gameId
             };
 
-            SetContentImages(vm, images);
+            SplitImagesFieldToSave(vm, images);
 
             OperationResultVo<Guid> saveResult = await userContentAppService.Save(CurrentUserId, vm);
 
@@ -270,12 +271,12 @@ namespace LuduStack.Web.Controllers
             return Task.FromResult((IActionResult)component);
         }
 
-        private void SetContentImages(UserContentViewModel vm, string images)
+        private void SplitImagesFieldToSave(UserContentViewModel vm, string images)
         {
-            if (images != null)
+            if (!string.IsNullOrWhiteSpace(images))
             {
                 string[] imgSplit = images.Split('|');
-                vm.Images = new List<ImageListItemVo>();
+                vm.Images = new List<MediaListItemVo>();
 
                 for (int i = 0; i < imgSplit.Length; i++)
                 {
@@ -285,14 +286,14 @@ namespace LuduStack.Web.Controllers
                         {
                             vm.FeaturedImage = imgSplit[i];
                         }
-                        else
+
+                        MediaType type = ContentHelper.GetMediaType(imgSplit[i]);
+
+                        vm.Images.Add(new MediaListItemVo
                         {
-                            vm.Images.Add(new ImageListItemVo
-                            {
-                                Language = SupportedLanguage.English,
-                                Image = imgSplit[i]
-                            });
-                        }
+                            Type = type,
+                            Image = imgSplit[i]
+                        });
                     }
                 }
             }

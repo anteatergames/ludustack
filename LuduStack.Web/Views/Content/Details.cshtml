@@ -51,7 +51,7 @@
             oembeds.each(function (index, element) {
                 $(element).find('embed').hide();
 
-                var w = $(element).closest('.videoWrapper').width();
+                var w = $(element).closest('.videowrapper').width();
                 var h = w * 9 / 16;
 
                 embedo.load(element, element.innerHTML, {
@@ -116,7 +116,7 @@
             <div class="box-body p-0 text-center overflow-hidden rounded-0">
                 @if (Model.FeaturedMediaType == MediaType.Youtube)
                 {
-                    <div class="videoWrapper"><oembed>@Model.FeaturedImage</oembed></div>
+                    <div class="videowrapper"><oembed>@Model.FeaturedImage</oembed></div>
                 }
                 else if (Model.FeaturedMediaType == MediaType.Video)
                 {

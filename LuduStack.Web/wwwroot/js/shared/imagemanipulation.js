@@ -115,7 +115,7 @@
         random[index] = r;
 
         dropzones[index] = new Dropzone(el, {
-            url: '/storage/uploadcontentimage',
+            url: '/storage/uploadmedia',
             paramName: 'upload',
             addRemoveLinks: true,
             autoProcessQueue: true,

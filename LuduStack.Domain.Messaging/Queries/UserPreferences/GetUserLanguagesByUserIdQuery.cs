@@ -8,7 +8,6 @@ using System.Threading;
 using System.Threading.Tasks;
 
 
-// List<SupportedLanguage>
 namespace LuduStack.Domain.Messaging.Queries.UserPreferences
 {
     public class GetUserLanguagesByUserIdQuery : Query<IEnumerable<SupportedLanguage>>

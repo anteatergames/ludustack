@@ -40,7 +40,7 @@ namespace LuduStack.Web.Controllers
         }
 
         [Route("game/{id:guid}")]
-        public async Task<IActionResult> Details(Guid id, int? pointsEarned, Guid notificationclicked)
+        public async Task<IActionResult> Details(Guid id, int? pointsEarned, Guid notificationclicked, bool refreshImages)
         {
             await notificationAppService.MarkAsRead(notificationclicked);
 
@@ -73,6 +73,8 @@ namespace LuduStack.Web.Controllers
             vm.Permissions.CanPostActivity = vm.UserId == CurrentUserId;
 
             SetGamificationMessage(pointsEarned);
+
+            SetImagesToRefresh(vm, refreshImages);
 
             return View(vm);
         }
@@ -118,6 +120,8 @@ namespace LuduStack.Web.Controllers
 
             SetMyTeamsSelectList();
 
+            SetImagesToRefresh(vm, true);
+
             return View("CreateEdit", vm);
         }
 
@@ -140,7 +144,7 @@ namespace LuduStack.Web.Controllers
                 }
                 else
                 {
-                    string url = Url.Action("Details", "Game", new { area = string.Empty, id = saveResult.Value.ToString(), pointsEarned = saveResult.PointsEarned, msg = SharedLocalizer[saveResult.Message] });
+                    string url = Url.Action("Details", "Game", new { area = string.Empty, id = saveResult.Value.ToString(), pointsEarned = saveResult.PointsEarned, msg = SharedLocalizer[saveResult.Message], refreshImages = true });
 
                     if (isNew && EnvName.Equals(Constants.ProductionEnvironmentName))
                     {
@@ -313,6 +317,15 @@ namespace LuduStack.Web.Controllers
 
                 vm.LocalizationPercentage = castResult.Value.LocalizationPercentage;
                 vm.LocalizationId = castResult.Value.LocalizationId;
+            }
+        }
+
+        private void SetImagesToRefresh(GameViewModel vm, bool refresh)
+        {
+            if (refresh)
+            {
+                vm.ThumbnailUrl = UrlFormatter.ReplaceCloudVersion(vm.ThumbnailUrl);
+                vm.CoverImageUrl = UrlFormatter.ReplaceCloudVersion(vm.CoverImageUrl);
             }
         }
     }

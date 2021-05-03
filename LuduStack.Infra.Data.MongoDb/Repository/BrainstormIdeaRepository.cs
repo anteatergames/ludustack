@@ -37,7 +37,6 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
             return result.IsAcknowledged && result.ModifiedCount > 0;
         }
 
-
         public async Task UpdateIdea(BrainstormIdea idea)
         {
             FilterDefinition<BrainstormIdea> filter = Builders<BrainstormIdea>.Filter.Where(x => x.Id == idea.Id);

@@ -1,4 +1,5 @@
-﻿using LuduStack.Application.Interfaces;
+﻿using LuduStack.Application.Formatters;
+using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels.User;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.ValueObjects;
@@ -28,7 +29,7 @@ namespace LuduStack.Web.Controllers
         [HttpGet]
         [Route("/u/{userHandler?}")]
         [Route("profile/{id:guid}")]
-        public async Task<IActionResult> Details(Guid id, string userHandler)
+        public async Task<IActionResult> Details(Guid id, string userHandler, bool refreshImages)
         {
             try
             {
@@ -67,6 +68,8 @@ namespace LuduStack.Web.Controllers
 
                 ViewData["ConnecionTypes"] = EnumExtensions.ToJson(UserConnectionType.Mentor);
 
+                SetImagesToRefresh(vm, refreshImages);
+
                 return View(vm);
             }
             catch
@@ -99,6 +102,8 @@ namespace LuduStack.Web.Controllers
                 ViewBag.Countries = new List<SelectListItem>();
             }
 
+            SetImagesToRefresh(vm, true);
+
             return View(vm);
         }
 
@@ -114,7 +119,7 @@ namespace LuduStack.Web.Controllers
                 }
                 else
                 {
-                    string url = Url.Action("Details", "Profile", new { area = string.Empty, userHandler = vm.Handler });
+                    string url = Url.Action("Details", "Profile", new { area = string.Empty, userHandler = vm.Handler, refreshImages = true });
 
                     return Json(new OperationResultRedirectVo(url));
                 }
@@ -122,6 +127,15 @@ namespace LuduStack.Web.Controllers
             catch (Exception ex)
             {
                 return Json(new OperationResultVo(ex.Message));
+            }
+        }
+
+        private static void SetImagesToRefresh(ProfileViewModel vm, bool refresh)
+        {
+            if (refresh)
+            {
+                vm.ProfileImageUrl = UrlFormatter.ReplaceCloudVersion(vm.ProfileImageUrl);
+                vm.CoverImageUrl = UrlFormatter.ReplaceCloudVersion(vm.CoverImageUrl);
             }
         }
     }

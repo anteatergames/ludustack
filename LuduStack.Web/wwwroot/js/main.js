@@ -335,11 +335,17 @@
             return Promise.resolve();
         }
         else {
-            document.querySelector(idList).innerHTML = MAINMODULE.Default.SpinnerTop;
+            var listDiv = document.querySelector(idList);
+            if (listDiv) {
+                listDiv.innerHTML = MAINMODULE.Default.SpinnerTop;
+            }
 
             return getHtml(url)
                 .then(function (body) {
-                    document.querySelector(idList).innerHTML = body;
+                    var listDiv2 = document.querySelector(idList);
+                    if (listDiv2) {
+                        listDiv2.innerHTML = body;
+                    }
 
                     return body;
                 });

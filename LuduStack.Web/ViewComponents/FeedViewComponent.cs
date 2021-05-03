@@ -87,12 +87,15 @@ namespace LuduStack.Web.ViewComponents
                 case UserContentType.TeamCreation:
                     FormatTeamCreationPost(item);
                     break;
+
                 case UserContentType.JobPosition:
                     FormatJobPositionPostForTheFeed(item);
                     break;
+
                 case UserContentType.ComicStrip:
                     FormatComicStripPost(item);
                     break;
+
                 default:
                     FormatPost(item);
                     break;
@@ -113,7 +116,6 @@ namespace LuduStack.Web.ViewComponents
             item.Permissions.CanDelete = item.UserId == CurrentUserId || userIsAdmin;
         }
 
-
         private void FormatComicStripPost(UserContentViewModel item)
         {
             item.Url = Url.Action("details", "comics", new { area = "member", id = item.Id }, (string)ViewData["protocol"], (string)ViewData["host"]);
@@ -125,7 +127,7 @@ namespace LuduStack.Web.ViewComponents
             if (item.FeaturedMediaType == MediaType.Youtube)
             {
                 item.FeaturedImageResponsive = ContentFormatter.GetYoutubeVideoId(item.FeaturedImage);
-                item.FeaturedImageLquip = ContentHelper.SetFeaturedImage(Guid.Empty, Constants.DefaultFeaturedImageLquip, ImageRenderType.LowQuality);
+                item.FeaturedImageLquip = ContentHelper.FormatFeaturedImageUrl(Guid.Empty, Constants.DefaultFeaturedImageLquip, ImageRenderType.LowQuality);
             }
 
             item.Url = Url.Action("details", "content", new { area = string.Empty, id = item.Id }, (string)ViewData["protocol"], (string)ViewData["host"]);

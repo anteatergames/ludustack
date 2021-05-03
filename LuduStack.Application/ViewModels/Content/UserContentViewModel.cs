@@ -19,8 +19,10 @@ namespace LuduStack.Application.ViewModels.Content
         public string FeaturedImageResponsive { get; set; }
         public string FeaturedImageLquip { get; set; }
 
+        public MediaType? FeaturedMediaType { get; set; }
+
         [Display(Name = "Images")]
-        public List<ImageListItemVo> Images { get; set; }
+        public List<MediaListItemVo> Images { get; set; }
 
         [StringLength(128)]
         [Display(Name = "Title")]
@@ -41,8 +43,6 @@ namespace LuduStack.Application.ViewModels.Content
         public string GameThumbnail { get; set; }
 
         public bool HasFeaturedImage { get; set; }
-
-        public MediaType FeaturedMediaType { get; set; }
 
         public bool IsComplex { get { return HasFeaturedImage; } }
 

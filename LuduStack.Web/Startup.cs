@@ -60,6 +60,8 @@ namespace LuduStack.Web
 
             services.AddIdentityMongoDbProvider<ApplicationUser, Role>(options =>
             {
+                options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-.";
+                options.User.RequireUniqueEmail = true;
                 options.Password.RequireDigit = false;
                 options.Password.RequiredLength = 4;
                 options.Password.RequireNonAlphanumeric = false;
@@ -113,6 +115,10 @@ namespace LuduStack.Web
                         Location = ResponseCacheLocation.None,
                         NoStore = true
                     });
+            })
+            .AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.IgnoreNullValues = true;
             })
             .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
             .AddDataAnnotationsLocalization(options =>

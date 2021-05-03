@@ -1,13 +1,10 @@
-﻿using LuduStack.Domain.Models;
-using LuduStack.Domain.ValueObjects;
+﻿using LuduStack.Domain.ValueObjects;
 using System;
 
 namespace LuduStack.Domain.Interfaces.Services
 {
     public interface IProfileBaseAppService
     {
-        void SetProfileCache(Guid userId, UserProfile value);
-
         void SetProfileCache(Guid userId, UserProfileEssentialVo value);
 
         OperationResultVo GetCountries(Guid currentUserId);

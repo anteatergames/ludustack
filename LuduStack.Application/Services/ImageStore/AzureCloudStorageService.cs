@@ -1,4 +1,6 @@
 ﻿using LuduStack.Application.Interfaces;
+using LuduStack.Domain.Core.Enums;
+using LuduStack.Domain.ValueObjects;
 using Microsoft.Extensions.Configuration;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
@@ -16,7 +18,7 @@ namespace LuduStack.Application.Services
             _config = config;
         }
 
-        public async Task<string> StoreImageAsync(string container, string fileName, byte[] image, params string[] tags)
+        public async Task<UploadResultVo> StoreMediaAsync(string container, string fileName, string extension, byte[] image, params string[] tags)
         {
             string storageConnectionString = _config["Storage:ConnectionString"];
 
@@ -45,7 +47,7 @@ namespace LuduStack.Application.Services
                 }
             }
 
-            return fileName;
+            return new UploadResultVo(true, MediaType.None, fileName, "Image Uploaded");
         }
 
         public async Task<string> DeleteImageAsync(string container, string fileName)
