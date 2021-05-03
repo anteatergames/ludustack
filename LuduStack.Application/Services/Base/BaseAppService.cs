@@ -1,12 +1,9 @@
 ﻿using AutoMapper;
 using LuduStack.Application.Interfaces;
-using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Interfaces;
 using LuduStack.Domain.Interfaces.Infrastructure;
 using LuduStack.Infra.CrossCutting.Messaging;
 using System;
-using System.Linq;
-using System.Text.RegularExpressions;
 
 namespace LuduStack.Application.Services
 {

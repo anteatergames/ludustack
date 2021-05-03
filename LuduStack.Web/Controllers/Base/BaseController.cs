@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Localization;
 using System;
 using System.Net;
-using System.Text.Json;
 
 namespace LuduStack.Web.Controllers.Base
 {

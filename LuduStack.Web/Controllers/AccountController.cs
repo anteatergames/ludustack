@@ -671,9 +671,9 @@ namespace LuduStack.Web.Controllers
 
             try
             {
-                var pattern = new Regex("^(?=.{3,32}$)(?![-.])(?!.*[-.]{2})[a-zA-Z0-9-.]+(?<![-.])$");
+                Regex pattern = new Regex("^(?=.{3,32}$)(?![-.])(?!.*[-.]{2})[a-zA-Z0-9-.]+(?<![-.])$");
 
-                var match = pattern.Match(UserName);
+                Match match = pattern.Match(UserName);
 
                 if (!match.Success)
                 {

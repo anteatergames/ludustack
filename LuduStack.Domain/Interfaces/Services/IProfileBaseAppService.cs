@@ -1,5 +1,4 @@
-﻿using LuduStack.Domain.Models;
-using LuduStack.Domain.ValueObjects;
+﻿using LuduStack.Domain.ValueObjects;
 using System;
 
 namespace LuduStack.Domain.Interfaces.Services

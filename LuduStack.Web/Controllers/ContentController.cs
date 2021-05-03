@@ -287,7 +287,7 @@ namespace LuduStack.Web.Controllers
                             vm.FeaturedImage = imgSplit[i];
                         }
 
-                        var type = ContentHelper.GetMediaType(imgSplit[i]);
+                        MediaType type = ContentHelper.GetMediaType(imgSplit[i]);
 
                         vm.Images.Add(new MediaListItemVo
                         {
