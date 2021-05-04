@@ -739,9 +739,18 @@
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 
-    <script>
-        var isAdmin = @isAdmin;
-    </script>
+
+    <environment include="Development">
+        <script>
+            var isAdmin = @isAdmin;
+        </script>
+    </environment>
+    <environment include="Production">
+        <script>
+            var isAdmin = @isAdmin;
+            ga('set', 'dimension1', 'true');
+        </script>
+    </environment>
 
     @await Html.PartialAsync("_TagManagerHead")
 </head>
