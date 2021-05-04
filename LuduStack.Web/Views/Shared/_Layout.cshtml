@@ -69,10 +69,6 @@
     <link rel="preconnect" href="https://img.youtube.com">
     <link rel="preconnect" href="https://connect.facebook.net">
     <link rel="preconnect" href="https://www.googletagmanager.com">
-    <link rel="preload" href="/fonts/poppins-v11-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="/fonts/poppins-v11-latin-300.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="/lib/font-awesome/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="/lib/font-awesome/webfonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin>
 
     @if (ViewData["CanonicalUrl"] != null)
     {
@@ -643,11 +639,7 @@
 
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/twitter-bootstrap/css/bootstrap.css">
-        <link rel="stylesheet" href="~/lib/font-awesome/css/brands.css">
-        @*<link rel="stylesheet" href="~/lib/font-awesome/css/fontawesome.css">*@
-        <link rel="preload stylesheet" href="~/lib/font-awesome/css/fontawesome.css" as="style">
-        <link rel="stylesheet" href="~/lib/font-awesome/css/regular.css">
-        <link rel="stylesheet" href="~/lib/font-awesome/css/solid.css">
+        <link rel="stylesheet" href="~/lib/font-awesome/css/all.css">
         <link rel="stylesheet" href="~/lib/pace/themes/white/pace-theme-minimal.css">
         @RenderSection("ComponentStyles", required: false)
         <link rel="stylesheet" href="~/css/skins/ludustack-skin.css">
@@ -665,57 +657,25 @@
         <link rel="stylesheet" href="~/css/gameidea.css" as="style">
     </environment>
     <environment exclude="Development">
-        <link rel="preload stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.0/css/bootstrap.min.css" as="style"
+        <link rel="preload stylesheet" as="style"
+              href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.0/css/bootstrap.min.css"
               asp-fallback-href="~/lib/twitter-bootstrap/css/bootstrap.min.css"
               asp-fallback-test-class="sr-only"
               asp-fallback-test-property="position"
               asp-fallback-test-value="absolute"
               integrity="sha256-/ykJw/wDxMa0AQhHDYfuMEwVb4JHMx9h4jD4XvHqVzU=" crossorigin="anonymous">
 
-        <link rel="preload stylesheet"
-              href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/fontawesome.min.css"
-              asp-fallback-href="~/lib/font-awesome/css/fontawesome.min.css"
+        <link rel="preload stylesheet" as="style"
+              href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+              asp-fallback-href="~/lib/font-awesome/css/all.min.css"
               asp-fallback-test-class="fa"
               asp-fallback-test-property="display"
               asp-fallback-test-value="inline-block"
-              integrity="sha512-9NyfC2Lx+faLve4B168pWgTEHH3T50NBfVLF1aldvQxvwxjYdNNu7HQQKOehQW6r5v1r9QWDUe1BSFQPMbB5fw=="
+              integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
               crossorigin="anonymous" />
-        <link rel="preload"
-              as="style"
-              onload="this.onload=null;this.rel='stylesheet'"
-              href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/brands.min.css"
-              asp-fallback-href="~/lib/font-awesome/css/brands.min.css"
-              asp-fallback-test-class="fa"
-              asp-fallback-test-property="display"
-              asp-fallback-test-value="inline-block"
-              integrity="sha512-LrBiPZ3DqJbvWrRvdLOkbgPAPCpwwK7aMoNKrnyhvpfAvUT3g53O7cdvW0up2aIuAjad0BS9mEiUQMnCz9b6EQ=="
-              crossorigin="anonymous" />
-        <noscript><link rel="stylesheet" href="~/lib/font-awesome/css/brands.min.css"></noscript>
-        <link rel="preload"
-              as="style"
-              onload="this.onload=null;this.rel='stylesheet'"
-              href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/regular.min.css"
-              asp-fallback-href="~/lib/font-awesome/css/regular.min.css"
-              asp-fallback-test-class="fa"
-              asp-fallback-test-property="display"
-              asp-fallback-test-value="inline-block"
-              integrity="sha512-UMfyYhrK4rmIVgDeTOOvDutWqYv3sCbprjQd29z7eqVYWCA2eJ5dLiXdygsw0xDQvMqYU7ETNn0Xuv+uB7eYbA=="
-              crossorigin="anonymous" />
-        <noscript><link rel="stylesheet" href="~/lib/font-awesome/css/regular.min.css"></noscript>
-        <link rel="preload"
-              as="style"
-              onload="this.onload=null;this.rel='stylesheet'"
-              href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/solid.min.css"
-              asp-fallback-href="~/lib/font-awesome/css/solid.min.css"
-              asp-fallback-test-class="fa"
-              asp-fallback-test-property="display"
-              asp-fallback-test-value="inline-block"
-              integrity="sha512-uXb7T6PbdeZfKrD3eKLjlKZU95eciMqCRTKykwrrjAIYQUefedK+jRkyje5J9jQUYA6oFLTfe94Uj2pAMlUwZQ=="
-              crossorigin="anonymous" />
-        <noscript><link rel="stylesheet" href="~/lib/font-awesome/css/solid.min.css"></noscript>
+        <noscript><link rel="stylesheet" href="~/lib/font-awesome/css/all.min.css"></noscript>
 
-        <link rel="preload"
-              as="style"
+        <link rel="preload stylesheet" as="style"
               onload="this.onload=null;this.rel='stylesheet'"
               href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/themes/white/pace-theme-minimal.min.css"
               asp-fallback-href="~/lib/pace/themes/white/pace-theme-minimal.min.css"
