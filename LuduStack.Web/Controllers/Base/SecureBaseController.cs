@@ -125,8 +125,8 @@ namespace LuduStack.Web.Controllers.Base
                 ProfileViewModel profile = await ProfileAppService.GetByUserId(userId, ProfileType.Personal);
                 if (profile != null)
                 {
-                    SetSessionValue(SessionValues.FullName, profile.Name);
-                    SetCookieValue(SessionValues.FullName.ToString(), profile.Name, 365);
+                    SetSessionValue(SessionValues.FullName, profile.Name.Trim());
+                    SetCookieValue(SessionValues.FullName.ToString(), profile.Name.Trim(), 365);
                 }
             }
         }
@@ -216,7 +216,7 @@ namespace LuduStack.Web.Controllers.Base
         {
             ViewBag.Locale = culture;
 
-            SetCookieValue(CookieRequestCultureProvider.DefaultCookieName, CookieRequestCultureProvider.MakeCookieValue(culture), 365);
+            SetCookieValue(CookieRequestCultureProvider.DefaultCookieName, CookieRequestCultureProvider.MakeCookieValue(culture), 365, SameSiteMode.Strict);
         }
 
         protected async Task<string> GetAspNetCultureCookie()
