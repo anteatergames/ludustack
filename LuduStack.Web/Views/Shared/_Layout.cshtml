@@ -748,7 +748,10 @@
     <environment include="Production">
         <script>
             var isAdmin = @isAdmin;
-            ga('set', 'dimension1', 'true');
+            if (isAdmin === 'true') {
+                console.log("current user is admin");
+                ga('set', 'dimension1', 1);
+            }
         </script>
     </environment>
 
