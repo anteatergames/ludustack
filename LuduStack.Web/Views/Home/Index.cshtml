@@ -4,8 +4,8 @@
 
     var postModel = ViewBag.PostFromHome as PostFromHomeViewModel;
 
-    var joinUsViewModel = new HomeSquareViewModel("account", "login", "bg-purple", "far fa-3x fa-smile", SharedLocalizer["Join us!"]);
-    var confirmEmailViewModel = new HomeSquareViewModel("member", "preferences", "index", "bg-green", "fas fa-check", SharedLocalizer["Confirm your email!"]);
+    var joinUsViewModel = new HomeSquareViewModel("account", "login", new { returnUrl = Context.Request.Path }, "bg-purple", "far fa-3x fa-smile", SharedLocalizer["Join us!"]);
+    var confirmEmailViewModel = new HomeSquareViewModel("preferences", "index", new { area = "member" }, "bg-green", "fas fa-check", SharedLocalizer["Confirm your email!"]);
 
     var emailConfirmed = bool.Parse((string)(ViewData["emailConfirmed"] ?? "False"));
 }

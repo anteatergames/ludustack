@@ -56,7 +56,7 @@
             }
             else
             {
-                <a asp-area="" asp-controller="account" asp-action="login" class="btn btn-default bg-transparent" data-toggle="tooltip" title="@SharedLocalizer["Login"]" data-original-title="@SharedLocalizer["Login"]">
+                <a asp-area="" asp-controller="account" asp-action="login" asp-route-returnUrl="@Context.Request.Path" class="btn btn-default bg-transparent" data-toggle="tooltip" title="@SharedLocalizer["Login"]" data-original-title="@SharedLocalizer["Login"]">
                     <i class="fa fa-power-off" aria-hidden="true">&nbsp;</i>@SharedLocalizer["Login"]
                 </a>
             }
