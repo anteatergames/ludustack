@@ -1,6 +1,10 @@
 ﻿@model HomeSquareViewModel
 
-<a asp-area="@Model.Area" asp-controller="@Model.Controller" asp-action="@Model.Action">
+@{
+    var url = Url.Action(Model.Action, Model.Controller, Model.RouteParameters);
+}
+
+<a href="@url">
     <div class="info-box @(string.IsNullOrWhiteSpace(Model.ColorClass) ? "bg-purple" : Model.ColorClass)">
         <span class="info-box-icon"><i class="@Model.Icon" aria-hidden="true"></i></span>
 
