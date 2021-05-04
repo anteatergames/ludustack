@@ -19,7 +19,7 @@
       "destination": "wwwroot/lib/jquery-validation-unobtrusive/"
     },
     {
-      "library": "font-awesome@5.13.0",
+      "library": "font-awesome@5.15.3",
       "destination": "wwwroot/lib/font-awesome/"
     },
     {
