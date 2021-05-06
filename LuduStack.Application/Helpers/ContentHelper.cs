@@ -52,8 +52,8 @@ namespace LuduStack.Application.Helpers
                 return MediaType.Youtube;
             }
 
-            string[] imageExtensions = new [] { "jpg", "png", "gif", "tiff", "webp", "svg", "jfif", "jpeg", "bmp" };
-            string[] videoExtensions = new [] { "mp4", "avi", "mpeg", "vob", "webm", "mpg", "m4v", "wmv", "asf", "mov", "mpe", "3gp" };
+            string[] imageExtensions = new[] { "jpg", "png", "gif", "tiff", "webp", "svg", "jfif", "jpeg", "bmp" };
+            string[] videoExtensions = new[] { "mp4", "avi", "mpeg", "vob", "webm", "mpg", "m4v", "wmv", "asf", "mov", "mpe", "3gp" };
 
             string extension = featuredImage.Split('.').Last();
 

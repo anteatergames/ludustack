@@ -1,4 +1,5 @@
-﻿using LuduStack.Application.Interfaces;
+﻿using LuduStack.Application;
+using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels.Game;
 using LuduStack.Web.ViewComponents.Base;
 using Microsoft.AspNetCore.Http;
@@ -19,20 +20,41 @@ namespace LuduStack.Web.ViewComponents
             _gameAppService = gameAppService;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(int qtd, Guid userId)
+        public async Task<IViewComponentResult> InvokeAsync(bool placeholder, int qtd, Guid userId)
         {
-            if (qtd == 0)
-            {
-                qtd = 3;
-            }
-
-            IEnumerable<GameListItemViewModel> latestGames = await _gameAppService.GetLatest(CurrentUserId, qtd, userId, null, 0);
-
-            List<GameListItemViewModel> model = latestGames.ToList();
-
             ViewData["UserId"] = userId;
 
-            return await Task.Run(() => View(model));
+            if (placeholder)
+            {
+                ViewData["placeholder"] = true;
+
+                List<GameListItemViewModel> model = new List<GameListItemViewModel>();
+                for (int i = 0; i < qtd; i++)
+                {
+                    model.Add(new GameListItemViewModel
+                    {
+                        Title = "placeholder",
+                        DeveloperHandler = "placeholder",
+                        DeveloperName = "placeholder",
+                        DeveloperImageUrl = Constants.DefaultAvatar30
+                    });
+                }
+
+                return await Task.Run(() => View(model));
+            }
+            else
+            {
+                if (qtd == 0)
+                {
+                    qtd = 3;
+                }
+
+                IEnumerable<GameListItemViewModel> latestGames = await _gameAppService.GetLatest(CurrentUserId, qtd, userId, null, 0);
+
+                List<GameListItemViewModel> model = latestGames.ToList();
+
+                return await Task.Run(() => View(model));
+            }
         }
     }
 }

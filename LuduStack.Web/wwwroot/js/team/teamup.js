@@ -410,7 +410,7 @@
             return result.text;
         }
 
-        return $('<span><img class="rounded-circle lazyload avatar" data-src="' + avatarBaseUrl + result.id + '/profileimage_' + result.id + '_Personal' + '" src="/images/profileimages/developer.png" alt="meh"> ' + result.text + '</span>');
+        return $('<span><img class="rounded-circle lazyload avatar" data-src="' + avatarBaseUrl + result.id + '/profileimage_' + result.id + '_Personal' + '" src="/images/placeholders/developer.png" alt="meh"> ' + result.text + '</span>');
     }
 
     function cacheAjaxObjs() {

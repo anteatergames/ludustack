@@ -230,7 +230,6 @@ namespace LuduStack.Application.Formatters
             string finalUrl = cloudinary.Api.UrlVideoUp.Secure(true).Transform(transformation).BuildUrl(publicId);
 
             return finalUrl;
-
         }
 
         private static string GetPublicId(Guid userId, ref string fileName)

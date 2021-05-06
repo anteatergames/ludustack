@@ -1,12 +1,21 @@
 ﻿@model IGameCardBasic
 @{
     Layout = null;
+
+    var isPlaceholder = (bool)(ViewData["placeholder"] ?? false);
 }
 
 <div class="box-widget widget-game">
     <div class="overflow-hidden square-bottom">
         <a asp-area="" asp-controller="game" asp-action="details" asp-route-id="@Model.Id">
-            <img data-sizes="auto" src="@Model.ThumbnailLquip" data-src="@Model.ThumbnailLquip" data-srcset="@Model.ThumbnailResponsive" class="card-img-top img-fluid lazyload blur-up" style="width:100%" alt="@Model.Title" />
+            @if (isPlaceholder)
+            {
+                <div class="card-img-top img-fluid imageloader skeleton">&nbsp;</div>
+            }
+            else
+            {
+                <img data-sizes="auto" src="@Model.ThumbnailLquip" data-src="@Model.ThumbnailLquip" data-srcset="@Model.ThumbnailResponsive" class="card-img-top img-fluid lazyload blur-up" style="width:100%" alt="@Model.Title" />
+            }
         </a>
     </div>
 
@@ -18,19 +27,38 @@
                 @if (!string.IsNullOrWhiteSpace(Model.Title))
                 {
                     <div class="row text-truncate">
-                        <div class="col-12">
+                        <div class="col-12 pt-0">
                             <a asp-area="" asp-controller="game" asp-action="details" asp-route-id="@Model.Id">
-                                <span class="gamebox-description-text">@Model.Title</span>
+                                <span class="gamebox-description-text@(isPlaceholder ? " skeleton" : string.Empty)">
+                                    @if (isPlaceholder)
+                                    {
+                                        <text>&nbsp;</text>
+                                    }
+                                    else
+                                    {
+                                        <text>@Model.Title</text>
+                                    }
+                                </span>
                             </a>
                         </div>
                     </div>
                 }
+
                 @if (!String.IsNullOrWhiteSpace(Model.DeveloperName))
                 {
                     <a asp-area="" asp-controller="profile" asp-action="details" asp-route-userHandler="@Model.DeveloperHandler">
                         <img class="rounded-circle img-sm" src="@Model.DeveloperImageUrl" alt="@Model.DeveloperName">
                         <div class="gamebox-description-text">
-                            <span class="gamebox-description-number">@Model.DeveloperName</span>
+                            <span class="gamebox-description-developername@(isPlaceholder ? " skeleton" : string.Empty)">
+                                @if (isPlaceholder)
+                                {
+                                    <text>&nbsp;</text>
+                                }
+                                else
+                                {
+                                    <text>@Model.DeveloperName</text>
+                                }
+                            </span>
                         </div>
                     </a>
                 }

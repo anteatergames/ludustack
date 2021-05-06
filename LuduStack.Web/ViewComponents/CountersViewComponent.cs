@@ -27,31 +27,38 @@ namespace LuduStack.Web.ViewComponents
             this.teamAppService = teamAppService;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync()
+        public async Task<IViewComponentResult> InvokeAsync(bool placeholder)
         {
             CountersViewModel model = new CountersViewModel();
 
-            OperationResultVo<int> gamesCount = await gameAppService.Count(CurrentUserId);
-
-            if (gamesCount.Success)
+            if (placeholder)
             {
-                model.GamesCount = gamesCount.Value;
+                ViewData["placeholder"] = true;
             }
-
-            OperationResultVo<int> usersCount = await profileAppService.Count(CurrentUserId);
-
-            if (usersCount.Success)
+            else
             {
-                model.UsersCount = usersCount.Value;
-            }
+                OperationResultVo<int> gamesCount = await gameAppService.Count(CurrentUserId);
 
-            model.ArticlesCount = await contentService.CountArticles();
+                if (gamesCount.Success)
+                {
+                    model.GamesCount = gamesCount.Value;
+                }
 
-            OperationResultVo<int> teamCount = await teamAppService.Count(CurrentUserId);
+                OperationResultVo<int> usersCount = await profileAppService.Count(CurrentUserId);
 
-            if (teamCount.Success)
-            {
-                model.TeamCount = teamCount.Value;
+                if (usersCount.Success)
+                {
+                    model.UsersCount = usersCount.Value;
+                }
+
+                model.ArticlesCount = await contentService.CountArticles();
+
+                OperationResultVo<int> teamCount = await teamAppService.Count(CurrentUserId);
+
+                if (teamCount.Success)
+                {
+                    model.TeamCount = teamCount.Value;
+                }
             }
 
             return await Task.Run(() => View(model));

@@ -508,9 +508,11 @@ namespace LuduStack.Application.Services
                 case MediaType.Image:
                     SetFeaturedImageUrls(item, item.FeaturedImage);
                     break;
+
                 case MediaType.Video:
                     SetFeaturedVideoUrl(item, item.FeaturedImage);
                     break;
+
                 default:
                     break;
             }

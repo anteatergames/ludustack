@@ -30,7 +30,6 @@ namespace LuduStack.Application.Services
 
             if (mediaType == MediaType.Image)
             {
-
                 ImageUploadParams uploadParams = new ImageUploadParams()
                 {
                     PublicId = publicId,
@@ -45,7 +44,7 @@ namespace LuduStack.Application.Services
 
                 ImageUploadResult uploadResult = await cloudinary.UploadAsync(uploadParams);
 
-                return new  UploadResultVo(true, mediaType, fileNameFull, "Image uploaded");
+                return new UploadResultVo(true, mediaType, fileNameFull, "Image uploaded");
             }
             else if (mediaType == MediaType.Video)
             {
