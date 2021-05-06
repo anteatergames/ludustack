@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-
 namespace LuduStack.Domain.Messaging.Queries.UserPreferences
 {
     public class GetUserLanguagesByUserIdQuery : Query<IEnumerable<SupportedLanguage>>

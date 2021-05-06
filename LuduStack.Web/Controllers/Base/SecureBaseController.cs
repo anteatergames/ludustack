@@ -306,7 +306,7 @@ namespace LuduStack.Web.Controllers.Base
         protected async Task<UploadResultVo> UploadFeaturedImage(Guid userId, string filename, string extension, byte[] fileBytes, params string[] tags)
         {
             string type = ImageType.FeaturedImage.ToString().ToLower();
-            
+
             return await UploadImage(userId, type, filename, extension, fileBytes, tags);
         }
 

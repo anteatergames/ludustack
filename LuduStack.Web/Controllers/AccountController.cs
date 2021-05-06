@@ -526,7 +526,7 @@ namespace LuduStack.Web.Controllers
 
             if (string.IsNullOrWhiteSpace(profile.ProfileImageUrl) || profile.ProfileImageUrl == Constants.DefaultAvatar)
             {
-                await UploadFirstAvatar (profile.UserId, ProfileType.Personal);
+                await UploadFirstAvatar(profile.UserId, ProfileType.Personal);
             }
 
             await profileAppService.Save(CurrentUserId, profile);

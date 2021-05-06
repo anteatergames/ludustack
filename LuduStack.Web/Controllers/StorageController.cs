@@ -204,7 +204,6 @@ namespace LuduStack.Web.Controllers
 
                         string filename = DateTime.Now.ToString("yyyyMMddHHmmss");
 
-
                         if (type == ImageType.GameCover || type == ImageType.GameThumbnail)
                         {
                             filename = gameId.ToString();

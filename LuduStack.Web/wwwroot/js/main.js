@@ -340,7 +340,7 @@
             const rect = listDiv.getBoundingClientRect();
             listDiv.style.height = rect.height;
 
-            if (listDiv && (placeSpinner === true || placeSpinner === undefined )) {
+            if (listDiv && (placeSpinner === true || placeSpinner === undefined)) {
                 listDiv.innerHTML = MAINMODULE.Default.SpinnerTop;
             }
 

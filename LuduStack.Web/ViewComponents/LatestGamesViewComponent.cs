@@ -37,7 +37,7 @@ namespace LuduStack.Web.ViewComponents
                         DeveloperHandler = "placeholder",
                         DeveloperName = "placeholder",
                         DeveloperImageUrl = Constants.DefaultAvatar30
-                    }); ;
+                    });
                 }
 
                 return await Task.Run(() => View(model));
