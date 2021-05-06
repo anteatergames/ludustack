@@ -1199,7 +1199,7 @@ ul.flexbox {
     padding-right: 5px;
 }
 
-.info-box, .info-box-icon, .info-box-more, .info-box-number {
+.info-box, .info-box-icon, .info-box-more, .info-box-number, .info-box-text {
     display: block;
 }
 
@@ -1228,9 +1228,12 @@ ul.flexbox {
     text-align: center;
     font-size: 30px;
     line-height: 54px;
-    background: rgba(0, 0, 0, .2);
     border-radius: 100%
 }
+
+    .info-box-icon:not(.skeleton) {
+        background: rgba(0, 0, 0, .2);
+    }
 
     .info-box-icon.push-bottom {
         margin-top: 20px;
@@ -1246,7 +1249,8 @@ ul.flexbox {
 
 .info-box-number {
     font-weight: 300;
-    font-size: 21px;
+    font-size: 18px;
+    margin-bottom: 2px;
 }
 
 /*button*/
@@ -1927,8 +1931,15 @@ button.btn.dropdown-toggle::after, .wysihtml5-toolbar .btn.dropdown-toggle::afte
         color: white;
     }
 
+.box-game .imageloader {
+    width: 100%;
+    height: 172px;
+    border-radius:0;
+}
+
 .gamebox-description, .gamebox-description-text {
     display: block;
+    border-radius: 0;
 }
 
     .gamebox-description .img-sm {
@@ -1936,9 +1947,12 @@ button.btn.dropdown-toggle::after, .wysihtml5-toolbar .btn.dropdown-toggle::afte
         height: 30px !important;
     }
 
-    .gamebox-description .gamebox-description-number {
+    .gamebox-description .gamebox-description-developername {
         margin-left: 10px;
         font-size: 16px;
+        display: block;
+        height: 30px;
+        line-height: 30px;
     }
 
     .gamebox-description .gamebox-description-text {
@@ -1947,7 +1961,6 @@ button.btn.dropdown-toggle::after, .wysihtml5-toolbar .btn.dropdown-toggle::afte
         overflow: hidden;
         text-overflow: ellipsis;
         font-weight: 400;
-        display: flex;
         align-items: center;
         height: 30px;
     }

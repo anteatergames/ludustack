@@ -317,7 +317,7 @@
         return promise;
     }
 
-    async function loadHtml(url, listObj) {
+    async function loadHtml(url, listObj, placeSpinner) {
         var idList = '';
 
         if (listObj instanceof jQuery) {
@@ -336,7 +336,11 @@
         }
         else {
             var listDiv = document.querySelector(idList);
-            if (listDiv) {
+
+            const rect = listDiv.getBoundingClientRect();
+            listDiv.style.height = rect.height;
+
+            if (listDiv && (placeSpinner === true || placeSpinner === undefined )) {
                 listDiv.innerHTML = MAINMODULE.Default.SpinnerTop;
             }
 

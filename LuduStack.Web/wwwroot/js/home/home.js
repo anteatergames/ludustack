@@ -425,7 +425,7 @@
     }
 
     function loadCounters() {
-        MAINMODULE.Ajax.LoadHtml("/home/counters", selectors.divCounters);
+        MAINMODULE.Ajax.LoadHtml("/home/counters", selectors.divCounters, false);
     }
 
     function loadGameIdea() {
@@ -435,7 +435,7 @@
     }
 
     function loadLatestGames() {
-        MAINMODULE.Ajax.LoadHtml("/game/latest", selectors.divLatestGames);
+        MAINMODULE.Ajax.LoadHtml("/game/latest", selectors.divLatestGames, false);
     }
 
     function autosize(el) {

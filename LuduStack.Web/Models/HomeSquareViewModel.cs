@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Routing;
-
-namespace LuduStack.Web.Models
+﻿namespace LuduStack.Web.Models
 {
     public class HomeSquareViewModel
     {
