@@ -21,7 +21,7 @@ else
                 <div class="box box-widget widget-user">
                     <div class="widget-user-image">
                         <a asp-area="" asp-controller="profile" asp-action="details" asp-route-userHandler="@item.UserHandler">
-                            <img class="rounded-circle lazyload" data-src="@item.ProfileImageUrl" src="~/images/profileimages/developer.png" alt="@SharedLocalizer["This is {0}, believe it or not.", item.TargetUserName]">
+                            <img class="rounded-circle lazyload" data-src="@item.ProfileImageUrl" src="@Constants.DefaultAvatar" alt="@SharedLocalizer["This is {0}, believe it or not.", item.TargetUserName]">
                         </a>
                     </div>
                     <div class="widget-user-header bg-black" style="background-image: url('@item.CoverImageUrl')">

@@ -60,7 +60,15 @@ namespace LuduStack.Application
         {
             get
             {
-                return "/images/profileimages/developer.png";
+                return "/images/placeholders/developer.png";
+            }
+        }
+
+        public static string DefaultAvatar30
+        {
+            get
+            {
+                return "/images/placeholders/developer_w30.png";
             }
         }
 

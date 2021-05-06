@@ -63,7 +63,7 @@
                     <div class="row m-3 team-member @(member.InvitationStatus == InvitationStatus.Invited && !member.Permissions.IsMe ? " convidado" : string.Empty)">
                         <div class="div-avatar">
                             <a asp-area="" asp-controller="profile" asp-action="details" asp-route-userHandler="@member.UserHandler">
-                                <img class="rounded-circle lazyload avatar" data-src="@member.ProfileImage" src="~/images/profileimages/developer.png" alt="@member.Quote">
+                                <img class="rounded-circle lazyload avatar" data-src="@member.ProfileImage" src="@Constants.DefaultAvatar" alt="@member.Quote">
                             </a>
                             @if (member.Leader)
                             {
