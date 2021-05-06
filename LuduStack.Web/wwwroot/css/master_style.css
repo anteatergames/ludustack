@@ -454,7 +454,6 @@ select:-webkit-autofill:focus {
 .form-control:not(select) {
     -webkit-appearance: none;
     -moz-appearance: none;
-    appearance: none;
 }
 
 .form-group.has-success .form-control, .form-group.has-success .input-group-addon {
@@ -894,7 +893,6 @@ ul.flexbox {
     }
 
     .media .align-center {
-        -ms-grid-row-align: center;
         align-self: center;
     }
 
@@ -1933,7 +1931,7 @@ button.btn.dropdown-toggle::after, .wysihtml5-toolbar .btn.dropdown-toggle::afte
 
 .box-game .imageloader {
     width: 100%;
-    height: 172px;
+    height: 171px;
     border-radius: 0;
 }
 
