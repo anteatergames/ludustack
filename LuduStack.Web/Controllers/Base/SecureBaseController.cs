@@ -2,7 +2,6 @@
 using LuduStack.Application.Formatters;
 using LuduStack.Application.Interfaces;
 using LuduStack.Application.Requests.Notification;
-using LuduStack.Application.ViewModels.User;
 using LuduStack.Application.ViewModels.UserPreferences;
 using LuduStack.Domain.Core.Attributes;
 using LuduStack.Domain.Core.Enums;
@@ -55,6 +54,8 @@ namespace LuduStack.Web.Controllers.Base
 
         public Guid CurrentUserId { get; set; }
 
+        public bool CurrentUserIsAdmin { get; set; }
+
         public String CurrentLocale { get; set; }
 
         public string EnvName { get; private set; }
@@ -84,6 +85,7 @@ namespace LuduStack.Web.Controllers.Base
                 if (userIsAdmin != null)
                 {
                     ViewData["user_is_admin"] = "true";
+                    CurrentUserIsAdmin = true;
                 }
 
                 if (ViewBag.Username == null)
@@ -122,7 +124,7 @@ namespace LuduStack.Web.Controllers.Base
 
             if (sessionFullName == null)
             {
-                ProfileViewModel profile = await ProfileAppService.GetByUserId(userId, ProfileType.Personal);
+                UserProfileEssentialVo profile = await ProfileAppService.GetEssentialUserProfileWithCache(userId);
                 if (profile != null)
                 {
                     SetSessionValue(SessionValues.FullName, profile.Name.Trim());

@@ -80,6 +80,11 @@ namespace LuduStack.Domain.ValueObjects
         {
         }
 
+        public OperationResultRedirectVo(bool success, string url, string message) : base(success, message)
+        {
+            Url = url;
+        }
+
         public OperationResultRedirectVo(OperationResultVo serviceResult, string url) : base(serviceResult.Success, serviceResult.Message)
         {
             PointsEarned = serviceResult.PointsEarned;

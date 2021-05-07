@@ -88,24 +88,29 @@ namespace LuduStack.Web.Areas.Member.Controllers
         }
 
         [Route("edit/{id:guid}")]
-        public async Task<ViewResult> Edit(Guid id, string msg)
+        public async Task<IActionResult> Edit(Guid id, string msg)
         {
             if (!string.IsNullOrWhiteSpace(msg))
             {
                 TempData["Message"] = SharedLocalizer[msg];
             }
 
-            BillRateViewModel model;
+            BillRateViewModel viewModel;
 
             OperationResultVo serviceResult = await billRateAppService.GetForEdit(CurrentUserId, id);
 
             OperationResultVo<BillRateViewModel> castResult = serviceResult as OperationResultVo<BillRateViewModel>;
 
-            model = castResult.Value;
+            viewModel = castResult.Value;
+
+            if (!CurrentUserIsAdmin && viewModel.UserId != CurrentUserId)
+            {
+                return RedirectToAction("index", "billrate", new { area = "member", id, msg = SharedLocalizer["You cannot edit someone else's Bill Rate!"] });
+            }
 
             SetGameElements();
 
-            return View("CreateEditWrapper", model);
+            return View("CreateEditWrapper", viewModel);
         }
 
         [Route("save")]

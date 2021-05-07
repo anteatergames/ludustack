@@ -22,6 +22,7 @@ using System.Threading.Tasks;
 
 namespace LuduStack.Web.Areas.Work.Controllers
 {
+    [Authorize]
     public class JobPositionController : WorkBaseController
     {
         private readonly IJobPositionAppService jobPositionAppService;
@@ -34,6 +35,7 @@ namespace LuduStack.Web.Areas.Work.Controllers
             this.userContentAppService = userContentAppService;
         }
 
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             string jobProfile = JobProfile.Applicant.ToString();
@@ -207,6 +209,7 @@ namespace LuduStack.Web.Areas.Work.Controllers
             return PartialView("_MyApplications", model);
         }
 
+        [AllowAnonymous]
         [Route("work/jobposition/details/{id:guid}")]
         public async Task<IActionResult> Details(Guid id, int? pointsEarned)
         {
@@ -224,7 +227,6 @@ namespace LuduStack.Web.Areas.Work.Controllers
             return View("_Details", viewModel);
         }
 
-        [Authorize]
         [Route("work/jobposition/new/{origin}")]
         public IActionResult New(JobPositionOrigin origin)
         {
@@ -244,7 +246,6 @@ namespace LuduStack.Web.Areas.Work.Controllers
             }
         }
 
-        [Authorize]
         [Route("work/jobposition/edit/{jobPositionId:guid}")]
         public async Task<IActionResult> Edit(Guid jobPositionId)
         {
@@ -254,12 +255,18 @@ namespace LuduStack.Web.Areas.Work.Controllers
             {
                 OperationResultVo<JobPositionViewModel> castResult = serviceResult as OperationResultVo<JobPositionViewModel>;
 
-                JobPositionViewModel model = castResult.Value;
-                model.ClosingDateText = model.ClosingDate.HasValue ? model.ClosingDate.Value.ToShortDateString() : string.Empty;
+                JobPositionViewModel viewModel = castResult.Value;
 
-                SetLocalization(model, true);
+                if (!CurrentUserIsAdmin && viewModel.UserId != CurrentUserId)
+                {
+                    return RedirectToAction("details", "jobposition", new { area = "work", id = jobPositionId, msg = SharedLocalizer["You cannot edit someone else's job position!"] });
+                }
 
-                return PartialView("_CreateEdit", model);
+                viewModel.ClosingDateText = viewModel.ClosingDate.HasValue ? viewModel.ClosingDate.Value.ToShortDateString() : string.Empty;
+
+                SetLocalization(viewModel, true);
+
+                return PartialView("_CreateEdit", viewModel);
             }
             else
             {
@@ -267,22 +274,28 @@ namespace LuduStack.Web.Areas.Work.Controllers
             }
         }
 
-        [Authorize]
         [HttpPost("work/jobposition/save")]
-        public async Task<IActionResult> Save(JobPositionViewModel vm)
+        public async Task<IActionResult> Save(JobPositionViewModel viewModel)
         {
+            if (!CurrentUserIsAdmin && viewModel.UserId != CurrentUserId)
+            {
+                string url = Url.Action("details", "jobposition", new { area = "work", id = viewModel.Id, msg = SharedLocalizer["You cannot edit someone else's job position!"] });
+
+                return Json(new OperationResultRedirectVo(false, url, string.Empty));
+            }
+
             try
             {
-                bool isNew = vm.Id == Guid.Empty;
+                bool isNew = viewModel.Id == Guid.Empty;
 
-                vm.UserId = CurrentUserId;
+                viewModel.UserId = CurrentUserId;
 
-                if (!string.IsNullOrWhiteSpace(vm.ClosingDateText))
+                if (!string.IsNullOrWhiteSpace(viewModel.ClosingDateText))
                 {
-                    vm.ClosingDate = DateTime.Parse(vm.ClosingDateText);
+                    viewModel.ClosingDate = DateTime.Parse(viewModel.ClosingDateText);
                 }
 
-                OperationResultVo<Guid> saveResult = await jobPositionAppService.Save(CurrentUserId, vm);
+                OperationResultVo<Guid> saveResult = await jobPositionAppService.Save(CurrentUserId, viewModel);
 
                 if (!saveResult.Success)
                 {
@@ -290,8 +303,8 @@ namespace LuduStack.Web.Areas.Work.Controllers
                 }
                 else
                 {
-                    vm.Id = saveResult.Value;
-                    await GenerateFeedPost(vm);
+                    viewModel.Id = saveResult.Value;
+                    await GenerateFeedPost(viewModel);
 
                     string url = Url.Action("Details", "JobPosition", new { area = "Work", id = saveResult.Value, pointsEarned = saveResult.PointsEarned });
 

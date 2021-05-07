@@ -3157,4 +3157,12 @@
     <value>Você</value>
     <comment>Generic</comment>
   </data>
+  <data name="You cannot edit someone else's profile!" xml:space="preserve">
+    <value>Você não pode editar o perfil de outra pessoa!</value>
+    <comment>Profile</comment>
+  </data>
+  <data name="You cannot edit someone else's game!" xml:space="preserve">
+    <value>Você não pode editar o jogo de outra pessoa!</value>
+    <comment>Game</comment>
+  </data>
 </root>
