@@ -26,22 +26,6 @@
         <span class="card-subtitle">
             @SharedLocalizer["If a Bill Rate for this kind of service already exists the values will just be updated."]
         </span>
-        @if (!isNew)
-        {
-            <div class="box-tools">
-                <div class="btn-group">
-                    <button type="button" class="btn  btn-box-tool" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fas fa-ellipsis-v" aria-hidden="true"></i>
-                    </button>
-                    <div class="dropdown-menu text-capitalize" x-placement="bottom-start" style="position: absolute; transform: translate3d(-67px, 28px, 0px); top: 0px; left: 0px; will-change: transform;">
-                        @if (Model.Permissions.CanDelete)
-                        {
-                            <a class="dropdown-item" asp-area="member" asp-controller="billrate" asp-action="details" asp-route-id="@Model.Id" target="_blank">@SharedLocalizer["view"]</a>
-                        }
-                    </div>
-                </div>
-            </div>
-        }
     </div>
 
     <div class="box-body p-0 px-md-2">
@@ -106,18 +90,22 @@
                     <div class="form-group">
                         <label asp-for="HourPrice" class="col-form-label"></label>
                         <span asp-description-for="HourPrice" class="col-form-label" />
-                        <input asp-for="HourPrice" type="number" min="1" step=".5" class="form-control" placeholder="@SharedLocalizer["The Hour Price"]" value="@Model.HourPrice.ToString(new System.Globalization.CultureInfo("en-US"))" />
+                        <input asp-for="HourPrice" type="number" min="1" step="1" class="form-control" placeholder="@SharedLocalizer["The Hour Price"]" value="@Model.HourPrice.ToString(new System.Globalization.CultureInfo("en-US"))" />
                         <span asp-validation-for="HourPrice" class="text-danger"></span>
                     </div>
                 </div>
 
-                <div class="col-12 col-sm-6 col-lg-3">
+                <div class="col-12 col-sm-6 col-lg-3 hiddenbytypes" data-hiddenbytypes="3,4">
                     <div class="form-group">
                         <label asp-for="HourQuantity" class="col-form-label"></label>
                         <span asp-description-for="HourQuantity" class="col-form-label" />
                         <input asp-for="HourQuantity" type="number" min="1" step="1" class="form-control" placeholder="@SharedLocalizer["The Hour Quantity"]" />
                         <span asp-validation-for="HourQuantity" class="text-danger"></span>
                     </div>
+                </div>
+
+                <div class="col-12">
+                    <p class="alert alert-warning text-center">@Html.Raw(SharedLocalizer["You are billing USD $ <spam id=\"txtTotal\" class=\"h3 font-weight-bold\">0</spam> for this type of job."])</p>
                 </div>
 
                 <div class="col-12 col-md-6 offset-md-6 col-xl-4 offset-xl-8 mt-2 mb-2">

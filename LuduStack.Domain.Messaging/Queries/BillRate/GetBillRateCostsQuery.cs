@@ -4,6 +4,8 @@ using LuduStack.Domain.Interfaces.Repository;
 using LuduStack.Domain.ValueObjects;
 using LuduStack.Infra.CrossCutting.Messaging;
 using MediatR;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -32,15 +34,9 @@ namespace LuduStack.Domain.Messaging.Queries.BillRate
 
             IQueryable<Models.BillRate> rates = (await repository.GetAll()).AsQueryable();
 
-            SetPixelArtElementRates(vo, rates);
-            SetVectorElementRates(vo, rates);
-            SetCartoonElementRates(vo, rates);
-            SetArtisticElementRates(vo, rates);
-            SetRealisticElementRates(vo, rates);
+            SetVisualElementRates(vo, rates);
 
-            SetChiptuneElementRates(vo, rates);
-            SetSnesEraElementRates(vo, rates);
-            SetOrchestralElementRates(vo, rates);
+            SetAudioElementRates(vo, rates);
 
             SetCodeElementRates(vo, rates);
 
@@ -49,100 +45,56 @@ namespace LuduStack.Domain.Messaging.Queries.BillRate
             return vo;
         }
 
-        private static void SetPixelArtElementRates(CostCalculatorVo vo, IQueryable<Models.BillRate> rates)
+        private static void SetVisualElementRates(CostCalculatorVo vo, IQueryable<Models.BillRate> rates)
         {
-            VisualRateVo pixelArtConceptArtVo = CreateVisualRateVo(rates, GameElement.ConceptArt, ArtStyle.Pixel);
-            vo.VisualRates.Add(pixelArtConceptArtVo);
+            IEnumerable<ArtStyle> styles = Enum.GetValues(typeof(ArtStyle)).Cast<ArtStyle>();
 
-            VisualRateVo pixelArtCharacterVo = CreateVisualRateVo(rates, GameElement.Character2d, ArtStyle.Pixel);
-            vo.VisualRates.Add(pixelArtCharacterVo);
+            foreach (ArtStyle style in styles)
+            {
+                VisualRateVo conceptArtVo = CreateVisualRateVo(rates, GameElement.ConceptArt, style);
+                vo.VisualRates.Add(conceptArtVo);
 
-            VisualRateVo pixelArtLevelVo = CreateVisualRateVo(rates, GameElement.Level2d, ArtStyle.Pixel);
-            vo.VisualRates.Add(pixelArtLevelVo);
+                VisualRateVo character2dVo = CreateVisualRateVo(rates, GameElement.Character2d, style);
+                vo.VisualRates.Add(character2dVo);
+
+                VisualRateVo level2dVo = CreateVisualRateVo(rates, GameElement.Level2d, style);
+                vo.VisualRates.Add(level2dVo);
+
+                VisualRateVo asset2dVo = CreateVisualRateVo(rates, GameElement.Asset2d, style);
+                vo.VisualRates.Add(asset2dVo);
+
+                VisualRateVo character3dVo = CreateVisualRateVo(rates, GameElement.Character3d, style);
+                vo.VisualRates.Add(character3dVo);
+
+                VisualRateVo level3dVo = CreateVisualRateVo(rates, GameElement.Level3d, style);
+                vo.VisualRates.Add(level3dVo);
+
+                VisualRateVo asset3dVo = CreateVisualRateVo(rates, GameElement.Asset3d, style);
+                vo.VisualRates.Add(asset3dVo);
+            }
         }
 
-        private static void SetVectorElementRates(CostCalculatorVo vo, IQueryable<Models.BillRate> rates)
+        private static void SetAudioElementRates(CostCalculatorVo vo, IQueryable<Models.BillRate> rates)
         {
-            VisualRateVo vectorConceptArtVo = CreateVisualRateVo(rates, GameElement.ConceptArt, ArtStyle.Flat);
-            vo.VisualRates.Add(vectorConceptArtVo);
+            IEnumerable<SoundStyle> styles = Enum.GetValues(typeof(SoundStyle)).Cast<SoundStyle>();
 
-            VisualRateVo vectorCharacterVo = CreateVisualRateVo(rates, GameElement.Character2d, ArtStyle.Flat);
-            vo.VisualRates.Add(vectorCharacterVo);
+            foreach (SoundStyle style in styles)
+            {
+                AudioRateVo chiptuneFxVo = CreateAudioRateVo(rates, GameElement.SoundFx, style);
+                vo.AudioRates.Add(chiptuneFxVo);
 
-            VisualRateVo vectorLevelVo = CreateVisualRateVo(rates, GameElement.Level2d, ArtStyle.Flat);
-            vo.VisualRates.Add(vectorLevelVo);
-        }
-
-        private static void SetCartoonElementRates(CostCalculatorVo vo, IQueryable<Models.BillRate> rates)
-        {
-            VisualRateVo vectorConceptArtVo = CreateVisualRateVo(rates, GameElement.ConceptArt, ArtStyle.Cartoon);
-            vo.VisualRates.Add(vectorConceptArtVo);
-
-            VisualRateVo vectorCharacterVo = CreateVisualRateVo(rates, GameElement.Character2d, ArtStyle.Cartoon);
-            vo.VisualRates.Add(vectorCharacterVo);
-
-            VisualRateVo vectorLevelVo = CreateVisualRateVo(rates, GameElement.Level2d, ArtStyle.Cartoon);
-            vo.VisualRates.Add(vectorLevelVo);
-        }
-
-        private static void SetArtisticElementRates(CostCalculatorVo vo, IQueryable<Models.BillRate> rates)
-        {
-            VisualRateVo artisticConceptArtVo = CreateVisualRateVo(rates, GameElement.ConceptArt, ArtStyle.Artistic);
-            vo.VisualRates.Add(artisticConceptArtVo);
-
-            VisualRateVo artisticCharacterVo = CreateVisualRateVo(rates, GameElement.Character2d, ArtStyle.Artistic);
-            vo.VisualRates.Add(artisticCharacterVo);
-
-            VisualRateVo artisticLevelVo = CreateVisualRateVo(rates, GameElement.Level2d, ArtStyle.Artistic);
-            vo.VisualRates.Add(artisticLevelVo);
-        }
-
-        private static void SetRealisticElementRates(CostCalculatorVo vo, IQueryable<Models.BillRate> rates)
-        {
-            VisualRateVo realisticConceptArtVo = CreateVisualRateVo(rates, GameElement.ConceptArt, ArtStyle.Realistic);
-            vo.VisualRates.Add(realisticConceptArtVo);
-
-            VisualRateVo realisticCharacterVo = CreateVisualRateVo(rates, GameElement.Character2d, ArtStyle.Realistic);
-            vo.VisualRates.Add(realisticCharacterVo);
-
-            VisualRateVo realisticLevelVo = CreateVisualRateVo(rates, GameElement.Level2d, ArtStyle.Realistic);
-            vo.VisualRates.Add(realisticLevelVo);
-        }
-
-        private static void SetChiptuneElementRates(CostCalculatorVo vo, IQueryable<Models.BillRate> rates)
-        {
-            AudioRateVo chiptuneFxVo = CreateAudioRateVo(rates, GameElement.SoundFx, SoundStyle.Chiptune);
-            vo.AudioRates.Add(chiptuneFxVo);
-
-            AudioRateVo chiptuneMusicTrackVo = CreateAudioRateVo(rates, GameElement.MusicTrack, SoundStyle.Chiptune);
-            vo.AudioRates.Add(chiptuneMusicTrackVo);
-        }
-
-        private static void SetSnesEraElementRates(CostCalculatorVo vo, IQueryable<Models.BillRate> rates)
-        {
-            AudioRateVo snesEraFxVo = CreateAudioRateVo(rates, GameElement.SoundFx, SoundStyle.SnesEra);
-            vo.AudioRates.Add(snesEraFxVo);
-
-            AudioRateVo snesEraMusicTrackVo = CreateAudioRateVo(rates, GameElement.MusicTrack, SoundStyle.SnesEra);
-            vo.AudioRates.Add(snesEraMusicTrackVo);
-        }
-
-        private static void SetOrchestralElementRates(CostCalculatorVo vo, IQueryable<Models.BillRate> rates)
-        {
-            AudioRateVo orchestralFxVo = CreateAudioRateVo(rates, GameElement.SoundFx, SoundStyle.Orchestral);
-            vo.AudioRates.Add(orchestralFxVo);
-
-            AudioRateVo orchestralMusicTrackVo = CreateAudioRateVo(rates, GameElement.MusicTrack, SoundStyle.Orchestral);
-            vo.AudioRates.Add(orchestralMusicTrackVo);
+                AudioRateVo chiptuneMusicTrackVo = CreateAudioRateVo(rates, GameElement.MusicTrack, style);
+                vo.AudioRates.Add(chiptuneMusicTrackVo);
+            }
         }
 
         private static void SetCodeElementRates(CostCalculatorVo vo, IQueryable<Models.BillRate> rates)
         {
-            CodeRateVo gameplayCodeVo = CreateCodeRateVo(rates, GameElement.GameplayCode2d);
-            vo.CodeRates.Add(gameplayCodeVo);
+            CodeRateVo gameplay2dCodeVo = CreateCodeRateVo(rates, GameElement.GameplayCode2d);
+            vo.CodeRates.Add(gameplay2dCodeVo);
 
-            CodeRateVo uiCodeVo = CreateCodeRateVo(rates, GameElement.UiCode);
-            vo.CodeRates.Add(uiCodeVo);
+            CodeRateVo gameplay3dCodeVo = CreateCodeRateVo(rates, GameElement.GameplayCode3d);
+            vo.CodeRates.Add(gameplay3dCodeVo);
         }
 
         private static void SetTextElementRates(CostCalculatorVo vo, IQueryable<Models.BillRate> rates)

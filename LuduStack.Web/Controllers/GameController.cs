@@ -21,6 +21,7 @@ using System.Threading.Tasks;
 
 namespace LuduStack.Web.Controllers
 {
+    [Authorize]
     public class GameController : SecureBaseController
     {
         private readonly IGameAppService gameAppService;
@@ -39,6 +40,7 @@ namespace LuduStack.Web.Controllers
             this.translationAppService = translationAppService;
         }
 
+        [AllowAnonymous]
         [Route("game/{id:guid}")]
         public async Task<IActionResult> Details(Guid id, int? pointsEarned, Guid notificationclicked, bool refreshImages)
         {
@@ -79,6 +81,7 @@ namespace LuduStack.Web.Controllers
             return View(vm);
         }
 
+        [AllowAnonymous]
         [Route("games/{genre:alpha?}")]
         public async Task<IActionResult> List(GameGenre genre)
         {
@@ -109,34 +112,42 @@ namespace LuduStack.Web.Controllers
             }
         }
 
-        [Authorize]
         public async Task<IActionResult> Edit(Guid id)
         {
             OperationResultVo<GameViewModel> serviceResult = await gameAppService.GetById(CurrentUserId, id, true);
 
-            GameViewModel vm = serviceResult.Value;
+            GameViewModel viewModel = serviceResult.Value;
 
-            SetImages(vm);
+            if (!CurrentUserIsAdmin && viewModel.UserId != CurrentUserId)
+            {
+                return RedirectToAction("details", "game", new { id, msg = SharedLocalizer["You cannot edit someone else's game!"] });
+            }
+
+            SetImages(viewModel);
 
             SetMyTeamsSelectList();
 
-            SetImagesToRefresh(vm, true);
+            SetImagesToRefresh(viewModel, true);
 
-            return View("CreateEdit", vm);
+            return View("CreateEdit", viewModel);
         }
 
         [HttpPost]
-        [Authorize]
-        public async Task<IActionResult> Save(GameViewModel vm, IFormFile thumbnail)
+        public async Task<IActionResult> Save(GameViewModel viewModel, IFormFile thumbnail)
         {
+            if (!CurrentUserIsAdmin && viewModel.UserId != CurrentUserId)
+            {
+                return RedirectToAction("details", "game", new { viewModel.Id, msg = SharedLocalizer["You cannot edit someone else's game!"] });
+            }
+
             try
             {
-                bool isNew = vm.Id == Guid.Empty;
+                bool isNew = viewModel.Id == Guid.Empty;
 
-                await SetAuthorDetails(vm);
-                ClearImagesUrl(vm);
+                await SetAuthorDetails(viewModel);
+                ClearImagesUrl(viewModel);
 
-                OperationResultVo<Guid> saveResult = await gameAppService.Save(CurrentUserId, vm);
+                OperationResultVo<Guid> saveResult = await gameAppService.Save(CurrentUserId, viewModel);
 
                 if (!saveResult.Success)
                 {
@@ -148,7 +159,7 @@ namespace LuduStack.Web.Controllers
 
                     if (isNew && EnvName.Equals(Constants.ProductionEnvironmentName))
                     {
-                        await NotificationSender.SendTeamNotificationAsync($"New game Created: {vm.Title}");
+                        await NotificationSender.SendTeamNotificationAsync($"New game Created: {viewModel.Title}");
                     }
 
                     return Json(new OperationResultRedirectVo(url));
@@ -160,6 +171,7 @@ namespace LuduStack.Web.Controllers
             }
         }
 
+        [AllowAnonymous]
         public IActionResult Latest(int qtd, Guid userId)
         {
             if (userId != Guid.Empty)
@@ -226,6 +238,7 @@ namespace LuduStack.Web.Controllers
 
         #endregion Game Follow/Unfollow
 
+        [AllowAnonymous]
         [Route("game/byteam/{teamId:guid}")]
         public async Task<IActionResult> ByTeam(Guid teamId)
         {

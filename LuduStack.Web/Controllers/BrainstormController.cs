@@ -6,6 +6,7 @@ using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.ValueObjects;
 using LuduStack.Web.Controllers.Base;
 using LuduStack.Web.Extensions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,7 @@ using System.Threading.Tasks;
 
 namespace LuduStack.Web.Controllers
 {
+    [Authorize]
     public class BrainstormController : SecureBaseController
     {
         private readonly IBrainstormAppService brainstormAppService;
@@ -23,6 +25,7 @@ namespace LuduStack.Web.Controllers
             this.brainstormAppService = brainstormAppService;
         }
 
+        [AllowAnonymous]
         [Route("brainstorm/{id:guid}")]
         [Route("brainstorm")]
         public async Task<IActionResult> Index(Guid? id)
@@ -92,6 +95,7 @@ namespace LuduStack.Web.Controllers
             return PartialView("_CreateEditSession", vm);
         }
 
+        [AllowAnonymous]
         public async Task<IActionResult> Details(Guid id)
         {
             OperationResultVo<BrainstormIdeaViewModel> op = await brainstormAppService.GetById(CurrentUserId, id);
@@ -103,6 +107,7 @@ namespace LuduStack.Web.Controllers
             return View("_Details", viewModel);
         }
 
+        [AllowAnonymous]
         [Route("brainstorm/list/{sessionId:guid}")]
         [Route("brainstorm/list")]
         public async Task<PartialViewResult> List(Guid sessionId)

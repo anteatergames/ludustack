@@ -56,9 +56,9 @@
                                     }
                                 </a>
                             </td>
-                            <td class="text-right"><a asp-area="member" asp-controller="billrate" asp-action="edit" asp-route-id="@item.Id"><span>@item.ElementPrice.ToString()</span></a></td>
+                            <td class="text-right"><a asp-area="member" asp-controller="billrate" asp-action="edit" asp-route-id="@item.Id"><span>@(item.ElementPrice == 0 ? "-" : item.ElementPrice.ToString())</span></a></td>
                             <td class="text-right"><a asp-area="member" asp-controller="billrate" asp-action="edit" asp-route-id="@item.Id"><span>@item.HourPrice.ToString()</span></a></td>
-                            <td class="text-right"><a asp-area="member" asp-controller="billrate" asp-action="edit" asp-route-id="@item.Id"><span>@item.HourQuantity.ToString()</span></a></td>
+                            <td class="text-right"><a asp-area="member" asp-controller="billrate" asp-action="edit" asp-route-id="@item.Id"><span>@(item.HourQuantity == 0 ? "-" : item.HourQuantity.ToString())</span></a></td>
                             <td class="text-right">
                                 @if (canInteract)
                                 {

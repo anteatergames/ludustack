@@ -96,7 +96,7 @@ namespace LuduStack.Application.Services
                 {
                     UserId = currentUserId,
                     GameElement = GameElement.ConceptArt,
-                    HourPrice = 100,
+                    HourPrice = 30,
                     HourQuantity = 8
                 };
 

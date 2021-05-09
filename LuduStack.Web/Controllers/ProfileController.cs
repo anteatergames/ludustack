@@ -6,6 +6,7 @@ using LuduStack.Domain.ValueObjects;
 using LuduStack.Infra.CrossCutting.Identity.Models;
 using LuduStack.Web.Controllers.Base;
 using LuduStack.Web.Extensions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -15,6 +16,7 @@ using System.Threading.Tasks;
 
 namespace LuduStack.Web.Controllers
 {
+    [Authorize]
     public class ProfileController : SecureBaseController
     {
         private readonly IProfileAppService profileAppService;
@@ -26,6 +28,7 @@ namespace LuduStack.Web.Controllers
             this.gamificationAppService = gamificationAppService;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         [Route("/u/{userHandler?}")]
         [Route("profile/{id:guid}")]
@@ -33,9 +36,9 @@ namespace LuduStack.Web.Controllers
         {
             try
             {
-                ProfileViewModel vm = await profileAppService.Get(CurrentUserId, id, userHandler, ProfileType.Personal);
+                ProfileViewModel viewModel = await profileAppService.Get(CurrentUserId, id, userHandler, ProfileType.Personal);
 
-                if (vm == null)
+                if (viewModel == null)
                 {
                     ProfileViewModel profile = profileAppService.GenerateNewOne(ProfileType.Personal);
 
@@ -51,26 +54,18 @@ namespace LuduStack.Web.Controllers
                         return RedirectToAction("index", "home", new { area = string.Empty, msg = SharedLocalizer["User not found!"] });
                     }
 
-                    vm = profile;
+                    viewModel = profile;
                 }
 
-                await gamificationAppService.FillProfileGamificationDetails(CurrentUserId, vm);
+                await gamificationAppService.FillProfileGamificationDetails(CurrentUserId, viewModel);
 
-                if (CurrentUserId != Guid.Empty)
-                {
-                    ApplicationUser user = await UserManager.FindByIdAsync(CurrentUserId.ToString());
-                    bool userIsAdmin = await UserManager.IsInRoleAsync(user, Roles.Administrator.ToString());
-                    vm.Permissions.IsAdmin = userIsAdmin;
-                    vm.Permissions.CanEdit = vm.UserId == CurrentUserId;
-                    vm.Permissions.CanFollow = vm.UserId != CurrentUserId;
-                    vm.Permissions.CanConnect = vm.UserId != CurrentUserId;
-                }
+                SetPermissions(viewModel);
 
                 ViewData["ConnecionTypes"] = EnumExtensions.ToJson(UserConnectionType.Mentor);
 
-                SetImagesToRefresh(vm, refreshImages);
+                SetImagesToRefresh(viewModel, refreshImages);
 
-                return View(vm);
+                return View(viewModel);
             }
             catch
             {
@@ -81,7 +76,12 @@ namespace LuduStack.Web.Controllers
         [Route("profile/edit/{userId:guid}")]
         public async Task<IActionResult> Edit(Guid userId)
         {
-            ProfileViewModel vm = await profileAppService.GetByUserId(userId, ProfileType.Personal, true);
+            if (!CurrentUserIsAdmin && userId != CurrentUserId)
+            {
+                return RedirectToAction("index", "home", new { msg = SharedLocalizer["You cannot edit someone else's profile!"] });
+            }
+
+            ProfileViewModel viewModel = await profileAppService.GetByUserId(userId, ProfileType.Personal, true);
 
             OperationResultVo countriesResult = profileAppService.GetCountries(CurrentUserId);
             if (countriesResult.Success)
@@ -91,9 +91,9 @@ namespace LuduStack.Web.Controllers
                 IEnumerable<SelectListItemVo> countries = castResultCountries.Value;
 
                 List<SelectListItem> countriesDropDown = countries.ToSelectList();
-                if (!string.IsNullOrWhiteSpace(vm.Country))
+                if (!string.IsNullOrWhiteSpace(viewModel.Country))
                 {
-                    countriesDropDown.ForEach(x => x.Selected = x.Value.Equals(vm.Country));
+                    countriesDropDown.ForEach(x => x.Selected = x.Value.Equals(viewModel.Country));
                 }
                 ViewBag.Countries = countriesDropDown;
             }
@@ -102,24 +102,29 @@ namespace LuduStack.Web.Controllers
                 ViewBag.Countries = new List<SelectListItem>();
             }
 
-            SetImagesToRefresh(vm, true);
+            SetImagesToRefresh(viewModel, true);
 
-            return View(vm);
+            return View(viewModel);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Save(ProfileViewModel vm, IFormFile avatar)
+        public async Task<IActionResult> Save(ProfileViewModel viewModel, IFormFile avatar)
         {
+            if (!CurrentUserIsAdmin && viewModel.UserId != CurrentUserId)
+            {
+                return RedirectToAction("index", "home", new { msg = SharedLocalizer["You cannot edit someone else's profile!"] });
+            }
+
             try
             {
-                OperationResultVo<Guid> saveResult = await profileAppService.Save(CurrentUserId, vm);
+                OperationResultVo<Guid> saveResult = await profileAppService.Save(CurrentUserId, viewModel);
                 if (!saveResult.Success)
                 {
                     return Json(new OperationResultVo(false, saveResult.Message));
                 }
                 else
                 {
-                    string url = Url.Action("Details", "Profile", new { area = string.Empty, userHandler = vm.Handler, refreshImages = true });
+                    string url = Url.Action("details", "profile", new { area = string.Empty, userHandler = viewModel.Handler, refreshImages = true });
 
                     return Json(new OperationResultRedirectVo(url));
                 }
@@ -136,6 +141,17 @@ namespace LuduStack.Web.Controllers
             {
                 vm.ProfileImageUrl = UrlFormatter.ReplaceCloudVersion(vm.ProfileImageUrl);
                 vm.CoverImageUrl = UrlFormatter.ReplaceCloudVersion(vm.CoverImageUrl);
+            }
+        }
+
+        private void SetPermissions(ProfileViewModel viewModel)
+        {
+            if (CurrentUserId != Guid.Empty)
+            {
+                viewModel.Permissions.IsAdmin = CurrentUserIsAdmin;
+                viewModel.Permissions.CanEdit = viewModel.UserId == CurrentUserId;
+                viewModel.Permissions.CanFollow = viewModel.UserId != CurrentUserId;
+                viewModel.Permissions.CanConnect = viewModel.UserId != CurrentUserId;
             }
         }
     }

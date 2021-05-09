@@ -14,6 +14,7 @@ using LuduStack.Web.Controllers.Base;
 using LuduStack.Web.Enums;
 using LuduStack.Web.Extensions;
 using LuduStack.Web.Helpers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
@@ -23,22 +24,30 @@ using System.Threading.Tasks;
 
 namespace LuduStack.Web.Controllers
 {
+    [Authorize]
     public class ContentController : SecureBaseController
     {
         private readonly IUserContentAppService userContentAppService;
         private readonly IGameAppService gameAppService;
         private readonly INotificationAppService notificationAppService;
 
-        public ContentController(IUserContentAppService userContentAppService
-            , IGameAppService gameAppService
-            , INotificationAppService notificationAppService)
+        public ContentController(IUserContentAppService userContentAppService, IGameAppService gameAppService, INotificationAppService notificationAppService)
         {
             this.userContentAppService = userContentAppService;
             this.gameAppService = gameAppService;
             this.notificationAppService = notificationAppService;
         }
 
-        [Route("content/{id:guid}")]
+        [AllowAnonymous]
+        public Task<IActionResult> Feed(Guid? gameId, Guid? userId, Guid? singleContentId, Guid? oldestId, DateTime? oldestDate, bool? articlesOnly, int? count)
+        {
+            ViewComponentResult component = ViewComponent("Feed", new { count, gameId, userId, singleContentId, oldestId, oldestDate, articlesOnly });
+
+            return Task.FromResult((IActionResult)component);
+        }
+
+        [AllowAnonymous]
+        [HttpGet("content/{id:guid}")]
         public async Task<IActionResult> Details(Guid id)
         {
             OperationResultVo<UserContentViewModel> serviceResult = await userContentAppService.GetById(CurrentUserId, id);
@@ -90,25 +99,6 @@ namespace LuduStack.Web.Controllers
             return View(viewModel);
         }
 
-        [Route("content/edit/{id:guid}")]
-        public async Task<IActionResult> Edit(Guid id)
-        {
-            OperationResultVo<UserContentViewModel> serviceResult = await userContentAppService.GetById(CurrentUserId, id);
-
-            UserContentViewModel vm = serviceResult.Value;
-
-            IEnumerable<SelectListItemVo> games = await gameAppService.GetByUser(vm.UserId);
-            List<SelectListItem> gamesDropDown = games.ToSelectList();
-            ViewBag.UserGames = gamesDropDown;
-
-            if (!vm.HasFeaturedImage)
-            {
-                vm.FeaturedImage = Constants.DefaultFeaturedImage;
-            }
-
-            return View("CreateEdit", vm);
-        }
-
         public async Task<IActionResult> Add(Guid? gameId)
         {
             UserContentViewModel vm = new UserContentViewModel
@@ -129,13 +119,42 @@ namespace LuduStack.Web.Controllers
             return View("CreateEdit", vm);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Save(UserContentViewModel vm)
+        [HttpGet("content/edit/{id:guid}")]
+        public async Task<IActionResult> Edit(Guid id)
         {
+            OperationResultVo<UserContentViewModel> serviceResult = await userContentAppService.GetById(CurrentUserId, id);
+
+            UserContentViewModel viewModel = serviceResult.Value;
+
+            if (!CurrentUserIsAdmin && viewModel.UserId != CurrentUserId)
+            {
+                return RedirectToAction("details", "content", new { id, msg = SharedLocalizer["You cannot edit someone else's content!"] });
+            }
+
+            IEnumerable<SelectListItemVo> games = await gameAppService.GetByUser(viewModel.UserId);
+            List<SelectListItem> gamesDropDown = games.ToSelectList();
+            ViewBag.UserGames = gamesDropDown;
+
+            if (!viewModel.HasFeaturedImage)
+            {
+                viewModel.FeaturedImage = Constants.DefaultFeaturedImage;
+            }
+
+            return View("CreateEdit", viewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Save(UserContentViewModel viewModel)
+        {
+            if (!CurrentUserIsAdmin && viewModel.UserId != CurrentUserId)
+            {
+                return RedirectToAction("details", "content", new { viewModel.Id, msg = SharedLocalizer["You cannot edit someone else's content!"] });
+            }
+
             try
             {
-                bool isNew = vm.Id == Guid.Empty;
-                OperationResultVo<Guid> saveResult = await userContentAppService.Save(CurrentUserId, vm);
+                bool isNew = viewModel.Id == Guid.Empty;
+                OperationResultVo<Guid> saveResult = await userContentAppService.Save(CurrentUserId, viewModel);
 
                 if (!saveResult.Success)
                 {
@@ -145,7 +164,7 @@ namespace LuduStack.Web.Controllers
                 {
                     ProfileViewModel profile = await ProfileAppService.GetByUserId(CurrentUserId, ProfileType.Personal);
 
-                    await NotifyFollowers(profile, vm.GameId);
+                    await NotifyFollowers(profile, viewModel.GameId);
 
                     string url = Url.Action("details", "content", new { area = string.Empty, id = saveResult.Value, pointsEarned = saveResult.PointsEarned, msg = SharedLocalizer[saveResult.Message] });
 
@@ -217,11 +236,9 @@ namespace LuduStack.Web.Controllers
             }
         }
 
-        [HttpPost]
-
         #region Content interactions
 
-        [Route("content/like")]
+        [HttpPost("content/like")]
         public async Task<IActionResult> LikeContent(Guid targetId, UserContentType contentType)
         {
             OperationResultVo response = await userContentAppService.ContentLike(CurrentUserId, targetId);
@@ -242,8 +259,7 @@ namespace LuduStack.Web.Controllers
             return Json(response);
         }
 
-        [HttpPost]
-        [Route("content/unlike")]
+        [HttpPost("content/unlike")]
         public async Task<IActionResult> UnLikeContent(Guid targetId)
         {
             OperationResultVo response = await userContentAppService.ContentUnlike(CurrentUserId, targetId);
@@ -251,8 +267,7 @@ namespace LuduStack.Web.Controllers
             return Json(response);
         }
 
-        [HttpPost]
-        [Route("content/comment")]
+        [HttpPost("content/comment")]
         public async Task<IActionResult> Comment(CommentViewModel vm)
         {
             OperationResultVo response;
@@ -263,13 +278,6 @@ namespace LuduStack.Web.Controllers
         }
 
         #endregion Content interactions
-
-        public Task<IActionResult> Feed(Guid? gameId, Guid? userId, Guid? singleContentId, Guid? oldestId, DateTime? oldestDate, bool? articlesOnly, int? count)
-        {
-            ViewComponentResult component = ViewComponent("Feed", new { count, gameId, userId, singleContentId, oldestId, oldestDate, articlesOnly });
-
-            return Task.FromResult((IActionResult)component);
-        }
 
         private void SplitImagesFieldToSave(UserContentViewModel vm, string images)
         {

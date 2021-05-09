@@ -1,9 +1,7 @@
 ﻿using LuduStack.Application;
 using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels.Gamification;
-using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.ValueObjects;
-using LuduStack.Infra.CrossCutting.Identity.Models;
 using LuduStack.Web.Areas.Staff.Controllers.Base;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -53,7 +51,7 @@ namespace LuduStack.Web.Areas.Staff.Controllers
 
             foreach (GamificationLevelViewModel item in model)
             {
-                await SetPermissions(item);
+                SetPermissions(item);
             }
 
             ViewData["ListDescription"] = SharedLocalizer["All Gamification Levels"].ToString();
@@ -71,6 +69,7 @@ namespace LuduStack.Web.Areas.Staff.Controllers
                 OperationResultVo<GamificationLevelViewModel> castResult = serviceResult as OperationResultVo<GamificationLevelViewModel>;
 
                 GamificationLevelViewModel model = castResult.Value;
+
                 return View("CreateEditWrapper", model);
             }
             else
@@ -82,17 +81,17 @@ namespace LuduStack.Web.Areas.Staff.Controllers
         [Route("edit/{id:guid}")]
         public async Task<IActionResult> Edit(Guid id)
         {
-            GamificationLevelViewModel model;
+            GamificationLevelViewModel viewModel;
 
             OperationResultVo serviceResult = await gamificationLevelAppService.GetById(CurrentUserId, id);
 
             OperationResultVo<GamificationLevelViewModel> castResult = serviceResult as OperationResultVo<GamificationLevelViewModel>;
 
-            model = castResult.Value;
+            viewModel = castResult.Value;
 
-            await SetPermissions(model);
+            SetPermissions(viewModel);
 
-            return View("CreateEditWrapper", model);
+            return View("CreateEditWrapper", viewModel);
         }
 
         [HttpPost]
@@ -177,11 +176,9 @@ namespace LuduStack.Web.Areas.Staff.Controllers
             }
         }
 
-        private async Task SetPermissions(GamificationLevelViewModel model)
+        private void SetPermissions(GamificationLevelViewModel model)
         {
-            ApplicationUser user = await UserManager.FindByIdAsync(CurrentUserId.ToString());
-            bool userIsAdmin = await UserManager.IsInRoleAsync(user, Roles.Administrator.ToString());
-            model.Permissions.IsAdmin = userIsAdmin;
+            model.Permissions.IsAdmin = CurrentUserIsAdmin;
             model.Permissions.CanDelete = model.Permissions.IsAdmin;
         }
     }

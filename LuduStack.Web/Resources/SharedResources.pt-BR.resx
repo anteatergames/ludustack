@@ -3157,4 +3157,39 @@
     <value>Você</value>
     <comment>Generic</comment>
   </data>
+  <data name="You cannot edit someone else's profile!" xml:space="preserve">
+    <value>Você não pode editar o perfil de outra pessoa!</value>
+    <comment>Profile</comment>
+  </data>
+  <data name="You cannot edit someone else's game!" xml:space="preserve">
+    <value>Você não pode editar o jogo de outra pessoa!</value>
+    <comment>Game</comment>
+  </data>
+  <data name="2D Assets" xml:space="preserve">
+    <value>Assets 2D</value>
+    <comment>Cost Calculator</comment>
+  </data>
+  <data name="3D Assets" xml:space="preserve">
+    <value>Assets 3D</value>
+    <comment>Cost Calculator</comment>
+  </data>
+  <data name="3D Characters" xml:space="preserve">
+    <value>Personagens 3D</value>
+    <comment>Cost Calculator</comment>
+  </data>
+  <data name="3D Levels/Maps/Tracks" xml:space="preserve">
+    <value>Níveis/Mapas/Pistas 3D</value>
+    <comment>Cost Calculator</comment>
+  </data>
+  <data name="How many 3D assets the game has?" xml:space="preserve">
+    <value>Quan</value>
+  </data>
+  <data name="How many 3D characters the game has?" xml:space="preserve">
+    <value>Quantos personagens 3D o jogo tem?</value>
+    <comment>Cost Calculator</comment>
+  </data>
+  <data name="Visual Arts" xml:space="preserve">
+    <value>Arte Visual</value>
+    <comment>Cost Calculator</comment>
+  </data>
 </root>

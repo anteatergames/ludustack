@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 
 namespace LuduStack.Web.Controllers
 {
+    [Authorize]
     [Route("team")]
     public class TeamController : SecureBaseController
     {
@@ -31,6 +32,7 @@ namespace LuduStack.Web.Controllers
             this.userContentAppService = userContentAppService;
         }
 
+        [AllowAnonymous]
         public IActionResult Index(int? pointsEarned)
         {
             SetGamificationMessage(pointsEarned);
@@ -38,6 +40,7 @@ namespace LuduStack.Web.Controllers
             return View();
         }
 
+        [AllowAnonymous]
         [Route("list")]
         public async Task<IActionResult> List()
         {
@@ -48,6 +51,7 @@ namespace LuduStack.Web.Controllers
             return PartialView("_List", model);
         }
 
+        [AllowAnonymous]
         [Route("list/user/{userId:guid}")]
         public async Task<IActionResult> ListByUser(Guid userId)
         {
@@ -82,6 +86,7 @@ namespace LuduStack.Web.Controllers
             }
         }
 
+        [AllowAnonymous]
         [Route("{teamId:guid}")]
         public async Task<IActionResult> Details(Guid teamId, int? pointsEarned, Guid notificationclicked)
         {
@@ -106,20 +111,6 @@ namespace LuduStack.Web.Controllers
             return View(model);
         }
 
-        [Authorize]
-        [Route("edit/{teamId:guid}")]
-        public async Task<IActionResult> Edit(Guid teamId)
-        {
-            OperationResultVo<TeamViewModel> service = await teamAppService.GetById(CurrentUserId, teamId);
-
-            TeamViewModel model = service.Value;
-
-            model.RecruitingBefore = model.Recruiting;
-
-            return PartialView("_CreateEdit", model);
-        }
-
-        [Authorize]
         [Route("new")]
         public async Task<IActionResult> New()
         {
@@ -128,18 +119,39 @@ namespace LuduStack.Web.Controllers
             return PartialView("_CreateEdit", service.Value);
         }
 
-        [Authorize]
-        [HttpPost("save")]
-        public async Task<IActionResult> Save(TeamViewModel vm)
+        [Route("edit/{teamId:guid}")]
+        public async Task<IActionResult> Edit(Guid teamId)
         {
+            OperationResultVo<TeamViewModel> service = await teamAppService.GetById(CurrentUserId, teamId);
+
+            TeamViewModel viewModel = service.Value;
+
+            if (!CurrentUserIsAdmin && viewModel.UserId != CurrentUserId)
+            {
+                return RedirectToAction("details", "team", new { teamId, msg = SharedLocalizer["You cannot edit someone else's team!"] });
+            }
+
+            viewModel.RecruitingBefore = viewModel.Recruiting;
+
+            return PartialView("_CreateEdit", viewModel);
+        }
+
+        [HttpPost("save")]
+        public async Task<IActionResult> Save(TeamViewModel viewModel)
+        {
+            if (!CurrentUserIsAdmin && viewModel.UserId != CurrentUserId)
+            {
+                return RedirectToAction("details", "team", new { viewModel.Id, msg = SharedLocalizer["You cannot edit someone else's team!"] });
+            }
+
             try
             {
-                bool isNew = vm.Id == Guid.Empty;
-                vm.UserId = CurrentUserId;
+                bool isNew = viewModel.Id == Guid.Empty;
+                viewModel.UserId = CurrentUserId;
 
-                IEnumerable<Guid> oldMembers = vm.Members.Where(x => x.Id != Guid.Empty).Select(x => x.Id);
+                IEnumerable<Guid> oldMembers = viewModel.Members.Where(x => x.Id != Guid.Empty).Select(x => x.Id);
 
-                OperationResultVo<Guid> saveResult = await teamAppService.Save(CurrentUserId, vm);
+                OperationResultVo<Guid> saveResult = await teamAppService.Save(CurrentUserId, viewModel);
 
                 if (!saveResult.Success)
                 {
@@ -147,18 +159,18 @@ namespace LuduStack.Web.Controllers
                 }
                 else
                 {
-                    vm.Id = saveResult.Value;
+                    viewModel.Id = saveResult.Value;
 
                     string url = Url.Action("Index", "Team", new { area = string.Empty, id = saveResult.Value, pointsEarned = saveResult.PointsEarned });
 
-                    Notify(vm, oldMembers);
+                    Notify(viewModel, oldMembers);
 
-                    bool recruiting = !vm.RecruitingBefore && vm.Recruiting;
-                    await GenerateTeamPost(vm, isNew, recruiting);
+                    bool recruiting = !viewModel.RecruitingBefore && viewModel.Recruiting;
+                    await GenerateTeamPost(viewModel, isNew, recruiting);
 
                     if (isNew && EnvName.Equals(Constants.ProductionEnvironmentName))
                     {
-                        await NotificationSender.SendTeamNotificationAsync($"New team Created: {vm.Name}");
+                        await NotificationSender.SendTeamNotificationAsync($"New team Created: {viewModel.Name}");
                     }
 
                     return Json(new OperationResultRedirectVo(saveResult, url));
