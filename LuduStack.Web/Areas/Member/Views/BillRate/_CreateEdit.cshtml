@@ -106,7 +106,7 @@
                     <div class="form-group">
                         <label asp-for="HourPrice" class="col-form-label"></label>
                         <span asp-description-for="HourPrice" class="col-form-label" />
-                        <input asp-for="HourPrice" type="number" min="1" step=".5" class="form-control" placeholder="@SharedLocalizer["The Hour Price"]" value="@Model.HourPrice.ToString(new System.Globalization.CultureInfo("en-US"))" />
+                        <input asp-for="HourPrice" type="number" min="1" step="1" class="form-control" placeholder="@SharedLocalizer["The Hour Price"]" value="@Model.HourPrice.ToString(new System.Globalization.CultureInfo("en-US"))" />
                         <span asp-validation-for="HourPrice" class="text-danger"></span>
                     </div>
                 </div>
@@ -118,6 +118,10 @@
                         <input asp-for="HourQuantity" type="number" min="1" step="1" class="form-control" placeholder="@SharedLocalizer["The Hour Quantity"]" />
                         <span asp-validation-for="HourQuantity" class="text-danger"></span>
                     </div>
+                </div>
+
+                <div class="col-12">
+                    <p class="alert alert-warning text-center">@Html.Raw(SharedLocalizer["You are billing USD $ <spam id=\"txtTotal\" class=\"h3 font-weight-bold\">0</spam> for this type of job."])</p>
                 </div>
 
                 <div class="col-12 col-md-6 offset-md-6 col-xl-4 offset-xl-8 mt-2 mb-2">

@@ -18,6 +18,9 @@
         selectors.artStyle = '#ArtStyle';
         selectors.soundStyle = '#SoundStyle';
         selectors.gameElement = '#GameElement';
+        selectors.hourPrice = '#HourPrice';
+        selectors.hourQuantity = '#HourQuantity';
+        selectors.txtTotal = '#txtTotal';
         selectors.btnSave = '#btnSaveBillRate';
     }
 
@@ -31,6 +34,9 @@
         objs.artStyle = $(selectors.artStyle);
         objs.soundStyle = $(selectors.soundStyle);
         objs.gameElement = $(selectors.gameElement);
+        objs.hourPrice = $(selectors.hourPrice);
+        objs.hourQuantity = $(selectors.hourQuantity);
+        objs.txtTotal = $(selectors.txtTotal);
     }
 
     function init() {
@@ -49,17 +55,29 @@
         }
 
         MAINMODULE.Common.BindPopOvers();
+
+        calculateTotal();
     }
 
     function bindAll() {
         bindBtnSaveForm();
         bindTypeChange();
+        bindHourPriceChange();
+        bindHourQuantityChange();
     }
 
     function bindTypeChange() {
         objs.container.on('change', selectors.billRateType, function (e) {
             typeChange(false, e.target.value);
         });
+    }
+
+    function bindHourPriceChange() {
+        objs.container.on('change', selectors.hourPrice, calculateTotal);
+    }
+
+    function bindHourQuantityChange() {
+        objs.container.on('change', selectors.hourQuantity, calculateTotal);
     }
 
     function typeChange(initial, value) {
@@ -71,6 +89,8 @@
         if (!initial && (isNew || objs.gameElement.val() !== firstVisibleOption.first().val())) {
             $(selectors.gameElement).val(firstVisibleOption.first().val());
         }
+
+        calculateTotal();
     }
 
     function bindBtnSaveForm() {
@@ -100,6 +120,13 @@
                 MAINMODULE.Ajax.HandleErrorResponse(response);
             }
         });
+    }
+
+    function calculateTotal() {
+        var price = parseInt(objs.hourPrice.val() || 0);
+        var quantity = parseInt(objs.hourQuantity.val() || 0);
+
+        objs.txtTotal.text(price * quantity);
     }
 
     return {
