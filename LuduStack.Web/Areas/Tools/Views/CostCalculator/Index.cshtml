@@ -55,11 +55,10 @@
 
             <div class="box-body p-0 px-md-2">
                 <form id="frmCostCalculator" asp-area="tools" asp-controller="giveaway" asp-action="save" method="post">
-                    <div class="row">
-                        <div class="col-12 col-md-6 no-gutters">
+                    <div class="row mt-md-2">
+                        <div class="col-12 col-md-6 no-gutters rounded-0 border-right">
                             <div class="row">
-                                <div class="col-12">
-                                    <hr />
+                                <div class="col-12 d-block d-md-none">
                                     <span class="col-form-label text-center bg-light d-block">@SharedLocalizer["Visual Arts"]</span>
                                 </div>
                                 <div class="col-12 col-sm-6">
@@ -84,10 +83,6 @@
                                             <input type="range" min="0" max="50" step="1" id="ConceptArtCount" name="ConceptArtCount" data-gameelement="@((int)GameElement.ConceptArt)" class="form-control" style="visibility:hidden" value="0" />
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-12 art-per-dimension" data-type="@((int)BillRateType.Visual)" data-subtype="@((int)Dimensions.TwoDee)">
-                                    <hr />
-                                    <span class="col-form-label text-center bg-light d-block mx-5">2D</span>
                                 </div>
                                 <div class="col-12 art-per-dimension" data-type="@((int)BillRateType.Visual)" data-subtype="@((int)Dimensions.TwoDee)">
                                     <div class="form-group">
@@ -115,10 +110,6 @@
                                             <input type="range" min="0" max="50" step="1" id="LevelCount2d" name="LevelCount2d" data-gameelement="@((int)GameElement.Level2d)" class="form-control" style="visibility:hidden" value="0" />
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-12 art-per-dimension" data-type="@((int)BillRateType.Visual)" data-subtype="@((int)Dimensions.ThreeDee)">
-                                    <hr />
-                                    <span class="col-form-label text-center bg-light d-block mx-5">3D</span>
                                 </div>
                                 <div class="col-12 art-per-dimension" data-type="@((int)BillRateType.Visual)" data-subtype="@((int)Dimensions.ThreeDee)">
                                     <div class="form-group">
@@ -150,9 +141,8 @@
                             </div>
                         </div>
                         <div class="col-12 col-md-6 no-gutters">
-                            <div class="row">
-                                <div class="col-12">
-                                    <hr />
+                            <div class="row mt-2 mt-md-0">
+                                <div class="col-12 d-block d-md-none">
                                     <span class="col-form-label text-center bg-light d-block">@SharedLocalizer["Audio"]</span>
                                 </div>
                                 <div class="col-12">

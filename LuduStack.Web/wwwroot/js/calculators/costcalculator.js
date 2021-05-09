@@ -223,8 +223,8 @@
     function dimensionChange(value) {
         var theOthers = $(selectors.artPerDimension + '[data-subtype!="' + value + '"]' + ' input');
 
-        $(selectors.artPerDimension + '[data-subtype!="' + value + '"]').hide();
-        $(selectors.artPerDimension + '[data-subtype="' + value + '"]').show();
+        $(selectors.artPerDimension + '[data-subtype!="' + value + '"]').css('visibility', 'hidden').hide();
+        $(selectors.artPerDimension + '[data-subtype="' + value + '"]').css('visibility', 'visible').fadeIn('slow');
 
         theOthers.val(0).change();
     }

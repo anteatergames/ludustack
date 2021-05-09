@@ -115,7 +115,7 @@ namespace LuduStack.Domain.Messaging
                     SoundStyle = soundStyle,
                     GameElement = request.GameElement,
                     HourPrice = request.HourPrice,
-                    HourQuantity = request.HourQuantity
+                    HourQuantity = (request.Type == BillRateType.Code || request.Type == BillRateType.Text) ? 0 : request.HourQuantity
                 };
 
                 await billRateRepository.Add(billRate);
@@ -124,7 +124,15 @@ namespace LuduStack.Domain.Messaging
             {
                 billRate = existing.FirstOrDefault();
                 billRate.HourPrice = request.HourPrice;
-                billRate.HourQuantity = request.HourQuantity;
+
+                if (request.Type == BillRateType.Code || request.Type == BillRateType.Text)
+                {
+                    billRate.HourQuantity = 0;
+                }
+                else
+                {
+                    billRate.HourQuantity = request.HourQuantity;
+                }
 
                 billRateRepository.Update(billRate);
             }

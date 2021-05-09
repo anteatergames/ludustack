@@ -22,6 +22,8 @@
         selectors.hourQuantity = '#HourQuantity';
         selectors.txtTotal = '#txtTotal';
         selectors.btnSave = '#btnSaveBillRate';
+        selectors.conditionalbytype = '.conditionalbytype';
+        selectors.hiddenbytypes = '.hiddenbytypes';
     }
 
     function cacheObjs() {
@@ -50,10 +52,6 @@
         canInteract = $(selectors.canInteract).val();
         isNew = window.location.href.indexOf('add') > -1;
 
-        if (isNew) {
-            console.log('new bill rate');
-        }
-
         MAINMODULE.Common.BindPopOvers();
 
         calculateTotal();
@@ -81,14 +79,31 @@
     }
 
     function typeChange(initial, value) {
-        $('.conditionalbytype[data-visiblewhentype!="' + value + '"]').hide();
-        $('.conditionalbytype[data-visiblewhentype="' + value + '"]').show();
+        $(selectors.conditionalbytype + '[data-visiblewhentype!="' + value + '"]').hide();
+        $(selectors.conditionalbytype + '[data-visiblewhentype="' + value + '"]').show();
 
         var firstVisibleOption = $(selectors.gameElement + ' option.conditionalbytype[data-visiblewhentype="' + value + '"]:first');
 
         if (!initial && (isNew || objs.gameElement.val() !== firstVisibleOption.first().val())) {
             $(selectors.gameElement).val(firstVisibleOption.first().val());
         }
+
+        var elementsToHide = $(selectors.hiddenbytypes);
+
+        elementsToHide.each(function (index, element) {
+            var hiddenTypes = $(element).data('hiddenbytypes');
+
+            if (hiddenTypes) {
+                var types = hiddenTypes.split(',');
+
+                if (types.indexOf(value) > -1) {
+                    $(element).hide();
+                }
+                else {
+                    $(element).show();
+                }
+            }
+        });
 
         calculateTotal();
     }
@@ -123,10 +138,16 @@
     }
 
     function calculateTotal() {
-        var price = parseInt(objs.hourPrice.val() || 0);
-        var quantity = parseInt(objs.hourQuantity.val() || 0);
+        var price = parseInt((objs.hourPrice.val() || 0), 10);
+        var quantity = parseInt((objs.hourQuantity.val() || 0), 10);
+        var type = objs.billRateType.val();
 
-        objs.txtTotal.text(price * quantity);
+        if (type === '3' || type === '4') {
+            objs.txtTotal.text(price);
+        }
+        else {
+            objs.txtTotal.text(price * quantity);
+        }
     }
 
     return {
