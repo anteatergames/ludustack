@@ -15,15 +15,15 @@ namespace LuduStack.Application.Interfaces
 
         Task<OperationResultVo> GetForDetails(Guid currentUserId, Guid giveawayId);
 
-        OperationResultVo GetGiveawayParticipantInfo(Guid currentUserId, Guid giveawayId, string email);
+        Task<OperationResultVo> GetGiveawayParticipantInfo(Guid currentUserId, Guid giveawayId, string email);
 
-        OperationResultVo GetGiveawaysByMe(Guid currentUserId);
+        Task<OperationResultVo> GetGiveawaysByMe(Guid currentUserId);
 
         Task<OperationResultVo<Guid>> SaveGiveaway(Guid currentUserId, GiveawayViewModel viewModel);
 
         Task<OperationResultVo> DeleteGiveaway(Guid currentUserId, Guid giveawayId);
 
-        OperationResultVo CheckParticipant(Guid currentUserId, Guid giveawayId, string sessionEmail);
+        Task<OperationResultVo> CheckParticipant(Guid currentUserId, Guid giveawayId, string sessionEmail);
 
         Task<OperationResultVo> EnterGiveaway(Guid currentUserId, GiveawayEnterViewModel vm, string urlReferralBase);
 
@@ -41,6 +41,6 @@ namespace LuduStack.Application.Interfaces
 
         OperationResultVo DeclareNotWinner(Guid currentUserId, Guid giveawayId, Guid participantId);
 
-        OperationResultVo DuplicateGiveaway(Guid currentUserId, Guid giveawayId);
+        Task<OperationResultVo> DuplicateGiveaway(Guid currentUserId, Guid giveawayId);
     }
 }

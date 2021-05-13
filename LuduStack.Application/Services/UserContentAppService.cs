@@ -174,8 +174,6 @@ namespace LuduStack.Application.Services
                     return new OperationResultVo<Guid>("Calm down! You cannot post the same content twice in a row.");
                 }
 
-                await SetAuthorDetails(currentUserId, viewModel);
-
                 UserContent existing = await mediator.Query<GetUserContentByIdQuery, UserContent>(new GetUserContentByIdQuery(viewModel.Id));
                 if (existing != null)
                 {

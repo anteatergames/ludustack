@@ -1,5 +1,4 @@
 ﻿using LuduStack.Domain.Core.Enums;
-using LuduStack.Domain.Core.Extensions;
 using LuduStack.Domain.Interfaces.Models;
 using LuduStack.Domain.Interfaces.Repository;
 using LuduStack.Domain.Interfaces.Services;
@@ -33,109 +32,6 @@ namespace LuduStack.Domain.Services
             return model;
         }
 
-        public List<GiveawayListItemVo> GetGiveawayListByUserId(Guid userId)
-        {
-            List<GiveawayListItemVo> objs = giveawayRepository.GetGiveawayListByUserId(userId);
-
-            foreach (GiveawayListItemVo item in objs)
-            {
-                SetDates(item);
-            }
-
-            return objs;
-        }
-
-        public GiveawayBasicInfo GetGiveawayBasicInfoById(Guid id)
-        {
-            Task<GiveawayBasicInfo> task = Task.Run(async () => await giveawayRepository.GetBasicGiveawayById(id));
-            GiveawayBasicInfo model = task.Result;
-
-            if (model.Status == GiveawayStatus.Ended)
-            {
-                model.Winners = giveawayRepository.GetParticipants(id).Where(x => x.IsWinner).ToList();
-            }
-
-            SetDates(model);
-
-            return model;
-        }
-
-        public Giveaway Duplicate(Guid giveawayId)
-        {
-            Task<Giveaway> task = Task.Run(async () => await giveawayRepository.GetById(giveawayId));
-            Giveaway model = task.Result;
-
-            Giveaway copy = model.Copy();
-
-            copy.Id = Guid.Empty;
-
-            copy.Name = string.Format("{0} (Copy {1})", copy.Name, DateTime.Now.ToString("yyyyMMddhhmmss"));
-
-            copy.Status = GiveawayStatus.Draft;
-
-            copy.StartDate = DateTime.Today.AddDays(1);
-            copy.EndDate = copy.StartDate.AddDays(1);
-
-            copy.Participants = new List<GiveawayParticipant>();
-
-            giveawayRepository.Add(copy);
-
-            return copy;
-        }
-
-        public DomainOperationVo<GiveawayParticipant> AddParticipant(Guid giveawayId, string email, bool gdprConsent, bool wantNotifications, string referralCode, string referrer, GiveawayEntryType? entryType)
-        {
-            GiveawayParticipant participant;
-
-            IQueryable<GiveawayParticipant> existing = giveawayRepository.GetParticipants(giveawayId);
-            bool exists = existing.Any(x => x.Email == email);
-
-            if (exists)
-            {
-                participant = existing.First(x => x.Email == email);
-
-                giveawayRepository.UpdateParticipant(giveawayId, participant);
-
-                return new DomainOperationVo<GiveawayParticipant>(DomainActionPerformed.Update, participant);
-            }
-            else
-            {
-                participant = new GiveawayParticipant
-                {
-                    Email = email,
-                    GdprConsent = gdprConsent,
-                    WantNotifications = wantNotifications
-                };
-
-                participant.Entries.Add(new GiveawayEntry
-                {
-                    Type = GiveawayEntryType.LoginOrEmail,
-                    Points = 1
-                });
-
-                participant.ReferralCode = referralCode;
-
-                giveawayRepository.AddParticipant(giveawayId, participant);
-
-                if (!string.IsNullOrWhiteSpace(referrer))
-                {
-                    GiveawayParticipant referrerParticipant = giveawayRepository.GetParticipantByReferralCode(giveawayId, referrer);
-                    if (referrerParticipant != null)
-                    {
-                        referrerParticipant.Entries.Add(new GiveawayEntry
-                        {
-                            Type = entryType ?? GiveawayEntryType.ReferralCode,
-                            Points = 1
-                        });
-
-                        giveawayRepository.UpdateParticipant(giveawayId, referrerParticipant);
-                    }
-                }
-
-                return new DomainOperationVo<GiveawayParticipant>(DomainActionPerformed.Create, participant);
-            }
-        }
-
         public DomainOperationVo<int> DailyEntry(Guid giveawayId, Guid participantId)
         {
             GiveawayParticipant existing = giveawayRepository.GetParticipantById(giveawayId, participantId);
@@ -165,32 +61,6 @@ namespace LuduStack.Domain.Services
             return new DomainOperationVo<int>(DomainActionPerformed.Create, countDailyEntries);
         }
 
-        public GiveawayParticipant GetParticipantByEmail(Guid giveawayId, string email)
-        {
-            GiveawayParticipant model = giveawayRepository.GetParticipantByEmail(giveawayId, email);
-
-            return model;
-        }
-
-        public bool CheckParticipantByEmail(Guid giveawayId, string email)
-        {
-            Guid guid = giveawayRepository.CheckParticipantByEmail(giveawayId, email);
-
-            return guid != default;
-        }
-
-        public void UpdateParticipantShortUrl(Guid giveawayId, string email, string shortUrl)
-        {
-            GiveawayParticipant existing = giveawayRepository.GetParticipantByEmail(giveawayId, email);
-
-            if (existing != null)
-            {
-                existing.ShortUrl = shortUrl;
-
-                giveawayRepository.UpdateParticipant(giveawayId, existing);
-            }
-        }
-
         public void ConfirmParticipant(Guid giveawayId, string referralCode)
         {
             GiveawayParticipant existing = giveawayRepository.GetParticipantByReferralCode(giveawayId, referralCode);
@@ -199,6 +69,7 @@ namespace LuduStack.Domain.Services
             {
                 existing.Entries.Add(new GiveawayEntry
                 {
+                    Date = DateTime.Now,
                     Type = GiveawayEntryType.EmailConfirmed,
                     Points = 1
                 });
@@ -249,11 +120,11 @@ namespace LuduStack.Domain.Services
 
         public void PickAllWinners(Guid giveawayId)
         {
-            Task<GiveawayBasicInfo> task = Task.Run(async () => await giveawayRepository.GetBasicGiveawayById(giveawayId));
+            Task<GiveawayBasicInfoVo> task = Task.Run(async () => await giveawayRepository.GetBasicGiveawayById(giveawayId));
 
             task.Wait();
 
-            GiveawayBasicInfo basicInfo = task.Result;
+            GiveawayBasicInfoVo basicInfo = task.Result;
 
             List<GiveawayParticipant> allParticipants = giveawayRepository.GetParticipants(giveawayId).ToList();
             List<GiveawayParticipant> winners = allParticipants.Where(x => x.IsWinner).ToList();
@@ -295,7 +166,7 @@ namespace LuduStack.Domain.Services
             giveawayRepository.UpdateGiveawayStatus(giveawayId, GiveawayStatus.Ended);
         }
 
-        private static void SetDates(IGiveawayBasicInfo model)
+        public void SetDates(IGiveawayBasicInfo model)
         {
             if (model != null)
             {

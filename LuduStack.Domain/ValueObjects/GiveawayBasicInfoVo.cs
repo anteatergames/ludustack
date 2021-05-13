@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace LuduStack.Domain.Models
 {
-    public class GiveawayBasicInfo : IEntity, IGiveawayBasicInfo
+    public class GiveawayBasicInfoVo : IEntity, IGiveawayBasicInfo
     {
         public Guid Id { get; set; }
 

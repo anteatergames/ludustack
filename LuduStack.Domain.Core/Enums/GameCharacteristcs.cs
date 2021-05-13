@@ -17,8 +17,8 @@ namespace LuduStack.Domain.Core.Enums
         [UiInfo(Display = "Level Of Detail", Class = "check")]
         Lod,
 
-        [Display(Name = "Procedural Geleration")]
-        [UiInfo(Display = "Procedural Geleration", Class = "check")]
+        [Display(Name = "Procedural Generation")]
+        [UiInfo(Display = "Procedural Generation", Class = "check")]
         ProceduralGeleration,
 
         [Display(Name = "Online Multiplayer")]

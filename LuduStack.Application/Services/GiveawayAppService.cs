@@ -70,7 +70,7 @@ namespace LuduStack.Application.Services
         {
             try
             {
-                GiveawayBasicInfo existing = giveawayDomainService.GetGiveawayBasicInfoById(giveawayId);
+                GiveawayBasicInfoVo existing = await mediator.Query<GetGiveawayBasicInfoByIdQuery, GiveawayBasicInfoVo>(new GetGiveawayBasicInfoByIdQuery(giveawayId));
 
                 GiveawayViewModel vm = mapper.Map<GiveawayViewModel>(existing);
 
@@ -92,7 +92,7 @@ namespace LuduStack.Application.Services
         {
             try
             {
-                GiveawayBasicInfo existing = giveawayDomainService.GetGiveawayBasicInfoById(giveawayId);
+                GiveawayBasicInfoVo existing = await mediator.Query<GetGiveawayBasicInfoByIdQuery, GiveawayBasicInfoVo>(new GetGiveawayBasicInfoByIdQuery(giveawayId));
 
                 GiveawayViewModel vm = mapper.Map<GiveawayViewModel>(existing);
 
@@ -110,11 +110,11 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo GetGiveawaysByMe(Guid currentUserId)
+        public async Task<OperationResultVo> GetGiveawaysByMe(Guid currentUserId)
         {
             try
             {
-                List<GiveawayListItemVo> giveaways = giveawayDomainService.GetGiveawayListByUserId(currentUserId);
+                List<GiveawayListItemVo> giveaways = await mediator.Query<GetGiveawayListByUserIdQuery, List<GiveawayListItemVo>>(new GetGiveawayListByUserIdQuery(currentUserId));
 
                 return new OperationResultListVo<GiveawayListItemVo>(giveaways);
             }
@@ -176,15 +176,13 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo DuplicateGiveaway(Guid currentUserId, Guid giveawayId)
+        public async Task<OperationResultVo> DuplicateGiveaway(Guid currentUserId, Guid giveawayId)
         {
             try
             {
-                Giveaway newGiveaway = giveawayDomainService.Duplicate(giveawayId);
+                CommandResult<Giveaway> newGiveaway = await mediator.SendCommand<DuplicateGiveawayCommand, Giveaway>(new DuplicateGiveawayCommand(currentUserId, giveawayId));
 
-                unitOfWork.Commit();
-
-                return new OperationResultVo<Guid>(newGiveaway.Id, 0, "Giveaway duplicated!");
+                return new OperationResultVo<Guid>(newGiveaway.Result.Id, 0, "Giveaway duplicated!");
             }
             catch (Exception ex)
             {
@@ -192,11 +190,11 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo CheckParticipant(Guid currentUserId, Guid giveawayId, string sessionEmail)
+        public async Task<OperationResultVo> CheckParticipant(Guid currentUserId, Guid giveawayId, string sessionEmail)
         {
             try
             {
-                bool exists = giveawayDomainService.CheckParticipantByEmail(giveawayId, sessionEmail);
+                bool exists = await mediator.Query<CheckParticipantByEmailQuery, bool>(new CheckParticipantByEmailQuery(giveawayId, sessionEmail));
 
                 if (!exists)
                 {
@@ -213,41 +211,32 @@ namespace LuduStack.Application.Services
 
         public async Task<OperationResultVo> EnterGiveaway(Guid currentUserId, GiveawayEnterViewModel vm, string urlReferralBase)
         {
+            int pointsEarned = 0;
+
             try
             {
                 string myCode = Guid.NewGuid().NoHyphen();
 
-                DomainOperationVo<GiveawayParticipant> domainActionPerformed = giveawayDomainService.AddParticipant(vm.GiveawayId, vm.Email, vm.GdprConsent, vm.WantNotifications, myCode, vm.ReferralCode, vm.EntryType);
+                CommandResult<DomainOperationVo> addParticipantCommandResult = await mediator.SendCommand<AddParticipantCommand, DomainOperationVo>(new AddParticipantCommand(vm.GiveawayId, vm.Email, vm.GdprConsent, vm.WantNotifications, myCode, vm.ReferralCode, urlReferralBase));
 
-                await unitOfWork.Commit();
-
-                if (domainActionPerformed.Action == DomainActionPerformed.Create)
+                if (!addParticipantCommandResult.Validation.IsValid)
                 {
-                    string urlReferral = string.Format("{0}?referralCode={1}", urlReferralBase, myCode);
+                    string message = addParticipantCommandResult.Validation.Errors.FirstOrDefault().ErrorMessage;
 
-                    SaveShortUrlCommand saveShortUrlCommand = new SaveShortUrlCommand(urlReferral, ShortUrlDestinationType.Giveaway);
-
-                    CommandResult result = await mediator.SendCommand(saveShortUrlCommand);
-
-                    if (!result.Validation.IsValid)
-                    {
-                        string message = result.Validation.Errors.FirstOrDefault().ErrorMessage;
-                        return new OperationResultVo<string>(saveShortUrlCommand.ShortUrl.OriginalUrl, false, message);
-                    }
-                    else
-                    {
-                        if (!string.IsNullOrWhiteSpace(saveShortUrlCommand.ShortUrl.NewUrl))
-                        {
-                            giveawayDomainService.UpdateParticipantShortUrl(vm.GiveawayId, vm.Email, saveShortUrlCommand.ShortUrl.NewUrl);
-
-                            await unitOfWork.Commit();
-                        }
-
-                        return new OperationResultVo<string>(myCode, 0, "You are in!");
-                    }
+                    return new OperationResultVo<string>(string.Empty, false, message);
                 }
 
-                return new OperationResultVo<string>(string.Empty, 0, "You are in!");
+                pointsEarned += addParticipantCommandResult.PointsEarned;
+
+                if (addParticipantCommandResult.Result.Action == DomainActionPerformed.Create)
+                {
+                    return new OperationResultVo<string>(myCode, pointsEarned, "You are in!");
+                }
+                else
+                {
+                    return new OperationResultVo<string>(string.Empty, pointsEarned, "You are already participating!");
+                }
+
             }
             catch (Exception ex)
             {
@@ -276,18 +265,18 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo GetGiveawayParticipantInfo(Guid currentUserId, Guid giveawayId, string email)
+        public async Task<OperationResultVo> GetGiveawayParticipantInfo(Guid currentUserId, Guid giveawayId, string email)
         {
             try
             {
-                GiveawayBasicInfo existing = giveawayDomainService.GetGiveawayBasicInfoById(giveawayId);
+                GiveawayBasicInfoVo existing = await mediator.Query<GetGiveawayBasicInfoByIdQuery, GiveawayBasicInfoVo>(new GetGiveawayBasicInfoByIdQuery(giveawayId));
 
                 if (existing == null)
                 {
                     return new OperationResultVo(false, "Giveaway not found!");
                 }
 
-                GiveawayParticipant participant = giveawayDomainService.GetParticipantByEmail(giveawayId, email);
+                GiveawayParticipant participant = await mediator.Query<GetParticipantByEmailQuery, GiveawayParticipant>(new GetParticipantByEmailQuery(giveawayId, email));
 
                 if (participant == null)
                 {
