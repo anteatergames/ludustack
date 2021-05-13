@@ -70,7 +70,9 @@ namespace LuduStack.Application.AutoMapper
 
             #region Content
 
-            CreateMap<UserContentViewModel, Domain.Models.UserContent>();
+            CreateMap<UserContentViewModel, Domain.Models.UserContent>()
+                .ForMember(dest => dest.Likes, opt => opt.Ignore())
+                .ForMember(dest => dest.Comments, opt => opt.Ignore());
 
             #endregion Content
 
@@ -153,7 +155,7 @@ namespace LuduStack.Application.AutoMapper
 
             CreateMap<GiveawayViewModel, Giveaway>()
                 .ForMember(dest => dest.Participants, opt => opt.Ignore());
-            CreateMap<GiveawayViewModel, GiveawayBasicInfo>();
+            CreateMap<GiveawayViewModel, GiveawayBasicInfoVo>();
             CreateMap<GiveawayPrizeViewModel, GiveawayPrize>();
             CreateMap<GiveawayEntryOptionViewModel, GiveawayEntryOption>();
             CreateMap<GiveawayParticipantViewModel, GiveawayParticipant>();
@@ -169,7 +171,9 @@ namespace LuduStack.Application.AutoMapper
 
             #region Comics
 
-            CreateMap<ComicStripViewModel, Domain.Models.UserContent>();
+            CreateMap<ComicStripViewModel, Domain.Models.UserContent>()
+                .ForMember(dest => dest.Likes, opt => opt.Ignore())
+                .ForMember(dest => dest.Comments, opt => opt.Ignore());
 
             #endregion Comics
 
