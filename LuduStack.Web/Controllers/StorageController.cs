@@ -19,6 +19,8 @@ namespace LuduStack.Web.Controllers
     {
         private readonly IHttpContextAccessor httpContextAccessor;
         private readonly ILogger logger;
+        
+        private string datetimeFormat = "yyyyMMddHHmmssfff";
 
         public StorageController(IHttpContextAccessor httpContextAccessor
             , ILogger<StorageController> logger)
@@ -202,7 +204,7 @@ namespace LuduStack.Web.Controllers
 
                         string extension = GetFileExtension(image);
 
-                        string filename = DateTime.Now.ToString("yyyyMMddHHmmss");
+                        string filename = DateTime.Now.ToString(datetimeFormat);
 
                         if (type == ImageType.GameCover || type == ImageType.GameThumbnail)
                         {
@@ -254,7 +256,7 @@ namespace LuduStack.Web.Controllers
 
                         string extension = GetFileExtension(upload);
 
-                        string filename = DateTime.Now.ToString("yyyyMMddHHmmss");
+                        string filename = DateTime.Now.ToString(datetimeFormat);
 
                         if (randomName)
                         {
@@ -293,7 +295,7 @@ namespace LuduStack.Web.Controllers
 
                         string extension = GetFileExtension(upload);
 
-                        string filename = DateTime.Now.ToString("yyyyMMddHHmmss");
+                        string filename = DateTime.Now.ToString(datetimeFormat);
 
                         UploadResultVo uploadResult = await base.UploadContentMedia(CurrentUserId, filename, extension, fileBytes, EnvName);
 
@@ -328,7 +330,7 @@ namespace LuduStack.Web.Controllers
 
                         string extension = GetFileExtension(featuredimage);
 
-                        string filename = DateTime.Now.ToString("yyyyMMddHHmmss");
+                        string filename = DateTime.Now.ToString(datetimeFormat);
 
                         if (userId == Guid.Empty)
                         {

@@ -3192,4 +3192,16 @@
     <value>Arte Visual</value>
     <comment>Cost Calculator</comment>
   </data>
+  <data name="add up to 5 files" xml:space="preserve">
+    <value>adicione até 5 arquivos</value>
+    <comment>Home</comment>
+  </data>
+  <data name="gallery" xml:space="preserve">
+    <value>galeria</value>
+    <comment>Generic</comment>
+  </data>
+  <data name="There are no items in this gallery, yet." xml:space="preserve">
+    <value>Não existem itens nessa galeria, ainda.</value>
+    <comment>Generic</comment>
+  </data>
 </root>

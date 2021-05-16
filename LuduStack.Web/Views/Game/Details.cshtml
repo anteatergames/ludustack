@@ -8,6 +8,12 @@
     ViewData["Url"] = ViewBag.BaseUrl + Url.Action("details", "game", new { id = Model.Id });
     ViewData["CanonicalUrl"] = ViewData["Url"];
     ViewData["OgImage"] = Model.ThumbnailUrl;
+
+    var mediaCount = Model.Media.Count;
+    var columns = mediaCount < 4 ? mediaCount : 4;
+    var rows = Math.Ceiling(mediaCount / (decimal)4);
+
+    var noGalleryItemsModel = new ListNoItemsViewModel("fas fa-photo-video", "There are no items in this gallery, yet.");
 }
 
 @section Styles {
@@ -15,27 +21,39 @@
         <link rel="stylesheet" href="~/css/gamedetails.css" />
         <link rel="stylesheet" href="~/css/teamup.css">
         <link rel="stylesheet" href="~/css/circularpercentage.css">
+        <link rel="stylesheet" href="~/lib/nanogallery2/css/nanogallery2.min.css">
     </environment>
     <environment exclude="Development">
         <link rel="stylesheet" href="~/css/gamedetails.min.css" asp-append-version="true" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/nanogallery2/3.0.5/css/nanogallery2.min.css"
+              integrity="sha512-6sOT9zKSKq1CYgNMqtcY84tFPDnG1yX5mxwdGQiAVpAomVr2kUKJ//pFeU/KfaZDVCOru5iFOVswpT4RWWF2dQ=="
+              crossorigin="anonymous" />
     </environment>
 }
 @section Scripts {
-
     <environment include="Development">
-        <script src="~/js/shared/contentactions.js"></script>
-        <script src="~/js/game/gamedetails.js"></script>
         <script src="~/lib/qrious/qrious.js"></script>
         <script src="~/lib/embedo/embedo.js"></script>
+        <script src="~/lib/nanogallery2/jquery.nanogallery2.js"></script>
+        <script src="~/js/shared/contentactions.js"></script>
+        <script src="~/js/game/gamedetails.js"></script>
         <script src="~/js/shared/activityfeed.js"></script>
+        <script src="~/js/shared/gallery.js"></script>
     </environment>
     <environment exclude="Development">
         <script src="~/lib/qrious/qrious.min.js"></script>
         <script src="~/lib/embedo/embedo.min.js"></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/nanogallery2/3.0.5/jquery.nanogallery2.min.js"
+                integrity="sha512-tvpLVnZrWnnNzV2921XEMx4xkFTUF8xg3s+Mi6cvC/R7A6X1FkpBUXPJFa3Xh5uD9BvOZ2tHeYq/5ZqrweW86Q=="
+                crossorigin="anonymous"></script>
+
         <script src="~/js/game/gamedetails.min.js" asp-append-version="true" defer></script>
     </environment>
 
     <script type="text/javascript">
+        @*var nanoGalleryJson = @Html.Raw(Model.NanoGaleryJson);*@
+
         (function () {
             $('.qrCode').each(function (index, element){
                 var qr = new QRious({
@@ -71,6 +89,7 @@
         }
     </script>
 }
+
 
 <section class="content container">
     <input type="hidden" asp-for="Id" />
@@ -186,6 +205,7 @@
                     <ul class="nav nav-tabs text-capitalize">
                         <li><a href="#tabactivity" class="active" data-toggle="tab">@SharedLocalizer["Activity"]</a></li>
                         <li><a href="#about" data-toggle="tab">@SharedLocalizer["about"]</a></li>
+                        <li><a href="#gamegallery" data-toggle="tab" data-isgallery="true" data-hasitems="@(Model.Media.Count > 0 ? "true" : "false")">@SharedLocalizer["gallery"]</a></li>
                     </ul>
 
                     <div class="tab-content pt-1">
@@ -279,6 +299,10 @@
                                     </div>
                                 </div>
                             }
+                        </div>
+
+                        <div class="tab-pane mediagallery" id="gamegallery" data-items="@Model.NanoGaleryJson">
+                            <partial name="_ListNoItems" model="noGalleryItemsModel" />
                         </div>
 
                         <div class="box col-12 d-block d-lg-none bg-white mt-3 mt-lg-0">

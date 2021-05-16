@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Localization;
 using System;
 using System.Net;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace LuduStack.Web.Controllers.Base
 {
@@ -14,8 +16,11 @@ namespace LuduStack.Web.Controllers.Base
         private IStringLocalizer<SharedResources> _sharedLocalizer;
         public IStringLocalizer<SharedResources> SharedLocalizer => _sharedLocalizer ?? (_sharedLocalizer = (IStringLocalizer<SharedResources>)HttpContext?.RequestServices.GetService(typeof(IStringLocalizer<SharedResources>)));
 
+        protected JsonSerializerOptions DefaultJsonSerializeOptions { get; }
+
         public BaseController()
         {
+            DefaultJsonSerializeOptions = new JsonSerializerOptions { DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull, PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
         }
 
         public override void OnActionExecuting(ActionExecutingContext context)

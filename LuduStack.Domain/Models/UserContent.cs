@@ -10,7 +10,7 @@ namespace LuduStack.Domain.Models
     {
         public string FeaturedImage { get; set; }
 
-        public List<MediaListItemVo> Images { get; set; }
+        public List<MediaListItemVo> Media { get; set; }
 
         public int? IssueNumber { get; set; }
 

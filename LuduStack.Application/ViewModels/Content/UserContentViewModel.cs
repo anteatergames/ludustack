@@ -22,7 +22,7 @@ namespace LuduStack.Application.ViewModels.Content
         public MediaType? FeaturedMediaType { get; set; }
 
         [Display(Name = "Images")]
-        public List<MediaListItemVo> Images { get; set; }
+        public List<MediaListItemVo> Media { get; set; }
 
         [StringLength(128)]
         [Display(Name = "Title")]

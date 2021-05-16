@@ -79,7 +79,8 @@
     "inputFiles": [
       "wwwroot/js/shared/contentactions.js",
       "wwwroot/js/shared/activityfeed.js",
-      "wwwroot/js/game/gamedetails.js"
+      "wwwroot/js/game/gamedetails.js",
+      "wwwroot/js/shared/gallery.js"
     ]
   },
   {

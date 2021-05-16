@@ -10,6 +10,7 @@ using LuduStack.Domain.ValueObjects;
 using LuduStack.Infra.CrossCutting.Identity.Models;
 using LuduStack.Web.Controllers.Base;
 using LuduStack.Web.Enums;
+using LuduStack.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,6 +18,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace LuduStack.Web.Controllers
@@ -77,6 +80,8 @@ namespace LuduStack.Web.Controllers
             SetGamificationMessage(pointsEarned);
 
             SetImagesToRefresh(vm, refreshImages);
+
+            SetNanoGallery(vm);
 
             return View(vm);
         }
@@ -340,6 +345,30 @@ namespace LuduStack.Web.Controllers
                 vm.ThumbnailUrl = UrlFormatter.ReplaceCloudVersion(vm.ThumbnailUrl);
                 vm.CoverImageUrl = UrlFormatter.ReplaceCloudVersion(vm.CoverImageUrl);
             }
+        }
+
+        private void SetNanoGallery(GameViewModel vm)
+        {
+            var gallery = new List<NanoGalleryViewModel>();
+
+            var galleryItems = vm.Media.Where(x => x.Type == MediaType.Image || x.Type == MediaType.Youtube || x.Type == MediaType.Dailymotion); // need to add Vimeo with thumbnail
+
+            foreach (var mediaItem in galleryItems)
+            {
+                var item = new NanoGalleryViewModel();
+                item.Src = mediaItem.Type == MediaType.Image ? UrlFormatter.Image(vm.UserId, ImageType.ContentImage, mediaItem.Url) : mediaItem.Url;
+
+                if (mediaItem.Type == MediaType.Image)
+                {
+                    item.Srct = UrlFormatter.Image(vm.UserId, ImageType.ContentImage, mediaItem.Url);
+                }
+
+                gallery.Add(item);
+
+                mediaItem.Url = UrlFormatter.Image(vm.UserId, ImageType.ContentImage, mediaItem.Url);
+            }
+
+            vm.NanoGaleryJson = JsonSerializer.Serialize(gallery, DefaultJsonSerializeOptions);
         }
     }
 }

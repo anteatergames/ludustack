@@ -101,25 +101,25 @@
                     </div>
                 </div>
 
-                @for (int i = 0; i < Model.Images.Count; i++)
+                @for (int i = 0; i < Model.Media.Count; i++)
                 {
                     var imageTarget = string.Format("img_{0}", i);
 
                     <div class="col-md-12 text-center px-5">
                         <div class="form-group">
-                            <label class="col-form-label">@SharedLocalizer["Image in {0}", Model.Images[i].Language]</label>
+                            <label class="col-form-label">@SharedLocalizer["Image in {0}", Model.Media[i].Language]</label>
                         </div>
                         <div class="dropzone">
-                            <img class="comicstripimage rounded img-fluid border" id="@imageTarget" src="@Model.Images[i].Image" alt="Featured Image @i">
+                            <img class="comicstripimage rounded img-fluid border" id="@imageTarget" src="@Model.Media[i].Url" alt="Featured Image @i">
                         </div>
 
                         <div class="col-12 text-center">
                             <label class="btn btn-outline-secondary">
                                 <i class="fas fa-fw fa-upload" aria-hidden="true"></i>
                                 <span>@SharedLocalizer["change"]</span>
-                                <input type="hidden" asp-for="Images[i].Language" />
-                                <input type="hidden" asp-for="Images[i].Image" />
-                                <input type="file" class="sr-only comicstripimageinput" accept="image/*" data-target-img="@imageTarget" data-target-hidden="@String.Format("Images_{0}__Image", i)">
+                                <input type="hidden" asp-for="Media[i].Language" />
+                                <input type="hidden" asp-for="Media[i].Url" />
+                                <input type="file" class="sr-only comicstripimageinput" accept="image/*" data-target-img="@imageTarget" data-target-hidden="@String.Format("Media_{0}__Url", i)">
                             </label>
                         </div>
                     </div>

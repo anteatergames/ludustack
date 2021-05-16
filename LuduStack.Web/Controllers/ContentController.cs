@@ -69,8 +69,11 @@ namespace LuduStack.Web.Controllers
 
                 GameViewModel game = gameServiceResult.Value;
 
-                viewModel.GameTitle = game.Title;
-                viewModel.GameThumbnail = UrlFormatter.Image(game.UserId, ImageType.GameThumbnail, game.ThumbnailUrl);
+                if (game != null)
+                {
+                    viewModel.GameTitle = game.Title;
+                    viewModel.GameThumbnail = UrlFormatter.Image(game.UserId, ImageType.GameThumbnail, game.ThumbnailUrl);
+                }
             }
 
             viewModel.Content = viewModel.Content.Replace("image-style-align-right", "image-style-align-right float-right p-10");
@@ -284,7 +287,7 @@ namespace LuduStack.Web.Controllers
             if (!string.IsNullOrWhiteSpace(images))
             {
                 string[] imgSplit = images.Split('|');
-                vm.Images = new List<MediaListItemVo>();
+                vm.Media = new List<MediaListItemVo>();
 
                 for (int i = 0; i < imgSplit.Length; i++)
                 {
@@ -297,10 +300,10 @@ namespace LuduStack.Web.Controllers
 
                         MediaType type = ContentHelper.GetMediaType(imgSplit[i]);
 
-                        vm.Images.Add(new MediaListItemVo
+                        vm.Media.Add(new MediaListItemVo
                         {
                             Type = type,
-                            Image = imgSplit[i]
+                            Url = imgSplit[i]
                         });
                     }
                 }

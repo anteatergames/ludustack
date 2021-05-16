@@ -93,6 +93,10 @@
     {
       "library": "tempusdominus-bootstrap-4@5.1.2",
       "destination": "wwwroot/lib/tempusdominus"
+    },
+    {
+      "library": "nanogallery2@3.0.5",
+      "destination": "wwwroot/lib/nanogallery2"
     }
   ]
 }

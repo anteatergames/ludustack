@@ -40,6 +40,7 @@
         bindLikeBtn();
         bindFollowBtn();
         bindShareBtn();
+        bindGallery();
     }
 
     function bindLikeBtn() {
@@ -82,6 +83,16 @@
                 href: url
             }, function (response) { console.log(response); });
         });
+    }
+
+    function bindGallery() {
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            var target = $(e.target);
+
+            if (target.data('hasitems') === true && target.data('isgallery') === true) {
+                GALLERY.Load('#gamegallery');
+            }
+        })
     }
 
     function like(likedId) {
