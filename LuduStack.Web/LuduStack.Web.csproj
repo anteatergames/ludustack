@@ -53,7 +53,7 @@
     <PackageReference Include="MediatR" Version="9.0.0" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="3.1.9" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="3.1.9" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="5.0.6" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" Version="3.1.9" />
     
     <PackageReference Include="Microsoft.AspNetCore.Rewrite" Version="2.2.0" />
