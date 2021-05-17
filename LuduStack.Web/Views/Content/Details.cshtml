@@ -17,9 +17,13 @@
 @section Styles {
     <environment include="Development">
         <link rel="stylesheet" href="~/css/polls.css" />
+        <link rel="stylesheet" href="~/lib/nanogallery2/css/nanogallery2.min.css">
     </environment>
     <environment exclude="Development">
         <link rel="stylesheet" href="~/css/contentdetails.min.css" asp-append-version="true" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/nanogallery2/3.0.5/css/nanogallery2.min.css"
+              integrity="sha512-6sOT9zKSKq1CYgNMqtcY84tFPDnG1yX5mxwdGQiAVpAomVr2kUKJ//pFeU/KfaZDVCOru5iFOVswpT4RWWF2dQ=="
+              crossorigin="anonymous" />
     </environment>
 }
 
@@ -28,9 +32,15 @@
     <environment include="Development">
         <script src="~/js/shared/polls.js"></script>
         <script src="~/js/shared/contentactions.js"></script>
+        <script src="~/lib/nanogallery2/jquery.nanogallery2.js"></script>
+        <script src="~/js/shared/gallery.js"></script>
         <script src="~/js/content/contentdetails.js"></script>
     </environment>
     <environment exclude="Development">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/nanogallery2/3.0.5/jquery.nanogallery2.min.js"
+                integrity="sha512-tvpLVnZrWnnNzV2921XEMx4xkFTUF8xg3s+Mi6cvC/R7A6X1FkpBUXPJFa3Xh5uD9BvOZ2tHeYq/5ZqrweW86Q=="
+                crossorigin="anonymous"></script>
+
         <script src="~/js/content/contentdetails.min.js" asp-append-version="true"></script>
     </environment>
 
@@ -166,7 +176,7 @@
                             var option = Model.Poll.PollOptions.ElementAt(i);
                             var optionName = String.Format("poll_{0}_{1}", Model.Id, option.Id);
                             <li class="@(option.CurrentUserVoted ? "voted" : "notvoted") ">
-                                <span class="perc-back" style="width: @(option.VotePercentageText)%"></span>
+                                <span class="perc-back" style="width: @String.Format("{0}%", option.VotePercentageText)"></span>
                                 <input type="radio" class="poll-option" name="@pollName" id="@optionName" value="@option.Id">
                                 <label for="@optionName">
                                     <span>@option.Text</span>
@@ -180,6 +190,12 @@
                         &nbsp;@SharedLocalizer["votes"]
                     </div>
                 }
+            </div>
+        }
+
+        @if (Model.Media.Count > 1)
+        {
+            <div class="tab-pane mediagallery" id="postgallery" data-isgallery="true" data-hasitems="@(Model.Media.Count > 0 ? "true" : "false")" data-items="@Model.NanoGaleryJson">
             </div>
         }
 

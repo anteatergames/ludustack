@@ -244,6 +244,8 @@ namespace LuduStack.Web.Controllers
         [Route("uploadmedia")]
         public async Task<IActionResult> UploadMedia(IFormFile upload, bool randomName, string tag)
         {
+            randomName = true;
+
             try
             {
                 if (upload != null && upload.Length > 0)

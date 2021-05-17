@@ -53,8 +53,16 @@
         objs.xxx = $(selectors.xxx);
     }
 
+    function load(selector, type) {
+        if (!type) {
+            loadGalleryOne(selector);
+        }
+        else if (type === 2) {
+            loadGalleryTwo(selector);
+        }
+    }
 
-    function loadGallery(selector) {
+    function loadGalleryOne(selector) {
         var galleryElement = $(selector);
 
         var nanoGalleryJson = galleryElement.data('items');
@@ -75,7 +83,7 @@
             thumbnailDisplayOrder: 'random',
 
             thumbnailHeight: '180', thumbnailWidth: '220',
-            thumbnailAlignment: 'scaled',
+            thumbnailAlignment: 'center',
             thumbnailGutterWidth: 0, thumbnailGutterHeight: 0,
             thumbnailBorderHorizontal: 0, thumbnailBorderVertical: 0,
 
@@ -109,9 +117,66 @@
         });
     }
 
+    function loadGalleryTwo(selector) {
+        var galleryElement = $(selector);
+
+        var nanoGalleryJson = galleryElement.data('items');
+
+
+
+        galleryElement.nanogallery2({
+
+            // CONTENT SOURCE
+            items: nanoGalleryJson,
+
+            // GALLERY AND THUMBNAIL LAYOUT
+            galleryMosaic: fullGalleryMosaic,
+            galleryMosaicXS: fullGalleryMosaicXS,
+            galleryMosaicSM: fullGalleryMosaicSM,
+
+            galleryMaxRows: 1,
+            galleryDisplayMode: 'fullContent',
+            gallerySorting: 'random',
+            thumbnailDisplayOrder: 'random',
+
+            thumbnailHeight: '180', thumbnailWidth: 'auto',
+            thumbnailAlignment: 'justified',
+            thumbnailGutterWidth: 0, thumbnailGutterHeight: 0,
+            thumbnailBorderHorizontal: 0, thumbnailBorderVertical: 0,
+
+            thumbnailToolbarImage: null,
+            thumbnailToolbarAlbum: null,
+            thumbnailLabel: { display: false },
+
+            // DISPLAY ANIMATION
+            // for gallery
+            galleryDisplayTransitionDuration: 1500,
+            // for thumbnails
+            thumbnailDisplayTransition: 'scaleUp',
+            thumbnailDisplayTransitionDuration: 1200,
+            thumbnailDisplayTransitionEasing: 'easeInOutQuint',
+            thumbnailDisplayInterval: 60,
+
+
+            // THUMBNAIL HOVER ANIMATION
+            thumbnailBuildInit2: 'image_scale_1.15',
+            thumbnailHoverEffect2: 'thumbnail_scale_1.00_1.05_300|image_scale_1.15_1.00',
+            touchAnimation: true,
+            touchAutoOpenDelay: 500,
+
+            // GALLERY THEME
+            galleryTheme: {
+                thumbnail: { background: '#fff' },
+            },
+
+            // DEEP LINKING
+            locationHash: true
+        });
+    }
+
     return {
         Init: init,
-        Load: loadGallery
+        Load: load
     };
 }());
 

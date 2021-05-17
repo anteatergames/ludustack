@@ -51,5 +51,7 @@ namespace LuduStack.Application.ViewModels.Content
         public PollViewModel Poll { get; set; }
 
         public bool IsArticle { get; set; }
+
+        public string NanoGaleryJson { get; set; }
     }
 }

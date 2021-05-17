@@ -358,6 +358,11 @@ namespace LuduStack.Web.Controllers
                 var item = new NanoGalleryViewModel();
                 item.Src = mediaItem.Type == MediaType.Image ? UrlFormatter.Image(vm.UserId, ImageType.ContentImage, mediaItem.Url) : mediaItem.Url;
 
+                if (mediaItem.CreateDate != DateTime.MinValue)
+                {
+                    item.Title = SharedLocalizer["Posted on {0}", mediaItem.CreateDate.ToString()];
+                }
+
                 if (mediaItem.Type == MediaType.Image)
                 {
                     item.Srct = UrlFormatter.Image(vm.UserId, ImageType.ContentImage, mediaItem.Url);
