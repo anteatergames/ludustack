@@ -72,7 +72,7 @@ namespace LuduStack.Domain.Messaging
             CommandResult<DomainOperationVo> result = request.Result;
             int pointsEarned = 0;
 
-            if (!request.IsValid()) return request.Result;
+            if (!request.IsValid()) { return request.Result; }
 
             DomainOperationVo domainOperationPerformed;
             GiveawayParticipant participant;

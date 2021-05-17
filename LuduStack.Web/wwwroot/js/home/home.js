@@ -298,7 +298,6 @@
             //resizeWidth
         });
 
-
         postImagesDropZone.on("addedfile", function (file) {
             if (this.files.length > maxUploadFiles) {
                 this.removeFile(this.files[0]);

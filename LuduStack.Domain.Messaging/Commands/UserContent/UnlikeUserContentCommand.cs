@@ -40,7 +40,7 @@ namespace LuduStack.Domain.Messaging
 
         public async Task<CommandResult> Handle(UnlikeUserContentCommand request, CancellationToken cancellationToken)
         {
-            if (!request.IsValid()) return request.Result;
+            if (!request.IsValid()) { return request.Result; }
 
             UserContent userContent = await repository.GetById(request.Id);
             if (userContent is null)

@@ -28,7 +28,12 @@ namespace LuduStack.Domain.Core.Extensions
             }
         }
 
-        public static IEnumerable<List<T>> SplitList<T>(this List<T> locations, int nSize = 10)
+        public static IEnumerable<List<T>> SplitList<T>(this List<T> locations)
+        {
+            return SplitList(locations, 10);
+        }
+
+        public static IEnumerable<List<T>> SplitList<T>(this List<T> locations, int nSize)
         {
             for (int i = 0; i < locations.Count; i += nSize)
             {

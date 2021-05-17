@@ -1,6 +1,5 @@
 ﻿using LuduStack.Domain.Interfaces;
 using LuduStack.Domain.Interfaces.Repository;
-using LuduStack.Domain.Messaging.Queries.Game;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
 using LuduStack.Infra.CrossCutting.Messaging;
@@ -46,7 +45,7 @@ namespace LuduStack.Domain.Messaging
         {
             CommandResult result = request.Result;
 
-            if (!request.IsValid()) return request.Result;
+            if (!request.IsValid()) { return request.Result; }
 
             Game game = await gameRepository.GetById(request.Id);
 
@@ -59,9 +58,9 @@ namespace LuduStack.Domain.Messaging
                     game.Media = new List<MediaListItemVo>();
                 }
 
-                foreach (var mediaItem in request.Media)
+                foreach (MediaListItemVo mediaItem in request.Media)
                 {
-                    var alreadyExists = game.Media.FirstOrDefault(x => x.Url.Equals(mediaItem.Url)) != null;
+                    bool alreadyExists = game.Media.FirstOrDefault(x => x.Url.Equals(mediaItem.Url)) != null;
 
                     if (!alreadyExists)
                     {

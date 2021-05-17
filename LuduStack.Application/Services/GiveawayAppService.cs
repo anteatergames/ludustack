@@ -236,7 +236,6 @@ namespace LuduStack.Application.Services
                 {
                     return new OperationResultVo<string>(string.Empty, pointsEarned, "You are already participating!");
                 }
-
             }
             catch (Exception ex)
             {

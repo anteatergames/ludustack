@@ -39,7 +39,7 @@ namespace LuduStack.Domain.Messaging
         {
             CommandResult<int> result = request.Result;
 
-            if (!request.IsValid()) return request.Result;
+            if (!request.IsValid()) { return request.Result; }
 
             await gameRepository.Unfollow(request.UserId, request.Id);
 

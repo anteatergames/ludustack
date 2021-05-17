@@ -19,7 +19,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace LuduStack.Web.Controllers
@@ -349,14 +348,16 @@ namespace LuduStack.Web.Controllers
 
         private void SetNanoGallery(GameViewModel vm)
         {
-            var gallery = new List<NanoGalleryViewModel>();
+            List<NanoGalleryViewModel> gallery = new List<NanoGalleryViewModel>();
 
-            var galleryItems = vm.Media.Where(x => x.Type == MediaType.Image || x.Type == MediaType.Youtube || x.Type == MediaType.Dailymotion); // need to add Vimeo with thumbnail
+            IEnumerable<MediaListItemVo> galleryItems = vm.Media.Where(x => x.Type == MediaType.Image || x.Type == MediaType.Youtube || x.Type == MediaType.Dailymotion); // need to add Vimeo with thumbnail
 
-            foreach (var mediaItem in galleryItems)
+            foreach (MediaListItemVo mediaItem in galleryItems)
             {
-                var item = new NanoGalleryViewModel();
-                item.Src = mediaItem.Type == MediaType.Image ? UrlFormatter.Image(vm.UserId, ImageType.ContentImage, mediaItem.Url) : mediaItem.Url;
+                NanoGalleryViewModel item = new NanoGalleryViewModel
+                {
+                    Src = mediaItem.Type == MediaType.Image ? UrlFormatter.Image(vm.UserId, ImageType.ContentImage, mediaItem.Url) : mediaItem.Url
+                };
 
                 if (mediaItem.CreateDate != DateTime.MinValue)
                 {

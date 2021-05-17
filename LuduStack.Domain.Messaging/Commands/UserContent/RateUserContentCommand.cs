@@ -45,7 +45,7 @@ namespace LuduStack.Domain.Messaging
         {
             UserContentRating rating;
 
-            if (!request.IsValid()) return request.Result;
+            if (!request.IsValid()) { return request.Result; }
 
             UserContent userContent = await repository.GetById(request.Id);
             if (userContent is null)

@@ -46,7 +46,7 @@ namespace LuduStack.Domain.Messaging
         {
             CommandResult result = request.Result;
 
-            if (!request.IsValid()) return request.Result;
+            if (!request.IsValid()) { return request.Result; }
 
             if (request.UserProfile.Type == 0)
             {

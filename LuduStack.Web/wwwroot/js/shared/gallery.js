@@ -68,7 +68,6 @@
         var nanoGalleryJson = galleryElement.data('items');
 
         galleryElement.nanogallery2({
-
             // CONTENT SOURCE
             items: nanoGalleryJson,
 
@@ -100,7 +99,6 @@
             thumbnailDisplayTransitionEasing: 'easeInOutQuint',
             thumbnailDisplayInterval: 60,
 
-
             // THUMBNAIL HOVER ANIMATION
             thumbnailBuildInit2: 'image_scale_1.15',
             thumbnailHoverEffect2: 'thumbnail_scale_1.00_1.05_300|image_scale_1.15_1.00',
@@ -122,10 +120,7 @@
 
         var nanoGalleryJson = galleryElement.data('items');
 
-
-
         galleryElement.nanogallery2({
-
             // CONTENT SOURCE
             items: nanoGalleryJson,
 
@@ -156,7 +151,6 @@
             thumbnailDisplayTransitionDuration: 1200,
             thumbnailDisplayTransitionEasing: 'easeInOutQuint',
             thumbnailDisplayInterval: 60,
-
 
             // THUMBNAIL HOVER ANIMATION
             thumbnailBuildInit2: 'image_scale_1.15',

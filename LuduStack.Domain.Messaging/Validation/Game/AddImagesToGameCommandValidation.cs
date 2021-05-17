@@ -9,6 +9,7 @@ namespace LuduStack.Domain.Messaging
             ValidateId();
             ValidateMedia();
         }
+
         protected void ValidateMedia()
         {
             RuleFor(c => c.Media)

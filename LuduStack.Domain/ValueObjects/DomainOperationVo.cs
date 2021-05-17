@@ -14,7 +14,6 @@ namespace LuduStack.Domain.ValueObjects
 
     public class DomainOperationVo<T> : DomainOperationVo
     {
-
         public T Entity { get; private set; }
 
         public DomainOperationVo(DomainActionPerformed action, T entity) : base(action)

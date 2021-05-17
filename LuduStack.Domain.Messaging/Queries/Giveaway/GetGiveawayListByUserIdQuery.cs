@@ -35,7 +35,6 @@ namespace LuduStack.Domain.Messaging.Queries.Giveaway
         {
             List<GiveawayListItemVo> giveaways = giveawayRepository.GetGiveawayListByUserId(request.UserId);
 
-
             foreach (GiveawayListItemVo item in giveaways)
             {
                 giveawayDomainService.SetDates(item);

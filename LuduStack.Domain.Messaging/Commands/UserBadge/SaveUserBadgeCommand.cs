@@ -44,7 +44,7 @@ namespace LuduStack.Domain.Messaging
         {
             CommandResult result = request.Result;
 
-            if (!request.IsValid()) return request.Result;
+            if (!request.IsValid()) { return request.Result; }
 
             IQueryable<UserBadge> items = userBadgeRepository.Get(x => x.UserId == request.UserId && x.Badge == request.BadgeType);
 

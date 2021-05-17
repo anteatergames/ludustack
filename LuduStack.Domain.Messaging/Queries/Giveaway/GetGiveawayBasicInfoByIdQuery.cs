@@ -43,7 +43,6 @@ namespace LuduStack.Domain.Messaging.Queries.Giveaway
 
             giveawayDomainService.SetDates(model);
 
-
             return model;
         }
     }
