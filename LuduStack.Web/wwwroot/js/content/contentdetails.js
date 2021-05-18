@@ -25,7 +25,9 @@
 
     function bindGallery() {
         if (objs.gallery.data('hasitems') === true && objs.gallery.data('isgallery') === true) {
-            GALLERY.Load(selectors.gallery, 2);
+            setTimeout(function () {
+                GALLERY.Load(selectors.gallery, 2);
+            }, 10)
         }
     }
 

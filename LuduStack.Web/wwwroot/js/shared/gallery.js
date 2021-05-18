@@ -116,6 +116,7 @@
     }
 
     function loadGalleryTwo(selector) {
+        console.log('loadGalleryTwo');
         var galleryElement = $(selector);
 
         var nanoGalleryJson = galleryElement.data('items');
@@ -124,20 +125,12 @@
             // CONTENT SOURCE
             items: nanoGalleryJson,
 
-            // GALLERY AND THUMBNAIL LAYOUT
-            galleryMosaic: fullGalleryMosaic,
-            galleryMosaicXS: fullGalleryMosaicXS,
-            galleryMosaicSM: fullGalleryMosaicSM,
-
-            galleryMaxRows: 1,
             galleryDisplayMode: 'fullContent',
-            gallerySorting: 'random',
             thumbnailDisplayOrder: 'random',
 
-            thumbnailHeight: '180', thumbnailWidth: 'auto',
+            thumbnailHeight: '150',
+            thumbnailWidth: 'auto',
             thumbnailAlignment: 'justified',
-            thumbnailGutterWidth: 0, thumbnailGutterHeight: 0,
-            thumbnailBorderHorizontal: 0, thumbnailBorderVertical: 0,
 
             thumbnailToolbarImage: null,
             thumbnailToolbarAlbum: null,

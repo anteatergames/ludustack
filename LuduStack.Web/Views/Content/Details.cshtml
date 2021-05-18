@@ -195,7 +195,9 @@
 
         @if (Model.Media.Count > 1)
         {
-            <div class="tab-pane mediagallery" id="postgallery" data-isgallery="true" data-hasitems="@(Model.Media.Count > 0 ? "true" : "false")" data-items="@Model.NanoGaleryJson">
+            <div class="tab-pane m-3">
+                <div class="mediagallery" id="postgallery" data-isgallery="true" data-hasitems="@(Model.Media.Count > 0 ? "true" : "false")" data-items="@Model.NanoGaleryJson">
+                </div>
             </div>
         }
 
