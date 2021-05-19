@@ -111,45 +111,9 @@ namespace LuduStack.Application.Services
             {
                 FeaturedContent featuredNow = featured.FirstOrDefault(x => x.UserContentId == item.Id && x.StartDate.ToLocalTime() <= DateTime.Now.ToLocalTime() && (!x.EndDate.HasValue || (x.EndDate.HasValue && x.EndDate.Value.ToLocalTime() > DateTime.Now.ToLocalTime())));
 
-                if (featuredNow != null)
-                {
-                    item.CurrentFeatureId = featuredNow.Id;
-                }
+                SetProperties(item, featuredNow);
 
-                item.IsFeatured = item.CurrentFeatureId.HasValue;
-
-                item.AuthorName = string.IsNullOrWhiteSpace(item.AuthorName) ? Constants.UnknownSoul : item.AuthorName;
-
-                item.TitleCompliant = !string.IsNullOrWhiteSpace(item.Title) && item.Title.Length <= 30;
-
-                item.TitleLength = string.IsNullOrWhiteSpace(item.Title) ? 0 : item.Title.Length;
-
-                item.IntroCompliant = !string.IsNullOrWhiteSpace(item.Introduction) && item.Introduction.Length <= 120;
-
-                item.IntroLength = string.IsNullOrWhiteSpace(item.Introduction) ? 0 : item.Introduction.Length;
-
-                item.ContentCompliant = !string.IsNullOrWhiteSpace(item.Content) && item.Content.Length >= 250;
-
-                item.ContentLength = string.IsNullOrWhiteSpace(item.Content) ? 0 : item.Content.Length;
-
-                item.IsArticle = !string.IsNullOrWhiteSpace(item.Title) && !string.IsNullOrWhiteSpace(item.Introduction);
-
-                item.HasFeaturedImage = !string.IsNullOrWhiteSpace(item.FeaturedImage) && !item.FeaturedImage.Equals(Constants.DefaultFeaturedImage);
-
-                if (item.TitleCompliant)
-                {
-                    item.Score += 2;
-                }
-
-                if (item.IntroCompliant)
-                {
-                    item.Score += 2;
-                }
-
-                if (item.ContentCompliant)
-                {
-                    item.Score += 1;
-                }
+                CalculateScore(item);
             }
 
             featurable = featurable.Where(x => x.HasFeaturedImage).ToList();
@@ -193,6 +157,52 @@ namespace LuduStack.Application.Services
             catch (Exception ex)
             {
                 return new OperationResultVo(ex.Message);
+            }
+        }
+
+        private static void SetProperties(UserContentToBeFeaturedViewModel item, FeaturedContent featuredNow)
+        {
+            if (featuredNow != null)
+            {
+                item.CurrentFeatureId = featuredNow.Id;
+            }
+
+            item.IsFeatured = item.CurrentFeatureId.HasValue;
+
+            item.AuthorName = string.IsNullOrWhiteSpace(item.AuthorName) ? Constants.UnknownSoul : item.AuthorName;
+
+            item.TitleCompliant = !string.IsNullOrWhiteSpace(item.Title) && item.Title.Length <= 30;
+
+            item.TitleLength = string.IsNullOrWhiteSpace(item.Title) ? 0 : item.Title.Length;
+
+            item.IntroCompliant = !string.IsNullOrWhiteSpace(item.Introduction) && item.Introduction.Length <= 120;
+
+            item.IntroLength = string.IsNullOrWhiteSpace(item.Introduction) ? 0 : item.Introduction.Length;
+
+            item.ContentCompliant = !string.IsNullOrWhiteSpace(item.Content) && item.Content.Length >= 250;
+
+            item.ContentLength = string.IsNullOrWhiteSpace(item.Content) ? 0 : item.Content.Length;
+
+            item.IsArticle = !string.IsNullOrWhiteSpace(item.Title) && !string.IsNullOrWhiteSpace(item.Introduction);
+
+            item.HasFeaturedImage = !string.IsNullOrWhiteSpace(item.FeaturedImage) && !item.FeaturedImage.Equals(Constants.DefaultFeaturedImage);
+        }
+
+        private static void CalculateScore(UserContentToBeFeaturedViewModel item)
+        {
+            if (item.TitleCompliant)
+            {
+                item.Score += 2;
+            }
+
+            if (item.IntroCompliant)
+            {
+                item.Score += 2;
+            }
+
+            if (item.ContentCompliant)
+            {
+                item.Score += 1;
             }
         }
     }

@@ -30,13 +30,11 @@ namespace LuduStack.Domain.Messaging
 
     public class AddImagesToGameCommandHandler : CommandHandler, IRequestHandler<AddImagesToGameCommand, CommandResult>
     {
-        private readonly IMediatorHandler mediator;
         private readonly IUnitOfWork unitOfWork;
         private readonly IGameRepository gameRepository;
 
-        public AddImagesToGameCommandHandler(IMediatorHandler mediator, IUnitOfWork unitOfWork, IGameRepository gameRepository)
+        public AddImagesToGameCommandHandler(IUnitOfWork unitOfWork, IGameRepository gameRepository)
         {
-            this.mediator = mediator;
             this.unitOfWork = unitOfWork;
             this.gameRepository = gameRepository;
         }

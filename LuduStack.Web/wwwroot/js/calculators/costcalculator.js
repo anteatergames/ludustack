@@ -257,7 +257,7 @@
 
     function formatTableText(priceValue, timeValue, quantity) {
         var multiplier = priceValue * timeValue;
-        return quantity === 0 || priceValue === 0 ? 0 : `(x${multiplier}) ${multiplier * quantity}`
+        return quantity === 0 || priceValue === 0 ? '0' : `(x${multiplier}) ${multiplier * quantity}`;
     }
 
     function setRates() {

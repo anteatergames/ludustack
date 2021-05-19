@@ -90,38 +90,13 @@ namespace LuduStack.Domain.Messaging
             }
             else
             {
-                participant = new GiveawayParticipant
-                {
-                    Email = request.Email,
-                    GdprConsent = request.GdprConsent,
-                    WantNotifications = request.WantNotifications,
-                };
-
-                participant.Entries.Add(new GiveawayEntry
-                {
-                    Date = DateTime.Now,
-                    Type = GiveawayEntryType.LoginOrEmail,
-                    Points = 1
-                });
+                participant = InitializeParticipant(request);
 
                 participant.ReferralCode = request.ReferralCode;
 
                 giveawayRepository.AddParticipant(request.Id, participant);
 
-                if (!string.IsNullOrWhiteSpace(request.Referrer))
-                {
-                    GiveawayParticipant referrerParticipant = giveawayRepository.GetParticipantByReferralCode(request.Id, request.Referrer);
-                    if (referrerParticipant != null)
-                    {
-                        referrerParticipant.Entries.Add(new GiveawayEntry
-                        {
-                            Type = request.EntryType ?? GiveawayEntryType.ReferralCode,
-                            Points = 1
-                        });
-
-                        giveawayRepository.UpdateParticipant(request.Id, referrerParticipant);
-                    }
-                }
+                CheckReferrer(request);
 
                 domainOperationPerformed = new DomainOperationVo(DomainActionPerformed.Create);
             }
@@ -130,8 +105,48 @@ namespace LuduStack.Domain.Messaging
             result.PointsEarned = pointsEarned;
             result.Result = domainOperationPerformed;
 
-            // ------------------------
+            await SetShortUrl(request, result, domainOperationPerformed);
 
+            return result;
+        }
+
+        private static GiveawayParticipant InitializeParticipant(AddParticipantCommand request)
+        {
+            GiveawayParticipant participant = new GiveawayParticipant
+            {
+                Email = request.Email,
+                GdprConsent = request.GdprConsent,
+                WantNotifications = request.WantNotifications,
+            };
+            participant.Entries.Add(new GiveawayEntry
+            {
+                Date = DateTime.Now,
+                Type = GiveawayEntryType.LoginOrEmail,
+                Points = 1
+            });
+            return participant;
+        }
+
+        private void CheckReferrer(AddParticipantCommand request)
+        {
+            if (!string.IsNullOrWhiteSpace(request.Referrer))
+            {
+                GiveawayParticipant referrerParticipant = giveawayRepository.GetParticipantByReferralCode(request.Id, request.Referrer);
+                if (referrerParticipant != null)
+                {
+                    referrerParticipant.Entries.Add(new GiveawayEntry
+                    {
+                        Type = request.EntryType ?? GiveawayEntryType.ReferralCode,
+                        Points = 1
+                    });
+
+                    giveawayRepository.UpdateParticipant(request.Id, referrerParticipant);
+                }
+            }
+        }
+
+        private async Task SetShortUrl(AddParticipantCommand request, CommandResult<DomainOperationVo> result, DomainOperationVo domainOperationPerformed)
+        {
             if (domainOperationPerformed.Action == DomainActionPerformed.Create)
             {
                 string urlReferral = string.Format("{0}?referralCode={1}", request.UrlReferralBase, request.ReferralCode);
@@ -159,8 +174,6 @@ namespace LuduStack.Domain.Messaging
                     }
                 }
             }
-
-            return result;
         }
     }
 }
