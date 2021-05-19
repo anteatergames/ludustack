@@ -34,7 +34,7 @@ namespace LuduStack.Domain.Messaging
 
         public async Task<CommandResult> Handle(DeleteJobPositionCommand request, CancellationToken cancellationToken)
         {
-            if (!request.IsValid()) return request.Result;
+            if (!request.IsValid()) { return request.Result; }
 
             Models.JobPosition jobPosition = await jobPositionRepository.GetById(request.Id);
 

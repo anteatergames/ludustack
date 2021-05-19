@@ -18,9 +18,9 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
         {
         }
 
-        public Task<GiveawayBasicInfo> GetBasicGiveawayById(Guid id)
+        public Task<GiveawayBasicInfoVo> GetBasicGiveawayById(Guid id)
         {
-            IQueryable<GiveawayBasicInfo> obj = DbSet.AsQueryable().Where(x => x.Id == id).Select(x => new GiveawayBasicInfo
+            IQueryable<GiveawayBasicInfoVo> obj = DbSet.AsQueryable().Where(x => x.Id == id).Select(x => new GiveawayBasicInfoVo
             {
                 Id = x.Id,
                 UserId = x.UserId,

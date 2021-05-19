@@ -57,6 +57,8 @@ namespace LuduStack.Application.ViewModels.Game
 
         public List<GameCharacteristicVo> Characteristics { get; set; }
 
+        public List<MediaListItemVo> Media { get; set; }
+
         #region Counters
 
         public int FollowerCount { get; set; }
@@ -66,6 +68,8 @@ namespace LuduStack.Application.ViewModels.Game
         public Guid LocalizationId { get; set; }
 
         #endregion Counters
+
+        public string NanoGaleryJson { get; set; }
 
         public GameViewModel()
         {

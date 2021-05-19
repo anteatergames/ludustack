@@ -61,7 +61,7 @@ namespace LuduStack.Domain.Messaging
         {
             CommandResult result = request.Result;
 
-            if (!request.IsValid()) return request.Result;
+            if (!request.IsValid()) { return request.Result; }
 
             string youtubePattern = @"(https?\:\/\/)?(www\.youtube\.com|youtu\.?be)\/.+";
 
@@ -77,6 +77,8 @@ namespace LuduStack.Domain.Messaging
 
             if (request.UserContent.Id == Guid.Empty)
             {
+                request.UserContent.UserId = request.UserId;
+
                 await userContentRepository.Add(request.UserContent);
 
                 PlatformAction action = request.IsComplex ? PlatformAction.ComplexPost : PlatformAction.SimplePost;
@@ -103,6 +105,17 @@ namespace LuduStack.Domain.Messaging
                 }
 
                 result.PointsEarned += savePollResult.PointsEarned;
+            }
+
+            if (request.UserContent.GameId.HasValue)
+            {
+                CommandResult addImagesToGameResult = await mediator.SendCommand(new AddImagesToGameCommand(request.UserContent.GameId.Value, request.UserContent.Media));
+
+                if (!addImagesToGameResult.Validation.IsValid)
+                {
+                    string savePollMessage = result.Validation.Errors.FirstOrDefault().ErrorMessage;
+                    result.Validation.Errors.Add(new ValidationFailure("Media", savePollMessage));
+                }
             }
 
             return result;

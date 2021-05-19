@@ -45,7 +45,7 @@ namespace LuduStack.Domain.Messaging
 
         public async Task<CommandResult> Handle(SavePlansCommand request, CancellationToken cancellationToken)
         {
-            if (!request.IsValid()) return request.Result;
+            if (!request.IsValid()) { return request.Result; }
 
             List<StudyPlan> existingPlans = await studyCourseRepository.GetPlans(request.Id);
 

@@ -34,7 +34,7 @@ namespace LuduStack.Domain.Messaging
 
         public async Task<CommandResult> Handle(DeleteGiveawayCommand request, CancellationToken cancellationToken)
         {
-            if (!request.IsValid()) return request.Result;
+            if (!request.IsValid()) { return request.Result; }
 
             Models.Giveaway giveaway = await giveawayRepository.GetById(request.Id);
 

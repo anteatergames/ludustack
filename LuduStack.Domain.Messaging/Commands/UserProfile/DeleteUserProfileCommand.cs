@@ -34,7 +34,7 @@ namespace LuduStack.Domain.Messaging
 
         public async Task<CommandResult> Handle(DeleteUserProfileCommand request, CancellationToken cancellationToken)
         {
-            if (!request.IsValid()) return request.Result;
+            if (!request.IsValid()) { return request.Result; }
 
             Models.UserProfile userProfile = await userProfileRepository.GetById(request.Id);
 

@@ -58,13 +58,13 @@
             @Model.Title
         </h1>
 
-        @if (Model.Images.Count > 1)
+        @if (Model.Media.Count > 1)
         {
             <div class="col-12 px-0 pt-1 text-center">
                 <div class="btn-group btn-group-sm btn-group-toggle" role="group" aria-label="Basic example">
-                    @for (int i = 0; i < Model.Images.Count; i++)
+                    @for (int i = 0; i < Model.Media.Count; i++)
                     {
-                        var image = Model.Images.ElementAt(i);
+                        var image = Model.Media.ElementAt(i);
 
                         <button class="btn btn-outline-info btn-changelanguage" data-target="@(String.Format("img-{0}", (image.Language ?? SupportedLanguage.English).ToString().ToLower()))">@SharedLocalizer[(image.Language ?? SupportedLanguage.English).ToDisplayName()]</button>
                     }
@@ -72,12 +72,12 @@
             </div>
         }
 
-        @for (int i = 0; i < Model.Images.Count; i++)
+        @for (int i = 0; i < Model.Media.Count; i++)
         {
-            var image = Model.Images.ElementAt(i);
+            var image = Model.Media.ElementAt(i);
 
-            <div class="square-bottom text-center overflow-hidden px-0 img-multilanguage@(image.Image.Equals(Model.FeaturedImage) ? string.Empty : " d-none") @(String.Format("img-{0}", image.Language.ToString().ToLower())) @(Model.Images.Count == 1 ? string.Empty : "square-top")">
-                <img data-src="@image.Image" src="@image.ImageLquip" class="img-fluid lazyload blur-up" style="width:100%" alt="@(String.IsNullOrWhiteSpace(Model.Title) ? Model.Content : Model.Title)" />
+            <div class="square-bottom text-center overflow-hidden px-0 img-multilanguage@(image.Url.Equals(Model.FeaturedImage) ? string.Empty : " d-none") @(String.Format("img-{0}", image.Language.ToString().ToLower())) @(Model.Media.Count == 1 ? string.Empty : "square-top")">
+                <img data-src="@image.Url" src="@image.UrlLquip" class="img-fluid lazyload blur-up" style="width:100%" alt="@(String.IsNullOrWhiteSpace(Model.Title) ? Model.Content : Model.Title)" />
             </div>
         }
 

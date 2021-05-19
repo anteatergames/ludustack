@@ -20,6 +20,8 @@ namespace LuduStack.Web.Controllers
         private readonly IHttpContextAccessor httpContextAccessor;
         private readonly ILogger logger;
 
+        private readonly string datetimeFormat = "yyyyMMddHHmmssfff";
+
         public StorageController(IHttpContextAccessor httpContextAccessor
             , ILogger<StorageController> logger)
         {
@@ -202,7 +204,7 @@ namespace LuduStack.Web.Controllers
 
                         string extension = GetFileExtension(image);
 
-                        string filename = DateTime.Now.ToString("yyyyMMddHHmmss");
+                        string filename = DateTime.Now.ToString(datetimeFormat);
 
                         if (type == ImageType.GameCover || type == ImageType.GameThumbnail)
                         {
@@ -240,7 +242,7 @@ namespace LuduStack.Web.Controllers
 
         [HttpPost]
         [Route("uploadmedia")]
-        public async Task<IActionResult> UploadMedia(IFormFile upload, bool randomName, string tag)
+        public async Task<IActionResult> UploadMedia(IFormFile upload, string tag)
         {
             try
             {
@@ -254,14 +256,9 @@ namespace LuduStack.Web.Controllers
 
                         string extension = GetFileExtension(upload);
 
-                        string filename = DateTime.Now.ToString("yyyyMMddHHmmss");
+                        Random rand = new Random(Guid.NewGuid().ToString().GetHashCode());
 
-                        if (randomName)
-                        {
-                            Random rand = new Random(Guid.NewGuid().ToString().GetHashCode());
-
-                            filename += "-" + rand.Next().ToString();
-                        }
+                        string filename = string.Format("{0}-{1}", DateTime.Now.ToString(datetimeFormat), rand.Next().ToString());
 
                         UploadResultVo uploadResult = await base.UploadContentMedia(CurrentUserId, filename, extension, fileBytes, EnvName, tag);
 
@@ -293,7 +290,7 @@ namespace LuduStack.Web.Controllers
 
                         string extension = GetFileExtension(upload);
 
-                        string filename = DateTime.Now.ToString("yyyyMMddHHmmss");
+                        string filename = DateTime.Now.ToString(datetimeFormat);
 
                         UploadResultVo uploadResult = await base.UploadContentMedia(CurrentUserId, filename, extension, fileBytes, EnvName);
 
@@ -328,7 +325,7 @@ namespace LuduStack.Web.Controllers
 
                         string extension = GetFileExtension(featuredimage);
 
-                        string filename = DateTime.Now.ToString("yyyyMMddHHmmss");
+                        string filename = DateTime.Now.ToString(datetimeFormat);
 
                         if (userId == Guid.Empty)
                         {

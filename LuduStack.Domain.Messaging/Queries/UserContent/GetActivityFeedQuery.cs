@@ -59,35 +59,7 @@ namespace LuduStack.Domain.Messaging.Queries.UserContent
 
                 List<Guid> featuredIds = featuredContentRepository.Get(x => x.Active).Select(x => x.UserContentId).ToList();
 
-                if (featuredIds.Any())
-                {
-                    allModels = allModels.Where(x => !featuredIds.Contains(x.Id));
-                }
-
-                if (request.ArticlesOnly.HasValue && request.ArticlesOnly.Value)
-                {
-                    allModels = allModels.Where(x => !string.IsNullOrEmpty(x.Title) && !string.IsNullOrEmpty(x.Introduction) && !string.IsNullOrEmpty(x.FeaturedImage) && x.Content.Length > 50);
-                }
-
-                if (request.UserId.HasValue && request.UserId != Guid.Empty)
-                {
-                    allModels = allModels.Where(x => x.UserId != Guid.Empty && x.UserId == request.UserId);
-                }
-
-                if (request.GameId.HasValue && request.GameId != Guid.Empty)
-                {
-                    allModels = allModels.Where(x => x.GameId != Guid.Empty && x.GameId == request.GameId);
-                }
-
-                if (request.Languages != null && request.Languages.Any())
-                {
-                    allModels = allModels.Where(x => x.Language == 0 || request.Languages.Contains(x.Language));
-                }
-
-                if (request.OldestDate.HasValue)
-                {
-                    allModels = allModels.Where(x => x.CreateDate <= request.OldestDate && x.Id != request.OldestId);
-                }
+                allModels = Filter(allModels, request, featuredIds);
             }
 
             IOrderedQueryable<Models.UserContent> orderedList = allModels.OrderByDescending(x => x.PublishDate);
@@ -95,6 +67,41 @@ namespace LuduStack.Domain.Messaging.Queries.UserContent
             List<Models.UserContent> finalList = orderedList.Take(request.Count).ToList();
 
             return Task.FromResult(finalList);
+        }
+
+        private static IQueryable<Models.UserContent> Filter(IQueryable<Models.UserContent> allModels, GetActivityFeedQuery request, List<Guid> featuredIds)
+        {
+            if (featuredIds.Any())
+            {
+                allModels = allModels.Where(x => !featuredIds.Contains(x.Id));
+            }
+
+            if (request.ArticlesOnly.HasValue && request.ArticlesOnly.Value)
+            {
+                allModels = allModels.Where(x => !string.IsNullOrEmpty(x.Title) && !string.IsNullOrEmpty(x.Introduction) && !string.IsNullOrEmpty(x.FeaturedImage) && x.Content.Length > 50);
+            }
+
+            if (request.UserId.HasValue && request.UserId != Guid.Empty)
+            {
+                allModels = allModels.Where(x => x.UserId != Guid.Empty && x.UserId == request.UserId);
+            }
+
+            if (request.GameId.HasValue && request.GameId != Guid.Empty)
+            {
+                allModels = allModels.Where(x => x.GameId != Guid.Empty && x.GameId == request.GameId);
+            }
+
+            if (request.Languages != null && request.Languages.Any())
+            {
+                allModels = allModels.Where(x => x.Language == 0 || request.Languages.Contains(x.Language));
+            }
+
+            if (request.OldestDate.HasValue)
+            {
+                allModels = allModels.Where(x => x.CreateDate <= request.OldestDate && x.Id != request.OldestId);
+            }
+
+            return allModels;
         }
     }
 }

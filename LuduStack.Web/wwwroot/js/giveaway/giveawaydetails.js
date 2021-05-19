@@ -67,7 +67,9 @@
                     callback();
                 }
 
-                MAINMODULE.Ajax.HandleUrlResponse(response);
+                if (response.url) {
+                    window.location = response.url;
+                }
             }
             else {
                 if (response.message) {

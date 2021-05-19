@@ -114,16 +114,16 @@ namespace LuduStack.Application.Services
                     Language = SupportedLanguage.English
                 };
 
-                newVm.Images.Add(new MediaListItemVo
+                newVm.Media.Add(new MediaListItemVo
                 {
                     Language = newVm.Language,
-                    Image = Constants.DefaultComicStripPlaceholder
+                    Url = Constants.DefaultComicStripPlaceholder
                 });
 
-                newVm.Images.Add(new MediaListItemVo
+                newVm.Media.Add(new MediaListItemVo
                 {
                     Language = SupportedLanguage.Portuguese,
-                    Image = Constants.DefaultComicStripPlaceholder
+                    Url = Constants.DefaultComicStripPlaceholder
                 });
 
                 return new OperationResultVo<ComicStripViewModel>(newVm);
@@ -238,8 +238,8 @@ namespace LuduStack.Application.Services
 
         private void FormatImagesToSave(UserContent model)
         {
-            IEnumerable<MediaListItemVo> except = model.Images.Where(x => x.Image.Contains(Constants.DefaultComicStripPlaceholder) || Constants.DefaultComicStripPlaceholder.Contains(x.Image));
-            model.Images = model.Images.Except(except).ToList();
+            IEnumerable<MediaListItemVo> except = model.Media.Where(x => x.Url.Contains(Constants.DefaultComicStripPlaceholder) || Constants.DefaultComicStripPlaceholder.Contains(x.Url));
+            model.Media = model.Media.Except(except).ToList();
         }
 
         private void SetImagesToShow(ComicStripViewModel vm, bool editing)
@@ -247,30 +247,30 @@ namespace LuduStack.Application.Services
             vm.FeaturedImage = ContentHelper.FormatFeaturedImageUrl(vm.UserId, vm.FeaturedImage, ImageRenderType.Full);
             vm.FeaturedImageLquip = ContentHelper.FormatFeaturedImageUrl(vm.UserId, vm.FeaturedImage, ImageRenderType.LowQuality);
 
-            foreach (MediaListItemVo image in vm.Images)
+            foreach (MediaListItemVo image in vm.Media)
             {
-                image.Image = ContentHelper.FormatFeaturedImageUrl(vm.UserId, image.Image, ImageRenderType.Full);
-                image.ImageResponsive = ContentHelper.FormatFeaturedImageUrl(vm.UserId, image.Image, ImageRenderType.Responsive);
-                image.ImageLquip = ContentHelper.FormatFeaturedImageUrl(vm.UserId, image.Image, ImageRenderType.LowQuality);
+                image.Url = ContentHelper.FormatFeaturedImageUrl(vm.UserId, image.Url, ImageRenderType.Full);
+                image.UrlResponsive = ContentHelper.FormatFeaturedImageUrl(vm.UserId, image.Url, ImageRenderType.Responsive);
+                image.UrlLquip = ContentHelper.FormatFeaturedImageUrl(vm.UserId, image.Url, ImageRenderType.LowQuality);
             }
 
             if (editing)
             {
-                if (!vm.Images.Any(x => x.Language == SupportedLanguage.English))
+                if (!vm.Media.Any(x => x.Language == SupportedLanguage.English))
                 {
-                    vm.Images.Add(new MediaListItemVo
+                    vm.Media.Add(new MediaListItemVo
                     {
                         Language = SupportedLanguage.English,
-                        Image = Constants.DefaultComicStripPlaceholder
+                        Url = Constants.DefaultComicStripPlaceholder
                     });
                 }
 
-                if (!vm.Images.Any(x => x.Language == SupportedLanguage.Portuguese))
+                if (!vm.Media.Any(x => x.Language == SupportedLanguage.Portuguese))
                 {
-                    vm.Images.Add(new MediaListItemVo
+                    vm.Media.Add(new MediaListItemVo
                     {
                         Language = SupportedLanguage.Portuguese,
-                        Image = Constants.DefaultComicStripPlaceholder
+                        Url = Constants.DefaultComicStripPlaceholder
                     });
                 }
             }
@@ -278,13 +278,13 @@ namespace LuduStack.Application.Services
             {
                 string selectedFeaturedImage = vm.FeaturedImage;
 
-                if (vm.Images.Any(x => x.Language == vm.Language))
+                if (vm.Media.Any(x => x.Language == vm.Language))
                 {
-                    selectedFeaturedImage = vm.Images.FirstOrDefault(x => x.Language == vm.Language)?.Image;
+                    selectedFeaturedImage = vm.Media.FirstOrDefault(x => x.Language == vm.Language)?.Url;
                 }
-                else if (vm.Images.Any())
+                else if (vm.Media.Any())
                 {
-                    selectedFeaturedImage = vm.Images.FirstOrDefault()?.Image;
+                    selectedFeaturedImage = vm.Media.FirstOrDefault()?.Url;
                 }
 
                 vm.FeaturedImage = ContentHelper.FormatFeaturedImageUrl(vm.UserId, selectedFeaturedImage, ImageRenderType.Full);
@@ -292,7 +292,7 @@ namespace LuduStack.Application.Services
                 vm.FeaturedImageLquip = ContentHelper.FormatFeaturedImageUrl(vm.UserId, selectedFeaturedImage, ImageRenderType.LowQuality);
             }
 
-            vm.Images = vm.Images.OrderBy(x => x.Language).ToList();
+            vm.Media = vm.Media.OrderBy(x => x.Language).ToList();
         }
 
         private async Task LoadAuthenticatedData(Guid currentUserId, UserGeneratedCommentBaseViewModel item)

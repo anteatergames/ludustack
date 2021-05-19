@@ -53,7 +53,7 @@ namespace LuduStack.Domain.Messaging
             CommandResult result = request.Result;
             Team newTeam = null;
 
-            if (!request.IsValid()) return request.Result;
+            if (!request.IsValid()) { return request.Result; }
 
             if (request.CreateTeam)
             {

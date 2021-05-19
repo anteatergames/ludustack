@@ -39,7 +39,7 @@ namespace LuduStack.Domain.Messaging
 
         public async Task<CommandResult> Handle(DeleteTeamCommand request, CancellationToken cancellationToken)
         {
-            if (!request.IsValid()) return request.Result;
+            if (!request.IsValid()) { return request.Result; }
 
             Models.Team team = await teamRepository.GetById(request.Id);
 

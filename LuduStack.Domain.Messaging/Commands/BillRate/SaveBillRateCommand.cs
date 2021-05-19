@@ -82,7 +82,7 @@ namespace LuduStack.Domain.Messaging
         {
             CommandResult<Guid> result = request.Result;
 
-            if (!request.IsValid()) return request.Result;
+            if (!request.IsValid()) { return request.Result; }
 
             BillRate billRate;
 

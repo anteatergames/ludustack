@@ -35,7 +35,7 @@ namespace LuduStack.Domain.Messaging
 
         public async Task<CommandResult> Handle(EnrollCourseCommand request, CancellationToken cancellationToken)
         {
-            if (!request.IsValid()) return request.Result;
+            if (!request.IsValid()) { return request.Result; }
 
             StudyCourse course = await studyCourseRepository.GetById(request.Id);
             if (course is null)

@@ -46,6 +46,8 @@ namespace LuduStack.Domain.Models
 
         public List<GameCharacteristicVo> Characteristics { get; set; }
 
+        public List<MediaListItemVo> Media { get; set; }
+
         public Game()
         {
             ExternalLinks = new List<ExternalLinkVo>();

@@ -100,8 +100,16 @@ namespace LuduStack.Application.Services
             {
                 UserContent model = await mediator.Query<GetUserContentByIdQuery, UserContent>(new GetUserContentByIdQuery(id));
 
-                List<Guid> finalUserIdList = model.Comments.Select(y => y.UserId).ToList();
-                finalUserIdList.Add(model.UserId);
+                List<Guid> finalUserIdList = new List<Guid>
+                {
+                    model.UserId
+                };
+
+                List<Guid> commentIds = model.Comments?.Select(y => y.UserId).ToList();
+                if (commentIds != null)
+                {
+                    finalUserIdList.AddRange(commentIds);
+                }
 
                 IEnumerable<UserProfileEssentialVo> userProfiles = await mediator.Query<GetBasicUserProfileDataByUserIdsQuery, IEnumerable<UserProfileEssentialVo>>(new GetBasicUserProfileDataByUserIdsQuery(finalUserIdList));
 
@@ -173,8 +181,6 @@ namespace LuduStack.Application.Services
                 {
                     return new OperationResultVo<Guid>("Calm down! You cannot post the same content twice in a row.");
                 }
-
-                await SetAuthorDetails(currentUserId, viewModel);
 
                 UserContent existing = await mediator.Query<GetUserContentByIdQuery, UserContent>(new GetUserContentByIdQuery(viewModel.Id));
                 if (existing != null)
@@ -492,13 +498,13 @@ namespace LuduStack.Application.Services
 
         private static void SetFeaturedMedia(UserContentViewModel item)
         {
-            if (string.IsNullOrWhiteSpace(item.FeaturedImage) && item.Images.Any(x => x.Language == item.Language))
+            if (string.IsNullOrWhiteSpace(item.FeaturedImage) && item.Media.Any(x => x.Language == item.Language))
             {
-                item.FeaturedImage = item.Images.FirstOrDefault(x => x.Language == item.Language)?.Image;
+                item.FeaturedImage = item.Media.FirstOrDefault(x => x.Language == item.Language)?.Url;
             }
-            else if (string.IsNullOrWhiteSpace(item.FeaturedImage) && item.Images.Any())
+            else if (string.IsNullOrWhiteSpace(item.FeaturedImage) && item.Media.Any())
             {
-                item.FeaturedImage = item.Images.FirstOrDefault()?.Image;
+                item.FeaturedImage = item.Media.FirstOrDefault()?.Url;
             }
 
             item.FeaturedMediaType = ContentHelper.GetMediaType(item.FeaturedImage);

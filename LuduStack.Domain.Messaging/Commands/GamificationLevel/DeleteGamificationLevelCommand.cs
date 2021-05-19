@@ -34,7 +34,7 @@ namespace LuduStack.Domain.Messaging
 
         public async Task<CommandResult> Handle(DeleteGamificationLevelCommand request, CancellationToken cancellationToken)
         {
-            if (!request.IsValid()) return request.Result;
+            if (!request.IsValid()) { return request.Result; }
 
             Models.GamificationLevel gamificationLevel = await gamificationLevelRepository.GetById(request.Id);
 

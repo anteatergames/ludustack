@@ -44,11 +44,11 @@ namespace LuduStack.Web.Areas.Tools.Controllers
 
         [Authorize]
         [Route("tools/giveaway/listbyme")]
-        public PartialViewResult ListByMe()
+        public async Task<PartialViewResult> ListByMe()
         {
             List<GiveawayListItemVo> model;
 
-            OperationResultVo serviceResult = giveawayAppService.GetGiveawaysByMe(CurrentUserId);
+            OperationResultVo serviceResult = await giveawayAppService.GetGiveawaysByMe(CurrentUserId);
 
             if (serviceResult.Success)
             {
@@ -181,11 +181,11 @@ namespace LuduStack.Web.Areas.Tools.Controllers
 
         [Authorize]
         [HttpPost("tools/giveaway/{giveawayId:guid}/duplicate")]
-        public IActionResult Duplicate(Guid giveawayId, bool edit)
+        public async Task<IActionResult> Duplicate(Guid giveawayId, bool edit)
         {
             try
             {
-                OperationResultVo duplicateResult = giveawayAppService.DuplicateGiveaway(CurrentUserId, giveawayId);
+                OperationResultVo duplicateResult = await giveawayAppService.DuplicateGiveaway(CurrentUserId, giveawayId);
 
                 if (duplicateResult.Success)
                 {
@@ -248,7 +248,7 @@ namespace LuduStack.Web.Areas.Tools.Controllers
 
                 if (!string.IsNullOrWhiteSpace(sessionEmail) && castRestult.Value.Status != GiveawayStatus.Ended)
                 {
-                    OperationResultVo checkParticipant = giveawayAppService.CheckParticipant(CurrentUserId, id, sessionEmail);
+                    OperationResultVo checkParticipant = await giveawayAppService.CheckParticipant(CurrentUserId, id, sessionEmail);
 
                     if (checkParticipant.Success)
                     {
@@ -340,11 +340,11 @@ namespace LuduStack.Web.Areas.Tools.Controllers
         }
 
         [Route("giveaway/{id:guid}/youarein")]
-        public IActionResult YouAreIn(Guid id)
+        public async Task<IActionResult> YouAreIn(Guid id)
         {
             string sessionEmail = GetSessionValue(SessionValues.Email);
 
-            OperationResultVo result = giveawayAppService.GetGiveawayParticipantInfo(CurrentUserId, id, sessionEmail);
+            OperationResultVo result = await giveawayAppService.GetGiveawayParticipantInfo(CurrentUserId, id, sessionEmail);
 
             if (result.Success)
             {

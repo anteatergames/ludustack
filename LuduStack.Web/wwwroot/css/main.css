@@ -50,7 +50,7 @@ select.form-control {
 }
 
 .commenttextarea, .posttextarea {
-    border-radius: 10px !important;
+    border-radius: var(--border-radius);
     overflow: hidden;
     resize: none;
     white-space: pre-wrap;
@@ -315,3 +315,66 @@ img.grayscale {
         background-position: 468px 0;
     }
 }
+
+/*.mediagallery .flex-column {
+    max-width: unset;
+}
+mediagallery
+
+@media (min-width: 576px) {
+    .mediagallery .flex-column {
+        max-width: 250px;
+    }
+}
+
+@media (min-width: 768px) {
+    .mediagallery .flex-column {
+        max-width: 172px;
+    }
+}
+
+@media (min-width: 992px) {
+    .mediagallery .flex-column {
+        max-width: 250px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .mediagallery .flex-column {
+        max-width: 193px;
+    }
+}
+
+.mediagallery img {
+    margin: 5px;
+}
+
+.mediagallery .scale {
+    transform: scaleY(1.05);
+    padding-top: 5px;
+}*/
+
+.mediagallery div {
+    border-radius: 0;
+}
+
+.dropzone {
+    padding: 10px !important;
+    text-align: center !important;
+}
+
+    .dropzone .dz-preview .dz-image {
+        border-radius: inherit !important;
+    }
+
+    .dropzone .dz-preview.dz-image-preview .dz-progress {
+        visibility: hidden;
+    }
+
+    .dropzone .dz-preview .dz-progress {
+        margin-top: 25px !important;
+    }
+
+    .dropzone .dz-preview {
+        margin: 4px !important;
+    }

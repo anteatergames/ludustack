@@ -257,7 +257,7 @@
 
     function formatTableText(priceValue, timeValue, quantity) {
         var multiplier = priceValue * timeValue;
-        return quantity === 0 || priceValue === 0 ? 0 : `(x${multiplier}) ${multiplier * quantity}`
+        return quantity === 0 || priceValue === 0 ? '0' : `(x${multiplier}) ${multiplier * quantity}`;
     }
 
     function setRates() {
@@ -290,7 +290,6 @@
             objs.txtCharacter2dAverage.text(formatTableText(character2dRates[0].price.average, character2dRates[0].time.average, character2dCount));
             objs.txtCharacter2dMaximum.text(formatTableText(character2dRates[0].price.maximum, character2dRates[0].time.maximum, character2dCount));
         }
-
 
         var asset2dRates = rates.visualRates.filter(x => x.gameElement === objs.asset2dCount.data('gameelement') && x.artStyle === selectedArtStyle);
 
@@ -336,7 +335,6 @@
             objs.txtCharacter3dAverage.text(formatTableText(character3dRates[0].price.average, character3dRates[0].time.average, character3dCount));
             objs.txtCharacter3dMaximum.text(formatTableText(character3dRates[0].price.maximum, character3dRates[0].time.maximum, character3dCount));
         }
-
 
         var asset3dRates = rates.visualRates.filter(x => x.gameElement === objs.asset3dCount.data('gameelement') && x.artStyle === selectedArtStyle);
 

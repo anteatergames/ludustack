@@ -22,7 +22,7 @@ namespace LuduStack.Application.ViewModels.Content
         public MediaType? FeaturedMediaType { get; set; }
 
         [Display(Name = "Images")]
-        public List<MediaListItemVo> Images { get; set; }
+        public List<MediaListItemVo> Media { get; set; }
 
         [StringLength(128)]
         [Display(Name = "Title")]
@@ -51,5 +51,7 @@ namespace LuduStack.Application.ViewModels.Content
         public PollViewModel Poll { get; set; }
 
         public bool IsArticle { get; set; }
+
+        public string NanoGaleryJson { get; set; }
     }
 }

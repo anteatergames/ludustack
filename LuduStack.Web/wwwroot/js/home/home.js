@@ -14,6 +14,7 @@
     var selectors = {};
     var objs = {};
     var iconPreviousClass = '';
+    var maxUploadFiles = 5;
 
     function setSelectors() {
         selectors.divCounters = '#divCounters';
@@ -150,10 +151,6 @@
                 divPostImagesActive = true;
                 if (!postImagesDropZone) {
                     instantiateDropZone();
-
-                    postImagesDropZone.on("addedfile", function (file) {
-                        resizePostBox();
-                    });
                 }
 
                 objs.divPostImages.show();
@@ -191,7 +188,7 @@
             var txtArea = btn.closest('.simplecontentpostarea').find('.posttextarea');
             var text = txtArea.val().replace(/\n/g, '<br>\n');
             if (text.length === 0) {
-                icon.attr('class', iconPreviousClass);
+                objs.sendIcon.attr('class', iconPreviousClass);
                 ALERTSYSTEM.ShowWarningMessage("You must type a text to post!");
                 return false;
             }
@@ -228,12 +225,17 @@
     }
 
     function uploadImages(text, gameId, pollOptions, txtArea) {
+        $('.dropzone .dz-preview .dz-progress').css('visibility', 'visible');
+
         postImagesDropZone.processQueue();
 
         var success = false;
 
         postImagesDropZone.on("success", function (file) {
+            console.log('success');
             var response = JSON.parse(file.xhr.response);
+
+            postImagesDropZone.options.autoProcessQueue = true;
 
             success = response.success;
 
@@ -248,6 +250,8 @@
         });
 
         postImagesDropZone.on("queuecomplete", function (file) {
+            postImagesDropZone.options.autoProcessQueue = false;
+
             if (success === true) {
                 var images = objs.postImages.val();
                 var json = { text: text, gameId: gameId, images: images, pollOptions: pollOptions };
@@ -290,8 +294,17 @@
             paramName: 'upload',
             addRemoveLinks: true,
             autoProcessQueue: false,
-            maxFiles: 1
+            maxFiles: maxUploadFiles
             //resizeWidth
+        });
+
+        postImagesDropZone.on("addedfile", function (file) {
+            if (this.files.length > maxUploadFiles) {
+                this.removeFile(this.files[0]);
+            }
+            else {
+                resizePostBox();
+            }
         });
     }
 
@@ -346,6 +359,9 @@
     function hidePostModal() {
         postModalActive = false;
         objs.btnPostAddImage.removeClass('btn-warning');
+        objs.btnPostAddGame.removeClass('btn-warning');
+        objs.btnPostAddPoll.removeClass('btn-warning');
+
         $('.commentmodal .modal').css('padding-right', '');
         $('#modalPost').modal('hide');
         $('#modalPost').css('display', '');

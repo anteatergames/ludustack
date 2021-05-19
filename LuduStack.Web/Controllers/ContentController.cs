@@ -14,12 +14,14 @@ using LuduStack.Web.Controllers.Base;
 using LuduStack.Web.Enums;
 using LuduStack.Web.Extensions;
 using LuduStack.Web.Helpers;
+using LuduStack.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace LuduStack.Web.Controllers
@@ -69,8 +71,11 @@ namespace LuduStack.Web.Controllers
 
                 GameViewModel game = gameServiceResult.Value;
 
-                viewModel.GameTitle = game.Title;
-                viewModel.GameThumbnail = UrlFormatter.Image(game.UserId, ImageType.GameThumbnail, game.ThumbnailUrl);
+                if (game != null)
+                {
+                    viewModel.GameTitle = game.Title;
+                    viewModel.GameThumbnail = UrlFormatter.Image(game.UserId, ImageType.GameThumbnail, game.ThumbnailUrl);
+                }
             }
 
             viewModel.Content = viewModel.Content.Replace("image-style-align-right", "image-style-align-right float-right p-10");
@@ -95,6 +100,8 @@ namespace LuduStack.Web.Controllers
             viewModel.Permissions.CanDelete = viewModel.UserId == CurrentUserId || userIsAdmin;
 
             ViewData["IsDetails"] = true;
+
+            SetNanoGallery(viewModel);
 
             return View(viewModel);
         }
@@ -284,7 +291,7 @@ namespace LuduStack.Web.Controllers
             if (!string.IsNullOrWhiteSpace(images))
             {
                 string[] imgSplit = images.Split('|');
-                vm.Images = new List<MediaListItemVo>();
+                vm.Media = new List<MediaListItemVo>();
 
                 for (int i = 0; i < imgSplit.Length; i++)
                 {
@@ -297,10 +304,10 @@ namespace LuduStack.Web.Controllers
 
                         MediaType type = ContentHelper.GetMediaType(imgSplit[i]);
 
-                        vm.Images.Add(new MediaListItemVo
+                        vm.Media.Add(new MediaListItemVo
                         {
                             Type = type,
-                            Image = imgSplit[i]
+                            Url = imgSplit[i]
                         });
                     }
                 }
@@ -369,6 +376,32 @@ namespace LuduStack.Web.Controllers
                         break;
                 }
             }
+        }
+
+        private void SetNanoGallery(UserContentViewModel vm)
+        {
+            List<NanoGalleryViewModel> gallery = new List<NanoGalleryViewModel>();
+
+            IEnumerable<MediaListItemVo> galleryItems = vm.Media.Where(x => x.Type == MediaType.Image || x.Type == MediaType.Youtube || x.Type == MediaType.Dailymotion); // need to add Vimeo with thumbnail
+
+            foreach (MediaListItemVo mediaItem in galleryItems)
+            {
+                NanoGalleryViewModel item = new NanoGalleryViewModel
+                {
+                    Src = mediaItem.Type == MediaType.Image ? UrlFormatter.Image(vm.UserId, ImageType.ContentImage, mediaItem.Url) : mediaItem.Url
+                };
+
+                if (mediaItem.Type == MediaType.Image)
+                {
+                    item.Srct = UrlFormatter.Image(vm.UserId, ImageType.ContentImage, mediaItem.Url);
+                }
+
+                gallery.Add(item);
+
+                mediaItem.Url = UrlFormatter.Image(vm.UserId, ImageType.ContentImage, mediaItem.Url);
+            }
+
+            vm.NanoGaleryJson = JsonSerializer.Serialize(gallery, DefaultJsonSerializeOptions);
         }
     }
 }

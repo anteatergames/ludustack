@@ -6,29 +6,29 @@
     border-radius: var(--border-radius)
 }
 
-.alert h4, .nav-pills > li.active > a {
-    font-weight: 400;
-}
-
-.alert .icon {
-    margin-right: 10px;
-}
-
-.alert .close {
-    color: var(--color-black);
-    opacity: .2;
-    filter: alpha(opacity=20);
-}
-
-    .alert .close:hover {
-        opacity: .5;
-        filter: alpha(opacity=50);
+    .alert h4, .nav-pills > li.active > a {
+        font-weight: 400;
     }
 
-.alert a {
-    color: var(--color-white);
-    text-decoration: underline;
-}
+    .alert .icon {
+        margin-right: 10px;
+    }
+
+    .alert .close {
+        color: var(--color-black);
+        opacity: .2;
+        filter: alpha(opacity=20);
+    }
+
+        .alert .close:hover {
+            opacity: .5;
+            filter: alpha(opacity=50);
+        }
+
+    .alert a {
+        color: var(--color-white);
+        text-decoration: underline;
+    }
 
 .alert-danger, .alert-error {
     border-color: var(--color-red-fx);
