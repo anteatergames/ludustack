@@ -22,10 +22,10 @@ namespace LuduStack.Domain.Messaging
 
         public Poll Poll { get; }
 
-        public SaveUserContentCommand(Guid userId, UserContent userContent, bool isComplex) : base(userId, userContent.Id)
+        public SaveUserContentCommand(Guid userId, UserContent userContent) : base(userId, userContent.Id)
         {
             UserContent = userContent;
-            IsComplex = isComplex;
+            IsComplex = userContent.UserContentType == UserContentType.ComicStrip;
         }
 
         public SaveUserContentCommand(Guid userId, UserContent userContent, Poll poll) : base(userId, userContent.Id)

@@ -84,7 +84,7 @@ namespace LuduStack.Application.Services
 
                 FormatImagesToSave(model);
 
-                CommandResult result = await mediator.SendCommand(new SaveUserContentCommand(currentUserId, model, true));
+                CommandResult result = await mediator.SendCommand(new SaveUserContentCommand(currentUserId, model));
 
                 if (!result.Validation.IsValid)
                 {

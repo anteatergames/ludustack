@@ -1,5 +1,6 @@
 ﻿using FluentValidation.Results;
 using LuduStack.Domain.Interfaces;
+using System;
 using System.Threading.Tasks;
 
 namespace LuduStack.Infra.CrossCutting.Messaging
@@ -20,9 +21,14 @@ namespace LuduStack.Infra.CrossCutting.Messaging
 
         protected async Task<ValidationResult> Commit(IUnitOfWork uow, string message)
         {
-            if (!await uow.Commit())
+            try
+            {
+                await uow.Commit();
+            }
+            catch (Exception ex)
             {
                 AddError(message);
+                AddError(ex.Message);
             }
 
             return ValidationResult;
@@ -30,7 +36,7 @@ namespace LuduStack.Infra.CrossCutting.Messaging
 
         protected async Task<ValidationResult> Commit(IUnitOfWork uow)
         {
-            return await Commit(uow, "There was an error saving data").ConfigureAwait(false);
+            return await Commit(uow, string.Empty).ConfigureAwait(false);
         }
     }
 }

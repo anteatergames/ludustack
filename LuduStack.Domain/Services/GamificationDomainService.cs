@@ -77,7 +77,7 @@ namespace LuduStack.Domain.Services
             return scoreValue;
         }
 
-        private Gamification GenerateNewGamification(Guid userId)
+        public Gamification GenerateNewGamification(Guid userId)
         {
             Gamification userGamification;
 
