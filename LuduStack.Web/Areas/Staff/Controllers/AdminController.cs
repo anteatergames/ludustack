@@ -1,4 +1,5 @@
-﻿using LuduStack.Application.Requests.User;
+﻿using LuduStack.Application;
+using LuduStack.Application.Requests.User;
 using LuduStack.Application.ViewModels.User;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Messaging;
@@ -205,9 +206,6 @@ namespace LuduStack.Web.Areas.Staff.Controllers
             };
 
             Guid currentGame;
-
-            Regex pattern = new Regex("(.+)718c8981-63ee-46c0-9973-c8eade7b9f0e/(.+)");
-
             try
             {
                 List<Game> allGames = (await mediator.Query<GetGameQuery, IEnumerable<Game>>(new GetGameQuery())).ToList();
@@ -217,8 +215,10 @@ namespace LuduStack.Web.Areas.Staff.Controllers
                 int count = 0;
                 foreach (Game game in allGames)
                 {
+                    int mediaCount = 0;
                     bool hasChangesToSave = false;
                     currentGame = game.Id;
+                    Regex pattern = new Regex("(.+)" + game.UserId.ToString() + "/(.+)");
                     string gameUrl = $"<strong><a href=\"/game/{game.Id}\" target=\"_blank\">{game.Title}</a></strong>";
 
                     List<UserContent> thisGamePosts = allPosts.Where(x => x.GameId.ToString().Equals(game.Id.ToString())).ToList();
@@ -226,7 +226,7 @@ namespace LuduStack.Web.Areas.Staff.Controllers
                     if (thisGamePosts.Any())
                     {
                         count++;
-                        List<UserContent> postsWithFeaturedImage = thisGamePosts.Where(x => !string.IsNullOrWhiteSpace(x.FeaturedImage)).ToList();
+                        List<UserContent> postsWithFeaturedImage = thisGamePosts.Where(x => !string.IsNullOrWhiteSpace(x.FeaturedImage) && !x.FeaturedImage.Equals(Constants.DefaultFeaturedImage)).ToList();
                         List<MediaListItemVo> allRelatedMedia = new List<MediaListItemVo>();
                         List<string> allFeaturedImages = postsWithFeaturedImage.Select(x => x.FeaturedImage).ToList();
                         IEnumerable<MediaListItemVo> allMediaImages = postsWithFeaturedImage.SelectMany(x => x.Media ?? new List<MediaListItemVo>()).Where(x => !x.Url.Contains("youtu"));
@@ -244,7 +244,7 @@ namespace LuduStack.Web.Areas.Staff.Controllers
                             }
                         }
 
-                        if (allMediaImages.Any())
+                        if (allRelatedMedia.Any())
                         {
                             allRelatedMedia.AddRange(allMediaImages);
 
@@ -252,13 +252,14 @@ namespace LuduStack.Web.Areas.Staff.Controllers
 
                             if (game.Media == null)
                             {
+                                game.Media = new List<MediaListItemVo>();
+
                                 if (!fix)
                                 {
                                     messages.Add($"{count} - {gameUrl} does not have a gallery and it has {allRelatedMedia.Count} related images.");
                                 }
                                 else
                                 {
-                                    game.Media = new List<MediaListItemVo>();
                                     hasChangesToSave = true;
                                 }
                             }
@@ -271,37 +272,36 @@ namespace LuduStack.Web.Areas.Staff.Controllers
                                 }
                             }
 
-                            foreach (MediaListItemVo media in game.Media)
-                            {
-                                Match match = pattern.Match(media.Url);
-                                if (match.Success)
-                                {
-                                    if (!fix)
-                                    {
-                                        messages.Add($"{count} - {gameUrl} full URL needs to be changed");
-                                    }
-                                    else
-                                    {
-                                        media.Url = match.Groups[2].Value;
-                                        messages.Add($"{count} - {gameUrl} full URL was changed to {match.Groups[2].Value}");
-                                    }
-                                }
-                            }
-
-                            int mediaCount = game.Media.Count;
-
-                            game.Media = game.Media.Distinct(new MediaListItemVoComparer()).ToList();
+                            mediaCount = game.Media.Count;
+                            game.Media = game.Media.Where(x => !x.Url.Equals(Constants.DefaultFeaturedImage)).ToList();
                             if (game.Media.Count != mediaCount)
                             {
                                 if (!fix)
                                 {
-                                    messages.Add($"{count} - {gameUrl} has duplicated <strong>Media</strong>");
+                                    messages.Add($"{count} - {gameUrl} has placeholders in the gallery");
                                 }
                                 else
                                 {
-                                    messages.Add($"{count} - duplicates <strong>Media</strong> removed from {gameUrl}");
+                                    messages.Add($"{count} - {gameUrl} placeholders removed");
                                     hasChangesToSave = true;
                                 }
+                            }
+
+                            foreach (MediaListItemVo media in game.Media)
+                            {
+                                Match match = pattern.Match(media.Url);
+                                if (match.Success && fix)
+                                {
+                                    media.Url = match.Groups[2].Value;
+                                    hasChangesToSave = true;
+                                }
+                            }
+
+                            mediaCount = game.Media.Count;
+                            game.Media = game.Media.Distinct(new MediaListItemVoComparer()).ToList();
+                            if (game.Media.Count != mediaCount && fix)
+                            {
+                                hasChangesToSave = true;
                             }
 
                             if (fix && hasChangesToSave)
