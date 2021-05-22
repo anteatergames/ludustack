@@ -1,4 +1,5 @@
 ﻿using LuduStack.Application;
+using LuduStack.Application.Helpers;
 using LuduStack.Application.Requests.User;
 using LuduStack.Application.ViewModels.User;
 using LuduStack.Domain.Core.Enums;
@@ -85,7 +86,7 @@ namespace LuduStack.Web.Areas.Staff.Controllers
             List<string> messages = new List<string>();
             OperationResultListVo<string> result = new OperationResultListVo<string>(messages)
             {
-                Message = "Check Missing Content Galleries Task"
+                Message = $"{(fix ? "Fix" : "Check")} Missing Content Galleries Task"
             };
 
             Guid currentContent;
@@ -101,16 +102,33 @@ namespace LuduStack.Web.Areas.Staff.Controllers
                 {
                     count++;
                     currentContent = content.Id;
+                    bool hasChangesToSave = false;
+                    Regex pattern = new Regex("(.+)" + content.UserId.ToString() + "/(.+)");
                     string contentUrl = $"<strong><a href=\"/content/{content.Id}\" target=\"_blank\">{content.Id}</a></strong>";
 
                     List<MediaListItemVo> images = content.Media?.ToList() ?? new List<MediaListItemVo>();
                     if (!string.IsNullOrWhiteSpace(content.FeaturedImage))
                     {
+                        Match matchFeaturedImage = pattern.Match(content.FeaturedImage);
+                        if (matchFeaturedImage.Success)
+                        {
+                            if (!fix)
+                            {
+                                messages.Add($"{count} - content {contentUrl} featuredImage needs short URL");
+                            }
+                            else
+                            {
+                                content.FeaturedImage = matchFeaturedImage.Groups[2].Value;
+                                messages.Add($"{count} - content {contentUrl} featuredImage URL made short");
+                                hasChangesToSave = true;
+                            }
+                        }
+
                         MediaListItemVo featuredImageMediaListItemVo = new MediaListItemVo
                         {
                             Url = content.FeaturedImage,
                             CreateDate = DateTime.Now,
-                            Type = content.FeaturedImage.Contains("youtu") ? MediaType.Youtube : MediaType.Image
+                            Type = ContentHelper.GetMediaType(content.FeaturedImage)
                         };
 
                         images.Add(featuredImageMediaListItemVo);
@@ -128,16 +146,9 @@ namespace LuduStack.Web.Areas.Staff.Controllers
                                     featuredImageMediaListItemVo
                                 };
 
-                                CommandResult saveContentResult = await mediator.SendCommand(new SaveUserContentCommand(CurrentUserId, content));
+                                messages.Add($"{count} - <strong>Media</strong> property created and featuredImage added to the content {contentUrl}");
 
-                                if (!saveContentResult.Validation.IsValid)
-                                {
-                                    messages.Add(saveContentResult.Validation.Errors.FirstOrDefault().ErrorMessage);
-                                }
-                                else
-                                {
-                                    messages.Add($"{count} - <strong>Media</strong> property created and featuredImage added to the content {contentUrl}");
-                                }
+                                hasChangesToSave = true;
                             }
                         }
                         else
@@ -148,33 +159,54 @@ namespace LuduStack.Web.Areas.Staff.Controllers
                                 {
                                     messages.Add($"{count} - content {contentUrl} need to add the featured image to its gallery.");
                                 }
+
+                                if (content.Media.Select(x => x.Url).Contains(Constants.DefaultFeaturedImage))
+                                {
+                                    messages.Add($"{count} - content {contentUrl} has a placeholder");
+                                }
                             }
                             else
                             {
-                                int mediaCount = content.Media.Count;
-
-                                content.Media = content.Media.Distinct(new MediaListItemVoComparer()).ToList();
-                                if (content.Media.Count != mediaCount)
-                                {
-                                    messages.Add($"{count} - duplicates <strong>Media</strong> removed from the content {contentUrl}");
-                                }
-
                                 if (!content.Media.Any(x => x.Url.Equals(featuredImageMediaListItemVo.Url)))
                                 {
                                     content.Media.Add(featuredImageMediaListItemVo);
 
                                     messages.Add($"{count} - featuredImage added to the <strong>Media</strong> property on the content {contentUrl}");
+
+                                    hasChangesToSave = true;
                                 }
 
-                                if (messages.Any())
+                                if (CheckDuplicates(content.Media))
                                 {
-                                    CommandResult saveContentResult = await mediator.SendCommand(new SaveUserContentCommand(CurrentUserId, content));
+                                    content.Media = CleanDuplicates(content.Media);
+                                    hasChangesToSave = true;
+                                }
 
-                                    if (!saveContentResult.Validation.IsValid)
+                                if (CheckPlaceholder(content.Media))
+                                {
+                                    content.Media = CleanPlaceholder(content.Media);
+                                    hasChangesToSave = true;
+                                }
+
+                                foreach (MediaListItemVo media in content.Media)
+                                {
+                                    Match matchMediaItem = pattern.Match(media.Url);
+                                    if (matchMediaItem.Success && fix)
                                     {
-                                        messages.Add(saveContentResult.Validation.Errors.FirstOrDefault().ErrorMessage);
+                                        media.Url = matchMediaItem.Groups[2].Value;
+                                        hasChangesToSave = true;
                                     }
                                 }
+                            }
+                        }
+
+                        if (fix && hasChangesToSave)
+                        {
+                            CommandResult saveContentResult = await mediator.SendCommand(new SaveUserContentCommand(CurrentUserId, content));
+
+                            if (!saveContentResult.Validation.IsValid)
+                            {
+                                messages.Add(saveContentResult.Validation.Errors.FirstOrDefault().ErrorMessage);
                             }
                         }
                     }
@@ -202,7 +234,7 @@ namespace LuduStack.Web.Areas.Staff.Controllers
             List<string> messages = new List<string>();
             OperationResultListVo<string> result = new OperationResultListVo<string>(messages)
             {
-                Message = "Check Missing Game Galleries Task"
+                Message = $"{(fix ? "Fix" : "Check")} Missing Game Galleries Task"
             };
 
             Guid currentGame;
@@ -297,10 +329,15 @@ namespace LuduStack.Web.Areas.Staff.Controllers
                                 }
                             }
 
-                            mediaCount = game.Media.Count;
-                            game.Media = game.Media.Distinct(new MediaListItemVoComparer()).ToList();
-                            if (game.Media.Count != mediaCount && fix)
+                            if (CheckDuplicates(game.Media))
                             {
+                                game.Media = CleanDuplicates(game.Media);
+                                hasChangesToSave = true;
+                            }
+
+                            if (CheckPlaceholder(game.Media))
+                            {
+                                game.Media = CleanPlaceholder(game.Media);
                                 hasChangesToSave = true;
                             }
 
@@ -510,6 +547,50 @@ namespace LuduStack.Web.Areas.Staff.Controllers
         private static string GenerateProfileUrl(string handler, string name)
         {
             return $"<strong><a href=\"/u/{handler}\" target=\"_blank\">{name}</a></strong>";
+        }
+
+        private static bool CheckDuplicates(List<MediaListItemVo> mediaList)
+        {
+            var hasChangesToSave = false;
+
+            int mediaCount = mediaList.Count;
+
+            mediaList = mediaList.Distinct(new MediaListItemVoComparer()).ToList();
+            if (mediaList.Count != mediaCount)
+            {
+                hasChangesToSave = true;
+            }
+
+            return hasChangesToSave;
+        }
+
+        private static List<MediaListItemVo> CleanDuplicates(List<MediaListItemVo> mediaList)
+        {
+            mediaList = mediaList.Distinct(new MediaListItemVoComparer()).ToList();
+
+            return mediaList;
+        }
+
+        private static bool CheckPlaceholder(List<MediaListItemVo> mediaList)
+        {
+            var hasChangesToSave = false;
+
+            int mediaCount = mediaList.Count;
+
+            mediaList = mediaList.Where(x => !x.Url.Equals(Constants.DefaultFeaturedImage)).ToList();
+            if (mediaList.Count != mediaCount)
+            {
+                hasChangesToSave = true;
+            }
+
+            return hasChangesToSave;
+        }
+
+        private static List<MediaListItemVo> CleanPlaceholder(List<MediaListItemVo> mediaList)
+        {
+            mediaList = mediaList.Where(x => !x.Url.Equals(Constants.DefaultFeaturedImage)).ToList();
+
+            return mediaList;
         }
     }
 
