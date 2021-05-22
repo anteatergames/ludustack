@@ -22,10 +22,10 @@ namespace LuduStack.Domain.Messaging
 
         public Poll Poll { get; }
 
-        public SaveUserContentCommand(Guid userId, UserContent userContent, bool isComplex) : base(userId, userContent.Id)
+        public SaveUserContentCommand(Guid userId, UserContent userContent) : base(userId, userContent.Id)
         {
             UserContent = userContent;
-            IsComplex = isComplex;
+            IsComplex = userContent.UserContentType == UserContentType.ComicStrip;
         }
 
         public SaveUserContentCommand(Guid userId, UserContent userContent, Poll poll) : base(userId, userContent.Id)
@@ -107,7 +107,7 @@ namespace LuduStack.Domain.Messaging
                 result.PointsEarned += savePollResult.PointsEarned;
             }
 
-            if (request.UserContent.GameId.HasValue)
+            if (request.UserContent.GameId.HasValue && request.UserContent.Media != null && request.UserContent.Media.Any())
             {
                 CommandResult addImagesToGameResult = await mediator.SendCommand(new AddImagesToGameCommand(request.UserContent.GameId.Value, request.UserContent.Media));
 

@@ -3,6 +3,8 @@ using AutoMapper.QueryableExtensions;
 using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels.Gamification;
 using LuduStack.Application.ViewModels.User;
+using LuduStack.Domain.Interfaces.Services;
+using LuduStack.Domain.Messaging;
 using LuduStack.Domain.Messaging.Queries.Gamification;
 using LuduStack.Domain.Messaging.Queries.GamificationLevel;
 using LuduStack.Domain.Messaging.Queries.UserBadge;
@@ -20,13 +22,15 @@ namespace LuduStack.Application.Services
     {
         private readonly IMediatorHandler mediator;
         private readonly IMapper mapper;
+        private readonly IGamificationDomainService gamificationDomainService;
 
         public Guid CurrentUserId { get; set; }
 
-        public GamificationAppService(IMediatorHandler mediator, IMapper mapper)
+        public GamificationAppService(IMediatorHandler mediator, IMapper mapper, IGamificationDomainService gamificationDomainService)
         {
             this.mediator = mediator;
             this.mapper = mapper;
+            this.gamificationDomainService = gamificationDomainService;
         }
 
         public async Task<OperationResultListVo<RankingViewModel>> GetAll()
@@ -67,6 +71,13 @@ namespace LuduStack.Application.Services
             try
             {
                 Gamification gamification = await mediator.Query<GetGamificationByUserIdQuery, Gamification>(new GetGamificationByUserIdQuery(vm.UserId));
+
+                if (gamification == null)
+                {
+                    gamification = gamificationDomainService.GenerateNewGamification(vm.UserId);
+
+                    CommandResult saveGamification = await mediator.SendCommand(new SaveGamificationCommand(gamification));
+                }
 
                 GamificationLevel currentLevel = await mediator.Query<GetGamificationLevelByNumberQuery, GamificationLevel>(new GetGamificationLevelByNumberQuery(gamification.CurrentLevelNumber));
 

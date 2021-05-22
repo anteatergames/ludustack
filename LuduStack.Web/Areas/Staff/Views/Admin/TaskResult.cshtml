@@ -11,7 +11,7 @@
         @foreach (var item in Model.Value)
         {
             <div class="col-12">
-                <span>@item</span>
+                <span>@Html.Raw(item)</span>
             </div>
         }
     </div>

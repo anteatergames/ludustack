@@ -2,6 +2,7 @@
 using LuduStack.Application.ViewModels;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.ValueObjects;
+using LuduStack.Infra.CrossCutting.Messaging;
 using MediatR;
 using System;
 using System.Linq;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace LuduStack.Application.Requests.User
 {
-    public class DeleteUserFromPlatformRequest : IRequest<OperationResultVo>
+    public class DeleteUserFromPlatformRequest : Command<OperationResultVo>
     {
         public Guid CurrentUserId { get; }
         public Guid UserId { get; }
@@ -22,7 +23,7 @@ namespace LuduStack.Application.Requests.User
         }
     }
 
-    public class DeleteUserFromPlatformRequestHandler : IRequestHandler<DeleteUserFromPlatformRequest, OperationResultVo>
+    public class DeleteUserFromPlatformRequestHandler : CommandHandler, IRequestHandler<DeleteUserFromPlatformRequest, CommandResult<OperationResultVo>>
     {
         private readonly IProfileAppService profileAppService;
         private readonly IUserContentAppService userContentAppService;
@@ -33,7 +34,7 @@ namespace LuduStack.Application.Requests.User
             this.userContentAppService = userContentAppService;
         }
 
-        public async Task<OperationResultVo> Handle(DeleteUserFromPlatformRequest request, CancellationToken cancellationToken)
+        public async Task<CommandResult<OperationResultVo>> Handle(DeleteUserFromPlatformRequest request, CancellationToken cancellationToken)
         {
             bool canDelete = true;
 
@@ -52,16 +53,16 @@ namespace LuduStack.Application.Requests.User
 
                 if (profile == null)
                 {
-                    return new OperationResultVo(false, "Can't delete user");
+                    return new CommandResult<OperationResultVo>(new OperationResultVo(false, "Can't delete user"));
                 }
 
-                OperationResultVo result = await profileAppService.Remove(request.CurrentUserId, profile.Id);
+                OperationResultVo resultVo = await profileAppService.Remove(request.CurrentUserId, profile.Id);
 
-                return result;
+                return new CommandResult<OperationResultVo>(resultVo);
             }
             else
             {
-                return new OperationResultVo(false, "Can't delete user");
+                return new CommandResult<OperationResultVo>(new OperationResultVo(false, "Can't delete user"));
             }
         }
     }

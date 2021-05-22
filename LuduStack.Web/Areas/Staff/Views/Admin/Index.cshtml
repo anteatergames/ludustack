@@ -23,22 +23,57 @@
     <div class="box bg-white">
         <h1>Admin Tasks</h1>
 
-        <h2>Batches</h2>
+        <h2>User</h2>
 
         <div class="row">
             <div class="col-12">
                 <div class="form-group">
                     <label class="col-form-label">Check User Inconsistencies</label>
-                    <button class="btn btn-primary btn-action" data-url="@Url.Action("checkuserinconsistencies", "admin", new { area = "staff" })">Go</button>
+                    <button class="btn btn-primary btn-action" data-url="@Url.Action("checkuserinconsistencies", "admin", new { area = "staff" })">Check</button>
                 </div>
             </div>
             <div class="col-12">
                 <div class="form-group">
                     <label class="col-form-label">Fix User Inconsistencies</label>
-                    <button class="btn btn-primary btn-action" data-url="@Url.Action("fixuserinconcistencies", "admin", new { area = "staff" })">Go</button>
+                    <button class="btn btn-primary btn-action" data-url="@Url.Action("fixuserinconcistencies", "admin", new { area = "staff" })">Fix</button>
                 </div>
             </div>
         </div>
+
+        <h2>Content</h2>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="form-group">
+                    <label class="col-form-label">Check Missing Content Galleries</label>
+                    <button class="btn btn-primary btn-action" data-url="@Url.Action("checkmissingcontentgalleries", "admin", new { area = "staff" })">Check</button>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="form-group">
+                    <label class="col-form-label">Fix Missing Content Galleries</label>
+                    <button class="btn btn-primary btn-action" data-url="@Url.Action("checkmissingcontentgalleries", "admin", new { area = "staff", fix = "True" })">Fix</button>
+                </div>
+            </div>
+        </div>
+
+        <h2>Game</h2>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="form-group">
+                    <label class="col-form-label">Check Missing Game Galleries</label>
+                    <button class="btn btn-primary btn-action" data-url="@Url.Action("checkmissinggamegalleries", "admin", new { area = "staff" })">Check</button>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="form-group">
+                    <label class="col-form-label">Fix Missing Game Galleries</label>
+                    <button class="btn btn-primary btn-action" data-url="@Url.Action("checkmissinggamegalleries", "admin", new { area = "staff", fix = "True" })">Fix</button>
+                </div>
+            </div>
+        </div>
+
         <div class="row">
             <div id="divResult" class="col-12">
                 <span>No result to show</span>
