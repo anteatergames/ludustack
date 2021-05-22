@@ -290,9 +290,6 @@ namespace LuduStack.Application.Services
 
             profile.Bio = String.Format("{0} {1}", profile.Name, Constants.DefaultProfileDescription);
 
-            profile.StudioName = "Awesome Game Studio";
-            profile.Location = "Earth";
-
             profile.ProfileImageUrl = Constants.DefaultAvatar;
             profile.CoverImageUrl = Constants.DefaultGameCoverImage;
 
