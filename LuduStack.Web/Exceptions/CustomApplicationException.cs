@@ -33,14 +33,12 @@ namespace LuduStack.Web.Exceptions
         {
         }
 
-        [SecurityPermissionAttribute(SecurityAction.Demand, SerializationFormatter = true)]
         protected CustomApplicationException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
             resourceName = info.GetString("CustomApplicationException.ResourceName");
             validationErrors = (IList<string>)info.GetValue("CustomApplicationException.ValidationErrors", typeof(IList<string>));
         }
 
-        [SecurityPermissionAttribute(SecurityAction.Demand, SerializationFormatter = true)]
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             base.GetObjectData(info, context);
