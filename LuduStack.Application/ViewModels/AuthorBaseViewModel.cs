@@ -13,7 +13,7 @@ namespace LuduStack.Application.ViewModels
         [Display(Name = "Author Name")]
         public string AuthorName { get; set; }
 
-        public AuthorBaseViewModel() : base()
+        public AuthorBaseViewModel()
         {
         }
 

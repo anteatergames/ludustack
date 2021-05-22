@@ -5,7 +5,7 @@ namespace LuduStack.Domain.Messaging.Queries.Team
 {
     public class CountTeamQuery : CountBaseQuery<Models.Team>
     {
-        public CountTeamQuery() : base()
+        public CountTeamQuery()
         {
         }
     }

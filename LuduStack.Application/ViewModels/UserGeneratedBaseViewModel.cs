@@ -24,7 +24,7 @@ namespace LuduStack.Application.ViewModels
 
         public string ShareText { get; set; }
 
-        protected UserGeneratedBaseViewModel() : base()
+        protected UserGeneratedBaseViewModel()
         {
         }
     }
@@ -77,7 +77,7 @@ namespace LuduStack.Application.ViewModels
             }
         }
 
-        protected UserGeneratedCommentBaseViewModel() : base()
+        protected UserGeneratedCommentBaseViewModel()
         {
             Comments = new List<CommentViewModel>();
             Likes = new List<Guid>();

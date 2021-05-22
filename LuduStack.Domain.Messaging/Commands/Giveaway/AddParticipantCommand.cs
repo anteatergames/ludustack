@@ -105,7 +105,7 @@ namespace LuduStack.Domain.Messaging
             result.PointsEarned = pointsEarned;
             result.Result = domainOperationPerformed;
 
-            await SetShortUrl(request, result, domainOperationPerformed);
+            await SetShortUrl(request, result, domainOperationPerformed).ConfigureAwait(false);
 
             return result;
         }

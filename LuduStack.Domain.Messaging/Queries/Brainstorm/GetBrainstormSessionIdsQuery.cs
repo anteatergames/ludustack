@@ -10,7 +10,7 @@ namespace LuduStack.Domain.Messaging.Queries.Brainstorm
 {
     public class GetBrainstormSessionIdsQuery : GetIdsBaseQuery<Models.BrainstormSession>
     {
-        public GetBrainstormSessionIdsQuery() : base()
+        public GetBrainstormSessionIdsQuery()
         {
         }
 

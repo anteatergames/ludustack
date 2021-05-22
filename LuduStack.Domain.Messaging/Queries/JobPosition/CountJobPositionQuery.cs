@@ -5,7 +5,7 @@ namespace LuduStack.Domain.Messaging.Queries.JobPosition
 {
     public class CountJobPositionQuery : CountBaseQuery<Models.JobPosition>
     {
-        public CountJobPositionQuery() : base()
+        public CountJobPositionQuery()
         {
         }
     }

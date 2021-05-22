@@ -10,6 +10,18 @@ using System.Threading.Tasks;
 
 namespace LuduStack.Domain.Messaging.Queries.UserContent
 {
+    public class GetActivityFeedQueryOptions
+    {
+        public Guid? GameId { get; set; }
+        public Guid? UserId { get; set; }
+        public Guid? SingleContentId { get; set; }
+        public List<SupportedLanguage> Languages { get; set; }
+        public Guid? OldestId { get; set; }
+        public DateTime? OldestDate { get; set; }
+        public bool? ArticlesOnly { get; set; }
+        public int Count { get; set; }
+    }
+
     public class GetActivityFeedQuery : Query<List<Models.UserContent>>
     {
         public Guid? GameId { get; }
@@ -21,16 +33,16 @@ namespace LuduStack.Domain.Messaging.Queries.UserContent
         public bool? ArticlesOnly { get; }
         public int Count { get; }
 
-        public GetActivityFeedQuery(Guid? gameId, Guid? userId, Guid? singleContentId, List<SupportedLanguage> languages, Guid? oldestId, DateTime? oldestDate, bool? articlesOnly, int count)
+        public GetActivityFeedQuery(GetActivityFeedQueryOptions options)
         {
-            GameId = gameId;
-            UserId = userId;
-            SingleContentId = singleContentId;
-            Languages = languages;
-            OldestId = oldestId;
-            OldestDate = oldestDate;
-            ArticlesOnly = articlesOnly;
-            Count = count;
+            GameId = options.GameId;
+            UserId = options.UserId;
+            SingleContentId = options.SingleContentId;
+            Languages = options.Languages;
+            OldestId = options.OldestId;
+            OldestDate = options.OldestDate;
+            ArticlesOnly = options.ArticlesOnly;
+            Count = options.Count;
         }
     }
 

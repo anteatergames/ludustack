@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
-using System.Security.Permissions;
 
 namespace LuduStack.Web.Exceptions
 {
@@ -21,7 +20,7 @@ namespace LuduStack.Web.Exceptions
             get { return validationErrors; }
         }
 
-        public CustomApplicationException() : base()
+        public CustomApplicationException()
         {
         }
 

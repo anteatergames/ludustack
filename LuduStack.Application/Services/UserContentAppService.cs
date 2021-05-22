@@ -246,7 +246,9 @@ namespace LuduStack.Application.Services
         {
             try
             {
-                List<UserContent> allModels = await mediator.Query<GetActivityFeedQuery, List<UserContent>>(new GetActivityFeedQuery(vm.GameId, vm.UserId, vm.SingleContentId, vm.Languages, vm.OldestId, vm.OldestDate, vm.ArticlesOnly, vm.Count));
+                GetActivityFeedQueryOptions queryOptions = vm.ToQueryOptions();
+
+                List<UserContent> allModels = await mediator.Query<GetActivityFeedQuery, List<UserContent>>(new GetActivityFeedQuery(queryOptions));
 
                 IEnumerable<UserContentViewModel> viewModels = mapper.Map<IEnumerable<UserContent>, IEnumerable<UserContentViewModel>>(allModels);
 

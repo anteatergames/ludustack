@@ -10,7 +10,7 @@ namespace LuduStack.Domain.Messaging.Queries.Notification
 {
     public class GetNotificationIdsQuery : GetIdsBaseQuery<Models.Notification>
     {
-        public GetNotificationIdsQuery() : base()
+        public GetNotificationIdsQuery()
         {
         }
 

@@ -10,7 +10,7 @@ namespace LuduStack.Domain.Messaging.Queries.GamificationLevel
 {
     public class GetGamificationLevelQuery : GetBaseQuery<Models.GamificationLevel>
     {
-        public GetGamificationLevelQuery() : base()
+        public GetGamificationLevelQuery()
         {
         }
 

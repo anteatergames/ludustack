@@ -10,7 +10,7 @@ namespace LuduStack.Domain.Messaging.Queries.ShortUrl
 {
     public class GetShortUrlQuery : GetBaseQuery<Models.ShortUrl>
     {
-        public GetShortUrlQuery() : base()
+        public GetShortUrlQuery()
         {
         }
 

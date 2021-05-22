@@ -10,7 +10,7 @@ namespace LuduStack.Domain.Messaging.Queries.JobPosition
 {
     public class GetJobPositionIdsQuery : GetIdsBaseQuery<Models.JobPosition>
     {
-        public GetJobPositionIdsQuery() : base()
+        public GetJobPositionIdsQuery()
         {
         }
 

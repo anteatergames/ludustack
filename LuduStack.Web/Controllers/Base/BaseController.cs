@@ -1,10 +1,8 @@
-﻿using LuduStack.Domain.ValueObjects;
-using LuduStack.Web.Enums;
+﻿using LuduStack.Web.Enums;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Localization;
-using System;
 using System.Net;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -52,22 +50,6 @@ namespace LuduStack.Web.Controllers.Base
             if (!string.IsNullOrWhiteSpace(value))
             {
                 HttpContext.Session.SetString(key.ToString(), value);
-            }
-        }
-
-        private void TranslateResponse(OperationResultVo response)
-        {
-            if (response != null && !String.IsNullOrWhiteSpace(response.Message))
-            {
-                response.Message = SharedLocalizer[response.Message];
-            }
-        }
-
-        private void TranslateResponse(UploadResultVo response)
-        {
-            if (response != null && !String.IsNullOrWhiteSpace(response.Message))
-            {
-                response.Message = SharedLocalizer[response.Message];
             }
         }
 

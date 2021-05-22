@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using LuduStack.Application.AutoMapper;
+﻿using LuduStack.Application.AutoMapper;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 

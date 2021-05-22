@@ -7,7 +7,7 @@ namespace LuduStack.Domain.Messaging.Queries.UserContent
 {
     public class CountUserContentQuery : CountBaseQuery<Models.UserContent>
     {
-        public CountUserContentQuery() : base()
+        public CountUserContentQuery()
         {
         }
 

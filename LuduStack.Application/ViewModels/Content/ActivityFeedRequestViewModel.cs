@@ -1,4 +1,5 @@
 ﻿using LuduStack.Domain.Core.Enums;
+using LuduStack.Domain.Messaging.Queries.UserContent;
 using System;
 using System.Collections.Generic;
 
@@ -21,5 +22,20 @@ namespace LuduStack.Application.ViewModels.Content
         public DateTime? OldestDate { get; set; }
 
         public bool? ArticlesOnly { get; set; }
+
+        public GetActivityFeedQueryOptions ToQueryOptions()
+        {
+            return new GetActivityFeedQueryOptions
+            {
+                GameId = GameId,
+                UserId = UserId,
+                SingleContentId = SingleContentId,
+                Languages = Languages,
+                OldestId = OldestId,
+                OldestDate = OldestDate,
+                ArticlesOnly = ArticlesOnly,
+                Count = Count
+            };
+        }
     }
 }

@@ -26,9 +26,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Net.Http.Headers;
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization;
-using MongoDB.Bson.Serialization.Serializers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -254,7 +251,7 @@ namespace LuduStack.Web
             NativeInjectorBootStrapper.RegisterServices(services);
         }
 
-        private async Task CreateUserRoles(IServiceProvider serviceProvider)
+        private static async Task CreateUserRoles(IServiceProvider serviceProvider)
         {
             RoleManager<Role> roleManager = serviceProvider.GetRequiredService<RoleManager<Role>>();
 

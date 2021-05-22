@@ -10,7 +10,7 @@ namespace LuduStack.Domain.Messaging.Queries.BillRate
 {
     public class GetBillRateQuery : GetBaseQuery<Models.BillRate>
     {
-        public GetBillRateQuery() : base()
+        public GetBillRateQuery()
         {
         }
 

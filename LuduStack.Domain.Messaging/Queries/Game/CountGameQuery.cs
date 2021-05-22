@@ -7,7 +7,7 @@ namespace LuduStack.Domain.Messaging.Queries.Game
 {
     public class CountGameQuery : CountBaseQuery<Models.Game>
     {
-        public CountGameQuery() : base()
+        public CountGameQuery()
         {
         }
 

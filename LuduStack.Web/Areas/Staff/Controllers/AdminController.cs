@@ -551,7 +551,7 @@ namespace LuduStack.Web.Areas.Staff.Controllers
 
         private static bool CheckDuplicates(List<MediaListItemVo> mediaList)
         {
-            var hasChangesToSave = false;
+            bool hasChangesToSave = false;
 
             int mediaCount = mediaList.Count;
 
@@ -573,7 +573,7 @@ namespace LuduStack.Web.Areas.Staff.Controllers
 
         private static bool CheckPlaceholder(List<MediaListItemVo> mediaList)
         {
-            var hasChangesToSave = false;
+            bool hasChangesToSave = false;
 
             int mediaCount = mediaList.Count;
 
