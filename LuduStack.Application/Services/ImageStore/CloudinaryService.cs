@@ -4,7 +4,6 @@ using LuduStack.Application.Helpers;
 using LuduStack.Application.Interfaces;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.ValueObjects;
-using System;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -24,7 +23,7 @@ namespace LuduStack.Application.Services
 
             MediaType mediaType = ContentHelper.GetMediaType(fileNameFull);
 
-            string publicId = String.Format("{0}/{1}", container, fileName);
+            string publicId = string.Format("{0}/{1}", container, fileName);
 
             MemoryStream stream = new MemoryStream(image);
 
@@ -72,7 +71,7 @@ namespace LuduStack.Application.Services
         {
             Cloudinary cloudinary = new Cloudinary();
 
-            string publicId = String.Format("{0}/{1}", container, fileName);
+            string publicId = string.Format("{0}/{1}", container, fileName);
 
             await cloudinary.DeleteResourcesAsync(publicId);
 

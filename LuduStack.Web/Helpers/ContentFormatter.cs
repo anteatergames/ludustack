@@ -1,5 +1,6 @@
 ﻿using LuduStack.Domain.Core.Enums;
 using System;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
@@ -45,16 +46,16 @@ namespace LuduStack.Web.Helpers
                 string url = match.Groups[8].Value;
                 string closeParenthesis = match.Groups[10].Value;
 
-                url = !url.TrimStart('(').TrimEnd(')').ToLower().StartsWith("http") ? String.Format("http://{0}", url) : url;
+                url = !url.TrimStart('(').TrimEnd(')').ToLower().StartsWith("http") ? string.Format("http://{0}", url) : url;
 
                 string newText = string.Empty;
                 if (!string.IsNullOrWhiteSpace(imagePrefix))
                 {
-                    newText = String.Format("<img src=\"{0}\" />", url);
+                    newText = string.Format("<img src=\"{0}\" />", url);
                 }
                 else if (!string.IsNullOrWhiteSpace(oembedPrefix))
                 {
-                    newText = String.Format(@"<div class=""videowrapper""><oembed>{0}</oembed></div>", url);
+                    newText = string.Format(@"<div class=""videowrapper""><oembed>{0}</oembed></div>", url);
                 }
                 else
                 {
@@ -63,10 +64,10 @@ namespace LuduStack.Web.Helpers
 
                 if (!string.IsNullOrWhiteSpace(openParenthesis) && !string.IsNullOrWhiteSpace(closeParenthesis))
                 {
-                    newText = String.Format("({0})", newText);
+                    newText = string.Format("({0})", newText);
                 }
 
-                string templateUrlCkEditor = String.Format("<a href=\"{0}\">.+</a>", url);
+                string templateUrlCkEditor = string.Format("<a href=\"{0}\">.+</a>", url);
 
                 bool isAlreadyUrl = Regex.IsMatch(content, templateUrlCkEditor);
 
@@ -93,7 +94,7 @@ namespace LuduStack.Web.Helpers
             {
                 string toReplace = match.Groups[0].Value.Trim();
 
-                string formattedLink = String.Format(@"<a href=""/search/?q={0}"" class=""hashtag"">{1}</a>", HttpUtility.UrlEncode(toReplace), toReplace);
+                string formattedLink = string.Format(@"<a href=""/search/?q={0}"" class=""hashtag"">{1}</a>", HttpUtility.UrlEncode(toReplace), toReplace);
 
                 content = content.Replace(toReplace, formattedLink);
             }
@@ -119,20 +120,16 @@ namespace LuduStack.Web.Helpers
         public static string GetYoutubeVideoId(string url)
         {
             Uri uri = new Uri(url);
-            System.Collections.Specialized.NameValueCollection query = HttpUtility.ParseQueryString(uri.Query);
-
-            string videoId = string.Empty;
+            NameValueCollection query = HttpUtility.ParseQueryString(uri.Query);
 
             if (query.AllKeys.Contains("v"))
             {
-                videoId = query["v"];
+                return query["v"];
             }
             else
             {
-                videoId = uri.Segments.Last();
+                return uri.Segments.Last();
             }
-
-            return videoId;
         }
     }
 }

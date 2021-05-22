@@ -25,13 +25,7 @@ namespace LuduStack.Web.TagHelpers
         }
 
         /// <inheritdoc />
-        public override int Order
-        {
-            get
-            {
-                return -1000;
-            }
-        }
+        public override int Order => -1000;
 
         [HtmlAttributeNotBound]
         [ViewContext]
@@ -70,7 +64,7 @@ namespace LuduStack.Web.TagHelpers
 
             if (!string.IsNullOrWhiteSpace(metadata.Description))
             {
-                string content = String.Format("<i class=\"fas fa-exclamation-circle\" data-container=\"body\" data-toggle=\"popover\" data-trigger=\"hover\" data-placement=\"top\" data-html=\"true\" data-content=\"{0}\" aria-hidden=\"true\"></i>", metadata.Description);
+                string content = string.Format("<i class=\"fas fa-exclamation-circle\" data-container=\"body\" data-toggle=\"popover\" data-trigger=\"hover\" data-placement=\"top\" data-html=\"true\" data-content=\"{0}\" aria-hidden=\"true\"></i>", metadata.Description);
 
                 output.Content.SetHtmlContent(content);
                 output.TagMode = TagMode.StartTagAndEndTag;

@@ -7,7 +7,7 @@ namespace LuduStack.Domain.ValueObjects
     {
         public bool Success { get; set; }
 
-        public bool Uploaded { get { return Success; } }
+        public bool Uploaded => Success;
 
         public string Message { get; set; }
 

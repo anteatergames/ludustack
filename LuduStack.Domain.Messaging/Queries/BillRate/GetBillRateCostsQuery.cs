@@ -14,9 +14,6 @@ namespace LuduStack.Domain.Messaging.Queries.BillRate
 {
     public class GetBillRateCostsQuery : Query<CostCalculatorVo>
     {
-        public GetBillRateCostsQuery()
-        {
-        }
     }
 
     public class GetBillRateCostsQueryHandler : QueryHandler, IRequestHandler<GetBillRateCostsQuery, CostCalculatorVo>

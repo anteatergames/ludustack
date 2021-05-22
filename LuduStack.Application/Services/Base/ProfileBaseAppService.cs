@@ -230,12 +230,12 @@ namespace LuduStack.Application.Services
 
         private string FormatProfileCacheId(Guid userId)
         {
-            return String.Format("profile_{0}", userId.ToString());
+            return string.Format("profile_{0}", userId.ToString());
         }
 
         private string FormatObjectCacheId(string preffix, Guid id)
         {
-            return String.Format("{0}_{1}", preffix, id.ToString());
+            return string.Format("{0}_{1}", preffix, id.ToString());
         }
     }
 }

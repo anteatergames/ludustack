@@ -29,9 +29,13 @@ namespace LuduStack.Web.Services
             };
 
             if (expireTime.HasValue)
+            {
                 option.Expires = DateTime.Now.AddDays(expireTime.Value);
+            }
             else
+            {
                 option.Expires = DateTime.Now.AddDays(7);
+            }
 
             option.IsEssential = isEssential || consent != null;
             option.Secure = true;

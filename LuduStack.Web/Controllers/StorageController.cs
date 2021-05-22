@@ -40,7 +40,7 @@ namespace LuduStack.Web.Controllers
 
             if (type == ImageType.ProfileImage)
             {
-                name = String.Format("{0}_Personal", userId);
+                name = string.Format("{0}_Personal", userId);
             }
 
             return GetImage(type, userId, name, v);

@@ -20,15 +20,30 @@ namespace LuduStack.Web.Views.Manage
 
         public static string TwoFactorAuthentication => "TwoFactorAuthentication";
 
-        public static string IndexNavClass(ViewContext viewContext) => PageNavClass(viewContext, Index);
+        public static string IndexNavClass(ViewContext viewContext)
+        {
+            return PageNavClass(viewContext, Index);
+        }
 
-        public static string LanguagesNavClass(ViewContext viewContext) => PageNavClass(viewContext, Languages);
+        public static string LanguagesNavClass(ViewContext viewContext)
+        {
+            return PageNavClass(viewContext, Languages);
+        }
 
-        public static string ChangePasswordNavClass(ViewContext viewContext) => PageNavClass(viewContext, ChangePassword);
+        public static string ChangePasswordNavClass(ViewContext viewContext)
+        {
+            return PageNavClass(viewContext, ChangePassword);
+        }
 
-        public static string ExternalLoginsNavClass(ViewContext viewContext) => PageNavClass(viewContext, ExternalLogins);
+        public static string ExternalLoginsNavClass(ViewContext viewContext)
+        {
+            return PageNavClass(viewContext, ExternalLogins);
+        }
 
-        public static string TwoFactorAuthenticationNavClass(ViewContext viewContext) => PageNavClass(viewContext, TwoFactorAuthentication);
+        public static string TwoFactorAuthenticationNavClass(ViewContext viewContext)
+        {
+            return PageNavClass(viewContext, TwoFactorAuthentication);
+        }
 
         public static string PageNavClass(ViewContext viewContext, string page)
         {

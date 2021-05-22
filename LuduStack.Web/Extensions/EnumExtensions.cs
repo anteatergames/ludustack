@@ -27,7 +27,7 @@ namespace LuduStack.Web.Extensions
 
                 Domain.Core.Attributes.UiInfoAttribute ui = item.ToUiInfo();
 
-                string text = String.Format("\"{0}\": \"{1}\"", Convert.ToInt32(item), ui.Display);
+                string text = string.Format("\"{0}\": \"{1}\"", Convert.ToInt32(item), ui.Display);
 
                 sb.Append(text);
 

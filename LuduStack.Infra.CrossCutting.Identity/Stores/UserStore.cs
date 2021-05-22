@@ -67,7 +67,10 @@ namespace LuduStack.Infra.CrossCutting.Identity.Stores
             await _userCollection.UpdateOneAsync(x => x.Id == user.Id, upd);
         }
 
-        private Task<TUser> ById(string id) => _userCollection.FirstOrDefaultAsync(x => x.Id == id);
+        private Task<TUser> ById(string id)
+        {
+            return _userCollection.FirstOrDefaultAsync(x => x.Id == id);
+        }
 
         public async Task SetTokenAsync(TUser user, string loginProvider, string name, string value, CancellationToken cancellationToken)
         {
@@ -129,7 +132,10 @@ namespace LuduStack.Infra.CrossCutting.Identity.Stores
             cancellationToken.ThrowIfCancellationRequested();
 
             TUser u = await _userCollection.FirstOrDefaultAsync(x => x.UserName == user.UserName);
-            if (u != null) return IdentityResult.Failed(new IdentityError { Code = "Username already in use" });
+            if (u != null)
+            {
+                return IdentityResult.Failed(new IdentityError { Code = "Username already in use" });
+            }
 
             await _userCollection.InsertOneAsync(user);
 
@@ -479,7 +485,10 @@ namespace LuduStack.Infra.CrossCutting.Identity.Stores
         {
             cancellationToken.ThrowIfCancellationRequested();
             TRole role = await _roleCollection.FirstOrDefaultAsync(x => x.NormalizedName == roleName);
-            if (role == null) return;
+            if (role == null)
+            {
+                return;
+            }
 
             user.Roles.Add(role.Id);
 
@@ -490,7 +499,10 @@ namespace LuduStack.Infra.CrossCutting.Identity.Stores
         {
             cancellationToken.ThrowIfCancellationRequested();
             TRole role = await _roleCollection.FirstOrDefaultAsync(x => x.NormalizedName == roleName);
-            if (role == null) return;
+            if (role == null)
+            {
+                return;
+            }
 
             user.Roles.Remove(roleName);
 
@@ -501,7 +513,10 @@ namespace LuduStack.Infra.CrossCutting.Identity.Stores
         {
             cancellationToken.ThrowIfCancellationRequested();
             TRole role = await _roleCollection.FirstOrDefaultAsync(x => x.NormalizedName == roleName);
-            if (role == null) return new List<TUser>();
+            if (role == null)
+            {
+                return new List<TUser>();
+            }
 
             FilterDefinition<TUser> filter = Builders<TUser>.Filter.AnyEq(x => x.Roles, role.Id);
             return (await _userCollection.FindAsync(filter)).ToList();
@@ -512,7 +527,10 @@ namespace LuduStack.Infra.CrossCutting.Identity.Stores
             cancellationToken.ThrowIfCancellationRequested();
 
             TUser userDb = await ById(user.Id);
-            if (userDb == null) return new List<string>();
+            if (userDb == null)
+            {
+                return new List<string>();
+            }
 
             List<string> roles = new List<string>();
 
@@ -564,11 +582,17 @@ namespace LuduStack.Infra.CrossCutting.Identity.Stores
             cancellationToken.ThrowIfCancellationRequested();
 
             TUser dbUser = await ById(user.Id);
-            if (dbUser == null) return false;
+            if (dbUser == null)
+            {
+                return false;
+            }
 
             TwoFactorRecoveryCode c = user.RecoveryCodes.FirstOrDefault(x => x.Code == code);
 
-            if (c == null || c.Redeemed) return false;
+            if (c == null || c.Redeemed)
+            {
+                return false;
+            }
 
             c.Redeemed = true;
 

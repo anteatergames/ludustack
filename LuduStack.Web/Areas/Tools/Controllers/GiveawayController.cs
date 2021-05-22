@@ -252,19 +252,18 @@ namespace LuduStack.Web.Areas.Tools.Controllers
 
                     if (checkParticipant.Success)
                     {
-                        return RedirectToAction("youarein", "giveaway", new { area = "tools", id = id });
+                        return RedirectToAction("youarein", "giveaway", new { area = "tools", id });
                     }
                 }
 
                 string serialized = JsonConvert.SerializeObject(castRestult.Value);
                 GiveawayDetailsViewModel model = JsonConvert.DeserializeObject<GiveawayDetailsViewModel>(serialized);
 
-                GiveawayEntryType entryType;
                 model.Enter = new GiveawayEnterViewModel
                 {
                     GiveawayId = id,
                     ReferralCode = referralCode,
-                    EntryType = Enum.TryParse(source, out entryType) ? entryType : new GiveawayEntryType?()
+                    EntryType = Enum.TryParse(source, out GiveawayEntryType entryType) ? entryType : new GiveawayEntryType?()
                 };
 
                 SetLocalization(model);
@@ -306,7 +305,7 @@ namespace LuduStack.Web.Areas.Tools.Controllers
 
                             if (EnvName.Equals(Constants.ProductionEnvironmentName))
                             {
-                                await NotificationSender.SendTeamNotificationAsync(String.Format("{0} joined the giveaway {1}", enter.Email, castRestultGiveawayInfo.Value.Name));
+                                await NotificationSender.SendTeamNotificationAsync(string.Format("{0} joined the giveaway {1}", enter.Email, castRestultGiveawayInfo.Value.Name));
                             }
                         }
                     }
@@ -331,11 +330,11 @@ namespace LuduStack.Web.Areas.Tools.Controllers
 
             if (result.Success)
             {
-                return RedirectToAction("youarein", "giveaway", new { area = "tools", id = id });
+                return RedirectToAction("youarein", "giveaway", new { area = "tools", id });
             }
             else
             {
-                return RedirectToAction("details", "giveaway", new { area = "tools", id = id });
+                return RedirectToAction("details", "giveaway", new { area = "tools", id });
             }
         }
 
@@ -352,12 +351,12 @@ namespace LuduStack.Web.Areas.Tools.Controllers
 
                 if (string.IsNullOrWhiteSpace(sessionEmail) || castRestult.Value.Status == GiveawayStatus.Ended)
                 {
-                    return RedirectToAction("details", "giveaway", new { area = "tools", id = id });
+                    return RedirectToAction("details", "giveaway", new { area = "tools", id });
                 }
 
                 string[] emailSplit = sessionEmail.Split("@");
 
-                ViewData["mailProvider"] = emailSplit.Length > 1 ? String.Format("https://{0}", emailSplit[1]) : "#";
+                ViewData["mailProvider"] = emailSplit.Length > 1 ? string.Format("https://{0}", emailSplit[1]) : "#";
 
                 GiveawayParticipationViewModel model = castRestult.Value;
 
@@ -369,7 +368,7 @@ namespace LuduStack.Web.Areas.Tools.Controllers
             }
             else
             {
-                return RedirectToAction("details", "giveaway", new { area = "tools", id = id });
+                return RedirectToAction("details", "giveaway", new { area = "tools", id });
             }
         }
 

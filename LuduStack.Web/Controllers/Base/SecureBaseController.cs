@@ -28,35 +28,35 @@ namespace LuduStack.Web.Controllers.Base
     public class SecureBaseController : BaseController
     {
         private IServiceProvider services;
-        public IServiceProvider Services => services ?? (services = HttpContext?.RequestServices.GetService<IServiceProvider>());
+        public IServiceProvider Services => services ??= HttpContext?.RequestServices.GetService<IServiceProvider>();
 
         private IWebHostEnvironment hostEnvironment;
-        public IWebHostEnvironment HostEnvironment => hostEnvironment ?? (hostEnvironment = Services.GetService<IWebHostEnvironment>());
+        public IWebHostEnvironment HostEnvironment => hostEnvironment ??= Services.GetService<IWebHostEnvironment>();
 
         private INotificationSender notificationSender;
-        public INotificationSender NotificationSender => notificationSender ?? (notificationSender = Services.GetService<INotificationSender>());
+        public INotificationSender NotificationSender => notificationSender ??= Services.GetService<INotificationSender>();
 
         private UserManager<ApplicationUser> _userManager;
-        public UserManager<ApplicationUser> UserManager => _userManager ?? (_userManager = Services.GetService<UserManager<ApplicationUser>>());
+        public UserManager<ApplicationUser> UserManager => _userManager ??= Services.GetService<UserManager<ApplicationUser>>();
 
         private IImageStorageService _imageStorageService;
-        public IImageStorageService ImageStorageService => _imageStorageService ?? (_imageStorageService = Services.GetService<IImageStorageService>());
+        public IImageStorageService ImageStorageService => _imageStorageService ??= Services.GetService<IImageStorageService>();
 
         private ICookieMgrService _cookieMgrService;
-        public ICookieMgrService CookieMgrService => _cookieMgrService ?? (_cookieMgrService = Services.GetService<ICookieMgrService>());
+        public ICookieMgrService CookieMgrService => _cookieMgrService ??= Services.GetService<ICookieMgrService>();
 
         private IProfileAppService profileAppService;
-        public IProfileAppService ProfileAppService => profileAppService ?? (profileAppService = Services.GetService<IProfileAppService>());
+        public IProfileAppService ProfileAppService => profileAppService ??= Services.GetService<IProfileAppService>();
 
         private IUserPreferencesAppService userPreferencesAppService;
 
-        public IUserPreferencesAppService UserPreferencesAppService => userPreferencesAppService ?? (userPreferencesAppService = Services.GetService<IUserPreferencesAppService>());
+        public IUserPreferencesAppService UserPreferencesAppService => userPreferencesAppService ??= Services.GetService<IUserPreferencesAppService>();
 
         public Guid CurrentUserId { get; set; }
 
         public bool CurrentUserIsAdmin { get; set; }
 
-        public String CurrentLocale { get; set; }
+        public string CurrentLocale { get; set; }
 
         public string EnvName { get; private set; }
 

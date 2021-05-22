@@ -25,13 +25,7 @@ namespace LuduStack.Application.ViewModels
 
         public PermissionsVo Permissions { get; set; }
 
-        public string CreateDateText
-        {
-            get
-            {
-                return CreateDate.ToString();
-            }
-        }
+        public string CreateDateText => CreateDate.ToString();
 
         protected BaseViewModel()
         {

@@ -102,18 +102,19 @@
 
     function bindCropper() {
         var images = document.querySelectorAll(selectors.imageListItem);
+        console.log(images);
         var i;
 
-        for (i = 0; i < images.length; i++) {
-            croppers.push(new Cropper(images[i], {
-                aspectRatio: 40 / 21,
-                viewMode: 3,
-                autoCropArea: 1,
-                zoomOnWheel: false
-            }));
+        //for (i = 0; i < images.length; i++) {
+        //    croppers.push(new Cropper(images[i], {
+        //        aspectRatio: 40 / 21,
+        //        viewMode: 3,
+        //        autoCropArea: 1,
+        //        zoomOnWheel: false
+        //    }));
 
-            images[i].dataset.cropperIndex = i;
-        }
+        //    images[i].dataset.cropperIndex = i;
+        //}
     }
 
     function uploadCroppedImages(callback) {

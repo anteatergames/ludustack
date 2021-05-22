@@ -31,9 +31,9 @@ namespace LuduStack.Web.Models
 
         public string Description { get; set; }
 
-        public List<String> Items { get; set; }
+        public List<string> Items { get; set; }
 
-        public bool Future { get { return Date > DateTime.Today; } }
+        public bool Future => Date > DateTime.Today;
 
         public TimeLineItemViewModel()
         {

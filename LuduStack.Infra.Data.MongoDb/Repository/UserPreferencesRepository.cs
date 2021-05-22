@@ -27,7 +27,7 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
         private IEnumerable<SupportedLanguage> FormatList(string contentLanguages)
         {
             string[] languages = (contentLanguages ?? string.Empty)
-                .Split(new Char[] { '|' });
+                .Split(new char[] { '|' });
 
             IEnumerable<SupportedLanguage> languagesConverted = languages.Where(x => !string.IsNullOrWhiteSpace(x)).Select(x => (SupportedLanguage)Enum.Parse(typeof(SupportedLanguage), x));
 

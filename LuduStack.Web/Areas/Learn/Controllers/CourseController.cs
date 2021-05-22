@@ -333,14 +333,14 @@ namespace LuduStack.Web.Areas.Learn.Controllers
 
         private void FormatToShow(CourseViewModel model)
         {
-            model.Description = String.IsNullOrWhiteSpace(model.Description) ? SharedLocalizer["No Description to show."] : model.Description.Replace("\n", "<br />");
+            model.Description = string.IsNullOrWhiteSpace(model.Description) ? SharedLocalizer["No Description to show."] : model.Description.Replace("\n", "<br />");
         }
 
         private void FormatToShow(List<StudyPlanViewModel> castResult)
         {
             foreach (StudyPlanViewModel plan in castResult)
             {
-                plan.Description = String.IsNullOrWhiteSpace(plan.Description) ? SharedLocalizer["No Description to show."] : plan.Description.Replace("\n", "<br />");
+                plan.Description = string.IsNullOrWhiteSpace(plan.Description) ? SharedLocalizer["No Description to show."] : plan.Description.Replace("\n", "<br />");
             }
         }
 

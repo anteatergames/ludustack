@@ -43,11 +43,11 @@ namespace LuduStack.Domain.Messaging
         protected readonly IUnitOfWork unitOfWork;
         protected readonly IShortUrlRepository shortUrlRepository;
 
-        private static Random random = new Random();
+        private static readonly Random random = new Random();
 
         private const string BASEURL = "/go/";
 
-        private const String ALPHABET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        private const string ALPHABET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
         public SaveShortUrlCommandHandler(IUnitOfWork unitOfWork, IShortUrlRepository shortUrlRepository)
         {

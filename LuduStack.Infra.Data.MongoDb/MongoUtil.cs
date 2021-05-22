@@ -8,17 +8,20 @@ namespace LuduStack.Infra.Data.MongoDb
 {
     public static class MongoUtil
     {
-        private static FindOptions<TItem> LimitOneOption<TItem>() => new FindOptions<TItem>
+        private static FindOptions<TItem> LimitOneOption<TItem>()
         {
-            Limit = 1
-        };
+            return new FindOptions<TItem>
+            {
+                Limit = 1
+            };
+        }
 
         public static IMongoCollection<TItem> FromConnectionString<TItem>(string connectionString)
         {
             char[] name = typeof(TItem).Name.ToCharArray();
             name[0] = char.ToLowerInvariant(name[0]);
 
-            string newName = new String(name);
+            string newName = new string(name);
 
             return FromConnectionString<TItem>(connectionString, null, newName);
         }

@@ -7,7 +7,7 @@ namespace LuduStack.Domain.Core.Extensions
     {
         public static string GetFirstWords(this string input, int count)
         {
-            return String.Join(' ', input.GetWords(count, null, StringSplitOptions.RemoveEmptyEntries));
+            return string.Join(' ', input.GetWords(count, null, StringSplitOptions.RemoveEmptyEntries));
         }
 
         public static string[] GetWords(

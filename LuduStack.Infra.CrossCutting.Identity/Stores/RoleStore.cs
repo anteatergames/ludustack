@@ -31,7 +31,11 @@ namespace LuduStack.Infra.CrossCutting.Identity.Stores
         async Task<IdentityResult> IRoleStore<TRole>.CreateAsync(TRole role, CancellationToken cancellationToken)
         {
             TRole found = await _collection.FirstOrDefaultAsync(x => x.NormalizedName == role.NormalizedName);
-            if (found == null) await _collection.InsertOneAsync(role, new InsertOneOptions(), cancellationToken);
+            if (found == null)
+            {
+                await _collection.InsertOneAsync(role, new InsertOneOptions(), cancellationToken);
+            }
+
             return IdentityResult.Success;
         }
 

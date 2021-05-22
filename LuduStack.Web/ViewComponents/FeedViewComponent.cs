@@ -155,7 +155,7 @@ namespace LuduStack.Web.ViewComponents
                 translatedText = SharedLocalizer["A team is recruiting!", memberCount].ToString();
             }
 
-            item.Content = String.Format(postTemplate, translatedText, name, motto);
+            item.Content = string.Format(postTemplate, translatedText, name, motto);
             item.Url = Url.Action("Details", "Team", new { area = string.Empty, teamId = id }, (string)ViewData["protocol"], (string)ViewData["host"]);
             item.Language = SupportedLanguage.English;
         }
@@ -179,7 +179,7 @@ namespace LuduStack.Web.ViewComponents
             string postTemplate = ContentFormatter.FormatUrlContentToShow(item.UserContentType);
             string translatedText = SharedLocalizer["A new job position for {0}({1}) is open for applications.", SharedLocalizer[obj.WorkType.ToDisplayName()], obj.Location].ToString();
 
-            item.Content = String.Format(postTemplate, translatedText, SharedLocalizer[obj.WorkType.ToDisplayName()], obj.Location);
+            item.Content = string.Format(postTemplate, translatedText, SharedLocalizer[obj.WorkType.ToDisplayName()], obj.Location);
             item.Url = Url.Action("Details", "JobPosition", new { area = "Work", id = obj.Id.ToString() }, (string)ViewData["protocol"], (string)ViewData["host"]);
             item.Language = language;
         }

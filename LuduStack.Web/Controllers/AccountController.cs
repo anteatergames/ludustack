@@ -137,7 +137,7 @@ namespace LuduStack.Web.Controllers
                 await SetCache(user);
             }
 
-            string logMessage = String.Format("User {0} logged in.", model.UserName);
+            string logMessage = string.Format("User {0} logged in.", model.UserName);
 
             if (EnvName.Equals(Constants.ProductionEnvironmentName))
             {
@@ -304,7 +304,7 @@ namespace LuduStack.Web.Controllers
 
                     await SetPreferences(user);
 
-                    string logMessage = String.Format("User {0} created a new account with password.", model.UserName);
+                    string logMessage = string.Format("User {0} created a new account with password.", model.UserName);
 
                     if (EnvName.Equals(Constants.ProductionEnvironmentName))
                     {
@@ -398,7 +398,7 @@ namespace LuduStack.Web.Controllers
 
                 if (existingUser != null)
                 {
-                    string logMessage = String.Format("User {0} logged in with {1} provider.", existingUser.UserName, info.LoginProvider);
+                    string logMessage = string.Format("User {0} logged in with {1} provider.", existingUser.UserName, info.LoginProvider);
 
                     if (EnvName.Equals(Constants.ProductionEnvironmentName))
                     {
@@ -535,10 +535,10 @@ namespace LuduStack.Web.Controllers
 
             await _signInManager.SignInAsync(user, isPersistent: false);
 
-            string logMessage = String.Format("User {0} linked a {1} account.", user.UserName, externalLoginInfo.LoginProvider);
+            string logMessage = string.Format("User {0} linked a {1} account.", user.UserName, externalLoginInfo.LoginProvider);
             if (existingUser == null)
             {
-                logMessage = String.Format("User {0} registered with a {1} account.", user.UserName, externalLoginInfo.LoginProvider);
+                logMessage = string.Format("User {0} registered with a {1} account.", user.UserName, externalLoginInfo.LoginProvider);
             }
 
             if (EnvName.Equals(Constants.ProductionEnvironmentName))
@@ -844,7 +844,7 @@ namespace LuduStack.Web.Controllers
 
         private async Task UploadFirstAvatar(Guid userId, ProfileType type)
         {
-            string fileName = String.Format("{0}_{1}", userId, type);
+            string fileName = string.Format("{0}_{1}", userId, type);
 
             string defaultImageNotRooted = UrlFormatter.GetDefaultImage(ImageType.ProfileImage);
 

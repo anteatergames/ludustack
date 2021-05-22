@@ -58,7 +58,7 @@ namespace LuduStack.Domain.Messaging
             if (request.CreateTeam)
             {
                 newTeam = teamDomainService.GenerateNewTeam(request.UserId);
-                newTeam.Name = String.Format("Team {0}", request.Game.Title);
+                newTeam.Name = string.Format("Team {0}", request.Game.Title);
 
                 CommandResult saveTeamResult = await mediator.SendCommand(new SaveTeamCommand(request.UserId, newTeam));
 
@@ -74,7 +74,7 @@ namespace LuduStack.Domain.Messaging
                 }
             }
 
-            request.Game.ExternalLinks.RemoveAll(x => String.IsNullOrWhiteSpace(x.Value));
+            request.Game.ExternalLinks.RemoveAll(x => string.IsNullOrWhiteSpace(x.Value));
 
             if (request.Game.Id == Guid.Empty)
             {

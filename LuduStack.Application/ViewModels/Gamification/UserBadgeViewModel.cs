@@ -9,13 +9,7 @@ namespace LuduStack.Application.ViewModels.Gamification
     {
         public BadgeType Badge { get; set; }
 
-        public string Description
-        {
-            get
-            {
-                return Badge.ToUiInfo().Description;
-            }
-        }
+        public string Description => Badge.ToUiInfo().Description;
 
         public List<Guid> References { get; set; }
 

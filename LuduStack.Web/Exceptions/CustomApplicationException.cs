@@ -10,15 +10,9 @@ namespace LuduStack.Web.Exceptions
         private readonly string resourceName;
         private readonly IList<string> validationErrors;
 
-        public string ResourceName
-        {
-            get { return resourceName; }
-        }
+        public string ResourceName => resourceName;
 
-        public IList<string> ValidationErrors
-        {
-            get { return validationErrors; }
-        }
+        public IList<string> ValidationErrors => validationErrors;
 
         public CustomApplicationException()
         {

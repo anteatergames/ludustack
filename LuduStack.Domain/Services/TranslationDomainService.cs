@@ -202,7 +202,7 @@ namespace LuduStack.Domain.Services
 
                 xmlTexts.Add(new InMemoryFileVo
                 {
-                    FileName = String.Format("{0}.xml", language.ToString().ToLower()),
+                    FileName = string.Format("{0}.xml", language.ToString().ToLower()),
                     Contents = Encoding.UTF8.GetBytes(xmlText)
                 });
             }
@@ -218,7 +218,7 @@ namespace LuduStack.Domain.Services
 
             return new InMemoryFileVo
             {
-                FileName = String.Format("{0}.xml", language.ToString().ToLower()),
+                FileName = string.Format("{0}.xml", language.ToString().ToLower()),
                 Contents = Encoding.UTF8.GetBytes(xmlText)
             };
         }
@@ -245,8 +245,8 @@ namespace LuduStack.Domain.Services
             sb.AppendLine("<resources>");
             sb.AppendLine();
 
-            sb.AppendLine(String.Format("<string id=\"lang_name\">{0}</string>", language.ToDisplayName()));
-            sb.AppendLine(String.Format("<string id=\"lang_index\">{0}</string>", (int)language));
+            sb.AppendLine(string.Format("<string id=\"lang_name\">{0}</string>", language.ToDisplayName()));
+            sb.AppendLine(string.Format("<string id=\"lang_index\">{0}</string>", (int)language));
             sb.AppendLine();
 
             for (int i = 0; i < project.Terms.Count; i++)
@@ -273,7 +273,7 @@ namespace LuduStack.Domain.Services
 
                 if (!string.IsNullOrWhiteSpace(langValue))
                 {
-                    sb.AppendLine(String.Format("<string id=\"{0}\">{1}</string>", term.Key, langValue));
+                    sb.AppendLine(string.Format("<string id=\"{0}\">{1}</string>", term.Key, langValue));
                 }
             }
 
