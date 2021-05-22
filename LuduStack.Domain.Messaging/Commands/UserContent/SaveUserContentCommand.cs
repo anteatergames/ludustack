@@ -107,7 +107,7 @@ namespace LuduStack.Domain.Messaging
                 result.PointsEarned += savePollResult.PointsEarned;
             }
 
-            if (request.UserContent.GameId.HasValue)
+            if (request.UserContent.GameId.HasValue && request.UserContent.Media != null && request.UserContent.Media.Any())
             {
                 CommandResult addImagesToGameResult = await mediator.SendCommand(new AddImagesToGameCommand(request.UserContent.GameId.Value, request.UserContent.Media));
 
