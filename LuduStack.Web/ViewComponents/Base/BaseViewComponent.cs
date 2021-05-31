@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using LuduStack.Domain.Core.Enums;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
@@ -17,13 +18,22 @@ namespace LuduStack.Web.ViewComponents.Base
 
         public Guid CurrentUserId { get; set; }
 
+        public bool CurrentUserIsAdmin { get; set; }
+
         protected BaseViewComponent(IHttpContextAccessor httpContextAccessor)
         {
-            string id = httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            ClaimsPrincipal authenticatedUser = httpContextAccessor.HttpContext.User;
 
-            if (!string.IsNullOrWhiteSpace(id))
+            if (authenticatedUser != null)
             {
-                CurrentUserId = new Guid(id);
+                string id = authenticatedUser.FindFirstValue(ClaimTypes.NameIdentifier);
+
+                if (!string.IsNullOrWhiteSpace(id))
+                {
+                    CurrentUserId = new Guid(id);
+
+                    CurrentUserIsAdmin = authenticatedUser.Identity.IsAuthenticated && authenticatedUser.IsInRole(Roles.Administrator.ToString());
+                }
             }
         }
     }

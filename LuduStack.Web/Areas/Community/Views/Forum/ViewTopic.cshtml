@@ -1,0 +1,128 @@
+﻿@model ForumPostViewModel
+@{
+    ViewData["Title"] = Model.Title;
+    ViewData["Description"] = SharedLocalizer["Topic posted on {0}", Model.CreateDate.ToString()];
+    ViewData["Url"] = ViewBag.BaseUrl + Url.Action("viewpost", "forum", new { area = "community", id = Model.Id });
+
+    var authorUrl = Url.Action("details", "profile", new { area = string.Empty, userHandler = Model.UserHandler });
+    var authorLink = string.Format("<a href=\"{0}\" class=\"boldlink\">{1}</a>", authorUrl, Model.AuthorName);
+
+    var categoryUrl = Url.Action("category", "forum", new { area = "community", handler = Model.CategoryHandler });
+    var categoryLink = string.Format("<a href=\"{0}\" class=\"boldlink\">{1}</a>", categoryUrl, Model.CategoryName);
+
+    var answerModel = new ForumPostViewModel
+    {
+        Id = Guid.Empty,
+        ForumCategoryId = Model.ForumCategoryId,
+        OriginalPostId = Model.OriginalPostId
+    };
+}
+
+@section OpenGraphMeta {
+    <meta property="og:article:author" content="@Model.AuthorName">
+}
+
+@section Styles {
+    <environment include="Development">
+        <link rel="stylesheet" href="~/css/forum.css" />
+        <link rel="stylesheet" href="~/lib/nanogallery2/css/nanogallery2.min.css">
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="~/css/contentdetails.min.css" asp-append-version="true" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/nanogallery2/3.0.5/css/nanogallery2.min.css"
+              integrity="sha512-6sOT9zKSKq1CYgNMqtcY84tFPDnG1yX5mxwdGQiAVpAomVr2kUKJ//pFeU/KfaZDVCOru5iFOVswpT4RWWF2dQ=="
+              crossorigin="anonymous" />
+    </environment>
+}
+
+@section Scripts {
+    <environment include="Development">
+        <script src="~/js/forum/forumcommon.js"></script>
+        <script src="~/js/forum/forumpostdetails.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/js/forum/forumpostdetails.min.js" asp-append-version="true"></script>
+    </environment>
+    @*    <script type="application/ld+json">
+        {
+        "@@context":"http://schema.org",
+        "@@type":"SocialMediaPosting",
+        "@@id":"@(ViewData["Url"])",
+        "headline":"@(JavaScriptEncoder.Default.Encode(Model.Title))",
+        "image": "@((hasFeaturedImage && featuredImageIsYoutube) || !hasFeaturedImage ? ViewBag.BaseUrl + "/images/og/img_facebook600x315.png" : ViewBag.BaseUrl + Model.FeaturedImage)",
+        "datePublished": "@Model.CreateDate.ToString("yyyy-MM-dd")",
+        "author":{
+        "@@type":"Person",
+        "name":"@Model.AuthorName",
+        "url":"@(ViewBag.BaseUrl + "/u/" + Model.UserHandler)"
+        }
+        },
+        "sharedContent":{
+        "@@type":"WebPage",
+        "headline":"@(JavaScriptEncoder.Default.Encode(Model.Introduction))",
+        "url":"@(ViewData["Url"])",
+        "image": "@Model.FeaturedImage",
+        "author":{
+        "@@type":"Person",
+        "name":"@Model.AuthorName"
+        }
+        }
+        }
+        </script>*@
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+<section id="featurecontainer" class="content container">
+    <input type="hidden" id="urls" value="urls"
+           data-url-answers="@Url.Action("answersbytopic", "forum", new { area = "community", topicId = Model.Id })" />
+
+    <div class="box p-0 bg-white">
+
+        <div class="col-12 p-2">
+            <div class="row">
+                <div class="col-12">
+                    <div class="float-left mr-2">
+                        <a asp-area="community" asp-controller="forum" asp-action="category" asp-route-handler="@Model.CategoryHandler" class="btn btn-default"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
+                    </div>
+                    <h1 data-language="@Model.Language" class="h3">
+                        @(string.IsNullOrWhiteSpace(Model.Title) ? Html.Raw("&nbsp;") : Model.Title)
+                    </h1>
+                    <hr class="my-2" />
+                    <span class="d-block">@Html.Raw(SharedLocalizer["Posted by {0} on {1}, {2}", authorLink, categoryLink, Model.CreatedRelativeTime])</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="postitem">
+            <partial name="_ForumPost" model="Model" />
+        </div>
+
+        <div id="divAnswers">
+            <hr class="m-2" />
+        </div>
+    </div>
+
+    <div class="p-0 bg-white">
+        <form id="frmSendAnswer" asp-area="community" asp-controller="forum" asp-action="savepost" method="post">
+            <input type="hidden" asp-for="ForumCategoryId" />
+            <input type="hidden" asp-for="OriginalPostId" />
+
+            <div class="d-flex p-3">
+                <div class="mr-2">
+                    <img class="rounded-circle" src="@ViewBag.ProfileImage" alt="This is @ViewBag.Username">
+                </div>
+
+                <div class="d-flex flex-fill flex-column">
+                    <div class="mb-2">
+                        <textarea name="Content" class="form-control txtAreaMyAnswer" rows="5"></textarea>
+                    </div>
+
+                    <div class="text-right">
+                        <button type="button" class="btn btn-lg btn-primary btn-post-save"><i class="far fa-paper-plane" aria-hidden="true"></i> @SharedLocalizer["Answer"]</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>

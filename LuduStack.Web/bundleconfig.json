@@ -94,7 +94,7 @@
   {
     "outputFileName": "wwwroot/css/contentdetails.min.css",
     "inputFiles": [
-      "wwwroot/css/polls.css"
+      "wwwroot/css/forum.css"
     ]
   },
   {
@@ -495,5 +495,54 @@
     "inputFiles": [
       "wwwroot/js/billrate/billratedetails.js"
     ]
-  }
+  },
+  {
+    "outputFileName": "wwwroot/css/forumcategory.min.css",
+    "inputFiles": [
+      "wwwroot/css/forumcategory.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/forumcategory/forumcategory.min.js",
+    "inputFiles": [
+      "wwwroot/js/forumcategory/forumcategorycommon.js",
+      "wwwroot/js/forumcategory/forumcategory.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/forumcategory/forumcategoryedit.min.js",
+    "inputFiles": [
+      "wwwroot/js/common-edit.js",
+      "wwwroot/js/forumcategory/forumcategorycommon.js",
+      "wwwroot/js/forumcategory/forumcategoryedit.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/forum.min.css",
+    "inputFiles": [
+      "wwwroot/css/forum.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/forum/forum.min.js",
+    "inputFiles": [
+      "wwwroot/js/forum/forumcommon.js",
+      "wwwroot/js/forum/forum.js"
+    ]
+  },
+    {
+        "outputFileName": "wwwroot/js/forum/forumpostedit.min.js",
+        "inputFiles": [
+            "wwwroot/js/common-edit.js",
+            "wwwroot/js/forum/forumcommon.js",
+            "wwwroot/js/forum/forumpostedit.js"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/js/forum/forumpostdetails.min.js",
+        "inputFiles": [
+            "wwwroot/js/forum/forumcommon.js",
+            "wwwroot/js/forum/forumpostdetails.js"
+        ]
+    }
 ]

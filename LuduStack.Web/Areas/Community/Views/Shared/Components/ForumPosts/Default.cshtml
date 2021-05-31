@@ -1,0 +1,98 @@
+﻿@model IEnumerable<ForumPostListItemVo>
+
+@{
+    var canInteract = User.Identity.IsAuthenticated;
+
+    Layout = null;
+
+    var noItemsModel = new ListNoItemsViewModel("fas fa-dizzy", "There are no Forum Posts on this Category!");
+
+    var description = ViewData["ListDescription"] == null ? SharedLocalizer["Forum Posts"] : (string)ViewData["ListDescription"];
+}
+
+<div class="bg-light pt-2">
+    @if (!Model.Any())
+    {
+        <partial name="_ListNoItems" model="noItemsModel" />
+    }
+    else
+    {
+        <div class="row px-3 text-uppercase">
+            <div class="col-12 col-sm-8 col-md-6">@SharedLocalizer["title"]</div>
+            <div class="col-sm-4 col-md-3 col-lg-1 d-none d-sm-block text-center">@SharedLocalizer["answers"]</div>
+            <div class="col-md-3 col-lg-1 d-none d-md-block text-center">@SharedLocalizer["views"]</div>
+            <div class="col-4 d-none d-lg-block">@SharedLocalizer["most recent"]</div>
+        </div>
+        <div class="col-12 square-top p-0 bg-white">
+            @for (int i = 0; i < Model.Count(); i++)
+            {
+                var item = Model.ElementAt(i);
+
+                if (i > 0)
+                {
+                    <hr />
+                }
+
+                <div class="rounded-0 forumlistitem">
+                    <div class="col-12">
+                        <div class="row">
+                            <div class="col-12 col-sm-8 col-md-6 p-3">
+                                <a asp-area="community" asp-controller="forum" asp-action="viewtopic" asp-route-id="@item.Id" class="stretched-link">
+                                    <div class="d-flex flex-column align-items-left p-2">
+                                        <div class="forumlisttitle">
+                                            @item.Title
+                                        </div>
+                                        <div class="forumlistdescription">
+                                            @SharedLocalizer["by {0} {1}", item.AuthorName, item.CreatedRelativeTime]
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-sm-4 col-md-3 col-lg-1 d-none d-sm-block p-3">
+                                <a asp-area="community" asp-controller="forum" asp-action="viewtopic" asp-route-id="@item.Id" class="stretched-link">
+                                    <div class="d-flex flex-column align-items-center p-2">
+                                        <div class="p-2 bd-highlight">@item.AnswerCount</div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-md-3 col-lg-1  d-none d-md-block p-3">
+                                <div class="verticaldivider"></div>
+                                <a asp-area="community" asp-controller="forum" asp-action="viewtopic" asp-route-id="@item.Id" class="stretched-link">
+                                    <div class="d-flex flex-column align-items-center p-2">
+                                        <div class="p-2 bd-highlight">@item.ViewCount</div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-4 d-none d-lg-block p-3 clickablelink">
+                                <div class="d-flex flex-row p-2">
+                                    @if (item.LatestAnswer != null)
+                                    {
+                                        var authorUrl = Url.Action("details", "profile", new { area = string.Empty, userHandler = item.LatestAnswer.UserHandler });
+                                        var authorLink = string.Format("<a href=\"{0}\" class=\"boldlink\">{1}</a>", authorUrl, item.LatestAnswer.AuthorName);
+
+                                        <div class="mr-2">
+                                            <a href="@authorUrl">
+                                                <img class="rounded-circle border" src="@item.LatestAnswer.AuthorPicture" alt="This is @item.LatestAnswer.AuthorName">
+                                            </a>
+                                        </div>
+
+                                        <div class="d-flex flex-column align-items-left forumlistdescription">
+                                            @Html.Raw(SharedLocalizer["{0} answered {1}", authorLink, item.LatestAnswer.CreatedRelativeTime])
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="p-2">-</div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="row px-3 text-uppercase">
+            <div class="col-12">&nbsp;</div>
+        </div>
+    }
+</div>

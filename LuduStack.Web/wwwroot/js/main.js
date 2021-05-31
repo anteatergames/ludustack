@@ -153,6 +153,12 @@
     }
 
     function enableButton(btn) {
+        console.log(btn);
+        console.log(saveBtnOriginalText);
+        if (saveBtnOriginalText) {
+            btn.html(saveBtnOriginalText);
+        }
+
         btn.removeClass('disabled');
     }
 
@@ -317,14 +323,14 @@
         return promise;
     }
 
-    async function loadHtml(url, listObj, placeSpinner) {
+    async function loadHtml(url, targetObj, placeSpinner) {
         var idList = '';
 
-        if (listObj instanceof jQuery) {
-            idList = '#' + listObj.attr('id');
+        if (targetObj instanceof jQuery) {
+            idList = '#' + targetObj.attr('id');
         }
         else {
-            idList = listObj;
+            idList = targetObj;
 
             if (idList.indexOf('#') !== 0) {
                 idList = '#' + idList;
@@ -434,7 +440,9 @@
                 type: httpmethod
             }).done(function (response) {
                 if (response.success) {
-                    MAINMODULE.Common.HandleSuccessDefault(response, null, callback);
+                    MAINMODULE.Common.HandleSuccessDefault(response, null, function (response) {
+                        callback(response, btn);
+                    });
                 }
                 else {
                     ALERTSYSTEM.ShowWarningMessage(response.message);

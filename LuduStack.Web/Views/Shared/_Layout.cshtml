@@ -747,12 +747,12 @@
                 <div id="divHeaderSearch" class="col d-none d-md-block">
                     <form asp-controller="search" asp-action="index" method="get" class="search-form">
                         <div class="input-group">
-                            <div class="input-group-prepend">
+                            <input type="text" name="q" aria-label="@SharedLocalizer["Search"]" class="form-control" placeholder="@SharedLocalizer["Search"]...">
+                            <div class="input-group-append">
                                 <button class="input-group-text" id="btn-search" aria-label="Search Button">
                                     <i class="fa fa-search" aria-hidden="true"></i>
                                 </button>
                             </div>
-                            <input type="text" name="q" aria-label="@SharedLocalizer["Search"]" class="form-control" placeholder="@SharedLocalizer["Search"]...">
                         </div>
                     </form>
                 </div>

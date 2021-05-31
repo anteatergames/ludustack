@@ -1,0 +1,64 @@
+﻿hr {
+    margin: 0;
+}
+
+.author-details {
+    background-color: var(--color-shade);
+}
+
+.clickablelink a:active, .clickablelink a:focus, .clickablelink a:hover {
+    text-decoration: underline !important;
+}
+
+.forum-headermessage {
+    line-height: 37px;
+}
+
+.forumlistitem {
+    --line-height: 32px;
+}
+
+    .forumlistitem .verticaldivider {
+        border-left: 1px solid #dedada;
+        float: left;
+        height: 100%;
+        margin-left: -20px;
+    }
+
+    .forumlistitem .categoryicon {
+    }
+
+    .forumlistitem .forumlisttitle {
+        font-weight: bold;
+    }
+
+    .forumlistitem .forumlistdescription {
+        font-weight: lighter;
+    }
+
+    /*    .forumlistitem .fullline {
+        min-height: var(--line-height);
+        line-height: var(--line-height);
+    }
+
+    .forumlistitem .halfline {
+        min-height: calc(var(--line-height) / 2);
+        line-height: calc(var(--line-height) / 2);
+    }*/
+
+    .forumlistitem:hover, .forumlistitem:hover a {
+        background-color: var(--color-green);
+        color: white;
+    }
+
+        .forumlistitem:hover svg {
+            fill: white;
+        }
+
+.postitem .postitemcontainer {
+    min-height: 160px;
+}
+
+.postitem .postsidebar svg {
+    fill: var(--color-bg-basic);
+}

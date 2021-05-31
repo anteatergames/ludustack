@@ -27,7 +27,7 @@ namespace LuduStack.Domain.Messaging.Queries.Base
             this.repository = repository;
         }
 
-        public async Task<TModel> Handle(TQuery request, CancellationToken cancellationToken)
+        public virtual async Task<TModel> Handle(TQuery request, CancellationToken cancellationToken)
         {
             TModel obj = await repository.GetById(request.Id);
 

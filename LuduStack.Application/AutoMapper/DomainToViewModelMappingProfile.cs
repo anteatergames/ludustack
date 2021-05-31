@@ -7,6 +7,7 @@ using LuduStack.Application.ViewModels.Comics;
 using LuduStack.Application.ViewModels.Content;
 using LuduStack.Application.ViewModels.CostCalculator;
 using LuduStack.Application.ViewModels.FeaturedContent;
+using LuduStack.Application.ViewModels.Forum;
 using LuduStack.Application.ViewModels.Game;
 using LuduStack.Application.ViewModels.Gamification;
 using LuduStack.Application.ViewModels.Giveaway;
@@ -196,6 +197,14 @@ namespace LuduStack.Application.AutoMapper
             CreateMap<TextRateVo, TextRateCostsViewModel>();
 
             #endregion BillRate
+
+            #region Forum
+
+            CreateMap<ForumCategory, ForumCategoryViewModel>();
+            CreateMap<ForumCategory, ForumCategoryListItemVo>();
+            CreateMap<ForumPost, ForumPostViewModel>();
+
+            #endregion Forum
         }
     }
 }

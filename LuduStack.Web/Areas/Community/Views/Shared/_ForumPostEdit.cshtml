@@ -1,0 +1,31 @@
+﻿@model ForumPostViewModel
+@{
+    Layout = null;
+}
+
+<div class="flex-fill">
+    <form id="@string.Format("frmPostEdit-{0}", Model.Id)" asp-area="community" asp-controller="forum" asp-action="savepost" method="post">
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="UserId" />
+        <input type="hidden" asp-for="ForumCategoryId" />
+        <input type="hidden" asp-for="IsOriginalPost" />
+        <input type="hidden" asp-for="OriginalPostId" />
+
+        <div class="d-flex p-2">
+            <div class="mr-2">
+                <img class="rounded-circle" src="@ViewBag.ProfileImage" alt="This is @ViewBag.Username">
+            </div>
+
+            <div class="d-flex flex-fill flex-column">
+                <div class="mb-2">
+                    <textarea asp-for="Content" class="form-control txtAreaMyAnswer" rows="5"></textarea>
+                </div>
+
+                <div class="text-right">
+                    <button type="button" class="btn btn-sm btn-outline-danger btn-edit-cancel"><i class="fas fa-ban" aria-hidden="true"></i> @SharedLocalizer["Cancel"]</button>
+                    <button type="button" class="btn btn-sm btn-primary btn-post-save"><i class="far fa-paper-plane" aria-hidden="true"></i> @SharedLocalizer["Save"]</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

@@ -3,13 +3,17 @@
     Layout = null;
 
     var url = string.IsNullOrWhiteSpace(Model.Url) ? "#" : Model.Url;
+    var authorUrl = Url.Action("details", "profile", new { area = string.Empty, userHandler = Model.UserHandler });
+    var authorLink = string.Format("<a href=\"{0}\" class=\"boldlink\">{1}</a>", authorUrl, Model.AuthorName);
 }
 
 <div class="user-block">
     <a asp-area="" asp-controller="profile" asp-action="details" asp-route-userHandler="@Model.UserHandler">
         <img class="rounded-circle" src="@Model.AuthorPicture" alt="This is @Model.AuthorName">
     </a>
-    <span class="username"><a asp-area="" asp-controller="profile" asp-action="details" asp-route-userHandler="@Model.UserHandler">@SharedLocalizer["by {0}", Model.AuthorName]</a></span>
+    <span class="username">
+        @Html.Raw(SharedLocalizer["by {0}", authorLink])
+    </span>
 
     <a href="@url" class="contenturl">
         <span class="description">@SharedLocalizer["at {0}", Model.CreateDate.ToString()]</span>

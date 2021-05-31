@@ -56,11 +56,9 @@ namespace LuduStack.Web.ViewComponents
 
             IEnumerable<UserContentViewModel> model = await _userContentAppService.GetActivityFeed(vm);
 
-            bool userIsAdmin = User.Identity.IsAuthenticated && User.IsInRole(Roles.Administrator.ToString());
-
             foreach (UserContentViewModel item in model)
             {
-                FillMissingInformation(userIsAdmin, item);
+                FillMissingInformation(CurrentUserIsAdmin, item);
             }
 
             if (model.Any())

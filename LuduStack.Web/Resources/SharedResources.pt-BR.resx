@@ -1549,7 +1549,7 @@
     <value>membros</value>
     <comment>Team</comment>
   </data>
-  <data name="quote" xml:space="preserve">
+  <data name="quote phrase" xml:space="preserve">
     <value>frase de efeito</value>
     <comment>Team</comment>
   </data>
@@ -3203,5 +3203,77 @@
   <data name="There are no items in this gallery, yet." xml:space="preserve">
     <value>Não existem itens nessa galeria, ainda.</value>
     <comment>Generic</comment>
+  </data>
+  <data name="hours ago" xml:space="preserve">
+    <value>horas atrás</value>
+    <comment>RelativeTime</comment>
+  </data>
+  <data name="by {0} {1}" xml:space="preserve">
+    <value>por {0} {1}</value>
+    <comment>Generic</comment>
+  </data>
+  <data name="minutes ago" xml:space="preserve">
+    <value>minutos atrás</value>
+    <comment>RelativeTime</comment>
+  </data>
+  <data name="months ago" xml:space="preserve">
+    <value>meses atrás</value>
+    <comment>RelativeTime</comment>
+  </data>
+  <data name="an hour ago" xml:space="preserve">
+    <value>uma hora atrás</value>
+    <comment>RelativeTime</comment>
+  </data>
+  <data name="a minute ago" xml:space="preserve">
+    <value>um minuto atrás</value>
+    <comment>RelativeTime</comment>
+  </data>
+  <data name="one month ago" xml:space="preserve">
+    <value>um mês atrás</value>
+    <comment>RelativeTime</comment>
+  </data>
+  <data name="one second ago" xml:space="preserve">
+    <value>um segundo atrás</value>
+    <comment>RelativeTime</comment>
+  </data>
+  <data name="one week ago" xml:space="preserve">
+    <value>uma semana atrás</value>
+    <comment>RelativeTime</comment>
+  </data>
+  <data name="one year ago" xml:space="preserve">
+    <value>um ano atrás</value>
+    <comment>RelativeTime</comment>
+  </data>
+  <data name="seconds ago" xml:space="preserve">
+    <value>segundos atrás</value>
+    <comment>RelativeTime</comment>
+  </data>
+  <data name="weeks ago" xml:space="preserve">
+    <value>semanas atrás</value>
+    <comment>RelativeTime</comment>
+  </data>
+  <data name="years ago" xml:space="preserve">
+    <value>anos atrás</value>
+    <comment>RelativeTime</comment>
+  </data>
+  <data name="days ago" xml:space="preserve">
+    <value>dias atrás</value>
+    <comment>RelativeTime</comment>
+  </data>
+  <data name="yesterday" xml:space="preserve">
+    <value>ontem</value>
+    <comment>RelativeTime</comment>
+  </data>
+  <data name="Posted by {0} on {1}, {2}" xml:space="preserve">
+    <value>Postado por {0} em {1}, {2}</value>
+    <comment>Forum</comment>
+  </data>
+  <data name="{0} answered {1}" xml:space="preserve">
+    <value>{0} respondeu {1}</value>
+    <comment>Forum</comment>
+  </data>
+  <data name="quote" xml:space="preserve">
+    <value>citar</value>
+    <comment>Forum</comment>
   </data>
 </root>

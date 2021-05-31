@@ -9,7 +9,7 @@ html {
     --color-black: #000;
     --color-white: #fff;
     --color-blue: #45aef1;
-    --color-green: #22af47;
+    --color-green: #00bf9d;
     --color-green-fx: #1a943b;
     --color-yellow: #ffbf36;
     --color-red: #f83f37;
@@ -30,6 +30,17 @@ html {
 a {
     color: var(--color-bg-dark);
 }
+
+    a:active, a:focus, a:hover {
+        outline: 0;
+        text-decoration: none;
+        color: var(--color-green);
+    }
+
+    a.boldlink {
+        font-weight: 500;
+        text-shadow: 0 0 black;
+    }
 
 .bordered {
     border: 1px solid var(--color-border);
@@ -208,22 +219,25 @@ a {
     box-shadow: none;
     height: 35px;
     border: none;
+    border-radius: 0;
 }
 
-    .skin-ludustack .search-form input[type="text"]:hover {
-        border-bottom: 2px solid gray;
+    .skin-ludustack .search-form input[type="text"]:focus,
+    .skin-ludustack .search-form input[type="text"]:focus + .input-group-btn .btn {
+        border-bottom: 2px solid #ffbf36;
         margin-top: 1px;
     }
 
-    .skin-ludustack .search-form input[type="text"]:focus {
-        color: #fff;
-    }
+.skin-ludustack .search-form:hover input[type="text"] {
+    border-bottom: 2px solid white;
+    margin-top: 1px;
+}
 
-        .skin-ludustack .search-form input[type="text"]:focus,
-        .skin-ludustack .search-form input[type="text"]:focus + .input-group-btn .btn {
-            border-bottom: 2px solid #ffbf36;
-            margin-top: 1px;
-        }
+    .skin-ludustack .search-form:hover input[type="text"],
+    .skin-ludustack .search-form:hover input[type="text"]::placeholder,
+    .skin-ludustack .search-form:hover #btn-search {
+        color: white;
+    }
 
 .skin-ludustack .btn-blue {
     background-color: #232323;
