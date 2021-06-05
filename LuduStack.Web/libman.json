@@ -95,8 +95,12 @@
       "destination": "wwwroot/lib/tempusdominus"
     },
     {
-      "library": "nanogallery2@3.0.5",
-      "destination": "wwwroot/lib/nanogallery2"
+        "library": "nanogallery2@3.0.5",
+        "destination": "wwwroot/lib/nanogallery2"
+    },
+    {
+        "library": "ckeditor5@27.1.0",
+        "destination": "wwwroot/lib/ckeditor5"
     }
   ]
 }

@@ -7,7 +7,7 @@ namespace LuduStack.Application.Interfaces
 {
     public interface IForumAppService
     {
-        Task<OperationResultVo<ForumPostViewModel>> GenerateNewPost(Guid currentUserId, Guid? categoryId);
+        Task<OperationResultVo<ForumPostViewModel>> GenerateNewTopic(Guid currentUserId, Guid? categoryId);
 
         Task<OperationResultListVo<ForumCategoryListItemVo>> GetAllCategories(Guid currentUserId);
 

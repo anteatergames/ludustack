@@ -153,8 +153,6 @@
     }
 
     function enableButton(btn) {
-        console.log(btn);
-        console.log(saveBtnOriginalText);
         if (saveBtnOriginalText) {
             btn.html(saveBtnOriginalText);
         }

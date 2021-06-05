@@ -533,6 +533,7 @@
     {
         "outputFileName": "wwwroot/js/forum/forumpostedit.min.js",
         "inputFiles": [
+            "wwwroot/js/shared/wysiwygeditor.js",
             "wwwroot/js/common-edit.js",
             "wwwroot/js/forum/forumcommon.js",
             "wwwroot/js/forum/forumpostedit.js"
@@ -541,6 +542,7 @@
     {
         "outputFileName": "wwwroot/js/forum/forumpostdetails.min.js",
         "inputFiles": [
+            "wwwroot/js/shared/wysiwygeditor.js",
             "wwwroot/js/forum/forumcommon.js",
             "wwwroot/js/forum/forumpostdetails.js"
         ]

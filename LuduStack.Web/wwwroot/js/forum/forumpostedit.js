@@ -7,6 +7,8 @@
     var canInteract = false;
     var isNew = false;
 
+    var editorId = '';
+
     function setSelectors() {
         selectors.controlsidebar = '.control-sidebar';
         selectors.canInteract = '#caninteract';
@@ -40,12 +42,25 @@
     }
 
     function bindAll() {
+        bindEditor();
         bindBtnSaveForm();
+    }
+
+    function bindEditor() {
+        var element = document.querySelector('.wysiwygeditor');
+        WYSIWYGEDITOR.BindEditor('.wysiwygeditor').then((id) => {
+            editorId = element.id;
+        });
     }
 
     function bindBtnSaveForm() {
         objs.container.on('click', selectors.btnSave, function () {
             var btn = $(this);
+
+            var data = WYSIWYGEDITOR.GetEditor(editorId).editor.getData();
+            console.log(data);
+            WYSIWYGEDITOR.UpdateSourceElement(editorId);
+
             var valid = objs.form.valid();
 
             if (valid && canInteract) {
@@ -68,6 +83,7 @@
                 MAINMODULE.Ajax.HandleUrlResponse(response);
             }
             else {
+                MAINMODULE.Common.EnableButton(btn);
                 MAINMODULE.Ajax.HandleErrorResponse(response);
             }
         });

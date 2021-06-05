@@ -21,12 +21,14 @@ namespace LuduStack.Application.ViewModels.Forum
 
         public Guid ForumCategoryId { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Your topic must have a title!")]
+        [MinLength(2, ErrorMessage = "{0} must have at least {1} characters!")]
         public string Title { get; set; }
 
         public string Slug { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "You typed nothing!")]
+        [MinLength(2, ErrorMessage = "You must type at least two characters!")]
         public string Content { get; set; }
 
         [Required]

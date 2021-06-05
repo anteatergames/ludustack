@@ -1,4 +1,6 @@
-﻿using LuduStack.Application.Formatters;
+﻿using Ganss.XSS;
+using LuduStack.Application.Formatters;
+using LuduStack.Application.Helpers;
 using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels.Forum;
 using LuduStack.Domain.Messaging;
@@ -26,13 +28,14 @@ namespace LuduStack.Application.Services
             this.logger = logger;
         }
 
-        public async Task<OperationResultVo<ForumPostViewModel>> GenerateNewPost(Guid currentUserId, Guid? categoryId)
+        public async Task<OperationResultVo<ForumPostViewModel>> GenerateNewTopic(Guid currentUserId, Guid? categoryId)
         {
             try
             {
                 ForumPostViewModel viewModel = new ForumPostViewModel
                 {
-                    UserId = currentUserId
+                    UserId = currentUserId,
+                    IsOriginalPost = true
                 };
 
                 if (categoryId.HasValue)
@@ -192,9 +195,12 @@ namespace LuduStack.Application.Services
                 ForumPost existing = await mediator.Query<GetForumPostByIdQuery, ForumPost>(new GetForumPostByIdQuery(viewModel.Id));
                 if (existing != null)
                 {
-                    string title = existing.Title;
-                    model = mapper.Map(viewModel, existing);
-                    model.Title = title;
+                    existing.Content = viewModel.Content;
+                    model = existing;
+                    //string title = existing.Title;
+                    //var existingCreateDate = existing.CreateDate;
+                    //model = mapper.Map(viewModel, existing);
+                    //model.Title = title;
                 }
                 else
                 {
@@ -241,6 +247,9 @@ namespace LuduStack.Application.Services
                 SetProfiles(viewModel, userProfiles);
 
                 SetPermissions(currentUserId, viewModel);
+                
+                var sanitizer = ContentHelper.GetHtmlSanitizer();
+                SanitizeHtml(viewModel, sanitizer);
 
                 await mediator.SendCommand(new RegisterForumPostViewCommand(id, currentUserId));
 
@@ -282,11 +291,15 @@ namespace LuduStack.Application.Services
 
                 IEnumerable<UserProfileEssentialVo> userProfiles = await mediator.Query<GetBasicUserProfileDataByUserIdsQuery, IEnumerable<UserProfileEssentialVo>>(new GetBasicUserProfileDataByUserIdsQuery(profilesToGet));
 
+                var sanitizer = ContentHelper.GetHtmlSanitizer();
+
                 foreach (ForumPostViewModel forumTopicAnswer in vms)
                 {
                     SetProfiles(forumTopicAnswer, userProfiles);
 
                     SetPermissions(currentUserId, forumTopicAnswer);
+
+                    SanitizeHtml(forumTopicAnswer, sanitizer);
                 }
 
                 return new OperationResultListVo<ForumPostViewModel>(vms);
@@ -304,6 +317,10 @@ namespace LuduStack.Application.Services
                 CommandResult<ForumPost> deletedPost = await mediator.SendCommand<DeleteForumPostCommand, ForumPost>(new DeleteForumPostCommand(currentUserId, id));
 
                 ForumPostViewModel viewModel = mapper.Map<ForumPostViewModel>(deletedPost.Result);
+
+                ForumCategory category = await mediator.Query<GetForumCategoryByIdQuery, ForumCategory>(new GetForumCategoryByIdQuery(viewModel.ForumCategoryId));
+
+                viewModel.CategoryHandler = category.Handler;
 
                 return new OperationResultVo<ForumPostViewModel>(viewModel, true, "That Forum Post is gone now!");
             }
@@ -338,6 +355,16 @@ namespace LuduStack.Application.Services
         private void SetPermissions(Guid currentUserId, ForumPostViewModel viewModel)
         {
             SetBasePermissions(currentUserId, viewModel);
+        }
+
+        private static void SanitizeHtml(ForumPostViewModel viewModel, HtmlSanitizer sanitizer)
+        {
+            viewModel.Content = sanitizer.Sanitize(viewModel.Content, Constants.DefaultLuduStackPath);
+
+            viewModel.Content = viewModel.Content.Replace("<img src=", @"<img class=""img-fluid m-0"" src=");
+            viewModel.Content = viewModel.Content.Replace("<div data-oembed-url=", @"<div class=""col-12 col-lg-8 col-xl-6 mx-auto"" data-oembed-url=");
+            viewModel.Content = viewModel.Content.Replace("<figure ", @"<figure class=""mx-auto"" ");
+            viewModel.Content = viewModel.Content.Replace("<iframe src=", @"<iframe frameBorder=""0"" src=");
         }
     }
 }

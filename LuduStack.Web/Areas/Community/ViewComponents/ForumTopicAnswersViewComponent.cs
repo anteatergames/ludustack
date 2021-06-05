@@ -3,12 +3,14 @@ using LuduStack.Application.ViewModels.Forum;
 using LuduStack.Domain.ValueObjects;
 using LuduStack.Infra.CrossCutting.Identity.Models;
 using LuduStack.Web.ViewComponents.Base;
+using Markdig;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace LuduStack.Web.Areas.Community.ViewComponents
@@ -38,7 +40,7 @@ namespace LuduStack.Web.Areas.Community.ViewComponents
 
             OperationResultListVo<ForumPostViewModel> model = await forumAppService.GetTopicAnswers(CurrentUserId, vm);
 
-            IEnumerable<ForumPostViewModel> list = model.Value;
+            List<ForumPostViewModel> list = model.Value.ToList();
 
             return await Task.Run(() => View(list));
         }

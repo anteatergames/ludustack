@@ -52,7 +52,9 @@ namespace LuduStack.Domain.Messaging.Queries.ForumPost
                 Likes = x.Likes
             });
 
-            return Task.FromResult(resultingModels.ToList());
+            var finalList = resultingModels.OrderByDescending(x => x.IsFixed).ThenByDescending(x => x.CreateDate).ToList();
+
+            return Task.FromResult(finalList);
         }
 
         private static IQueryable<Models.ForumPost> Filter(GetForumPostListQuery request, IQueryable<Models.ForumPost> allModels)

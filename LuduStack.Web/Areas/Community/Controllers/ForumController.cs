@@ -4,6 +4,7 @@ using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels.Forum;
 using LuduStack.Domain.ValueObjects;
 using LuduStack.Web.Helpers;
+using Markdig;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -75,7 +76,7 @@ namespace LuduStack.Web.Areas.Community.Controllers
         [Route("newtopic")]
         public async Task<IActionResult> NewTopic(Guid? categoryId)
         {
-            OperationResultVo<ForumPostViewModel> serviceResult = await forumAppService.GenerateNewPost(CurrentUserId, categoryId);
+            OperationResultVo<ForumPostViewModel> serviceResult = await forumAppService.GenerateNewTopic(CurrentUserId, categoryId);
 
             return View("CreateEditPostWrapper", serviceResult.Value);
         }
@@ -92,22 +93,33 @@ namespace LuduStack.Web.Areas.Community.Controllers
                     vm.UserId = CurrentUserId;
                 }
 
+                vm.Content = Markdown.Normalize(vm.Content);
+
                 OperationResultVo<Guid> saveResult = await forumAppService.SavePost(CurrentUserId, vm);
 
                 if (saveResult.Success)
                 {
-                    string url = Url.Action("viewtopic", "forum", new { area = "community", id = saveResult.Value });
+                    string url = string.Empty;
 
-                    if (isNew && EnvName.Equals(Constants.ProductionEnvironmentName))
+                    if (isNew)
                     {
-                        await NotificationSender.SendTeamNotificationAsync("New Forum Post created!");
+                        url = Url.Action("viewtopic", "forum", new { area = "community", id = saveResult.Value });
+
+                        if (EnvName.Equals(Constants.ProductionEnvironmentName))
+                        {
+                            await NotificationSender.SendTeamNotificationAsync("New Forum Post created!");
+                        }
+                    }
+                    else
+                    {
+                        url = Url.Action("viewpost", "forum", new { area = "community", id = vm.Id });
                     }
 
                     return Json(new OperationResultRedirectVo<Guid>(saveResult, url));
                 }
                 else
                 {
-                    return Json(new OperationResultVo(false));
+                    return Json(saveResult);
                 }
             }
             catch (Exception ex)
@@ -125,8 +137,6 @@ namespace LuduStack.Web.Areas.Community.Controllers
             {
                 ForumPostViewModel viewModel = result.Value;
 
-                FillMissingInformation(viewModel);
-
                 viewModel.Url = Url.Action("viewtopic", "forum", new { area = "community", id = viewModel.Id }, (string)ViewData["protocol"], (string)ViewData["host"]);
 
                 ViewData["latest"] = false;
@@ -138,6 +148,27 @@ namespace LuduStack.Web.Areas.Community.Controllers
             else
             {
                 return RedirectToAction("index", "forum", new { area = "community", msg = SharedLocalizer["Forum Post not found!"] });
+            }
+        }
+
+        [Route("post/{id:guid}")]
+        public async Task<IActionResult> ViewPost(Guid id)
+        {
+            OperationResultVo<ForumPostViewModel> result = await forumAppService.GetPostForDetails(CurrentUserId, id);
+
+            if (result.Success)
+            {
+                ForumPostViewModel viewModel = result.Value;
+
+                ViewData["latest"] = false;
+
+                ViewBag.ProfileImage = UrlFormatter.ProfileImage(CurrentUserId, 64);
+
+                return PartialView("_ForumPostViewOnly", viewModel);
+            }
+            else
+            {
+                return PartialView("_ForumPostViewOnly", new ForumPostViewModel());
             }
         }
 
@@ -157,8 +188,6 @@ namespace LuduStack.Web.Areas.Community.Controllers
             if (result.Success)
             {
                 ForumPostViewModel viewModel = result.Value;
-
-                FillMissingInformation(viewModel);
 
                 viewModel.Url = Url.Action("viewtopic", "forum", new { area = "community", id = viewModel.Id }, (string)ViewData["protocol"], (string)ViewData["host"]);
 
@@ -186,7 +215,7 @@ namespace LuduStack.Web.Areas.Community.Controllers
                     {
                         deleteResult.Message = null;
 
-                        string url = Url.Action("index", "forum", new { area = "community", msg = deleteResult.Message });
+                        string url = Url.Action("category", "forum", new { area = "community", handler = deleteResult.Value.CategoryHandler, msg = deleteResult.Message });
 
                         return Json(new OperationResultRedirectVo(deleteResult, url));
                     }
@@ -237,12 +266,6 @@ namespace LuduStack.Web.Areas.Community.Controllers
             {
                 category.LatestForumPost.CreatedRelativeTime = ContentFormatter.DateTimeToCreatedAgoMessage(category.LatestForumPost.CreateDate, SharedLocalizer);
             }
-        }
-
-        private void FillMissingInformation(ForumPostViewModel forumPost)
-        {
-
-            forumPost.CreatedRelativeTime = ContentFormatter.DateTimeToCreatedAgoMessage(forumPost.CreateDate, SharedLocalizer);
         }
     }
 }

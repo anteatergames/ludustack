@@ -1,4 +1,5 @@
-﻿using LuduStack.Application.Formatters;
+﻿using Ganss.XSS;
+using LuduStack.Application.Formatters;
 using LuduStack.Domain.Core.Enums;
 using System;
 using System.Linq;
@@ -67,6 +68,18 @@ namespace LuduStack.Application.Helpers
             }
 
             return MediaType.Image;
+        }
+
+        public static HtmlSanitizer GetHtmlSanitizer()
+        {
+            var sanitizer = new HtmlSanitizer();
+            sanitizer.AllowedTags.Add("iframe");
+            sanitizer.AllowedAttributes.Add("data-oembed-url");
+            sanitizer.AllowedClasses.Add("media");
+            sanitizer.AllowedCssProperties.Remove("margin");
+            sanitizer.AllowedCssProperties.Add("position");
+
+            return sanitizer;
         }
     }
 }

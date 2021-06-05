@@ -36,8 +36,14 @@
                 <div class="rounded-0 forumlistitem">
                     <div class="col-12">
                         <div class="row">
-                            <div class="col-12 col-sm-8 col-md-6 p-3">
+                            <div class="col-12 col-sm-8 col-md-6 p-2">
                                 <a asp-area="community" asp-controller="forum" asp-action="viewtopic" asp-route-id="@item.Id" class="stretched-link">
+                                    @if (item.IsFixed)
+                                    {
+                                        <div class="position-absolute pineedicon">
+                                            <i class="fas fa-2x fa-thumbtack" aria-hidden="true"></i>
+                                        </div>
+                                    }
                                     <div class="d-flex flex-column align-items-left p-2">
                                         <div class="forumlisttitle">
                                             @item.Title
@@ -48,14 +54,14 @@
                                     </div>
                                 </a>
                             </div>
-                            <div class="col-sm-4 col-md-3 col-lg-1 d-none d-sm-block p-3">
+                            <div class="col-sm-4 col-md-3 col-lg-1 d-none d-sm-block p-2">
                                 <a asp-area="community" asp-controller="forum" asp-action="viewtopic" asp-route-id="@item.Id" class="stretched-link">
                                     <div class="d-flex flex-column align-items-center p-2">
                                         <div class="p-2 bd-highlight">@item.AnswerCount</div>
                                     </div>
                                 </a>
                             </div>
-                            <div class="col-md-3 col-lg-1  d-none d-md-block p-3">
+                            <div class="col-md-3 col-lg-1  d-none d-md-block p-2">
                                 <div class="verticaldivider"></div>
                                 <a asp-area="community" asp-controller="forum" asp-action="viewtopic" asp-route-id="@item.Id" class="stretched-link">
                                     <div class="d-flex flex-column align-items-center p-2">
@@ -63,12 +69,16 @@
                                     </div>
                                 </a>
                             </div>
-                            <div class="col-4 d-none d-lg-block p-3 clickablelink">
+                            <div class="col-4 d-none d-lg-block p-2 clickablelink">
                                 <div class="d-flex flex-row p-2">
                                     @if (item.LatestAnswer != null)
                                     {
                                         var authorUrl = Url.Action("details", "profile", new { area = string.Empty, userHandler = item.LatestAnswer.UserHandler });
                                         var authorLink = string.Format("<a href=\"{0}\" class=\"boldlink\">{1}</a>", authorUrl, item.LatestAnswer.AuthorName);
+
+
+                                        var lastAnswerUrl = Url.Action("viewtopiclatest", "forum", new { area = "community", id = item.Id });
+                                        var lastAnswerLink = string.Format("<a href=\"{0}\" class=\"boldlink\">{1}</a>", lastAnswerUrl, item.LatestAnswer.CreatedRelativeTime);
 
                                         <div class="mr-2">
                                             <a href="@authorUrl">
@@ -77,7 +87,7 @@
                                         </div>
 
                                         <div class="d-flex flex-column align-items-left forumlistdescription">
-                                            @Html.Raw(SharedLocalizer["{0} answered {1}", authorLink, item.LatestAnswer.CreatedRelativeTime])
+                                            @Html.Raw(string.Format("{0} <span>{1}</span>", authorLink, SharedLocalizer["answered {0}", lastAnswerLink]))
                                         </div>
                                     }
                                     else

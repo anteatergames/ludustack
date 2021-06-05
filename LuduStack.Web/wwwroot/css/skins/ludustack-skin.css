@@ -42,6 +42,50 @@ a {
         text-shadow: 0 0 black;
     }
 
+blockquote {
+    border-radius: 3px;
+    position: relative; /*  <--- */
+    font-style: italic;
+    text-align: center;
+    padding: 1rem 1.2rem;
+    width: 80%; /* create space for the quotes */
+    color: #4a4a4a;
+    margin: 1rem auto 2rem;
+    color: #4a4a4a;
+    background: #d5e4db;
+}
+    /* -- create the quotation marks -- */
+    blockquote:before,
+    blockquote:after {
+        font-family: 'Font Awesome 5 Free';
+        position: absolute;
+        /* -- inside the relative position of blockquote -- */
+        top: 13px;
+        color: #E8E8E8;
+        font-size: 34px;
+        font-weight: 900;
+        color: #d5e4db;
+    }
+
+    blockquote:before {
+        content: "\f10d";
+        margin-right: 13px;
+        right: 100%;
+    }
+
+    blockquote p {
+        text-rendering: optimizeLegibility;
+        color: var(--color-green);
+    }
+
+    blockquote:after {
+        content: "\f10e";
+        margin-left: 13px;
+        left: 100%;
+        top: auto;
+        bottom: 13px;
+    }
+
 .bordered {
     border: 1px solid var(--color-border);
 }
@@ -85,7 +129,7 @@ a {
     color: var(--color-accent);
 }
 
-.skin-ludustack .col-form-label, .skin-ludustack .form-label {
+.skin-ludustack label.col-form-label, .skin-ludustack label.form-label {
     color: var(--color-accent);
     font-size: 13px;
     font-weight: 600;

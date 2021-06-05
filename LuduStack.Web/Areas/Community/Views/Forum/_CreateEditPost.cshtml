@@ -10,7 +10,7 @@
 
 <h1 class="sr-only">@ViewData["Title"]</h1>
 
-<div class="box bg-white">
+<div class="box bg-white posttopic">
 
     <div class="box-header with-border">
         <div class="float-left mr-3">
@@ -62,7 +62,7 @@
                     <div class="form-group">
                         <label asp-for="Content" class="col-form-label"></label>
                         <span asp-description-for="Content" class="col-form-label" />
-                        <textarea asp-for="Content" class="form-control" placeholder="@SharedLocalizer["Describe the Forum Post here"]"></textarea>
+                        <textarea asp-for="Content" class="form-control wysiwygeditor" placeholder="@SharedLocalizer["Describe the Forum Post here"]"></textarea>
                         <span asp-validation-for="Content" class="text-danger"></span>
                     </div>
                 </div>

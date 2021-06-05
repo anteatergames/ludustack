@@ -3276,4 +3276,24 @@
     <value>citar</value>
     <comment>Forum</comment>
   </data>
+  <data name="You typed nothing!" xml:space="preserve">
+    <value>Você não digitou nada!</value>
+    <comment>Forum</comment>
+  </data>
+  <data name="Your topic must have a title!" xml:space="preserve">
+    <value>Seu tópico precisa ter um título!</value>
+    <comment>Forum</comment>
+  </data>
+  <data name="{0} must have at least {1} characters!" xml:space="preserve">
+    <value>{0} deve ter no mínimo {1} caracteres!</value>
+    <comment>Forum</comment>
+  </data>
+  <data name="You must type at least two characters!" xml:space="preserve">
+    <value>Você deve digitar ao menos dois caracteres!</value>
+    <comment>Forum</comment>
+  </data>
+  <data name="answered {0}" xml:space="preserve">
+    <value>respondeu {0}</value>
+    <comment>Forum</comment>
+  </data>
 </root>

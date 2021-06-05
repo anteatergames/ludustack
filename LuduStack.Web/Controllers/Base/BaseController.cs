@@ -1,4 +1,5 @@
-﻿using LuduStack.Web.Enums;
+﻿using LuduStack.Domain.ValueObjects;
+using LuduStack.Web.Enums;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -73,6 +74,16 @@ namespace LuduStack.Web.Controllers.Base
             string[] split = fileUrl.Split('.');
             string extension = split.Length > 1 ? split[1] : "jpg";
             return extension;
+        }
+
+        protected JsonResult Json(OperationResultVo operationVo)
+        {
+            if (!string.IsNullOrWhiteSpace(operationVo.Message))
+            {
+                operationVo.Message = SharedLocalizer[operationVo.Message];
+            }
+
+            return Json((object)operationVo);
         }
     }
 }

@@ -37,10 +37,13 @@
 
 @section Scripts {
     <environment include="Development">
+        <script src="~/thirdparty/ckeditor5-build-classic/build/ckeditor.js"></script>
+        <script src="~/js/shared/wysiwygeditor.js"></script>
         <script src="~/js/forum/forumcommon.js"></script>
         <script src="~/js/forum/forumpostdetails.js"></script>
     </environment>
     <environment exclude="Development">
+        <script src="~/thirdparty/ckeditor5-build-classic/build/ckeditor.js"></script>
         <script src="~/js/forum/forumpostdetails.min.js" asp-append-version="true"></script>
     </environment>
     @*    <script type="application/ld+json">
@@ -73,7 +76,7 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
 
-<section id="featurecontainer" class="content container">
+<section id="featurecontainer" class="col-12 container">
     <input type="hidden" id="urls" value="urls"
            data-url-answers="@Url.Action("answersbytopic", "forum", new { area = "community", topicId = Model.Id })" />
 
@@ -95,7 +98,7 @@
         </div>
 
         <div class="postitem">
-            <partial name="_ForumPost" model="Model" />
+            <partial name="_ForumPostViewEdit" model="Model" />
         </div>
 
         <div id="divAnswers">
@@ -103,7 +106,7 @@
         </div>
     </div>
 
-    <div class="p-0 bg-white">
+    <div class="p-0 bg-white postanswer">
         <form id="frmSendAnswer" asp-area="community" asp-controller="forum" asp-action="savepost" method="post">
             <input type="hidden" asp-for="ForumCategoryId" />
             <input type="hidden" asp-for="OriginalPostId" />
@@ -115,11 +118,11 @@
 
                 <div class="d-flex flex-fill flex-column">
                     <div class="mb-2">
-                        <textarea name="Content" class="form-control txtAreaMyAnswer" rows="5"></textarea>
+                        <textarea id="txtContentNewAnswer" name="Content" class="form-control txtAnswer" rows="5"></textarea>
                     </div>
 
                     <div class="text-right">
-                        <button type="button" class="btn btn-lg btn-primary btn-post-save"><i class="far fa-paper-plane" aria-hidden="true"></i> @SharedLocalizer["Answer"]</button>
+                        <button type="button" class="btn btn-lg btn-primary btn-post-save-answer"><i class="far fa-paper-plane" aria-hidden="true"></i> @SharedLocalizer["Answer"]</button>
                     </div>
                 </div>
             </div>

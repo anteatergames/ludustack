@@ -3,7 +3,7 @@
     Layout = null;
 }
 
-<div class="flex-fill">
+<div class="flex-fill postanswer">
     <form id="@string.Format("frmPostEdit-{0}", Model.Id)" asp-area="community" asp-controller="forum" asp-action="savepost" method="post">
         <input type="hidden" asp-for="Id" />
         <input type="hidden" asp-for="UserId" />
@@ -18,7 +18,7 @@
 
             <div class="d-flex flex-fill flex-column">
                 <div class="mb-2">
-                    <textarea asp-for="Content" class="form-control txtAreaMyAnswer" rows="5"></textarea>
+                    <textarea id="@string.Format("txtContentAnswer_{0}", Model.Id.ToString())" asp-for="Content" class="form-control txtAnswer" rows="5"></textarea>
                 </div>
 
                 <div class="text-right">
