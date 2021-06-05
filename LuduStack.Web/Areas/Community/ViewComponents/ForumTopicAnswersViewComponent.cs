@@ -3,7 +3,6 @@ using LuduStack.Application.ViewModels.Forum;
 using LuduStack.Domain.ValueObjects;
 using LuduStack.Infra.CrossCutting.Identity.Models;
 using LuduStack.Web.ViewComponents.Base;
-using Markdig;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

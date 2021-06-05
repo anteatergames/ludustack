@@ -18,15 +18,15 @@
     --line-height: 32px;
 }
 
-    .forumlistitem .pineedicon {
-        left: -5px;
-        top: 5px;
+    .forumlistitem .pinedicon {
+        left: -12px;
+        top: 20px;
     }
 
-        .forumlistitem .pineedicon i {
-            transform: rotate( 315deg );
-            color: var(--color-green-fx);
-        }
+    .forumlistitem .pinedicon span i {
+        transform: rotate( 315deg );
+        color: var(--color-green-fx);
+    }
 
     .forumlistitem .verticaldivider {
         border-left: 1px solid #dedada;
@@ -66,11 +66,12 @@
         }
 
 .postitem pre {
-    white-space: pre-wrap; //css3
-    white-space: moz-pre-wrap; //firefox
-    white-space: -pre-wrap; //opera 4-6
-    white-space: -o-pre-wrap; //opera 7
-    word-wrap: break-word; //internet explorer
+    white-space: pre-wrap;
+    //css3 white-space: moz-pre-wrap;
+    //firefox white-space: -pre-wrap;
+    //opera 4-6 white-space: -o-pre-wrap;
+    //opera 7 word-wrap: break-word;
+    //internet explorer
 }
 
 .postitem .postitemcontainer {

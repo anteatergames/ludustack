@@ -9,7 +9,6 @@ using LuduStack.Domain.ValueObjects;
 using LuduStack.Infra.CrossCutting.Identity.Services;
 using LuduStack.Web.Areas.Work.Controllers.Base;
 using LuduStack.Web.Enums;
-using LuduStack.Web.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -216,8 +215,6 @@ namespace LuduStack.Web.Areas.Work.Controllers
             OperationResultVo<JobPositionViewModel> op = await jobPositionAppService.GetById(CurrentUserId, id);
 
             JobPositionViewModel viewModel = op.Value;
-
-            viewModel.Description = ContentFormatter.FormatContentToShow(viewModel.Description);
             viewModel.Url = Url.Action("details", "jobposition", new { area = "work", id = viewModel.Id }, (string)ViewData["protocol"], (string)ViewData["host"]);
 
             SetLocalization(viewModel);

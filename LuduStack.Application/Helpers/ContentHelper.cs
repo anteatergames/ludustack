@@ -1,5 +1,4 @@
 ﻿using Ganss.XSS;
-using LuduStack.Application.Formatters;
 using LuduStack.Domain.Core.Enums;
 using System;
 using System.Linq;
@@ -9,34 +8,6 @@ namespace LuduStack.Application.Helpers
 {
     public static class ContentHelper
     {
-        public static string FormatFeaturedImageUrl(Guid userId, string featuredImage, ImageRenderType type)
-        {
-            if (!string.IsNullOrWhiteSpace(featuredImage) && !featuredImage.Contains("/images/placeholders/"))
-            {
-                switch (type)
-                {
-                    case ImageRenderType.LowQuality:
-                        return UrlFormatter.Image(userId, ImageType.FeaturedImage, featuredImage, 600, 10);
-
-                    case ImageRenderType.Responsive:
-                        return UrlFormatter.Image(userId, ImageType.FeaturedImage, featuredImage, true, 0, 0);
-
-                    case ImageRenderType.Full:
-                    default:
-                        return UrlFormatter.Image(userId, ImageType.FeaturedImage, featuredImage);
-                }
-            }
-            else
-            {
-                return featuredImage;
-            }
-        }
-
-        public static string FormatFeaturedVideoUrl(Guid userId, string featuredVideo)
-        {
-            return UrlFormatter.Video(userId, ImageType.FeaturedImage, featuredVideo);
-        }
-
         public static MediaType GetMediaType(string featuredImage)
         {
             if (string.IsNullOrWhiteSpace(featuredImage))
@@ -70,9 +41,24 @@ namespace LuduStack.Application.Helpers
             return MediaType.Image;
         }
 
+        public static string GetSpecialPostTemplate(UserContentType type)
+        {
+            switch (type)
+            {
+                case UserContentType.TeamCreation:
+                    return "<div class=\"row p-3 \"><div class=\"col-12 col-md-4 p-2 text-center align-middle\"><i class=\"fas fa-4x fa-users\"></i></div><div class=\"col-12 col-md-8\">{0}. <br> <br> <span class=\"font-weight-bold text-uppercase\">{1}</span> <br> {2}</div></div>";
+
+                case UserContentType.JobPosition:
+                    return "<div class=\"row p-3 \"><div class=\"col-12 col-md-4 p-2 text-center align-middle\"><i class=\"fas fa-4x fa-briefcase\"></i></div><div class=\"col-12 col-md-8\">{0}. <br> <br> <span class=\"font-weight-bold text-uppercase\">{1}</span> <br> <span class=\"text-capitalize\">{2}</span></div></div>";
+
+                default:
+                    return "Check this out!";
+            }
+        }
+
         public static HtmlSanitizer GetHtmlSanitizer()
         {
-            var sanitizer = new HtmlSanitizer();
+            HtmlSanitizer sanitizer = new HtmlSanitizer();
             sanitizer.AllowedTags.Add("iframe");
             sanitizer.AllowedAttributes.Add("data-oembed-url");
             sanitizer.AllowedClasses.Add("media");

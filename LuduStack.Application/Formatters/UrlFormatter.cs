@@ -9,6 +9,34 @@ namespace LuduStack.Application.Formatters
 {
     public static class UrlFormatter
     {
+        public static string FormatFeaturedImageUrl(Guid userId, string featuredImage, ImageRenderType type)
+        {
+            if (!string.IsNullOrWhiteSpace(featuredImage) && !featuredImage.Contains("/images/placeholders/"))
+            {
+                switch (type)
+                {
+                    case ImageRenderType.LowQuality:
+                        return Image(userId, ImageType.FeaturedImage, featuredImage, 600, 10);
+
+                    case ImageRenderType.Responsive:
+                        return Image(userId, ImageType.FeaturedImage, featuredImage, true, 0, 0);
+
+                    case ImageRenderType.Full:
+                    default:
+                        return Image(userId, ImageType.FeaturedImage, featuredImage);
+                }
+            }
+            else
+            {
+                return featuredImage;
+            }
+        }
+
+        public static string FormatFeaturedVideoUrl(Guid userId, string featuredVideo)
+        {
+            return Video(userId, ImageType.FeaturedImage, featuredVideo);
+        }
+
         #region Internal
 
         public static string GetDefaultImage(ImageType type)
@@ -111,11 +139,6 @@ namespace LuduStack.Application.Formatters
         public static string Image(Guid userId, ImageType type, string fileName, int width)
         {
             return Image(userId, type, fileName, width, 0);
-        }
-
-        public static string Image(Guid userId, ImageType type, string fileName, int width, string defaultImage)
-        {
-            return Image(userId, type, fileName, false, width, 0, defaultImage);
         }
 
         public static string Image(Guid userId, ImageType type, string fileName, int width, int quality)

@@ -40,11 +40,14 @@
                                 <a asp-area="community" asp-controller="forum" asp-action="viewtopic" asp-route-id="@item.Id" class="stretched-link">
                                     @if (item.IsFixed)
                                     {
-                                        <div class="position-absolute pineedicon">
-                                            <i class="fas fa-2x fa-thumbtack" aria-hidden="true"></i>
+                                        <div class="position-absolute pinedicon">
+                                            <span class="fa-stack fa-lg">
+                                                <i class="fa fa-circle fa-stack-2x text-success"></i>
+                                                <i class="fas fa-stack-1x fa-thumbtack text-white" aria-hidden="true"></i>
+                                            </span>
                                         </div>
                                     }
-                                    <div class="d-flex flex-column align-items-left p-2">
+                                    <div class="d-flex flex-column align-items-left p-2@(item.IsFixed ? " pl-4" : string.Empty)">
                                         <div class="forumlisttitle">
                                             @item.Title
                                         </div>

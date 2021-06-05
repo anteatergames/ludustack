@@ -7,7 +7,6 @@ using LuduStack.Domain.ValueObjects;
 using LuduStack.Infra.CrossCutting.Identity.Services;
 using LuduStack.Web.Areas.Tools.Controllers.Base;
 using LuduStack.Web.Enums;
-using LuduStack.Web.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -106,8 +105,6 @@ namespace LuduStack.Web.Areas.Tools.Controllers
             OperationResultVo<GiveawayViewModel> castResult = serviceResult as OperationResultVo<GiveawayViewModel>;
 
             model = castResult.Value;
-
-            model.Description = ContentFormatter.FormatCFormatTextAreaBreaks(model.Description);
 
             SetTimeZoneDropdown(model);
 

@@ -3,7 +3,6 @@ using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels.Study;
 using LuduStack.Domain.ValueObjects;
 using LuduStack.Web.Areas.Learn.Controllers.Base;
-using LuduStack.Web.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -142,8 +141,6 @@ namespace LuduStack.Web.Areas.Learn.Controllers
             OperationResultVo<CourseViewModel> castResult = serviceResult as OperationResultVo<CourseViewModel>;
 
             model = castResult.Value;
-
-            model.Description = ContentFormatter.FormatCFormatTextAreaBreaks(model.Description);
 
             return View("CourseCreateEditWrapper", model);
         }

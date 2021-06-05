@@ -1,12 +1,10 @@
-﻿using LuduStack.Domain.Core.Enums;
-using Microsoft.Extensions.Localization;
-using System;
+﻿using System;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
 
-namespace LuduStack.Web.Helpers
+namespace LuduStack.Application.Formatters
 {
     public static class ContentFormatter
     {
@@ -103,21 +101,6 @@ namespace LuduStack.Web.Helpers
             return content;
         }
 
-        internal static string FormatUrlContentToShow(UserContentType type)
-        {
-            switch (type)
-            {
-                case UserContentType.TeamCreation:
-                    return "<div class=\"row p-3 \"><div class=\"col-12 col-md-4 p-2 text-center align-middle\"><i class=\"fas fa-4x fa-users\"></i></div><div class=\"col-12 col-md-8\">{0}. <br> <br> <span class=\"font-weight-bold text-uppercase\">{1}</span> <br> {2}</div></div>";
-
-                case UserContentType.JobPosition:
-                    return "<div class=\"row p-3 \"><div class=\"col-12 col-md-4 p-2 text-center align-middle\"><i class=\"fas fa-4x fa-briefcase\"></i></div><div class=\"col-12 col-md-8\">{0}. <br> <br> <span class=\"font-weight-bold text-uppercase\">{1}</span> <br> <span class=\"text-capitalize\">{2}</span></div></div>";
-
-                default:
-                    return "Check this out!";
-            }
-        }
-
         public static string GetYoutubeVideoId(string url)
         {
             Uri uri = new Uri(url);
@@ -130,64 +113,6 @@ namespace LuduStack.Web.Helpers
             else
             {
                 return uri.Segments.Last();
-            }
-        }
-
-        public static string DateTimeToCreatedAgoMessage(DateTime createDate, IStringLocalizer localizer)
-        {
-            const int SECOND = 1;
-            const int MINUTE = 60 * SECOND;
-            const int HOUR = 60 * MINUTE;
-            const int DAY = 24 * HOUR;
-            const int MONTH = 30 * DAY;
-
-            TimeSpan ts = new TimeSpan(DateTime.UtcNow.Ticks - createDate.Ticks);
-            double delta = Math.Abs(ts.TotalSeconds);
-
-            if (delta < 1 * MINUTE)
-            {
-                return ts.Seconds == 1 ? localizer["one second ago"] : string.Format("{0} {1}", ts.Seconds, localizer["seconds ago"]);
-            }
-
-            if (delta < 2 * MINUTE)
-            {
-                return localizer["a minute ago"];
-            }
-
-            if (delta < 45 * MINUTE)
-            {
-                return string.Format("{0} {1}", ts.Minutes, localizer["minutes ago"]);
-            }
-
-            if (delta < 90 * MINUTE)
-            {
-                return localizer["an hour ago"];
-            }
-
-            if (delta < 24 * HOUR)
-            {
-                return string.Format("{0} {1}", ts.Hours, localizer["hours ago"]);
-            }
-
-            if (delta < 48 * HOUR)
-            {
-                return localizer["yesterday"];
-            }
-
-            if (delta < 30 * DAY)
-            {
-                return string.Format("{0} {1}", ts.Days, localizer["days ago"]);
-            }
-
-            if (delta < 12 * MONTH)
-            {
-                int months = Convert.ToInt32(Math.Floor((double)ts.Days / 30));
-                return months <= 1 ? localizer["one month ago"] : string.Format("{0} {1}", months, localizer["months ago"]);
-            }
-            else
-            {
-                int years = Convert.ToInt32(Math.Floor((double)ts.Days / 365));
-                return years <= 1 ? localizer["one year ago"] : string.Format("{0} {1}", years, localizer["years ago"]);
             }
         }
     }

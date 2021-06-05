@@ -1,4 +1,4 @@
-﻿using LuduStack.Application.Helpers;
+﻿using LuduStack.Application.Formatters;
 using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels.Forum;
 using LuduStack.Domain.Core.Enums;
@@ -143,7 +143,7 @@ namespace LuduStack.Application.Services
 
         private void SetImagesToShow(ForumCategoryViewModel vm)
         {
-            vm.FeaturedImage = ContentHelper.FormatFeaturedImageUrl(vm.UserId, vm.FeaturedImage, ImageRenderType.Full);
+            vm.FeaturedImage = UrlFormatter.FormatFeaturedImageUrl(vm.UserId, vm.FeaturedImage, ImageRenderType.Full);
         }
     }
 }

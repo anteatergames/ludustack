@@ -247,8 +247,8 @@ namespace LuduStack.Application.Services
                 SetProfiles(viewModel, userProfiles);
 
                 SetPermissions(currentUserId, viewModel);
-                
-                var sanitizer = ContentHelper.GetHtmlSanitizer();
+
+                HtmlSanitizer sanitizer = ContentHelper.GetHtmlSanitizer();
                 SanitizeHtml(viewModel, sanitizer);
 
                 await mediator.SendCommand(new RegisterForumPostViewCommand(id, currentUserId));
@@ -291,7 +291,7 @@ namespace LuduStack.Application.Services
 
                 IEnumerable<UserProfileEssentialVo> userProfiles = await mediator.Query<GetBasicUserProfileDataByUserIdsQuery, IEnumerable<UserProfileEssentialVo>>(new GetBasicUserProfileDataByUserIdsQuery(profilesToGet));
 
-                var sanitizer = ContentHelper.GetHtmlSanitizer();
+                HtmlSanitizer sanitizer = ContentHelper.GetHtmlSanitizer();
 
                 foreach (ForumPostViewModel forumTopicAnswer in vms)
                 {

@@ -264,7 +264,7 @@ namespace LuduStack.Web.Areas.Community.Controllers
         {
             if (category.LatestForumPost != null)
             {
-                category.LatestForumPost.CreatedRelativeTime = ContentFormatter.DateTimeToCreatedAgoMessage(category.LatestForumPost.CreateDate, SharedLocalizer);
+                category.LatestForumPost.CreatedRelativeTime = DateTimeHelper.DateTimeToCreatedAgoMessage(category.LatestForumPost.CreateDate, SharedLocalizer);
             }
         }
     }

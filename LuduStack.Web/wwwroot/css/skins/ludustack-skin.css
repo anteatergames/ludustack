@@ -39,7 +39,6 @@ a {
 
     a.boldlink {
         font-weight: 500;
-        text-shadow: 0 0 black;
     }
 
 blockquote {
@@ -470,7 +469,7 @@ blockquote {
 }
 
 .text-green, .text-success {
-    color: #22af47;
+    color: var(--color-green);
 }
 
 .text-orange {

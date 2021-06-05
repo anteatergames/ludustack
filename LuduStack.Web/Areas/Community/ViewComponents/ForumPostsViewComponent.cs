@@ -53,11 +53,11 @@ namespace LuduStack.Web.Areas.Community.ViewComponents
         {
             foreach (ForumPostListItemVo forumPost in model)
             {
-                forumPost.CreatedRelativeTime = ContentFormatter.DateTimeToCreatedAgoMessage(forumPost.CreateDate, SharedLocalizer);
+                forumPost.CreatedRelativeTime = DateTimeHelper.DateTimeToCreatedAgoMessage(forumPost.CreateDate, SharedLocalizer);
 
                 if (forumPost.LatestAnswer != null)
                 {
-                    forumPost.LatestAnswer.CreatedRelativeTime = ContentFormatter.DateTimeToCreatedAgoMessage(forumPost.LatestAnswer.CreateDate, SharedLocalizer);
+                    forumPost.LatestAnswer.CreatedRelativeTime = DateTimeHelper.DateTimeToCreatedAgoMessage(forumPost.LatestAnswer.CreateDate, SharedLocalizer);
                 }
             }
         }

@@ -22,6 +22,7 @@ namespace LuduStack.Application.ViewModels.Content
         public DateTime? OldestDate { get; set; }
 
         public bool? ArticlesOnly { get; set; }
+        public bool CurrentUserIsAdmin { get; set; }
 
         public GetActivityFeedQueryOptions ToQueryOptions()
         {

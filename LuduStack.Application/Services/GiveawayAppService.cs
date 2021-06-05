@@ -80,6 +80,8 @@ namespace LuduStack.Application.Services
 
                 SetImagesToShow(vm, true);
 
+                vm.Description = ContentFormatter.FormatCFormatTextAreaBreaks(vm.Description);
+
                 return new OperationResultVo<GiveawayViewModel>(vm);
             }
             catch (Exception ex)
