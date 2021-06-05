@@ -10,7 +10,7 @@
 }
 
 <div class="d-flex flex-fill flex-row">
-    <div class="d-flex flex-row align-items-start px-1 border-gradient border-right postsidebar">
+    <div class="d-flex flex-row align-items-start px-1 border-gradient border-right rounded-0 postsidebar">
         <div class="d-flex flex-column">
             <div class="text-center">
                 <button class="btn btn-sm p-0" aria-pressed="false" aria-label="Up vote">
@@ -52,14 +52,20 @@
             </div>
         </div>
         <div class="mt-2 d-flex flex-row flex-fill justify-content-end">
-            <div class="d-flex flex-column justify-content-end mx-1 mr-auto">
-                <button type="button" class="btn btn-sm btn-outline-warning btn-reply text-nowrap d-block d-md-none text-capitalize"><i class="fas fa-fw fa-exclamation-triangle" aria-hidden="true"></i></button>
-                <button type="button" class="btn btn-sm btn-outline-warning btn-reply text-nowrap d-none d-md-block text-capitalize"><i class="fas fa-fw fa-exclamation-triangle" aria-hidden="true"></i> @SharedLocalizer["report"]</button>
-            </div>
-            <div class="d-flex flex-column justify-content-end mx-1">
-                <button type="button" class="btn btn-sm btn-success btn-reply text-nowrap d-block d-md-none text-capitalize"><i class="fas fa-fw fa-quote-right" aria-hidden="true"></i></button>
-                <button type="button" class="btn btn-sm btn-success btn-reply text-nowrap d-none d-md-block text-capitalize"><i class="fas fa-fw fa-quote-right" aria-hidden="true"></i> @SharedLocalizer["quote"]</button>
-            </div>
+            @if (User.Identity.IsAuthenticated)
+            {
+                <div class="d-flex flex-column justify-content-end mx-1 mr-auto">
+                    <button type="button" class="btn btn-sm btn-outline-warning btn-reply text-nowrap d-block d-md-none text-capitalize"><i class="fas fa-fw fa-exclamation-triangle" aria-hidden="true"></i></button>
+                    <button type="button" class="btn btn-sm btn-outline-warning btn-reply text-nowrap d-none d-md-block text-capitalize"><i class="fas fa-fw fa-exclamation-triangle" aria-hidden="true"></i> @SharedLocalizer["report"]</button>
+                </div>
+                <div class="d-flex flex-column justify-content-end mx-1">
+                    <button type="button" class="btn btn-sm btn-success btn-reply text-capitalize"><div style="display: -webkit-box"><i class="fas fa-fw fa-quote-right" aria-hidden="true"></i><span class="d-none d-md-block">&nbsp;@SharedLocalizer["quote"]</span></div></button>
+                </div>
+                <div class="d-flex flex-column justify-content-end mx-1">
+                    <button type="button" class="btn btn-sm btn-success btn-reply text-nowrap d-block d-md-none text-capitalize"><i class="fas fa-fw fa-reply" aria-hidden="true"></i></button>
+                    <button type="button" class="btn btn-sm btn-success btn-reply text-nowrap d-none d-md-block text-capitalize"><i class="fas fa-fw fa-reply" aria-hidden="true"></i> @SharedLocalizer["reply"]</button>
+                </div>
+            }
             <div class="d-flex flex-column justify-content-end mx-1">
                 <div class="p-2 author-details text-nowrap">
                     <partial name="_AuthorDetails" model="Model" />

@@ -25,7 +25,6 @@ var WYSIWYGEDITOR = (function () {
                         'indent',
                         'alignment',
                         '|',
-                        'imageUpload',
                         'blockQuote',
                         'insertTable',
                         'todoList',

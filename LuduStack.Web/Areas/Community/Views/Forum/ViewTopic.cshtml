@@ -106,26 +106,29 @@
         </div>
     </div>
 
-    <div class="p-0 bg-white postanswer">
-        <form id="frmSendAnswer" asp-area="community" asp-controller="forum" asp-action="savepost" method="post">
-            <input type="hidden" asp-for="ForumCategoryId" />
-            <input type="hidden" asp-for="OriginalPostId" />
+    @if (User.Identity.IsAuthenticated)
+    {
+        <div class="p-0 bg-white postanswer">
+            <form id="frmSendAnswer" asp-area="community" asp-controller="forum" asp-action="savepost" method="post">
+                <input type="hidden" asp-for="ForumCategoryId" />
+                <input type="hidden" asp-for="OriginalPostId" />
 
-            <div class="d-flex p-3">
-                <div class="mr-2">
-                    <img class="rounded-circle" src="@ViewBag.ProfileImage" alt="This is @ViewBag.Username">
-                </div>
-
-                <div class="d-flex flex-fill flex-column">
-                    <div class="mb-2">
-                        <textarea id="txtContentNewAnswer" name="Content" class="form-control txtAnswer" rows="5"></textarea>
+                <div class="d-flex p-3">
+                    <div class="mr-2">
+                        <img class="rounded-circle" src="@ViewBag.ProfileImage" alt="This is @ViewBag.Username">
                     </div>
 
-                    <div class="text-right">
-                        <button type="button" class="btn btn-lg btn-primary btn-post-save-answer"><i class="far fa-paper-plane" aria-hidden="true"></i> @SharedLocalizer["Answer"]</button>
+                    <div class="d-flex flex-fill flex-column">
+                        <div class="mb-2">
+                            <textarea id="txtContentNewAnswer" name="Content" class="form-control txtAnswer" rows="5"></textarea>
+                        </div>
+
+                        <div class="text-right">
+                            <button type="button" class="btn btn-lg btn-primary btn-post-save-answer"><i class="far fa-paper-plane" aria-hidden="true"></i> @SharedLocalizer["Answer"]</button>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </form>
-    </div>
+            </form>
+        </div>
+    }
 </section>
