@@ -6,6 +6,8 @@
     ViewData["Title"] = SharedLocalizer["{0} Forum Category", (Model.Id == Guid.Empty ? "New" : "Edit")];
 
     var isNew = Model.Id == Guid.Empty;
+
+    var forumGroups = ViewBag.ForumGroups as List<SelectListItem>;
 }
 
 <h1 class="sr-only">@ViewData["Title"]</h1>
@@ -81,6 +83,14 @@
                         <textarea asp-for="Description" class="form-control" placeholder="@SharedLocalizer["Describe the Forum Category here"]"></textarea>
                         <span asp-validation-for="Description" class="text-danger"></span>
                     </div>
+                </div>
+
+                <div class="col-md-12">
+                    <label class="col-form-label text-capitalize">@SharedLocalizer["group"]</label>
+                    <select asp-for="GroupId" asp-items="@forumGroups" class="form-control select2">
+                        <option selected="selected" value="">@SharedLocalizer["Select"]</option>
+                    </select>
+                    <span asp-validation-for="GroupId" class="text-danger"></span>
                 </div>
 
                 <div class="col-md-12 text-center px-5">

@@ -4,9 +4,11 @@ using LuduStack.Application.Helpers;
 using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels.Forum;
 using LuduStack.Domain.Core.Enums;
+using LuduStack.Domain.Core.Extensions;
 using LuduStack.Domain.Messaging;
 using LuduStack.Domain.Messaging.Commands.Forum;
 using LuduStack.Domain.Messaging.Queries.ForumCategory;
+using LuduStack.Domain.Messaging.Queries.ForumGroup;
 using LuduStack.Domain.Messaging.Queries.ForumPost;
 using LuduStack.Domain.Messaging.Queries.UserProfile;
 using LuduStack.Domain.Models;
@@ -58,50 +60,37 @@ namespace LuduStack.Application.Services
             }
         }
 
+        public async Task<OperationResultVo<ForumIndexViewModel>> GetAllCategoriesByGroup(Guid currentUserId)
+        {
+            try
+            {
+                IEnumerable<ForumGroup> allGroups = await mediator.Query<GetForumGroupQuery, IEnumerable<ForumGroup>>(new GetForumGroupQuery());
+                List<ForumGroupViewModel> allGroupsVms = mapper.Map<IEnumerable<ForumGroup>, IEnumerable<ForumGroupViewModel>>(allGroups).ToList();
+
+                var model = new ForumIndexViewModel();
+                model.Groups = allGroupsVms.OrderBy(x => x.Order).ToList();
+
+                var allCategories = await GetCategoryList();
+
+                foreach (var group in model.Groups)
+                {
+                    group.Slug = group.Name.Slugify();
+                    group.Categories = allCategories.Where(x => x.GroupId == group.Id).ToList();
+                }
+
+                return new OperationResultVo<ForumIndexViewModel>(model);
+            }
+            catch (Exception ex)
+            {
+                return new OperationResultVo<ForumIndexViewModel>(ex.Message);
+            }
+        }
+
         public async Task<OperationResultListVo<ForumCategoryListItemVo>> GetAllCategories(Guid currentUserId)
         {
             try
             {
-                IEnumerable<ForumCategory> allModels = await mediator.Query<GetForumCategoryQuery, IEnumerable<ForumCategory>>(new GetForumCategoryQuery());
-
-                List<ForumCategoryListItemVo> vms = mapper.Map<IEnumerable<ForumCategory>, IEnumerable<ForumCategoryListItemVo>>(allModels).ToList();
-
-                IEnumerable<ForumCategoryCounterResultVo> categoryCounters = await mediator.Query<GetForumCategoryCountersQuery, IEnumerable<ForumCategoryCounterResultVo>>(new GetForumCategoryCountersQuery());
-
-                List<Guid> profilesToGet = new List<Guid>();
-
-                foreach (ForumCategoryListItemVo category in vms)
-                {
-                    ForumCategoryCounterResultVo categoryStats = categoryCounters.FirstOrDefault(x => x.ForumCategoryId == category.Id);
-                    if (categoryStats != null)
-                    {
-                        category.PostCount = categoryStats.PostsCount;
-                        category.TopicCount = categoryStats.TopicsCount;
-                        category.LatestForumPost = categoryStats.LatestPost;
-                    }
-
-                    if (category.LatestForumPost != null)
-                    {
-                        profilesToGet.Add(category.LatestForumPost.UserId);
-                    }
-                }
-
-                IEnumerable<UserProfileEssentialVo> userProfiles = await mediator.Query<GetBasicUserProfileDataByUserIdsQuery, IEnumerable<UserProfileEssentialVo>>(new GetBasicUserProfileDataByUserIdsQuery(profilesToGet));
-
-                foreach (ForumCategoryListItemVo category in vms)
-                {
-                    if (category.LatestForumPost != null)
-                    {
-                        UserProfileEssentialVo latestPostAuthorProfile = userProfiles.FirstOrDefault(x => x.UserId == category.LatestForumPost.UserId);
-
-                        if (latestPostAuthorProfile != null)
-                        {
-                            category.LatestForumPost.UserHandler = latestPostAuthorProfile.Handler;
-                            category.LatestForumPost.AuthorName = latestPostAuthorProfile.Name;
-                            category.LatestForumPost.AuthorPicture = UrlFormatter.ProfileImage(category.LatestForumPost.UserId, 43);
-                        }
-                    }
-                }
+                var vms = await GetCategoryList();
 
                 return new OperationResultListVo<ForumCategoryListItemVo>(vms);
             }
@@ -354,6 +343,52 @@ namespace LuduStack.Application.Services
             {
                 return new OperationResultVo<int>(ex.Message);
             }
+        }
+
+        private async Task<List<ForumCategoryListItemVo>> GetCategoryList()
+        {
+            IEnumerable<ForumCategory> allModels = await mediator.Query<GetForumCategoryQuery, IEnumerable<ForumCategory>>(new GetForumCategoryQuery());
+
+            List<ForumCategoryListItemVo> vms = mapper.Map<IEnumerable<ForumCategory>, IEnumerable<ForumCategoryListItemVo>>(allModels).ToList();
+
+            IEnumerable<ForumCategoryCounterResultVo> categoryCounters = await mediator.Query<GetForumCategoryCountersQuery, IEnumerable<ForumCategoryCounterResultVo>>(new GetForumCategoryCountersQuery());
+
+            List<Guid> profilesToGet = new List<Guid>();
+
+            foreach (ForumCategoryListItemVo category in vms)
+            {
+                ForumCategoryCounterResultVo categoryStats = categoryCounters.FirstOrDefault(x => x.ForumCategoryId == category.Id);
+                if (categoryStats != null)
+                {
+                    category.PostCount = categoryStats.PostsCount;
+                    category.TopicCount = categoryStats.TopicsCount;
+                    category.LatestForumPost = categoryStats.LatestPost;
+                }
+
+                if (category.LatestForumPost != null)
+                {
+                    profilesToGet.Add(category.LatestForumPost.UserId);
+                }
+            }
+
+            IEnumerable<UserProfileEssentialVo> userProfiles = await mediator.Query<GetBasicUserProfileDataByUserIdsQuery, IEnumerable<UserProfileEssentialVo>>(new GetBasicUserProfileDataByUserIdsQuery(profilesToGet));
+
+            foreach (ForumCategoryListItemVo category in vms)
+            {
+                if (category.LatestForumPost != null)
+                {
+                    UserProfileEssentialVo latestPostAuthorProfile = userProfiles.FirstOrDefault(x => x.UserId == category.LatestForumPost.UserId);
+
+                    if (latestPostAuthorProfile != null)
+                    {
+                        category.LatestForumPost.UserHandler = latestPostAuthorProfile.Handler;
+                        category.LatestForumPost.AuthorName = latestPostAuthorProfile.Name;
+                        category.LatestForumPost.AuthorPicture = UrlFormatter.ProfileImage(category.LatestForumPost.UserId, 43);
+                    }
+                }
+            }
+
+            return vms;
         }
 
         private static void SetVotes(Guid currentUserId, ForumPostViewModel forumPost, ForumPost entity)

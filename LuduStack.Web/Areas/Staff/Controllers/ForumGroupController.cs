@@ -3,7 +3,6 @@ using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels.Forum;
 using LuduStack.Domain.ValueObjects;
 using LuduStack.Web.Areas.Staff.Controllers.Base;
-using LuduStack.Web.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -12,15 +11,13 @@ using System.Threading.Tasks;
 
 namespace LuduStack.Web.Areas.Staff.Controllers
 {
-    [Route("staff/forumcategory")]
-    public class ForumCategoryController : StaffBaseController
+    [Route("staff/forumgroup")]
+    public class ForumGroupController : StaffBaseController
     {
-        private readonly IForumCategoryAppService forumCategoryAppService;
         private readonly IForumGroupAppService forumGroupAppService;
 
-        public ForumCategoryController(IForumCategoryAppService forumCategoryAppService, IForumGroupAppService forumGroupAppService)
+        public ForumGroupController(IForumGroupAppService forumGroupAppService)
         {
-            this.forumCategoryAppService = forumCategoryAppService;
             this.forumGroupAppService = forumGroupAppService;
         }
 
@@ -37,64 +34,60 @@ namespace LuduStack.Web.Areas.Staff.Controllers
         [Route("list")]
         public async Task<PartialViewResult> List()
         {
-            List<ForumCategoryViewModel> model;
+            List<ForumGroupViewModel> model;
 
-            OperationResultVo serviceResult = await forumCategoryAppService.GetAll(CurrentUserId);
+            OperationResultVo serviceResult = await forumGroupAppService.GetAll(CurrentUserId);
 
             if (serviceResult.Success)
             {
-                OperationResultListVo<ForumCategoryViewModel> castResult = serviceResult as OperationResultListVo<ForumCategoryViewModel>;
+                OperationResultListVo<ForumGroupViewModel> castResult = serviceResult as OperationResultListVo<ForumGroupViewModel>;
 
                 model = castResult.Value.ToList();
             }
             else
             {
-                model = new List<ForumCategoryViewModel>();
+                model = new List<ForumGroupViewModel>();
             }
 
-            foreach (ForumCategoryViewModel item in model)
+            foreach (ForumGroupViewModel item in model)
             {
                 SetPermissions(item);
             }
 
-            ViewData["ListDescription"] = SharedLocalizer["All Forum Categories"].ToString();
+            ViewData["ListDescription"] = SharedLocalizer["All Forum Groups"].ToString();
 
-            return PartialView("_ListForumCategories", model);
+            return PartialView("_ListForumGroups", model);
         }
 
         [Route("add")]
         public async Task<IActionResult> Add()
         {
-            OperationResultVo serviceResult = await forumCategoryAppService.GenerateNew(CurrentUserId);
+            OperationResultVo serviceResult = await forumGroupAppService.GenerateNew(CurrentUserId);
 
             if (serviceResult.Success)
             {
-                OperationResultVo<ForumCategoryViewModel> castResult = serviceResult as OperationResultVo<ForumCategoryViewModel>;
+                OperationResultVo<ForumGroupViewModel> castResult = serviceResult as OperationResultVo<ForumGroupViewModel>;
 
-                ForumCategoryViewModel model = castResult.Value;
-
-                await SetGroupsViewBag();
+                ForumGroupViewModel model = castResult.Value;
 
                 return View("CreateEditWrapper", model);
             }
             else
             {
-                return View("CreateEditWrapper", new ForumCategoryViewModel());
+                return View("CreateEditWrapper", new ForumGroupViewModel());
             }
         }
 
         [Route("edit/{id:guid}")]
         public async Task<IActionResult> Edit(Guid id)
         {
-            ForumCategoryViewModel viewModel;
+            ForumGroupViewModel viewModel;
 
-            OperationResultVo serviceResult = await forumCategoryAppService.GetForEdit(CurrentUserId, id);
+            OperationResultVo serviceResult = await forumGroupAppService.GetById(CurrentUserId, id);
 
-            OperationResultVo<ForumCategoryViewModel> castResult = serviceResult as OperationResultVo<ForumCategoryViewModel>;
+            OperationResultVo<ForumGroupViewModel> castResult = serviceResult as OperationResultVo<ForumGroupViewModel>;
 
             viewModel = castResult.Value;
-
-            await SetGroupsViewBag();
 
             SetPermissions(viewModel);
 
@@ -102,7 +95,7 @@ namespace LuduStack.Web.Areas.Staff.Controllers
         }
 
         [HttpPost("save")]
-        public async Task<JsonResult> Save(ForumCategoryViewModel vm)
+        public async Task<JsonResult> Save(ForumGroupViewModel vm)
         {
             bool isNew = vm.Id == Guid.Empty;
 
@@ -110,15 +103,15 @@ namespace LuduStack.Web.Areas.Staff.Controllers
             {
                 vm.UserId = CurrentUserId;
 
-                OperationResultVo<Guid> saveResult = await forumCategoryAppService.Save(CurrentUserId, vm);
+                OperationResultVo<Guid> saveResult = await forumGroupAppService.Save(CurrentUserId, vm);
 
                 if (saveResult.Success)
                 {
-                    string url = Url.Action("index", "forumcategory", new { area = "staff", msg = SharedLocalizer[saveResult.Message] });
+                    string url = Url.Action("index", "forumgroup", new { area = "staff", msg = SharedLocalizer[saveResult.Message] });
 
                     if (isNew && EnvName.Equals(Constants.ProductionEnvironmentName))
                     {
-                        await NotificationSender.SendTeamNotificationAsync("New Forum Category created!");
+                        await NotificationSender.SendTeamNotificationAsync("New Forum Group created!");
                     }
 
                     return Json(new OperationResultRedirectVo<Guid>(saveResult, url));
@@ -139,13 +132,13 @@ namespace LuduStack.Web.Areas.Staff.Controllers
         {
             try
             {
-                OperationResultVo deleteResult = await forumCategoryAppService.Remove(CurrentUserId, id);
+                OperationResultVo deleteResult = await forumGroupAppService.Remove(CurrentUserId, id);
 
                 if (deleteResult.Success)
                 {
                     if (edit)
                     {
-                        string url = Url.Action("index", "forumcategory", new { area = "staff", msg = deleteResult.Message });
+                        string url = Url.Action("index", "forumgroup", new { area = "staff", msg = deleteResult.Message });
                         deleteResult.Message = null;
 
                         return Json(new OperationResultRedirectVo(deleteResult, url));
@@ -164,14 +157,7 @@ namespace LuduStack.Web.Areas.Staff.Controllers
             }
         }
 
-        private async Task SetGroupsViewBag()
-        {
-            IEnumerable<SelectListItemVo> groups = await forumGroupAppService.GetSelectList(CurrentUserId);
-            List<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem> selectList = groups.ToSelectList();
-            ViewBag.ForumGroups = selectList;
-        }
-
-        private void SetPermissions(ForumCategoryViewModel model)
+        private void SetPermissions(ForumGroupViewModel model)
         {
             model.Permissions.IsAdmin = CurrentUserIsAdmin;
             model.Permissions.CanDelete = model.Permissions.IsAdmin;

@@ -497,6 +497,27 @@
         ]
     },
     {
+        "outputFileName": "wwwroot/css/forumgroup.min.css",
+        "inputFiles": [
+            "wwwroot/css/forumgroup.css"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/js/forumgroup/forumgroup.min.js",
+        "inputFiles": [
+            "wwwroot/js/forumgroup/forumgroupcommon.js",
+            "wwwroot/js/forumgroup/forumgroup.js"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/js/forumgroup/forumgroupedit.min.js",
+        "inputFiles": [
+            "wwwroot/js/common-edit.js",
+            "wwwroot/js/forumgroup/forumgroupcommon.js",
+            "wwwroot/js/forumgroup/forumgroupedit.js"
+        ]
+    },
+    {
         "outputFileName": "wwwroot/css/forumcategory.min.css",
         "inputFiles": [
             "wwwroot/css/forumcategory.css"

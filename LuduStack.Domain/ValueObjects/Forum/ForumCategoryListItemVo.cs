@@ -4,6 +4,8 @@ namespace LuduStack.Domain.ValueObjects
 {
     public class ForumCategoryListItemVo
     {
+        public Guid GroupId { get; set; }
+
         public Guid Id { get; set; }
 
         public Guid UserId { get; set; }

@@ -2,6 +2,23 @@
     margin: 0;
 }
 
+.card {
+    border-radius: var(--border-radius) !important;
+}
+
+    .card .card-header:first-child {
+        border-radius: var(--border-radius);
+    }
+
+    .card .forumlistitem:last-child {
+        border-bottom-left-radius: var(--border-radius) !important;
+        border-bottom-right-radius: var(--border-radius) !important;
+    }
+
+.btn-link {
+    color: var(--color-green);
+}
+
 .author-details {
     background-color: var(--color-shade);
 }

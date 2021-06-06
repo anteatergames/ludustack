@@ -5,6 +5,7 @@ using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Interfaces.Services;
 using LuduStack.Domain.Messaging;
 using LuduStack.Domain.Messaging.Queries.ForumCategory;
+using LuduStack.Domain.Messaging.Queries.ForumGroup;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
 using LuduStack.Infra.CrossCutting.Messaging;
@@ -54,7 +55,30 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public async Task<OperationResultVo<ForumCategoryViewModel>> GetById(Guid currentUserId, Guid id)
+        public async Task<OperationResultVo<ForumCategoryViewModel>> GetForDetails(Guid currentUserId, Guid id)
+        {
+            try
+            {
+                ForumCategory model = await mediator.Query<GetForumCategoryByIdQuery, ForumCategory>(new GetForumCategoryByIdQuery(id));
+
+                if (model == null)
+                {
+                    return new OperationResultVo<ForumCategoryViewModel>("Entity not found!");
+                }
+
+                ForumCategoryViewModel vm = mapper.Map<ForumCategoryViewModel>(model);
+
+                SetImagesToShow(vm);
+
+                return new OperationResultVo<ForumCategoryViewModel>(vm);
+            }
+            catch (Exception ex)
+            {
+                return new OperationResultVo<ForumCategoryViewModel>(ex.Message);
+            }
+        }
+
+        public async Task<OperationResultVo<ForumCategoryViewModel>> GetForEdit(Guid currentUserId, Guid id)
         {
             try
             {

@@ -29,14 +29,12 @@ namespace LuduStack.Domain.Messaging
     public class SaveForumCategoryCommandHandler : CommandHandler, IRequestHandler<SaveForumCategoryCommand, CommandResult>
     {
         protected readonly IUnitOfWork unitOfWork;
-        protected readonly IForumCategoryRepository gamificationLevelRepository;
-        protected readonly IGamificationDomainService gamificationDomainService;
+        protected readonly IForumCategoryRepository forumCategoryRepository;
 
-        public SaveForumCategoryCommandHandler(IUnitOfWork unitOfWork, IForumCategoryRepository gamificationLevelRepository, IGamificationDomainService gamificationDomainService)
+        public SaveForumCategoryCommandHandler(IUnitOfWork unitOfWork, IForumCategoryRepository forumCategoryRepository)
         {
             this.unitOfWork = unitOfWork;
-            this.gamificationLevelRepository = gamificationLevelRepository;
-            this.gamificationDomainService = gamificationDomainService;
+            this.forumCategoryRepository = forumCategoryRepository;
         }
 
         public async Task<CommandResult> Handle(SaveForumCategoryCommand request, CancellationToken cancellationToken)
@@ -47,11 +45,11 @@ namespace LuduStack.Domain.Messaging
 
             if (request.ForumCategory.Id == Guid.Empty)
             {
-                await gamificationLevelRepository.Add(request.ForumCategory);
+                await forumCategoryRepository.Add(request.ForumCategory);
             }
             else
             {
-                gamificationLevelRepository.Update(request.ForumCategory);
+                forumCategoryRepository.Update(request.ForumCategory);
             }
 
             result.Validation = await Commit(unitOfWork);

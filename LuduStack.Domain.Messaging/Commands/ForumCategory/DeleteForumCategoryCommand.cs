@@ -24,21 +24,21 @@ namespace LuduStack.Domain.Messaging
     public class DeleteForumCategoryCommandHandler : CommandHandler, IRequestHandler<DeleteForumCategoryCommand, CommandResult>
     {
         protected readonly IUnitOfWork unitOfWork;
-        protected readonly IForumCategoryRepository gamificationLevelRepository;
+        protected readonly IForumCategoryRepository forumCategoryRepository;
 
-        public DeleteForumCategoryCommandHandler(IUnitOfWork unitOfWork, IForumCategoryRepository gamificationLevelRepository)
+        public DeleteForumCategoryCommandHandler(IUnitOfWork unitOfWork, IForumCategoryRepository forumCategoryRepository)
         {
             this.unitOfWork = unitOfWork;
-            this.gamificationLevelRepository = gamificationLevelRepository;
+            this.forumCategoryRepository = forumCategoryRepository;
         }
 
         public async Task<CommandResult> Handle(DeleteForumCategoryCommand request, CancellationToken cancellationToken)
         {
             if (!request.IsValid()) { return request.Result; }
 
-            Models.ForumCategory gamificationLevel = await gamificationLevelRepository.GetById(request.Id);
+            Models.ForumCategory category = await forumCategoryRepository.GetById(request.Id);
 
-            if (gamificationLevel is null)
+            if (category is null)
             {
                 AddError("The Forum Category doesn't exist.");
                 return request.Result;
@@ -46,7 +46,7 @@ namespace LuduStack.Domain.Messaging
 
             // AddDomainEvent here
 
-            gamificationLevelRepository.Remove(gamificationLevel.Id);
+            forumCategoryRepository.Remove(category.Id);
 
             FluentValidation.Results.ValidationResult validation = await Commit(unitOfWork);
 

@@ -11,7 +11,9 @@ namespace LuduStack.Application.Interfaces
 
         Task<OperationResultListVo<ForumCategoryViewModel>> GetAll(Guid currentUserId);
 
-        Task<OperationResultVo<ForumCategoryViewModel>> GetById(Guid currentUserId, Guid id);
+        Task<OperationResultVo<ForumCategoryViewModel>> GetForDetails(Guid currentUserId, Guid id);
+
+        Task<OperationResultVo<ForumCategoryViewModel>> GetForEdit(Guid currentUserId, Guid id);
 
         Task<OperationResultVo> Remove(Guid currentUserId, Guid id);
 

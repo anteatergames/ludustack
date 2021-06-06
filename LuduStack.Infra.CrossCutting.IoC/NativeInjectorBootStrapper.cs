@@ -173,6 +173,10 @@ namespace LuduStack.Infra.CrossCutting.IoC
 
             services.AddScoped<IForumAppService, ForumAppService>();
 
+            services.AddScoped<IForumGroupAppService, ForumGroupAppService>();
+            services.AddScoped<IForumGroupDomainService, ForumGroupDomainService>();
+            services.AddScoped<IForumGroupRepository, ForumGroupRepository>();
+
             services.AddScoped<IForumCategoryAppService, ForumCategoryAppService>();
             services.AddScoped<IForumCategoryDomainService, ForumCategoryDomainService>();
             services.AddScoped<IForumCategoryRepository, ForumCategoryRepository>();

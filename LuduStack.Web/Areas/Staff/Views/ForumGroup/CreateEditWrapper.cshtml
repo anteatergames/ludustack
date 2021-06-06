@@ -1,0 +1,33 @@
+﻿@model ForumGroupViewModel
+@{
+    var isAjax = ViewContext.HttpContext.Request.IsAjaxRequest();
+    var canInteract = User.Identity.IsAuthenticated;
+}
+
+@section ComponentStyles {
+    <environment include="Development">
+        <link rel="stylesheet" href="~/css/forumgroup.css">
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="~/css/forumgroup.min.css" asp-append-version="true">
+    </environment>
+}
+
+@section Scripts {
+    <environment include="Development">
+        <script src="~/js/common-edit.js"></script>
+        <script src="~/js/forumgroup/forumgroupcommon.js"></script>
+        <script src="~/js/forumgroup/forumgroupedit.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/js/forumgroup/forumgroupedit.min.js" asp-append-version="true"></script>
+    </environment>
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+<section class="content container">
+    <div id="featurecontainer" class="col">
+        <partial name="_CreateEdit" model="Model" />
+    </div>
+</section>

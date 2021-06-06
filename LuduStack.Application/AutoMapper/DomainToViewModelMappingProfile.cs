@@ -199,6 +199,7 @@ namespace LuduStack.Application.AutoMapper
 
             #region Forum
 
+            CreateMap<ForumGroup, ForumGroupViewModel>();
             CreateMap<ForumCategory, ForumCategoryViewModel>();
             CreateMap<ForumCategory, ForumCategoryListItemVo>();
             CreateMap<ForumPost, ForumPostViewModel>();

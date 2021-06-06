@@ -1,4 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using LuduStack.Domain.Models;
+using LuduStack.Domain.ValueObjects;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace LuduStack.Application.ViewModels.Forum
 {
@@ -13,6 +17,8 @@ namespace LuduStack.Application.ViewModels.Forum
 
         [Required]
         public string Description { get; set; }
+
+        public Guid GroupId { get; set; }
 
         public string FeaturedImage { get; set; }
 
