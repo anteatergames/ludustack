@@ -5,7 +5,6 @@ using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Interfaces.Services;
 using LuduStack.Domain.Messaging;
 using LuduStack.Domain.Messaging.Queries.ForumCategory;
-using LuduStack.Domain.Messaging.Queries.ForumGroup;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
 using LuduStack.Infra.CrossCutting.Messaging;

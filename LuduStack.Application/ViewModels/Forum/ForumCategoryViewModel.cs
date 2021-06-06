@@ -1,7 +1,4 @@
-﻿using LuduStack.Domain.Models;
-using LuduStack.Domain.ValueObjects;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace LuduStack.Application.ViewModels.Forum

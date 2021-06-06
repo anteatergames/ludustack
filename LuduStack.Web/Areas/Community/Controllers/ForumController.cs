@@ -58,28 +58,38 @@ namespace LuduStack.Web.Areas.Community.Controllers
         [Route("categoriesbygroup")]
         public async Task<PartialViewResult> ListCategoriesByGroup()
         {
-            ForumIndexViewModel model;
 
             OperationResultVo<ForumIndexViewModel> serviceResult = await forumAppService.GetAllCategoriesByGroup(CurrentUserId);
 
             if (serviceResult.Success)
             {
-                model = serviceResult.Value;
+                ForumIndexViewModel model = serviceResult.Value;
+
+                foreach (ForumGroupViewModel group in model.Groups)
+                {
+                    foreach (ForumCategoryListItemVo category in group.Categories)
+                    {
+                        FillMissingInformation(category);
+                    }
+                }
+
+                return PartialView("_ListCategoriesByGroup", model);
             }
             else
             {
-                model = new ForumIndexViewModel();
-            }
+                OperationResultListVo<ForumCategoryListItemVo> serviceResultCategories = await forumAppService.GetAllCategories(CurrentUserId);
 
-            foreach (var group in model.Groups)
-            {
-                foreach (var category in group.Categories)
+                if (serviceResultCategories.Success)
                 {
-                    FillMissingInformation(category);
+                    IEnumerable<ForumCategoryListItemVo> model = serviceResultCategories.Value;
+
+                    return PartialView("_ListCategories", model);
+                }
+                else
+                {
+                    return PartialView("_ListCategories", new List<ForumCategoryListItemVo>());
                 }
             }
-
-            return PartialView("_ListCategoriesByGroup", model);
         }
 
         [Route("{handler?}")]

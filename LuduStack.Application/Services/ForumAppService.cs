@@ -67,12 +67,19 @@ namespace LuduStack.Application.Services
                 IEnumerable<ForumGroup> allGroups = await mediator.Query<GetForumGroupQuery, IEnumerable<ForumGroup>>(new GetForumGroupQuery());
                 List<ForumGroupViewModel> allGroupsVms = mapper.Map<IEnumerable<ForumGroup>, IEnumerable<ForumGroupViewModel>>(allGroups).ToList();
 
-                var model = new ForumIndexViewModel();
-                model.Groups = allGroupsVms.OrderBy(x => x.Order).ToList();
+                if (!allGroupsVms.Any())
+                {
+                    return new OperationResultVo<ForumIndexViewModel>("No Groups");
+                }
 
-                var allCategories = await GetCategoryList();
+                ForumIndexViewModel model = new ForumIndexViewModel
+                {
+                    Groups = allGroupsVms.OrderBy(x => x.Order).ToList()
+                };
 
-                foreach (var group in model.Groups)
+                List<ForumCategoryListItemVo> allCategories = await GetCategoryList();
+
+                foreach (ForumGroupViewModel group in model.Groups)
                 {
                     group.Slug = group.Name.Slugify();
                     group.Categories = allCategories.Where(x => x.GroupId == group.Id).ToList();
@@ -90,7 +97,7 @@ namespace LuduStack.Application.Services
         {
             try
             {
-                var vms = await GetCategoryList();
+                List<ForumCategoryListItemVo> vms = await GetCategoryList();
 
                 return new OperationResultListVo<ForumCategoryListItemVo>(vms);
             }

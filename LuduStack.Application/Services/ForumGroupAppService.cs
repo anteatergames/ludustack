@@ -1,7 +1,5 @@
-﻿using LuduStack.Application.Formatters;
-using LuduStack.Application.Interfaces;
+﻿using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels.Forum;
-using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Interfaces.Services;
 using LuduStack.Domain.Messaging;
 using LuduStack.Domain.Messaging.Queries.ForumGroup;
