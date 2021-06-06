@@ -53,7 +53,6 @@
         bindBtnEditCancel();
     }
 
-
     function bindEditors() {
         $(selectors.txtAnswer).each((index, element) => {
             var id = element.id;
@@ -215,9 +214,7 @@
             var txtArea = editDiv.find(selectors.txtAnswer);
 
             bindEditor(`#${txtArea.attr('id')}`).then(() => {
-
                 viewDiv.removeClass('d-flex').fadeOut("slow", function () {
-
                     postDiv.animate({ 'height': editDiv.css('height') },
                         {
                             complete: () => {

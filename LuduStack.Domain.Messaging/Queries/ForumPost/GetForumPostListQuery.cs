@@ -49,7 +49,7 @@ namespace LuduStack.Domain.Messaging.Queries.ForumPost
                 IsFixed = x.IsFixed,
                 Language = x.Language,
                 Title = x.Title,
-                Likes = x.Likes
+                Votes = x.Votes
             });
 
             List<ForumPostListItemVo> finalList = resultingModels.OrderByDescending(x => x.IsFixed).ThenByDescending(x => x.CreateDate).ToList();

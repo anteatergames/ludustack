@@ -91,7 +91,6 @@ namespace LuduStack.Application.AutoMapper
 
             CreateMap<BrainstormSession, BrainstormSessionViewModel>();
             CreateMap<BrainstormIdea, BrainstormIdeaViewModel>();
-            CreateMap<BrainstormVote, BrainstormVoteViewModel>();
             CreateMap<BrainstormComment, BrainstormCommentViewModel>();
 
             #endregion Brainstorm

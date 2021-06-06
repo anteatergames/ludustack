@@ -14,6 +14,12 @@ namespace LuduStack.Domain.Interfaces.Repository
 
         bool CanRegisterViewForUser(Guid forumPostId, Guid userId);
 
-        Task RegisterView(Guid id, Guid? userId);
+        Task RegisterView(Guid forumPostId, Guid? userId);
+
+        Task AddVote(Guid forumPostId, UserVoteVo model);
+
+        Task UpdateVote(Guid forumPostId, UserVoteVo model);
+
+        Task<int> GetScore(Guid forumPostId);
     }
 }

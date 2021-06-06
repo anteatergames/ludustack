@@ -53,12 +53,10 @@ namespace LuduStack.Domain.Core.Extensions
             return originalString.Replace("https://res.cloudinary.com/indievisible", "https://res.cloudinary.com/ludustack");
         }
 
-
-
         /// <summary>
-        /// Produces optional, URL-friendly version of a title, "like-this-one". 
+        /// Produces optional, URL-friendly version of a title, "like-this-one".
         /// hand-tuned for speed, reflects performance refactoring contributed
-        /// by John Gietzen (user otac0n on Stack Overflow) 
+        /// by John Gietzen (user otac0n on Stack Overflow)
         /// </summary>
         public static string Slugify(this string text)
         {
@@ -120,6 +118,7 @@ namespace LuduStack.Domain.Core.Extensions
                 return sb.ToString();
             }
         }
+
         private static string RemapInternationalCharToAscii(char c)
         {
             string s = c.ToString().ToLowerInvariant();

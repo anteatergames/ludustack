@@ -1,5 +1,6 @@
 ﻿using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Core.Models;
+using LuduStack.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
 
@@ -19,6 +20,6 @@ namespace LuduStack.Domain.Models
 
         public virtual List<BrainstormComment> Comments { get; set; }
 
-        public virtual List<BrainstormVote> Votes { get; set; }
+        public virtual List<UserVoteVo> Votes { get; set; }
     }
 }

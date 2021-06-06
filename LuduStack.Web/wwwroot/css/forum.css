@@ -23,10 +23,10 @@
         top: 20px;
     }
 
-    .forumlistitem .pinedicon span i {
-        transform: rotate( 315deg );
-        color: var(--color-green-fx);
-    }
+        .forumlistitem .pinedicon span i {
+            transform: rotate( 315deg );
+            color: var(--color-green-fx);
+        }
 
     .forumlistitem .verticaldivider {
         border-left: 1px solid #dedada;
@@ -82,10 +82,17 @@
     fill: var(--color-bg-basic);
 }
 
+.postitem .postsidebar .text-green svg {
+    fill: var(--color-green);
+}
+
+.postitem .postsidebar .text-red svg {
+    fill: var(--color-red);
+}
+
 .postanswer .ck.ck-content.ck-editor__editable {
     min-height: 150px !important;
 }
-
 
 .posttopic .ck.ck-content.ck-editor__editable {
     min-height: 300px !important;

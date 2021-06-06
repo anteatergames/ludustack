@@ -1,4 +1,5 @@
 ﻿using LuduStack.Application.ViewModels.Forum;
+using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.ValueObjects;
 using System;
 using System.Threading.Tasks;
@@ -24,5 +25,7 @@ namespace LuduStack.Application.Interfaces
         Task<OperationResultListVo<ForumPostViewModel>> GetTopicAnswers(Guid currentUserId, GetForumTopicAnswersRequestViewModel viewModel);
 
         Task<OperationResultVo<ForumPostViewModel>> RemovePost(Guid currentUserId, Guid id);
+
+        Task<OperationResultVo<int>> Vote(Guid currentUserId, Guid postId, VoteValue vote);
     }
 }

@@ -50,7 +50,6 @@ blockquote {
     width: 80%; /* create space for the quotes */
     color: #4a4a4a;
     margin: 1rem auto 2rem;
-    color: #4a4a4a;
     background: #d5e4db;
 }
     /* -- create the quotation marks -- */
@@ -60,7 +59,6 @@ blockquote {
         position: absolute;
         /* -- inside the relative position of blockquote -- */
         top: 13px;
-        color: #E8E8E8;
         font-size: 34px;
         font-weight: 900;
         color: #d5e4db;

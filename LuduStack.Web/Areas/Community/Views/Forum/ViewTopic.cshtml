@@ -75,10 +75,14 @@
 
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+@section TranslatedMessages {
+    <span class="msg" data-msg-id="msgNeedLoginToVote">@SharedLocalizer["You need to be logged in to be able to vote on posts."]</span>
+}
 
 <section id="featurecontainer" class="col-12 container">
     <input type="hidden" id="urls" value="urls"
-           data-url-answers="@Url.Action("answersbytopic", "forum", new { area = "community", topicId = Model.Id })" />
+           data-url-answers="@Url.Action("answersbytopic", "forum", new { area = "community", topicId = Model.Id })"
+           data-url-vote="@Url.Action("vote", "forum", new { area = "community" })" />
 
     <div class="box p-0 bg-white">
 
@@ -97,7 +101,7 @@
             </div>
         </div>
 
-        <div class="postitem">
+        <div class="postitem" data-id="@Model.Id" data-currentuservote="@Model.CurrentUserVote">
             <partial name="_ForumPostViewEdit" model="Model" />
         </div>
 

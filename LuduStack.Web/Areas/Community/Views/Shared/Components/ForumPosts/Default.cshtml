@@ -79,7 +79,6 @@
                                         var authorUrl = Url.Action("details", "profile", new { area = string.Empty, userHandler = item.LatestAnswer.UserHandler });
                                         var authorLink = string.Format("<a href=\"{0}\" class=\"boldlink\">{1}</a>", authorUrl, item.LatestAnswer.AuthorName);
 
-
                                         var lastAnswerUrl = Url.Action("viewtopiclatest", "forum", new { area = "community", id = item.Id });
                                         var lastAnswerLink = string.Format("<a href=\"{0}\" class=\"boldlink\">{1}</a>", lastAnswerUrl, item.LatestAnswer.CreatedRelativeTime);
 

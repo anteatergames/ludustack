@@ -30,10 +30,10 @@ namespace LuduStack.Domain.Models
 
         public List<MediaListItemVo> Media { get; set; }
 
-        public virtual List<UserContentLike> Likes { get; set; }
-
         public virtual List<UserViewVo> Views { get; set; }
 
         public virtual List<Poll> Polls { get; set; }
+
+        public virtual List<UserVoteVo> Votes { get; set; }
     }
 }

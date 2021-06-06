@@ -19,19 +19,15 @@ namespace LuduStack.Web.Areas.Community.ViewComponents
         private UserManager<ApplicationUser> _userManager;
         public UserManager<ApplicationUser> UserManager => _userManager ?? (_userManager = HttpContext?.RequestServices.GetService<UserManager<ApplicationUser>>());
 
-        private readonly IUserPreferencesAppService _userPreferencesAppService;
-
         private readonly IForumAppService forumAppService;
 
-        public ForumTopicAnswersViewComponent(IHttpContextAccessor httpContextAccessor, IForumAppService forumAppService, IUserPreferencesAppService userPreferencesAppService) : base(httpContextAccessor)
+        public ForumTopicAnswersViewComponent(IHttpContextAccessor httpContextAccessor, IForumAppService forumAppService) : base(httpContextAccessor)
         {
             this.forumAppService = forumAppService;
-            _userPreferencesAppService = userPreferencesAppService;
         }
 
         public async Task<IViewComponentResult> InvokeAsync(int? count, Guid topicId)
         {
-
             GetForumTopicAnswersRequestViewModel vm = new GetForumTopicAnswersRequestViewModel
             {
                 TopicId = topicId

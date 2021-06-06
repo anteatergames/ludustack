@@ -47,5 +47,9 @@ namespace LuduStack.Application.ViewModels.Forum
         public string CategoryName { get; internal set; }
 
         public bool IsEditting { get; set; }
+
+        public int Score { get; internal set; }
+
+        public VoteValue CurrentUserVote { get; set; }
     }
 }

@@ -84,7 +84,7 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
             return existingView == null ? true : false;
         }
 
-        public async Task RegisterView(Guid id, Guid? userId)
+        public async Task RegisterView(Guid forumPostId, Guid? userId)
         {
             UserViewVo model = new UserViewVo
             {
@@ -92,10 +92,44 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
                 UserId = userId
             };
 
-            FilterDefinition<ForumPost> filter = Builders<ForumPost>.Filter.Where(x => x.Id == id);
+            FilterDefinition<ForumPost> filter = Builders<ForumPost>.Filter.Where(x => x.Id == forumPostId);
             UpdateDefinition<ForumPost> add = Builders<ForumPost>.Update.AddToSet(c => c.Views, model);
 
             await Context.AddCommand(() => DbSet.UpdateOneAsync(filter, add));
+        }
+
+        public async Task AddVote(Guid forumPostId, UserVoteVo model)
+        {
+            FilterDefinition<ForumPost> filter = Builders<ForumPost>.Filter.Where(x => x.Id == forumPostId);
+            UpdateDefinition<ForumPost> add = Builders<ForumPost>.Update.AddToSet(c => c.Votes, model);
+
+            await DbSet.UpdateOneAsync(filter, add);
+
+            await Context.AddCommand(() => DbSet.UpdateOneAsync(filter, add));
+        }
+
+        public async Task UpdateVote(Guid forumPostId, UserVoteVo model)
+        {
+            FilterDefinition<ForumPost> filter = Builders<ForumPost>.Filter.And(
+                Builders<ForumPost>.Filter.Eq(x => x.Id, forumPostId),
+                Builders<ForumPost>.Filter.ElemMatch(x => x.Votes, x => x.UserId == model.UserId));
+
+            UpdateDefinition<ForumPost> update = Builders<ForumPost>.Update.Set(c => c.Votes[-1].VoteValue, model.VoteValue);
+
+            await DbSet.UpdateOneAsync(filter, update);
+
+            await Context.AddCommand(() => DbSet.UpdateOneAsync(filter, update));
+        }
+
+        public Task<int> GetScore(Guid forumPostId)
+        {
+            IQueryable<ForumPost> forumPost = DbSet.AsQueryable().Where(x => x.Id == forumPostId);
+
+            List<Domain.Core.Enums.VoteValue> votes = forumPost.SelectMany(x => x.Votes).Select(x => x.VoteValue).ToList();
+
+            int score = votes.Sum(x => (int)x);
+
+            return Task.FromResult(score);
         }
     }
 }

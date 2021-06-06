@@ -14,6 +14,7 @@ namespace LuduStack.Domain.Messaging.Queries.ForumCategory
         public GetForumCategoryByIdQuery(Guid id) : base(id)
         {
         }
+
         public GetForumCategoryByIdQuery(Guid id, string handler) : base(id)
         {
             Handler = handler;

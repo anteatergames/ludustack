@@ -1,11 +1,9 @@
-﻿
-var WYSIWYGEDITOR = (function () {
+﻿var WYSIWYGEDITOR = (function () {
     "use strict";
 
     var editors = [];
 
     function bindEditor(selector) {
-
         var element = document.querySelector(selector);
 
         return ClassicEditor
@@ -53,8 +51,6 @@ var WYSIWYGEDITOR = (function () {
                     ]
                 },
                 licenseKey: '',
-
-
             })
             .then(editor => {
                 var existing = editors.filter((e) => {

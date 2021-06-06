@@ -3296,4 +3296,12 @@
     <value>respondeu {0}</value>
     <comment>Forum</comment>
   </data>
+  <data name="reply" xml:space="preserve">
+    <value>responder</value>
+    <comment>Forum</comment>
+  </data>
+  <data name="You need to be logged in to be able to vote on posts." xml:space="preserve">
+    <value>Você precisa estar logado para poder votar nos posts.</value>
+    <comment>Forum</comment>
+  </data>
 </root>

@@ -16,7 +16,6 @@ namespace LuduStack.Domain.Messaging.Queries.ForumCategory
 
         public GetForumPostCountersQuery()
         {
-
         }
 
         public GetForumPostCountersQuery(Guid? forumCategoryId)

@@ -26,7 +26,6 @@ namespace LuduStack.Domain.Messaging
                 .MinimumLength(2)
                 .WithMessage("You must type at least two characters!")
                 .When(x => x.ForumPost.IsOriginalPost);
-
         }
 
         protected void ValidateContent()

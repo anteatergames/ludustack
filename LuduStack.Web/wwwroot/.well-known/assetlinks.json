@@ -1,14 +1,14 @@
 [
 
-  {
-    "relation": [ "delegate_permission/common.handle_all_urls" ],
-    "target": {
-      "namespace": "android_app",
-      "package_name": "com.ludustack.www.twa",
-      "sha256_cert_fingerprints": [
-        "EB:71:2D:F7:20:D6:D6:BF:80:5E:76:C9:35:80:8D:34:5E:38:8F:57:30:ED:95:55:3A:83:44:EC:EE:7F:17:83",
-        "83:4A:C9:09:EF:5C:F5:97:E8:E0:BF:92:72:7C:D7:B0:66:DF:1B:87:9A:64:2F:EA:EA:E8:E2:46:89:8E:E5:F2"
-      ]
+    {
+        "relation": [ "delegate_permission/common.handle_all_urls" ],
+        "target": {
+            "namespace": "android_app",
+            "package_name": "com.ludustack.www.twa",
+            "sha256_cert_fingerprints": [
+                "EB:71:2D:F7:20:D6:D6:BF:80:5E:76:C9:35:80:8D:34:5E:38:8F:57:30:ED:95:55:3A:83:44:EC:EE:7F:17:83",
+                "83:4A:C9:09:EF:5C:F5:97:E8:E0:BF:92:72:7C:D7:B0:66:DF:1B:87:9A:64:2F:EA:EA:E8:E2:46:89:8E:E5:F2"
+            ]
+        }
     }
-  }
 ]

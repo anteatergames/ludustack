@@ -2,6 +2,7 @@
 using LuduStack.Application.Formatters;
 using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels.Forum;
+using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.ValueObjects;
 using LuduStack.Web.Helpers;
 using Markdig;
@@ -137,6 +138,8 @@ namespace LuduStack.Web.Areas.Community.Controllers
             {
                 ForumPostViewModel viewModel = result.Value;
 
+                FillMissingInformation(viewModel);
+
                 viewModel.Url = Url.Action("viewtopic", "forum", new { area = "community", id = viewModel.Id }, (string)ViewData["protocol"], (string)ViewData["host"]);
 
                 ViewData["latest"] = false;
@@ -189,6 +192,8 @@ namespace LuduStack.Web.Areas.Community.Controllers
             {
                 ForumPostViewModel viewModel = result.Value;
 
+                FillMissingInformation(viewModel);
+
                 viewModel.Url = Url.Action("viewtopic", "forum", new { area = "community", id = viewModel.Id }, (string)ViewData["protocol"], (string)ViewData["host"]);
 
                 ViewData["latest"] = true;
@@ -206,7 +211,6 @@ namespace LuduStack.Web.Areas.Community.Controllers
         {
             try
             {
-
                 OperationResultVo<ForumPostViewModel> deleteResult = await forumAppService.RemovePost(CurrentUserId, id);
 
                 if (deleteResult.Success)
@@ -250,6 +254,26 @@ namespace LuduStack.Web.Areas.Community.Controllers
             {
                 return Json(new OperationResultVo("unable to get the forum post"));
             }
+        }
+
+        [HttpPost("post/vote")]
+        public async Task<IActionResult> Vote(Guid postId, VoteValue vote)
+        {
+            try
+            {
+                OperationResultVo<int> voteResult = await forumAppService.Vote(CurrentUserId, postId, vote);
+
+                return Json(voteResult);
+            }
+            catch (Exception ex)
+            {
+                return Json(new OperationResultVo(ex.Message));
+            }
+        }
+
+        private void FillMissingInformation(ForumPostViewModel viewModel)
+        {
+            viewModel.CreatedRelativeTime = DateTimeHelper.DateTimeToCreatedAgoMessage(viewModel.CreateDate, SharedLocalizer);
         }
 
         private void FillMissingInformation(List<ForumCategoryListItemVo> model)

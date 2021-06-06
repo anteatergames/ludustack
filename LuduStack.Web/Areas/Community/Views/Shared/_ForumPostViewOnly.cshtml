@@ -13,7 +13,7 @@
     <div class="d-flex flex-row align-items-start px-1 border-gradient border-right rounded-0 postsidebar">
         <div class="d-flex flex-column">
             <div class="text-center">
-                <button class="btn btn-sm p-0" aria-pressed="false" aria-label="Up vote">
+                <button class="btn btn-sm p-0 btn-vote btn-vote-up@(Model.CurrentUserVote == VoteValue.Positive ? " text-green": string.Empty)@(User.Identity.IsAuthenticated ? String.Empty : " needlogin")" data-msg-id="msgNeedLoginToVote" aria-pressed="false" aria-label="Up vote" data-vote="@VoteValue.Positive" data-colorclass="text-green">
                     <svg aria-hidden="true" class="m0 svg-icon iconArrowUpLg" width="36" height="36" viewBox="0 0 36 36">
                         <path d="M2 26h32L18 10 2 26z"></path>
                     </svg>
@@ -21,11 +21,11 @@
             </div>
 
             <div class="text-center">
-                99999
+                <span class="txtScore">@Model.Score</span>
             </div>
 
             <div class="text-center">
-                <button class="btn btn-sm p-0" aria-pressed="false" aria-label="Down vote">
+                <button class="btn btn-sm p-0 btn-vote btn-vote-down@(Model.CurrentUserVote == VoteValue.Negative ? " text-red": string.Empty)@(User.Identity.IsAuthenticated ? String.Empty : " needlogin")" data-msg-id="msgNeedLoginToVote" aria-pressed="false" aria-label="Down vote" data-vote="@VoteValue.Negative" data-colorclass="text-red">
                     <svg aria-hidden="true" class="m0 svg-icon iconArrowDownLg" width="36" height="36" viewBox="0 0 36 36">
                         <path d="M2 10h32L18 26 2 10z"></path>
                     </svg>
@@ -54,18 +54,18 @@
         <div class="mt-2 d-flex flex-row flex-fill justify-content-end">
             @if (User.Identity.IsAuthenticated)
             {
-            <div class="d-flex flex-column justify-content-end mx-1 mr-auto">
-                <button type="button" class="btn btn-sm btn-outline-warning text-nowrap text-capitalize btn-report">
-                    <div class="d-flex flex-row justify-content-center">
-                        <div>
-                            <i class="fas fa-fw fa-exclamation-triangle" aria-hidden="true"></i>
+                <div class="d-flex flex-column justify-content-end mx-1 mr-auto">
+                    <button type="button" class="btn btn-sm btn-outline-warning text-nowrap text-capitalize btn-report">
+                        <div class="d-flex flex-row justify-content-center">
+                            <div>
+                                <i class="fas fa-fw fa-exclamation-triangle" aria-hidden="true"></i>
+                            </div>
+                            <div class="d-none d-md-block">
+                                <span>&nbsp;@SharedLocalizer["report"]</span>
+                            </div>
                         </div>
-                        <div class="d-none d-md-block">
-                            <span>&nbsp;@SharedLocalizer["report"]</span>
-                        </div>
-                    </div>
-                </button>
-            </div>
+                    </button>
+                </div>
                 <div class="d-flex flex-column justify-content-end mx-1">
                     <button type="button" class="btn btn-sm btn-success text-capitalize btn-quote">
                         <div class="d-flex flex-row justify-content-center">

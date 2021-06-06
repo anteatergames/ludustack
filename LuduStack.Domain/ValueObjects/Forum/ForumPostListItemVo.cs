@@ -1,5 +1,4 @@
 ﻿using LuduStack.Domain.Core.Enums;
-using LuduStack.Domain.Models;
 using System;
 using System.Collections.Generic;
 
@@ -23,7 +22,7 @@ namespace LuduStack.Domain.ValueObjects
 
         public SupportedLanguage Language { get; set; }
 
-        public virtual List<UserContentLike> Likes { get; set; }
+        public virtual List<UserVoteVo> Votes { get; set; }
 
         public string AuthorPicture { get; set; }
         public string AuthorName { get; set; }

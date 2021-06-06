@@ -3,6 +3,7 @@ using LuduStack.Application.Formatters;
 using LuduStack.Application.Helpers;
 using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels.Forum;
+using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Messaging;
 using LuduStack.Domain.Messaging.Commands.Forum;
 using LuduStack.Domain.Messaging.Queries.ForumCategory;
@@ -239,6 +240,7 @@ namespace LuduStack.Application.Services
                     viewModel.CategoryName = category.Name;
                 }
 
+                SetVotes(currentUserId, viewModel, existing);
 
                 List<Guid> profilesToGet = new List<Guid> { viewModel.UserId };
 
@@ -295,6 +297,10 @@ namespace LuduStack.Application.Services
 
                 foreach (ForumPostViewModel forumTopicAnswer in vms)
                 {
+                    ForumPost entity = allModels.First(x => x.Id == forumTopicAnswer.Id);
+
+                    SetVotes(currentUserId, forumTopicAnswer, entity);
+
                     SetProfiles(forumTopicAnswer, userProfiles);
 
                     SetPermissions(currentUserId, forumTopicAnswer);
@@ -328,6 +334,32 @@ namespace LuduStack.Application.Services
             {
                 return new OperationResultVo<ForumPostViewModel>(ex.Message);
             }
+        }
+
+        public async Task<OperationResultVo<int>> Vote(Guid currentUserId, Guid postId, VoteValue vote)
+        {
+            try
+            {
+                CommandResult<int> result = await mediator.SendCommand<SaveForumPostVoteCommand, int>(new SaveForumPostVoteCommand(currentUserId, postId, vote));
+
+                if (!result.Validation.IsValid)
+                {
+                    string message = result.Validation.Errors.FirstOrDefault().ErrorMessage;
+                    return new OperationResultVo<int>(message);
+                }
+
+                return new OperationResultVo<int>(result.Result, true, "You have voted!");
+            }
+            catch (Exception ex)
+            {
+                return new OperationResultVo<int>(ex.Message);
+            }
+        }
+
+        private static void SetVotes(Guid currentUserId, ForumPostViewModel forumPost, ForumPost entity)
+        {
+            forumPost.Score = (entity.Votes != null ? entity.Votes.Sum(x => (int)x.VoteValue) : 0); ;
+            forumPost.CurrentUserVote = entity.Votes?.FirstOrDefault(x => x.UserId == currentUserId)?.VoteValue ?? VoteValue.Neutral;
         }
 
         private static void SetProfiles(ForumPostListItemVo forumPost, IEnumerable<UserProfileEssentialVo> userProfiles)

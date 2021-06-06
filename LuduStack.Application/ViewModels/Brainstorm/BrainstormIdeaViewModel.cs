@@ -1,5 +1,6 @@
 ﻿using LuduStack.Application.Interfaces;
 using LuduStack.Domain.Core.Enums;
+using LuduStack.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -28,6 +29,6 @@ namespace LuduStack.Application.ViewModels.Brainstorm
 
         public BrainstormIdeaStatus Status { get; set; }
 
-        public List<BrainstormVoteViewModel> Votes { get; set; }
+        public List<UserVoteVo> Votes { get; set; }
     }
 }
