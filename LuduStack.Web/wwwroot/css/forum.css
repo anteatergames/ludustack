@@ -4,10 +4,19 @@
 
 .card {
     border-radius: var(--border-radius) !important;
+    background-color: var(--teal);
 }
+
+    .card .card-header a {
+        color: var(--color-white);
+    }
 
     .card .card-header:first-child {
         border-radius: var(--border-radius);
+    }
+
+    .card .collapse {
+        background-color: var(--color-white);
     }
 
     .card .forumlistitem:last-child {
@@ -42,8 +51,12 @@
 
         .forumlistitem .pinedicon span i {
             transform: rotate( 315deg );
-            color: var(--color-green-fx);
         }
+
+            .forumlistitem .pinedicon span i.text-success {
+                color: var(--color-highlight) !important;
+            }
+
 
     .forumlistitem .verticaldivider {
         border-left: 1px solid #dedada;
@@ -63,18 +76,8 @@
         font-weight: lighter;
     }
 
-    /*    .forumlistitem .fullline {
-        min-height: var(--line-height);
-        line-height: var(--line-height);
-    }
-
-    .forumlistitem .halfline {
-        min-height: calc(var(--line-height) / 2);
-        line-height: calc(var(--line-height) / 2);
-    }*/
-
     .forumlistitem:hover, .forumlistitem:hover a {
-        background-color: var(--color-green);
+        background-color: var(--color-highlight);
         color: white;
     }
 
@@ -84,11 +87,10 @@
 
 .postitem pre {
     white-space: pre-wrap;
-    //css3 white-space: moz-pre-wrap;
-    //firefox white-space: -pre-wrap;
-    //opera 4-6 white-space: -o-pre-wrap;
-    //opera 7 word-wrap: break-word;
-    //internet explorer
+    white-space: moz-pre-wrap;
+    white-space: -pre-wrap;
+    white-space: -o-pre-wrap;
+    word-wrap: break-word;
 }
 
 .postitem .postitemcontainer {

@@ -3304,4 +3304,24 @@
     <value>Você precisa estar logado para poder votar nos posts.</value>
     <comment>Forum</comment>
   </data>
+  <data name="answers" xml:space="preserve">
+    <value>respostas</value>
+    <comment>Forum</comment>
+  </data>
+  <data name="Interact with your fellow game devs." xml:space="preserve">
+    <value>Interaja com seus colegas gamedevs.</value>
+    <comment>Forum</comment>
+  </data>
+  <data name="most recent" xml:space="preserve">
+    <value>mais recente</value>
+    <comment>Forum</comment>
+  </data>
+  <data name="topics" xml:space="preserve">
+    <value>tópicos</value>
+    <comment>Forum</comment>
+  </data>
+  <data name="views" xml:space="preserve">
+    <value>views</value>
+    <comment>Forum</comment>
+  </data>
 </root>

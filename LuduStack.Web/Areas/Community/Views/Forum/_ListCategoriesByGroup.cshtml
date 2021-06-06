@@ -19,15 +19,12 @@
     <div class="card mt-2">
         <div class="card-header" id="@string.Format("heading{0}", group.Slug)">
                 <a class="stretched-link" data-toggle="collapse" href="#@group.Slug" role="button" aria-expanded="true" aria-controls="#@group.Slug">
-                    @group.Name
+                    <div class="text-nowrap">@group.Name<span class="d-none d-lg-inline"> - @group.Description</span></div>
                 </a>
         </div>
 
-        <div id="@group.Slug" class="collapse show" aria-labelledby="@string.Format("heading{0}", group.Slug)">
+        <div id="@group.Slug" class="square-top bg-white collapse show" aria-labelledby="@string.Format("heading{0}", group.Slug)">
             <div class="card-body p-0 rounded-0">
-                <div class="p-2">
-                    @group.Description
-                </div>
                 <hr />
                 <partial name="_ListCategoriesInSingleGroup" model="@group.Categories" />
             </div>
