@@ -3324,4 +3324,20 @@
     <value>views</value>
     <comment>Forum</comment>
   </data>
+  <data name="There are no Forums here!" xml:space="preserve">
+    <value>Não existem Forums aqui!</value>
+    <comment>Forum</comment>
+  </data>
+  <data name="{0} topics here" xml:space="preserve">
+    <value>{0} tópicos aqui</value>
+    <comment>Forum</comment>
+  </data>
+  <data name="New Topic" xml:space="preserve">
+    <value>Novo Tópico</value>
+    <comment>Forum</comment>
+  </data>
+  <data name="Page {0}" xml:space="preserve">
+    <value>Página {0}</value>
+    <comment>Pagination</comment>
+  </data>
 </root>
