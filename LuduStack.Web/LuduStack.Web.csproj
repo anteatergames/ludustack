@@ -193,6 +193,9 @@
     <Content Update="Views\Brainstorm\_ViewImports.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="Views\Shared\_Pagination.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\Shared\_QrCode.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

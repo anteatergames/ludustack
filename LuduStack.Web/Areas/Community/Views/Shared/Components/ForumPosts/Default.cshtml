@@ -8,27 +8,29 @@
     var noItemsModel = new ListNoItemsViewModel("fas fa-dizzy", "There are no Topics here!");
 
     var description = ViewData["ListDescription"] == null ? SharedLocalizer["Forum Posts"] : (string)ViewData["ListDescription"];
+
+    Model.PaginationMessage = "{0} topics here";
 }
 
-<div class="d-flex flex-row">
-    @if (Model.TotalPageCount > 1)
-    {
-        <nav aria-label="Pagination">
-            <ul class="pagination pagination-sm mb-2">
-                @for (int i = 1; i <= Model.TotalPageCount; i++)
-                {
-                    <li class="page-item@(i == Model.Page ? " active" : string.Empty)">
-                        <a asp-protocol="@ViewData["protocol"]" asp-host="@ViewData["host"]" asp-area="community" asp-controller="forum" asp-action="postsbycategory" asp-route-page="@i" title="@SharedLocalizer["Page {0}", i]" class="page-link">@i</a>
-                    </li>
-                }
-            </ul>
-        </nav>
-    }
+@*<div class="d-flex flex-row">
+        @if (Model.TotalPageCount > 1)
+        {
+            <nav class="ml-2" aria-label="@SharedLocalizer["Pagination"]">
+                <ul class="pagination pagination-sm mb-2">
+                    @for (int i = 1; i <= Model.TotalPageCount; i++)
+                    {
+                        <li class="page-item@(i == Model.Page ? " active" : string.Empty)">
+                            <a asp-protocol="@ViewData["protocol"]" asp-host="@ViewData["host"]" asp-area="community" asp-controller="forum" asp-action="postsbycategory" asp-route-page="@i" title="@SharedLocalizer["Page {0}", i]" class="page-link">@i</a>
+                        </li>
+                    }
+                </ul>
+            </nav>
+        }
 
-    <div class="d-block pagination pagination-sm ml-auto mb-2">
-        <span class="rounded page-link text-muted">@SharedLocalizer["{0} topics here", Model.TotalCount]</span>
-    </div>
-</div>
+        <div class="d-block pagination pagination-sm ml-auto mb-2">
+            <span class="rounded page-link text-muted">@SharedLocalizer["{0} topics here", Model.TotalCount]</span>
+        </div>
+    </div>*@
 
 @if (!Model.Posts.Any())
 {
@@ -38,7 +40,9 @@
 }
 else
 {
-    <div class="bg-light pt-2">
+    <partial name="_Pagination" model="Model" />
+
+    <div class="bg-light pt-2 mb-2">
         <div class="row px-3 text-uppercase">
             <div class="col-12 col-sm-8 col-md-6">@SharedLocalizer["Title"]</div>
             <div class="col-sm-4 col-md-3 col-lg-1 d-none d-sm-block text-center">@SharedLocalizer["answers"]</div>
@@ -129,4 +133,8 @@ else
             <div class="col-12">&nbsp;</div>
         </div>
     </div>
+
+    Model.PaginationMessage = string.Empty;
+
+    <partial name="_Pagination" model="Model" />
 }
