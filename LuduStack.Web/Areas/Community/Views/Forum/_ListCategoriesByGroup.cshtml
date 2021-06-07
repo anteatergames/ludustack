@@ -17,10 +17,8 @@
     var group = Model.Groups.ElementAt(i);
 
     <div class="card mt-2">
-        <div class="card-header" id="@string.Format("heading{0}", group.Slug)">
-                <a class="stretched-link" data-toggle="collapse" href="#@group.Slug" role="button" aria-expanded="true" aria-controls="#@group.Slug">
-                    <div class="text-nowrap">@group.Name<span class="d-none d-lg-inline"> - @group.Description</span></div>
-                </a>
+        <div class="card-header" id="@string.Format("heading{0}", group.Slug)" data-toggle="collapse" href="#@group.Slug" aria-expanded="true" aria-controls="#@group.Slug">
+            <div class="text-nowrap text-white">@group.Name<span class="d-none d-lg-inline"> - @group.Description</span></div>
         </div>
 
         <div id="@group.Slug" class="square-top bg-white collapse show" aria-labelledby="@string.Format("heading{0}", group.Slug)">
