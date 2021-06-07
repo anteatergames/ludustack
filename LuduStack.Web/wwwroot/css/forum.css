@@ -4,11 +4,15 @@
 
 .card {
     border-radius: var(--border-radius) !important;
-    background-color: var(--teal);
+    background-color: var(--color-green);
 }
 
     .card .card-header a {
         color: var(--color-white);
+    }
+
+    .card .card-body {
+        border-top: 0;
     }
 
     .card .card-header:first-child {
