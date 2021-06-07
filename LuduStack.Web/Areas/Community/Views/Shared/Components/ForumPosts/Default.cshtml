@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ForumPostListItemVo>
+﻿@model ForumPostListVo
 
 @{
     var canInteract = User.Identity.IsAuthenticated;
@@ -10,8 +10,25 @@
     var description = ViewData["ListDescription"] == null ? SharedLocalizer["Forum Posts"] : (string)ViewData["ListDescription"];
 }
 
+<div class="d-flex flex-row">
+    <nav class="mr-auto" aria-label="Pagination">
+        <ul class="pagination pagination-sm">
+            @for (int i = 1; i <= Model.TotalPageCount; i++)
+            {
+                <li class="page-item@(i == Model.Page ? " active" : string.Empty)">
+                    <a asp-protocol="@ViewData["protocol"]" asp-host="@ViewData["host"]" asp-area="community" asp-controller="forum" asp-action="postsbycategory" asp-route-page="@i" title="@SharedLocalizer["Page {0}", i]" class="page-link">@i</a>
+                </li>
+            }
+        </ul>
+    </nav>
+
+    <div class="d-block pagination pagination-sm">
+        <span class="rounded page-link text-muted">@SharedLocalizer["{0} posts here", Model.TotalCount]</span>
+    </div>
+</div>
+
 <div class="bg-light pt-2">
-    @if (!Model.Any())
+    @if (!Model.Posts.Any())
     {
         <partial name="_ListNoItems" model="noItemsModel" />
     }
@@ -24,9 +41,9 @@
             <div class="col-4 d-none d-lg-block">@SharedLocalizer["most recent"]</div>
         </div>
         <div class="col-12 square-top p-0 bg-white">
-            @for (int i = 0; i < Model.Count(); i++)
+            @for (int i = 0; i < Model.Posts.Count(); i++)
             {
-                var item = Model.ElementAt(i);
+                var item = Model.Posts.ElementAt(i);
 
                 if (i > 0)
                 {

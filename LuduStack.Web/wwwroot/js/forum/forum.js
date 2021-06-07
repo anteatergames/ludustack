@@ -12,6 +12,7 @@
         selectors.container = '#featurecontainer';
         selectors.containerList = '#containerlist';
         selectors.list = '#divList';
+        selectors.btnPage = 'a.page-link';
     }
 
     function cacheObjs() {
@@ -26,11 +27,32 @@
         setSelectors();
         cacheObjs();
 
+        bindAll();
+
         urlList = objs.urls.data('urlList');
 
         loadItems(urlList);
 
         FORUMCOMMON.Callback.DeleteEntity = deleteCallback;
+    }
+
+    function bindAll() {
+        bindPagination();
+    }
+
+    function bindPagination() {
+        objs.container.on('click', selectors.btnPage, function (e) {
+            e.preventDefault();
+
+            var btn = $(this);
+            urlList = btn.attr('href');
+
+            console.log(urlList);
+
+            loadItems(urlList);
+
+            return false;
+        });
     }
 
     function loadItems(url) {

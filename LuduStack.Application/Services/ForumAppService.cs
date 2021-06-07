@@ -123,7 +123,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public async Task<OperationResultListVo<ForumPostListItemVo>> GetPosts(Guid currentUserId, GetForumPostsRequestViewModel viewModel)
+        public async Task<OperationResultVo<ForumPostListVo>> GetPosts(Guid currentUserId, GetForumPostsRequestViewModel viewModel)
         {
             try
             {
@@ -131,14 +131,14 @@ namespace LuduStack.Application.Services
 
                 GetForumPostsQueryOptions queryOptions = viewModel.ToQueryOptions();
 
-                List<ForumPostListItemVo> allModels = await mediator.Query<GetForumPostListQuery, List<ForumPostListItemVo>>(new GetForumPostListQuery(queryOptions));
+                ForumPostListVo queryResult = await mediator.Query<GetForumPostListQuery, ForumPostListVo>(new GetForumPostListQuery(queryOptions));
 
-                IEnumerable<Guid> userIds = allModels.Select(x => x.UserId);
+                IEnumerable<Guid> userIds = queryResult.Posts.Select(x => x.UserId);
                 profilesToGet.AddRange(userIds);
 
                 IEnumerable<ForumPostCounterResultVo> postCounters = await mediator.Query<GetForumPostCountersQuery, IEnumerable<ForumPostCounterResultVo>>(new GetForumPostCountersQuery(viewModel.ForumCategoryId));
 
-                foreach (ForumPostListItemVo forumPost in allModels)
+                foreach (ForumPostListItemVo forumPost in queryResult.Posts)
                 {
                     ForumPostCounterResultVo postStats = postCounters.FirstOrDefault(x => x.OriginalPostId == forumPost.Id);
                     if (postStats != null)
@@ -156,7 +156,7 @@ namespace LuduStack.Application.Services
 
                 IEnumerable<UserProfileEssentialVo> userProfiles = await mediator.Query<GetBasicUserProfileDataByUserIdsQuery, IEnumerable<UserProfileEssentialVo>>(new GetBasicUserProfileDataByUserIdsQuery(profilesToGet));
 
-                foreach (ForumPostListItemVo forumPost in allModels)
+                foreach (ForumPostListItemVo forumPost in queryResult.Posts)
                 {
                     SetProfiles(forumPost, userProfiles);
 
@@ -173,7 +173,7 @@ namespace LuduStack.Application.Services
                     }
                 }
 
-                return new OperationResultListVo<ForumPostListItemVo>(allModels);
+                return new OperationResultVo<ForumPostListVo>(queryResult);
             }
             catch (Exception ex)
             {

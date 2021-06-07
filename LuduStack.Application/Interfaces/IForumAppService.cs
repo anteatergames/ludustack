@@ -16,7 +16,7 @@ namespace LuduStack.Application.Interfaces
 
         Task<OperationResultVo<ForumCategoryViewModel>> GetCategory(Guid currentUserId, Guid id, string handler);
 
-        Task<OperationResultListVo<ForumPostListItemVo>> GetPosts(Guid currentUserId, GetForumPostsRequestViewModel viewModel);
+        Task<OperationResultVo<ForumPostListVo>> GetPosts(Guid currentUserId, GetForumPostsRequestViewModel viewModel);
 
         Task<OperationResultVo<Guid>> SavePost(Guid currentUserId, ForumPostViewModel viewModel);
 

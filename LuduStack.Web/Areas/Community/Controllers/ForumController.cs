@@ -104,9 +104,9 @@ namespace LuduStack.Web.Areas.Community.Controllers
         }
 
         [Route("category/{categoryId:guid}/posts")]
-        public Task<IActionResult> PostsByCategory(Guid categoryId)
+        public Task<IActionResult> PostsByCategory(Guid categoryId, int? page)
         {
-            ViewComponentResult component = ViewComponent("ForumPosts", new { categoryId });
+            ViewComponentResult component = ViewComponent("ForumPosts", new { categoryId, page });
 
             return Task.FromResult((IActionResult)component);
         }

@@ -1,4 +1,5 @@
-﻿using LuduStack.Application.Interfaces;
+﻿using LuduStack.Application;
+using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels.Forum;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.ValueObjects;
@@ -31,22 +32,24 @@ namespace LuduStack.Web.Areas.Community.ViewComponents
             _userPreferencesAppService = userPreferencesAppService;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(int? count, Guid? categoryId)
+        public async Task<IViewComponentResult> InvokeAsync(int? count, int? page, Guid? categoryId)
         {
             List<SupportedLanguage> userLanguages = await _userPreferencesAppService.GetLanguagesByUserId(CurrentUserId);
 
             GetForumPostsRequestViewModel vm = new GetForumPostsRequestViewModel
             {
-                ForumCategoryId = categoryId
+                ForumCategoryId = categoryId,
+                Count = count,
+                Page = page
             };
 
-            OperationResultListVo<ForumPostListItemVo> model = await forumAppService.GetPosts(CurrentUserId, vm);
+            OperationResultVo<ForumPostListVo> result = await forumAppService.GetPosts(CurrentUserId, vm);
 
-            List<ForumPostListItemVo> list = model.Value.ToList();
+            var model = result.Value;
 
-            FillMissingInformation(list);
+            FillMissingInformation(model.Posts);
 
-            return await Task.Run(() => View(list));
+            return await Task.Run(() => View(model));
         }
 
         private void FillMissingInformation(List<ForumPostListItemVo> model)

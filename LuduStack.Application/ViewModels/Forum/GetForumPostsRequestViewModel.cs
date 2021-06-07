@@ -7,11 +7,17 @@ namespace LuduStack.Application.ViewModels.Forum
     {
         public Guid? ForumCategoryId { get; set; }
 
+        public int? Count { get; set; }
+
+        public int? Page { get; set; }
+
         public GetForumPostsQueryOptions ToQueryOptions()
         {
             return new GetForumPostsQueryOptions
             {
-                CategoryId = ForumCategoryId
+                CategoryId = ForumCategoryId,
+                Count = Count ?? Constants.DefaultItemsPerPage,
+                Page = Page ?? 1
             };
         }
     }
