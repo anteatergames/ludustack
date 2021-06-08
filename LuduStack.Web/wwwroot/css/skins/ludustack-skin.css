@@ -127,9 +127,11 @@ blockquote {
 }
 
 .skin-ludustack label.col-form-label, .skin-ludustack label.form-label {
-    color: var(--color-accent);
     font-size: 13px;
     font-weight: 600;
+}
+.skin-ludustack label.col-form-label, .skin-ludustack label.form-label, .skin-ludustack span.col-form-label i {
+    color: var(--color-accent);
 }
 
 .skin-ludustack .main-header .navbar {
