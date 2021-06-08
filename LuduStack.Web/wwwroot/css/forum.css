@@ -61,6 +61,15 @@
                 color: var(--color-highlight) !important;
             }
 
+    .forumlistitem .badge {
+        transition: none;
+    }
+
+    .forumlistitem:hover .badge {
+        background-color: var(--color-white);
+        color: var(--color-highlight);
+    }
+
     .forumlistitem .verticaldivider {
         border-left: 1px solid #dedada;
         float: left;
