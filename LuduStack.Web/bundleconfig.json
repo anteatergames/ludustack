@@ -547,6 +547,7 @@
     {
         "outputFileName": "wwwroot/js/forum/forum.min.js",
         "inputFiles": [
+            "wwwroot/js/shared/pagination.js",
             "wwwroot/js/forum/forumcommon.js",
             "wwwroot/js/forum/forum.js"
         ]
