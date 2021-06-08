@@ -1,4 +1,5 @@
-﻿using LuduStack.Domain.Interfaces.Repository;
+﻿using LuduStack.Domain.Core.Enums;
+using LuduStack.Domain.Interfaces.Repository;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
 using LuduStack.Infra.Data.MongoDb.Interfaces;
@@ -17,7 +18,7 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
         {
         }
 
-        public async Task<List<ForumCategoryConterDataVo>> GetForumCategoryCounterInformation()
+        public async Task<List<ForumCategoryConterDataVo>> GetForumCategoryCounterInformation(List<SupportedLanguage> languages)
         {
             ProjectionDefinition<ForumPost, ForumCategoryConterDataVo> projection1 =
                 Builders<ForumPost>.Projection.Expression(x => new ForumCategoryConterDataVo
@@ -35,7 +36,17 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
                 Projection = projection1
             };
 
-            FilterDefinition<ForumPost> filter = new ExpressionFilterDefinition<ForumPost>(x => x.IsOriginalPost);
+            FilterDefinition<ForumPost> filter;
+
+            if (languages != null && languages.Any())
+            {
+                filter = new ExpressionFilterDefinition<ForumPost>(x => x.IsOriginalPost && languages.Contains(x.Language));
+            }
+            else
+            {
+                filter = new ExpressionFilterDefinition<ForumPost>(x => x.IsOriginalPost);
+            }
+
 
             List<ForumCategoryConterDataVo> data = await (await DbSet.FindAsync(filter, findOptions)).ToListAsync();
 

@@ -9,7 +9,6 @@ using LuduStack.Infra.CrossCutting.Identity.Models;
 using LuduStack.Infra.CrossCutting.Identity.Models.AccountViewModels;
 using LuduStack.Infra.CrossCutting.Identity.Services;
 using LuduStack.Web.Controllers.Base;
-using LuduStack.Web.Enums;
 using LuduStack.Web.Exceptions;
 using LuduStack.Web.Models;
 using Microsoft.AspNetCore.Authentication;
@@ -17,7 +16,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -708,18 +706,8 @@ namespace LuduStack.Web.Controllers
         private async Task SetPreferences(ApplicationUser user)
         {
             UserPreferencesViewModel preferences = await UserPreferencesAppService.GetByUserId(new Guid(user.Id));
-            if (preferences == null || preferences.Id == Guid.Empty)
-            {
-                RequestCulture requestLanguage = Request.HttpContext.Features.Get<IRequestCultureFeature>().RequestCulture;
-                SupportedLanguage lang = base.SetLanguageFromCulture(requestLanguage.UICulture.Name);
 
-                SetCookieValue(SessionValues.PostLanguage, lang.ToString(), 7);
-            }
-            else
-            {
-                SetCookieValue(SessionValues.PostLanguage, preferences.UiLanguage.ToString(), 7);
-                SetSessionValue(SessionValues.JobProfile, preferences.JobProfile.ToString());
-            }
+            SetUserPreferences(preferences);
         }
 
         #region Helpers

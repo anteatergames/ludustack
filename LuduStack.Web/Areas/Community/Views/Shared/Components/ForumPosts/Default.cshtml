@@ -12,26 +12,6 @@
     Model.PaginationMessage = "{0} topics here";
 }
 
-@*<div class="d-flex flex-row">
-        @if (Model.TotalPageCount > 1)
-        {
-            <nav class="ml-2" aria-label="@SharedLocalizer["Pagination"]">
-                <ul class="pagination pagination-sm mb-2">
-                    @for (int i = 1; i <= Model.TotalPageCount; i++)
-                    {
-                        <li class="page-item@(i == Model.Page ? " active" : string.Empty)">
-                            <a asp-protocol="@ViewData["protocol"]" asp-host="@ViewData["host"]" asp-area="community" asp-controller="forum" asp-action="postsbycategory" asp-route-page="@i" title="@SharedLocalizer["Page {0}", i]" class="page-link">@i</a>
-                        </li>
-                    }
-                </ul>
-            </nav>
-        }
-
-        <div class="d-block pagination pagination-sm ml-auto mb-2">
-            <span class="rounded page-link text-muted">@SharedLocalizer["{0} topics here", Model.TotalCount]</span>
-        </div>
-    </div>*@
-
 @if (!Model.Posts.Any())
 {
     <div class="mt-2">
@@ -78,7 +58,8 @@ else
                                             @item.Title
                                         </div>
                                         <div class="forumlistdescription">
-                                            @SharedLocalizer["by {0} {1}", item.AuthorName, item.CreatedRelativeTime]
+                                            <span class="badge badge-dark d-inline">@SharedLocalizer[item.Language.ToString()]</span>
+                                            <span class="d-inline">@SharedLocalizer["by {0} {1}", item.AuthorName, item.CreatedRelativeTime]</span>
                                         </div>
                                     </div>
                                 </a>

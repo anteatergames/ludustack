@@ -96,7 +96,8 @@
                         @(string.IsNullOrWhiteSpace(Model.Title) ? Html.Raw("&nbsp;") : Model.Title)
                     </h1>
                     <hr class="my-2" />
-                    <span class="d-block">@Html.Raw(SharedLocalizer["Posted by {0} on {1}, {2}", authorLink, categoryLink, Model.CreatedRelativeTime])</span>
+                    <span class="badge badge-dark d-inline">@SharedLocalizer[Model.Language.ToString()]</span>
+                    <span class="d-inline">@Html.Raw(SharedLocalizer["Posted by {0} on {1}, {2}", authorLink, categoryLink, Model.CreatedRelativeTime])</span>
                 </div>
             </div>
         </div>

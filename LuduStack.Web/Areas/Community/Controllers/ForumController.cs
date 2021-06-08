@@ -39,7 +39,14 @@ namespace LuduStack.Web.Areas.Community.Controllers
         {
             List<ForumCategoryListItemVo> model;
 
-            OperationResultListVo<ForumCategoryListItemVo> serviceResult = await forumAppService.GetAllCategories(CurrentUserId);
+            List<SupportedLanguage> userLanguages = await GetCurrentUserContentLanguage();
+
+            GetAllCategoriesRequestViewModel request = new GetAllCategoriesRequestViewModel
+            {
+                Languages = userLanguages
+            };
+
+            OperationResultListVo<ForumCategoryListItemVo> serviceResult = await forumAppService.GetAllCategories(CurrentUserId, request);
 
             if (serviceResult.Success)
             {
@@ -58,8 +65,14 @@ namespace LuduStack.Web.Areas.Community.Controllers
         [Route("categoriesbygroup")]
         public async Task<PartialViewResult> ListCategoriesByGroup()
         {
+            List<SupportedLanguage> userLanguages = await GetCurrentUserContentLanguage();
 
-            OperationResultVo<ForumIndexViewModel> serviceResult = await forumAppService.GetAllCategoriesByGroup(CurrentUserId);
+            GetAllCategoriesRequestViewModel request = new GetAllCategoriesRequestViewModel
+            {
+                Languages = userLanguages
+            };
+
+            OperationResultVo<ForumIndexViewModel> serviceResult = await forumAppService.GetAllCategoriesByGroup(CurrentUserId, request);
 
             if (serviceResult.Success)
             {
@@ -77,7 +90,7 @@ namespace LuduStack.Web.Areas.Community.Controllers
             }
             else
             {
-                OperationResultListVo<ForumCategoryListItemVo> serviceResultCategories = await forumAppService.GetAllCategories(CurrentUserId);
+                OperationResultListVo<ForumCategoryListItemVo> serviceResultCategories = await forumAppService.GetAllCategories(CurrentUserId, request);
 
                 if (serviceResultCategories.Success)
                 {
@@ -116,6 +129,8 @@ namespace LuduStack.Web.Areas.Community.Controllers
         {
             OperationResultVo<ForumPostViewModel> serviceResult = await forumAppService.GenerateNewTopic(CurrentUserId, categoryId);
 
+            serviceResult.Value.Language = base.SetLanguageFromCulture(base.CurrentLocale);
+
             return View("CreateEditPostWrapper", serviceResult.Value);
         }
 
@@ -131,7 +146,10 @@ namespace LuduStack.Web.Areas.Community.Controllers
                     vm.UserId = CurrentUserId;
                 }
 
-                vm.Content = Markdown.Normalize(vm.Content);
+                if (!string.IsNullOrWhiteSpace(vm.Content))
+                {
+                    vm.Content = Markdown.Normalize(vm.Content);
+                }
 
                 OperationResultVo<Guid> saveResult = await forumAppService.SavePost(CurrentUserId, vm);
 

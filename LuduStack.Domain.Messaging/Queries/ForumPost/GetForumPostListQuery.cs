@@ -1,4 +1,5 @@
-﻿using LuduStack.Domain.Interfaces.Repository;
+﻿using LuduStack.Domain.Core.Enums;
+using LuduStack.Domain.Interfaces.Repository;
 using LuduStack.Domain.ValueObjects;
 using LuduStack.Infra.CrossCutting.Messaging;
 using MediatR;
@@ -17,6 +18,8 @@ namespace LuduStack.Domain.Messaging.Queries.ForumPost
         public int Count { get; set; }
 
         public int Page { get; set; }
+
+        public List<SupportedLanguage> Languages { get; set; }
     }
 
     public class GetForumPostListQuery : Query<ForumPostListVo>
@@ -27,11 +30,14 @@ namespace LuduStack.Domain.Messaging.Queries.ForumPost
 
         public int Page { get; set; }
 
+        public List<SupportedLanguage> Languages { get; set; }
+
         public GetForumPostListQuery(GetForumPostsQueryOptions queryOptions)
         {
             CategoryId = queryOptions.CategoryId;
             Count = queryOptions.Count;
             Page = queryOptions.Page;
+            Languages = queryOptions.Languages;
         }
     }
 
@@ -46,7 +52,7 @@ namespace LuduStack.Domain.Messaging.Queries.ForumPost
 
         public Task<ForumPostListVo> Handle(GetForumPostListQuery request, CancellationToken cancellationToken)
         {
-            var result = new ForumPostListVo();
+            ForumPostListVo result = new ForumPostListVo();
 
             if (request.Page < 1)
             {
@@ -58,7 +64,7 @@ namespace LuduStack.Domain.Messaging.Queries.ForumPost
                 request.Count = 20;
             }
 
-            var skip = request.Count * (request.Page - 1);
+            int skip = request.Count * (request.Page - 1);
 
             skip = Math.Max(0, skip);
 
@@ -106,6 +112,11 @@ namespace LuduStack.Domain.Messaging.Queries.ForumPost
             if (request.CategoryId.HasValue)
             {
                 allModels = allModels.Where(x => x.ForumCategoryId == request.CategoryId.Value);
+            }
+
+            if (request.Languages != null && request.Languages.Any())
+            {
+                allModels = allModels.Where(x => x.Language == default || request.Languages.Contains(x.Language));
             }
 
             return allModels;

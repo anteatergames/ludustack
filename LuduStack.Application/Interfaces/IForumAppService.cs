@@ -10,9 +10,9 @@ namespace LuduStack.Application.Interfaces
     {
         Task<OperationResultVo<ForumPostViewModel>> GenerateNewTopic(Guid currentUserId, Guid? categoryId);
 
-        Task<OperationResultVo<ForumIndexViewModel>> GetAllCategoriesByGroup(Guid currentUserId);
+        Task<OperationResultVo<ForumIndexViewModel>> GetAllCategoriesByGroup(Guid currentUserId, GetAllCategoriesRequestViewModel request);
 
-        Task<OperationResultListVo<ForumCategoryListItemVo>> GetAllCategories(Guid currentUserId);
+        Task<OperationResultListVo<ForumCategoryListItemVo>> GetAllCategories(Guid currentUserId, GetAllCategoriesRequestViewModel request);
 
         Task<OperationResultVo<ForumCategoryViewModel>> GetCategory(Guid currentUserId, Guid id, string handler);
 

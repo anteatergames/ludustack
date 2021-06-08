@@ -1,5 +1,4 @@
-﻿using LuduStack.Application;
-using LuduStack.Application.Interfaces;
+﻿using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels.Forum;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.ValueObjects;
@@ -12,7 +11,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace LuduStack.Web.Areas.Community.ViewComponents
@@ -22,30 +20,28 @@ namespace LuduStack.Web.Areas.Community.ViewComponents
         private UserManager<ApplicationUser> _userManager;
         public UserManager<ApplicationUser> UserManager => _userManager ?? (_userManager = HttpContext?.RequestServices.GetService<UserManager<ApplicationUser>>());
 
-        private readonly IUserPreferencesAppService _userPreferencesAppService;
-
         private readonly IForumAppService forumAppService;
 
-        public ForumPostsViewComponent(IHttpContextAccessor httpContextAccessor, IForumAppService forumAppService, IUserPreferencesAppService userPreferencesAppService) : base(httpContextAccessor)
+        public ForumPostsViewComponent(IHttpContextAccessor httpContextAccessor, IForumAppService forumAppService) : base(httpContextAccessor)
         {
             this.forumAppService = forumAppService;
-            _userPreferencesAppService = userPreferencesAppService;
         }
 
         public async Task<IViewComponentResult> InvokeAsync(int? count, int? page, Guid? categoryId)
         {
-            List<SupportedLanguage> userLanguages = await _userPreferencesAppService.GetLanguagesByUserId(CurrentUserId);
+            List<SupportedLanguage> userLanguages = await GetCurrentUserContentLanguage();
 
             GetForumPostsRequestViewModel vm = new GetForumPostsRequestViewModel
             {
                 ForumCategoryId = categoryId,
                 Count = count,
-                Page = page
+                Page = page,
+                Languages = userLanguages
             };
 
             OperationResultVo<ForumPostListVo> result = await forumAppService.GetPosts(CurrentUserId, vm);
 
-            var model = result.Value;
+            ForumPostListVo model = result.Value;
 
             FillMissingInformation(model.Posts);
 

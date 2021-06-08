@@ -1,6 +1,4 @@
-﻿using LuduStack.Domain.Core.Enums;
-
-namespace LuduStack.Domain.Interfaces.Models
+﻿namespace LuduStack.Domain.Interfaces.Models
 {
     public interface IPagination
     {

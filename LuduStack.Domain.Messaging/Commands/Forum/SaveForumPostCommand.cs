@@ -1,4 +1,5 @@
-﻿using LuduStack.Domain.Core.Extensions;
+﻿using LuduStack.Domain.Core.Enums;
+using LuduStack.Domain.Core.Extensions;
 using LuduStack.Domain.Interfaces;
 using LuduStack.Domain.Interfaces.Repository;
 using LuduStack.Domain.Interfaces.Services;
@@ -46,7 +47,9 @@ namespace LuduStack.Domain.Messaging
 
             if (!request.IsValid()) { return request.Result; }
 
-            SetSlug(request);
+            SetSlug(request.ForumPost);
+
+            SetMissingLanguage(request.ForumPost);
 
             if (request.ForumPost.Id == Guid.Empty)
             {
@@ -72,11 +75,19 @@ namespace LuduStack.Domain.Messaging
             return result;
         }
 
-        private static void SetSlug(SaveForumPostCommand request)
+        private static void SetMissingLanguage(ForumPost forumPost)
         {
-            if (string.IsNullOrWhiteSpace(request.ForumPost.Slug))
+            if (forumPost.Language == 0)
             {
-                request.ForumPost.Slug = request.ForumPost.Title.Slugify();
+                forumPost.Language = SupportedLanguage.English;
+            }
+        }
+
+        private static void SetSlug(ForumPost forumPost)
+        {
+            if (string.IsNullOrWhiteSpace(forumPost.Slug))
+            {
+                forumPost.Slug = forumPost.Title.Slugify();
             }
         }
     }

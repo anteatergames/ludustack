@@ -6,6 +6,7 @@ using LuduStack.Application.ViewModels.UserPreferences;
 using LuduStack.Domain.Core.Attributes;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Core.Extensions;
+using LuduStack.Domain.Helper;
 using LuduStack.Domain.ValueObjects;
 using LuduStack.Infra.CrossCutting.Abstractions;
 using LuduStack.Infra.CrossCutting.Identity.Models;
@@ -19,8 +20,10 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace LuduStack.Web.Controllers.Base
@@ -256,6 +259,53 @@ namespace LuduStack.Web.Controllers.Base
                 {
                     return cookie.Cultures.First().Value;
                 }
+            }
+        }
+
+        protected async Task<UserPreferencesViewModel> GetUserPreferences(Guid userId)
+        {
+            UserPreferencesViewModel preferences = await UserPreferencesAppService.GetByUserId(userId);
+            if (preferences != null)
+            {
+                SetUserPreferences(preferences);
+            }
+
+            return preferences;
+        }
+
+        protected void SetUserPreferences(UserPreferencesViewModel preferences)
+        {
+            List<SupportedLanguage> userLanguages = preferences.Languages;
+            if (userLanguages == null || !userLanguages.Any())
+            {
+                userLanguages = LanguageDomainHelper.FormatList(preferences.ContentLanguages).ToList();
+            }
+
+            if (preferences == null || preferences.Id == Guid.Empty)
+            {
+                RequestCulture requestLanguage = Request.HttpContext.Features.Get<IRequestCultureFeature>().RequestCulture;
+                SupportedLanguage lang = SetLanguageFromCulture(requestLanguage.UICulture.Name);
+
+                SetCookieValue(SessionValues.PostLanguage, lang.ToString(), 7);
+            }
+            else
+            {
+                SetCookieValue(SessionValues.PostLanguage, preferences.UiLanguage.ToString(), 7);
+                SetCookieValue(SessionValues.ContentLanguages, JsonSerializer.Serialize(userLanguages), 7);
+                SetSessionValue(SessionValues.JobProfile, preferences.JobProfile.ToString());
+            }
+        }
+
+        protected async Task<List<SupportedLanguage>> GetCurrentUserContentLanguage()
+        {
+            string languagesFromCookie = CookieMgrService.Get(SessionValues.ContentLanguages.ToString());
+            if (string.IsNullOrWhiteSpace(languagesFromCookie))
+            {
+                return await UserPreferencesAppService.GetLanguagesByUserId(CurrentUserId);
+            }
+            else
+            {
+                return JsonSerializer.Deserialize<List<SupportedLanguage>>(languagesFromCookie);
             }
         }
 

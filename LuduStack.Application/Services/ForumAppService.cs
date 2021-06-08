@@ -60,7 +60,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public async Task<OperationResultVo<ForumIndexViewModel>> GetAllCategoriesByGroup(Guid currentUserId)
+        public async Task<OperationResultVo<ForumIndexViewModel>> GetAllCategoriesByGroup(Guid currentUserId, GetAllCategoriesRequestViewModel request)
         {
             try
             {
@@ -77,7 +77,7 @@ namespace LuduStack.Application.Services
                     Groups = allGroupsVms.OrderBy(x => x.Order).ToList()
                 };
 
-                List<ForumCategoryListItemVo> allCategories = await GetCategoryList();
+                List<ForumCategoryListItemVo> allCategories = await GetCategoryList(request.Languages);
 
                 foreach (ForumGroupViewModel group in model.Groups)
                 {
@@ -93,11 +93,11 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public async Task<OperationResultListVo<ForumCategoryListItemVo>> GetAllCategories(Guid currentUserId)
+        public async Task<OperationResultListVo<ForumCategoryListItemVo>> GetAllCategories(Guid currentUserId, GetAllCategoriesRequestViewModel request)
         {
             try
             {
-                List<ForumCategoryListItemVo> vms = await GetCategoryList();
+                List<ForumCategoryListItemVo> vms = await GetCategoryList(request.Languages);
 
                 return new OperationResultListVo<ForumCategoryListItemVo>(vms);
             }
@@ -151,6 +151,11 @@ namespace LuduStack.Application.Services
                     if (forumPost.LatestAnswer != null)
                     {
                         profilesToGet.Add(forumPost.LatestAnswer.UserId);
+                    }
+
+                    if (forumPost.Language == 0)
+                    {
+                        forumPost.Language = SupportedLanguage.English;
                     }
                 }
 
@@ -248,6 +253,11 @@ namespace LuduStack.Application.Services
 
                 HtmlSanitizer sanitizer = ContentHelper.GetHtmlSanitizer();
                 SanitizeHtml(viewModel, sanitizer);
+
+                if (viewModel.Language == 0)
+                {
+                    viewModel.Language = SupportedLanguage.English;
+                }
 
                 await mediator.SendCommand(new RegisterForumPostViewCommand(id, currentUserId));
 
@@ -352,13 +362,13 @@ namespace LuduStack.Application.Services
             }
         }
 
-        private async Task<List<ForumCategoryListItemVo>> GetCategoryList()
+        private async Task<List<ForumCategoryListItemVo>> GetCategoryList(List<SupportedLanguage> languages)
         {
             IEnumerable<ForumCategory> allModels = await mediator.Query<GetForumCategoryQuery, IEnumerable<ForumCategory>>(new GetForumCategoryQuery());
 
             List<ForumCategoryListItemVo> vms = mapper.Map<IEnumerable<ForumCategory>, IEnumerable<ForumCategoryListItemVo>>(allModels).ToList();
 
-            IEnumerable<ForumCategoryCounterResultVo> categoryCounters = await mediator.Query<GetForumCategoryCountersQuery, IEnumerable<ForumCategoryCounterResultVo>>(new GetForumCategoryCountersQuery());
+            IEnumerable<ForumCategoryCounterResultVo> categoryCounters = await mediator.Query<GetForumCategoryCountersQuery, IEnumerable<ForumCategoryCounterResultVo>>(new GetForumCategoryCountersQuery(languages));
 
             List<Guid> profilesToGet = new List<Guid>();
 

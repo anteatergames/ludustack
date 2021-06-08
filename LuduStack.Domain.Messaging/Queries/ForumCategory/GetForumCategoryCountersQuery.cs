@@ -1,4 +1,5 @@
-﻿using LuduStack.Domain.Interfaces.Repository;
+﻿using LuduStack.Domain.Core.Enums;
+using LuduStack.Domain.Interfaces.Repository;
 using LuduStack.Domain.ValueObjects;
 using LuduStack.Infra.CrossCutting.Messaging;
 using MediatR;
@@ -11,6 +12,12 @@ namespace LuduStack.Domain.Messaging.Queries.ForumCategory
 {
     public class GetForumCategoryCountersQuery : Query<IEnumerable<ForumCategoryCounterResultVo>>
     {
+        public List<SupportedLanguage> Languages { get; set; }
+
+        public GetForumCategoryCountersQuery(List<SupportedLanguage> languages)
+        {
+            Languages = languages;
+        }
     }
 
     public class GetForumCategoryCountersQueryHandler : QueryHandler, IRequestHandler<GetForumCategoryCountersQuery, IEnumerable<ForumCategoryCounterResultVo>>
@@ -24,7 +31,7 @@ namespace LuduStack.Domain.Messaging.Queries.ForumCategory
 
         public async Task<IEnumerable<ForumCategoryCounterResultVo>> Handle(GetForumCategoryCountersQuery request, CancellationToken cancellationToken)
         {
-            List<ForumCategoryConterDataVo> rawData = await forumPostRepository.GetForumCategoryCounterInformation();
+            List<ForumCategoryConterDataVo> rawData = await forumPostRepository.GetForumCategoryCounterInformation(request.Languages);
 
             IEnumerable<IGrouping<System.Guid, ForumCategoryConterDataVo>> grouped = rawData.GroupBy(x => x.ForumCategoryId);
 
