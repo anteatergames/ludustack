@@ -3,6 +3,9 @@
     ViewData["Title"] = Model.Title;
     ViewData["Description"] = SharedLocalizer["Topic posted on {0}", Model.CreateDate.ToString()];
     ViewData["Url"] = ViewBag.BaseUrl + Url.Action("viewpost", "forum", new { area = "community", id = Model.Id });
+    ViewData["OgImage"] = ViewBag.BaseUrl + "/images/og/ogforums.png";
+    ViewData["OgImageWidth"] = 1200;
+    ViewData["OgImageHeight"] = 630;
 
     var authorUrl = Url.Action("details", "profile", new { area = string.Empty, userHandler = Model.UserHandler });
     var authorLink = string.Format("<a href=\"{0}\" class=\"boldlink\">{1}</a>", authorUrl, Model.AuthorName);
@@ -113,6 +116,7 @@
             <form id="frmSendAnswer" asp-area="community" asp-controller="forum" asp-action="savepost" method="post">
                 <input type="hidden" asp-for="ForumCategoryId" />
                 <input type="hidden" asp-for="OriginalPostId" />
+                <input type="hidden" asp-for="Language" />
                 <input type="hidden" id="hdnReplyPostId" name="ReplyPostId" />
                 <input type="hidden" id="hdnReplyUserId" name="ReplyUserId" />
 
