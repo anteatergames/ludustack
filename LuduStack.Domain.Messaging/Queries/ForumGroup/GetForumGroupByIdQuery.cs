@@ -8,7 +8,6 @@ namespace LuduStack.Domain.Messaging.Queries.ForumGroup
 {
     public class GetForumGroupByIdQuery : GetByIdBaseQuery<Models.ForumGroup>
     {
-
         public GetForumGroupByIdQuery(Guid id) : base(id)
         {
         }

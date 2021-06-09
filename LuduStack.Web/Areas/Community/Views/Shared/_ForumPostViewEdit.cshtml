@@ -3,7 +3,7 @@
     Layout = null;
 }
 
-<div class="postitem" data-postid="@Model.Id" data-userid="@Model.UserId" data-authorname="@Model.AuthorName" data-currentuservote="@Model.CurrentUserVote" >
+<div class="postitem" data-postid="@Model.Id" data-userid="@Model.UserId" data-authorname="@Model.AuthorName" data-currentuservote="@Model.CurrentUserVote">
     <div class="d-flex py-2 px-0 postitemcontainer" id="@string.Format("postitemcontainer-{0}", Model.Id.ToString())">
         <partial name="_ForumPostViewOnly" model="Model" />
     </div>

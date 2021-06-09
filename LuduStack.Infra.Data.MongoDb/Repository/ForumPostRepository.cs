@@ -47,7 +47,6 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
                 filter = new ExpressionFilterDefinition<ForumPost>(x => x.IsOriginalPost);
             }
 
-
             List<ForumCategoryConterDataVo> data = await (await DbSet.FindAsync(filter, findOptions)).ToListAsync();
 
             return data;
