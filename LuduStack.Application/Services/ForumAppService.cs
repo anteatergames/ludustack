@@ -115,6 +115,11 @@ namespace LuduStack.Application.Services
 
                 ForumCategoryViewModel vm = mapper.Map<ForumCategory, ForumCategoryViewModel>(model);
 
+                if (vm.FeaturedImage.Equals(Constants.DefaultFeaturedImage))
+                {
+                    vm.FeaturedImage = null;
+                }
+
                 return new OperationResultVo<ForumCategoryViewModel>(vm);
             }
             catch (Exception ex)
@@ -296,7 +301,7 @@ namespace LuduStack.Application.Services
                 List<ForumPostViewModel> vms = mapper.Map<IEnumerable<ForumPost>, IEnumerable<ForumPostViewModel>>(allModels).ToList();
 
                 List<Guid> profilesToGet = vms.Select(x => x.UserId).ToList();
-                var repliesProfilesToGet = vms.Where(x => x.ReplyUserId.HasValue).Select(x => x.ReplyUserId.Value);
+                IEnumerable<Guid> repliesProfilesToGet = vms.Where(x => x.ReplyUserId.HasValue).Select(x => x.ReplyUserId.Value);
                 profilesToGet.AddRange(repliesProfilesToGet);
 
                 IEnumerable<UserProfileEssentialVo> userProfiles = await mediator.Query<GetBasicUserProfileDataByUserIdsQuery, IEnumerable<UserProfileEssentialVo>>(new GetBasicUserProfileDataByUserIdsQuery(profilesToGet));

@@ -130,6 +130,11 @@ namespace LuduStack.Application.Services
                     model = mapper.Map<ForumCategory>(viewModel);
                 }
 
+                if (model.FeaturedImage.Equals(Constants.DefaultFeaturedImage))
+                {
+                    model.FeaturedImage = null;
+                }
+
                 CommandResult result = await mediator.SendCommand(new SaveForumCategoryCommand(model));
 
                 if (!result.Validation.IsValid)
