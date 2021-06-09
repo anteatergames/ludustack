@@ -130,7 +130,7 @@ namespace LuduStack.Application.Services
                     model = mapper.Map<ForumCategory>(viewModel);
                 }
 
-                if (model.FeaturedImage.Equals(Constants.DefaultFeaturedImage))
+                if (!string.IsNullOrWhiteSpace(model.FeaturedImage) && model.FeaturedImage.Equals(Constants.DefaultFeaturedImage))
                 {
                     model.FeaturedImage = null;
                 }

@@ -49,13 +49,12 @@
         <script src="~/thirdparty/ckeditor5-build-classic/build/ckeditor.js"></script>
         <script src="~/js/forum/forumpostdetails.min.js" asp-append-version="true"></script>
     </environment>
-    @*    <script type="application/ld+json">
+    <script type="application/ld+json">
         {
         "@@context":"http://schema.org",
-        "@@type":"SocialMediaPosting",
+        "@@type":"DiscussionForumPosting",
         "@@id":"@(ViewData["Url"])",
         "headline":"@(JavaScriptEncoder.Default.Encode(Model.Title))",
-        "image": "@((hasFeaturedImage && featuredImageIsYoutube) || !hasFeaturedImage ? ViewBag.BaseUrl + "/images/og/img_facebook600x315.png" : ViewBag.BaseUrl + Model.FeaturedImage)",
         "datePublished": "@Model.CreateDate.ToString("yyyy-MM-dd")",
         "author":{
         "@@type":"Person",
@@ -65,16 +64,14 @@
         },
         "sharedContent":{
         "@@type":"WebPage",
-        "headline":"@(JavaScriptEncoder.Default.Encode(Model.Introduction))",
         "url":"@(ViewData["Url"])",
-        "image": "@Model.FeaturedImage",
         "author":{
         "@@type":"Person",
         "name":"@Model.AuthorName"
         }
         }
         }
-        </script>*@
+    </script>
 }
 @section TranslatedMessages {
     <span class="msg" data-msg-id="msgNeedLoginToVote">@SharedLocalizer["You need to be logged in to be able to vote on posts."]</span>

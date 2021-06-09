@@ -115,7 +115,7 @@ namespace LuduStack.Application.Services
 
                 ForumCategoryViewModel vm = mapper.Map<ForumCategory, ForumCategoryViewModel>(model);
 
-                if (vm.FeaturedImage.Equals(Constants.DefaultFeaturedImage))
+                if (!string.IsNullOrWhiteSpace(vm.FeaturedImage) && vm.FeaturedImage.Equals(Constants.DefaultFeaturedImage))
                 {
                     vm.FeaturedImage = null;
                 }
