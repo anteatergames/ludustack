@@ -2,7 +2,7 @@
 @{
     ViewData["Title"] = Model.Title;
     ViewData["Description"] = SharedLocalizer["Topic posted on {0}", Model.CreateDate.ToString()];
-    ViewData["Url"] = ViewBag.BaseUrl + Url.Action("viewpost", "forum", new { area = "community", id = Model.Id });
+    ViewData["Url"] = ViewBag.BaseUrl + Url.Action("viewtopic", "forum", new { area = "community", id = Model.Id });
     ViewData["OgImage"] = ViewBag.BaseUrl + "/images/og/ogforums.png";
     ViewData["OgImageWidth"] = 1200;
     ViewData["OgImageHeight"] = 630;
@@ -91,7 +91,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="float-left mr-2">
-                        <a asp-area="community" asp-controller="forum" asp-action="category" asp-route-handler="@Model.CategoryHandler" class="btn btn-default"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
+                        <a asp-area="community" asp-controller="forum" asp-action="category" asp-route-handler="@Model.CategoryHandler" class="btn btn-outline-secondary"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
                     </div>
                     <h1 data-language="@Model.Language" class="h3">
                         @(string.IsNullOrWhiteSpace(Model.Title) ? Html.Raw("&nbsp;") : Model.Title)

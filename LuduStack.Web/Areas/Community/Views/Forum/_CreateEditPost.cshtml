@@ -14,7 +14,7 @@
 
     <div class="box-header with-border">
         <div class="float-left mr-3">
-            <a asp-area="community" asp-controller="forum" asp-action="category" asp-route-handler="@Model.CategoryHandler" class="btn btn-default"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
+            <a asp-area="community" asp-controller="forum" asp-action="category" asp-route-handler="@Model.CategoryHandler" class="btn btn-outline-secondary"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
         </div>
         <h3 class="card-title">@SharedLocalizer["You are {0} a Forum Post", (isNew ? SharedLocalizer["creating"] : SharedLocalizer["editing"])]</h3>
         <span class="card-subtitle">
