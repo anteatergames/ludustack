@@ -8,11 +8,9 @@
 {
     var item = Model.ElementAt(i);
 
-    <div class="postitem" data-id="@item.Id" data-currentuservote="@item.CurrentUserVote">
-        <div class="col-12 separator">
-            <hr />
-        </div>
-
-        <partial name="_ForumPostViewEdit" model="item" />
+    <div class="col-12 separator">
+        <hr />
     </div>
+
+    <partial name="_ForumPostViewEdit" model="item" />
 }

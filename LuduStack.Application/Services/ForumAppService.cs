@@ -295,7 +295,9 @@ namespace LuduStack.Application.Services
 
                 List<ForumPostViewModel> vms = mapper.Map<IEnumerable<ForumPost>, IEnumerable<ForumPostViewModel>>(allModels).ToList();
 
-                IEnumerable<Guid> profilesToGet = vms.Select(x => x.UserId);
+                List<Guid> profilesToGet = vms.Select(x => x.UserId).ToList();
+                var repliesProfilesToGet = vms.Where(x => x.ReplyUserId.HasValue).Select(x => x.ReplyUserId.Value);
+                profilesToGet.AddRange(repliesProfilesToGet);
 
                 IEnumerable<UserProfileEssentialVo> userProfiles = await mediator.Query<GetBasicUserProfileDataByUserIdsQuery, IEnumerable<UserProfileEssentialVo>>(new GetBasicUserProfileDataByUserIdsQuery(profilesToGet));
 
@@ -433,6 +435,15 @@ namespace LuduStack.Application.Services
                 forumTopicAnswer.AuthorName = authorProfile.Name;
                 forumTopicAnswer.UserHandler = authorProfile.Handler;
                 forumTopicAnswer.AuthorPicture = UrlFormatter.ProfileImage(authorProfile.UserId, 43);
+            }
+
+            if (forumTopicAnswer.ReplyUserId.HasValue)
+            {
+                UserProfileEssentialVo replyProfile = userProfiles.FirstOrDefault(x => x.UserId == forumTopicAnswer.ReplyUserId);
+                if (replyProfile != null)
+                {
+                    forumTopicAnswer.ReplyAuthorName = replyProfile.Name;
+                }
             }
         }
 

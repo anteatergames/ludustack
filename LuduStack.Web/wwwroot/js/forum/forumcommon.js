@@ -56,7 +56,7 @@
             var btn = $(this);
             var colorClass = btn.data('colorclass');
             var item = btn.closest(selectors.postItem);
-            var postId = item.data('id');
+            var postId = item.data('postid');
             var vote = btn.data('vote');
             var sameVote = item.data('currentuservote') === vote;
 

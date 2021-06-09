@@ -19,6 +19,10 @@ namespace LuduStack.Application.ViewModels.Forum
 
         public Guid? ReplyPostId { get; set; }
 
+        public Guid? ReplyUserId { get; set; }
+
+        public string ReplyAuthorName { get; set; }
+
         public Guid ForumCategoryId { get; set; }
 
         [Required(ErrorMessage = "Your topic must have a title!")]

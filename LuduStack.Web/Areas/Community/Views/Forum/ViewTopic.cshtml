@@ -72,8 +72,6 @@
         }
         }
         </script>*@
-
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
 @section TranslatedMessages {
     <span class="msg" data-msg-id="msgNeedLoginToVote">@SharedLocalizer["You need to be logged in to be able to vote on posts."]</span>
@@ -102,9 +100,7 @@
             </div>
         </div>
 
-        <div class="postitem" data-id="@Model.Id" data-currentuservote="@Model.CurrentUserVote">
-            <partial name="_ForumPostViewEdit" model="Model" />
-        </div>
+        <partial name="_ForumPostViewEdit" model="Model" />
 
         <div id="divAnswers">
             <hr class="m-2" />
@@ -117,6 +113,8 @@
             <form id="frmSendAnswer" asp-area="community" asp-controller="forum" asp-action="savepost" method="post">
                 <input type="hidden" asp-for="ForumCategoryId" />
                 <input type="hidden" asp-for="OriginalPostId" />
+                <input type="hidden" id="hdnReplyPostId" name="ReplyPostId" />
+                <input type="hidden" id="hdnReplyUserId" name="ReplyUserId" />
 
                 <div class="d-flex p-3">
                     <div class="mr-2">
@@ -124,12 +122,20 @@
                     </div>
 
                     <div class="d-flex flex-fill flex-column">
+                        <div id="postanswerreplyalert" class="alert alert-info d-none" role="alert">
+                            @Html.Raw(SharedLocalizer["Replying to {0}", string.Format("<span id=\"postanswerauthorname\">{0}</span>", "meh").ToString()])
+
+                            <button type="button" class="close" id="btncloseanswerreply" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+
                         <div class="mb-2">
                             <textarea id="txtContentNewAnswer" name="Content" class="form-control txtAnswer" rows="5"></textarea>
                         </div>
 
                         <div class="text-right">
-                            <button type="button" class="btn btn-lg btn-primary btn-post-save-answer"><i class="far fa-paper-plane" aria-hidden="true"></i> @SharedLocalizer["Answer"]</button>
+                            <button type="button" class="btn btn-lg btn-primary text-capitalize btn-post-save-answer"><i class="far fa-paper-plane" aria-hidden="true"></i> @SharedLocalizer["answer"]</button>
                         </div>
                     </div>
                 </div>

@@ -3340,4 +3340,16 @@
     <value>Página {0}</value>
     <comment>Pagination</comment>
   </data>
+  <data name="Replying to {0}" xml:space="preserve">
+    <value>Em resposta a {0}</value>
+    <comment>Forum</comment>
+  </data>
+  <data name="answer" xml:space="preserve">
+    <value>responder</value>
+    <comment>Forum</comment>
+  </data>
+  <data name="report" xml:space="preserve">
+    <value>reportar</value>
+    <comment>Forum</comment>
+  </data>
 </root>

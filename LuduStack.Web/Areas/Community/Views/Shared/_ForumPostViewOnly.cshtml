@@ -46,6 +46,11 @@
         </div>
     </div>
     <div class="w-100 px-1 d-flex flex-column postitemcontent">
+        @if (Model.ReplyPostId.HasValue)
+        {
+            <span class="text-info text-right mr-2">@Html.Raw(SharedLocalizer["Replying to {0}", string.Format("<span>{0}</span>", Model.ReplyAuthorName).ToString()])</span>
+        }
+
         <div class="w-100">
             <div class="d-flex flex-column forumpostcontent">
                 @Html.Raw(Model.Content)
@@ -62,18 +67,6 @@
                             </div>
                             <div class="d-none d-md-block">
                                 <span>&nbsp;@SharedLocalizer["report"]</span>
-                            </div>
-                        </div>
-                    </button>
-                </div>
-                <div class="d-flex flex-column justify-content-end mx-1">
-                    <button type="button" class="btn btn-sm btn-success text-capitalize btn-quote">
-                        <div class="d-flex flex-row justify-content-center">
-                            <div>
-                                <i class="fas fa-fw fa-quote-right" aria-hidden="true"></i>
-                            </div>
-                            <div class="d-none d-md-block">
-                                <span>&nbsp;@SharedLocalizer["quote"]</span>
                             </div>
                         </div>
                     </button>

@@ -18,6 +18,8 @@ namespace LuduStack.Domain.Models
 
         public Guid? ReplyPostId { get; set; }
 
+        public Guid? ReplyUserId { get; set; }
+
         public Guid ForumCategoryId { get; set; }
 
         public string Title { get; set; }

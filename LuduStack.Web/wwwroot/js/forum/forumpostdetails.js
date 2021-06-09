@@ -17,10 +17,17 @@
         selectors.btnSaveAnswer = '.btn-post-save-answer';
         selectors.btnEditPost = '.btn-post-edit';
         selectors.btnEditCancel = '.btn-edit-cancel';
+        selectors.btnReply = '.btn-reply';
         selectors.postItem = '.postitem';
+        selectors.postAnswer = '.postanswer';
         selectors.postItemContainer = '.postitemcontainer';
         selectors.postItemContainerEdit = '.postitemcontaineredit';
         selectors.txtAnswer = '.txtAnswer';
+        selectors.hdnReplyPostId = '#hdnReplyPostId';
+        selectors.hdnReplyUserId = '#hdnReplyUserId';
+        selectors.postAnswerReplyAlert = '#postanswerreplyalert';
+        selectors.postAnswerAuthorName = '#postanswerauthorname';
+        selectors.btnCloseAnswerReply = '#btncloseanswerreply';
     }
 
     function cacheObjs() {
@@ -51,6 +58,8 @@
         bindBtnSavePost();
         bindBtnEdit();
         bindBtnEditCancel();
+        bindBtnReply();
+        bindBtnCloseAnswerReply();
     }
 
     function bindEditors() {
@@ -75,10 +84,8 @@
     function bindBtnSaveAnswer() {
         objs.container.on('click', selectors.btnSaveAnswer, function (e) {
             var btn = $(this);
-            var form = btn.closest('form');
-            var valid = form.valid();
 
-            if (valid && canInteract) {
+            if (canInteract) {
                 MAINMODULE.Common.DisableButton(btn);
 
                 saveAnswer(btn);
@@ -92,10 +99,8 @@
     function bindBtnSavePost() {
         objs.container.on('click', selectors.btnSavePost, function (e) {
             var btn = $(this);
-            var form = btn.closest('form');
-            var valid = form.valid();
 
-            if (valid && canInteract) {
+            if (canInteract) {
                 MAINMODULE.Common.DisableButton(btn);
 
                 savePost(btn);
@@ -128,6 +133,63 @@
         });
     }
 
+    function bindBtnReply() {
+        objs.container.on('click', selectors.btnReply, function (e) {
+            var btn = $(this);
+            var postItem = btn.closest(selectors.postItem);
+            var replyPostId = postItem.data('postid');
+            var replyUserId = postItem.data('userid');
+            var authorName = postItem.data('authorname');
+            var postAnswer = $(selectors.postAnswer);
+            var replyHiddenPostId = postAnswer.find(selectors.hdnReplyPostId);
+            var replyHiddenUserId = postAnswer.find(selectors.hdnReplyUserId);
+            var replyAuthorName = $(selectors.postAnswerAuthorName);
+            var postAnswerReplyAlert = $(selectors.postAnswerReplyAlert);
+
+            replyHiddenPostId.val(replyPostId);
+            replyHiddenUserId.val(replyUserId);
+            replyAuthorName.text(authorName);
+
+            postAnswerReplyAlert.hide().removeClass('d-none').slideDown();
+
+            var txtArea = $(selectors.txtAnswer);
+            var editorId = txtArea.attr('id');
+
+            var complete = false;
+            $('html, body').animate({
+                scrollTop: postAnswer.offset().top
+            }, {
+                complete: () => {
+                    if (!complete) {
+                        complete = true;
+                        WYSIWYGEDITOR.GetEditor(editorId).editor.editing.view.focus();
+                    }
+                }
+            }, 1000);
+
+            e.preventDefault();
+            return false;
+        });
+    }
+
+    function bindBtnCloseAnswerReply() {
+        objs.container.on('click', selectors.btnCloseAnswerReply, function (e) {
+            e.preventDefault();
+
+            var btn = $(this);
+            var postAnswer = $(selectors.postAnswer);
+            var replyHiddenPostId = postAnswer.find(selectors.hdnReplyPostId);
+            var replyHiddenUserId = postAnswer.find(selectors.hdnReplyUserId);
+
+            replyHiddenPostId.val('');
+            replyHiddenUserId.val('');
+
+            btn.closest('.alert').slideUp();
+
+            return false;
+        });
+    }
+
     function loadItems(url) {
         MAINMODULE.Ajax.LoadHtml(url, objs.answers).then(() => {
             objs.answers.hide();
@@ -144,11 +206,7 @@
 
         WYSIWYGEDITOR.UpdateSourceElement(editorId);
 
-        $.validator.unobtrusive.parse(form);
-
-        var valid = form.valid();
-
-        if (valid && canInteract) {
+        if (canInteract) {
             var data = form.serializeObject();
 
             return $.post(url, data).done(function (response) {
@@ -173,11 +231,7 @@
 
         WYSIWYGEDITOR.UpdateSourceElement(editorId);
 
-        $.validator.unobtrusive.parse(form);
-
-        var valid = form.valid();
-
-        if (valid && canInteract) {
+        if (canInteract) {
             var data = form.serializeObject();
 
             return $.post(url, data).done(function (response) {
