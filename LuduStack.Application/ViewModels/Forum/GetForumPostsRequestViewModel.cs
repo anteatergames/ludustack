@@ -14,16 +14,5 @@ namespace LuduStack.Application.ViewModels.Forum
         public int? Page { get; set; }
 
         public List<SupportedLanguage> Languages { get; set; }
-
-        public GetForumPostsQueryOptions ToQueryOptions()
-        {
-            return new GetForumPostsQueryOptions
-            {
-                CategoryId = ForumCategoryId,
-                Count = Count ?? Constants.DefaultItemsPerPage,
-                Page = Page ?? 1,
-                Languages = Languages
-            };
-        }
     }
 }

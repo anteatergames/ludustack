@@ -28,6 +28,7 @@
         selectors.postAnswerReplyAlert = '#postanswerreplyalert';
         selectors.postAnswerAuthorName = '#postanswerauthorname';
         selectors.btnCloseAnswerReply = '#btncloseanswerreply';
+        selectors.btnPage = 'a.page-link';
     }
 
     function cacheObjs() {
@@ -50,6 +51,8 @@
         loadItems(urlAnswers);
 
         FORUMCOMMON.Callback.DeleteEntity = deleteCallback;
+
+        PAGINATION.Init(selectors.btnPage, selectors.answers);
     }
 
     function bindAll() {

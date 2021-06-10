@@ -231,9 +231,9 @@ namespace LuduStack.Web.Areas.Community.Controllers
         }
 
         [Route("topic/{topicId:guid}/answers")]
-        public Task<IActionResult> AnswersByTopic(Guid topicId)
+        public Task<IActionResult> AnswersByTopic(Guid topicId, int? page)
         {
-            ViewComponentResult component = ViewComponent("ForumTopicAnswers", new { topicId });
+            ViewComponentResult component = ViewComponent("ForumTopicAnswers", new { topicId, page });
 
             return Task.FromResult((IActionResult)component);
         }

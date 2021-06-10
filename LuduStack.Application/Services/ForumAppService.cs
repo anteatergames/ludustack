@@ -134,9 +134,15 @@ namespace LuduStack.Application.Services
             {
                 List<Guid> profilesToGet = new List<Guid>();
 
-                GetForumPostsQueryOptions queryOptions = viewModel.ToQueryOptions();
+                var query = new GetForumPostListQuery
+                {
+                    CategoryId = viewModel.ForumCategoryId,
+                    Count = viewModel.Count ?? Constants.DefaultItemsPerPage,
+                    Page = viewModel.Page ?? 1,
+                    Languages = viewModel.Languages
+                };
 
-                ForumPostListVo queryResult = await mediator.Query<GetForumPostListQuery, ForumPostListVo>(new GetForumPostListQuery(queryOptions));
+                ForumPostListVo queryResult = await mediator.Query<GetForumPostListQuery, ForumPostListVo>(query);
 
                 IEnumerable<Guid> userIds = queryResult.Posts.Select(x => x.UserId);
                 profilesToGet.AddRange(userIds);
@@ -290,11 +296,16 @@ namespace LuduStack.Application.Services
         {
             try
             {
-                GetForumTopicAnswersQueryOptions queryOptions = viewModel.ToQueryOptions();
+                var query = new GetForumTopicAnswersQuery
+                {
+                    TopicId = viewModel.TopicId,
+                    Count = viewModel.Count ?? Constants.DefaultItemsPerPage,
+                    Page = viewModel.Page ?? 1
+                };
 
-                List<ForumPost> allModels = await mediator.Query<GetForumTopicAnswersQuery, List<ForumPost>>(new GetForumTopicAnswersQuery(queryOptions));
+                ForumTopicAnswerListVo queryResult = await mediator.Query<GetForumTopicAnswersQuery, ForumTopicAnswerListVo>(query);
 
-                List<ForumPostViewModel> vms = mapper.Map<IEnumerable<ForumPost>, IEnumerable<ForumPostViewModel>>(allModels).ToList();
+                List<ForumPostViewModel> vms = mapper.Map<IEnumerable<ForumPost>, IEnumerable<ForumPostViewModel>>(queryResult.Answers).ToList();
 
                 List<Guid> profilesToGet = vms.Select(x => x.UserId).ToList();
                 IEnumerable<Guid> repliesProfilesToGet = vms.Where(x => x.ReplyUserId.HasValue).Select(x => x.ReplyUserId.Value);
@@ -306,7 +317,7 @@ namespace LuduStack.Application.Services
 
                 foreach (ForumPostViewModel forumTopicAnswer in vms)
                 {
-                    ForumPost entity = allModels.First(x => x.Id == forumTopicAnswer.Id);
+                    ForumPost entity = queryResult.Answers.First(x => x.Id == forumTopicAnswer.Id);
 
                     SetVotes(currentUserId, forumTopicAnswer, entity);
 
@@ -317,7 +328,11 @@ namespace LuduStack.Application.Services
                     SanitizeHtml(forumTopicAnswer, sanitizer);
                 }
 
-                return new OperationResultListVo<ForumPostViewModel>(vms);
+                var result = new OperationResultListVo<ForumPostViewModel>(vms);
+
+                result.Pagination = queryResult.Pagination;
+
+                return result;
             }
             catch (Exception ex)
             {

@@ -6,12 +6,12 @@
 <div class="d-flex flex-row">
     @if (Model.TotalPageCount > 1)
     {
-        <nav class="ml-2" aria-label="@SharedLocalizer[" Pagination"]">
+        <nav aria-label="@SharedLocalizer[" Pagination"]">
             <ul class="pagination pagination-sm mb-2">
                 @for (int i = 1; i <= Model.TotalPageCount; i++)
                 {
                     <li class="page-item@(i == Model.Page ? " active" : string.Empty)">
-                        <a asp-protocol="@ViewData[" protocol"]" asp-host="@ViewData[" host"]" asp-area="community" asp-controller="forum" asp-action="postsbycategory" asp-route-page="@i" title="@SharedLocalizer[" Page {0}", i]" class="page-link">@i</a>
+                        <a asp-protocol="@ViewData[" protocol"]" asp-host="@ViewData[" host"]" asp-area="@Model.Area" asp-controller="@Model.Controller" asp-action="@Model.Action" asp-route-page="@i" title="@SharedLocalizer[" Page {0}", i]" class="page-link">@i</a>
                     </li>
                 }
             </ul>

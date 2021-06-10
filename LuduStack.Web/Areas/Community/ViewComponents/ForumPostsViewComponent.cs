@@ -45,6 +45,10 @@ namespace LuduStack.Web.Areas.Community.ViewComponents
 
             FillMissingInformation(model.Posts);
 
+            model.Pagination.Area = "community";
+            model.Pagination.Controller = "forum";
+            model.Pagination.Action = "postsbycategory";
+
             return await Task.Run(() => View(model));
         }
 

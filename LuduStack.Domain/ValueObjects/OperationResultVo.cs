@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using LuduStack.Domain.Interfaces.Models;
+using LuduStack.Domain.ValueObjects;
+using System.Collections.Generic;
 
 namespace LuduStack.Domain.ValueObjects
 {
@@ -150,6 +152,8 @@ namespace LuduStack.Domain.ValueObjects
     public class OperationResultListVo<T> : OperationResultVo
     {
         public IEnumerable<T> Value { get; set; }
+
+        public PaginationVo Pagination { get; set; }
 
         public OperationResultListVo(IEnumerable<T> items) : base(true)
         {

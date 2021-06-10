@@ -9,7 +9,7 @@
 
     var description = ViewData["ListDescription"] == null ? SharedLocalizer["Forum Posts"] : (string)ViewData["ListDescription"];
 
-    Model.PaginationMessage = "{0} topics here";
+    Model.Pagination.PaginationMessage = "{0} topics here";
 }
 
 @if (!Model.Posts.Any())
@@ -20,7 +20,9 @@
 }
 else
 {
-    <partial name="_Pagination" model="Model" />
+    <div class="ml-2">
+        <partial name="_Pagination" model="Model.Pagination" />
+    </div>
 
     <div class="bg-light pt-2 mb-2">
         <div class="row px-3 text-uppercase">
@@ -115,7 +117,9 @@ else
         </div>
     </div>
 
-    Model.PaginationMessage = string.Empty;
+    Model.Pagination.PaginationMessage = string.Empty;
 
-    <partial name="_Pagination" model="Model" />
+    <div class="ml-2">
+        <partial name="_Pagination" model="Model.Pagination" />
+    </div>
 }

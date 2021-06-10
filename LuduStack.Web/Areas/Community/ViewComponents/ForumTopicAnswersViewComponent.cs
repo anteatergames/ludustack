@@ -26,16 +26,24 @@ namespace LuduStack.Web.Areas.Community.ViewComponents
             this.forumAppService = forumAppService;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(int? count, Guid topicId)
+        public async Task<IViewComponentResult> InvokeAsync(int? count, int? page, Guid topicId)
         {
             GetForumTopicAnswersRequestViewModel vm = new GetForumTopicAnswersRequestViewModel
             {
-                TopicId = topicId
+                TopicId = topicId,
+                Count = count,
+                Page = page,
             };
 
-            OperationResultListVo<ForumPostViewModel> model = await forumAppService.GetTopicAnswers(CurrentUserId, vm);
+            OperationResultListVo<ForumPostViewModel> result = await forumAppService.GetTopicAnswers(CurrentUserId, vm);
 
-            List<ForumPostViewModel> list = model.Value.ToList();
+            result.Pagination.Area = "community";
+            result.Pagination.Controller = "forum";
+            result.Pagination.Action = "answersbytopic";
+
+            ViewData["Pagination"] = result.Pagination;
+
+            List<ForumPostViewModel> list = result.Value.ToList();
 
             return await Task.Run(() => View(list));
         }

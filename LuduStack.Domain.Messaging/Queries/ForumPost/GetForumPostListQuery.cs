@@ -1,4 +1,5 @@
 ﻿using LuduStack.Domain.Core.Enums;
+using LuduStack.Domain.Interfaces.Models;
 using LuduStack.Domain.Interfaces.Repository;
 using LuduStack.Domain.ValueObjects;
 using LuduStack.Infra.CrossCutting.Messaging;
@@ -11,7 +12,8 @@ using System.Threading.Tasks;
 
 namespace LuduStack.Domain.Messaging.Queries.ForumPost
 {
-    public class GetForumPostsQueryOptions
+
+    public class GetForumPostListQuery : Query<ForumPostListVo>, IPaginatedQuery
     {
         public Guid? CategoryId { get; set; }
 
@@ -20,24 +22,11 @@ namespace LuduStack.Domain.Messaging.Queries.ForumPost
         public int Page { get; set; }
 
         public List<SupportedLanguage> Languages { get; set; }
-    }
 
-    public class GetForumPostListQuery : Query<ForumPostListVo>
-    {
-        public Guid? CategoryId { get; }
 
-        public int Count { get; set; }
-
-        public int Page { get; set; }
-
-        public List<SupportedLanguage> Languages { get; set; }
-
-        public GetForumPostListQuery(GetForumPostsQueryOptions queryOptions)
+        public GetForumPostListQuery()
         {
-            CategoryId = queryOptions.CategoryId;
-            Count = queryOptions.Count;
-            Page = queryOptions.Page;
-            Languages = queryOptions.Languages;
+
         }
     }
 
@@ -72,9 +61,9 @@ namespace LuduStack.Domain.Messaging.Queries.ForumPost
 
             allModels = Filter(request, allModels);
 
-            result.TotalCount = allModels.Count();
-            result.TotalPageCount = (int)Math.Ceiling(result.TotalCount / (decimal)request.Count);
-            result.Page = request.Page;
+            result.Pagination.TotalCount = allModels.Count();
+            result.Pagination.TotalPageCount = (int)Math.Ceiling(result.Pagination.TotalCount / (decimal)request.Count);
+            result.Pagination.Page = request.Page;
 
             allModels = Sort(allModels);
 

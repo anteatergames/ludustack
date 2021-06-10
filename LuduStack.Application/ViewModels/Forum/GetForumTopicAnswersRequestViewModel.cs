@@ -6,13 +6,7 @@ namespace LuduStack.Application.ViewModels.Forum
     public class GetForumTopicAnswersRequestViewModel : RequestBaseViewModel
     {
         public Guid TopicId { get; set; }
-
-        public GetForumTopicAnswersQueryOptions ToQueryOptions()
-        {
-            return new GetForumTopicAnswersQueryOptions
-            {
-                TopicId = TopicId
-            };
-        }
+        public int? Count { get; set; }
+        public int? Page { get; set; }
     }
 }

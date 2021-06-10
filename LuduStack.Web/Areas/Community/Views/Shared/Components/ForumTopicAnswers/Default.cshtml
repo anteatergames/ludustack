@@ -2,7 +2,15 @@
 
 @{
     Layout = null;
+
+    var paginationModel = (PaginationVo)ViewData["Pagination"];
+
+    paginationModel.PaginationMessage = "{0} answers here";
 }
+
+<div class="mx-2">
+    <partial name="_Pagination" model="paginationModel" />
+</div>
 
 @for (int i = 0; i < Model.Count(); i++)
 {
@@ -14,3 +22,9 @@
 
     <partial name="_ForumPostViewEdit" model="item" />
 }
+
+@{ paginationModel.PaginationMessage = string.Empty; }
+
+<div class="mx-2">
+    <partial name="_Pagination" model="paginationModel" />
+</div>
