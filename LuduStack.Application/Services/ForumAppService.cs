@@ -204,10 +204,6 @@ namespace LuduStack.Application.Services
                 {
                     existing.Content = viewModel.Content;
                     model = existing;
-                    //string title = existing.Title;
-                    //var existingCreateDate = existing.CreateDate;
-                    //model = mapper.Map(viewModel, existing);
-                    //model.Title = title;
                 }
                 else
                 {
@@ -417,7 +413,7 @@ namespace LuduStack.Application.Services
 
         private static void SetVotes(Guid currentUserId, ForumPostViewModel forumPost, ForumPost entity)
         {
-            forumPost.Score = (entity.Votes != null ? entity.Votes.Sum(x => (int)x.VoteValue) : 0); ;
+            forumPost.Score = (entity.Votes != null ? entity.Votes.Sum(x => (int)x.VoteValue) : 0);
             forumPost.CurrentUserVote = entity.Votes?.FirstOrDefault(x => x.UserId == currentUserId)?.VoteValue ?? VoteValue.Neutral;
         }
 
