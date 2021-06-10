@@ -253,6 +253,8 @@ namespace LuduStack.Application.Services
 
                 vm.FeaturedImage = SetFeaturedImage(vm.UserId, vm.FeaturedImage, ImageRenderType.Full, Constants.DefaultCourseThumbnail);
 
+                vm.Description = ContentFormatter.FormatCFormatTextAreaBreaks(vm.Description);
+
                 return new OperationResultVo<CourseViewModel>(vm);
             }
             catch (Exception ex)

@@ -10,7 +10,7 @@ namespace LuduStack.Domain.Messaging.Queries.UserPreferences
 {
     public class GetUserPreferencesQuery : GetBaseQuery<Models.UserPreferences>
     {
-        public GetUserPreferencesQuery() : base()
+        public GetUserPreferencesQuery()
         {
         }
 

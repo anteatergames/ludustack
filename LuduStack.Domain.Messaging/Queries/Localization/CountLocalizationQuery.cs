@@ -5,7 +5,7 @@ namespace LuduStack.Domain.Messaging.Queries.Localization
 {
     public class CountLocalizationQuery : CountBaseQuery<Models.Localization>
     {
-        public CountLocalizationQuery() : base()
+        public CountLocalizationQuery()
         {
         }
     }

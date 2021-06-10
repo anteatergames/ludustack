@@ -5,7 +5,7 @@ namespace LuduStack.Domain.Messaging.Queries.FeaturedContent
 {
     public class CountFeaturedContentQuery : CountBaseQuery<Models.FeaturedContent>
     {
-        public CountFeaturedContentQuery() : base()
+        public CountFeaturedContentQuery()
         {
         }
     }

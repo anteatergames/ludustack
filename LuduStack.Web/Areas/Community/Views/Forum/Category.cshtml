@@ -1,0 +1,86 @@
+﻿@model ForumCategoryViewModel
+
+@{
+    var isAjax = ViewContext.HttpContext.Request.IsAjaxRequest();
+    var canInteract = User.Identity.IsAuthenticated;
+
+    if (isAjax)
+    {
+        Layout = null;
+    }
+
+    ViewData["Title"] = SharedLocalizer["{0} - Forum", Model.Name];
+    ViewData["Description"] = SharedLocalizer[Model.Description];
+    ViewData["Url"] = ViewBag.BaseUrl + Url.Action("category", "forum", new { area = "community", handler = Model.Handler });
+    ViewData["OgImage"] = Model.FeaturedImage ?? ViewBag.BaseUrl + "/images/og/ogforums.png";
+    ViewData["OgImageWidth"] = 1200;
+    ViewData["OgImageHeight"] = 630;
+}
+
+@section ComponentStyles {
+    <environment include="Development">
+        <link rel="stylesheet" href="~/css/_feature.css">
+        <link rel="stylesheet" href="~/css/forum.css">
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="~/css/forum.min.css" asp-append-version="true">
+    </environment>
+}
+
+@section Scripts {
+    <environment include="Development">
+        <script src="~/js/shared/pagination.js"></script>
+        <script src="~/js/forum/forumcommon.js"></script>
+        <script src="~/js/forum/forum.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/js/forum/forum.min.js" asp-append-version="true"></script>
+    </environment>
+}
+
+@section TranslatedMessages {
+    <span class="msg" data-msg-id="msgUrlPlaceholder">@SharedLocalizer["placeholder message"]</span>
+}
+
+<div id="featurecontainer" class="col-12 container">
+    <input type="hidden" id="isajax" value="@isAjax.ToString().ToLower()" />
+    <input type="hidden" id="urls" value="urls"
+           data-url-list="@Url.Action("postsbycategory", "forum", new { area = "community", categoryId = Model.Id })" />
+
+    <div id="containerlist" class="row">
+        <div class="col-12 mb-2 text-uppercase">
+            <h1 class="h3">
+                @if (string.IsNullOrWhiteSpace(Model.Icon))
+                {
+                    <i class="fas fa-comments fa-fw" aria-hidden="true"></i>
+                }
+                else
+                {
+                    @Html.Raw(Model.Icon.Replace("fa-2x", "fa-fw"))
+                }
+                @ViewData["Title"]
+            </h1>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="row p-2 mb-2 bg-white">
+            <div class="col-12 col-md-7 p-0 mb-2 mb-md-0 forum-headermessage">
+                <div class="float-left mr-3">
+                    <a asp-area="community" asp-controller="forum" asp-action="index" class="btn btn-outline-secondary"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
+                </div>
+                <span class="align-middle">@SharedLocalizer[Model.Description]</span>
+            </div>
+            <div class="col-12 col-md-5 p-0">
+                @if (canInteract)
+                {
+                    <div class="col-lg-12 p-0 text-right">
+                        <a asp-area="community" asp-controller="forum" asp-action="newtopic" asp-route-categoryId="@Model.Id" class="btn btn-success"><i class="fas fa-plus" aria-hidden="true"></i> @SharedLocalizer["New Topic"]</a>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div id="divList" class="col-12"></div>
+    </div>
+</div>

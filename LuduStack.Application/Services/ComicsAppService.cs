@@ -1,5 +1,4 @@
 ﻿using LuduStack.Application.Formatters;
-using LuduStack.Application.Helpers;
 using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels;
 using LuduStack.Application.ViewModels.Comics;
@@ -244,14 +243,14 @@ namespace LuduStack.Application.Services
 
         private void SetImagesToShow(ComicStripViewModel vm, bool editing)
         {
-            vm.FeaturedImage = ContentHelper.FormatFeaturedImageUrl(vm.UserId, vm.FeaturedImage, ImageRenderType.Full);
-            vm.FeaturedImageLquip = ContentHelper.FormatFeaturedImageUrl(vm.UserId, vm.FeaturedImage, ImageRenderType.LowQuality);
+            vm.FeaturedImage = UrlFormatter.FormatFeaturedImageUrl(vm.UserId, vm.FeaturedImage, ImageRenderType.Full);
+            vm.FeaturedImageLquip = UrlFormatter.FormatFeaturedImageUrl(vm.UserId, vm.FeaturedImage, ImageRenderType.LowQuality);
 
             foreach (MediaListItemVo image in vm.Media)
             {
-                image.Url = ContentHelper.FormatFeaturedImageUrl(vm.UserId, image.Url, ImageRenderType.Full);
-                image.UrlResponsive = ContentHelper.FormatFeaturedImageUrl(vm.UserId, image.Url, ImageRenderType.Responsive);
-                image.UrlLquip = ContentHelper.FormatFeaturedImageUrl(vm.UserId, image.Url, ImageRenderType.LowQuality);
+                image.Url = UrlFormatter.FormatFeaturedImageUrl(vm.UserId, image.Url, ImageRenderType.Full);
+                image.UrlResponsive = UrlFormatter.FormatFeaturedImageUrl(vm.UserId, image.Url, ImageRenderType.Responsive);
+                image.UrlLquip = UrlFormatter.FormatFeaturedImageUrl(vm.UserId, image.Url, ImageRenderType.LowQuality);
             }
 
             if (editing)
@@ -287,9 +286,9 @@ namespace LuduStack.Application.Services
                     selectedFeaturedImage = vm.Media.FirstOrDefault()?.Url;
                 }
 
-                vm.FeaturedImage = ContentHelper.FormatFeaturedImageUrl(vm.UserId, selectedFeaturedImage, ImageRenderType.Full);
-                vm.FeaturedImageResponsive = ContentHelper.FormatFeaturedImageUrl(vm.UserId, selectedFeaturedImage, ImageRenderType.Responsive);
-                vm.FeaturedImageLquip = ContentHelper.FormatFeaturedImageUrl(vm.UserId, selectedFeaturedImage, ImageRenderType.LowQuality);
+                vm.FeaturedImage = UrlFormatter.FormatFeaturedImageUrl(vm.UserId, selectedFeaturedImage, ImageRenderType.Full);
+                vm.FeaturedImageResponsive = UrlFormatter.FormatFeaturedImageUrl(vm.UserId, selectedFeaturedImage, ImageRenderType.Responsive);
+                vm.FeaturedImageLquip = UrlFormatter.FormatFeaturedImageUrl(vm.UserId, selectedFeaturedImage, ImageRenderType.LowQuality);
             }
 
             vm.Media = vm.Media.OrderBy(x => x.Language).ToList();

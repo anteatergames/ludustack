@@ -9,6 +9,34 @@ namespace LuduStack.Application.Formatters
 {
     public static class UrlFormatter
     {
+        public static string FormatFeaturedImageUrl(Guid userId, string featuredImage, ImageRenderType type)
+        {
+            if (!string.IsNullOrWhiteSpace(featuredImage) && !featuredImage.Contains("/images/placeholders/"))
+            {
+                switch (type)
+                {
+                    case ImageRenderType.LowQuality:
+                        return Image(userId, ImageType.FeaturedImage, featuredImage, 600, 10);
+
+                    case ImageRenderType.Responsive:
+                        return Image(userId, ImageType.FeaturedImage, featuredImage, true, 0, 0);
+
+                    case ImageRenderType.Full:
+                    default:
+                        return Image(userId, ImageType.FeaturedImage, featuredImage);
+                }
+            }
+            else
+            {
+                return featuredImage;
+            }
+        }
+
+        public static string FormatFeaturedVideoUrl(Guid userId, string featuredVideo)
+        {
+            return Video(userId, ImageType.FeaturedImage, featuredVideo);
+        }
+
         #region Internal
 
         public static string GetDefaultImage(ImageType type)
@@ -68,7 +96,7 @@ namespace LuduStack.Application.Formatters
 
         public static string ProfileImage(Guid userId, DateTime? lastUpdateDate, int width)
         {
-            string fileName = String.Format("profileimage_{0}_Personal", userId);
+            string fileName = string.Format("profileimage_{0}_Personal", userId);
 
             string url = CdnImageCommon(userId, fileName, false, width, 0, Constants.DefaultAvatar);
 
@@ -89,9 +117,9 @@ namespace LuduStack.Application.Formatters
         {
             long v = lastUpdateDate.HasValue ? lastUpdateDate.Value.Ticks : 1;
 
-            string fileName = String.Format("profilecover_{0}", profileId);
+            string fileName = string.Format("profilecover_{0}", profileId);
 
-            string url = hasCoverImage ? String.Format("{0}/{1}/{2}?v={3}", Constants.DefaultCdnPath, userId, fileName, v) : Constants.DefaultProfileCoverImage;
+            string url = hasCoverImage ? string.Format("{0}/{1}/{2}?v={3}", Constants.DefaultCdnPath, userId, fileName, v) : Constants.DefaultProfileCoverImage;
 
             url = url.Replace("//", "/").Replace("https:/", "https://");
 
@@ -111,11 +139,6 @@ namespace LuduStack.Application.Formatters
         public static string Image(Guid userId, ImageType type, string fileName, int width)
         {
             return Image(userId, type, fileName, width, 0);
-        }
-
-        public static string Image(Guid userId, ImageType type, string fileName, int width, string defaultImage)
-        {
-            return Image(userId, type, fileName, false, width, 0, defaultImage);
         }
 
         public static string Image(Guid userId, ImageType type, string fileName, int width, int quality)
@@ -176,16 +199,16 @@ namespace LuduStack.Application.Formatters
 
                     Transformation transformation = new Transformation().FetchFormat("auto").Width(300);
                     string url300 = cloudinary.Api.UrlImgUp.Secure(true).Transform(transformation).BuildUrl(publicId);
-                    sb.Append(String.Format("{0} 300w, ", url300));
+                    sb.Append(string.Format("{0} 300w, ", url300));
 
                     transformation = new Transformation().FetchFormat("auto").Width(600);
                     string url600 = cloudinary.Api.UrlImgUp.Secure(true).Transform(transformation).BuildUrl(publicId);
-                    sb.Append(String.Format("{0} 600w, ", url600));
+                    sb.Append(string.Format("{0} 600w, ", url600));
 
                     transformation = new Transformation().FetchFormat("auto");
                     string url900 = cloudinary.Api.UrlImgUp.Secure(true).Transform(transformation).BuildUrl(publicId);
 
-                    sb.Append(String.Format("{0} 900w", url900));
+                    sb.Append(string.Format("{0} 900w", url900));
 
                     return sb.ToString();
                 }
@@ -240,7 +263,7 @@ namespace LuduStack.Application.Formatters
                 fileName = fileNameSplit.Last();
             }
 
-            string publicId = String.Format("{0}/{1}", userId, fileName.Split('.')[0]);
+            string publicId = string.Format("{0}/{1}", userId, fileName.Split('.')[0]);
             return publicId;
         }
 
@@ -265,7 +288,7 @@ namespace LuduStack.Application.Formatters
                 handler = handler.Trim('/');
                 if (!handler.StartsWith("http"))
                 {
-                    handler = String.Format("http://{0}", handler);
+                    handler = string.Format("http://{0}", handler);
                 }
             }
 
@@ -279,7 +302,7 @@ namespace LuduStack.Application.Formatters
             if (!string.IsNullOrWhiteSpace(handler) && !handler.Contains("itch.io"))
             {
                 handler = ExternalUrlCommon(handler);
-                return String.Format("https://{0}.itch.io", handler);
+                return string.Format("https://{0}.itch.io", handler);
             }
             else
             {
@@ -293,7 +316,7 @@ namespace LuduStack.Application.Formatters
             if (!string.IsNullOrWhiteSpace(handler) && !handler.Contains("gamejolt.com"))
             {
                 handler = ExternalUrlCommon(handler);
-                return String.Format("https://gamejolt.com/@{0}", handler);
+                return string.Format("https://gamejolt.com/@{0}", handler);
             }
             else
             {
@@ -307,7 +330,7 @@ namespace LuduStack.Application.Formatters
             if (!string.IsNullOrWhiteSpace(handler) && !handler.Contains("connect.unity.com"))
             {
                 handler = ExternalUrlCommon(handler);
-                return String.Format("https://connect.unity.com/u/{0}", handler);
+                return string.Format("https://connect.unity.com/u/{0}", handler);
             }
             else
             {
@@ -321,7 +344,7 @@ namespace LuduStack.Application.Formatters
             if (!string.IsNullOrWhiteSpace(handler) && !handler.Contains("indiedb.com"))
             {
                 handler = ExternalUrlCommon(handler);
-                return String.Format("https://www.indiedb.com/members/{0}", handler);
+                return string.Format("https://www.indiedb.com/members/{0}", handler);
             }
             else
             {
@@ -335,7 +358,7 @@ namespace LuduStack.Application.Formatters
             if (!string.IsNullOrWhiteSpace(handler) && !handler.Contains("gamedev.net"))
             {
                 handler = ExternalUrlCommon(handler);
-                return String.Format("https://www.gamedev.net/profile/{0}", handler);
+                return string.Format("https://www.gamedev.net/profile/{0}", handler);
             }
             else
             {
@@ -354,7 +377,7 @@ namespace LuduStack.Application.Formatters
             if (!string.IsNullOrWhiteSpace(handler) && !handler.Contains("apps.apple.com"))
             {
                 handler = ExternalUrlCommon(handler);
-                return String.Format("https://apps.apple.com/us/developer/{0}", handler);
+                return string.Format("https://apps.apple.com/us/developer/{0}", handler);
             }
             else
             {
@@ -368,7 +391,7 @@ namespace LuduStack.Application.Formatters
             if (!string.IsNullOrWhiteSpace(handler) && !handler.Contains("play.google.com"))
             {
                 handler = ExternalUrlCommon(handler);
-                return String.Format("https://play.google.com/store/apps/dev?id={0}", handler);
+                return string.Format("https://play.google.com/store/apps/dev?id={0}", handler);
             }
             else
             {
@@ -382,7 +405,7 @@ namespace LuduStack.Application.Formatters
             if (!string.IsNullOrWhiteSpace(handler) && !handler.Contains("indiexpo.net"))
             {
                 handler = ExternalUrlCommon(handler);
-                return String.Format("https://www.indiexpo.net/users/{0}", handler);
+                return string.Format("https://www.indiexpo.net/users/{0}", handler);
             }
             else
             {
@@ -395,7 +418,7 @@ namespace LuduStack.Application.Formatters
         {
             if (!string.IsNullOrWhiteSpace(handler) && !handler.Contains("artstation.com"))
             {
-                return String.Format("https://www.artstation.com/{0}", handler);
+                return string.Format("https://www.artstation.com/{0}", handler);
             }
             else
             {
@@ -408,7 +431,7 @@ namespace LuduStack.Application.Formatters
         {
             if (!string.IsNullOrWhiteSpace(handler) && !handler.Contains("deviantart.com"))
             {
-                return String.Format("https://www.deviantart.com/{0}", handler);
+                return string.Format("https://www.deviantart.com/{0}", handler);
             }
             else
             {
@@ -421,7 +444,7 @@ namespace LuduStack.Application.Formatters
         {
             if (!string.IsNullOrWhiteSpace(handler) && !handler.Contains("dev.to"))
             {
-                return String.Format("https://dev.to/{0}", handler);
+                return string.Format("https://dev.to/{0}", handler);
             }
             else
             {
@@ -434,7 +457,7 @@ namespace LuduStack.Application.Formatters
         {
             if (!string.IsNullOrWhiteSpace(handler) && !handler.Contains("github.com"))
             {
-                return String.Format("https://github.com/{0}", handler);
+                return string.Format("https://github.com/{0}", handler);
             }
             else
             {
@@ -447,7 +470,7 @@ namespace LuduStack.Application.Formatters
         {
             if (!string.IsNullOrWhiteSpace(handler) && !handler.Contains("hackerrank.com"))
             {
-                return String.Format("https://www.hackerrank.com/{0}", handler);
+                return string.Format("https://www.hackerrank.com/{0}", handler);
             }
             else
             {
@@ -460,7 +483,7 @@ namespace LuduStack.Application.Formatters
         {
             if (!string.IsNullOrWhiteSpace(handler) && !handler.Contains("linkedin.com"))
             {
-                return String.Format("https://www.linkedin.com/in/{0}", handler);
+                return string.Format("https://www.linkedin.com/in/{0}", handler);
             }
             else
             {
@@ -473,7 +496,7 @@ namespace LuduStack.Application.Formatters
         {
             if (!string.IsNullOrWhiteSpace(handler) && !handler.Contains("patreon.com"))
             {
-                return String.Format("https://www.patreon.com/{0}", handler);
+                return string.Format("https://www.patreon.com/{0}", handler);
             }
             else
             {
@@ -486,7 +509,7 @@ namespace LuduStack.Application.Formatters
         {
             if (!string.IsNullOrWhiteSpace(handler) && !handler.Contains("medium.com"))
             {
-                return String.Format("https://medium.com/@{0}", handler);
+                return string.Format("https://medium.com/@{0}", handler);
             }
             else
             {
@@ -508,7 +531,7 @@ namespace LuduStack.Application.Formatters
             if (!string.IsNullOrWhiteSpace(handler) && !handler.Contains("facebook.com"))
             {
                 handler = ExternalUrlCommon(handler);
-                return String.Format("https://www.facebook.com/{0}", handler);
+                return string.Format("https://www.facebook.com/{0}", handler);
             }
             else
             {
@@ -522,7 +545,7 @@ namespace LuduStack.Application.Formatters
             if (!string.IsNullOrWhiteSpace(handler) && !handler.Contains("twitter.com"))
             {
                 handler = ExternalUrlCommon(handler);
-                return String.Format("https://twitter.com/{0}", handler);
+                return string.Format("https://twitter.com/{0}", handler);
             }
             else
             {
@@ -536,7 +559,7 @@ namespace LuduStack.Application.Formatters
             if (!string.IsNullOrWhiteSpace(handler) && !handler.Contains("instagram.com"))
             {
                 handler = ExternalUrlCommon(handler);
-                return String.Format("https://www.instagram.com/{0}", handler);
+                return string.Format("https://www.instagram.com/{0}", handler);
             }
             else
             {
@@ -550,7 +573,7 @@ namespace LuduStack.Application.Formatters
             if (!string.IsNullOrWhiteSpace(handler) && !handler.Contains("youtube.com"))
             {
                 handler = ExternalUrlCommon(handler);
-                return String.Format("https://www.youtube.com/channel/{0}", handler);
+                return string.Format("https://www.youtube.com/channel/{0}", handler);
             }
             else
             {
@@ -564,7 +587,7 @@ namespace LuduStack.Application.Formatters
             if (!string.IsNullOrWhiteSpace(handler) && !handler.Contains("xbox.com"))
             {
                 handler = ExternalUrlCommon(handler);
-                return String.Format("https://account.xbox.com/en-us/profile?gamertag={0}", handler);
+                return string.Format("https://account.xbox.com/en-us/profile?gamertag={0}", handler);
             }
             else
             {
@@ -578,7 +601,7 @@ namespace LuduStack.Application.Formatters
             if (!string.IsNullOrWhiteSpace(handler) && !handler.Contains("playstation.com"))
             {
                 handler = ExternalUrlCommon(handler);
-                return String.Format("https://my.playstation.com/profile/{0}", handler);
+                return string.Format("https://my.playstation.com/profile/{0}", handler);
             }
             else
             {
@@ -592,7 +615,7 @@ namespace LuduStack.Application.Formatters
             if (!string.IsNullOrWhiteSpace(handler) && !handler.Contains("store.steampowered.com"))
             {
                 handler = ExternalUrlCommon(handler);
-                return String.Format("https://store.steampowered.com/app/{0}", handler);
+                return string.Format("https://store.steampowered.com/app/{0}", handler);
             }
             else
             {
@@ -606,7 +629,7 @@ namespace LuduStack.Application.Formatters
             if (!string.IsNullOrWhiteSpace(handler) && !handler.Contains("gamejolt.com"))
             {
                 handler = ExternalUrlCommon(handler);
-                return String.Format("https://gamejolt.com/games/{0}", handler);
+                return string.Format("https://gamejolt.com/games/{0}", handler);
             }
             else
             {
@@ -622,11 +645,11 @@ namespace LuduStack.Application.Formatters
                 if (!handler.ToLower().Contains("itch.io"))
                 {
                     userBase = userBase.Replace("https://", string.Empty).Replace("http://", string.Empty).TrimEnd('/');
-                    handler = String.Format("https://{0}/{1}", userBase, handler.Trim('/'));
+                    handler = string.Format("https://{0}/{1}", userBase, handler.Trim('/'));
                 }
                 else if (handler.ToLower().Contains("itch.io") && !handler.ToLower().Contains("http"))
                 {
-                    handler = String.Format("https://{0}", handler.Trim('/'));
+                    handler = string.Format("https://{0}", handler.Trim('/'));
                 }
             }
 
@@ -643,7 +666,7 @@ namespace LuduStack.Application.Formatters
             if (!string.IsNullOrWhiteSpace(handler) && !handler.Contains("indiedb.com"))
             {
                 handler = ExternalUrlCommon(handler);
-                return String.Format("https://www.indiedb.com/games/{0}", handler);
+                return string.Format("https://www.indiedb.com/games/{0}", handler);
             }
             else
             {
@@ -657,7 +680,7 @@ namespace LuduStack.Application.Formatters
             if (!string.IsNullOrWhiteSpace(handler) && !handler.Contains("connect.unity.com"))
             {
                 handler = ExternalUrlCommon(handler);
-                return String.Format("https://connect.unity.com/p/{0}", handler);
+                return string.Format("https://connect.unity.com/p/{0}", handler);
             }
             else
             {
@@ -671,7 +694,7 @@ namespace LuduStack.Application.Formatters
             if (!string.IsNullOrWhiteSpace(handler) && !handler.Contains("apps.apple.com"))
             {
                 handler = ExternalUrlCommon(handler);
-                return String.Format("https://apps.apple.com/us/app/{0}", handler);
+                return string.Format("https://apps.apple.com/us/app/{0}", handler);
             }
             else
             {
@@ -684,7 +707,7 @@ namespace LuduStack.Application.Formatters
         {
             if (!string.IsNullOrWhiteSpace(handler) && !handler.Contains("play.google.com"))
             {
-                return String.Format("https://play.google.com/store/apps/details?id={0}", handler);
+                return string.Format("https://play.google.com/store/apps/details?id={0}", handler);
             }
             else
             {
@@ -698,7 +721,7 @@ namespace LuduStack.Application.Formatters
             if (!string.IsNullOrWhiteSpace(handler) && !handler.Contains("xbox.com"))
             {
                 handler = ExternalUrlCommon(handler);
-                return String.Format("https://www.xbox.com/games/{0}", handler);
+                return string.Format("https://www.xbox.com/games/{0}", handler);
             }
             else
             {
@@ -711,7 +734,7 @@ namespace LuduStack.Application.Formatters
         {
             if (!string.IsNullOrWhiteSpace(handler) && !handler.Contains("store.playstation.com"))
             {
-                return String.Format("https://store.playstation.com/en-us/product/{0}", handler);
+                return string.Format("https://store.playstation.com/en-us/product/{0}", handler);
             }
             else
             {
@@ -724,7 +747,7 @@ namespace LuduStack.Application.Formatters
         {
             if (!string.IsNullOrWhiteSpace(handler) && !handler.Contains("indiexpo.net"))
             {
-                return String.Format("https://www.indiexpo.net/games/{0}", handler);
+                return string.Format("https://www.indiexpo.net/games/{0}", handler);
             }
             else
             {
@@ -737,7 +760,7 @@ namespace LuduStack.Application.Formatters
         {
             if (!string.IsNullOrWhiteSpace(handler) && !handler.Contains("discord.gg"))
             {
-                return String.Format("https://discord.gg/{0}", handler);
+                return string.Format("https://discord.gg/{0}", handler);
             }
             else
             {
@@ -750,7 +773,7 @@ namespace LuduStack.Application.Formatters
         {
             if (!string.IsNullOrWhiteSpace(handler) && !handler.Contains("discord.gg"))
             {
-                return String.Format("https://discord.gg/{0}", handler);
+                return string.Format("https://discord.gg/{0}", handler);
             }
             else
             {

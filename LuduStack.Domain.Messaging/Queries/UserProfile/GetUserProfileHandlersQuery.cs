@@ -14,7 +14,7 @@ namespace LuduStack.Domain.Messaging.Queries.UserProfile
     {
         public Expression<Func<Models.UserProfile, bool>> Where { get; }
 
-        public GetUserProfileHandlersQuery() : base()
+        public GetUserProfileHandlersQuery()
         {
         }
 

@@ -19,7 +19,7 @@ namespace LuduStack.Domain.Messaging.Queries.Gamification
 
         public Expression<Func<Models.Gamification, bool>> Where { get; set; }
 
-        public GetGamificationQuery() : base()
+        public GetGamificationQuery()
         {
         }
 

@@ -169,6 +169,23 @@ namespace LuduStack.Infra.CrossCutting.IoC
 
             #endregion BillRate
 
+            #region Forum
+
+            services.AddScoped<IForumAppService, ForumAppService>();
+
+            services.AddScoped<IForumGroupAppService, ForumGroupAppService>();
+            services.AddScoped<IForumGroupDomainService, ForumGroupDomainService>();
+            services.AddScoped<IForumGroupRepository, ForumGroupRepository>();
+
+            services.AddScoped<IForumCategoryAppService, ForumCategoryAppService>();
+            services.AddScoped<IForumCategoryDomainService, ForumCategoryDomainService>();
+            services.AddScoped<IForumCategoryRepository, ForumCategoryRepository>();
+
+            services.AddScoped<IForumPostDomainService, ForumPostDomainService>();
+            services.AddScoped<IForumPostRepository, ForumPostRepository>();
+
+            #endregion Forum
+
             #region Common
 
             services.AddScoped<IBaseAppServiceCommon, BaseAppServiceCommon>();

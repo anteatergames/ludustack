@@ -11,7 +11,7 @@ namespace LuduStack.Domain.Messaging.Queries.Team
 {
     public class GetTeamQuery : GetBaseQuery<Models.Team>
     {
-        public GetTeamQuery() : base()
+        public GetTeamQuery()
         {
         }
 

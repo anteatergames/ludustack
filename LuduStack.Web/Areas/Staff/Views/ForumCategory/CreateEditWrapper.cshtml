@@ -1,0 +1,37 @@
+﻿@model ForumCategoryViewModel
+@{
+    var isAjax = ViewContext.HttpContext.Request.IsAjaxRequest();
+    var canInteract = User.Identity.IsAuthenticated;
+}
+
+@section ComponentStyles {
+    <environment include="Development">
+        <link rel="stylesheet" href="~/lib/cropperjs/cropper.css" />
+        <link rel="stylesheet" href="~/css/forumcategory.css">
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="~/lib/cropperjs/cropper.min.css" />
+        <link rel="stylesheet" href="~/css/forumcategory.min.css" asp-append-version="true">
+    </environment>
+}
+
+@section Scripts {
+    <environment include="Development">
+        <script src="~/lib/cropperjs/cropper.js"></script>
+        <script src="~/js/common-edit.js"></script>
+        <script src="~/js/forumcategory/forumcategorycommon.js"></script>
+        <script src="~/js/forumcategory/forumcategoryedit.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/lib/cropperjs/cropper.min.js"></script>
+        <script src="~/js/forumcategory/forumcategoryedit.min.js" asp-append-version="true"></script>
+    </environment>
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+<section class="content container">
+    <div id="featurecontainer" class="col">
+        <partial name="_CreateEdit" model="Model" />
+    </div>
+</section>

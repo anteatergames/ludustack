@@ -68,7 +68,7 @@ namespace LuduStack.Domain.Messaging
             request.UserContent.Content = Regex.Replace(request.UserContent.Content, youtubePattern, delegate (Match match)
             {
                 string v = match.ToString();
-                if (match.Index == 0 && String.IsNullOrWhiteSpace(request.UserContent.FeaturedImage))
+                if (match.Index == 0 && string.IsNullOrWhiteSpace(request.UserContent.FeaturedImage))
                 {
                     request.UserContent.FeaturedImage = v;
                 }

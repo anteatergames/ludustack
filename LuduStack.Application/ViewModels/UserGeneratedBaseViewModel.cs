@@ -24,7 +24,7 @@ namespace LuduStack.Application.ViewModels
 
         public string ShareText { get; set; }
 
-        protected UserGeneratedBaseViewModel() : base()
+        protected UserGeneratedBaseViewModel()
         {
         }
     }
@@ -42,19 +42,8 @@ namespace LuduStack.Application.ViewModels
 
         public int LikeCount
         {
-            get
-            {
-                if (likeCount == 0)
-                {
-                    return Likes.Count;
-                }
-
-                return likeCount;
-            }
-            set
-            {
-                likeCount = value;
-            }
+            get => likeCount == 0 ? Likes.Count : likeCount;
+            set => likeCount = value;
         }
 
         private int commentCount;
@@ -62,22 +51,11 @@ namespace LuduStack.Application.ViewModels
         [Display(Name = "Comment Count")]
         public int CommentCount
         {
-            get
-            {
-                if (commentCount == 0)
-                {
-                    return Comments.Count;
-                }
-
-                return commentCount;
-            }
-            set
-            {
-                commentCount = value;
-            }
+            get => commentCount == 0 ? Comments.Count : commentCount;
+            set => commentCount = value;
         }
 
-        protected UserGeneratedCommentBaseViewModel() : base()
+        protected UserGeneratedCommentBaseViewModel()
         {
             Comments = new List<CommentViewModel>();
             Likes = new List<Guid>();

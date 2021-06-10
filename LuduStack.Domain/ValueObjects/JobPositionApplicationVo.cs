@@ -11,6 +11,6 @@ namespace LuduStack.Domain.ValueObjects
 
         public WorkType WorkType { get; set; }
 
-        public String Location { get; set; }
+        public string Location { get; set; }
     }
 }

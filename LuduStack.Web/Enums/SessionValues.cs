@@ -9,6 +9,7 @@
         JobProfile = 5,
         Email = 6,
         StudyProfile = 7,
-        EmailConfirmed = 8
+        EmailConfirmed = 8,
+        ContentLanguages = 9
     }
 }

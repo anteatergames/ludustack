@@ -1,6 +1,7 @@
 ﻿using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Interfaces.Repository;
 using LuduStack.Domain.Models;
+using LuduStack.Domain.ValueObjects;
 using LuduStack.Infra.Data.MongoDb.Interfaces;
 using LuduStack.Infra.Data.MongoDb.Repository.Base;
 using MongoDB.Driver;
@@ -44,9 +45,9 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
             await Context.AddCommand(() => DbSet.ReplaceOneAsync(filter, idea));
         }
 
-        public async Task<bool> AddVoteDirectly(BrainstormVote model)
+        public async Task<bool> AddVoteDirectly(Guid ideaId, UserVoteVo model)
         {
-            FilterDefinition<BrainstormIdea> filter = Builders<BrainstormIdea>.Filter.Where(x => x.Id == model.IdeaId);
+            FilterDefinition<BrainstormIdea> filter = Builders<BrainstormIdea>.Filter.Where(x => x.Id == ideaId);
             UpdateDefinition<BrainstormIdea> add = Builders<BrainstormIdea>.Update.AddToSet(c => c.Votes, model);
 
             UpdateResult result = await GetCollection<BrainstormIdea>().UpdateOneAsync(filter, add);
@@ -54,9 +55,9 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
             return result.IsAcknowledged && result.MatchedCount > 0;
         }
 
-        public async Task AddVote(BrainstormVote model)
+        public async Task AddVote(Guid ideaId, UserVoteVo model)
         {
-            FilterDefinition<BrainstormIdea> filter = Builders<BrainstormIdea>.Filter.Where(x => x.Id == model.IdeaId);
+            FilterDefinition<BrainstormIdea> filter = Builders<BrainstormIdea>.Filter.Where(x => x.Id == ideaId);
             UpdateDefinition<BrainstormIdea> add = Builders<BrainstormIdea>.Update.AddToSet(c => c.Votes, model);
 
             await DbSet.UpdateOneAsync(filter, add);
@@ -64,10 +65,10 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
             await Context.AddCommand(() => DbSet.UpdateOneAsync(filter, add));
         }
 
-        public async Task<bool> UpdateVoteDirectly(BrainstormVote model)
+        public async Task<bool> UpdateVoteDirectly(Guid ideaId, UserVoteVo model)
         {
             FilterDefinition<BrainstormIdea> filter = Builders<BrainstormIdea>.Filter.And(
-                Builders<BrainstormIdea>.Filter.Eq(x => x.Id, model.IdeaId),
+                Builders<BrainstormIdea>.Filter.Eq(x => x.Id, ideaId),
                 Builders<BrainstormIdea>.Filter.ElemMatch(x => x.Votes, x => x.UserId == model.UserId));
 
             UpdateDefinition<BrainstormIdea> update = Builders<BrainstormIdea>.Update.Set(c => c.Votes[-1].VoteValue, model.VoteValue);
@@ -77,10 +78,10 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
             return result.IsAcknowledged && result.ModifiedCount > 0;
         }
 
-        public async Task UpdateVote(BrainstormVote model)
+        public async Task UpdateVote(Guid ideaId, UserVoteVo model)
         {
             FilterDefinition<BrainstormIdea> filter = Builders<BrainstormIdea>.Filter.And(
-                Builders<BrainstormIdea>.Filter.Eq(x => x.Id, model.IdeaId),
+                Builders<BrainstormIdea>.Filter.Eq(x => x.Id, ideaId),
                 Builders<BrainstormIdea>.Filter.ElemMatch(x => x.Votes, x => x.UserId == model.UserId));
 
             UpdateDefinition<BrainstormIdea> update = Builders<BrainstormIdea>.Update.Set(c => c.Votes[-1].VoteValue, model.VoteValue);

@@ -29,7 +29,9 @@ namespace LuduStack.Infra.Data.MongoDb.Context
         private void ConfigureMongo()
         {
             if (MongoClient != null)
+            {
                 return;
+            }
 
             string cs = _configuration["MongoSettings:Connection"];
             MongoClient = new MongoClient(cs);

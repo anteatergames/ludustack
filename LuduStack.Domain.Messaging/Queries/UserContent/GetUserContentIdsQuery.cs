@@ -10,7 +10,7 @@ namespace LuduStack.Domain.Messaging.Queries.UserContent
 {
     public class GetUserContentIdsQuery : GetIdsBaseQuery<Models.UserContent>
     {
-        public GetUserContentIdsQuery() : base()
+        public GetUserContentIdsQuery()
         {
         }
 

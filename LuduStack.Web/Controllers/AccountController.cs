@@ -9,7 +9,6 @@ using LuduStack.Infra.CrossCutting.Identity.Models;
 using LuduStack.Infra.CrossCutting.Identity.Models.AccountViewModels;
 using LuduStack.Infra.CrossCutting.Identity.Services;
 using LuduStack.Web.Controllers.Base;
-using LuduStack.Web.Enums;
 using LuduStack.Web.Exceptions;
 using LuduStack.Web.Models;
 using Microsoft.AspNetCore.Authentication;
@@ -17,7 +16,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -137,7 +135,7 @@ namespace LuduStack.Web.Controllers
                 await SetCache(user);
             }
 
-            string logMessage = String.Format("User {0} logged in.", model.UserName);
+            string logMessage = string.Format("User {0} logged in.", model.UserName);
 
             if (EnvName.Equals(Constants.ProductionEnvironmentName))
             {
@@ -304,7 +302,7 @@ namespace LuduStack.Web.Controllers
 
                     await SetPreferences(user);
 
-                    string logMessage = String.Format("User {0} created a new account with password.", model.UserName);
+                    string logMessage = string.Format("User {0} created a new account with password.", model.UserName);
 
                     if (EnvName.Equals(Constants.ProductionEnvironmentName))
                     {
@@ -398,7 +396,7 @@ namespace LuduStack.Web.Controllers
 
                 if (existingUser != null)
                 {
-                    string logMessage = String.Format("User {0} logged in with {1} provider.", existingUser.UserName, info.LoginProvider);
+                    string logMessage = string.Format("User {0} logged in with {1} provider.", existingUser.UserName, info.LoginProvider);
 
                     if (EnvName.Equals(Constants.ProductionEnvironmentName))
                     {
@@ -535,10 +533,10 @@ namespace LuduStack.Web.Controllers
 
             await _signInManager.SignInAsync(user, isPersistent: false);
 
-            string logMessage = String.Format("User {0} linked a {1} account.", user.UserName, externalLoginInfo.LoginProvider);
+            string logMessage = string.Format("User {0} linked a {1} account.", user.UserName, externalLoginInfo.LoginProvider);
             if (existingUser == null)
             {
-                logMessage = String.Format("User {0} registered with a {1} account.", user.UserName, externalLoginInfo.LoginProvider);
+                logMessage = string.Format("User {0} registered with a {1} account.", user.UserName, externalLoginInfo.LoginProvider);
             }
 
             if (EnvName.Equals(Constants.ProductionEnvironmentName))
@@ -708,18 +706,8 @@ namespace LuduStack.Web.Controllers
         private async Task SetPreferences(ApplicationUser user)
         {
             UserPreferencesViewModel preferences = await UserPreferencesAppService.GetByUserId(new Guid(user.Id));
-            if (preferences == null || preferences.Id == Guid.Empty)
-            {
-                RequestCulture requestLanguage = Request.HttpContext.Features.Get<IRequestCultureFeature>().RequestCulture;
-                SupportedLanguage lang = base.SetLanguageFromCulture(requestLanguage.UICulture.Name);
 
-                SetCookieValue(SessionValues.PostLanguage, lang.ToString(), 7);
-            }
-            else
-            {
-                SetCookieValue(SessionValues.PostLanguage, preferences.UiLanguage.ToString(), 7);
-                SetSessionValue(SessionValues.JobProfile, preferences.JobProfile.ToString());
-            }
+            SetUserPreferences(preferences);
         }
 
         #region Helpers
@@ -844,7 +832,7 @@ namespace LuduStack.Web.Controllers
 
         private async Task UploadFirstAvatar(Guid userId, ProfileType type)
         {
-            string fileName = String.Format("{0}_{1}", userId, type);
+            string fileName = string.Format("{0}_{1}", userId, type);
 
             string defaultImageNotRooted = UrlFormatter.GetDefaultImage(ImageType.ProfileImage);
 

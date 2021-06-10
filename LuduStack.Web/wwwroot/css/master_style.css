@@ -59,12 +59,6 @@ div {
     margin-left: auto;
 }
 
-a:active, a:focus, a:hover {
-    outline: 0;
-    text-decoration: none;
-    color: #0092ee;
-}
-
 .main-header {
     position: fixed;
     height: 50px;
@@ -433,52 +427,6 @@ select:-webkit-autofill:focus {
     transition: background-color 5000s ease-in-out 0s;
 }
 
-.form-group label {
-    font-weight: 500;
-}
-
-.form-control:focus {
-    border-color: #45aef1;
-    box-shadow: none;
-}
-
-.form-control:-ms-input-placeholder, .form-control::-moz-placeholder, .form-control::-webkit-input-placeholder {
-    color: #bbb;
-    opacity: 1;
-}
-
-.form-group.has-success .help-block, .form-group.has-success label {
-    color: #22af47;
-}
-
-.form-control:not(select) {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-}
-
-.form-group.has-success .form-control, .form-group.has-success .input-group-addon {
-    border-color: #22af47;
-    box-shadow: none;
-}
-
-.form-group.has-warning .help-block, .form-group.has-warning label {
-    color: #ffbf36;
-}
-
-.form-group.has-warning .form-control, .form-group.has-warning .input-group-addon {
-    border-color: #ffbf36;
-    box-shadow: none;
-}
-
-.form-group.has-error .help-block, .form-group.has-error label {
-    color: #f83f37;
-}
-
-.form-group.has-error .form-control, .form-group.has-error .input-group-addon {
-    border-color: #f83f37;
-    box-shadow: none;
-}
-
 .customtab li a.nav-link {
     border: 0;
     padding: 10px 20px;
@@ -745,8 +693,8 @@ ul.flexbox {
 
 .dropdown-toggle {
     cursor: pointer;
-    -webkit-transition: .2s linear;
-    transition: .2s linear;
+    -webkit-transition: 0.2s linear;
+    transition: 0.2s linear;
 }
 
 .dropdown-item i {
@@ -838,8 +786,8 @@ ul.flexbox {
 .media {
     display: block;
     padding: 10px;
-    -webkit-transition: background-color .2s linear;
-    transition: background-color .2s linear;
+    -webkit-transition: background-color 0.2s linear;
+    transition: background-color 0.2s linear;
 }
 
     .media > * {
@@ -1230,7 +1178,7 @@ ul.flexbox {
 }
 
     .info-box-icon:not(.skeleton) {
-        background: rgba(0, 0, 0, .2);
+        background: rgba(0, 0, 0, 0.2);
     }
 
     .info-box-icon.push-bottom {
@@ -1260,7 +1208,7 @@ button.btn.dropdown-toggle::after, .wysihtml5-toolbar .btn.dropdown-toggle::afte
     display: inline-block;
 }
 
-.btn-app, .pagination li a, table.text-center, table.text-center td, table.text-center th {
+.btn-app, table.text-center, table.text-center td, table.text-center th {
     text-align: center;
 }
 
@@ -1448,54 +1396,6 @@ button.btn.dropdown-toggle::after, .wysihtml5-toolbar .btn.dropdown-toggle::afte
 
     .nav-tabs-custom > .nav-tabs > li a.active {
         border-top-color: #242a33;
-    }
-
-/*pagination*/
-.pagination > li > a {
-    background-color: #fff;
-    color: #333;
-    border-color: #fff;
-}
-
-.pagination.pagination-flat > li > a {
-    border-radius: 0;
-}
-
-.pagination li a.current, .pagination li a.current:hover {
-    color: #fff;
-    border: 1px solid #89ad87;
-    background-color: #89ad87;
-}
-
-.pagination li a {
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-    display: inline-block;
-    min-width: 1.5em;
-    padding: .4em 1em;
-    margin-left: 2px;
-    text-decoration: none;
-    cursor: pointer;
-    color: #67757c;
-    border: 1px solid transparent;
-    border-radius: 2px;
-}
-
-.pagination > .disabled > a, .pagination > .disabled > a:focus, .pagination > .disabled > a:hover, .pagination > .disabled > span, .pagination > .disabled > span:focus, .pagination > .disabled > span:hover {
-    color: #777;
-    background-color: #fff;
-    border-color: #fff;
-    cursor: not-allowed;
-}
-
-.pagination {
-    margin-bottom: 10px;
-}
-
-    .pagination li a:hover {
-        color: #fff;
-        border: 1px solid #89ad87;
-        background-color: #89ad87;
     }
 
 @media screen and (max-width: 767px) {
@@ -1848,8 +1748,8 @@ button.btn.dropdown-toggle::after, .wysihtml5-toolbar .btn.dropdown-toggle::afte
 }
 
 .user-block img {
-    width: 43px;
-    height: 43px;
+    width: 40px;
+    height: 40px;
     float: left;
 }
 
@@ -1863,7 +1763,7 @@ button.btn.dropdown-toggle::after, .wysihtml5-toolbar .btn.dropdown-toggle::afte
 }
 
 .user-block .username {
-    font-size: 16px;
+    font-size: 15px;
 }
 
 .user-block .description {

@@ -9,120 +9,210 @@ namespace LuduStack.Domain.Core.Extensions
         public static double Median(this IEnumerable<int> source)
         {
             if (source == null)
-                throw new ArgumentNullException("source");
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+
             int[] data = source.OrderBy(n => n).ToArray();
             if (data.Length == 0)
+            {
                 throw new InvalidOperationException();
+            }
+
             if (data.Length % 2 == 0)
+            {
                 return (data[(data.Length / 2) - 1] + data[data.Length / 2]) / 2.0;
+            }
+
             return data[data.Length / 2];
         }
 
         public static double? Median(this IEnumerable<int?> source)
         {
             if (source == null)
-                throw new ArgumentNullException("source");
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+
             int[] data = source.Where(n => n.HasValue).Select(n => n.Value).OrderBy(n => n).ToArray();
             if (data.Length == 0)
+            {
                 return null;
+            }
+
             if (data.Length % 2 == 0)
+            {
                 return (data[(data.Length / 2) - 1] + data[data.Length / 2]) / 2.0;
+            }
+
             return data[data.Length / 2];
         }
 
         public static double Median(this IEnumerable<long> source)
         {
             if (source == null)
-                throw new ArgumentNullException("source");
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+
             long[] data = source.OrderBy(n => n).ToArray();
             if (data.Length == 0)
+            {
                 throw new InvalidOperationException();
+            }
+
             if (data.Length % 2 == 0)
+            {
                 return (data[(data.Length / 2) - 1] + data[data.Length / 2]) / 2.0;
+            }
+
             return data[data.Length / 2];
         }
 
         public static double? Median(this IEnumerable<long?> source)
         {
             if (source == null)
-                throw new ArgumentNullException("source");
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+
             long[] data = source.Where(n => n.HasValue).Select(n => n.Value).OrderBy(n => n).ToArray();
             if (data.Length == 0)
+            {
                 return null;
+            }
+
             if (data.Length % 2 == 0)
+            {
                 return (data[(data.Length / 2) - 1] + data[data.Length / 2]) / 2.0;
+            }
+
             return data[data.Length / 2];
         }
 
         public static float Median(this IEnumerable<float> source)
         {
             if (source == null)
-                throw new ArgumentNullException("source");
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+
             float[] data = source.OrderBy(n => n).ToArray();
             if (data.Length == 0)
+            {
                 throw new InvalidOperationException();
+            }
+
             if (data.Length % 2 == 0)
+            {
                 return (data[(data.Length / 2) - 1] + data[data.Length / 2]) / 2.0f;
+            }
+
             return data[data.Length / 2];
         }
 
         public static float? Median(this IEnumerable<float?> source)
         {
             if (source == null)
-                throw new ArgumentNullException("source");
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+
             float[] data = source.Where(n => n.HasValue).Select(n => n.Value).OrderBy(n => n).ToArray();
             if (data.Length == 0)
+            {
                 return null;
+            }
+
             if (data.Length % 2 == 0)
+            {
                 return (data[(data.Length / 2) - 1] + data[data.Length / 2]) / 2.0f;
+            }
+
             return data[data.Length / 2];
         }
 
         public static double Median(this IEnumerable<double> source)
         {
             if (source == null)
-                throw new ArgumentNullException("source");
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+
             double[] data = source.OrderBy(n => n).ToArray();
             if (data.Length == 0)
+            {
                 throw new InvalidOperationException();
+            }
+
             if (data.Length % 2 == 0)
+            {
                 return (data[(data.Length / 2) - 1] + data[data.Length / 2]) / 2.0;
+            }
+
             return data[data.Length / 2];
         }
 
         public static double? Median(this IEnumerable<double?> source)
         {
             if (source == null)
-                throw new ArgumentNullException("source");
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+
             double[] data = source.Where(n => n.HasValue).Select(n => n.Value).OrderBy(n => n).ToArray();
             if (data.Length == 0)
+            {
                 return null;
+            }
+
             if (data.Length % 2 == 0)
+            {
                 return (data[(data.Length / 2) - 1] + data[data.Length / 2]) / 2.0;
+            }
+
             return data[data.Length / 2];
         }
 
         public static decimal Median(this IEnumerable<decimal> source)
         {
             if (source == null)
-                throw new ArgumentNullException("source");
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+
             decimal[] data = source.OrderBy(n => n).ToArray();
             if (data.Length == 0)
+            {
                 throw new InvalidOperationException();
+            }
+
             if (data.Length % 2 == 0)
+            {
                 return (data[(data.Length / 2) - 1] + data[data.Length / 2]) / 2.0m;
+            }
+
             return data[data.Length / 2];
         }
 
         public static decimal? Median(this IEnumerable<decimal?> source)
         {
             if (source == null)
-                throw new ArgumentNullException("source");
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+
             decimal[] data = source.Where(n => n.HasValue).Select(n => n.Value).OrderBy(n => n).ToArray();
             if (data.Length == 0)
+            {
                 return null;
+            }
+
             if (data.Length % 2 == 0)
+            {
                 return (data[(data.Length / 2) - 1] + data[data.Length / 2]) / 2.0m;
+            }
+
             return data[data.Length / 2];
         }
 

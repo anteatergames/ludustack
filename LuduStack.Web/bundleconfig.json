@@ -1,499 +1,572 @@
 ﻿[
-  {
-    "outputFileName": "wwwroot/js/cookieconsent.min.js",
-    "inputFiles": [
-      "wwwroot/js/cookieconsent.js"
-    ]
-  },
-  {
-    "outputFileName": "wwwroot/js/tagmanager.min.js",
-    "inputFiles": [
-      "wwwroot/js/tagmanager.js"
-    ]
-  },
-  {
-    "outputFileName": "wwwroot/js/facebooksdk.min.js",
-    "inputFiles": [
-      "wwwroot/js/facebooksdk.js"
-    ]
-  },
-  {
-    "outputFileName": "wwwroot/css/site.min.css",
-    "inputFiles": [
-      "wwwroot/css/skins/ludustack-skin.css",
-      "wwwroot/css/bootstrap_overrides.css",
-      "wwwroot/css/main.css",
-      "wwwroot/css/master_style.css",
-      "wwwroot/css/animations.css",
-      "wwwroot/css/box.css",
-      "wwwroot/css/typography.css",
-      "wwwroot/css/social.css",
-      "wwwroot/css/sidebar.css",
-      "wwwroot/css/userwidgets.css",
-      "wwwroot/css/gameidea.css"
-    ]
-  },
-  {
-    "outputFileName": "wwwroot/js/site.min.js",
-    "inputFiles": [
-      "wwwroot/js/vanilla.extensions.js",
-      "wwwroot/js/jquery.extensions.js",
-      "wwwroot/js/template.js",
-      "wwwroot/js/main.js",
-      "wwwroot/js/shared/alertsystem.js"
-    ]
-  },
-  {
-    "outputFileName": "wwwroot/css/home.min.css",
-    "inputFiles": [
-      "wwwroot/css/home.css",
-      "wwwroot/css/polls.css"
-    ]
-  },
-  {
-    "outputFileName": "wwwroot/js/home/home.min.js",
-    "inputFiles": [
-      "wwwroot/js/shared/contentactions.js",
-      "wwwroot/js/shared/polls.js",
-      "wwwroot/js/shared/activityfeed.js",
-      "wwwroot/js/shared/gameidea.js",
-      "wwwroot/js/home/home.js"
-    ]
-  },
-  {
-    "outputFileName": "wwwroot/js/shared/contentactions.min.js",
-    "inputFiles": [
-      "wwwroot/js/shared/contentactions.js"
-    ]
-  },
-  {
-    "outputFileName": "wwwroot/css/gamedetails.min.css",
-    "inputFiles": [
-      "wwwroot/css/gamedetails.css",
-      "wwwroot/css/teamup.css",
-      "wwwroot/css/circularpercentage.css"
-    ]
-  },
-  {
-    "outputFileName": "wwwroot/js/game/gamedetails.min.js",
-    "inputFiles": [
-      "wwwroot/js/shared/contentactions.js",
-      "wwwroot/js/shared/activityfeed.js",
-      "wwwroot/js/game/gamedetails.js",
-      "wwwroot/js/shared/gallery.js"
-    ]
-  },
-  {
-    "outputFileName": "wwwroot/js/game/gameedit.min.js",
-    "inputFiles": [
-      "wwwroot/lib/select2/js/select2.full.min.js",
-      "wwwroot/lib/cropperjs/cropper.js",
-      "wwwroot/js/game/gameedit.js"
-    ]
-  },
-  {
-    "outputFileName": "wwwroot/css/contentdetails.min.css",
-    "inputFiles": [
-      "wwwroot/css/polls.css"
-    ]
-  },
-  {
-    "outputFileName": "wwwroot/js/content/contentdetails.min.js",
-    "inputFiles": [
-      "wwwroot/js/shared/contentactions.js",
-      "wwwroot/js/shared/polls.js",
-      "wwwroot/js/shared/gallery.js",
-      "wwwroot/js/content/contentdetails.js"
-    ]
-  },
-  {
-    "outputFileName": "wwwroot/css/profiledetails.min.css",
-    "inputFiles": [
-      "wwwroot/css/progress.css",
-      "wwwroot/css/polls.css",
-      "wwwroot/css/profiledetails.css"
-    ]
-  },
-  {
-    "outputFileName": "wwwroot/js/profile/profiledetails.min.js",
-    "inputFiles": [
-      "wwwroot/js/shared/contentactions.js",
-      "wwwroot/lib/embedo/embedo.min.js",
-      "wwwroot/js/shared/polls.js",
-      "wwwroot/js/shared/activityfeed.js",
-      "wwwroot/js/profile/profiledetails.js"
+    {
+        "outputFileName": "wwwroot/js/cookieconsent.min.js",
+        "inputFiles": [
+            "wwwroot/js/cookieconsent.js"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/js/tagmanager.min.js",
+        "inputFiles": [
+            "wwwroot/js/tagmanager.js"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/js/facebooksdk.min.js",
+        "inputFiles": [
+            "wwwroot/js/facebooksdk.js"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/css/site.min.css",
+        "inputFiles": [
+            "wwwroot/css/skins/ludustack-skin.css",
+            "wwwroot/css/bootstrap_overrides.css",
+            "wwwroot/css/main.css",
+            "wwwroot/css/master_style.css",
+            "wwwroot/css/animations.css",
+            "wwwroot/css/box.css",
+            "wwwroot/css/typography.css",
+            "wwwroot/css/social.css",
+            "wwwroot/css/sidebar.css",
+            "wwwroot/css/userwidgets.css",
+            "wwwroot/css/gameidea.css"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/js/site.min.js",
+        "inputFiles": [
+            "wwwroot/js/vanilla.extensions.js",
+            "wwwroot/js/jquery.extensions.js",
+            "wwwroot/js/template.js",
+            "wwwroot/js/main.js",
+            "wwwroot/js/shared/alertsystem.js"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/css/home.min.css",
+        "inputFiles": [
+            "wwwroot/css/home.css",
+            "wwwroot/css/polls.css"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/js/home/home.min.js",
+        "inputFiles": [
+            "wwwroot/js/shared/contentactions.js",
+            "wwwroot/js/shared/polls.js",
+            "wwwroot/js/shared/activityfeed.js",
+            "wwwroot/js/shared/gameidea.js",
+            "wwwroot/js/home/home.js"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/js/shared/contentactions.min.js",
+        "inputFiles": [
+            "wwwroot/js/shared/contentactions.js"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/css/gamedetails.min.css",
+        "inputFiles": [
+            "wwwroot/css/gamedetails.css",
+            "wwwroot/css/teamup.css",
+            "wwwroot/css/circularpercentage.css"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/js/game/gamedetails.min.js",
+        "inputFiles": [
+            "wwwroot/js/shared/contentactions.js",
+            "wwwroot/js/shared/activityfeed.js",
+            "wwwroot/js/game/gamedetails.js",
+            "wwwroot/js/shared/gallery.js"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/js/game/gameedit.min.js",
+        "inputFiles": [
+            "wwwroot/lib/select2/js/select2.full.min.js",
+            "wwwroot/lib/cropperjs/cropper.js",
+            "wwwroot/js/game/gameedit.js"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/css/contentdetails.min.css",
+        "inputFiles": [
+            "wwwroot/css/forum.css"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/js/content/contentdetails.min.js",
+        "inputFiles": [
+            "wwwroot/js/shared/contentactions.js",
+            "wwwroot/js/shared/polls.js",
+            "wwwroot/js/shared/gallery.js",
+            "wwwroot/js/content/contentdetails.js"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/css/profiledetails.min.css",
+        "inputFiles": [
+            "wwwroot/css/progress.css",
+            "wwwroot/css/polls.css",
+            "wwwroot/css/profiledetails.css"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/js/profile/profiledetails.min.js",
+        "inputFiles": [
+            "wwwroot/js/shared/contentactions.js",
+            "wwwroot/lib/embedo/embedo.min.js",
+            "wwwroot/js/shared/polls.js",
+            "wwwroot/js/shared/activityfeed.js",
+            "wwwroot/js/profile/profiledetails.js"
 
-    ]
-  },
-  {
-    "outputFileName": "wwwroot/css/profileedit.min.css",
-    "inputFiles": [
-      "wwwroot/lib/cropperjs/cropper.css",
-      "wwwroot/lib/select2/css/select2.min.css",
-      "wwwroot/css/profiledetails.css",
-      "wwwroot/css/progress.css",
-      "wwwroot/css/polls.css"
-    ]
-  },
-  {
-    "outputFileName": "wwwroot/js/profile/profileedit.min.js",
-    "inputFiles": [
-      "wwwroot/lib/cropperjs/cropper.js",
-      "wwwroot/lib/select2/js/select2.full.min.js",
-      "wwwroot/js/profile/profileedit.js"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/css/profileedit.min.css",
+        "inputFiles": [
+            "wwwroot/lib/cropperjs/cropper.css",
+            "wwwroot/lib/select2/css/select2.min.css",
+            "wwwroot/css/profiledetails.css",
+            "wwwroot/css/progress.css",
+            "wwwroot/css/polls.css"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/js/profile/profileedit.min.js",
+        "inputFiles": [
+            "wwwroot/lib/cropperjs/cropper.js",
+            "wwwroot/lib/select2/js/select2.full.min.js",
+            "wwwroot/js/profile/profileedit.js"
 
-    ]
-  },
-  {
-    "outputFileName": "wwwroot/css/brainstorm.min.css",
-    "inputFiles": [
-      "wwwroot/css/brainstorm.css"
-    ]
-  },
-  {
-    "outputFileName": "wwwroot/js/brainstorm/brainstorm.min.js",
-    "inputFiles": [
-      "wwwroot/js/brainstorm/brainstorm.js",
-      "wwwroot/js/shared/contentactions.js"
-    ]
-  },
-  {
-    "outputFileName": "wwwroot/css/ranking.min.css",
-    "inputFiles": [
-      "wwwroot/css/ranking.css"
-    ]
-  },
-  {
-    "outputFileName": "wwwroot/js/search/search.min.js",
-    "inputFiles": [
-      "wwwroot/js/search/search.js"
-    ]
-  },
-  {
-    "outputFileName": "wwwroot/js/team/teamup.min.js",
-    "inputFiles": [
-      "wwwroot/js/team/teamup.js",
-      "wwwroot/lib/select2/js/select2.full.min.js"
-    ]
-  },
-  {
-    "outputFileName": "wwwroot/css/teamup.min.css",
-    "inputFiles": [
-      "wwwroot/css/switch.css",
-      "wwwroot/css/teamup.css",
-      "wwwroot/lib/select2/css/select2.min.css"
-    ]
-  },
-  {
-    "outputFileName": "wwwroot/css/articles.min.css",
-    "inputFiles": [
-      "wwwroot/css/articles.css"
-    ]
-  },
-  {
-    "outputFileName": "wwwroot/js/home/articles.min.js",
-    "inputFiles": [
-      "wwwroot/js/home/articles.js",
-      "wwwroot/js/shared/activityfeed.js"
-    ]
-  },
-  {
-    "outputFileName": "wwwroot/css/jobposition.min.css",
-    "inputFiles": [
-      "wwwroot/css/switch.css",
-      "wwwroot/css/jobposition.css"
-    ]
-  },
-  {
-    "outputFileName": "wwwroot/js/jobposition/jobposition.min.js",
-    "inputFiles": [
-      "wwwroot/js/jobposition/jobposition.js",
-      "wwwroot/js/shared/contentactions.js"
-    ]
-  },
-  {
-    "outputFileName": "wwwroot/css/localization.min.css",
-    "inputFiles": [
-      "wwwroot/css/_feature.css",
-      "wwwroot/css/localization.css",
-      "wwwroot/css/circularpercentage.css"
-    ]
-  },
-  {
-    "outputFileName": "wwwroot/js/localization/localization.min.js",
-    "inputFiles": [
-      "wwwroot/js/localization/localization.js",
-      "wwwroot/js/shared/contentactions.js"
-    ]
-  },
-  {
-    "outputFileName": "wwwroot/js/localization/localizationedit.min.js",
-    "inputFiles": [
-      "wwwroot/js/common-edit.js",
-      "wwwroot/js/localization/localizationedit.js",
-      "wwwroot/js/shared/contentactions.js"
-    ]
-  },
-  {
-    "outputFileName": "wwwroot/js/localization/localizationtranslate.min.js",
-    "inputFiles": [
-      "wwwroot/js/localization/localizationcommon.js",
-      "wwwroot/js/localization/localizationtranslate.js",
-      "wwwroot/js/shared/contentactions.js"
-    ]
-  },
-  {
-    "outputFileName": "wwwroot/js/localization/localizationreview.min.js",
-    "inputFiles": [
-      "wwwroot/js/localization/localizationcommon.js",
-      "wwwroot/js/localization/localizationreview.js",
-      "wwwroot/js/shared/contentactions.js"
-    ]
-  },
-  {
-    "outputFileName": "wwwroot/js/localization/localizationexport.min.js",
-    "inputFiles": [
-      "wwwroot/js/localization/localizationexport.js",
-      "wwwroot/js/shared/contentactions.js"
-    ]
-  },
-  {
-    "outputFileName": "wwwroot/css/study.min.css",
-    "inputFiles": [
-      "wwwroot/lib/select2/css/select2.min.css",
-      "wwwroot/css/_feature.css",
-      "wwwroot/css/study.css"
-    ]
-  },
-  {
-    "outputFileName": "wwwroot/js/study/mentordashboard.min.js",
-    "inputFiles": [
-      "wwwroot/js/study/mentordashboard.js"
-    ]
-  },
-  {
-    "outputFileName": "wwwroot/js/study/studentdashboard.min.js",
-    "inputFiles": [
-      "wwwroot/js/study/studentdashboard.js"
-    ]
-  },
-  {
-    "outputFileName": "wwwroot/js/study/courseedit.min.js",
-    "inputFiles": [
-      "wwwroot/lib/select2/js/select2.full.min.js",
-      "wwwroot/js/common-edit.js",
-      "wwwroot/js/study/coursecommon.js",
-      "wwwroot/js/study/courseedit.js"
-    ]
-  },
-  {
-    "outputFileName": "wwwroot/js/study/coursedetails.min.js",
-    "inputFiles": [
-      "wwwroot/js/study/coursecommon.js",
-      "wwwroot/js/study/coursedetails.js"
-    ]
-  },
-  {
-    "outputFileName": "wwwroot/css/giveaway.min.css",
-    "inputFiles": [
-      "wwwroot/css/_feature.css",
-      "wwwroot/css/giveaway.css"
-    ]
-  },
-  {
-    "outputFileName": "wwwroot/css/giveawayedit.min.css",
-    "inputFiles": [
-      "wwwroot/lib/cropperjs/cropper.css",
-      "wwwroot/css/giveaway.css"
-    ]
-  },
-  {
-    "outputFileName": "wwwroot/css/ribbon.min.css",
-    "inputFiles": [
-      "wwwroot/css/ribbon.css"
-    ]
-  },
-  {
-    "outputFileName": "wwwroot/js/giveaway/giveaway.min.js",
-    "inputFiles": [
-      "wwwroot/js/giveaway/giveawaycommon.js",
-      "wwwroot/js/giveaway/giveaway.js"
-    ]
-  },
-  {
-    "outputFileName": "wwwroot/js/giveaway/giveawaymanage.min.js",
-    "inputFiles": [
-      "wwwroot/js/shared/exporthelper.js",
-      "wwwroot/js/shared/fx.js",
-      "wwwroot/js/giveaway/giveawaycommon.js",
-      "wwwroot/js/giveaway/giveawaymanage.js"
-    ]
-  },
-  {
-    "outputFileName": "wwwroot/js/giveaway/giveawayedit.min.js",
-    "inputFiles": [
-      "wwwroot/lib/cropperjs/cropper.js",
-      "wwwroot/js/shared/imagemanipulation.js",
-      "wwwroot/js/common-edit.js",
-      "wwwroot/js/giveaway/giveawaycommon.js",
-      "wwwroot/js/giveaway/giveawayedit.js"
-    ]
-  },
-  {
-    "outputFileName": "wwwroot/js/giveaway/giveawaydetails.min.js",
-    "inputFiles": [
-      "wwwroot/js/shared/fx.js",
-      "wwwroot/js/shared/messages.js",
-      "wwwroot/js/giveaway/giveawayparticipantcommon.js",
-      "wwwroot/js/giveaway/giveawaydetails.js"
-    ]
-  },
-  {
-    "outputFileName": "wwwroot/js/giveaway/giveawayyouarein.min.js",
-    "inputFiles": [
-      "wwwroot/js/shared/fx.js",
-      "wwwroot/js/shared/messages.js",
-      "wwwroot/js/giveaway/giveawayparticipantcommon.js",
-      "wwwroot/js/giveaway/giveawayyouarein.js"
-    ]
-  },
-  {
-    "outputFileName": "wwwroot/css/gamificationlevel.min.css",
-    "inputFiles": [
-      "wwwroot/css/gamificationlevel.css"
-    ]
-  },
-  {
-    "outputFileName": "wwwroot/js/gamificationlevel/gamificationlevel.min.js",
-    "inputFiles": [
-      "wwwroot/js/gamificationlevel/gamificationlevelcommon.js",
-      "wwwroot/js/gamificationlevel/gamificationlevel.js"
-    ]
-  },
-  {
-    "outputFileName": "wwwroot/js/gamificationlevel/gamificationleveledit.min.js",
-    "inputFiles": [
-      "wwwroot/js/common-edit.js",
-      "wwwroot/js/gamificationlevel/gamificationlevelcommon.js",
-      "wwwroot/js/gamificationlevel/gamificationleveledit.js"
-    ]
-  },
-  {
-    "outputFileName": "wwwroot/css/gameidea.min.css",
-    "inputFiles": [
-      "wwwroot/css/gameidea.css"
-    ]
-  },
-  {
-    "outputFileName": "wwwroot/js/shared/gameidea.min.js",
-    "inputFiles": [
-      "wwwroot/js/shared/gameidea.js"
-    ]
-  },
-  {
-    "outputFileName": "wwwroot/css/comics.min.css",
-    "inputFiles": [
-      "wwwroot/css/_feature.css",
-      "wwwroot/css/comics.css"
-    ]
-  },
-  {
-    "outputFileName": "wwwroot/js/comics/comicsdashboard.min.js",
-    "inputFiles": [
-      "wwwroot/js/comics/comicscommon.js",
-      "wwwroot/js/comics/comicsdashboard.js"
-    ]
-  },
-  {
-    "outputFileName": "wwwroot/js/comics/comicsedit.min.js",
-    "inputFiles": [
-      "wwwroot/js/common-edit.js",
-      "wwwroot/js/comics/comicscommon.js",
-      "wwwroot/js/comics/comicsedit.js"
-    ]
-  },
-  {
-    "outputFileName": "wwwroot/js/comics/comicsdetails.min.js",
-    "inputFiles": [
-      "wwwroot/js/shared/contentactions.js",
-      "wwwroot/js/comics/comicsdetails.js"
-    ]
-  },
-  {
-    "outputFileName": "wwwroot/css/notification.min.css",
-    "inputFiles": [
-      "wwwroot/css/_feature.css",
-      "wwwroot/css/notification.css"
-    ]
-  },
-  {
-    "outputFileName": "wwwroot/js/notification/notificationdashboard.min.js",
-    "inputFiles": [
-      "wwwroot/js/notification/notificationdashboard.js"
-    ]
-  },
-  {
-    "outputFileName": "wwwroot/css/memberpowers.min.css",
-    "inputFiles": [
-      "wwwroot/css/memberpowers.css"
-    ]
-  },
-  {
-    "outputFileName": "wwwroot/js/staff/admintasks.min.js",
-    "inputFiles": [
-      "wwwroot/js/staff/admintasks.js"
-    ]
-  },
-  {
-    "outputFileName": "wwwroot/css/ratecalculator.min.css",
-    "inputFiles": [
-      "wwwroot/css/ratecalculator.css"
-    ]
-  },
-  {
-    "outputFileName": "wwwroot/js/calculators/ratecalculator.min.js",
-    "inputFiles": [
-      "wwwroot/js/calculators/ratecalculator.js"
-    ]
-  },
-  {
-    "outputFileName": "wwwroot/css/costcalculator.min.css",
-    "inputFiles": [
-      "wwwroot/css/costcalculator.css"
-    ]
-  },
-  {
-    "outputFileName": "wwwroot/js/calculators/costcalculator.min.js",
-    "inputFiles": [
-      "wwwroot/js/calculators/costcalculator.js"
-    ]
-  },
-  {
-    "outputFileName": "wwwroot/css/billrate.min.css",
-    "inputFiles": [
-      "wwwroot/css/billrate.css",
-      "wwwroot/css/billrate.css"
-    ]
-  },
-  {
-    "outputFileName": "wwwroot/js/billrate/billratedashboard.min.js",
-    "inputFiles": [
-      "wwwroot/js/billrate/billratecommon.js",
-      "wwwroot/js/billrate/billratedashboard.js"
-    ]
-  },
-  {
-    "outputFileName": "wwwroot/js/billrate/billrateedit.min.js",
-    "inputFiles": [
-      "wwwroot/js/common-edit.js",
-      "wwwroot/js/billrate/billratecommon.js",
-      "wwwroot/js/billrate/billrateedit.js"
-    ]
-  },
-  {
-    "outputFileName": "wwwroot/js/billrate/billratedetails.min.js",
-    "inputFiles": [
-      "wwwroot/js/billrate/billratedetails.js"
-    ]
-  }
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/css/brainstorm.min.css",
+        "inputFiles": [
+            "wwwroot/css/brainstorm.css"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/js/brainstorm/brainstorm.min.js",
+        "inputFiles": [
+            "wwwroot/js/brainstorm/brainstorm.js",
+            "wwwroot/js/shared/contentactions.js"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/css/ranking.min.css",
+        "inputFiles": [
+            "wwwroot/css/ranking.css"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/js/search/search.min.js",
+        "inputFiles": [
+            "wwwroot/js/search/search.js"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/js/team/teamup.min.js",
+        "inputFiles": [
+            "wwwroot/js/team/teamup.js",
+            "wwwroot/lib/select2/js/select2.full.min.js"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/css/teamup.min.css",
+        "inputFiles": [
+            "wwwroot/css/switch.css",
+            "wwwroot/css/teamup.css",
+            "wwwroot/lib/select2/css/select2.min.css"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/css/articles.min.css",
+        "inputFiles": [
+            "wwwroot/css/articles.css"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/js/home/articles.min.js",
+        "inputFiles": [
+            "wwwroot/js/home/articles.js",
+            "wwwroot/js/shared/activityfeed.js"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/css/jobposition.min.css",
+        "inputFiles": [
+            "wwwroot/css/switch.css",
+            "wwwroot/css/jobposition.css"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/js/jobposition/jobposition.min.js",
+        "inputFiles": [
+            "wwwroot/js/jobposition/jobposition.js",
+            "wwwroot/js/shared/contentactions.js"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/css/localization.min.css",
+        "inputFiles": [
+            "wwwroot/css/_feature.css",
+            "wwwroot/css/localization.css",
+            "wwwroot/css/circularpercentage.css"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/js/localization/localization.min.js",
+        "inputFiles": [
+            "wwwroot/js/localization/localization.js",
+            "wwwroot/js/shared/contentactions.js"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/js/localization/localizationedit.min.js",
+        "inputFiles": [
+            "wwwroot/js/common-edit.js",
+            "wwwroot/js/localization/localizationedit.js",
+            "wwwroot/js/shared/contentactions.js"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/js/localization/localizationtranslate.min.js",
+        "inputFiles": [
+            "wwwroot/js/localization/localizationcommon.js",
+            "wwwroot/js/localization/localizationtranslate.js",
+            "wwwroot/js/shared/contentactions.js"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/js/localization/localizationreview.min.js",
+        "inputFiles": [
+            "wwwroot/js/localization/localizationcommon.js",
+            "wwwroot/js/localization/localizationreview.js",
+            "wwwroot/js/shared/contentactions.js"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/js/localization/localizationexport.min.js",
+        "inputFiles": [
+            "wwwroot/js/localization/localizationexport.js",
+            "wwwroot/js/shared/contentactions.js"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/css/study.min.css",
+        "inputFiles": [
+            "wwwroot/lib/select2/css/select2.min.css",
+            "wwwroot/css/_feature.css",
+            "wwwroot/css/study.css"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/js/study/mentordashboard.min.js",
+        "inputFiles": [
+            "wwwroot/js/study/mentordashboard.js"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/js/study/studentdashboard.min.js",
+        "inputFiles": [
+            "wwwroot/js/study/studentdashboard.js"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/js/study/courseedit.min.js",
+        "inputFiles": [
+            "wwwroot/lib/select2/js/select2.full.min.js",
+            "wwwroot/js/common-edit.js",
+            "wwwroot/js/study/coursecommon.js",
+            "wwwroot/js/study/courseedit.js"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/js/study/coursedetails.min.js",
+        "inputFiles": [
+            "wwwroot/js/study/coursecommon.js",
+            "wwwroot/js/study/coursedetails.js"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/css/giveaway.min.css",
+        "inputFiles": [
+            "wwwroot/css/_feature.css",
+            "wwwroot/css/giveaway.css"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/css/giveawayedit.min.css",
+        "inputFiles": [
+            "wwwroot/lib/cropperjs/cropper.css",
+            "wwwroot/css/giveaway.css"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/css/ribbon.min.css",
+        "inputFiles": [
+            "wwwroot/css/ribbon.css"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/js/giveaway/giveaway.min.js",
+        "inputFiles": [
+            "wwwroot/js/giveaway/giveawaycommon.js",
+            "wwwroot/js/giveaway/giveaway.js"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/js/giveaway/giveawaymanage.min.js",
+        "inputFiles": [
+            "wwwroot/js/shared/exporthelper.js",
+            "wwwroot/js/shared/fx.js",
+            "wwwroot/js/giveaway/giveawaycommon.js",
+            "wwwroot/js/giveaway/giveawaymanage.js"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/js/giveaway/giveawayedit.min.js",
+        "inputFiles": [
+            "wwwroot/lib/cropperjs/cropper.js",
+            "wwwroot/js/shared/imagemanipulation.js",
+            "wwwroot/js/common-edit.js",
+            "wwwroot/js/giveaway/giveawaycommon.js",
+            "wwwroot/js/giveaway/giveawayedit.js"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/js/giveaway/giveawaydetails.min.js",
+        "inputFiles": [
+            "wwwroot/js/shared/fx.js",
+            "wwwroot/js/shared/messages.js",
+            "wwwroot/js/giveaway/giveawayparticipantcommon.js",
+            "wwwroot/js/giveaway/giveawaydetails.js"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/js/giveaway/giveawayyouarein.min.js",
+        "inputFiles": [
+            "wwwroot/js/shared/fx.js",
+            "wwwroot/js/shared/messages.js",
+            "wwwroot/js/giveaway/giveawayparticipantcommon.js",
+            "wwwroot/js/giveaway/giveawayyouarein.js"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/css/gamificationlevel.min.css",
+        "inputFiles": [
+            "wwwroot/css/gamificationlevel.css"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/js/gamificationlevel/gamificationlevel.min.js",
+        "inputFiles": [
+            "wwwroot/js/gamificationlevel/gamificationlevelcommon.js",
+            "wwwroot/js/gamificationlevel/gamificationlevel.js"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/js/gamificationlevel/gamificationleveledit.min.js",
+        "inputFiles": [
+            "wwwroot/js/common-edit.js",
+            "wwwroot/js/gamificationlevel/gamificationlevelcommon.js",
+            "wwwroot/js/gamificationlevel/gamificationleveledit.js"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/css/gameidea.min.css",
+        "inputFiles": [
+            "wwwroot/css/gameidea.css"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/js/shared/gameidea.min.js",
+        "inputFiles": [
+            "wwwroot/js/shared/gameidea.js"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/css/comics.min.css",
+        "inputFiles": [
+            "wwwroot/css/_feature.css",
+            "wwwroot/css/comics.css"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/js/comics/comicsdashboard.min.js",
+        "inputFiles": [
+            "wwwroot/js/comics/comicscommon.js",
+            "wwwroot/js/comics/comicsdashboard.js"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/js/comics/comicsedit.min.js",
+        "inputFiles": [
+            "wwwroot/js/common-edit.js",
+            "wwwroot/js/comics/comicscommon.js",
+            "wwwroot/js/comics/comicsedit.js"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/js/comics/comicsdetails.min.js",
+        "inputFiles": [
+            "wwwroot/js/shared/contentactions.js",
+            "wwwroot/js/comics/comicsdetails.js"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/css/notification.min.css",
+        "inputFiles": [
+            "wwwroot/css/_feature.css",
+            "wwwroot/css/notification.css"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/js/notification/notificationdashboard.min.js",
+        "inputFiles": [
+            "wwwroot/js/notification/notificationdashboard.js"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/css/memberpowers.min.css",
+        "inputFiles": [
+            "wwwroot/css/memberpowers.css"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/js/staff/admintasks.min.js",
+        "inputFiles": [
+            "wwwroot/js/staff/admintasks.js"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/css/ratecalculator.min.css",
+        "inputFiles": [
+            "wwwroot/css/ratecalculator.css"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/js/calculators/ratecalculator.min.js",
+        "inputFiles": [
+            "wwwroot/js/calculators/ratecalculator.js"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/css/costcalculator.min.css",
+        "inputFiles": [
+            "wwwroot/css/costcalculator.css"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/js/calculators/costcalculator.min.js",
+        "inputFiles": [
+            "wwwroot/js/calculators/costcalculator.js"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/css/billrate.min.css",
+        "inputFiles": [
+            "wwwroot/css/billrate.css",
+            "wwwroot/css/billrate.css"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/js/billrate/billratedashboard.min.js",
+        "inputFiles": [
+            "wwwroot/js/billrate/billratecommon.js",
+            "wwwroot/js/billrate/billratedashboard.js"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/js/billrate/billrateedit.min.js",
+        "inputFiles": [
+            "wwwroot/js/common-edit.js",
+            "wwwroot/js/billrate/billratecommon.js",
+            "wwwroot/js/billrate/billrateedit.js"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/js/billrate/billratedetails.min.js",
+        "inputFiles": [
+            "wwwroot/js/billrate/billratedetails.js"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/css/forumgroup.min.css",
+        "inputFiles": [
+            "wwwroot/css/forumgroup.css"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/js/forumgroup/forumgroup.min.js",
+        "inputFiles": [
+            "wwwroot/js/forumgroup/forumgroupcommon.js",
+            "wwwroot/js/forumgroup/forumgroup.js"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/js/forumgroup/forumgroupedit.min.js",
+        "inputFiles": [
+            "wwwroot/js/common-edit.js",
+            "wwwroot/js/forumgroup/forumgroupcommon.js",
+            "wwwroot/js/forumgroup/forumgroupedit.js"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/css/forumcategory.min.css",
+        "inputFiles": [
+            "wwwroot/css/forumcategory.css"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/js/forumcategory/forumcategory.min.js",
+        "inputFiles": [
+            "wwwroot/js/forumcategory/forumcategorycommon.js",
+            "wwwroot/js/forumcategory/forumcategory.js"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/js/forumcategory/forumcategoryedit.min.js",
+        "inputFiles": [
+            "wwwroot/js/common-edit.js",
+            "wwwroot/js/forumcategory/forumcategorycommon.js",
+            "wwwroot/js/forumcategory/forumcategoryedit.js"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/css/forum.min.css",
+        "inputFiles": [
+            "wwwroot/css/forum.css"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/js/forum/forum.min.js",
+        "inputFiles": [
+            "wwwroot/js/shared/pagination.js",
+            "wwwroot/js/forum/forumcommon.js",
+            "wwwroot/js/forum/forum.js"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/js/forum/forumpostedit.min.js",
+        "inputFiles": [
+            "wwwroot/js/shared/wysiwygeditor.js",
+            "wwwroot/js/common-edit.js",
+            "wwwroot/js/forum/forumcommon.js",
+            "wwwroot/js/forum/forumpostedit.js"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/js/forum/forumpostdetails.min.js",
+        "inputFiles": [
+            "wwwroot/js/shared/wysiwygeditor.js",
+            "wwwroot/js/forum/forumcommon.js",
+            "wwwroot/js/forum/forumpostdetails.js"
+        ]
+    }
 ]

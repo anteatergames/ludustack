@@ -10,7 +10,7 @@ namespace LuduStack.Domain.Messaging.Queries.FeaturedContent
 {
     public class GetFeaturedContentQuery : GetBaseQuery<Models.FeaturedContent>
     {
-        public GetFeaturedContentQuery() : base()
+        public GetFeaturedContentQuery()
         {
         }
 

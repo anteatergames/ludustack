@@ -4,6 +4,7 @@ using LuduStack.Domain.Interfaces.Repository;
 using LuduStack.Domain.Interfaces.Services;
 using LuduStack.Domain.Messaging.Queries.Brainstorm;
 using LuduStack.Domain.Models;
+using LuduStack.Domain.ValueObjects;
 using LuduStack.Infra.CrossCutting.Messaging;
 using MediatR;
 using System;
@@ -51,28 +52,27 @@ namespace LuduStack.Domain.Messaging
 
             if (!request.IsValid()) { return request.Result; }
 
-            BrainstormVote model;
+            UserVoteVo model;
             BrainstormIdea idea = await mediator.Query<GetBrainstormIdeaByIdQuery, BrainstormIdea>(new GetBrainstormIdeaByIdQuery(request.Id));
 
-            BrainstormVote existing = idea.Votes.FirstOrDefault(x => x.UserId == request.UserId);
+            UserVoteVo existing = idea.Votes.FirstOrDefault(x => x.UserId == request.UserId);
             if (existing == null)
             {
-                model = new BrainstormVote
+                model = new UserVoteVo
                 {
                     UserId = request.UserId,
-                    IdeaId = request.Id,
-                    SessionId = idea.SessionId,
+                    CreateDate = DateTime.Now,
                     VoteValue = request.Vote
                 };
 
-                await brainstormIdeaRepository.AddVote(model);
+                await brainstormIdeaRepository.AddVote(request.Id, model);
             }
             else
             {
                 model = existing;
                 model.VoteValue = request.Vote;
 
-                await brainstormIdeaRepository.UpdateVote(model);
+                await brainstormIdeaRepository.UpdateVote(request.Id, model);
             }
 
             result.Validation = await Commit(unitOfWork);

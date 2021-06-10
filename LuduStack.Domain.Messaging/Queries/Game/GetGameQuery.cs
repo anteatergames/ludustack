@@ -18,7 +18,7 @@ namespace LuduStack.Domain.Messaging.Queries.Game
         public Guid UserId { get; }
         public Guid? TeamId { get; }
 
-        public GetGameQuery() : base()
+        public GetGameQuery()
         {
         }
 

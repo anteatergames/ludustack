@@ -1,0 +1,16 @@
+﻿@model IEnumerable<ForumPostViewModel>
+
+@{
+    Layout = null;
+}
+
+@for (int i = 0; i < Model.Count(); i++)
+{
+    var item = Model.ElementAt(i);
+
+    <div class="col-12 separator">
+        <hr />
+    </div>
+
+    <partial name="_ForumPostViewEdit" model="item" />
+}

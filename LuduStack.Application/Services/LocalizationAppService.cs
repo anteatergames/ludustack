@@ -742,7 +742,11 @@ namespace LuduStack.Application.Services
             for (int j = 0; j < cellCount; j++)
             {
                 ICell cell = headerRow.GetCell(j);
-                if (cell == null || string.IsNullOrWhiteSpace(cell.ToString())) continue;
+                if (cell == null || string.IsNullOrWhiteSpace(cell.ToString()))
+                {
+                    continue;
+                }
+
                 {
                     dtTable.Columns.Add(cell.ToString());
                 }

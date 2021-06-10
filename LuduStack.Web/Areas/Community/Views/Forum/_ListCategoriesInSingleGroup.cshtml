@@ -1,0 +1,118 @@
+﻿@model IEnumerable<ForumCategoryListItemVo>
+
+@{
+    var canInteract = User.Identity.IsAuthenticated;
+
+    Layout = null;
+
+    var noItemsModel = new ListNoItemsViewModel("fas fa-dizzy", "There are no Forums here!");
+
+    var description = ViewData["ListDescription"] == null ? SharedLocalizer["Forum Category"] : (string)ViewData["ListDescription"];
+}
+
+@if (!Model.Any())
+{
+    <partial name="_ListNoItems" model="noItemsModel" />
+}
+else
+{
+    @for (int i = 0; i < Model.Count(); i++)
+    {
+        var item = Model.ElementAt(i);
+
+        if (i > 0)
+        {
+            <hr />
+        }
+
+        <div class="rounded-0 forumlistitem">
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-12 col-sm-8 col-md-6 p-3">
+                        <a asp-area="community" asp-controller="forum" asp-action="category" asp-route-handler="@item.Handler" class="stretched-link">
+                            <div class="d-flex flex-row">
+                                <div class="mr-3 d-flex flex-row align-items-center categoryicon">
+                                    @if (string.IsNullOrWhiteSpace(item.Icon))
+                                    {
+                                        <i class="fas fa-comments fa-2x" aria-hidden="true"></i>
+                                    }
+                                    else
+                                    {
+                                        @Html.Raw(item.Icon)
+                                    }
+                                </div>
+                                <div>
+                                    <div class="d-flex flex-column">
+                                        <div class="forumlisttitle">
+                                            @item.Name
+                                        </div>
+                                        <div class="forumlistdescription">
+                                            @item.Description
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-sm-4 col-md-3 col-lg-1 d-none d-sm-block p-3">
+                        <a asp-area="community" asp-controller="forum" asp-action="category" asp-route-handler="@item.Handler" class="stretched-link">
+                            <div class="d-flex flex-column align-items-center">
+                                <div class="d-flex flex-column">
+                                    <div class="text-center text-uppercase">
+                                        @SharedLocalizer["topics"]
+                                    </div>
+                                    <div class="text-center">
+                                        @item.TopicCount
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-3 col-lg-1  d-none d-md-block p-3">
+                        <div class="verticaldivider"></div>
+                        <a asp-area="community" asp-controller="forum" asp-action="category" asp-route-handler="@item.Handler" class="stretched-link">
+                            <div class="d-flex flex-column align-items-center">
+                                <div class="text-center text-uppercase">
+                                    @SharedLocalizer["posts"]
+                                </div>
+                                <div class="text-center">
+                                    @item.PostCount
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-4 d-none d-lg-block p-3 clickablelink">
+                        <div class="d-flex flex-row">
+                            @if (item.LatestForumPost != null)
+                            {
+                                var authorUrl = Url.Action("details", "profile", new { area = string.Empty, userHandler = item.LatestForumPost.UserHandler });
+                                var authorLink = string.Format("<a href=\"{0}\" class=\"boldlink\">{1}</a>", authorUrl, item.LatestForumPost.AuthorName);
+
+                                <div class="mr-2">
+                                    <a href="@authorUrl">
+                                        <img class="rounded-circle border" src="@item.LatestForumPost.AuthorPicture" alt="This is @item.LatestForumPost.AuthorName">
+                                    </a>
+                                </div>
+                                <div class="d-flex flex-column">
+
+                                    <div class="d-flex flex-column">
+                                        <div class="forumlisttitle">
+                                            <a asp-area="community" asp-controller="forum" asp-action="viewtopic" asp-route-id="@item.LatestForumPost.Id">@item.LatestForumPost.Title</a>
+                                        </div>
+                                        <div class="forumlistdescription">
+                                            @Html.Raw(SharedLocalizer["by {0} {1}", authorLink, item.LatestForumPost.CreatedRelativeTime])
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="p-2">-</div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}

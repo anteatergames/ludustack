@@ -1,5 +1,4 @@
 ﻿using LuduStack.Domain.Core.Interfaces;
-using System;
 using System.Text;
 
 namespace LuduStack.Domain.Core.Extensions
@@ -23,7 +22,7 @@ namespace LuduStack.Domain.Core.Extensions
                 {
                     if (sb.Length > 0)
                     {
-                        sb.Append("|");
+                        sb.Append('|');
                     }
 
                     sb.Append(Right.ErrorMessage);
@@ -60,7 +59,7 @@ namespace LuduStack.Domain.Core.Extensions
             Right = right;
         }
 
-        public string ErrorMessage => String.Format("{0}|{1}", Left.ErrorMessage, Right.ErrorMessage);
+        public string ErrorMessage => string.Format("{0}|{1}", Left.ErrorMessage, Right.ErrorMessage);
 
         public bool IsSatisfied { get; private set; }
 

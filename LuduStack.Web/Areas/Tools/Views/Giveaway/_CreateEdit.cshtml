@@ -6,8 +6,6 @@
 
     ViewData["Title"] = SharedLocalizer["{0} Giveaway", (Model.Id == Guid.Empty ? "New" : "Edit")];
 
-    var userGames = ViewBag.UserGames as List<SelectListItem>;
-
     var isNew = Model.Id == Guid.Empty;
 
     var timeZoneList = (IEnumerable<SelectListItem>)ViewBag.TimeZones;

@@ -32,7 +32,7 @@ namespace LuduStack.Application.AutoMapper.Resolvers
             string[] platforms = (source.Platforms ?? string.Empty)
                 .Replace("XboxOne", "Xbox")
                 .Replace("Playstation4", "Playstation")
-                .Split(new Char[] { '|' });
+                .Split(new char[] { '|' });
 
             IEnumerable<GamePlatforms> platformsConverted = platforms.Where(x => !string.IsNullOrWhiteSpace(x)).Select(x => (GamePlatforms)Enum.Parse(typeof(GamePlatforms), x));
 

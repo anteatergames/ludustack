@@ -10,7 +10,7 @@ namespace LuduStack.Domain.Messaging.Queries.Localization
 {
     public class GetLocalizationQuery : GetBaseQuery<Models.Localization>
     {
-        public GetLocalizationQuery() : base()
+        public GetLocalizationQuery()
         {
         }
 

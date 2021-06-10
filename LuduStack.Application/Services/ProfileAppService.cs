@@ -285,13 +285,10 @@ namespace LuduStack.Application.Services
 
             profile.Type = ProfileType.Personal;
 
-            profile.Name = String.Format("NPC {0}", Math.Abs(randomNumber));
+            profile.Name = string.Format("NPC {0}", Math.Abs(randomNumber));
             profile.Motto = "It is dangerous out there, take this...";
 
-            profile.Bio = String.Format("{0} {1}", profile.Name, Constants.DefaultProfileDescription);
-
-            profile.StudioName = "Awesome Game Studio";
-            profile.Location = "Earth";
+            profile.Bio = string.Format("{0} {1}", profile.Name, Constants.DefaultProfileDescription);
 
             profile.ProfileImageUrl = Constants.DefaultAvatar;
             profile.CoverImageUrl = Constants.DefaultGameCoverImage;

@@ -266,7 +266,7 @@ namespace LuduStack.Web.Controllers
                     AuthorName = GetSessionValue(SessionValues.FullName),
                     UserId = CurrentUserId,
                     UserContentType = UserContentType.TeamCreation,
-                    Content = String.Format("{0}|{1}|{2}|{3}|{4}", vm.Id, vm.Name, vm.Motto, vm.Members.Count, recruiting)
+                    Content = string.Format("{0}|{1}|{2}|{3}|{4}", vm.Id, vm.Name, vm.Motto, vm.Members.Count, recruiting)
                 };
 
                 await userContentAppService.Save(CurrentUserId, newContent);

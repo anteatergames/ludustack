@@ -44,9 +44,9 @@ namespace LuduStack.Application.ViewModels.Content
 
         public bool HasFeaturedImage { get; set; }
 
-        public bool IsComplex { get { return HasFeaturedImage; } }
+        public bool IsComplex => HasFeaturedImage;
 
-        public bool HasPoll { get { return Poll != null && Poll.PollOptions.Any(); } }
+        public bool HasPoll => Poll != null && Poll.PollOptions.Any();
 
         public PollViewModel Poll { get; set; }
 

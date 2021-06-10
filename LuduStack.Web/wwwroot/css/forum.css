@@ -1,0 +1,136 @@
+﻿hr {
+    margin: 0;
+}
+
+.card {
+    border-radius: var(--border-radius) !important;
+    background-color: var(--color-green);
+}
+
+    .card .card-header a {
+        color: var(--color-white);
+    }
+
+    .card .card-body {
+        border-top: 0;
+    }
+
+    .card .card-header:first-child {
+        border-radius: var(--border-radius);
+    }
+
+    .card .collapse {
+        background-color: var(--color-white);
+    }
+
+    .card .forumlistitem:last-child {
+        border-bottom-left-radius: var(--border-radius) !important;
+        border-bottom-right-radius: var(--border-radius) !important;
+    }
+
+.btn-link {
+    color: var(--color-green);
+}
+
+.author-details {
+    background-color: var(--color-shade);
+}
+
+.clickablelink a:active, .clickablelink a:focus, .clickablelink a:hover {
+    text-decoration: underline !important;
+}
+
+.forum-headermessage {
+    line-height: 37px;
+}
+
+.forumlistitem {
+    --line-height: 32px;
+}
+
+    .forumlistitem .pinedicon {
+        left: -12px;
+        top: 20px;
+    }
+
+        .forumlistitem .pinedicon span i {
+            transform: rotate( 315deg );
+        }
+
+            .forumlistitem .pinedicon span i.text-success {
+                color: var(--color-highlight) !important;
+            }
+
+    .forumlistitem .badge {
+        transition: none;
+    }
+
+    .forumlistitem:hover .badge {
+        background-color: var(--color-white);
+        color: var(--color-highlight);
+    }
+
+    .forumlistitem .verticaldivider {
+        border-left: 1px solid #dedada;
+        float: left;
+        height: 100%;
+        margin-left: -20px;
+    }
+
+    .forumlistitem .forumlisttitle {
+        font-weight: bold;
+    }
+
+    .forumlistitem .forumlistdescription {
+        font-weight: lighter;
+    }
+
+    .forumlistitem:hover, .forumlistitem:hover a {
+        background-color: var(--color-highlight);
+        color: white;
+    }
+
+        .forumlistitem:hover svg {
+            fill: white;
+        }
+
+.postitem pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+.postitem .postitemcontainer {
+    min-height: 160px;
+}
+
+.postitem .postsidebar svg {
+    fill: var(--color-bg-basic);
+}
+
+.postitem .postsidebar .text-green svg {
+    fill: var(--color-green);
+}
+
+.postitem .postsidebar .text-red svg {
+    fill: var(--color-red);
+}
+
+.postanswer .ck.ck-content.ck-editor__editable {
+    min-height: 150px !important;
+}
+
+.posttopic .ck.ck-content.ck-editor__editable {
+    min-height: 300px !important;
+}
+
+.ck-content .media {
+    display: block;
+}
+
+.ck .ck-toolbar {
+    border-radius: var(--border-radius) var(--border-radius) 0 0 !important;
+}
+
+.ck .ck-content {
+    border-radius: 0 0 var(--border-radius) var(--border-radius) !important;
+}

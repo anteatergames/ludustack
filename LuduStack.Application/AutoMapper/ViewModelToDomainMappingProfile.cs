@@ -6,6 +6,7 @@ using LuduStack.Application.ViewModels.Brainstorm;
 using LuduStack.Application.ViewModels.Comics;
 using LuduStack.Application.ViewModels.Content;
 using LuduStack.Application.ViewModels.FeaturedContent;
+using LuduStack.Application.ViewModels.Forum;
 using LuduStack.Application.ViewModels.Game;
 using LuduStack.Application.ViewModels.Gamification;
 using LuduStack.Application.ViewModels.Giveaway;
@@ -35,24 +36,24 @@ namespace LuduStack.Application.AutoMapper
             CreateMap<BaseViewModel, Entity>()
                 .ForMember(dest => dest.CreateDate, opt => opt.Condition(x => x.CreateDate != DateTime.MinValue));
 
-            CreateMap<FeaturedContentViewModel, Domain.Models.FeaturedContent>();
+            CreateMap<FeaturedContentViewModel, FeaturedContent>();
 
-            CreateMap<UserPreferencesViewModel, Domain.Models.UserPreferences>()
+            CreateMap<UserPreferencesViewModel, UserPreferences>()
                 .ForMember(dest => dest.ContentLanguages, opt => opt.MapFrom<UserLanguagesToDomainResolver>());
 
-            CreateMap<NotificationItemViewModel, Domain.Models.Notification>();
+            CreateMap<NotificationItemViewModel, Notification>();
 
             CreateMap<ExternalLinkBaseViewModel, ExternalLinkVo>();
 
-            CreateMap<CommentViewModel, Domain.Models.UserContentComment>();
+            CreateMap<CommentViewModel, UserContentComment>();
 
-            CreateMap<CommentViewModel, Domain.Models.BrainstormComment>();
+            CreateMap<CommentViewModel, BrainstormComment>();
 
             #endregion General
 
             #region Game
 
-            CreateMap<GameViewModel, Domain.Models.Game>()
+            CreateMap<GameViewModel, Game>()
                     .ForMember(dest => dest.DeveloperName, opt => opt.MapFrom(src => src.AuthorName))
                     .ForMember(dest => dest.Platforms, opt => opt.MapFrom<GamePlatformToDomainResolver>())
                     .ForMember(dest => dest.ExternalLinks, opt => opt.Ignore())
@@ -62,7 +63,7 @@ namespace LuduStack.Application.AutoMapper
 
             #region Profile
 
-            CreateMap<ProfileViewModel, Domain.Models.UserProfile>()
+            CreateMap<ProfileViewModel, UserProfile>()
                 .ForMember(dest => dest.Followers, opt => opt.Ignore())
                 .AfterMap<AddOrUpdateProfileExternalLinks>();
 
@@ -70,7 +71,7 @@ namespace LuduStack.Application.AutoMapper
 
             #region Content
 
-            CreateMap<UserContentViewModel, Domain.Models.UserContent>()
+            CreateMap<UserContentViewModel, UserContent>()
                 .ForMember(dest => dest.Likes, opt => opt.Ignore())
                 .ForMember(dest => dest.Comments, opt => opt.Ignore());
 
@@ -78,44 +79,43 @@ namespace LuduStack.Application.AutoMapper
 
             #region Poll
 
-            CreateMap<PollViewModel, Domain.Models.Poll>()
+            CreateMap<PollViewModel, Poll>()
                 .ForMember(dest => dest.Options, opt => opt.MapFrom(src => src.PollOptions));
-            CreateMap<PollOptionViewModel, Domain.Models.PollOption>();
+            CreateMap<PollOptionViewModel, PollOption>();
 
             #endregion Poll
 
             #region Brainstorm
 
-            CreateMap<BrainstormSessionViewModel, Domain.Models.BrainstormSession>();
-            CreateMap<BrainstormIdeaViewModel, Domain.Models.BrainstormIdea>();
-            CreateMap<BrainstormVoteViewModel, Domain.Models.BrainstormVote>();
-            CreateMap<BrainstormCommentViewModel, Domain.Models.BrainstormComment>();
+            CreateMap<BrainstormSessionViewModel, BrainstormSession>();
+            CreateMap<BrainstormIdeaViewModel, BrainstormIdea>();
+            CreateMap<BrainstormCommentViewModel, BrainstormComment>();
 
             #endregion Brainstorm
 
             #region Gamification
 
-            CreateMap<UserBadgeViewModel, Domain.Models.UserBadge>();
-            CreateMap<GamificationLevelViewModel, Domain.Models.GamificationLevel>();
+            CreateMap<UserBadgeViewModel, UserBadge>();
+            CreateMap<GamificationLevelViewModel, GamificationLevel>();
 
             #endregion Gamification
 
             #region Interactions
 
-            CreateMap<GameFollowViewModel, Domain.Models.GameFollow>();
+            CreateMap<GameFollowViewModel, GameFollow>();
 
-            CreateMap<UserFollowViewModel, Domain.Models.UserFollow>();
+            CreateMap<UserFollowViewModel, UserFollow>();
 
-            CreateMap<UserConnectionViewModel, Domain.Models.UserConnection>();
+            CreateMap<UserConnectionViewModel, UserConnection>();
 
             #endregion Interactions
 
             #region Team
 
-            CreateMap<TeamViewModel, Domain.Models.Team>()
+            CreateMap<TeamViewModel, Team>()
                 .ForMember(dest => dest.Members, opt => opt.Ignore())
                 .AfterMap<AddOrUpdateTeamMembers>();
-            CreateMap<TeamMemberViewModel, Domain.Models.TeamMember>()
+            CreateMap<TeamMemberViewModel, TeamMember>()
                     .ForMember(dest => dest.Work, opt => opt.MapFrom<TeamWorkToDomainResolver>());
 
             #endregion Team
@@ -140,7 +140,7 @@ namespace LuduStack.Application.AutoMapper
 
             #region Study
 
-            CreateMap<CourseViewModel, Domain.Models.StudyCourse>()
+            CreateMap<CourseViewModel, StudyCourse>()
                 .ForMember(dest => dest.Plans, opt => opt.Ignore())
                 .ForMember(dest => dest.SkillSet, opt => opt.MapFrom<StudyCourseWorkTypeToDomainResolver>());
 
@@ -165,13 +165,13 @@ namespace LuduStack.Application.AutoMapper
 
             #region ShortUrl
 
-            CreateMap<ShortUrlViewModel, Domain.Models.ShortUrl>();
+            CreateMap<ShortUrlViewModel, ShortUrl>();
 
             #endregion ShortUrl
 
             #region Comics
 
-            CreateMap<ComicStripViewModel, Domain.Models.UserContent>()
+            CreateMap<ComicStripViewModel, UserContent>()
                 .ForMember(dest => dest.Likes, opt => opt.Ignore())
                 .ForMember(dest => dest.Comments, opt => opt.Ignore());
 
@@ -179,9 +179,17 @@ namespace LuduStack.Application.AutoMapper
 
             #region BillRate
 
-            CreateMap<BillRateViewModel, Domain.Models.BillRate>();
+            CreateMap<BillRateViewModel, BillRate>();
 
             #endregion BillRate
+
+            #region Forum
+
+            CreateMap<ForumGroupViewModel, ForumGroup>();
+            CreateMap<ForumCategoryViewModel, ForumCategory>();
+            CreateMap<ForumPostViewModel, ForumPost>();
+
+            #endregion Forum
         }
     }
 }

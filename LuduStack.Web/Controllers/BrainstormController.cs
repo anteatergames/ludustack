@@ -179,11 +179,11 @@ namespace LuduStack.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Vote(BrainstormVoteViewModel vm)
+        public async Task<IActionResult> Vote(Guid ideaId, VoteValue vote)
         {
             try
             {
-                await brainstormAppService.Vote(CurrentUserId, vm.VotingItemId, vm.VoteValue);
+                await brainstormAppService.Vote(CurrentUserId, ideaId, vote);
 
                 string url = Url.Action("Index", "Brainstorm", new { area = string.Empty });
 

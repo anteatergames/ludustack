@@ -251,13 +251,13 @@ namespace LuduStack.Web.Areas.Tools.Controllers
                 foreach (KeyValuePair<Guid, string> item in model)
                 {
                     string url = Url.Action("details", "profile", new { area = string.Empty, id = item.Key }, "https", Request.Host.Value);
-                    string newLine = String.Format("{0};{1};{2}", item.Key, item.Value, url);
+                    string newLine = string.Format("{0};{1};{2}", item.Key, item.Value, url);
                     sb.AppendLine(newLine);
                 }
 
                 InMemoryFileVo file = new InMemoryFileVo
                 {
-                    FileName = String.Format("contributors_{0}.csv", type.ToString().ToLower()),
+                    FileName = string.Format("contributors_{0}.csv", type.ToString().ToLower()),
                     Contents = Encoding.UTF8.GetBytes(sb.ToString())
                 };
 
@@ -593,7 +593,9 @@ namespace LuduStack.Web.Areas.Tools.Controllers
                     {
                         ZipArchiveEntry zipArchiveEntry = archive.CreateEntry(file.FileName, CompressionLevel.Fastest);
                         using (Stream zipStream = zipArchiveEntry.Open())
+                        {
                             zipStream.Write(file.Contents, 0, file.Contents.Length);
+                        }
                     }
                 }
 

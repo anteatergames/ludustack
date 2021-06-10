@@ -6,6 +6,7 @@ using LuduStack.Application.ViewModels.UserPreferences;
 using LuduStack.Domain.Core.Attributes;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Core.Extensions;
+using LuduStack.Domain.Helper;
 using LuduStack.Domain.ValueObjects;
 using LuduStack.Infra.CrossCutting.Abstractions;
 using LuduStack.Infra.CrossCutting.Identity.Models;
@@ -19,8 +20,10 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace LuduStack.Web.Controllers.Base
@@ -28,35 +31,35 @@ namespace LuduStack.Web.Controllers.Base
     public class SecureBaseController : BaseController
     {
         private IServiceProvider services;
-        public IServiceProvider Services => services ?? (services = HttpContext?.RequestServices.GetService<IServiceProvider>());
+        public IServiceProvider Services => services ??= HttpContext?.RequestServices.GetService<IServiceProvider>();
 
         private IWebHostEnvironment hostEnvironment;
-        public IWebHostEnvironment HostEnvironment => hostEnvironment ?? (hostEnvironment = Services.GetService<IWebHostEnvironment>());
+        public IWebHostEnvironment HostEnvironment => hostEnvironment ??= Services.GetService<IWebHostEnvironment>();
 
         private INotificationSender notificationSender;
-        public INotificationSender NotificationSender => notificationSender ?? (notificationSender = Services.GetService<INotificationSender>());
+        public INotificationSender NotificationSender => notificationSender ??= Services.GetService<INotificationSender>();
 
         private UserManager<ApplicationUser> _userManager;
-        public UserManager<ApplicationUser> UserManager => _userManager ?? (_userManager = Services.GetService<UserManager<ApplicationUser>>());
+        public UserManager<ApplicationUser> UserManager => _userManager ??= Services.GetService<UserManager<ApplicationUser>>();
 
         private IImageStorageService _imageStorageService;
-        public IImageStorageService ImageStorageService => _imageStorageService ?? (_imageStorageService = Services.GetService<IImageStorageService>());
+        public IImageStorageService ImageStorageService => _imageStorageService ??= Services.GetService<IImageStorageService>();
 
         private ICookieMgrService _cookieMgrService;
-        public ICookieMgrService CookieMgrService => _cookieMgrService ?? (_cookieMgrService = Services.GetService<ICookieMgrService>());
+        public ICookieMgrService CookieMgrService => _cookieMgrService ??= Services.GetService<ICookieMgrService>();
 
         private IProfileAppService profileAppService;
-        public IProfileAppService ProfileAppService => profileAppService ?? (profileAppService = Services.GetService<IProfileAppService>());
+        public IProfileAppService ProfileAppService => profileAppService ??= Services.GetService<IProfileAppService>();
 
         private IUserPreferencesAppService userPreferencesAppService;
 
-        public IUserPreferencesAppService UserPreferencesAppService => userPreferencesAppService ?? (userPreferencesAppService = Services.GetService<IUserPreferencesAppService>());
+        public IUserPreferencesAppService UserPreferencesAppService => userPreferencesAppService ??= Services.GetService<IUserPreferencesAppService>();
 
         public Guid CurrentUserId { get; set; }
 
         public bool CurrentUserIsAdmin { get; set; }
 
-        public String CurrentLocale { get; set; }
+        public string CurrentLocale { get; set; }
 
         public string EnvName { get; private set; }
 
@@ -256,6 +259,53 @@ namespace LuduStack.Web.Controllers.Base
                 {
                     return cookie.Cultures.First().Value;
                 }
+            }
+        }
+
+        protected async Task<UserPreferencesViewModel> GetUserPreferences(Guid userId)
+        {
+            UserPreferencesViewModel preferences = await UserPreferencesAppService.GetByUserId(userId);
+            if (preferences != null)
+            {
+                SetUserPreferences(preferences);
+            }
+
+            return preferences;
+        }
+
+        protected void SetUserPreferences(UserPreferencesViewModel preferences)
+        {
+            List<SupportedLanguage> userLanguages = preferences.Languages;
+            if (userLanguages == null || !userLanguages.Any())
+            {
+                userLanguages = LanguageDomainHelper.FormatList(preferences.ContentLanguages).ToList();
+            }
+
+            if (preferences == null || preferences.Id == Guid.Empty)
+            {
+                RequestCulture requestLanguage = Request.HttpContext.Features.Get<IRequestCultureFeature>().RequestCulture;
+                SupportedLanguage lang = SetLanguageFromCulture(requestLanguage.UICulture.Name);
+
+                SetCookieValue(SessionValues.PostLanguage, lang.ToString(), 7);
+            }
+            else
+            {
+                SetCookieValue(SessionValues.PostLanguage, preferences.UiLanguage.ToString(), 7);
+                SetCookieValue(SessionValues.ContentLanguages, JsonSerializer.Serialize(userLanguages), 7);
+                SetSessionValue(SessionValues.JobProfile, preferences.JobProfile.ToString());
+            }
+        }
+
+        protected async Task<List<SupportedLanguage>> GetCurrentUserContentLanguage()
+        {
+            string languagesFromCookie = CookieMgrService.Get(SessionValues.ContentLanguages.ToString());
+            if (string.IsNullOrWhiteSpace(languagesFromCookie))
+            {
+                return await UserPreferencesAppService.GetLanguagesByUserId(CurrentUserId);
+            }
+            else
+            {
+                return JsonSerializer.Deserialize<List<SupportedLanguage>>(languagesFromCookie);
             }
         }
 

@@ -50,11 +50,12 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
     <PackageReference Include="BuildBundlerMinifier" Version="3.2.449" />
+    <PackageReference Include="Markdig" Version="0.24.0" />
     <PackageReference Include="MediatR" Version="9.0.0" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="5.0.6" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="5.0.6" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" Version="5.0.6" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="5.0.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="5.0.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" Version="5.0.7" />
     
     <PackageReference Include="Microsoft.AspNetCore.Rewrite" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="5.0.0" />
@@ -75,6 +76,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="Areas\Community\Views\Forum\CreateEditPostWrapper.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Areas\Community\Views\_ViewImports.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Areas\Community\Views\_ViewStart.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Areas\Gamification\Views\_ViewImports.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
@@ -112,6 +122,12 @@
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Areas\Staff\Views\FeaturedContent\_List.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Areas\Staff\Views\ForumGroup\CreateEditWrapper.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Areas\Staff\Views\ForumCategory\CreateEditWrapper.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Areas\Staff\Views\GamificationLevel\CreateEditWrapper.cshtml">
@@ -175,6 +191,9 @@
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Views\Brainstorm\_ViewImports.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Shared\_Pagination.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Views\Shared\_QrCode.cshtml">
@@ -275,6 +294,15 @@
     </Content>
     <Content Update="Views\Team\_ViewImports.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="wwwroot\css\gamificationlevel - Copy %282%29.min.css">
+      <DependentUpon>gamificationlevel.min.css</DependentUpon>
+    </Content>
+    <Content Update="wwwroot\css\gamificationlevel - Copy - Copy.min.css">
+      <DependentUpon>gamificationlevel - Copy.min.css</DependentUpon>
+    </Content>
+    <Content Update="wwwroot\css\gamificationlevel - Copy.min.css">
+      <DependentUpon>gamificationlevel.min.css</DependentUpon>
     </Content>
     <Content Update="wwwroot\css\ratecalculator - Copy.min.css">
       <DependentUpon>ratecalculator.min.css</DependentUpon>

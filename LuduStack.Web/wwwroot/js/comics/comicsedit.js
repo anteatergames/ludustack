@@ -73,9 +73,24 @@
         bindDateTimePickers();
         bindBtnSaveForm();
 
-        bindChangeImage();
-
         bindCropper();
+
+        bindChangeImage();
+    }
+
+    function bindCropper() {
+        var images = document.querySelectorAll(selectors.imageListItem);
+
+        for (var i = 0; i < images.length; i++) {
+            croppers.push(new Cropper(images[i], {
+                aspectRatio: 40 / 21,
+                viewMode: 3,
+                autoCropArea: 1,
+                zoomOnWheel: false
+            }));
+
+            images[i].dataset.cropperIndex = i;
+        }
     }
 
     function bindChangeImage() {
@@ -99,22 +114,6 @@
 
         element.dataset.changed = true;
     };
-
-    function bindCropper() {
-        var images = document.querySelectorAll(selectors.imageListItem);
-        var i;
-
-        for (i = 0; i < images.length; i++) {
-            croppers.push(new Cropper(images[i], {
-                aspectRatio: 40 / 21,
-                viewMode: 3,
-                autoCropArea: 1,
-                zoomOnWheel: false
-            }));
-
-            images[i].dataset.cropperIndex = i;
-        }
-    }
 
     function uploadCroppedImages(callback) {
         var imagesChanged = objs.inputImageListItem.filter(function (index) {

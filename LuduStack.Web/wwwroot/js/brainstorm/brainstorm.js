@@ -109,14 +109,14 @@
         objs.container.on('click', '.brainstorm-button', function () {
             var btn = $(this);
             var item = btn.closest('.brainstorm-item');
-            var id = item.data('id');
+            var ideaId = item.data('id');
             var vote = btn.data('vote');
             var sameVote = item.data('currentuservote') === vote;
 
             if (canInteract === true && !sameVote) {
                 var url = rootUrl + "/vote";
 
-                return $.post(url, { votingItemId: id, voteValue: vote }).then(function (response) {
+                return $.post(url, { ideaId, vote }).then(function (response) {
                     if (response.success === true) {
                         location.reload();
                     }

@@ -1549,7 +1549,7 @@
     <value>membros</value>
     <comment>Team</comment>
   </data>
-  <data name="quote" xml:space="preserve">
+  <data name="quote phrase" xml:space="preserve">
     <value>frase de efeito</value>
     <comment>Team</comment>
   </data>
@@ -3203,5 +3203,153 @@
   <data name="There are no items in this gallery, yet." xml:space="preserve">
     <value>Não existem itens nessa galeria, ainda.</value>
     <comment>Generic</comment>
+  </data>
+  <data name="hours ago" xml:space="preserve">
+    <value>horas atrás</value>
+    <comment>RelativeTime</comment>
+  </data>
+  <data name="by {0} {1}" xml:space="preserve">
+    <value>por {0} {1}</value>
+    <comment>Generic</comment>
+  </data>
+  <data name="minutes ago" xml:space="preserve">
+    <value>minutos atrás</value>
+    <comment>RelativeTime</comment>
+  </data>
+  <data name="months ago" xml:space="preserve">
+    <value>meses atrás</value>
+    <comment>RelativeTime</comment>
+  </data>
+  <data name="an hour ago" xml:space="preserve">
+    <value>uma hora atrás</value>
+    <comment>RelativeTime</comment>
+  </data>
+  <data name="a minute ago" xml:space="preserve">
+    <value>um minuto atrás</value>
+    <comment>RelativeTime</comment>
+  </data>
+  <data name="one month ago" xml:space="preserve">
+    <value>um mês atrás</value>
+    <comment>RelativeTime</comment>
+  </data>
+  <data name="one second ago" xml:space="preserve">
+    <value>um segundo atrás</value>
+    <comment>RelativeTime</comment>
+  </data>
+  <data name="one week ago" xml:space="preserve">
+    <value>uma semana atrás</value>
+    <comment>RelativeTime</comment>
+  </data>
+  <data name="one year ago" xml:space="preserve">
+    <value>um ano atrás</value>
+    <comment>RelativeTime</comment>
+  </data>
+  <data name="seconds ago" xml:space="preserve">
+    <value>segundos atrás</value>
+    <comment>RelativeTime</comment>
+  </data>
+  <data name="weeks ago" xml:space="preserve">
+    <value>semanas atrás</value>
+    <comment>RelativeTime</comment>
+  </data>
+  <data name="years ago" xml:space="preserve">
+    <value>anos atrás</value>
+    <comment>RelativeTime</comment>
+  </data>
+  <data name="days ago" xml:space="preserve">
+    <value>dias atrás</value>
+    <comment>RelativeTime</comment>
+  </data>
+  <data name="yesterday" xml:space="preserve">
+    <value>ontem</value>
+    <comment>RelativeTime</comment>
+  </data>
+  <data name="Posted by {0} on {1}, {2}" xml:space="preserve">
+    <value>Postado por {0} em {1}, {2}</value>
+    <comment>Forum</comment>
+  </data>
+  <data name="{0} answered {1}" xml:space="preserve">
+    <value>{0} respondeu {1}</value>
+    <comment>Forum</comment>
+  </data>
+  <data name="quote" xml:space="preserve">
+    <value>citar</value>
+    <comment>Forum</comment>
+  </data>
+  <data name="You typed nothing!" xml:space="preserve">
+    <value>Você não digitou nada!</value>
+    <comment>Forum</comment>
+  </data>
+  <data name="Your topic must have a title!" xml:space="preserve">
+    <value>Seu tópico precisa ter um título!</value>
+    <comment>Forum</comment>
+  </data>
+  <data name="{0} must have at least {1} characters!" xml:space="preserve">
+    <value>{0} deve ter no mínimo {1} caracteres!</value>
+    <comment>Forum</comment>
+  </data>
+  <data name="You must type at least two characters!" xml:space="preserve">
+    <value>Você deve digitar ao menos dois caracteres!</value>
+    <comment>Forum</comment>
+  </data>
+  <data name="answered {0}" xml:space="preserve">
+    <value>respondeu {0}</value>
+    <comment>Forum</comment>
+  </data>
+  <data name="reply" xml:space="preserve">
+    <value>responder</value>
+    <comment>Forum</comment>
+  </data>
+  <data name="You need to be logged in to be able to vote on posts." xml:space="preserve">
+    <value>Você precisa estar logado para poder votar nos posts.</value>
+    <comment>Forum</comment>
+  </data>
+  <data name="answers" xml:space="preserve">
+    <value>respostas</value>
+    <comment>Forum</comment>
+  </data>
+  <data name="Interact with your fellow game devs." xml:space="preserve">
+    <value>Interaja com seus colegas gamedevs.</value>
+    <comment>Forum</comment>
+  </data>
+  <data name="most recent" xml:space="preserve">
+    <value>mais recente</value>
+    <comment>Forum</comment>
+  </data>
+  <data name="topics" xml:space="preserve">
+    <value>tópicos</value>
+    <comment>Forum</comment>
+  </data>
+  <data name="views" xml:space="preserve">
+    <value>views</value>
+    <comment>Forum</comment>
+  </data>
+  <data name="There are no Forums here!" xml:space="preserve">
+    <value>Não existem Forums aqui!</value>
+    <comment>Forum</comment>
+  </data>
+  <data name="{0} topics here" xml:space="preserve">
+    <value>{0} tópicos aqui</value>
+    <comment>Forum</comment>
+  </data>
+  <data name="New Topic" xml:space="preserve">
+    <value>Novo Tópico</value>
+    <comment>Forum</comment>
+  </data>
+  <data name="Page {0}" xml:space="preserve">
+    <value>Página {0}</value>
+    <comment>Pagination</comment>
+  </data>
+  <data name="Replying to {0}" xml:space="preserve">
+    <value>Em resposta a {0}</value>
+    <comment>Forum</comment>
+  </data>
+  <data name="answer" xml:space="preserve">
+    <value>responder</value>
+    <comment>Forum</comment>
+  </data>
+  <data name="report" xml:space="preserve">
+    <value>reportar</value>
+    <comment>Forum</comment>
   </data>
 </root>

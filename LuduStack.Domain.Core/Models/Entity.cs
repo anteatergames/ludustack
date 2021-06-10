@@ -28,8 +28,15 @@ namespace LuduStack.Domain.Core.Models
         {
             Entity compareTo = obj as Entity;
 
-            if (ReferenceEquals(this, compareTo)) return true;
-            if (ReferenceEquals(null, compareTo)) return false;
+            if (ReferenceEquals(this, compareTo))
+            {
+                return true;
+            }
+
+            if (ReferenceEquals(null, compareTo))
+            {
+                return false;
+            }
 
             return Id.Equals(compareTo.Id);
         }

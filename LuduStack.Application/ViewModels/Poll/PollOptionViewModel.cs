@@ -12,13 +12,7 @@ namespace LuduStack.Application.ViewModels.Poll
 
         public decimal VotePercentage { get; set; }
 
-        public string VotePercentageText
-        {
-            get
-            {
-                return VotePercentage.ToString("n2", new CultureInfo("en-us"));
-            }
-        }
+        public string VotePercentageText => VotePercentage.ToString("n2", new CultureInfo("en-us"));
 
         public bool CurrentUserVoted { get; set; }
     }

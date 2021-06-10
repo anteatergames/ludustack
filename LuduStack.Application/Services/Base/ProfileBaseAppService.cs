@@ -169,7 +169,7 @@ namespace LuduStack.Application.Services
             UserProfileEssentialVo authorProfile = await GetCachedEssentialProfileByUserId(vm.UserId);
             if (authorProfile != null)
             {
-                vm.AuthorPicture = UrlFormatter.ProfileImage(vm.UserId, 43);
+                vm.AuthorPicture = UrlFormatter.ProfileImage(vm.UserId, Constants.SmallAvatarSize);
                 vm.AuthorName = authorProfile.Name;
                 vm.UserHandler = authorProfile.Handler;
             }
@@ -190,7 +190,7 @@ namespace LuduStack.Application.Services
             UserProfileEssentialVo authorProfile = userProfiles.FirstOrDefault(x => x.UserId == vm.UserId);
             if (authorProfile != null)
             {
-                vm.AuthorPicture = UrlFormatter.ProfileImage(vm.UserId, 43);
+                vm.AuthorPicture = UrlFormatter.ProfileImage(vm.UserId, Constants.SmallAvatarSize);
                 vm.AuthorName = authorProfile.Name;
                 vm.UserHandler = authorProfile.Handler;
             }
@@ -230,12 +230,12 @@ namespace LuduStack.Application.Services
 
         private string FormatProfileCacheId(Guid userId)
         {
-            return String.Format("profile_{0}", userId.ToString());
+            return string.Format("profile_{0}", userId.ToString());
         }
 
         private string FormatObjectCacheId(string preffix, Guid id)
         {
-            return String.Format("{0}_{1}", preffix, id.ToString());
+            return string.Format("{0}_{1}", preffix, id.ToString());
         }
     }
 }

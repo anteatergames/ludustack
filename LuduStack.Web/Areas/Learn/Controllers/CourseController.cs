@@ -3,7 +3,6 @@ using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels.Study;
 using LuduStack.Domain.ValueObjects;
 using LuduStack.Web.Areas.Learn.Controllers.Base;
-using LuduStack.Web.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -142,8 +141,6 @@ namespace LuduStack.Web.Areas.Learn.Controllers
             OperationResultVo<CourseViewModel> castResult = serviceResult as OperationResultVo<CourseViewModel>;
 
             model = castResult.Value;
-
-            model.Description = ContentFormatter.FormatCFormatTextAreaBreaks(model.Description);
 
             return View("CourseCreateEditWrapper", model);
         }
@@ -333,14 +330,14 @@ namespace LuduStack.Web.Areas.Learn.Controllers
 
         private void FormatToShow(CourseViewModel model)
         {
-            model.Description = String.IsNullOrWhiteSpace(model.Description) ? SharedLocalizer["No Description to show."] : model.Description.Replace("\n", "<br />");
+            model.Description = string.IsNullOrWhiteSpace(model.Description) ? SharedLocalizer["No Description to show."] : model.Description.Replace("\n", "<br />");
         }
 
         private void FormatToShow(List<StudyPlanViewModel> castResult)
         {
             foreach (StudyPlanViewModel plan in castResult)
             {
-                plan.Description = String.IsNullOrWhiteSpace(plan.Description) ? SharedLocalizer["No Description to show."] : plan.Description.Replace("\n", "<br />");
+                plan.Description = string.IsNullOrWhiteSpace(plan.Description) ? SharedLocalizer["No Description to show."] : plan.Description.Replace("\n", "<br />");
             }
         }
 

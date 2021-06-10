@@ -10,7 +10,7 @@ namespace LuduStack.Domain.Messaging.Queries.Game
 {
     public class GetGameIdsQuery : GetIdsBaseQuery<Models.Game>
     {
-        public GetGameIdsQuery() : base()
+        public GetGameIdsQuery()
         {
         }
 

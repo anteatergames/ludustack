@@ -6,31 +6,51 @@ namespace LuduStack.Domain.Core.Extensions
 {
     public static class ObjectExtensions
     {
-        private static readonly MethodInfo CloneMethod = typeof(Object).GetMethod("MemberwiseClone", BindingFlags.NonPublic | BindingFlags.Instance);
+        private static readonly MethodInfo CloneMethod = typeof(object).GetMethod("MemberwiseClone", BindingFlags.NonPublic | BindingFlags.Instance);
 
         public static bool IsPrimitive(this Type type)
         {
-            if (type == typeof(String)) return true;
+            if (type == typeof(string))
+            {
+                return true;
+            }
+
             return (type.IsValueType && type.IsPrimitive);
         }
 
         public static T Copy<T>(this T original)
         {
-            return (T)Copy((Object)original);
+            return (T)Copy((object)original);
         }
 
-        public static Object Copy(this Object originalObject)
+        public static object Copy(this object originalObject)
         {
-            return InternalCopy(originalObject, new Dictionary<Object, Object>(new ReferenceEqualityComparer()));
+            return InternalCopy(originalObject, new Dictionary<object, object>(new ReferenceEqualityComparer()));
         }
 
-        private static Object InternalCopy(Object originalObject, IDictionary<Object, Object> visited)
+        private static object InternalCopy(object originalObject, IDictionary<object, object> visited)
         {
-            if (originalObject == null) return null;
+            if (originalObject == null)
+            {
+                return null;
+            }
+
             Type typeToReflect = originalObject.GetType();
-            if (IsPrimitive(typeToReflect)) return originalObject;
-            if (visited.ContainsKey(originalObject)) return visited[originalObject];
-            if (typeof(Delegate).IsAssignableFrom(typeToReflect)) return null;
+            if (IsPrimitive(typeToReflect))
+            {
+                return originalObject;
+            }
+
+            if (visited.ContainsKey(originalObject))
+            {
+                return visited[originalObject];
+            }
+
+            if (typeof(Delegate).IsAssignableFrom(typeToReflect))
+            {
+                return null;
+            }
+
             object cloneObject = CloneMethod.Invoke(originalObject, null);
             if (typeToReflect.IsArray)
             {
@@ -60,8 +80,16 @@ namespace LuduStack.Domain.Core.Extensions
         {
             foreach (FieldInfo fieldInfo in typeToReflect.GetFields(bindingFlags))
             {
-                if (filter != null && !filter(fieldInfo)) continue;
-                if (IsPrimitive(fieldInfo.FieldType)) continue;
+                if (filter != null && !filter(fieldInfo))
+                {
+                    continue;
+                }
+
+                if (IsPrimitive(fieldInfo.FieldType))
+                {
+                    continue;
+                }
+
                 object originalFieldValue = fieldInfo.GetValue(originalObject);
                 object clonedFieldValue = InternalCopy(originalFieldValue, visited);
                 fieldInfo.SetValue(cloneObject, clonedFieldValue);
@@ -69,7 +97,7 @@ namespace LuduStack.Domain.Core.Extensions
         }
     }
 
-    public class ReferenceEqualityComparer : EqualityComparer<Object>
+    public class ReferenceEqualityComparer : EqualityComparer<object>
     {
         public override bool Equals(object x, object y)
         {
@@ -78,7 +106,11 @@ namespace LuduStack.Domain.Core.Extensions
 
         public override int GetHashCode(object obj)
         {
-            if (obj == null) return 0;
+            if (obj == null)
+            {
+                return 0;
+            }
+
             return obj.GetHashCode();
         }
     }
@@ -87,9 +119,16 @@ namespace LuduStack.Domain.Core.Extensions
     {
         public static void ForEach(this Array array, Action<Array, int[]> action)
         {
-            if (array.LongLength == 0) return;
+            if (array.LongLength == 0)
+            {
+                return;
+            }
+
             ArrayTraverse walker = new ArrayTraverse(array);
-            do action(array, walker.Position);
+            do
+            {
+                action(array, walker.Position);
+            }
             while (walker.Step());
         }
     }

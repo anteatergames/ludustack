@@ -5,7 +5,7 @@ namespace LuduStack.Domain.Messaging.Queries.UserProfile
 {
     public class CountUserProfileQuery : CountBaseQuery<Models.UserProfile>
     {
-        public CountUserProfileQuery() : base()
+        public CountUserProfileQuery()
         {
         }
     }

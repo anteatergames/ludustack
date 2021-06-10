@@ -130,6 +130,8 @@ namespace LuduStack.Application.Services
                     vm.Reference = vm.Id.ToString();
                 }
 
+                vm.Description = ContentFormatter.FormatContentToShow(vm.Description);
+
                 return new OperationResultVo<JobPositionViewModel>(vm);
             }
             catch (Exception ex)

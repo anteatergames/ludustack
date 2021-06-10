@@ -6,7 +6,6 @@ using LuduStack.Infra.CrossCutting.Identity.Models;
 using LuduStack.Infra.CrossCutting.Identity.Models.ManageViewModels;
 using LuduStack.Infra.CrossCutting.Identity.Services;
 using LuduStack.Web.Areas.Member.Controllers.Base;
-using LuduStack.Web.Enums;
 using LuduStack.Web.Exceptions;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
@@ -142,7 +141,7 @@ namespace LuduStack.Web.Areas.Member.Controllers
 
                 await userPreferencesAppService.Save(CurrentUserId, vm);
 
-                SetPreferencesCookies(vm);
+                SetUserPreferences(vm);
 
                 SetAspNetCultureCookie(vm.UiLanguage);
 
@@ -544,11 +543,6 @@ namespace LuduStack.Web.Areas.Member.Controllers
         }
 
         #region Helpers
-
-        private void SetPreferencesCookies(UserPreferencesViewModel preferences)
-        {
-            SetCookieValue(SessionValues.PostLanguage, preferences.UiLanguage.ToString(), 7);
-        }
 
         private void AddErrors(IdentityResult result)
         {

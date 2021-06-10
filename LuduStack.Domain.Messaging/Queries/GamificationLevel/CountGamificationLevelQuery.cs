@@ -7,7 +7,7 @@ namespace LuduStack.Domain.Messaging.Queries.GamificationLevel
 {
     public class CountGamificationLevelQuery : CountBaseQuery<Models.GamificationLevel>
     {
-        public CountGamificationLevelQuery() : base()
+        public CountGamificationLevelQuery()
         {
         }
 

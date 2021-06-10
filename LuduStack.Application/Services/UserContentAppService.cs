@@ -246,7 +246,9 @@ namespace LuduStack.Application.Services
         {
             try
             {
-                List<UserContent> allModels = await mediator.Query<GetActivityFeedQuery, List<UserContent>>(new GetActivityFeedQuery(vm.GameId, vm.UserId, vm.SingleContentId, vm.Languages, vm.OldestId, vm.OldestDate, vm.ArticlesOnly, vm.Count));
+                GetActivityFeedQueryOptions queryOptions = vm.ToQueryOptions();
+
+                List<UserContent> allModels = await mediator.Query<GetActivityFeedQuery, List<UserContent>>(new GetActivityFeedQuery(queryOptions));
 
                 IEnumerable<UserContentViewModel> viewModels = mapper.Map<IEnumerable<UserContent>, IEnumerable<UserContentViewModel>>(allModels);
 
@@ -276,7 +278,7 @@ namespace LuduStack.Application.Services
                         item.UserHandler = authorProfile.Handler;
                     }
 
-                    item.AuthorPicture = UrlFormatter.ProfileImage(item.UserId, 43);
+                    item.AuthorPicture = UrlFormatter.ProfileImage(item.UserId, Constants.SmallAvatarSize);
 
                     item.IsArticle = !string.IsNullOrWhiteSpace(item.Title) && !string.IsNullOrWhiteSpace(item.Introduction);
 
@@ -293,6 +295,22 @@ namespace LuduStack.Application.Services
                     LoadAuthenticatedData(vm.CurrentUserId, item, userProfiles);
 
                     item.Content = item.Content.ReplaceCloudname();
+
+                    foreach (CommentViewModel comment in item.Comments)
+                    {
+                        comment.Text = ContentFormatter.FormatHashTagsToShow(comment.Text);
+                    }
+
+                    item.Permissions.CanEdit = !item.HasPoll && (item.UserId == vm.CurrentUserId || vm.CurrentUserIsAdmin);
+
+                    item.Permissions.CanDelete = item.UserId == vm.CurrentUserId || vm.CurrentUserIsAdmin;
+
+                    item.Content = ContentFormatter.FormatContentToShow(item.Content);
+                    if (item.FeaturedMediaType == MediaType.Youtube)
+                    {
+                        item.FeaturedImageResponsive = ContentFormatter.GetYoutubeVideoId(item.FeaturedImage);
+                        item.FeaturedImageLquip = UrlFormatter.FormatFeaturedImageUrl(Guid.Empty, Constants.DefaultFeaturedImageLquip, ImageRenderType.LowQuality);
+                    }
                 }
 
                 return viewModels;
@@ -526,14 +544,14 @@ namespace LuduStack.Application.Services
 
         private static void SetFeaturedImageUrls(UserContentViewModel item, string selectedFeaturedMedia)
         {
-            item.FeaturedImage = ContentHelper.FormatFeaturedImageUrl(item.UserId, selectedFeaturedMedia, ImageRenderType.Full);
-            item.FeaturedImageResponsive = ContentHelper.FormatFeaturedImageUrl(item.UserId, selectedFeaturedMedia, ImageRenderType.Responsive);
-            item.FeaturedImageLquip = ContentHelper.FormatFeaturedImageUrl(item.UserId, selectedFeaturedMedia, ImageRenderType.LowQuality);
+            item.FeaturedImage = UrlFormatter.FormatFeaturedImageUrl(item.UserId, selectedFeaturedMedia, ImageRenderType.Full);
+            item.FeaturedImageResponsive = UrlFormatter.FormatFeaturedImageUrl(item.UserId, selectedFeaturedMedia, ImageRenderType.Responsive);
+            item.FeaturedImageLquip = UrlFormatter.FormatFeaturedImageUrl(item.UserId, selectedFeaturedMedia, ImageRenderType.LowQuality);
         }
 
         private static void SetFeaturedVideoUrl(UserContentViewModel item, string selectedFeaturedMedia)
         {
-            item.FeaturedImage = ContentHelper.FormatFeaturedVideoUrl(item.UserId, selectedFeaturedMedia);
+            item.FeaturedImage = UrlFormatter.FormatFeaturedVideoUrl(item.UserId, selectedFeaturedMedia);
         }
     }
 }

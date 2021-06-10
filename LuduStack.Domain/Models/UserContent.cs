@@ -37,7 +37,7 @@ namespace LuduStack.Domain.Models
 
         public virtual List<UserContentRating> Ratings { get; set; }
 
-        public UserContent() : base()
+        public UserContent()
         {
             Ratings = new List<UserContentRating>();
         }

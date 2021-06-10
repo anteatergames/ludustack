@@ -1,13 +1,10 @@
-﻿using LuduStack.Application;
-using LuduStack.Application.Helpers;
+﻿using LuduStack.Application.Helpers;
 using LuduStack.Application.Interfaces;
-using LuduStack.Application.ViewModels;
 using LuduStack.Application.ViewModels.Content;
 using LuduStack.Application.ViewModels.Jobs;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Core.Extensions;
 using LuduStack.Infra.CrossCutting.Identity.Models;
-using LuduStack.Web.Helpers;
 using LuduStack.Web.ViewComponents.Base;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -51,16 +48,15 @@ namespace LuduStack.Web.ViewComponents
                 Languages = userLanguages,
                 OldestId = oldestId,
                 OldestDate = oldestDate,
-                ArticlesOnly = articlesOnly
+                ArticlesOnly = articlesOnly,
+                CurrentUserIsAdmin = CurrentUserIsAdmin
             };
 
             IEnumerable<UserContentViewModel> model = await _userContentAppService.GetActivityFeed(vm);
 
-            bool userIsAdmin = User.Identity.IsAuthenticated && User.IsInRole(Roles.Administrator.ToString());
-
             foreach (UserContentViewModel item in model)
             {
-                FillMissingInformation(userIsAdmin, item);
+                FillMissingInformation(CurrentUserIsAdmin, item);
             }
 
             if (model.Any())
@@ -101,20 +97,20 @@ namespace LuduStack.Web.ViewComponents
                     break;
             }
 
-            FormatCommon(userIsAdmin, item);
+            //FormatCommon(userIsAdmin, item);
         }
 
-        private void FormatCommon(bool userIsAdmin, UserContentViewModel item)
-        {
-            foreach (CommentViewModel comment in item.Comments)
-            {
-                comment.Text = ContentFormatter.FormatHashTagsToShow(comment.Text);
-            }
+        //private void FormatCommon(bool userIsAdmin, UserContentViewModel item)
+        //{
+        //    foreach (CommentViewModel comment in item.Comments)
+        //    {
+        //        comment.Text = ContentFormatter.FormatHashTagsToShow(comment.Text);
+        //    }
 
-            item.Permissions.CanEdit = !item.HasPoll && (item.UserId == CurrentUserId || userIsAdmin);
+        //    item.Permissions.CanEdit = !item.HasPoll && (item.UserId == CurrentUserId || userIsAdmin);
 
-            item.Permissions.CanDelete = item.UserId == CurrentUserId || userIsAdmin;
-        }
+        //    item.Permissions.CanDelete = item.UserId == CurrentUserId || userIsAdmin;
+        //}
 
         private void FormatComicStripPost(UserContentViewModel item)
         {
@@ -123,12 +119,12 @@ namespace LuduStack.Web.ViewComponents
 
         private void FormatPost(UserContentViewModel item)
         {
-            item.Content = ContentFormatter.FormatContentToShow(item.Content);
-            if (item.FeaturedMediaType == MediaType.Youtube)
-            {
-                item.FeaturedImageResponsive = ContentFormatter.GetYoutubeVideoId(item.FeaturedImage);
-                item.FeaturedImageLquip = ContentHelper.FormatFeaturedImageUrl(Guid.Empty, Constants.DefaultFeaturedImageLquip, ImageRenderType.LowQuality);
-            }
+            //item.Content = ContentFormatter.FormatContentToShow(item.Content);
+            //if (item.FeaturedMediaType == MediaType.Youtube)
+            //{
+            //    item.FeaturedImageResponsive = ContentFormatter.GetYoutubeVideoId(item.FeaturedImage);
+            //    item.FeaturedImageLquip = UrlFormatter.FormatFeaturedImageUrl(Guid.Empty, Constants.DefaultFeaturedImageLquip, ImageRenderType.LowQuality);
+            //}
 
             item.Url = Url.Action("details", "content", new { area = string.Empty, id = item.Id }, (string)ViewData["protocol"], (string)ViewData["host"]);
         }
@@ -147,7 +143,7 @@ namespace LuduStack.Web.ViewComponents
                 recruiting = bool.Parse(teamData[4] ?? "False");
             }
 
-            string postTemplate = ContentFormatter.FormatUrlContentToShow(item.UserContentType);
+            string postTemplate = ContentHelper.GetSpecialPostTemplate(item.UserContentType);
             string translatedText = SharedLocalizer["A new team has been created with {0} members.", memberCount].ToString();
 
             if (recruiting)
@@ -155,7 +151,7 @@ namespace LuduStack.Web.ViewComponents
                 translatedText = SharedLocalizer["A team is recruiting!", memberCount].ToString();
             }
 
-            item.Content = String.Format(postTemplate, translatedText, name, motto);
+            item.Content = string.Format(postTemplate, translatedText, name, motto);
             item.Url = Url.Action("Details", "Team", new { area = string.Empty, teamId = id }, (string)ViewData["protocol"], (string)ViewData["host"]);
             item.Language = SupportedLanguage.English;
         }
@@ -176,10 +172,10 @@ namespace LuduStack.Web.ViewComponents
                 language = obj.Language;
             }
 
-            string postTemplate = ContentFormatter.FormatUrlContentToShow(item.UserContentType);
+            string postTemplate = ContentHelper.GetSpecialPostTemplate(item.UserContentType);
             string translatedText = SharedLocalizer["A new job position for {0}({1}) is open for applications.", SharedLocalizer[obj.WorkType.ToDisplayName()], obj.Location].ToString();
 
-            item.Content = String.Format(postTemplate, translatedText, SharedLocalizer[obj.WorkType.ToDisplayName()], obj.Location);
+            item.Content = string.Format(postTemplate, translatedText, SharedLocalizer[obj.WorkType.ToDisplayName()], obj.Location);
             item.Url = Url.Action("Details", "JobPosition", new { area = "Work", id = obj.Id.ToString() }, (string)ViewData["protocol"], (string)ViewData["host"]);
             item.Language = language;
         }

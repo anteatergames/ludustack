@@ -8,7 +8,7 @@ namespace LuduStack.Application.ViewModels.Localization
         public List<ContributorViewModel> Contributors { get; set; }
         public List<TranslationStatsLanguageViewModel> Languages { get; set; }
 
-        public TranslationStatsViewModel() : base()
+        public TranslationStatsViewModel()
         {
             Contributors = new List<ContributorViewModel>();
             Languages = new List<TranslationStatsLanguageViewModel>();
@@ -40,7 +40,7 @@ namespace LuduStack.Application.ViewModels.Localization
             }
         }
 
-        public TranslationStatsLanguageViewModel() : base()
+        public TranslationStatsLanguageViewModel()
         {
         }
     }

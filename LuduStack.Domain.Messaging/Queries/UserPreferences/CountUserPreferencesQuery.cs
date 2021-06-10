@@ -5,9 +5,6 @@ namespace LuduStack.Domain.Messaging.Queries.UserPreferences
 {
     public class CountUserPreferencesQuery : CountBaseQuery<Models.UserPreferences>
     {
-        public CountUserPreferencesQuery() : base()
-        {
-        }
     }
 
     public class CountUserPreferencesQueryHandler : CountBaseQueryHandler<CountUserPreferencesQuery, Models.UserPreferences, IUserPreferencesRepository>

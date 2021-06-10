@@ -10,7 +10,7 @@ namespace LuduStack.Domain.Messaging.Queries.UserProfile
 {
     public class GetUserProfileIdsQuery : GetIdsBaseQuery<Models.UserProfile>
     {
-        public GetUserProfileIdsQuery() : base()
+        public GetUserProfileIdsQuery()
         {
         }
 

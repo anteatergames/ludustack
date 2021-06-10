@@ -40,13 +40,7 @@ namespace LuduStack.Application.ViewModels.User
 
         #region ExternalHandles
 
-        public bool HasOtherProfiles
-        {
-            get
-            {
-                return ExternalLinks.Any(x => x.Type == ExternalLinkType.GameDev);
-            }
-        }
+        public bool HasOtherProfiles => ExternalLinks.Any(x => x.Type == ExternalLinkType.GameDev);
 
         #endregion ExternalHandles
 
@@ -77,23 +71,9 @@ namespace LuduStack.Application.ViewModels.User
 
         public int XpCurrentLevelMax { get; set; }
 
-        public int XpToNextLevel
-        {
-            get
-            {
-                return XpCurrentLevelMax - XpCurrentLevel;
-            }
-        }
+        public int XpToNextLevel => XpCurrentLevelMax - XpCurrentLevel;
 
-        public int PercentageToNextLevel
-        {
-            get
-            {
-                int percentage = (int)Math.Round((double)(100 * XpCurrentLevel) / XpCurrentLevelMax);
-
-                return percentage;
-            }
-        }
+        public int PercentageToNextLevel => (int)Math.Round((double)(100 * XpCurrentLevel) / XpCurrentLevelMax);
 
         public string LevelName { get; set; }
     }

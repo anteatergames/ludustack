@@ -9,7 +9,7 @@ html {
     --color-black: #000;
     --color-white: #fff;
     --color-blue: #45aef1;
-    --color-green: #22af47;
+    --color-green: #00bf9d;
     --color-green-fx: #1a943b;
     --color-yellow: #ffbf36;
     --color-red: #f83f37;
@@ -30,6 +30,58 @@ html {
 a {
     color: var(--color-bg-dark);
 }
+
+    a:active, a:focus, a:hover {
+        outline: 0;
+        text-decoration: none;
+        color: var(--color-green);
+    }
+
+    a.boldlink {
+        font-weight: 500;
+    }
+
+blockquote {
+    border-radius: 3px;
+    position: relative; /*  <--- */
+    font-style: italic;
+    text-align: center;
+    padding: 1rem 1.2rem;
+    width: 80%; /* create space for the quotes */
+    color: #4a4a4a;
+    margin: 1rem auto 2rem;
+    background: #d5e4db;
+}
+    /* -- create the quotation marks -- */
+    blockquote:before,
+    blockquote:after {
+        font-family: 'Font Awesome 5 Free';
+        position: absolute;
+        /* -- inside the relative position of blockquote -- */
+        top: 13px;
+        font-size: 34px;
+        font-weight: 900;
+        color: #d5e4db;
+    }
+
+    blockquote:before {
+        content: "\f10d";
+        margin-right: 13px;
+        right: 100%;
+    }
+
+    blockquote p {
+        text-rendering: optimizeLegibility;
+        color: var(--color-green);
+    }
+
+    blockquote:after {
+        content: "\f10e";
+        margin-left: 13px;
+        left: 100%;
+        top: auto;
+        bottom: 13px;
+    }
 
 .bordered {
     border: 1px solid var(--color-border);
@@ -74,10 +126,13 @@ a {
     color: var(--color-accent);
 }
 
-.skin-ludustack .col-form-label, .skin-ludustack .form-label {
-    color: var(--color-accent);
+.skin-ludustack label.col-form-label, .skin-ludustack label.form-label {
     font-size: 13px;
     font-weight: 600;
+}
+
+.skin-ludustack label.col-form-label, .skin-ludustack label.form-label, .skin-ludustack span.col-form-label i {
+    color: var(--color-accent);
 }
 
 .skin-ludustack .main-header .navbar {
@@ -181,49 +236,52 @@ a {
     border-radius: var(--border-radius);
 }
 
-    .skin-ludustack .sidebar-form input[type="text"],
-    .skin-ludustack .sidebar-form .btn {
-        box-shadow: none;
-        background-color: #242a33;
-        border: 1px solid #242a33;
-        height: 35px;
-    }
-
-    .skin-ludustack .sidebar-form input[type="text"] {
-        color: #fff;
-    }
-
-        .skin-ludustack .sidebar-form input[type="text"]:focus,
-        .skin-ludustack .sidebar-form input[type="text"]:focus + .input-group-btn .btn {
-            color: #fff;
-        }
-
 .skin-ludustack .search-form input[type="text"], .skin-ludustack .search-form .input-group-text {
     background-color: #242a33;
     border: 1px solid #242a33;
 }
+
+.skin-ludustack .sidebar-form input[type="text"],
+.skin-ludustack .sidebar-form .btn {
+    box-shadow: none;
+    background-color: #242a33;
+    border: 1px solid #242a33;
+    height: 35px;
+}
+
+.skin-ludustack .sidebar-form input[type="text"] {
+    color: #fff;
+}
+
+    .skin-ludustack .sidebar-form input[type="text"]:focus,
+    .skin-ludustack .sidebar-form input[type="text"]:focus + .input-group-btn .btn {
+        color: #fff;
+    }
 
 .skin-ludustack .search-form input[type="text"],
 .skin-ludustack .search-form .btn {
     box-shadow: none;
     height: 35px;
     border: none;
+    border-radius: 0;
 }
 
-    .skin-ludustack .search-form input[type="text"]:hover {
-        border-bottom: 2px solid gray;
+    .skin-ludustack .search-form input[type="text"]:focus,
+    .skin-ludustack .search-form input[type="text"]:focus + .input-group-btn .btn {
+        border-bottom: 2px solid #ffbf36;
         margin-top: 1px;
     }
 
-    .skin-ludustack .search-form input[type="text"]:focus {
-        color: #fff;
-    }
+.skin-ludustack .search-form:hover input[type="text"] {
+    border-bottom: 2px solid white;
+    margin-top: 1px;
+}
 
-        .skin-ludustack .search-form input[type="text"]:focus,
-        .skin-ludustack .search-form input[type="text"]:focus + .input-group-btn .btn {
-            border-bottom: 2px solid #ffbf36;
-            margin-top: 1px;
-        }
+    .skin-ludustack .search-form:hover input[type="text"],
+    .skin-ludustack .search-form:hover input[type="text"]::placeholder,
+    .skin-ludustack .search-form:hover #btn-search {
+        color: white;
+    }
 
 .skin-ludustack .btn-blue {
     background-color: #232323;
@@ -412,7 +470,7 @@ a {
 }
 
 .text-green, .text-success {
-    color: #22af47;
+    color: var(--color-green);
 }
 
 .text-orange {
@@ -466,3 +524,13 @@ a {
         color: var(--color-white);
         opacity: 1;
     }
+
+.pagination .page-item.active .page-link {
+    color: var(--color-white);
+    background-color: var(--color-green);
+    border-color: var(--color-green);
+}
+
+.pagination .page-item .page-link {
+    color: var(--color-green);
+}

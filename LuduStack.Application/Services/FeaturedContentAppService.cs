@@ -1,6 +1,5 @@
 ﻿using AutoMapper.QueryableExtensions;
 using LuduStack.Application.Formatters;
-using LuduStack.Application.Helpers;
 using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels.Content;
 using LuduStack.Application.ViewModels.FeaturedContent;
@@ -45,8 +44,8 @@ namespace LuduStack.Application.Services
                     string[] imageSplit = vm.ImageUrl.Split("/");
                     Guid userId = vm.OriginalUserId == Guid.Empty ? vm.UserId : vm.OriginalUserId;
 
-                    vm.FeaturedImage = ContentHelper.FormatFeaturedImageUrl(userId, imageSplit.Last(), ImageRenderType.Full);
-                    vm.FeaturedImageLquip = ContentHelper.FormatFeaturedImageUrl(userId, imageSplit.Last(), ImageRenderType.LowQuality);
+                    vm.FeaturedImage = UrlFormatter.FormatFeaturedImageUrl(userId, imageSplit.Last(), ImageRenderType.Full);
+                    vm.FeaturedImageLquip = UrlFormatter.FormatFeaturedImageUrl(userId, imageSplit.Last(), ImageRenderType.LowQuality);
                 }
 
                 return model;

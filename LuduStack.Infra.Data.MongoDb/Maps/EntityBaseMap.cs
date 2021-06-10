@@ -1,9 +1,7 @@
 ﻿using LuduStack.Domain.Core.Models;
 using LuduStack.Domain.Models;
-using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.IdGenerators;
-using MongoDB.Bson.Serialization.Serializers;
 using System;
 
 namespace LuduStack.Infra.Data.MongoDb.Maps
@@ -29,6 +27,8 @@ namespace LuduStack.Infra.Data.MongoDb.Maps
                 map.AddKnownType(typeof(PollOption));
                 map.AddKnownType(typeof(PollVote));
                 map.AddKnownType(typeof(BillRate));
+                map.AddKnownType(typeof(ForumCategory));
+                map.AddKnownType(typeof(ForumPost));
             });
         }
     }
