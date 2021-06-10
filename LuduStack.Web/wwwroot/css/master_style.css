@@ -693,8 +693,8 @@ ul.flexbox {
 
 .dropdown-toggle {
     cursor: pointer;
-    -webkit-transition: .2s linear;
-    transition: .2s linear;
+    -webkit-transition: 0.2s linear;
+    transition: 0.2s linear;
 }
 
 .dropdown-item i {
@@ -786,8 +786,8 @@ ul.flexbox {
 .media {
     display: block;
     padding: 10px;
-    -webkit-transition: background-color .2s linear;
-    transition: background-color .2s linear;
+    -webkit-transition: background-color 0.2s linear;
+    transition: background-color 0.2s linear;
 }
 
     .media > * {
@@ -1178,7 +1178,7 @@ ul.flexbox {
 }
 
     .info-box-icon:not(.skeleton) {
-        background: rgba(0, 0, 0, .2);
+        background: rgba(0, 0, 0, 0.2);
     }
 
     .info-box-icon.push-bottom {

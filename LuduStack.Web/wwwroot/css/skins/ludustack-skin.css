@@ -236,27 +236,27 @@ blockquote {
     border-radius: var(--border-radius);
 }
 
-    .skin-ludustack .sidebar-form input[type="text"],
-    .skin-ludustack .sidebar-form .btn {
-        box-shadow: none;
-        background-color: #242a33;
-        border: 1px solid #242a33;
-        height: 35px;
-    }
-
-    .skin-ludustack .sidebar-form input[type="text"] {
-        color: #fff;
-    }
-
-        .skin-ludustack .sidebar-form input[type="text"]:focus,
-        .skin-ludustack .sidebar-form input[type="text"]:focus + .input-group-btn .btn {
-            color: #fff;
-        }
-
 .skin-ludustack .search-form input[type="text"], .skin-ludustack .search-form .input-group-text {
     background-color: #242a33;
     border: 1px solid #242a33;
 }
+
+.skin-ludustack .sidebar-form input[type="text"],
+.skin-ludustack .sidebar-form .btn {
+    box-shadow: none;
+    background-color: #242a33;
+    border: 1px solid #242a33;
+    height: 35px;
+}
+
+.skin-ludustack .sidebar-form input[type="text"] {
+    color: #fff;
+}
+
+    .skin-ludustack .sidebar-form input[type="text"]:focus,
+    .skin-ludustack .sidebar-form input[type="text"]:focus + .input-group-btn .btn {
+        color: #fff;
+    }
 
 .skin-ludustack .search-form input[type="text"],
 .skin-ludustack .search-form .btn {

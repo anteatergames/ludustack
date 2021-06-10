@@ -39,21 +39,21 @@
 }
 
     .badge-status.badge-proposed {
-        background-color: #9488AD;
+        background-color: #9488ad;
     }
 
     .badge-status.badge-inanalysis {
-        background-color: #BFA200;
+        background-color: #bfa200;
     }
 
     .badge-status.badge-accepted {
-        background-color: #4582FC;
+        background-color: #4582fc;
     }
 
     .badge-status.badge-rejected {
-        background-color: #FB5012;
+        background-color: #fb5012;
     }
 
     .badge-status.badge-implemented {
-        background-color: #03CF99;
+        background-color: #03cf99;
     }

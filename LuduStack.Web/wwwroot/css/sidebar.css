@@ -20,7 +20,7 @@
     z-index: 10;
     bottom: 0;
     left: 0;
-    transition: .2s ease-out;
+    transition: 0.2s ease-out;
     width: 230px;
     background: #fff;
     border-top: 1px solid rgba(120, 130, 140, .13);
@@ -86,7 +86,7 @@
         max-width: 25%;
         height: auto;
         margin: 0 10px;
-        border: 2px solid rgba(56, 154, 240, .27);
+        border: 2px solid rgba(56, 154, 240, 0.27);
     }
 
 .sidebar-collapse .user-panel .image > img {
