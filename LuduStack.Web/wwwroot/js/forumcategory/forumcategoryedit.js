@@ -105,7 +105,7 @@
         image.src = url2;
 
         element.dataset.changed = true;
-    };
+    }
 
     function uploadCroppedImages(callback) {
         var imagesChanged = objs.inputImageListItem.filter(function (index) {

@@ -48,7 +48,7 @@
 
     function bindEditor() {
         var element = document.querySelector('.wysiwygeditor');
-        WYSIWYGEDITOR.BindEditor('.wysiwygeditor').then((id) => {
+        WYSIWYGEDITOR.BindEditor('.wysiwygeditor').then(() => {
             editorId = element.id;
         });
     }

@@ -3,7 +3,6 @@
 
     var selectors = {};
     var objs = {};
-    var canInteract = false;
 
     function setSelectors() {
         selectors.controlsidebar = '.control-sidebar';
@@ -27,8 +26,6 @@
         selectors.ajaxContainer = ajaxContainerSelector;
 
         cacheObjs();
-
-        canInteract = objs.canInteract.val() === 'true';
 
         bindAll();
     }
