@@ -278,7 +278,7 @@ namespace LuduStack.Application.Services
                         item.UserHandler = authorProfile.Handler;
                     }
 
-                    item.AuthorPicture = UrlFormatter.ProfileImage(item.UserId, 43);
+                    item.AuthorPicture = UrlFormatter.ProfileImage(item.UserId, Constants.SmallAvatarSize);
 
                     item.IsArticle = !string.IsNullOrWhiteSpace(item.Title) && !string.IsNullOrWhiteSpace(item.Introduction);
 

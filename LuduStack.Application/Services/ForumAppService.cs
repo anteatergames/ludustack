@@ -178,7 +178,7 @@ namespace LuduStack.Application.Services
                         {
                             forumPost.LatestAnswer.UserHandler = latestPostAuthorProfile.Handler;
                             forumPost.LatestAnswer.AuthorName = latestPostAuthorProfile.Name;
-                            forumPost.LatestAnswer.AuthorPicture = UrlFormatter.ProfileImage(forumPost.LatestAnswer.UserId, 43);
+                            forumPost.LatestAnswer.AuthorPicture = UrlFormatter.ProfileImage(forumPost.LatestAnswer.UserId, Constants.SmallAvatarSize);
                         }
                     }
                 }
@@ -407,7 +407,7 @@ namespace LuduStack.Application.Services
                     {
                         category.LatestForumPost.UserHandler = latestPostAuthorProfile.Handler;
                         category.LatestForumPost.AuthorName = latestPostAuthorProfile.Name;
-                        category.LatestForumPost.AuthorPicture = UrlFormatter.ProfileImage(category.LatestForumPost.UserId, 43);
+                        category.LatestForumPost.AuthorPicture = UrlFormatter.ProfileImage(category.LatestForumPost.UserId, Constants.SmallAvatarSize);
                     }
                 }
             }
@@ -428,7 +428,7 @@ namespace LuduStack.Application.Services
             {
                 forumPost.AuthorName = authorProfile.Name;
                 forumPost.UserHandler = authorProfile.Handler;
-                forumPost.AuthorPicture = UrlFormatter.ProfileImage(authorProfile.UserId, 43);
+                forumPost.AuthorPicture = UrlFormatter.ProfileImage(authorProfile.UserId, Constants.SmallAvatarSize);
             }
         }
 
@@ -439,7 +439,7 @@ namespace LuduStack.Application.Services
             {
                 forumTopicAnswer.AuthorName = authorProfile.Name;
                 forumTopicAnswer.UserHandler = authorProfile.Handler;
-                forumTopicAnswer.AuthorPicture = UrlFormatter.ProfileImage(authorProfile.UserId, 43);
+                forumTopicAnswer.AuthorPicture = UrlFormatter.ProfileImage(authorProfile.UserId, Constants.SmallAvatarSize);
             }
 
             if (forumTopicAnswer.ReplyUserId.HasValue)
