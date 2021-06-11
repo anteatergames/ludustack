@@ -159,7 +159,14 @@ namespace LuduStack.Web.Areas.Community.Controllers
 
                     if (isNew)
                     {
-                        url = Url.Action("viewtopic", "forum", new { area = "community", id = saveResult.Value });
+                        var redirectAction = "viewtopic";
+
+                        if (!vm.IsOriginalPost!)
+                        {
+                            redirectAction = "viewtopiclatest";
+                        }
+
+                        url = Url.Action(redirectAction, "forum", new { area = "community", id = saveResult.Value });
 
                         if (EnvName.Equals(Constants.ProductionEnvironmentName))
                         {
