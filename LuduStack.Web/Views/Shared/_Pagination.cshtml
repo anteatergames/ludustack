@@ -37,13 +37,16 @@
             <span class="d-inline-block rounded page-link text-muted">@SharedLocalizer[Model.PaginationMessage, Model.TotalCount]</span>
         }
 
-        @if (Model.Bottom)
+        @if (Model.TotalCount > 1)
         {
-            <button type="button" class="d-inline-block rounded page-link text-muted btn-scrollto btn-scrollto-top"><i class="fas fa-angle-double-up" aria-hidden="true"></i></button>
-        }
-        else
-        {
-            <button type="button" class="d-inline-block rounded page-link text-muted btn-scrollto btn-scrollto-bottom"><i class="fas fa-angle-double-down" aria-hidden="true"></i></button>
+            if (Model.Bottom)
+            {
+                <button type="button" class="d-inline-block rounded page-link text-muted btn-scrollto btn-scrollto-top"><i class="fas fa-angle-double-up" aria-hidden="true"></i></button>
+            }
+            else
+            {
+                <button type="button" class="d-inline-block rounded page-link text-muted btn-scrollto btn-scrollto-bottom"><i class="fas fa-angle-double-down" aria-hidden="true"></i></button>
+            }
         }
     </div>
 </div>
