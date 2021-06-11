@@ -3352,4 +3352,20 @@
     <value>reportar</value>
     <comment>Forum</comment>
   </data>
+  <data name="{0} answers" xml:space="preserve">
+    <value>{0} respostas</value>
+    <comment>Forums</comment>
+  </data>
+  <data name="This is the calculated score for this post." xml:space="preserve">
+    <value>Este é o score calculado deste post.</value>
+    <comment>Forums</comment>
+  </data>
+  <data name="Vote DOWN if you don't like this post." xml:space="preserve">
+    <value>Vote PARA BAIXO se você não gostou deste post.</value>
+    <comment>Forums</comment>
+  </data>
+  <data name="Vote UP if you like this post." xml:space="preserve">
+    <value>Vote PARA CIMA se você gostou deste post.</value>
+    <comment>Forums</comment>
+  </data>
 </root>

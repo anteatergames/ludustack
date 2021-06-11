@@ -389,3 +389,17 @@ mediagallery
         border-bottom: 0;
         border-right: 0;
     }
+
+.pagination .page-item {
+    min-width: 26px;
+}
+
+    .pagination .page-item:first-child .page-link {
+        border-top-left-radius: var(--border-radius);
+        border-bottom-left-radius: var(--border-radius);
+    }
+
+    .pagination .page-item:last-child .page-link {
+        border-top-right-radius: var(--border-radius);
+        border-bottom-right-radius: var(--border-radius);
+    }
