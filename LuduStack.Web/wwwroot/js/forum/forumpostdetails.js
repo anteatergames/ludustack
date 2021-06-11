@@ -209,7 +209,7 @@
                 scrollToLatest();
             }
             else {
-                scrollToFirst();
+                MAINMODULE.Utils.ScrollToTop();
             }
 
             return false;
@@ -341,30 +341,10 @@
         });
     }
 
-    function scrollToFirst() {
-        var elementToScroll = $('body');
-
-        scrollTo(elementToScroll);
-    }
-
     function scrollToLatest() {
         var elementToScroll = $(selectors.postItem).last();
 
-        scrollTo(elementToScroll);
-    }
-
-    function scrollTo(elementToScroll) {
-
-        var complete = false;
-        $('html, body').animate({
-            scrollTop: elementToScroll.offset().top
-        }, {
-            complete: () => {
-                if (!complete) {
-                    complete = true;
-                }
-            }
-        }, 1000);
+        MAINMODULE.Utils.ScrollTo(elementToScroll);
     }
 
     function deleteCallback(response, btn) {
