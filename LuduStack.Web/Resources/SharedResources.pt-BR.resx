@@ -3368,4 +3368,15 @@
     <value>Vote PARA CIMA se você gostou deste post.</value>
     <comment>Forums</comment>
   </data>
+  <data name="Scroll to the bottom" xml:space="preserve">
+    <value>Rolar para o final</value>
+    <comment>Forums</comment>
+  </data>
+  <data name="Scroll to the top" xml:space="preserve">
+    <value>Rolar para o topo</value>
+    <comment>Forums</comment>
+  </data>
+  <data name="String1" xml:space="preserve">
+    <value />
+  </data>
 </root>
