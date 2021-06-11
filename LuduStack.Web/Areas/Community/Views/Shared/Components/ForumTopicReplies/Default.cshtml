@@ -28,6 +28,7 @@
 @if (hasItems)
 {
     paginationModel.PaginationMessage = string.Empty;
+    paginationModel.Bottom = true;
 
     <div class="px-2 pt-2 bg-light square-top">
         <partial name="_Pagination" model="paginationModel" />

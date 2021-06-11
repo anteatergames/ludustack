@@ -10,6 +10,8 @@
 
         public string PaginationMessage { get; set; }
 
+        public bool Bottom { get; set; }
+
         public string Area { get; set; }
 
         public string Controller { get; set; }

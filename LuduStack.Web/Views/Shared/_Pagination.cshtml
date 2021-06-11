@@ -20,7 +20,7 @@
                             <a asp-protocol="@ViewData[" protocol"]" asp-host="@ViewData[" host"]" asp-area="@Model.Area" asp-controller="@Model.Controller" asp-action="@Model.Action" asp-route-page="@i" title="@SharedLocalizer[" Page {0}", i]" class="page-link text-center">@i</a>
                         </li>
                     }
-                    else if(absDiff == (threshold + 1))
+                    else if (absDiff == (threshold + 1))
                     {
                         <li class="page-item">
                             <span class="page-link text-muted text-center">...</span>
@@ -31,10 +31,19 @@
         </nav>
     }
 
-    @if (!string.IsNullOrWhiteSpace(Model.PaginationMessage))
-    {
-        <div class="d-block pagination pagination-sm ml-auto mb-2">
-            <span class="rounded page-link text-muted">@SharedLocalizer[Model.PaginationMessage, Model.TotalCount]</span>
-        </div>
-    }
+    <div class="d-block pagination pagination-sm ml-auto mb-2">
+        @if (!string.IsNullOrWhiteSpace(Model.PaginationMessage))
+        {
+            <span class="d-inline-block rounded page-link text-muted">@SharedLocalizer[Model.PaginationMessage, Model.TotalCount]</span>
+        }
+
+        @if (Model.Bottom)
+        {
+            <button type="button" class="d-inline-block rounded page-link text-muted btn-scrollto btn-scrollto-top"><i class="fas fa-angle-double-up" aria-hidden="true"></i></button>
+        }
+        else
+        {
+            <button type="button" class="d-inline-block rounded page-link text-muted btn-scrollto btn-scrollto-bottom"><i class="fas fa-angle-double-down" aria-hidden="true"></i></button>
+        }
+    </div>
 </div>

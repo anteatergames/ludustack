@@ -30,6 +30,7 @@
         selectors.btnCloseReplyAlert = '#btnclosereplyalert';
         selectors.btnPage = 'a.page-link';
         selectors.latest = '#hdnLatest';
+        selectors.btnScrollTo = '.btn-scrollto';
     }
 
     function cacheObjs() {
@@ -65,6 +66,7 @@
         bindBtnEditCancel();
         bindBtnReply();
         bindBtnCloseReplyAlert();
+        bindBtnScrollTo();
     }
 
     function bindEditors() {
@@ -195,6 +197,25 @@
         });
     }
 
+    function bindBtnScrollTo() {
+        objs.container.on('click', selectors.btnScrollTo, function (e) {
+            e.preventDefault();
+
+            var btn = $(this);
+
+            var toBottom = btn.hasClass('btn-scrollto-bottom');
+
+            if (toBottom) {
+                scrollToLatest();
+            }
+            else {
+                scrollToFirst();
+            }
+
+            return false;
+        });
+    }
+
     function loadItems(url) {
         MAINMODULE.Ajax.LoadHtml(url, objs.replies).then(() => {
             objs.replies.hide();
@@ -320,8 +341,19 @@
         });
     }
 
+    function scrollToFirst() {
+        var elementToScroll = $('body');
+
+        scrollTo(elementToScroll);
+    }
+
     function scrollToLatest() {
         var elementToScroll = $(selectors.postItem).last();
+
+        scrollTo(elementToScroll);
+    }
+
+    function scrollTo(elementToScroll) {
 
         var complete = false;
         $('html, body').animate({
