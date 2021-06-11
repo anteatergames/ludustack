@@ -229,7 +229,12 @@ select.form-control {
         border-color: rgba(255, 255, 255, .7);
     }
 
-.swal2-actions {
+
+.swal2-container .swal2-actions button, .swal2-container .swal2-popup {
+    border-radius: var(--border-radius) !important;
+}
+
+.swal2-container .swal2-actions {
     width: inherit !important;
 }
 

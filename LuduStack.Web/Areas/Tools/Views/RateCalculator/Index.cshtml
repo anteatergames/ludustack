@@ -45,6 +45,7 @@
             </div>
 
             <div class="box-body p-0 px-md-2">
+
                 <form id="frmRateCalculator" asp-area="tools" asp-controller="giveaway" asp-action="save" method="post">
                     <div class="row no-gutters">
                         <div class="col-12 col-md-2">
@@ -180,6 +181,10 @@
                         </div>
                     </div>
                 </form>
+
+                <div class="box box-widget box-content rounded-0 p-0 bg-white mb-2">
+                    <partial name="_GoogleAdFeed" />
+                </div>
 
                 <hr />
 
