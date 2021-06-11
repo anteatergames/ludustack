@@ -66,6 +66,8 @@ namespace LuduStack.Application
 
         public static int DefaultItemsPerPage => 10;
 
+        public static int PagingThreshold => 5;
+
         public static int SmallAvatarSize => 40;
 
         public static int TinyAvatarSize => 30;

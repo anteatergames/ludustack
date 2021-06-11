@@ -13,7 +13,7 @@
     <div class="d-flex flex-row align-items-start px-1 border-gradient border-right rounded-0 postsidebar">
         <div class="d-flex flex-column">
             <div class="text-center">
-                <button class="btn btn-sm p-0 btn-vote btn-vote-up@(Model.CurrentUserVote == VoteValue.Positive ? " text-green": string.Empty)@(User.Identity.IsAuthenticated ? String.Empty : " needlogin")" data-msg-id="msgNeedLoginToVote" aria-pressed="false" aria-label="Up vote" data-vote="@VoteValue.Positive" data-colorclass="text-green">
+                <button class="btn btn-sm p-0 btn-vote btn-vote-up@(Model.CurrentUserVote == VoteValue.Positive ? " text-green": string.Empty)@(User.Identity.IsAuthenticated ? String.Empty : " needlogin")" data-msg-id="msgNeedLoginToVote" aria-pressed="false" aria-label="Up vote" data-vote="@VoteValue.Positive" data-colorclass="text-green" data-toggle="popover" title="@SharedLocalizer["Vote UP if you like this post."]">
                     <svg aria-hidden="true" class="m0 svg-icon iconArrowUpLg" width="36" height="36" viewBox="0 0 36 36">
                         <path d="M2 26h32L18 10 2 26z"></path>
                     </svg>
@@ -21,11 +21,11 @@
             </div>
 
             <div class="text-center">
-                <span class="txtScore">@Model.Score</span>
+                <span class="txtScore" data-toggle="popover" title="@SharedLocalizer["This is the calculated score for this post."]">@Model.Score</span>
             </div>
 
             <div class="text-center">
-                <button class="btn btn-sm p-0 btn-vote btn-vote-down@(Model.CurrentUserVote == VoteValue.Negative ? " text-red": string.Empty)@(User.Identity.IsAuthenticated ? String.Empty : " needlogin")" data-msg-id="msgNeedLoginToVote" aria-pressed="false" aria-label="Down vote" data-vote="@VoteValue.Negative" data-colorclass="text-red">
+                <button class="btn btn-sm p-0 btn-vote btn-vote-down@(Model.CurrentUserVote == VoteValue.Negative ? " text-red": string.Empty)@(User.Identity.IsAuthenticated ? String.Empty : " needlogin")" data-msg-id="msgNeedLoginToVote" aria-pressed="false" aria-label="Down vote" data-vote="@VoteValue.Negative" data-colorclass="text-red" data-toggle="popover" title="@SharedLocalizer["Vote DOWN if you don't like this post."]">
                     <svg aria-hidden="true" class="m0 svg-icon iconArrowDownLg" width="36" height="36" viewBox="0 0 36 36">
                         <path d="M2 10h32L18 26 2 10z"></path>
                     </svg>

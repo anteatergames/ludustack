@@ -58,7 +58,7 @@
             var btn = $(this);
 
             var data = WYSIWYGEDITOR.GetEditor(editorId).editor.getData();
-            console.log(data);
+
             WYSIWYGEDITOR.UpdateSourceElement(editorId);
 
             var valid = objs.form.valid();
