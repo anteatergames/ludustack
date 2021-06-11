@@ -154,14 +154,14 @@ namespace LuduStack.Application.Services
                     ForumPostCounterResultVo postStats = postCounters.FirstOrDefault(x => x.OriginalPostId == forumPost.Id);
                     if (postStats != null)
                     {
-                        forumPost.AnswerCount = postStats.AnswerCount;
+                        forumPost.ReplyCount = postStats.ReplyCount;
                         forumPost.ViewCount = postStats.ViewCount;
-                        forumPost.LatestAnswer = postStats.LatestAnswer;
+                        forumPost.LatestReply = postStats.LatestReply;
                     }
 
-                    if (forumPost.LatestAnswer != null)
+                    if (forumPost.LatestReply != null)
                     {
-                        profilesToGet.Add(forumPost.LatestAnswer.UserId);
+                        profilesToGet.Add(forumPost.LatestReply.UserId);
                     }
 
                     if (forumPost.Language == 0)
@@ -176,15 +176,15 @@ namespace LuduStack.Application.Services
                 {
                     SetProfiles(forumPost, userProfiles);
 
-                    if (forumPost.LatestAnswer != null)
+                    if (forumPost.LatestReply != null)
                     {
-                        UserProfileEssentialVo latestPostAuthorProfile = userProfiles.FirstOrDefault(x => x.UserId == forumPost.LatestAnswer.UserId);
+                        UserProfileEssentialVo latestPostAuthorProfile = userProfiles.FirstOrDefault(x => x.UserId == forumPost.LatestReply.UserId);
 
                         if (latestPostAuthorProfile != null)
                         {
-                            forumPost.LatestAnswer.UserHandler = latestPostAuthorProfile.Handler;
-                            forumPost.LatestAnswer.AuthorName = latestPostAuthorProfile.Name;
-                            forumPost.LatestAnswer.AuthorPicture = UrlFormatter.ProfileImage(forumPost.LatestAnswer.UserId, Constants.SmallAvatarSize);
+                            forumPost.LatestReply.UserHandler = latestPostAuthorProfile.Handler;
+                            forumPost.LatestReply.AuthorName = latestPostAuthorProfile.Name;
+                            forumPost.LatestReply.AuthorPicture = UrlFormatter.ProfileImage(forumPost.LatestReply.UserId, Constants.SmallAvatarSize);
                         }
                     }
                 }
@@ -292,11 +292,11 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public async Task<OperationResultListVo<ForumPostViewModel>> GetTopicAnswers(Guid currentUserId, GetForumTopicAnswersRequestViewModel viewModel)
+        public async Task<OperationResultListVo<ForumPostViewModel>> GetTopicReplies(Guid currentUserId, GetForumTopicRepliesRequestViewModel viewModel)
         {
             try
             {
-                var query = new GetForumTopicAnswersQuery
+                var query = new GetForumTopicRepliesQuery
                 {
                     TopicId = viewModel.TopicId,
                     Count = viewModel.Count ?? Constants.DefaultItemsPerPage,
@@ -304,9 +304,9 @@ namespace LuduStack.Application.Services
                     Latest = viewModel.Latest
                 };
 
-                ForumTopicAnswerListVo queryResult = await mediator.Query<GetForumTopicAnswersQuery, ForumTopicAnswerListVo>(query);
+                ForumTopicReplyListVo queryResult = await mediator.Query<GetForumTopicRepliesQuery, ForumTopicReplyListVo>(query);
 
-                List<ForumPostViewModel> vms = mapper.Map<IEnumerable<ForumPost>, IEnumerable<ForumPostViewModel>>(queryResult.Answers).ToList();
+                List<ForumPostViewModel> vms = mapper.Map<IEnumerable<ForumPost>, IEnumerable<ForumPostViewModel>>(queryResult.Replies).ToList();
 
                 List<Guid> profilesToGet = vms.Select(x => x.UserId).ToList();
                 IEnumerable<Guid> repliesProfilesToGet = vms.Where(x => x.ReplyUserId.HasValue).Select(x => x.ReplyUserId.Value);
@@ -316,17 +316,17 @@ namespace LuduStack.Application.Services
 
                 HtmlSanitizer sanitizer = ContentHelper.GetHtmlSanitizer();
 
-                foreach (ForumPostViewModel forumTopicAnswer in vms)
+                foreach (ForumPostViewModel topicReply in vms)
                 {
-                    ForumPost entity = queryResult.Answers.First(x => x.Id == forumTopicAnswer.Id);
+                    ForumPost entity = queryResult.Replies.First(x => x.Id == topicReply.Id);
 
-                    SetVotes(currentUserId, forumTopicAnswer, entity);
+                    SetVotes(currentUserId, topicReply, entity);
 
-                    SetProfiles(forumTopicAnswer, userProfiles);
+                    SetProfiles(topicReply, userProfiles);
 
-                    SetPermissions(currentUserId, forumTopicAnswer);
+                    SetPermissions(currentUserId, topicReply);
 
-                    SanitizeHtml(forumTopicAnswer, sanitizer);
+                    SanitizeHtml(topicReply, sanitizer);
                 }
 
                 var result = new OperationResultListVo<ForumPostViewModel>(vms);
@@ -444,22 +444,22 @@ namespace LuduStack.Application.Services
             }
         }
 
-        private void SetProfiles(ForumPostViewModel forumTopicAnswer, IEnumerable<UserProfileEssentialVo> userProfiles)
+        private void SetProfiles(ForumPostViewModel topicReply, IEnumerable<UserProfileEssentialVo> userProfiles)
         {
-            UserProfileEssentialVo authorProfile = userProfiles.FirstOrDefault(x => x.UserId == forumTopicAnswer.UserId);
+            UserProfileEssentialVo authorProfile = userProfiles.FirstOrDefault(x => x.UserId == topicReply.UserId);
             if (authorProfile != null)
             {
-                forumTopicAnswer.AuthorName = authorProfile.Name;
-                forumTopicAnswer.UserHandler = authorProfile.Handler;
-                forumTopicAnswer.AuthorPicture = UrlFormatter.ProfileImage(authorProfile.UserId, Constants.SmallAvatarSize);
+                topicReply.AuthorName = authorProfile.Name;
+                topicReply.UserHandler = authorProfile.Handler;
+                topicReply.AuthorPicture = UrlFormatter.ProfileImage(authorProfile.UserId, Constants.SmallAvatarSize);
             }
 
-            if (forumTopicAnswer.ReplyUserId.HasValue)
+            if (topicReply.ReplyUserId.HasValue)
             {
-                UserProfileEssentialVo replyProfile = userProfiles.FirstOrDefault(x => x.UserId == forumTopicAnswer.ReplyUserId);
+                UserProfileEssentialVo replyProfile = userProfiles.FirstOrDefault(x => x.UserId == topicReply.ReplyUserId);
                 if (replyProfile != null)
                 {
-                    forumTopicAnswer.ReplyAuthorName = replyProfile.Name;
+                    topicReply.ReplyAuthorName = replyProfile.Name;
                 }
             }
         }

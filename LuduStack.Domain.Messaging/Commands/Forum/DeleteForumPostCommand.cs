@@ -46,11 +46,11 @@ namespace LuduStack.Domain.Messaging
 
             if (forumPost.IsOriginalPost)
             {
-                System.Linq.IQueryable<Models.ForumPost> answers = forumPostRepository.Get(x => x.OriginalPostId == request.Id && !x.IsOriginalPost);
+                System.Linq.IQueryable<Models.ForumPost> replies = forumPostRepository.Get(x => x.OriginalPostId == request.Id && !x.IsOriginalPost);
 
-                foreach (Models.ForumPost answer in answers)
+                foreach (Models.ForumPost reply in replies)
                 {
-                    forumPostRepository.Remove(answer.Id);
+                    forumPostRepository.Remove(reply.Id);
                 }
             }
 

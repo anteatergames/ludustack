@@ -27,8 +27,8 @@ namespace LuduStack.Domain.ValueObjects
         public string AuthorPicture { get; set; }
         public string AuthorName { get; set; }
         public string UserHandler { get; set; }
-        public int AnswerCount { get; set; }
+        public int ReplyCount { get; set; }
         public int ViewCount { get; set; }
-        public LatestForumPostResultVo LatestAnswer { get; set; }
+        public LatestForumPostResultVo LatestReply { get; set; }
     }
 }

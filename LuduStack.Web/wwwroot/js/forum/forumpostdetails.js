@@ -5,29 +5,29 @@
     var objs = {};
 
     var canInteract = false;
-    var urlAnswers;
+    var urlReplies;
 
     function setSelectors() {
         selectors.canInteract = '#caninteract';
         selectors.urls = '#urls';
         selectors.container = '#featurecontainer';
-        selectors.answers = '#divAnswers';
+        selectors.replies = '#divReplies';
         selectors.userId = '#UserId';
         selectors.btnSavePost = '.btn-post-save';
-        selectors.btnSaveAnswer = '.btn-post-save-answer';
+        selectors.btnSaveReply = '.btn-post-save-reply';
         selectors.btnEditPost = '.btn-post-edit';
         selectors.btnEditCancel = '.btn-edit-cancel';
         selectors.btnReply = '.btn-reply';
         selectors.postItem = '.postitem';
-        selectors.postAnswer = '.postanswer';
+        selectors.postReply = '.postreply';
         selectors.postItemContainer = '.postitemcontainer';
         selectors.postItemContainerEdit = '.postitemcontaineredit';
-        selectors.txtAnswer = '.txtAnswer';
+        selectors.txtReply = '.txtReply';
         selectors.hdnReplyPostId = '#hdnReplyPostId';
         selectors.hdnReplyUserId = '#hdnReplyUserId';
-        selectors.postAnswerReplyAlert = '#postanswerreplyalert';
-        selectors.postAnswerAuthorName = '#postanswerauthorname';
-        selectors.btnCloseAnswerReply = '#btncloseanswerreply';
+        selectors.postReplyAlert = '#postreplyalert';
+        selectors.postReplyAuthorName = '#postreplyauthorname';
+        selectors.btnCloseReplyAlert = '#btnclosereplyalert';
         selectors.btnPage = 'a.page-link';
         selectors.latest = '#hdnLatest';
     }
@@ -36,7 +36,7 @@
         objs.controlsidebar = $(selectors.controlsidebar);
         objs.container = $(selectors.container);
         objs.urls = $(selectors.urls);
-        objs.answers = $(selectors.answers);
+        objs.replies = $(selectors.replies);
         objs.userId = $(selectors.userId);
         objs.latest = $(selectors.latest);
     }
@@ -46,29 +46,29 @@
         cacheObjs();
 
         canInteract = $(selectors.canInteract).val();
-        urlAnswers = objs.urls.data('urlAnswers');
+        urlReplies = objs.urls.data('urlReplies');
 
         bindAll();
 
-        loadItems(urlAnswers);
+        loadItems(urlReplies);
 
         FORUMCOMMON.Callback.DeleteEntity = deleteCallback;
 
-        PAGINATION.Init(selectors.btnPage, selectors.answers);
+        PAGINATION.Init(selectors.btnPage, selectors.replies);
     }
 
     function bindAll() {
         bindEditors();
-        bindBtnSaveAnswer();
+        bindBtnSaveReply();
         bindBtnSavePost();
         bindBtnEdit();
         bindBtnEditCancel();
         bindBtnReply();
-        bindBtnCloseAnswerReply();
+        bindBtnCloseReplyAlert();
     }
 
     function bindEditors() {
-        $(selectors.txtAnswer).each((index, element) => {
+        $(selectors.txtReply).each((index, element) => {
             var id = element.id;
 
             WYSIWYGEDITOR.BindEditor(`#${id}`).then((editorId) => {
@@ -86,14 +86,14 @@
         });
     }
 
-    function bindBtnSaveAnswer() {
-        objs.container.on('click', selectors.btnSaveAnswer, function (e) {
+    function bindBtnSaveReply() {
+        objs.container.on('click', selectors.btnSaveReply, function (e) {
             var btn = $(this);
 
             if (canInteract) {
                 MAINMODULE.Common.DisableButton(btn);
 
-                saveAnswer(btn);
+                saveReply(btn);
             }
 
             e.preventDefault();
@@ -145,24 +145,24 @@
             var replyPostId = postItem.data('postid');
             var replyUserId = postItem.data('userid');
             var authorName = postItem.data('authorname');
-            var postAnswer = $(selectors.postAnswer);
-            var replyHiddenPostId = postAnswer.find(selectors.hdnReplyPostId);
-            var replyHiddenUserId = postAnswer.find(selectors.hdnReplyUserId);
-            var replyAuthorName = $(selectors.postAnswerAuthorName);
-            var postAnswerReplyAlert = $(selectors.postAnswerReplyAlert);
+            var postReply = $(selectors.postReply);
+            var replyHiddenPostId = postReply.find(selectors.hdnReplyPostId);
+            var replyHiddenUserId = postReply.find(selectors.hdnReplyUserId);
+            var replyAuthorName = $(selectors.postReplyAuthorName);
+            var postReplyAlert = $(selectors.postReplyAlert);
 
             replyHiddenPostId.val(replyPostId);
             replyHiddenUserId.val(replyUserId);
             replyAuthorName.text(authorName);
 
-            postAnswerReplyAlert.hide().removeClass('d-none').slideDown();
+            postReplyAlert.hide().removeClass('d-none').slideDown();
 
-            var txtArea = $(selectors.txtAnswer);
+            var txtArea = $(selectors.txtReply);
             var editorId = txtArea.attr('id');
 
             var complete = false;
             $('html, body').animate({
-                scrollTop: postAnswer.offset().top
+                scrollTop: postReply.offset().top
             }, {
                 complete: () => {
                     if (!complete) {
@@ -177,14 +177,14 @@
         });
     }
 
-    function bindBtnCloseAnswerReply() {
-        objs.container.on('click', selectors.btnCloseAnswerReply, function (e) {
+    function bindBtnCloseReplyAlert() {
+        objs.container.on('click', selectors.btnCloseReplyAlert, function (e) {
             e.preventDefault();
 
             var btn = $(this);
-            var postAnswer = $(selectors.postAnswer);
-            var replyHiddenPostId = postAnswer.find(selectors.hdnReplyPostId);
-            var replyHiddenUserId = postAnswer.find(selectors.hdnReplyUserId);
+            var postReply = $(selectors.postReply);
+            var replyHiddenPostId = postReply.find(selectors.hdnReplyPostId);
+            var replyHiddenUserId = postReply.find(selectors.hdnReplyUserId);
 
             replyHiddenPostId.val('');
             replyHiddenUserId.val('');
@@ -196,10 +196,10 @@
     }
 
     function loadItems(url) {
-        MAINMODULE.Ajax.LoadHtml(url, objs.answers).then(() => {
-            objs.answers.hide();
+        MAINMODULE.Ajax.LoadHtml(url, objs.replies).then(() => {
+            objs.replies.hide();
 
-            objs.answers.slideDown('fast', () => {
+            objs.replies.slideDown('fast', () => {
                 setTimeout(function () {
                     if (objs.latest.length > 0) {
                         scrollToLatest();
@@ -209,10 +209,10 @@
         });
     }
 
-    function saveAnswer(btn) {
+    function saveReply(btn) {
         var form = btn.closest('form');
         var url = form.attr('action');
-        var txtArea = form.find(selectors.txtAnswer);
+        var txtArea = form.find(selectors.txtReply);
         var editorId = txtArea.attr('id');
 
         WYSIWYGEDITOR.UpdateSourceElement(editorId);
@@ -237,7 +237,7 @@
     function savePost(btn) {
         var form = btn.closest('form');
         var url = form.attr('action');
-        var txtArea = form.find(selectors.txtAnswer);
+        var txtArea = form.find(selectors.txtReply);
         var editorId = txtArea.attr('id');
 
         WYSIWYGEDITOR.UpdateSourceElement(editorId);
@@ -276,7 +276,7 @@
         postDiv.css('height', postDiv.css('height'));
 
         MAINMODULE.Ajax.LoadHtml(urlEdit, editDiv).then(() => {
-            var txtArea = editDiv.find(selectors.txtAnswer);
+            var txtArea = editDiv.find(selectors.txtReply);
 
             bindEditor(`#${txtArea.attr('id')}`).then(() => {
                 viewDiv.removeClass('d-flex').fadeOut("slow", function () {
@@ -302,7 +302,7 @@
 
         postDiv.css('height', postDiv.css('height'));
         editDiv.fadeOut("slow", function () {
-            var txtArea = editDiv.find(selectors.txtAnswer);
+            var txtArea = editDiv.find(selectors.txtReply);
             var editorId = txtArea.attr('id');
 
             WYSIWYGEDITOR.DestroyEditor(editorId);

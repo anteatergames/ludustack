@@ -3268,7 +3268,7 @@
     <value>Postado por {0} em {1}, {2}</value>
     <comment>Forum</comment>
   </data>
-  <data name="{0} answered {1}" xml:space="preserve">
+  <data name="{0} replied {1}" xml:space="preserve">
     <value>{0} respondeu {1}</value>
     <comment>Forum</comment>
   </data>
@@ -3292,7 +3292,7 @@
     <value>Você deve digitar ao menos dois caracteres!</value>
     <comment>Forum</comment>
   </data>
-  <data name="answered {0}" xml:space="preserve">
+  <data name="replied {0}" xml:space="preserve">
     <value>respondeu {0}</value>
     <comment>Forum</comment>
   </data>
@@ -3304,7 +3304,7 @@
     <value>Você precisa estar logado para poder votar nos posts.</value>
     <comment>Forum</comment>
   </data>
-  <data name="answers" xml:space="preserve">
+  <data name="replies" xml:space="preserve">
     <value>respostas</value>
     <comment>Forum</comment>
   </data>
@@ -3352,7 +3352,7 @@
     <value>reportar</value>
     <comment>Forum</comment>
   </data>
-  <data name="{0} answers" xml:space="preserve">
+  <data name="{0} replies" xml:space="preserve">
     <value>{0} respostas</value>
     <comment>Forums</comment>
   </data>

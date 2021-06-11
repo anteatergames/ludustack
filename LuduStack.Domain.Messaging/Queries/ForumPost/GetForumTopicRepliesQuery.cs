@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace LuduStack.Domain.Messaging.Queries.ForumPost
 {
-    public class GetForumTopicAnswersQuery : Query<ForumTopicAnswerListVo>, IPaginatedQuery
+    public class GetForumTopicRepliesQuery : Query<ForumTopicReplyListVo>, IPaginatedQuery
     {
         public Guid TopicId { get; set; }
 
@@ -22,24 +22,24 @@ namespace LuduStack.Domain.Messaging.Queries.ForumPost
 
         public bool Latest { get; set; }
 
-        public GetForumTopicAnswersQuery()
+        public GetForumTopicRepliesQuery()
         {
 
         }
     }
 
-    public class GetForumTopicAnswersQueryHandler : QueryHandler, IRequestHandler<GetForumTopicAnswersQuery, ForumTopicAnswerListVo>
+    public class GetForumTopicRepliesQueryHandler : QueryHandler, IRequestHandler<GetForumTopicRepliesQuery, ForumTopicReplyListVo>
     {
         private readonly IForumPostRepository repository;
 
-        public GetForumTopicAnswersQueryHandler(IForumPostRepository repository)
+        public GetForumTopicRepliesQueryHandler(IForumPostRepository repository)
         {
             this.repository = repository;
         }
 
-        public Task<ForumTopicAnswerListVo> Handle(GetForumTopicAnswersQuery request, CancellationToken cancellationToken)
+        public Task<ForumTopicReplyListVo> Handle(GetForumTopicRepliesQuery request, CancellationToken cancellationToken)
         {
-            ForumTopicAnswerListVo result = new ForumTopicAnswerListVo();
+            ForumTopicReplyListVo result = new ForumTopicReplyListVo();
 
             if (request.Page < 1)
             {
@@ -74,7 +74,7 @@ namespace LuduStack.Domain.Messaging.Queries.ForumPost
 
 
             List<Models.ForumPost> finalList = allModels.ToList();
-            result.Answers = finalList;
+            result.Replies = finalList;
 
             return Task.FromResult(result);
         }
@@ -86,7 +86,7 @@ namespace LuduStack.Domain.Messaging.Queries.ForumPost
             return allModels;
         }
 
-        private static IQueryable<Models.ForumPost> Filter(GetForumTopicAnswersQuery request, IQueryable<Models.ForumPost> allModels)
+        private static IQueryable<Models.ForumPost> Filter(GetForumTopicRepliesQuery request, IQueryable<Models.ForumPost> allModels)
         {
             allModels = allModels.Where(x => !x.IsOriginalPost);
 

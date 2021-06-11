@@ -4,8 +4,8 @@ using System.Collections.Generic;
 
 namespace LuduStack.Domain.ValueObjects
 {
-    public class ForumTopicAnswerListVo : GenericPaginatedListVo<ForumPost>
+    public class ForumTopicReplyListVo : GenericPaginatedListVo<ForumPost>
     {
-        public List<ForumPost> Answers { get { return Items; } set { Items = value; } }
+        public List<ForumPost> Replies { get { return Items; } set { Items = value; } }
     }
 }

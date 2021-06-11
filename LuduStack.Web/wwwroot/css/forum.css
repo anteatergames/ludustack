@@ -115,7 +115,7 @@
     fill: var(--color-red);
 }
 
-.postanswer .ck.ck-content.ck-editor__editable {
+.postreply .ck.ck-content.ck-editor__editable {
     min-height: 150px !important;
 }
 
