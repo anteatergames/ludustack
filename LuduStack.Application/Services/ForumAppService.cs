@@ -300,7 +300,8 @@ namespace LuduStack.Application.Services
                 {
                     TopicId = viewModel.TopicId,
                     Count = viewModel.Count ?? Constants.DefaultItemsPerPage,
-                    Page = viewModel.Page ?? 1
+                    Page = viewModel.Page ?? 1,
+                    Latest = viewModel.Latest
                 };
 
                 ForumTopicAnswerListVo queryResult = await mediator.Query<GetForumTopicAnswersQuery, ForumTopicAnswerListVo>(query);

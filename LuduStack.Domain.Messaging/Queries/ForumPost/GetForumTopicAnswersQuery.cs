@@ -20,6 +20,8 @@ namespace LuduStack.Domain.Messaging.Queries.ForumPost
 
         public int Page { get; set; }
 
+        public bool Latest { get; set; }
+
         public GetForumTopicAnswersQuery()
         {
 
@@ -49,10 +51,6 @@ namespace LuduStack.Domain.Messaging.Queries.ForumPost
                 request.Count = 20;
             }
 
-            int skip = request.Count * (request.Page - 1);
-
-            skip = Math.Max(0, skip);
-
             IQueryable<Models.ForumPost> allModels = repository.Get();
 
             allModels = Filter(request, allModels);
@@ -62,6 +60,15 @@ namespace LuduStack.Domain.Messaging.Queries.ForumPost
             result.Pagination.Page = request.Page;
 
             allModels = Sort(allModels);
+
+            if (request.Latest)
+            {
+                result.Pagination.Page = result.Pagination.TotalPageCount;
+            }
+
+            int skip = request.Count * (result.Pagination.Page - 1);
+
+            skip = Math.Max(0, skip);
 
             allModels = allModels.Skip(skip).Take(request.Count);
 

@@ -6,9 +6,11 @@
     var paginationModel = (PaginationVo)ViewData["Pagination"];
 
     paginationModel.PaginationMessage = "{0} answers here";
+
+    var hasItems = Model.Any();
 }
 
-<div class="mx-2">
+<div class="px-2 pt-2 bg-light@(hasItems ? " rounded-0" : " square-top")">
     <partial name="_Pagination" model="paginationModel" />
 </div>
 
@@ -23,8 +25,11 @@
     <partial name="_ForumPostViewEdit" model="item" />
 }
 
-@{ paginationModel.PaginationMessage = string.Empty; }
+@if (hasItems)
+{
+    paginationModel.PaginationMessage = string.Empty;
 
-<div class="mx-2">
-    <partial name="_Pagination" model="paginationModel" />
-</div>
+    <div class="px-2 pt-2 bg-light square-top">
+        <partial name="_Pagination" model="paginationModel" />
+    </div>
+}

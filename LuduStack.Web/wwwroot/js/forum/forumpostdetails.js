@@ -29,6 +29,7 @@
         selectors.postAnswerAuthorName = '#postanswerauthorname';
         selectors.btnCloseAnswerReply = '#btncloseanswerreply';
         selectors.btnPage = 'a.page-link';
+        selectors.latest = '#hdnLatest';
     }
 
     function cacheObjs() {
@@ -37,6 +38,7 @@
         objs.urls = $(selectors.urls);
         objs.answers = $(selectors.answers);
         objs.userId = $(selectors.userId);
+        objs.latest = $(selectors.latest);
     }
 
     function init() {
@@ -197,7 +199,13 @@
         MAINMODULE.Ajax.LoadHtml(url, objs.answers).then(() => {
             objs.answers.hide();
 
-            objs.answers.slideDown();
+            objs.answers.slideDown('fast', () => {
+                setTimeout(function () {
+                    if (objs.latest.length > 0) {
+                        scrollToLatest();
+                    }
+                }, 100);
+            });
         });
     }
 
@@ -310,6 +318,21 @@
                     }
                 });
         });
+    }
+
+    function scrollToLatest() {
+        var elementToScroll = $(selectors.postItem).last();
+
+        var complete = false;
+        $('html, body').animate({
+            scrollTop: elementToScroll.offset().top
+        }, {
+            complete: () => {
+                if (!complete) {
+                    complete = true;
+                }
+            }
+        }, 1000);
     }
 
     function deleteCallback(response, btn) {

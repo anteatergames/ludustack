@@ -27,7 +27,7 @@
         if (objs.gallery.data('hasitems') === true && objs.gallery.data('isgallery') === true) {
             setTimeout(function () {
                 GALLERY.Load(selectors.gallery, 2);
-            }, 10)
+            }, 10);
         }
     }
 

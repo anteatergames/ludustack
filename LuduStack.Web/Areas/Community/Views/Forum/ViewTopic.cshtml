@@ -19,6 +19,8 @@
         ForumCategoryId = Model.ForumCategoryId,
         OriginalPostId = Model.OriginalPostId
     };
+
+    var goToLastest = (bool)(ViewData["latest"] ?? false);
 }
 
 @section OpenGraphMeta {
@@ -80,8 +82,12 @@
 
 <section id="featurecontainer" class="col-12 container">
     <input type="hidden" id="urls" value="urls"
-           data-url-answers="@Url.Action("answersbytopic", "forum", new { area = "community", topicId = Model.Id })"
+           data-url-answers="@Url.Action("answersbytopic", "forum", new { area = "community", topicId = Model.Id, latest = goToLastest })"
            data-url-vote="@Url.Action("vote", "forum", new { area = "community" })" />
+    @if (goToLastest)
+    {
+        <input type="hidden" id="hdnLatest" value="1" />
+    }
 
     <div class="box p-0 bg-white">
 
