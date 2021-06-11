@@ -68,8 +68,8 @@
 }
 
     .box-game .card-img-top {
-        border-top-left-radius: 5px !important;
-        border-top-right-radius: 5px !important;
+        border-top-left-radius: var(--border-radius) !important;
+        border-top-right-radius: var(--border-radius) !important;
     }
 
 .noitems-icon {
