@@ -237,10 +237,10 @@ namespace LuduStack.Web.Areas.Community.Controllers
             }
         }
 
-        [Route("topic/{topicId:guid}/answers")]
-        public Task<IActionResult> AnswersByTopic(Guid topicId, int? page, bool latest)
+        [Route("topic/{topicId:guid}/replies")]
+        public Task<IActionResult> RepliesByTopic(Guid topicId, int? page, bool latest)
         {
-            ViewComponentResult component = ViewComponent("ForumTopicAnswers", new { topicId, page, latest });
+            ViewComponentResult component = ViewComponent("ForumTopicReplies", new { topicId, page, latest });
 
             return Task.FromResult((IActionResult)component);
         }

@@ -27,7 +27,7 @@ else
     <div class="bg-light pt-2 mb-2">
         <div class="row px-3 text-uppercase">
             <div class="col-12 col-sm-8 col-md-6">@SharedLocalizer["Title"]</div>
-            <div class="col-sm-4 col-md-3 col-lg-1 d-none d-sm-block text-center">@SharedLocalizer["answers"]</div>
+            <div class="col-sm-4 col-md-3 col-lg-1 d-none d-sm-block text-center">@SharedLocalizer["replies"]</div>
             <div class="col-md-3 col-lg-1 d-none d-md-block text-center">@SharedLocalizer["views"]</div>
             <div class="col-4 d-none d-lg-block">@SharedLocalizer["most recent"]</div>
         </div>
@@ -69,7 +69,7 @@ else
                             <div class="col-sm-4 col-md-3 col-lg-1 d-none d-sm-block p-2">
                                 <a asp-area="community" asp-controller="forum" asp-action="viewtopic" asp-route-id="@item.Id" class="stretched-link">
                                     <div class="d-flex flex-column align-items-center p-2">
-                                        <div class="p-2 bd-highlight">@item.AnswerCount</div>
+                                        <div class="p-2 bd-highlight">@item.ReplyCount</div>
                                     </div>
                                 </a>
                             </div>
@@ -83,22 +83,22 @@ else
                             </div>
                             <div class="col-4 d-none d-lg-block p-2 clickablelink">
                                 <div class="d-flex flex-row p-2">
-                                    @if (item.LatestAnswer != null)
+                                    @if (item.LatestReply != null)
                                     {
-                                        var authorUrl = Url.Action("details", "profile", new { area = string.Empty, userHandler = item.LatestAnswer.UserHandler });
-                                        var authorLink = string.Format("<a href=\"{0}\" class=\"boldlink\">{1}</a>", authorUrl, item.LatestAnswer.AuthorName);
+                                        var authorUrl = Url.Action("details", "profile", new { area = string.Empty, userHandler = item.LatestReply.UserHandler });
+                                        var authorLink = string.Format("<a href=\"{0}\" class=\"boldlink\">{1}</a>", authorUrl, item.LatestReply.AuthorName);
 
-                                        var lastAnswerUrl = Url.Action("viewtopiclatest", "forum", new { area = "community", id = item.Id });
-                                        var lastAnswerLink = string.Format("<a href=\"{0}\" class=\"boldlink\">{1}</a>", lastAnswerUrl, item.LatestAnswer.CreatedRelativeTime);
+                                        var lastReplyUrl = Url.Action("viewtopiclatest", "forum", new { area = "community", id = item.Id });
+                                        var lastReplyLink = string.Format("<a href=\"{0}\" class=\"boldlink\">{1}</a>", lastReplyUrl, item.LatestReply.CreatedRelativeTime);
 
                                         <div class="mr-2">
                                             <a href="@authorUrl">
-                                                <img class="rounded-circle border" src="@item.LatestAnswer.AuthorPicture" alt="This is @item.LatestAnswer.AuthorName">
+                                                <img class="rounded-circle border" src="@item.LatestReply.AuthorPicture" alt="This is @item.LatestReply.AuthorName">
                                             </a>
                                         </div>
 
                                         <div class="d-flex flex-column align-items-left forumlistdescription">
-                                            @Html.Raw(string.Format("{0} <span>{1}</span>", authorLink, SharedLocalizer["answered {0}", lastAnswerLink]))
+                                            @Html.Raw(string.Format("{0} <span>{1}</span>", authorLink, SharedLocalizer["replied {0}", lastReplyLink]))
                                         </div>
                                     }
                                     else

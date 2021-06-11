@@ -3,7 +3,7 @@ using System;
 
 namespace LuduStack.Application.ViewModels.Forum
 {
-    public class GetForumTopicAnswersRequestViewModel : RequestBaseViewModel
+    public class GetForumTopicRepliesRequestViewModel : RequestBaseViewModel
     {
         public Guid TopicId { get; set; }
 

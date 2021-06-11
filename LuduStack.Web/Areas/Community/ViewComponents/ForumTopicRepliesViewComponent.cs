@@ -14,21 +14,21 @@ using System.Threading.Tasks;
 
 namespace LuduStack.Web.Areas.Community.ViewComponents
 {
-    public class ForumTopicAnswersViewComponent : BaseViewComponent
+    public class ForumTopicRepliesViewComponent : BaseViewComponent
     {
         private UserManager<ApplicationUser> _userManager;
         public UserManager<ApplicationUser> UserManager => _userManager ?? (_userManager = HttpContext?.RequestServices.GetService<UserManager<ApplicationUser>>());
 
         private readonly IForumAppService forumAppService;
 
-        public ForumTopicAnswersViewComponent(IHttpContextAccessor httpContextAccessor, IForumAppService forumAppService) : base(httpContextAccessor)
+        public ForumTopicRepliesViewComponent(IHttpContextAccessor httpContextAccessor, IForumAppService forumAppService) : base(httpContextAccessor)
         {
             this.forumAppService = forumAppService;
         }
 
         public async Task<IViewComponentResult> InvokeAsync(Guid topicId, bool latest, int? count, int? page)
         {
-            GetForumTopicAnswersRequestViewModel vm = new GetForumTopicAnswersRequestViewModel
+            GetForumTopicRepliesRequestViewModel vm = new GetForumTopicRepliesRequestViewModel
             {
                 TopicId = topicId,
                 Count = count,
@@ -36,11 +36,11 @@ namespace LuduStack.Web.Areas.Community.ViewComponents
                 Latest = latest
             };
 
-            OperationResultListVo<ForumPostViewModel> result = await forumAppService.GetTopicAnswers(CurrentUserId, vm);
+            OperationResultListVo<ForumPostViewModel> result = await forumAppService.GetTopicReplies(CurrentUserId, vm);
 
             result.Pagination.Area = "community";
             result.Pagination.Controller = "forum";
-            result.Pagination.Action = "answersbytopic";
+            result.Pagination.Action = "repliesbytopic";
 
             ViewData["Pagination"] = result.Pagination;
 

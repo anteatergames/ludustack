@@ -24,7 +24,7 @@ namespace LuduStack.Application.Interfaces
 
         Task<OperationResultVo<ForumPostViewModel>> GetPostForEdit(Guid currentUserId, Guid id);
 
-        Task<OperationResultListVo<ForumPostViewModel>> GetTopicAnswers(Guid currentUserId, GetForumTopicAnswersRequestViewModel viewModel);
+        Task<OperationResultListVo<ForumPostViewModel>> GetTopicReplies(Guid currentUserId, GetForumTopicRepliesRequestViewModel viewModel);
 
         Task<OperationResultVo<ForumPostViewModel>> RemovePost(Guid currentUserId, Guid id);
 

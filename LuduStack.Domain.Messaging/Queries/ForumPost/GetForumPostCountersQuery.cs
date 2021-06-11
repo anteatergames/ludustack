@@ -42,9 +42,9 @@ namespace LuduStack.Domain.Messaging.Queries.ForumCategory
             IEnumerable<ForumPostCounterResultVo> result = grouped.Select(x => new ForumPostCounterResultVo
             {
                 OriginalPostId = x.Key,
-                AnswerCount = x.Count(y => !y.IsOriginalPost),
+                ReplyCount = x.Count(y => !y.IsOriginalPost),
                 ViewCount = x.Sum(y => y.Views),
-                LatestAnswer = x.Where(x => !x.IsOriginalPost).OrderByDescending(x => x.CreateDate).Select(x => new LatestForumPostResultVo
+                LatestReply = x.Where(x => !x.IsOriginalPost).OrderByDescending(x => x.CreateDate).Select(x => new LatestForumPostResultVo
                 {
                     Id = x.Id,
                     OriginalPostId = x.OriginalPostId,

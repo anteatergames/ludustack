@@ -58,9 +58,9 @@ namespace LuduStack.Web.Areas.Community.ViewComponents
             {
                 forumPost.CreatedRelativeTime = DateTimeHelper.DateTimeToCreatedAgoMessage(forumPost.CreateDate, SharedLocalizer);
 
-                if (forumPost.LatestAnswer != null)
+                if (forumPost.LatestReply != null)
                 {
-                    forumPost.LatestAnswer.CreatedRelativeTime = DateTimeHelper.DateTimeToCreatedAgoMessage(forumPost.LatestAnswer.CreateDate, SharedLocalizer);
+                    forumPost.LatestReply.CreatedRelativeTime = DateTimeHelper.DateTimeToCreatedAgoMessage(forumPost.LatestReply.CreateDate, SharedLocalizer);
                 }
             }
         }
