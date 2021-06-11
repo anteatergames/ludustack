@@ -30,6 +30,7 @@
         selectors.btnCloseReplyAlert = '#btnclosereplyalert';
         selectors.btnPage = 'a.page-link';
         selectors.latest = '#hdnLatest';
+        selectors.btnScrollTo = '.btn-scrollto';
     }
 
     function cacheObjs() {
@@ -65,6 +66,7 @@
         bindBtnEditCancel();
         bindBtnReply();
         bindBtnCloseReplyAlert();
+        bindBtnScrollTo();
     }
 
     function bindEditors() {
@@ -190,6 +192,25 @@
             replyHiddenUserId.val('');
 
             btn.closest('.alert').slideUp();
+
+            return false;
+        });
+    }
+
+    function bindBtnScrollTo() {
+        objs.container.on('click', selectors.btnScrollTo, function (e) {
+            e.preventDefault();
+
+            var btn = $(this);
+
+            var toBottom = btn.hasClass('btn-scrollto-bottom');
+
+            if (toBottom) {
+                scrollToLatest();
+            }
+            else {
+                MAINMODULE.Utils.ScrollToTop();
+            }
 
             return false;
         });
@@ -323,16 +344,7 @@
     function scrollToLatest() {
         var elementToScroll = $(selectors.postItem).last();
 
-        var complete = false;
-        $('html, body').animate({
-            scrollTop: elementToScroll.offset().top
-        }, {
-            complete: () => {
-                if (!complete) {
-                    complete = true;
-                }
-            }
-        }, 1000);
+        MAINMODULE.Utils.ScrollTo(elementToScroll);
     }
 
     function deleteCallback(response, btn) {

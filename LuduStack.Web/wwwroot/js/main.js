@@ -500,6 +500,25 @@
         }
     }
 
+    function scrollTo(elementToScroll) {
+        var complete = false;
+        $('html, body').animate({
+            scrollTop: elementToScroll.offset().top
+        }, {
+            complete: () => {
+                if (!complete) {
+                    complete = true;
+                }
+            }
+        }, 1000);
+    }
+
+    function scrollToTop() {
+        var elementToScroll = $('body');
+
+        MAINMODULE.Utils.ScrollTo(elementToScroll);
+    }
+
     return {
         Init: init,
         GetLocale: getLocale,
@@ -538,7 +557,9 @@
         },
         Utils: {
             DataURItoBlob: dataURItoBlob,
-            GetSelectedFileUrl: getSelectedFileUrl
+            GetSelectedFileUrl: getSelectedFileUrl,
+            ScrollTo: scrollTo,
+            ScrollToTop: scrollToTop
         }
     };
 }());
