@@ -1,6 +1,4 @@
-﻿using LuduStack.Domain.Interfaces.Models;
-using LuduStack.Domain.ValueObjects;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace LuduStack.Domain.ValueObjects
 {

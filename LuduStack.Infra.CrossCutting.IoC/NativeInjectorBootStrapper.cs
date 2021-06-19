@@ -186,6 +186,14 @@ namespace LuduStack.Infra.CrossCutting.IoC
 
             #endregion Forum
 
+
+            #region PlatformSetting
+
+            services.AddScoped<IPlatformSettingAppService, PlatformSettingAppService>();
+            services.AddScoped<IPlatformSettingRepository, PlatformSettingRepository>();
+
+            #endregion PlatformSetting
+
             #region Common
 
             services.AddScoped<IBaseAppServiceCommon, BaseAppServiceCommon>();

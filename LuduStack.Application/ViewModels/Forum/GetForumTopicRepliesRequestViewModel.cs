@@ -1,5 +1,4 @@
-﻿using LuduStack.Domain.Messaging.Queries.ForumPost;
-using System;
+﻿using System;
 
 namespace LuduStack.Application.ViewModels.Forum
 {

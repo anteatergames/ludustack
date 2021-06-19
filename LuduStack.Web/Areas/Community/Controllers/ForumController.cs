@@ -159,7 +159,7 @@ namespace LuduStack.Web.Areas.Community.Controllers
 
                     if (isNew)
                     {
-                        var redirectAction = "viewtopic";
+                        string redirectAction = "viewtopic";
 
                         if (!vm.IsOriginalPost!)
                         {
