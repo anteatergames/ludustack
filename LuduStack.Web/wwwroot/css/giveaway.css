@@ -105,7 +105,7 @@ html {
     .email-input .st0 {
         fill: none;
         stroke: #aeb8c4;
-        stroke-width: 1.5;
+        stroke-width: 1;
         stroke-miterlimit: 10;
     }
 
@@ -416,7 +416,7 @@ img.imagelistitem {
 
 .box {
     border-radius: var(--border-radius);
-    -webkit-box-shadow: 0 3px 5px rgb(0 0 0 / 20%);
+    -webkit-box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
     -moz-box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
-    box-shadow: 0 0 5px rgb(0 0 0 / 20%);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 }
