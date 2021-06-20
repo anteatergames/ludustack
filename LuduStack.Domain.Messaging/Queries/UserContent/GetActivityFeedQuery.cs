@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace LuduStack.Domain.Messaging.Queries.UserContent
 {
-    public class GetActivityFeedQueryOptions
+    public class GetActivityFeedQuery : Query<List<Models.UserContent>>
     {
         public Guid? GameId { get; set; }
         public Guid? UserId { get; set; }
@@ -20,30 +20,6 @@ namespace LuduStack.Domain.Messaging.Queries.UserContent
         public DateTime? OldestDate { get; set; }
         public bool? ArticlesOnly { get; set; }
         public int Count { get; set; }
-    }
-
-    public class GetActivityFeedQuery : Query<List<Models.UserContent>>
-    {
-        public Guid? GameId { get; }
-        public Guid? UserId { get; }
-        public Guid? SingleContentId { get; }
-        public List<SupportedLanguage> Languages { get; }
-        public Guid? OldestId { get; }
-        public DateTime? OldestDate { get; }
-        public bool? ArticlesOnly { get; }
-        public int Count { get; }
-
-        public GetActivityFeedQuery(GetActivityFeedQueryOptions options)
-        {
-            GameId = options.GameId;
-            UserId = options.UserId;
-            SingleContentId = options.SingleContentId;
-            Languages = options.Languages;
-            OldestId = options.OldestId;
-            OldestDate = options.OldestDate;
-            ArticlesOnly = options.ArticlesOnly;
-            Count = options.Count;
-        }
     }
 
     public class GetActivityFeedQueryHandler : QueryHandler, IRequestHandler<GetActivityFeedQuery, List<Models.UserContent>>

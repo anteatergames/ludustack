@@ -17,7 +17,7 @@ namespace LuduStack.Domain.Core.Enums
         [Display(Name = "Show Donate Button")]
         ShowDonateButton = 3,
 
-        [UiInfo(Display = "Feed Page Size", Type = (int)PlatformSettingType.Integer, SubType = (int)PlatformSettingGroup.Feed, DefaultValue = "20")]
+        [UiInfo(Display = "Feed Page Size", Type = (int)PlatformSettingType.Integer, SubType = (int)PlatformSettingGroup.Feed, DefaultValue = "10")]
         [Display(Name = "Feed Page Size")]
         FeedPageSize = 4,
 

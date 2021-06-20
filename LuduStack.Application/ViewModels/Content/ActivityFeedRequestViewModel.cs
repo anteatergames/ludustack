@@ -22,21 +22,7 @@ namespace LuduStack.Application.ViewModels.Content
         public DateTime? OldestDate { get; set; }
 
         public bool? ArticlesOnly { get; set; }
-        public bool CurrentUserIsAdmin { get; set; }
 
-        public GetActivityFeedQueryOptions ToQueryOptions()
-        {
-            return new GetActivityFeedQueryOptions
-            {
-                GameId = GameId,
-                UserId = UserId,
-                SingleContentId = SingleContentId,
-                Languages = Languages,
-                OldestId = OldestId,
-                OldestDate = OldestDate,
-                ArticlesOnly = ArticlesOnly,
-                Count = Count
-            };
-        }
+        public bool CurrentUserIsAdmin { get; set; }
     }
 }

@@ -27,21 +27,29 @@ namespace LuduStack.Web.ViewComponents
 
         private readonly IUserContentAppService _userContentAppService;
 
-        public FeedViewComponent(IHttpContextAccessor httpContextAccessor, IUserContentAppService userContentAppService, IUserPreferencesAppService userPreferencesAppService) : base(httpContextAccessor)
+        private readonly IPlatformSettingAppService platformSettingAppService;
+
+        public FeedViewComponent(IHttpContextAccessor httpContextAccessor
+            , IUserContentAppService userContentAppService
+            , IUserPreferencesAppService userPreferencesAppService
+            , IPlatformSettingAppService platformSettingAppService) : base(httpContextAccessor)
         {
             _userContentAppService = userContentAppService;
             _userPreferencesAppService = userPreferencesAppService;
+            this.platformSettingAppService = platformSettingAppService;
         }
 
         public async Task<IViewComponentResult> InvokeAsync(int? count, Guid? gameId, Guid? userId, Guid? singleContentId, Guid? oldestId, DateTime? oldestDate, bool? articlesOnly)
         {
-            int defaultCount = 10;
             List<SupportedLanguage> userLanguages = await _userPreferencesAppService.GetLanguagesByUserId(CurrentUserId);
 
+            var feedPageSizeSetting = await platformSettingAppService.GetByElement(Guid.Empty, PlatformSettingElement.FeedPageSize);
+
+            int defaultPageSize = int.Parse(feedPageSizeSetting.Value.Value);
             ActivityFeedRequestViewModel vm = new ActivityFeedRequestViewModel
             {
                 CurrentUserId = CurrentUserId,
-                Count = count ?? defaultCount,
+                Count = count ?? defaultPageSize,
                 GameId = gameId,
                 UserId = userId,
                 SingleContentId = singleContentId,
@@ -71,7 +79,7 @@ namespace LuduStack.Web.ViewComponents
 
             ViewData["UserId"] = userId;
 
-            ViewData["AddMoreButton"] = !singleContentId.HasValue && model.Count() >= defaultCount;
+            ViewData["AddMoreButton"] = !singleContentId.HasValue && model.Count() >= defaultPageSize;
 
             return await Task.Run(() => View(model));
         }
