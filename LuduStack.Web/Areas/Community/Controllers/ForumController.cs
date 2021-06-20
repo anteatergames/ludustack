@@ -14,7 +14,6 @@ using System.Threading.Tasks;
 
 namespace LuduStack.Web.Areas.Community.Controllers
 {
-    [Route("community/forum")]
     public class ForumController : CommunityBaseController
     {
         private readonly IForumAppService forumAppService;
@@ -24,6 +23,7 @@ namespace LuduStack.Web.Areas.Community.Controllers
             this.forumAppService = forumAppService;
         }
 
+        [Route("community/forum")]
         public IActionResult Index(string msg)
         {
             if (!string.IsNullOrWhiteSpace(msg))
@@ -34,7 +34,7 @@ namespace LuduStack.Web.Areas.Community.Controllers
             return View();
         }
 
-        [Route("categories")]
+        [Route("community/forum/categories")]
         public async Task<PartialViewResult> ListCategories()
         {
             List<ForumCategoryListItemVo> model;
@@ -62,7 +62,7 @@ namespace LuduStack.Web.Areas.Community.Controllers
             return PartialView("_ListCategories", model);
         }
 
-        [Route("categoriesbygroup")]
+        [Route("community/forum/categoriesbygroup")]
         public async Task<PartialViewResult> ListCategoriesByGroup()
         {
             List<SupportedLanguage> userLanguages = await GetCurrentUserContentLanguage();
@@ -105,8 +105,8 @@ namespace LuduStack.Web.Areas.Community.Controllers
             }
         }
 
-        [Route("{handler?}")]
-        [Route("category/{id:guid}")]
+        [Route("community/forum/{handler?}")]
+        [Route("community/forum/category/{id:guid}")]
         public async Task<IActionResult> Category(Guid id, string handler)
         {
             OperationResultVo<ForumCategoryViewModel> serviceResult = await forumAppService.GetCategory(CurrentUserId, id, handler);
@@ -116,7 +116,7 @@ namespace LuduStack.Web.Areas.Community.Controllers
             return View(model);
         }
 
-        [Route("category/{categoryId:guid}/posts")]
+        [Route("community/forum/category/{categoryId:guid}/posts")]
         public Task<IActionResult> PostsByCategory(Guid categoryId, int? page)
         {
             ViewComponentResult component = ViewComponent("ForumPosts", new { categoryId, page });
@@ -124,7 +124,7 @@ namespace LuduStack.Web.Areas.Community.Controllers
             return Task.FromResult((IActionResult)component);
         }
 
-        [Route("newtopic")]
+        [Route("community/forum/newtopic")]
         public async Task<IActionResult> NewTopic(Guid? categoryId)
         {
             OperationResultVo<ForumPostViewModel> serviceResult = await forumAppService.GenerateNewTopic(CurrentUserId, categoryId);
@@ -134,7 +134,7 @@ namespace LuduStack.Web.Areas.Community.Controllers
             return View("CreateEditPostWrapper", serviceResult.Value);
         }
 
-        [HttpPost("savepost")]
+        [HttpPost("community/forum/savepost")]
         public async Task<JsonResult> SavePost(ForumPostViewModel vm)
         {
             bool isNew = vm.Id == Guid.Empty;
@@ -191,7 +191,7 @@ namespace LuduStack.Web.Areas.Community.Controllers
             }
         }
 
-        [Route("topic/{id:guid}")]
+        [Route("community/forum/topic/{id:guid}")]
         public async Task<IActionResult> ViewTopic(Guid id)
         {
             OperationResultVo<ForumPostViewModel> result = await forumAppService.GetPostForDetails(CurrentUserId, id);
@@ -216,7 +216,7 @@ namespace LuduStack.Web.Areas.Community.Controllers
             }
         }
 
-        [Route("post/{id:guid}")]
+        [Route("community/forum/post/{id:guid}")]
         public async Task<IActionResult> ViewPost(Guid id)
         {
             OperationResultVo<ForumPostViewModel> result = await forumAppService.GetPostForDetails(CurrentUserId, id);
@@ -237,7 +237,7 @@ namespace LuduStack.Web.Areas.Community.Controllers
             }
         }
 
-        [Route("topic/{topicId:guid}/replies")]
+        [Route("community/forum/topic/{topicId:guid}/replies")]
         public Task<IActionResult> RepliesByTopic(Guid topicId, int? page, bool latest)
         {
             ViewComponentResult component = ViewComponent("ForumTopicReplies", new { topicId, page, latest });
@@ -245,7 +245,7 @@ namespace LuduStack.Web.Areas.Community.Controllers
             return Task.FromResult((IActionResult)component);
         }
 
-        [Route("topic/{id:guid}/latest")]
+        [Route("community/forum/topic/{id:guid}/latest")]
         public async Task<IActionResult> ViewTopicLatest(Guid id)
         {
             OperationResultVo<ForumPostViewModel> result = await forumAppService.GetPostForDetails(CurrentUserId, id);
@@ -268,7 +268,7 @@ namespace LuduStack.Web.Areas.Community.Controllers
             }
         }
 
-        [HttpDelete("deletepost/{id:guid}")]
+        [HttpDelete("community/forum/deletepost/{id:guid}")]
         public async Task<IActionResult> DeletePost(Guid id, bool edit)
         {
             try
@@ -299,7 +299,7 @@ namespace LuduStack.Web.Areas.Community.Controllers
             }
         }
 
-        [Route("post/{id:guid}/edit")]
+        [Route("community/forum/post/{id:guid}/edit")]
         public async Task<IActionResult> PostEdit(Guid id)
         {
             OperationResultVo<ForumPostViewModel> result = await forumAppService.GetPostForEdit(CurrentUserId, id);
@@ -318,7 +318,7 @@ namespace LuduStack.Web.Areas.Community.Controllers
             }
         }
 
-        [HttpPost("post/vote")]
+        [HttpPost("community/forum/post/vote")]
         public async Task<IActionResult> Vote(Guid postId, VoteValue vote)
         {
             try
