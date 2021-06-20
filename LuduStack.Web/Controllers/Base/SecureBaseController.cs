@@ -55,6 +55,10 @@ namespace LuduStack.Web.Controllers.Base
 
         public IUserPreferencesAppService UserPreferencesAppService => userPreferencesAppService ??= Services.GetService<IUserPreferencesAppService>();
 
+        private IPlatformSettingAppService platformSettingAppService;
+
+        public IPlatformSettingAppService PlatformSettingAppService => platformSettingAppService ??= Services.GetService<IPlatformSettingAppService>();
+
         public Guid CurrentUserId { get; set; }
 
         public bool CurrentUserIsAdmin { get; set; }
@@ -111,7 +115,18 @@ namespace LuduStack.Web.Controllers.Base
 
             EnvName = string.Format("env-{0}", HostEnvironment.EnvironmentName);
 
+            await SetAds();
+
             await base.OnActionExecutionAsync(context, next);
+        }
+
+        private async Task SetAds()
+        {
+            var showAdsResult = await PlatformSettingAppService.GetByElement(CurrentUserId, PlatformSettingElement.ShowAds);
+            if (showAdsResult.Success)
+            {
+                ViewBag.ShowAds = showAdsResult.Value.Value.Equals("1") ? true : false;
+            }
         }
 
         protected async Task SetProfileOnSession(Guid userId, string userName)

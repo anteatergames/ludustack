@@ -8,6 +8,8 @@
     var confirmEmailViewModel = new HomeSquareViewModel("preferences", "index", new { area = "member" }, "bg-green", "fas fa-check", SharedLocalizer["Confirm your email!"]);
 
     var emailConfirmed = bool.Parse((string)(ViewData["emailConfirmed"] ?? "False"));
+
+    var showAds = (bool)(ViewBag.ShowAds ?? false);
 }
 
 @section Styles {
@@ -118,6 +120,14 @@
 
             <environment include="Development"><div class="text-center position-absolute w-100 text-white" style="z-index:9999;top:-28px;padding-right: 30px;">dev</div></environment>
             <environment include="Staging"><div class="text-center position-absolute w-100 text-white" style="z-index:9999;top:-28px;padding-right: 30px;">staging</div></environment>
+
+
+            @if (showAds)
+            {
+                <div class="rounded-0 p-0 my-2 mx-auto">
+                    <partial name="_GoogleAdFeed" />
+                </div>
+            }
 
             <div class="row">
                 <div class="col-12">

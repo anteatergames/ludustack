@@ -1,4 +1,11 @@
 ﻿@{
+    ViewData["Title"] = SharedLocalizer["Forum"];
+    ViewData["Description"] = SharedLocalizer["Discuss game development subjects with other fellow gamedevs."];
+    ViewData["Url"] = ViewBag.BaseUrl + Url.Action("index", "forum", new { area = "community" });
+    ViewData["OgImage"] = ViewBag.BaseUrl + "/images/og/ogforums.png";
+    ViewData["OgImageWidth"] = 1200;
+    ViewData["OgImageHeight"] = 630;
+
     var isAjax = ViewContext.HttpContext.Request.IsAjaxRequest();
     var canInteract = User.Identity.IsAuthenticated;
 
@@ -7,12 +14,7 @@
         Layout = null;
     }
 
-    ViewData["Title"] = SharedLocalizer["Forum"];
-    ViewData["Description"] = SharedLocalizer["Discuss game development subjects with other fellow gamedevs."];
-    ViewData["Url"] = ViewBag.BaseUrl + Url.Action("index", "forum", new { area = "community" });
-    ViewData["OgImage"] = ViewBag.BaseUrl + "/images/og/ogforums.png";
-    ViewData["OgImageWidth"] = 1200;
-    ViewData["OgImageHeight"] = 630;
+    var showAds = (bool)(ViewBag.ShowAds ?? false);
 }
 
 @section ComponentStyles {
@@ -67,6 +69,14 @@
                 </div>*@
         </div>
     </div>
+
+    @if (showAds)
+    {
+        <div class="col-12 rounded-0 p-0 px-lg-5 mb-2 mx-auto">
+            <partial name="_GoogleAdFeed" />
+        </div>
+    }
+
     <div class="row">
         <div id="divList" class="col-12"></div>
     </div>

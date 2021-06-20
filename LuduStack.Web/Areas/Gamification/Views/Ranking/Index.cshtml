@@ -3,6 +3,8 @@
 @{
     ViewData["Title"] = SharedLocalizer["Ranking"];
     ViewData["Description"] = SharedLocalizer["Climb our ranks to reach to the top. Every little action you take earn you points."];
+
+    var showAds = (bool)(ViewBag.ShowAds ?? false);
 }
 
 @section Styles {
@@ -21,6 +23,14 @@
         <div class="col-12 mx-1">
             <h2>@SharedLocalizer["Top {0} users", Model.Count()]</h2>
         </div>
+
+        @if (showAds)
+        {
+            <div class="col-12 rounded-0 p-0 px-lg-5 my-3 mx-auto">
+                <partial name="_GoogleAdFeed" />
+            </div>
+        }
+
         @foreach (var item in Model)
         {
             <div class="col-12">

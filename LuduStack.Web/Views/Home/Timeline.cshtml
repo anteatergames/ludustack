@@ -4,6 +4,8 @@
     ViewData["Description"] = "Our Timeline - Learn about our history and how we got to this moment in time.";
     ViewData["Url"] = "https://www.ludustack.com/timeline";
     var count = 0;
+
+    var showAds = (bool)(ViewBag.ShowAds ?? false);
 }
 
 @section Styles{
@@ -14,6 +16,14 @@
     <div class="page-header">
         <h1 id="timeline">Timeline</h1>
     </div>
+
+    @if (showAds)
+    {
+        <div class="rounded-0 p-0 px-lg-5 my-3 mx-auto">
+            <partial name="_GoogleAdFeed" />
+        </div>
+    }
+
     <div class="px-3 px-md-0">
         <ul class="timeline">
             @foreach (var item in Model.Items)

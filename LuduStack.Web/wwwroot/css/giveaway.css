@@ -413,3 +413,10 @@ img.imagelistitem {
     width: 25px;
     line-height: 14px;
 }
+
+.box {
+    border-radius: var(--border-radius);
+    -webkit-box-shadow: 0 3px 5px rgb(0 0 0 / 20%);
+    -moz-box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 5px rgb(0 0 0 / 20%);
+}

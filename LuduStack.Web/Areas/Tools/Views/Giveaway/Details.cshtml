@@ -8,6 +8,8 @@
     var isAjax = ViewContext.HttpContext.Request.IsAjaxRequest();
     var canInteract = User.Identity.IsAuthenticated;
 
+    var showAds = (bool)(ViewBag.ShowAds ?? false);
+
     Layout = "_LayoutGiveaway";
 }
 
@@ -51,7 +53,7 @@
                         <button class="btn btn-info btn-lg btn-block btn-terms">@SharedLocalizer["close"]</button>
                     </div>
                 </div>
-                <div class="giveaway-container animate1 pb-5 mb-2">
+                <div class="giveaway-container animate1 pb-4 mb-2">
                     @if (Model.Status == GiveawayStatus.Draft)
                     {
                         <div id="ribbon-container" class="blue">
@@ -243,9 +245,12 @@
                         }
                     </div>
 
-                    <div class="box box-widget box-content rounded-0 p-0 px-lg-5 bg-white mb-2 mt-3 mx-auto">
-                        <partial name="_GoogleAdFeed" />
-                    </div>
+                    @if (showAds)
+                    {
+                        <div class="rounded-0 p-0 px-lg-5 my-3 mx-auto">
+                            <partial name="_GoogleAdFeed" />
+                        </div>
+                    }
                 </div>
             </div>
         </div>

@@ -3,6 +3,8 @@
 @{
     ViewData["Title"] = SharedLocalizer["Registered Users"];
     ViewData["Description"] = SharedLocalizer["The awesome people that enjoy participating on our community. Each and every member is important, be asured."];
+
+    var showAds = (bool)(ViewBag.ShowAds ?? false);
 }
 
 <h1 class="sr-only">@ViewData["Title"]</h1>
@@ -11,6 +13,14 @@
     <div class="col-12 mx-1">
         <h2>@SharedLocalizer["We have {0} users", Model.Count()]</h2>
     </div>
+
+    @if (showAds)
+    {
+        <div class="col-12 rounded-0 p-0 px-lg-5 my-3 mx-auto">
+            <partial name="_GoogleAdFeed" />
+        </div>
+    }
+
     @foreach (var item in Model)
     {
         <div class="col-12 col-md-6 col-lg-4 col-xl-3 px-0 px-md-2 mb-3">
