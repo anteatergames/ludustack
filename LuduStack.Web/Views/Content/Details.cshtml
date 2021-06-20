@@ -8,6 +8,8 @@
 
     var hasFeaturedImage = !string.IsNullOrWhiteSpace(Model.FeaturedImage);
     var featuredImageIsYoutube = hasFeaturedImage && Model.FeaturedImage.Contains("youtu");
+
+    var showAds = (bool)(ViewBag.ShowAds ?? false);
 }
 
 @section OpenGraphMeta {
@@ -190,6 +192,13 @@
                         &nbsp;@SharedLocalizer["votes"]
                     </div>
                 }
+            </div>
+        }
+
+        @if (showAds)
+        {
+            <div class="rounded-0 p-0 px-lg-5 my-3 mx-auto">
+                <partial name="_GoogleAdFeed" />
             </div>
         }
 

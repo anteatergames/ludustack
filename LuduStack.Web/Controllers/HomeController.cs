@@ -33,8 +33,9 @@ namespace LuduStack.Web.Controllers
 
         public async Task<IActionResult> Index(int? pointsEarned)
         {
-            CarouselViewModel featured = await featuredContentAppService.GetFeaturedNow();
-            ViewBag.Carousel = featured;
+            await SetFeaturedCarousel();
+
+            await SetDonateButton();
 
             SetLanguage();
 
@@ -103,6 +104,32 @@ namespace LuduStack.Web.Controllers
         public IActionResult ErrorTest()
         {
             throw new CustomApplicationException("meh");
+        }
+
+        private async Task SetFeaturedCarousel()
+        {
+            OperationResultVo<Application.ViewModels.PlatformSetting.PlatformSettingViewModel> showFeatureCarouselResult = await PlatformSettingAppService.GetByElement(CurrentUserId, PlatformSettingElement.ShowFeatureCarousel);
+            if (showFeatureCarouselResult.Success)
+            {
+                bool showFeatureCarousel = showFeatureCarouselResult.Value.Value.Equals("1");
+                ViewBag.ShowFeatureCarousel = showFeatureCarousel;
+
+                if (showFeatureCarousel)
+                {
+                    CarouselViewModel featured = await featuredContentAppService.GetFeaturedNow();
+                    ViewBag.Carousel = featured;
+                }
+            }
+        }
+
+        private async Task SetDonateButton()
+        {
+            OperationResultVo<Application.ViewModels.PlatformSetting.PlatformSettingViewModel> showDonateButtonResult = await PlatformSettingAppService.GetByElement(CurrentUserId, PlatformSettingElement.ShowDonateButton);
+            if (showDonateButtonResult.Success)
+            {
+                bool showDonateButton = showDonateButtonResult.Value.Value.Equals("1");
+                ViewBag.ShowDonateButton = showDonateButton;
+            }
         }
 
         private void SetLanguage()

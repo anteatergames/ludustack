@@ -1,0 +1,64 @@
+﻿@model IEnumerable<PlatformSettingViewModel>
+
+@{
+    var canInteract = User.Identity.IsAuthenticated;
+
+    Layout = null;
+
+    var noItemsModel = new ListNoItemsViewModel("fas fa-dizzy", "There are no Platform Settings on the platform!");
+
+    var description = ViewData["ListDescription"] == null ? SharedLocalizer["Platform Settings"] : (string)ViewData["ListDescription"];
+}
+
+<div class="bg-light pt-2">
+    <div class="col-12">
+        <h2>@SharedLocalizer[description]<span class="float-right">@Model.Count()</span></h2>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <partial name="_ListNoItems" model="noItemsModel" />
+    }
+    else
+    {
+        <div class="col-12 bg-white square-top table-responsive pb-1">
+            <table class="table table-hover">
+                <caption class="sr-only">@SharedLocalizer["The available Platform Setting."]</caption>
+                <thead>
+                    <tr class="text-capitalize">
+                        <th scope="col">@SharedLocalizer["Group"]</th>
+                        <th scope="col">@SharedLocalizer["Element"]</th>
+                        <th scope="col" class="text-center">@SharedLocalizer["Value"]</th>
+                        <th scope="col" class="text-center">@SharedLocalizer["Default"]</th>
+                        <th scope="col" class="text-center">@SharedLocalizer["Saved"]</th>
+                        <th scope="col" class="text-right text-wrap" style="width:1px">@SharedLocalizer["actions"]</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr class="row-clickable">
+                            <td>@item.Group</td>
+                            <td>@item.Element.ToUiInfo().Display</td>
+                            <td class="text-center@(item.IsDefault ? " text-green" : " text-blue")">@item.Value</td>
+                            <td class="text-center@(item.IsDefault ? " text-green" : " text-blue")">@item.DefaultValue</td>
+                            <td class="text-center"><i class="fas @(item.Saved ? "fa-check text-green" : "fa-times text-red")" aria-hidden="true"></i></td>
+                            <td class="text-right">
+                                @if (canInteract)
+                                {
+                                    <div class="btn-group  text-capitalize" role="group">
+                                        <a asp-area="staff" asp-controller="platformsetting" asp-action="edit" asp-route-element="@item.Element" class="btn btn-sm btn-outline-info my-1"><span class="text-nowrap"><i class="fas fa-fw fa-edit" aria-hidden="true"></i> @SharedLocalizer["edit"]</span></a>
+                                        <button class="btn btn-sm btn-outline-info dropdown-toggle my-1" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                                        <div class="dropdown-menu dropdown-menu-right btn-sm p-1" aria-labelledby="dropdownMenuButton" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(-30px, 38px, 0px);">
+                                            <a class="dropdown-item btn-trash py-2@(item.Saved ? " text-danger btn-entity-reset" : " text-muted disabled")" href="#" data-url="@Url.Action("reset", "platformsetting", new { area = "staff", id = item.Id })" data-confirmationmessage="@SharedLocalizer["Are you sure you want to reset this Setting to its default value?"]" data-confirmationtitle="@SharedLocalizer["Are you sure?"]" data-confirmationbuttontext="@SharedLocalizer["Yes, do it!"]" data-cancelbuttontext="@SharedLocalizer["Cancel"]"><i class="fas fa-fw fa-trash-alt" aria-hidden="true"></i> @SharedLocalizer["reset"]</a>
+                                        </div>
+                                    </div>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

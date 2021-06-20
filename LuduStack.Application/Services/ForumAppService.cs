@@ -26,9 +26,12 @@ namespace LuduStack.Application.Services
     {
         private readonly ILogger logger;
 
-        public ForumAppService(IBaseAppServiceCommon baseAppServiceCommon, ILogger<ForumAppService> logger) : base(baseAppServiceCommon)
+        private readonly IPlatformSettingAppService platformSettingAppService;
+
+        public ForumAppService(IBaseAppServiceCommon baseAppServiceCommon, ILogger<ForumAppService> logger, IPlatformSettingAppService platformSettingAppService) : base(baseAppServiceCommon)
         {
             this.logger = logger;
+            this.platformSettingAppService = platformSettingAppService;
         }
 
         public async Task<OperationResultVo<ForumPostViewModel>> GenerateNewTopic(Guid currentUserId, Guid? categoryId)
@@ -134,10 +137,12 @@ namespace LuduStack.Application.Services
             {
                 List<Guid> profilesToGet = new List<Guid>();
 
-                var query = new GetForumPostListQuery
+                OperationResultVo<ViewModels.PlatformSetting.PlatformSettingViewModel> itemsPerPageSetting = await platformSettingAppService.GetByElement(currentUserId, PlatformSettingElement.ForumPageSize);
+
+                GetForumPostListQuery query = new GetForumPostListQuery
                 {
                     CategoryId = viewModel.ForumCategoryId,
-                    Count = viewModel.Count ?? Constants.DefaultItemsPerPage,
+                    Count = viewModel.Count ?? int.Parse(itemsPerPageSetting.Value.Value),
                     Page = viewModel.Page ?? 1,
                     Languages = viewModel.Languages
                 };
@@ -296,10 +301,12 @@ namespace LuduStack.Application.Services
         {
             try
             {
-                var query = new GetForumTopicRepliesQuery
+                OperationResultVo<ViewModels.PlatformSetting.PlatformSettingViewModel> itemsPerPageSetting = await platformSettingAppService.GetByElement(currentUserId, PlatformSettingElement.ForumPageSize);
+
+                GetForumTopicRepliesQuery query = new GetForumTopicRepliesQuery
                 {
                     TopicId = viewModel.TopicId,
-                    Count = viewModel.Count ?? Constants.DefaultItemsPerPage,
+                    Count = viewModel.Count ?? int.Parse(itemsPerPageSetting.Value.Value),
                     Page = viewModel.Page ?? 1,
                     Latest = viewModel.Latest
                 };
@@ -329,9 +336,10 @@ namespace LuduStack.Application.Services
                     SanitizeHtml(topicReply, sanitizer);
                 }
 
-                var result = new OperationResultListVo<ForumPostViewModel>(vms);
-
-                result.Pagination = queryResult.Pagination;
+                OperationResultListVo<ForumPostViewModel> result = new OperationResultListVo<ForumPostViewModel>(vms)
+                {
+                    Pagination = queryResult.Pagination
+                };
 
                 return result;
             }

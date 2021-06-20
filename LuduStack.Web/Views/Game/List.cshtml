@@ -19,11 +19,20 @@
     ViewData["Description"] = description;
 
     var noItems = new ListNoItemsViewModel("fas fa-dizzy", "No results to show!");
+
+    var showAds = (bool)(ViewBag.ShowAds ?? false);
 }
 
 <div class="col-12">
     <h1>@ViewData["Title"] (@games.Count)</h1>
 </div>
+
+@if (showAds)
+{
+    <div class="rounded-0 p-0 px-lg-5 my-3 mx-auto">
+        <partial name="_GoogleAdFeed" />
+    </div>
+}
 
 @if (games.Any())
 {

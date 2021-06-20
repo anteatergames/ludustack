@@ -569,5 +569,26 @@
             "wwwroot/js/forum/forumcommon.js",
             "wwwroot/js/forum/forumpostdetails.js"
         ]
+    },
+    {
+        "outputFileName": "wwwroot/css/platformsetting.min.css",
+        "inputFiles": [
+            "wwwroot/css/platformsetting.css"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/js/platformsetting/platformsetting.min.js",
+        "inputFiles": [
+            "wwwroot/js/platformsetting/platformsettingcommon.js",
+            "wwwroot/js/platformsetting/platformsetting.js"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/js/platformsetting/platformsettingedit.min.js",
+        "inputFiles": [
+            "wwwroot/js/common-edit.js",
+            "wwwroot/js/platformsetting/platformsettingcommon.js",
+            "wwwroot/js/platformsetting/platformsettingedit.js"
+        ]
     }
 ]

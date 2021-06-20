@@ -1,13 +1,15 @@
 ﻿@model CostCalculatorViewModel
 
 @{
-    var isAjax = ViewContext.HttpContext.Request.IsAjaxRequest();
-    var canInteract = User.Identity.IsAuthenticated;
-
     ViewData["Title"] = SharedLocalizer["Cost Calculator"];
     ViewData["Description"] = SharedLocalizer["Estimate how much your idea for a game would cost approximately."];
     ViewData["Url"] = ViewBag.BaseUrl + Url.Action("index", "costcalculator", new { area = "tools" });
     ViewData["OgImage"] = ViewBag.BaseUrl + "/images/og/ogcostcalculator.png";
+
+    var isAjax = ViewContext.HttpContext.Request.IsAjaxRequest();
+    var canInteract = User.Identity.IsAuthenticated;
+
+    var showAds = (bool)(ViewBag.ShowAds ?? false);
 
     var visualDimensions = Html.GetEnumSelectList<Dimensions>();
     var artStyles = Html.GetEnumSelectList<ArtStyle>();
@@ -181,9 +183,12 @@
                     </div>
                 </div>
 
-                <div class="box box-widget box-content rounded-0 p-0 bg-white mb-2 mt-3">
-                    <partial name="_GoogleAdFeed" />
-                </div>
+                @if (showAds)
+                {
+                    <div class="rounded-0 p-0 px-lg-5 my-3 mx-auto">
+                        <partial name="_GoogleAdFeed" />
+                    </div>
+                }
 
                 <hr />
 

@@ -8,6 +8,12 @@
     var confirmEmailViewModel = new HomeSquareViewModel("preferences", "index", new { area = "member" }, "bg-green", "fas fa-check", SharedLocalizer["Confirm your email!"]);
 
     var emailConfirmed = bool.Parse((string)(ViewData["emailConfirmed"] ?? "False"));
+
+    var showAds = (bool)(ViewBag.ShowAds ?? false);
+
+    var showFeatureCarousel = (bool)(ViewBag.ShowFeatureCarousel ?? false);
+
+    var showDonateButton = (bool)(ViewBag.ShowDonateButton ?? false);
 }
 
 @section Styles {
@@ -98,9 +104,12 @@
                         <vc:counters placeholder="true"></vc:counters>
                     </div>
 
-                    <div class="col-12 p-0 d-sm-none d-xl-block">
-                        <partial name="_PayPalButton" model="@SharedLocalizer["donate"].ToString()" />
-                    </div>
+                    @if (showDonateButton)
+                    {
+                        <div class="col-12 p-0 d-sm-none d-xl-block">
+                            <partial name="_PayPalButton" model="@SharedLocalizer["donate"].ToString()" />
+                        </div>
+                    }
 
                     <div id="divGameIdea" class="mb-2"></div>
                 </div>
@@ -109,7 +118,10 @@
 
         <div class=" col-lg-8 col-xl-7 pr-lg-2 pl-xl-2 pr-xl-2">
 
-            @await Html.PartialAsync("_Carousel", ViewBag.Carousel as CarouselViewModel)
+            @if (showFeatureCarousel)
+            {
+                @await Html.PartialAsync("_Carousel", ViewBag.Carousel as CarouselViewModel)
+            }
 
             @if (User.Identity.IsAuthenticated)
             {
@@ -118,6 +130,13 @@
 
             <environment include="Development"><div class="text-center position-absolute w-100 text-white" style="z-index:9999;top:-28px;padding-right: 30px;">dev</div></environment>
             <environment include="Staging"><div class="text-center position-absolute w-100 text-white" style="z-index:9999;top:-28px;padding-right: 30px;">staging</div></environment>
+
+            @if (showAds)
+            {
+                <div class="rounded-0 p-0 my-2 mx-auto">
+                    <partial name="_GoogleAdFeed" />
+                </div>
+            }
 
             <div class="row">
                 <div class="col-12">
@@ -139,11 +158,14 @@
                     <partial name="_TagList" model="@ViewData["Genres"]" />
                 </div>
 
-                <div class="col-12 d-sm-block d-xl-none">
-                    <div class="col-12 mt-2 px-1">
-                        <partial name="_PayPalButton" model="@SharedLocalizer["donate"].ToString()" />
+                @if (showDonateButton)
+                {
+                    <div class="col-12 d-sm-block d-xl-none">
+                        <div class="col-12 mt-2 px-1">
+                            <partial name="_PayPalButton" model="@SharedLocalizer["donate"].ToString()" />
+                        </div>
                     </div>
-                </div>
+                }
 
                 <div class="col-12 mt-1">
                     <partial name="_InfoBox" />

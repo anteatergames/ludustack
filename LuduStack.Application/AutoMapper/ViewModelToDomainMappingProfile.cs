@@ -13,6 +13,7 @@ using LuduStack.Application.ViewModels.Giveaway;
 using LuduStack.Application.ViewModels.Jobs;
 using LuduStack.Application.ViewModels.Localization;
 using LuduStack.Application.ViewModels.Notification;
+using LuduStack.Application.ViewModels.PlatformSetting;
 using LuduStack.Application.ViewModels.Poll;
 using LuduStack.Application.ViewModels.ShortUrl;
 using LuduStack.Application.ViewModels.Study;
@@ -190,6 +191,12 @@ namespace LuduStack.Application.AutoMapper
             CreateMap<ForumPostViewModel, ForumPost>();
 
             #endregion Forum
+
+            #region PlatformSetting
+
+            CreateMap<PlatformSettingViewModel, PlatformSetting>();
+
+            #endregion PlatformSetting
         }
     }
 }

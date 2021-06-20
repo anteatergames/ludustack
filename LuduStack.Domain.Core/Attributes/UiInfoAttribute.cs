@@ -12,5 +12,6 @@ namespace LuduStack.Domain.Core.Attributes
         public string Locale { get; set; }
         public string Description { get; set; }
         public string Display { get; set; }
+        public string DefaultValue { get; set; }
     }
 }

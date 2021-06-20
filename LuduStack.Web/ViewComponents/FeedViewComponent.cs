@@ -27,21 +27,29 @@ namespace LuduStack.Web.ViewComponents
 
         private readonly IUserContentAppService _userContentAppService;
 
-        public FeedViewComponent(IHttpContextAccessor httpContextAccessor, IUserContentAppService userContentAppService, IUserPreferencesAppService userPreferencesAppService) : base(httpContextAccessor)
+        private readonly IPlatformSettingAppService platformSettingAppService;
+
+        public FeedViewComponent(IHttpContextAccessor httpContextAccessor
+            , IUserContentAppService userContentAppService
+            , IUserPreferencesAppService userPreferencesAppService
+            , IPlatformSettingAppService platformSettingAppService) : base(httpContextAccessor)
         {
             _userContentAppService = userContentAppService;
             _userPreferencesAppService = userPreferencesAppService;
+            this.platformSettingAppService = platformSettingAppService;
         }
 
         public async Task<IViewComponentResult> InvokeAsync(int? count, Guid? gameId, Guid? userId, Guid? singleContentId, Guid? oldestId, DateTime? oldestDate, bool? articlesOnly)
         {
-            int defaultCount = 10;
             List<SupportedLanguage> userLanguages = await _userPreferencesAppService.GetLanguagesByUserId(CurrentUserId);
 
+            Domain.ValueObjects.OperationResultVo<Application.ViewModels.PlatformSetting.PlatformSettingViewModel> feedPageSizeSetting = await platformSettingAppService.GetByElement(Guid.Empty, PlatformSettingElement.FeedPageSize);
+
+            int defaultPageSize = int.Parse(feedPageSizeSetting.Value.Value);
             ActivityFeedRequestViewModel vm = new ActivityFeedRequestViewModel
             {
                 CurrentUserId = CurrentUserId,
-                Count = count ?? defaultCount,
+                Count = count ?? defaultPageSize,
                 GameId = gameId,
                 UserId = userId,
                 SingleContentId = singleContentId,
@@ -71,7 +79,7 @@ namespace LuduStack.Web.ViewComponents
 
             ViewData["UserId"] = userId;
 
-            ViewData["AddMoreButton"] = !singleContentId.HasValue && model.Count() >= defaultCount;
+            ViewData["AddMoreButton"] = !singleContentId.HasValue && model.Count() >= defaultPageSize;
 
             return await Task.Run(() => View(model));
         }
@@ -96,21 +104,7 @@ namespace LuduStack.Web.ViewComponents
                     FormatPost(item);
                     break;
             }
-
-            //FormatCommon(userIsAdmin, item);
         }
-
-        //private void FormatCommon(bool userIsAdmin, UserContentViewModel item)
-        //{
-        //    foreach (CommentViewModel comment in item.Comments)
-        //    {
-        //        comment.Text = ContentFormatter.FormatHashTagsToShow(comment.Text);
-        //    }
-
-        //    item.Permissions.CanEdit = !item.HasPoll && (item.UserId == CurrentUserId || userIsAdmin);
-
-        //    item.Permissions.CanDelete = item.UserId == CurrentUserId || userIsAdmin;
-        //}
 
         private void FormatComicStripPost(UserContentViewModel item)
         {
@@ -119,13 +113,6 @@ namespace LuduStack.Web.ViewComponents
 
         private void FormatPost(UserContentViewModel item)
         {
-            //item.Content = ContentFormatter.FormatContentToShow(item.Content);
-            //if (item.FeaturedMediaType == MediaType.Youtube)
-            //{
-            //    item.FeaturedImageResponsive = ContentFormatter.GetYoutubeVideoId(item.FeaturedImage);
-            //    item.FeaturedImageLquip = UrlFormatter.FormatFeaturedImageUrl(Guid.Empty, Constants.DefaultFeaturedImageLquip, ImageRenderType.LowQuality);
-            //}
-
             item.Url = Url.Action("details", "content", new { area = string.Empty, id = item.Id }, (string)ViewData["protocol"], (string)ViewData["host"]);
         }
 

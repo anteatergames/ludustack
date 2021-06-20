@@ -8,6 +8,8 @@
     var isAjax = ViewContext.HttpContext.Request.IsAjaxRequest();
     var canInteract = User.Identity.IsAuthenticated;
 
+    var showAds = (bool)(ViewBag.ShowAds ?? false);
+
     Layout = "_LayoutGiveaway";
 }
 
@@ -51,7 +53,7 @@
                         <button class="btn btn-info btn-lg btn-block btn-terms">@SharedLocalizer["close"]</button>
                     </div>
                 </div>
-                <div class="giveaway-container animate1 pb-5 mb-2">
+                <div class="giveaway-container animate1 pb-4 mb-2">
                     @if (Model.Status == GiveawayStatus.Draft)
                     {
                         <div id="ribbon-container" class="blue">
@@ -231,9 +233,9 @@
                             <div class="p-4 rounded-0 bg-light offered-by-text ">
                                 <div class="text-uppercase d-flex flex-wrap justify-content-center">
                                     @*@if (Model.ShowTimeZone && Model.Status != GiveawayStatus.Ended)
-                        {
-                            <div class="mx-3"><small title="America/Sao_Paulo"><span class="h6">@SharedLocalizer["giveaway timezone:UTC {0}", Model.TimeZone]</span></small></div>
-                        }*@
+                                        {
+                                            <div class="mx-3"><small title="America/Sao_Paulo"><span class="h6">@SharedLocalizer["giveaway timezone:UTC {0}", Model.TimeZone]</span></small></div>
+                                        }*@
                                     @if (Model.ShowSponsor)
                                     {
                                         <div class="mx-3"><small><span class="h6">@SharedLocalizer["offered by:"]<a href="@Model.SponsorWebsite" target="_blank" rel="noopener noreferrer">@Model.SponsorName</a> </span></small></div>
@@ -243,9 +245,12 @@
                         }
                     </div>
 
-                    <div class="box box-widget box-content rounded-0 p-0 px-lg-5 bg-white mb-2 mt-3 mx-auto">
-                        <partial name="_GoogleAdFeed" />
-                    </div>
+                    @if (showAds)
+                    {
+                        <div class="rounded-0 p-0 px-lg-5 my-3 mx-auto">
+                            <partial name="_GoogleAdFeed" />
+                        </div>
+                    }
                 </div>
             </div>
         </div>

@@ -75,8 +75,8 @@
 
                         allVoteButtons.each((index, element) => {
                             var thisBtn = $(element);
-                            var colorClass = thisBtn.data('colorclass');
-                            thisBtn.removeClass(colorClass);
+                            var colorClass2 = thisBtn.data('colorclass');
+                            thisBtn.removeClass(colorClass2);
                         });
                         btn.addClass(colorClass);
                     }

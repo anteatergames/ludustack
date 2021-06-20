@@ -1,13 +1,15 @@
 ﻿@model RateCalculatorViewModel
 
 @{
-    var isAjax = ViewContext.HttpContext.Request.IsAjaxRequest();
-    var canInteract = User.Identity.IsAuthenticated;
-
     ViewData["Title"] = SharedLocalizer["Rate Calculator"];
     ViewData["Description"] = SharedLocalizer["Calculate how much you should charge for freelance jobs."];
     ViewData["Url"] = ViewBag.BaseUrl + Url.Action("index", "ratecalculator", new { area = "tools" });
     ViewData["OgImage"] = ViewBag.BaseUrl + "/images/og/ogratecalculator.png";
+
+    var isAjax = ViewContext.HttpContext.Request.IsAjaxRequest();
+    var canInteract = User.Identity.IsAuthenticated;
+
+    var showAds = (bool)(ViewBag.ShowAds ?? false);
 }
 
 @section ComponentStyles {
@@ -182,9 +184,12 @@
                     </div>
                 </form>
 
-                <div class="box box-widget box-content rounded-0 p-0 bg-white mb-2">
-                    <partial name="_GoogleAdFeed" />
-                </div>
+                @if (showAds)
+                {
+                    <div class="rounded-0 p-0 px-lg-5 my-3 mx-auto">
+                        <partial name="_GoogleAdFeed" />
+                    </div>
+                }
 
                 <hr />
 

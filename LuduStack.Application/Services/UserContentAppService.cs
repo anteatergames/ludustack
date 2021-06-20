@@ -33,7 +33,6 @@ namespace LuduStack.Application.Services
         {
             this.logger = logger;
             this.pollDomainService = pollDomainService;
-            this.pollDomainService = pollDomainService;
         }
 
         public async Task<OperationResultVo<int>> Count(Guid currentUserId)
@@ -246,9 +245,19 @@ namespace LuduStack.Application.Services
         {
             try
             {
-                GetActivityFeedQueryOptions queryOptions = vm.ToQueryOptions();
+                GetActivityFeedQuery query = new GetActivityFeedQuery
+                {
+                    GameId = vm.GameId,
+                    UserId = vm.UserId,
+                    SingleContentId = vm.SingleContentId,
+                    Languages = vm.Languages,
+                    OldestId = vm.OldestId,
+                    OldestDate = vm.OldestDate,
+                    ArticlesOnly = vm.ArticlesOnly,
+                    Count = vm.Count
+                };
 
-                List<UserContent> allModels = await mediator.Query<GetActivityFeedQuery, List<UserContent>>(new GetActivityFeedQuery(queryOptions));
+                List<UserContent> allModels = await mediator.Query<GetActivityFeedQuery, List<UserContent>>(query);
 
                 IEnumerable<UserContentViewModel> viewModels = mapper.Map<IEnumerable<UserContent>, IEnumerable<UserContentViewModel>>(allModels);
 
