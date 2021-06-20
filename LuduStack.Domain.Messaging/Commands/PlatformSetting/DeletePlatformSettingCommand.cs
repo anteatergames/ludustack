@@ -1,5 +1,4 @@
-﻿using LuduStack.Domain.Core.Enums;
-using LuduStack.Domain.Interfaces;
+﻿using LuduStack.Domain.Interfaces;
 using LuduStack.Domain.Interfaces.Repository;
 using LuduStack.Infra.CrossCutting.Messaging;
 using MediatR;

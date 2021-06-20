@@ -43,7 +43,7 @@ namespace LuduStack.Web.ViewComponents
         {
             List<SupportedLanguage> userLanguages = await _userPreferencesAppService.GetLanguagesByUserId(CurrentUserId);
 
-            var feedPageSizeSetting = await platformSettingAppService.GetByElement(Guid.Empty, PlatformSettingElement.FeedPageSize);
+            Domain.ValueObjects.OperationResultVo<Application.ViewModels.PlatformSetting.PlatformSettingViewModel> feedPageSizeSetting = await platformSettingAppService.GetByElement(Guid.Empty, PlatformSettingElement.FeedPageSize);
 
             int defaultPageSize = int.Parse(feedPageSizeSetting.Value.Value);
             ActivityFeedRequestViewModel vm = new ActivityFeedRequestViewModel

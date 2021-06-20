@@ -122,7 +122,7 @@ namespace LuduStack.Web.Controllers.Base
 
         private async Task SetAds()
         {
-            var showAdsResult = await PlatformSettingAppService.GetByElement(CurrentUserId, PlatformSettingElement.ShowAds);
+            OperationResultVo<Application.ViewModels.PlatformSetting.PlatformSettingViewModel> showAdsResult = await PlatformSettingAppService.GetByElement(CurrentUserId, PlatformSettingElement.ShowAds);
             if (showAdsResult.Success)
             {
                 ViewBag.ShowAds = showAdsResult.Value.Value.Equals("1") ? true : false;

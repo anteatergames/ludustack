@@ -161,13 +161,13 @@ namespace LuduStack.Application.Services
                 }
                 else
                 {
-                    var uiInfo = result.Result.Element.ToUiInfo();
+                    UiInfoAttribute uiInfo = result.Result.Element.ToUiInfo();
 
                     cacheService.Set(result.Result.Element, uiInfo.DefaultValue);
                     return new OperationResultVo(true, "That Platform Setting is gone now!");
                 }
             }
-            catch (Exception ex)    
+            catch (Exception ex)
             {
                 return new OperationResultVo(ex.Message);
             }

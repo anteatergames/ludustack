@@ -137,7 +137,7 @@ namespace LuduStack.Application.Services
             {
                 List<Guid> profilesToGet = new List<Guid>();
 
-                var itemsPerPageSetting = await platformSettingAppService.GetByElement(currentUserId, PlatformSettingElement.ForumPageSize);
+                OperationResultVo<ViewModels.PlatformSetting.PlatformSettingViewModel> itemsPerPageSetting = await platformSettingAppService.GetByElement(currentUserId, PlatformSettingElement.ForumPageSize);
 
                 GetForumPostListQuery query = new GetForumPostListQuery
                 {
@@ -301,7 +301,7 @@ namespace LuduStack.Application.Services
         {
             try
             {
-                var itemsPerPageSetting = await platformSettingAppService.GetByElement(currentUserId, PlatformSettingElement.ForumPageSize);
+                OperationResultVo<ViewModels.PlatformSetting.PlatformSettingViewModel> itemsPerPageSetting = await platformSettingAppService.GetByElement(currentUserId, PlatformSettingElement.ForumPageSize);
 
                 GetForumTopicRepliesQuery query = new GetForumTopicRepliesQuery
                 {
