@@ -33,18 +33,9 @@ namespace LuduStack.Web.Controllers
 
         public async Task<IActionResult> Index(int? pointsEarned)
         {
-            var showFeatureCarouselResult = await PlatformSettingAppService.GetByElement(CurrentUserId, PlatformSettingElement.ShowFeatureCarousel);
-            if (showFeatureCarouselResult.Success)
-            {
-                var showFeatureCarousel = showFeatureCarouselResult.Value.Value.Equals("1") ? true : false;
-                ViewBag.ShowFeatureCarousel = showFeatureCarousel;
+            await SetFeaturedCarousel();
 
-                if (showFeatureCarousel)
-                {
-                    CarouselViewModel featured = await featuredContentAppService.GetFeaturedNow();
-                    ViewBag.Carousel = featured;
-                }
-            }
+            await SetDonateButton();
 
             SetLanguage();
 
@@ -113,6 +104,32 @@ namespace LuduStack.Web.Controllers
         public IActionResult ErrorTest()
         {
             throw new CustomApplicationException("meh");
+        }
+
+        private async Task SetFeaturedCarousel()
+        {
+            var showFeatureCarouselResult = await PlatformSettingAppService.GetByElement(CurrentUserId, PlatformSettingElement.ShowFeatureCarousel);
+            if (showFeatureCarouselResult.Success)
+            {
+                var showFeatureCarousel = showFeatureCarouselResult.Value.Value.Equals("1") ? true : false;
+                ViewBag.ShowFeatureCarousel = showFeatureCarousel;
+
+                if (showFeatureCarousel)
+                {
+                    CarouselViewModel featured = await featuredContentAppService.GetFeaturedNow();
+                    ViewBag.Carousel = featured;
+                }
+            }
+        }
+
+        private async Task SetDonateButton()
+        {
+            var showDonateButtonResult = await PlatformSettingAppService.GetByElement(CurrentUserId, PlatformSettingElement.ShowDonateButton);
+            if (showDonateButtonResult.Success)
+            {
+                var showDonateButton = showDonateButtonResult.Value.Value.Equals("1") ? true : false;
+                ViewBag.ShowDonateButton = showDonateButton;
+            }
         }
 
         private void SetLanguage()
