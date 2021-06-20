@@ -23,10 +23,6 @@ namespace LuduStack.Domain.Core.Enums
 
         [UiInfo(Display = "Forum Page Size", Type = (int)PlatformSettingType.Integer, SubType = (int)PlatformSettingGroup.Forum, DefaultValue = "20")]
         [Display(Name = "Forum Page Size")]
-        ForumPageSize = 5,
-
-        [UiInfo(Display = "Forum Paging Threshold", Type = (int)PlatformSettingType.Integer, SubType = (int)PlatformSettingGroup.Forum, DefaultValue = "5")]
-        [Display(Name = "Forum Paging Threshold")]
-        ForumPagingThreshold = 6,
+        ForumPageSize = 5
     }
 }

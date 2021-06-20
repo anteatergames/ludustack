@@ -301,10 +301,12 @@ namespace LuduStack.Application.Services
         {
             try
             {
+                var itemsPerPageSetting = await platformSettingAppService.GetByElement(currentUserId, PlatformSettingElement.ForumPageSize);
+
                 GetForumTopicRepliesQuery query = new GetForumTopicRepliesQuery
                 {
                     TopicId = viewModel.TopicId,
-                    Count = viewModel.Count ?? Constants.DefaultItemsPerPage,
+                    Count = viewModel.Count ?? int.Parse(itemsPerPageSetting.Value.Value),
                     Page = viewModel.Page ?? 1,
                     Latest = viewModel.Latest
                 };
