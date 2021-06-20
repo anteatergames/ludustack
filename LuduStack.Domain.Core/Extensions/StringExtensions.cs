@@ -8,14 +8,30 @@ namespace LuduStack.Domain.Core.Extensions
     {
         public static string GetFirstWords(this string input, int count)
         {
-            return string.Join(' ', input.GetWords(count, null, StringSplitOptions.RemoveEmptyEntries));
+            return string.Join(' ', input.GetWords(count, StringSplitOptions.RemoveEmptyEntries));
         }
 
-        public static string[] GetWords(
-            this string input,
-            int count = -1,
-            string[] wordDelimiter = null,
-            StringSplitOptions options = StringSplitOptions.None)
+        public static string[] GetWords(this string input)
+        {
+            return GetWords(input, -1, null, StringSplitOptions.None);
+        }
+
+        public static string[] GetWords(this string input, int count)
+        {
+            return GetWords(input, count, null, StringSplitOptions.None);
+        }
+
+        public static string[] GetWords(this string input, StringSplitOptions options)
+        {
+            return GetWords(input, -1, null, options);
+        }
+
+        public static string[] GetWords(this string input, int count, StringSplitOptions options)
+        {
+            return GetWords(input, count, null, options);
+        }
+
+        public static string[] GetWords(this string input, int count, string[] wordDelimiter, StringSplitOptions options)
         {
             if (string.IsNullOrEmpty(input))
             {
