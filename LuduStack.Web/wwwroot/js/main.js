@@ -438,8 +438,8 @@
                 type: httpmethod
             }).done(function (response) {
                 if (response.success) {
-                    MAINMODULE.Common.HandleSuccessDefault(response, null, function (response) {
-                        callback(response, btn);
+                    MAINMODULE.Common.HandleSuccessDefault(response, null, function (response2) {
+                        callback(response2, btn);
                     });
                 }
                 else {

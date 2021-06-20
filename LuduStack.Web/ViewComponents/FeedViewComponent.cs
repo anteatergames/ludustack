@@ -104,21 +104,7 @@ namespace LuduStack.Web.ViewComponents
                     FormatPost(item);
                     break;
             }
-
-            //FormatCommon(userIsAdmin, item);
         }
-
-        //private void FormatCommon(bool userIsAdmin, UserContentViewModel item)
-        //{
-        //    foreach (CommentViewModel comment in item.Comments)
-        //    {
-        //        comment.Text = ContentFormatter.FormatHashTagsToShow(comment.Text);
-        //    }
-
-        //    item.Permissions.CanEdit = !item.HasPoll && (item.UserId == CurrentUserId || userIsAdmin);
-
-        //    item.Permissions.CanDelete = item.UserId == CurrentUserId || userIsAdmin;
-        //}
 
         private void FormatComicStripPost(UserContentViewModel item)
         {
@@ -127,13 +113,6 @@ namespace LuduStack.Web.ViewComponents
 
         private void FormatPost(UserContentViewModel item)
         {
-            //item.Content = ContentFormatter.FormatContentToShow(item.Content);
-            //if (item.FeaturedMediaType == MediaType.Youtube)
-            //{
-            //    item.FeaturedImageResponsive = ContentFormatter.GetYoutubeVideoId(item.FeaturedImage);
-            //    item.FeaturedImageLquip = UrlFormatter.FormatFeaturedImageUrl(Guid.Empty, Constants.DefaultFeaturedImageLquip, ImageRenderType.LowQuality);
-            //}
-
             item.Url = Url.Action("details", "content", new { area = string.Empty, id = item.Id }, (string)ViewData["protocol"], (string)ViewData["host"]);
         }
 

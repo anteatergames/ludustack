@@ -6,17 +6,9 @@ namespace LuduStack.Domain.ValueObjects
     {
         protected List<T> Items { get; set; }
 
-        //public int TotalCount { get; set; }
-
-        //public int Page { get; set; }
-
-        //public int TotalPageCount { get; set; }
-
-        //public string PaginationMessage { get; set; }
-
         public PaginationVo Pagination { get; set; }
 
-        public GenericPaginatedListVo()
+        protected GenericPaginatedListVo()
         {
             Items = new List<T>();
             Pagination = new PaginationVo();

@@ -23,7 +23,6 @@ namespace LuduStack.Domain.Messaging.Queries.ForumPost
 
         public GetForumTopicRepliesQuery()
         {
-
         }
     }
 
@@ -70,7 +69,6 @@ namespace LuduStack.Domain.Messaging.Queries.ForumPost
             skip = Math.Max(0, skip);
 
             allModels = allModels.Skip(skip).Take(request.Count);
-
 
             List<Models.ForumPost> finalList = allModels.ToList();
             result.Replies = finalList;

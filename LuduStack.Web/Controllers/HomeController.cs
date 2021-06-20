@@ -111,7 +111,7 @@ namespace LuduStack.Web.Controllers
             OperationResultVo<Application.ViewModels.PlatformSetting.PlatformSettingViewModel> showFeatureCarouselResult = await PlatformSettingAppService.GetByElement(CurrentUserId, PlatformSettingElement.ShowFeatureCarousel);
             if (showFeatureCarouselResult.Success)
             {
-                bool showFeatureCarousel = showFeatureCarouselResult.Value.Value.Equals("1") ? true : false;
+                bool showFeatureCarousel = showFeatureCarouselResult.Value.Value.Equals("1");
                 ViewBag.ShowFeatureCarousel = showFeatureCarousel;
 
                 if (showFeatureCarousel)
@@ -127,7 +127,7 @@ namespace LuduStack.Web.Controllers
             OperationResultVo<Application.ViewModels.PlatformSetting.PlatformSettingViewModel> showDonateButtonResult = await PlatformSettingAppService.GetByElement(CurrentUserId, PlatformSettingElement.ShowDonateButton);
             if (showDonateButtonResult.Success)
             {
-                bool showDonateButton = showDonateButtonResult.Value.Value.Equals("1") ? true : false;
+                bool showDonateButton = showDonateButtonResult.Value.Value.Equals("1");
                 ViewBag.ShowDonateButton = showDonateButton;
             }
         }

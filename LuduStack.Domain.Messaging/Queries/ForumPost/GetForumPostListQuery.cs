@@ -12,7 +12,6 @@ using System.Threading.Tasks;
 
 namespace LuduStack.Domain.Messaging.Queries.ForumPost
 {
-
     public class GetForumPostListQuery : Query<ForumPostListVo>, IPaginatedQuery
     {
         public Guid? CategoryId { get; set; }
@@ -23,10 +22,8 @@ namespace LuduStack.Domain.Messaging.Queries.ForumPost
 
         public List<SupportedLanguage> Languages { get; set; }
 
-
         public GetForumPostListQuery()
         {
-
         }
     }
 

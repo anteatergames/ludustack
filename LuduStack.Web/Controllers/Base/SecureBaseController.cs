@@ -125,7 +125,7 @@ namespace LuduStack.Web.Controllers.Base
             OperationResultVo<Application.ViewModels.PlatformSetting.PlatformSettingViewModel> showAdsResult = await PlatformSettingAppService.GetByElement(CurrentUserId, PlatformSettingElement.ShowAds);
             if (showAdsResult.Success)
             {
-                ViewBag.ShowAds = showAdsResult.Value.Value.Equals("1") ? true : false;
+                ViewBag.ShowAds = showAdsResult.Value.Value.Equals("1");
             }
         }
 
