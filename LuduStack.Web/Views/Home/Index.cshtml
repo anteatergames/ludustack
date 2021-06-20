@@ -10,6 +10,8 @@
     var emailConfirmed = bool.Parse((string)(ViewData["emailConfirmed"] ?? "False"));
 
     var showAds = (bool)(ViewBag.ShowAds ?? false);
+
+    var showFeatureCarousel = (bool)(ViewBag.ShowFeatureCarousel ?? false);
 }
 
 @section Styles {
@@ -111,7 +113,10 @@
 
         <div class=" col-lg-8 col-xl-7 pr-lg-2 pl-xl-2 pr-xl-2">
 
-            @await Html.PartialAsync("_Carousel", ViewBag.Carousel as CarouselViewModel)
+            @if (showFeatureCarousel)
+            {
+                @await Html.PartialAsync("_Carousel", ViewBag.Carousel as CarouselViewModel)
+            }
 
             @if (User.Identity.IsAuthenticated)
             {

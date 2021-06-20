@@ -33,8 +33,18 @@ namespace LuduStack.Web.Controllers
 
         public async Task<IActionResult> Index(int? pointsEarned)
         {
-            CarouselViewModel featured = await featuredContentAppService.GetFeaturedNow();
-            ViewBag.Carousel = featured;
+            var showFeatureCarouselResult = await PlatformSettingAppService.GetByElement(CurrentUserId, PlatformSettingElement.ShowFeatureCarousel);
+            if (showFeatureCarouselResult.Success)
+            {
+                var showFeatureCarousel = showFeatureCarouselResult.Value.Value.Equals("1") ? true : false;
+                ViewBag.ShowFeatureCarousel = showFeatureCarousel;
+
+                if (showFeatureCarousel)
+                {
+                    CarouselViewModel featured = await featuredContentAppService.GetFeaturedNow();
+                    ViewBag.Carousel = featured;
+                }
+            }
 
             SetLanguage();
 

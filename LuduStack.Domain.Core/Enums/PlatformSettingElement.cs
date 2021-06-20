@@ -9,9 +9,9 @@ namespace LuduStack.Domain.Core.Enums
         [Display(Name = "Show Ads")]
         ShowAds = 1,
 
-        [UiInfo(Display = "Show Feature Caroussel", Type = (int)PlatformSettingType.Boolean, SubType = (int)PlatformSettingGroup.Home, DefaultValue = "1")]
-        [Display(Name = "Show Feature Caroussel")]
-        ShowFeatureCaroussel = 2,
+        [UiInfo(Display = "Show Feature Carousel", Type = (int)PlatformSettingType.Boolean, SubType = (int)PlatformSettingGroup.Home, DefaultValue = "1")]
+        [Display(Name = "Show Feature Carousel")]
+        ShowFeatureCarousel = 2,
 
         [UiInfo(Display = "Show Donate Button", Type = (int)PlatformSettingType.Boolean, SubType = (int)PlatformSettingGroup.Home, DefaultValue = "1")]
         [Display(Name = "Show Donate Button")]
