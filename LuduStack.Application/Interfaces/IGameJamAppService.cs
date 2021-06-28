@@ -2,8 +2,6 @@
 using LuduStack.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace LuduStack.Application.Interfaces
@@ -14,13 +12,13 @@ namespace LuduStack.Application.Interfaces
 
         Task<IEnumerable<SelectListItemVo>> GetSelectList(Guid userId);
 
-        Task<OperationResultListVo<GameJamViewModel>> GetAll(Guid currentUserId);
+        Task<OperationResultListVo<GameJamViewModel>> GetAll(Guid currentUserId, bool currentUserIsAdmin);
 
-        Task<OperationResultListVo<GameJamViewModel>> GetByUserId(Guid userId);
+        Task<OperationResultListVo<GameJamViewModel>> GetByUserId(Guid userId, bool currentUserIsAdmin);
 
-        Task<OperationResultVo<GameJamViewModel>> GetForDetails(Guid currentUserId, Guid id, string handler);
+        Task<OperationResultVo<GameJamViewModel>> GetForDetails(Guid currentUserId, bool currentUserIsAdmin, Guid id, string handler);
 
-        Task<OperationResultVo<GameJamViewModel>> GetForEdit(Guid currentUserId, Guid id);
+        Task<OperationResultVo<GameJamViewModel>> GetForEdit(Guid currentUserId, bool currentUserIsAdmin, Guid id);
 
         Task<OperationResultVo> Remove(Guid currentUserId, Guid id);
 
@@ -28,6 +26,6 @@ namespace LuduStack.Application.Interfaces
 
         Task<OperationResultVo<GameJamViewModel>> GenerateNew(Guid currentUserId);
 
-        Task<OperationResultVo> ValidateHandler(Guid currentUserId, string handler);
+        Task<OperationResultVo> ValidateHandler(Guid currentUserId, string handler, Guid id);
     }
 }

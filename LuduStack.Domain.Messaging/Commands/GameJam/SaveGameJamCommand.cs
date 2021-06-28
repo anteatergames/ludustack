@@ -45,6 +45,8 @@ namespace LuduStack.Domain.Messaging
 
             if (!request.IsValid()) { return request.Result; }
 
+            request.GameJam.Handler = request.GameJam.Handler.ToLower();
+
             if (request.GameJam.Id == Guid.Empty)
             {
                 await forumGroupRepository.Add(request.GameJam);

@@ -1,1 +1,3 @@
-﻿/* This is a placeholder file */
+﻿.ck.ck-content.ck-editor__editable {
+    min-height: 300px !important;
+}

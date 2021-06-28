@@ -21,6 +21,8 @@ namespace LuduStack.Domain.Models
 
         public bool HideResults { get; set; }
 
+        public bool AllowLateJoin { get; set; }
+
         public string Handler { get; set; }
 
         public string HashTag { get; set; }

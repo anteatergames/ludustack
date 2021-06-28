@@ -2,9 +2,7 @@
 using LuduStack.Infra.CrossCutting.Messaging;
 using MediatR;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -13,10 +11,12 @@ namespace LuduStack.Domain.Messaging.Queries.GameJam
     public class CheckGameJamHandlerQuery : Query<bool>
     {
         public string Handler { get; }
+        public Guid Id { get; }
 
-        public CheckGameJamHandlerQuery(string handler)
+        public CheckGameJamHandlerQuery(string handler, Guid id)
         {
             Handler = handler;
+            Id = id;
         }
     }
     public class CheckGameJamHandlerQueryHandler : QueryHandler, IRequestHandler<CheckGameJamHandlerQuery, bool>
@@ -30,7 +30,7 @@ namespace LuduStack.Domain.Messaging.Queries.GameJam
 
         public Task<bool> Handle(CheckGameJamHandlerQuery request, CancellationToken cancellationToken)
         {
-            var jam = gameJamRepository.Get(x => x.Handler.Equals(request.Handler));
+            IQueryable<Models.GameJam> jam = gameJamRepository.Get(x => x.Handler.Equals(request.Handler) && x.Id != request.Id);
 
             return Task.FromResult(!jam.Any());
         }

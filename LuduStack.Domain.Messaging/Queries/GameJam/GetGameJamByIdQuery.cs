@@ -33,7 +33,7 @@ namespace LuduStack.Domain.Messaging.Queries.GameJam
 
             if (!string.IsNullOrWhiteSpace(request.Handler))
             {
-                var query = repository.Get(x => x.Handler.Equals(request.Handler));
+                IQueryable<Models.GameJam> query = repository.Get(x => x.Handler.Equals(request.Handler));
 
                 obj = query.FirstOrDefault();
             }
@@ -44,12 +44,37 @@ namespace LuduStack.Domain.Messaging.Queries.GameJam
 
             if (obj != null)
             {
-                obj.CreateDate = obj.CreateDate.ToLocalTime();
-
-                obj.PublishDate = obj.PublishDate.ToLocalTime();
+                SetDates(obj);
             }
 
             return obj;
+        }
+
+        private static void SetDates(Models.GameJam model)
+        {
+            if (model.StartDate == default)
+            {
+                model.StartDate = model.CreateDate.AddDays(7);
+            }
+            if (model.EntryDeadline == default)
+            {
+                model.EntryDeadline = model.StartDate.AddDays(7);
+            }
+            if (model.VotingEndDate == default)
+            {
+                model.VotingEndDate = model.EntryDeadline.AddDays(7);
+            }
+            if (model.ResultDate == default)
+            {
+                model.ResultDate = model.VotingEndDate.AddDays(7);
+            }
+
+            model.CreateDate = model.CreateDate.ToLocalTime();
+            model.PublishDate = model.PublishDate.ToLocalTime();
+            model.StartDate = model.StartDate.ToLocalTime();
+            model.EntryDeadline = model.EntryDeadline.ToLocalTime();
+            model.VotingEndDate = model.VotingEndDate.ToLocalTime();
+            model.ResultDate = model.ResultDate.ToLocalTime();
         }
     }
 }

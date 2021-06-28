@@ -48,7 +48,7 @@ namespace LuduStack.Web.Areas.Staff.Controllers
         {
             List<GameJamViewModel> model;
 
-            OperationResultVo serviceResult = await gameJamAppService.GetAll(CurrentUserId);
+            OperationResultVo serviceResult = await gameJamAppService.GetAll(CurrentUserId, CurrentUserIsAdmin);
 
             if (serviceResult.Success)
             {
@@ -59,11 +59,6 @@ namespace LuduStack.Web.Areas.Staff.Controllers
             else
             {
                 model = new List<GameJamViewModel>();
-            }
-
-            foreach (GameJamViewModel item in model)
-            {
-                SetPermissions(item);
             }
 
             ViewData["ListDescription"] = SharedLocalizer["All Game Jams"].ToString();
@@ -76,7 +71,7 @@ namespace LuduStack.Web.Areas.Staff.Controllers
         {
             List<GameJamViewModel> model;
 
-            OperationResultVo serviceResult = await gameJamAppService.GetByUserId(CurrentUserId);
+            OperationResultVo serviceResult = await gameJamAppService.GetByUserId(CurrentUserId, CurrentUserIsAdmin);
 
             if (serviceResult.Success)
             {
@@ -87,11 +82,6 @@ namespace LuduStack.Web.Areas.Staff.Controllers
             else
             {
                 model = new List<GameJamViewModel>();
-            }
-
-            foreach (GameJamViewModel item in model)
-            {
-                SetPermissions(item);
             }
 
             ViewData["ListDescription"] = SharedLocalizer["All Game Jams"].ToString();
@@ -107,7 +97,7 @@ namespace LuduStack.Web.Areas.Staff.Controllers
         {
             try
             {
-                OperationResultVo<GameJamViewModel> serviceResult = await gameJamAppService.GetForDetails(CurrentUserId, id, handler);
+                OperationResultVo<GameJamViewModel> serviceResult = await gameJamAppService.GetForDetails(CurrentUserId, CurrentUserIsAdmin, id, handler);
 
                 if (serviceResult.Success)
                 {
@@ -144,13 +134,13 @@ namespace LuduStack.Web.Areas.Staff.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> ValidateHandler(string handler)
+        public async Task<IActionResult> ValidateHandler(string handler, Guid Id)
         {
             OperationResultVo result;
 
             try
             {
-                OperationResultVo validate = await gameJamAppService.ValidateHandler(CurrentUserId, handler);
+                OperationResultVo validate = await gameJamAppService.ValidateHandler(CurrentUserId, handler, Id);
 
                 return Json(validate.Success);
             }
@@ -167,13 +157,14 @@ namespace LuduStack.Web.Areas.Staff.Controllers
         {
             GameJamViewModel viewModel;
 
-            OperationResultVo serviceResult = await gameJamAppService.GetForEdit(CurrentUserId, id);
+            OperationResultVo<GameJamViewModel> serviceResult = await gameJamAppService.GetForEdit(CurrentUserId, CurrentUserIsAdmin, id);
 
-            OperationResultVo<GameJamViewModel> castResult = serviceResult as OperationResultVo<GameJamViewModel>;
+            if (!serviceResult.Success)
+            {
+                return RedirectToWithMessage("index", "gamejam", "community", serviceResult.Message);
+            }
 
-            viewModel = castResult.Value;
-
-            SetPermissions(viewModel);
+            viewModel = serviceResult.Value;
 
             return View("CreateEditWrapper", viewModel);
         }
@@ -185,13 +176,11 @@ namespace LuduStack.Web.Areas.Staff.Controllers
 
             try
             {
-                vm.UserId = CurrentUserId;
-
                 OperationResultVo<Guid> saveResult = await gameJamAppService.Save(CurrentUserId, vm);
 
                 if (saveResult.Success)
                 {
-                    string url = Url.Action("manage", "gamejam", new { area = "community", msg = SharedLocalizer[saveResult.Message] });
+                    string url = Url.Action("edit", "gamejam", new { area = "community", id = saveResult.Value, msg = SharedLocalizer[saveResult.Message] });
 
                     if (isNew && EnvName.Equals(Constants.ProductionEnvironmentName))
                     {
@@ -244,12 +233,6 @@ namespace LuduStack.Web.Areas.Staff.Controllers
         private IActionResult RedirectToIndex()
         {
             return RedirectToWithMessage("index", "gamejam", "community", "Unable to get that GameJam!");
-        }
-
-        private void SetPermissions(GameJamViewModel model)
-        {
-            model.Permissions.IsAdmin = CurrentUserIsAdmin;
-            model.Permissions.CanDelete = model.Permissions.IsAdmin;
         }
     }
 }

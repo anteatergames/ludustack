@@ -16,6 +16,8 @@
 
     var authorUrl = Url.Action("details", "profile", new { area = string.Empty, userHandler = Model.AuthorHandler });
     var authorLink = string.Format("<a href=\"{0}\" class=\"boldlink\">{1}</a>", authorUrl, Model.AuthorName);
+
+    Model.Permissions.CanJoin = Model.Permissions.CanJoin && User.Identity.IsAuthenticated;
 }
 
 @section Styles {
@@ -58,29 +60,36 @@
             </div>
             <div class="d-flex flex-column justify-content-center">
                 <span class="h3 text-center">@Model.JoinCount</span>
-                <span class="text-center text-muted">@SharedLocalizer["joined"]</span>
+                <span class="text-center text-muted">@SharedLocalizer["participants"]</span>
             </div>
         </div>
 
         <div class="text-center mx-auto p-2">
             <div class="d-flex flex-row justify-content-center">
                 <div class="p-3 row justify-content-center bg-white bordered">
-                    <div class="d-flex flex-column justify-content-center">
-                        <span>@SharedLocalizer["Starts in"]</span>
-                    </div>
+                    @if (Model.CurrentPhase == GameJamPhase.Finished)
+                    {
+                        @SharedLocalizer[Model.CountDownMessage] // add results here
+                    }
+                    else
+                    {
+                        <div class="d-flex flex-column justify-content-center">
+                            <span>@SharedLocalizer[Model.CountDownMessage]</span>
+                        </div>
 
-                    <partial name="_GameJamCounter" />
+                        <partial name="_GameJamCounter" />
 
-                    <div class="d-flex flex-column justify-content-center">
-                        @if (Model.Permissions.CanJoin)
-                        {
-                            <button class="btn btn-success">@SharedLocalizer["join jam"]</button>
-                        }
-                        else
-                        {
-                            <button class="btn btn-default disabled" disabled="disabled">@SharedLocalizer["can't join"]</button>
-                        }
-                    </div>
+                        <div class="d-flex flex-column justify-content-center">
+                            @if (Model.Permissions.CanJoin)
+                            {
+                                <button class="btn btn-success btn-join" data-url="@Url.Action("join", "gamejam", new { area = "community" })">@SharedLocalizer["join jam"]</button>
+                            }
+                            else
+                            {
+                                <button class="btn btn-default disabled" disabled="disabled">@SharedLocalizer["can't join"]</button>
+                            }
+                        </div>
+                    }
                 </div>
             </div>
         </div>

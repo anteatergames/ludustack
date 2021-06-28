@@ -1,5 +1,4 @@
-﻿using LuduStack.Domain.Core.Models;
-using System;
+﻿using System;
 
 namespace LuduStack.Domain.Models
 {
