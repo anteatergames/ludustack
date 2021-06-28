@@ -1,0 +1,39 @@
+﻿@model IEnumerable<GameJamViewModel>
+
+@{
+    var canInteract = User.Identity.IsAuthenticated;
+
+    Layout = null;
+
+    var noItemsModel = new ListNoItemsViewModel("fas fa-dizzy", "There are no Game Jams on the platform!");
+
+    var description = ViewData["ListDescription"] == null ? SharedLocalizer["Game Jam"] : (string)ViewData["ListDescription"];
+}
+
+@if (!Model.Any())
+{
+    <partial name="_ListNoItems" model="noItemsModel" />
+}
+else
+{
+    <div class="col-12">
+        <div class="row justify-content-center">
+            @foreach (var item in Model)
+            {
+                <div class="col-md-12 col-lg-4 col-xl-3 p-1 mb-3">
+                    <div class="bg-white bordered gamejamitem" id="@($"gamejamcard-{item.Handler}")">
+                        <input type="hidden" id="@($"secondstocountdown-{item.Handler}")" value="@item.SecondsToCountDown" class="hiddendate" />
+
+                        <a asp-area="community" asp-controller="gamejam" asp-action="details" asp-route-handler="@item.Handler">
+                            <div>
+                                <img src="@item.FeaturedImage" class="img-fluid rounded square-bottom" />
+                            </div>
+
+                            <partial name="_GameJamCounter" />
+                        </a>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}

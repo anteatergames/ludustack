@@ -18,6 +18,7 @@ body {
 .wrapper {
     overflow-y: hidden;
     position: relative;
+    border-radius: 0;
 }
 
     .box-body:after, .box-footer:after, .box-header:after, .navbar-nav > .messages-menu > .dropdown-menu > li .menu > li > a:after, .navbar-nav > .user-menu > .dropdown-menu > .user-body:after, .navbar-nav > .user-menu > .dropdown-menu > .user-footer:after, .user-block:after, .user-panel:after, .wrapper:after {

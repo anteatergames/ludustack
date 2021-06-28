@@ -59,7 +59,7 @@
     }
 
     function bindAll() {
-        bindEditors();
+        WYSIWYGEDITOR.BindEditors('.wysiwygeditor');
         bindBtnSaveReply();
         bindBtnSavePost();
         bindBtnEdit();
@@ -67,25 +67,6 @@
         bindBtnReply();
         bindBtnCloseReplyAlert();
         bindBtnScrollTo();
-    }
-
-    function bindEditors() {
-        $(selectors.txtReply).each((index, element) => {
-            var id = element.id;
-
-            WYSIWYGEDITOR.BindEditor(`#${id}`).then((editorId) => {
-                $(element).attr('data-editor-id', editorId);
-            });
-        });
-    }
-
-    function bindEditor(selector) {
-        var element = document.querySelector(selector);
-
-        return WYSIWYGEDITOR.BindEditor(selector).then((editorId) => {
-            $(element).attr('data-editor-id', editorId);
-            return editorId;
-        });
     }
 
     function bindBtnSaveReply() {
@@ -234,7 +215,7 @@
         var form = btn.closest('form');
         var url = form.attr('action');
         var txtArea = form.find(selectors.txtReply);
-        var editorId = txtArea.attr('id');
+        var editorId = txtArea.attr('data-editor-id');
 
         WYSIWYGEDITOR.UpdateSourceElement(editorId);
 
@@ -259,7 +240,7 @@
         var form = btn.closest('form');
         var url = form.attr('action');
         var txtArea = form.find(selectors.txtReply);
-        var editorId = txtArea.attr('id');
+        var editorId = txtArea.attr('data-editor-id');
 
         WYSIWYGEDITOR.UpdateSourceElement(editorId);
 
@@ -299,7 +280,8 @@
         MAINMODULE.Ajax.LoadHtml(urlEdit, editDiv).then(() => {
             var txtArea = editDiv.find(selectors.txtReply);
 
-            bindEditor(`#${txtArea.attr('id')}`).then(() => {
+
+            WYSIWYGEDITOR.BindEditor(`#${txtArea.attr('id')}`).then(() => {
                 viewDiv.removeClass('d-flex').fadeOut("slow", function () {
                     postDiv.animate({ 'height': editDiv.css('height') },
                         {

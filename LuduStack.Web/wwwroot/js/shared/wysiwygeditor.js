@@ -6,6 +6,10 @@
     function bindEditor(selector) {
         var element = document.querySelector(selector);
 
+        return bindEditorElement(element);
+    }
+
+    function bindEditorElement(element) {
         return ClassicEditor
             .create(element, {
                 ckfinder: {
@@ -58,8 +62,10 @@
                 });
 
                 if (existing.length === 0) {
-                    editors.push({ id: editor.sourceElement.id, editor: editor });
+                    editors.push({ id: editor.id, editor: editor });
                 }
+
+                element.setAttribute('data-editor-id', editor.id);
 
                 return editor.id;
             })
@@ -69,6 +75,14 @@
                 console.warn('Build id: vjiyoesm40zi-u0d9ila63bix');
                 console.error(error);
             });
+    }
+
+    function bindEditors(selector) {
+        var elements = document.querySelectorAll(selector);
+
+        for (const element of elements) {
+            bindEditorElement(element);
+        }
     }
 
     function updateSourceElement(editorId) {
@@ -116,6 +130,8 @@
         GetEditor: getEditor,
         DestroyEditor: destroyEditor,
         BindEditor: bindEditor,
+        BindEditorElement: bindEditorElement,
+        BindEditors: bindEditors,
         UpdateSourceElement: updateSourceElement
     };
 }());

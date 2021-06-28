@@ -1,14 +1,24 @@
 /* The switch - the box around the slider */
-.switch {
+
+/*.switch.form-group {
+    line-height: 38px;
+    padding: 0;
+}*/
+
+label.switch {
     position: relative;
+    float: right;
     display: inline-block;
     width: 60px;
     height: 38px;
-    float: right;
     margin-left: 5px;
 }
 
-    .switch.left {
+    label.switch.closer {
+        position: absolute;
+    }
+
+    label.switch.left {
         float: left;
         margin-left: 0;
         margin-right: 5px;

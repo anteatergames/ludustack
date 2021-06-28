@@ -9,6 +9,7 @@ using LuduStack.Application.ViewModels.CostCalculator;
 using LuduStack.Application.ViewModels.FeaturedContent;
 using LuduStack.Application.ViewModels.Forum;
 using LuduStack.Application.ViewModels.Game;
+using LuduStack.Application.ViewModels.GameJam;
 using LuduStack.Application.ViewModels.Gamification;
 using LuduStack.Application.ViewModels.Giveaway;
 using LuduStack.Application.ViewModels.Jobs;
@@ -212,6 +213,16 @@ namespace LuduStack.Application.AutoMapper
             CreateMap<PlatformSetting, PlatformSettingViewModel>();
 
             #endregion PlatformSetting
+
+            #region GameJam
+
+            CreateMap<GameJam, GameJamViewModel>();
+            CreateMap<GameJamEntry, GameJamEntryViewModel>();
+            CreateMap<GameJamCriteria, GameJamCriteriaViewModel>();
+            CreateMap<GameJamSponsor, GameJamSponsorViewModel>();
+            CreateMap<GameJamVote, GameJamVoteViewModel>();
+
+            #endregion GameJam
         }
     }
 }

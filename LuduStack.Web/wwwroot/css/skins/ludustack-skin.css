@@ -31,6 +31,10 @@ a {
     color: var(--color-bg-dark);
 }
 
+content a {
+    font-weight: 600;
+}
+
     a:active, a:focus, a:hover {
         outline: 0;
         text-decoration: none;

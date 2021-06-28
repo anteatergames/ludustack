@@ -47,17 +47,14 @@
     }
 
     function bindEditor() {
-        var element = document.querySelector('.wysiwygeditor');
-        WYSIWYGEDITOR.BindEditor('.wysiwygeditor').then(() => {
-            editorId = element.id;
+        WYSIWYGEDITOR.BindEditor('.wysiwygeditor').then((id) => {
+            editorId = id;
         });
     }
 
     function bindBtnSaveForm() {
         objs.container.on('click', selectors.btnSave, function () {
             var btn = $(this);
-
-            var data = WYSIWYGEDITOR.GetEditor(editorId).editor.getData();
 
             WYSIWYGEDITOR.UpdateSourceElement(editorId);
 

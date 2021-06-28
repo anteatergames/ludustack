@@ -1,0 +1,151 @@
+﻿@model GameJamViewModel
+
+@{
+    Layout = null;
+
+    ViewData["Title"] = SharedLocalizer["{0} Game Jam", (Model.Id == Guid.Empty ? "New" : "Edit")];
+
+    var isNew = Model.Id == Guid.Empty;
+}
+
+<h1 class="sr-only">@ViewData["Title"]</h1>
+
+<div class="box bg-white">
+
+    <div class="box-header with-border">
+        <div class="float-left mr-3">
+            <a asp-area="community" asp-controller="gamejam" asp-action="manage" class="btn btn-default"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
+        </div>
+        <h3 class="card-title">@SharedLocalizer["You are {0} a Game Jam", (isNew ? SharedLocalizer["creating"] : SharedLocalizer["editing"])]</h3>
+        <span class="card-subtitle">
+            @SharedLocalizer["Tell us about the Game Jam."]
+        </span>
+        @if (!isNew)
+        {
+            <div class="box-tools">
+                <div class="btn-group">
+                    <button type="button" class="btn  btn-box-tool" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-ellipsis-v" aria-hidden="true"></i>
+                    </button>
+                    <div class="dropdown-menu text-capitalize" x-placement="bottom-start" style="position: absolute; transform: translate3d(-67px, 28px, 0px); top: 0px; left: 0px; will-change: transform;">
+                        @if (Model.Permissions.CanDelete)
+                        {
+                            <a class="dropdown-item btn-entity-delete" href="#" data-url="@Url.Action("delete", "gamejam", new { area = "community", id = Model.Id, edit = true })" data-confirmationmessage="@SharedLocalizer["Are you sure you want to delete this Game Jam?"]" data-confirmationtitle="@SharedLocalizer["Are you sure?"]" data-confirmationbuttontext="@SharedLocalizer["Yes, delete it!"]" data-cancelbuttontext="@SharedLocalizer["Cancel"]">@SharedLocalizer["delete"]</a>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="box-body p-0 px-md-2">
+        <form id="frmSave" asp-area="community" asp-controller="gamejam" asp-action="save" method="post">
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="UserId" />
+            <input type="hidden" asp-for="CreateDate" />
+            <input type="hidden" asp-for="FeaturedImage" />
+            <input type="hidden" asp-for="BannerImage" />
+            <input type="hidden" asp-for="BackgroundImage" />
+
+            <div class="row">
+
+                <div class="col-12">
+                    <div class="form-group">
+                        <label asp-for="Name" class="col-form-label"></label>
+                        <span asp-description-for="Name" class="col-form-label" />
+                        <input asp-for="Name" class="form-control" placeholder="@SharedLocalizer["Type the Game Jam name here"]" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-6">
+                    <div class="form-group">
+                        <label asp-for="Handler" class="col-form-label"></label>
+                        <span asp-description-for="Handler" class="col-form-label" />
+                        <input asp-for="Handler" class="form-control" placeholder="@SharedLocalizer["Type the handler name here"]" />
+                        <span asp-validation-for="Handler" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-6">
+                    <div class="form-group">
+                        <label asp-for="HashTag" class="col-form-label"></label>
+                        <span asp-description-for="HashTag" class="col-form-label" />
+                        <input asp-for="HashTag" class="form-control" placeholder="@SharedLocalizer["Type the HashTag name here"]" />
+                        <span asp-validation-for="HashTag" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <div class="form-group">
+                        <label asp-for="ShortDescription" class="col-form-label"></label>
+                        <span asp-description-for="ShortDescription" class="col-form-label" />
+                        <input asp-for="ShortDescription" class="form-control" placeholder="@SharedLocalizer["Give us a short description here (optional)"]" />
+                        <span asp-validation-for="ShortDescription" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <div class="form-group">
+                        <label asp-for="Description" class="col-form-label"></label>
+                        <span asp-description-for="Description" class="col-form-label" />
+                        <textarea asp-for="Description" class="form-control wysiwygeditor invisible" placeholder="@SharedLocalizer["Describe the Game Jam here"]"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <div class="form-group">
+                        <label asp-for="MainTheme" class="col-form-label"></label>
+                        <span asp-description-for="MainTheme" class="col-form-label" />
+                        <input asp-for="MainTheme" class="form-control" placeholder="@SharedLocalizer["Example: \"Two girls, one Cuphead\""]" />
+                        <span asp-validation-for="MainTheme" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <div class="form-group">
+                        <label asp-for="PrizeDescription" class="col-form-label"></label>
+                        <span asp-description-for="PrizeDescription" class="col-form-label" />
+                        <textarea asp-for="PrizeDescription" class="form-control wysiwygeditor invisible" placeholder="@SharedLocalizer["Describe the prize (if any) here"]"></textarea>
+                        <span asp-validation-for="PrizeDescription" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-6">
+                    <div class="form-group switch">
+                        <label asp-for="HideSubmissions" class="col-form-label"></label>
+                        <label class="switch left">
+                            <input asp-for="HideSubmissions" type="checkbox" class="default" />
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="col-6">
+                    <div class="form-group switch">
+                        <label asp-for="HideResults" class="col-form-label"></label>
+                        <label class="switch left">
+                            <input asp-for="HideResults" type="checkbox" class="default" />
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="col-6">
+                    <div class="form-group switch">
+                        <label asp-for="Unlisted" class="col-form-label"></label>
+                        <label class="switch left">
+                            <input asp-for="Unlisted" type="checkbox" class="default" />
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="col-12 col-lg-6 offset-lg-6 col-xl-4 offset-xl-8 mt-1 mb-2">
+                    <button type="button" id="btnSave" class="btn btn-lg btn-primary btn-block" data-error-msg="<i class='fas fa-exclamation-circle' aria-hidden='true'></i> @SharedLocalizer["Something is missing!"]"><i class="fas fa-save" aria-hidden="true"></i> @SharedLocalizer["Save"]</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

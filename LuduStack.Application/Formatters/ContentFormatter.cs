@@ -115,5 +115,19 @@ namespace LuduStack.Application.Formatters
                 return uri.Segments.Last();
             }
         }
+
+        public static StringDictionary Replacements()
+        {
+            return new StringDictionary
+            {
+                { "<img src=", @"<img class=""img-fluid m-0"" src=" },
+                { "<div data-oembed-url=", @"<div class=""col-12 col-lg-8 col-xl-6 mx-auto"" data-oembed-url=" },
+                { "<figure ", @"<figure class=""mx-auto"" " },
+                { "<figcaption>", @"<figcaption class=""text-center"">" },
+                { "<pre>", @"<pre class=""bg-light p-0 p-md-2 p-lg-3 p-xl-4"">" },
+                { "<iframe src=", @"<iframe frameBorder=""0"" src=" },
+                { "<table>", @"<table class=""table table-hover"">" }
+            };
+        }
     }
 }

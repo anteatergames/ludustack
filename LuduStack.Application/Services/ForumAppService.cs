@@ -16,6 +16,7 @@ using LuduStack.Domain.ValueObjects;
 using LuduStack.Infra.CrossCutting.Messaging;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -481,12 +482,10 @@ namespace LuduStack.Application.Services
         {
             viewModel.Content = sanitizer.Sanitize(viewModel.Content, Constants.DefaultLuduStackPath);
 
-            viewModel.Content = viewModel.Content.Replace("<img src=", @"<img class=""img-fluid m-0"" src=");
-            viewModel.Content = viewModel.Content.Replace("<div data-oembed-url=", @"<div class=""col-12 col-lg-8 col-xl-6 mx-auto"" data-oembed-url=");
-            viewModel.Content = viewModel.Content.Replace("<figure ", @"<figure class=""mx-auto"" ");
-            viewModel.Content = viewModel.Content.Replace("<figcaption>", @"<figcaption class=""text-center"">");
-            viewModel.Content = viewModel.Content.Replace("<pre>", @"<pre class=""bg-light p-0 p-md-2 p-lg-3 p-xl-4"">");
-            viewModel.Content = viewModel.Content.Replace("<iframe src=", @"<iframe frameBorder=""0"" src=");
+            foreach (string key in ContentFormatter.Replacements().Keys)
+            {
+                viewModel.Content = viewModel.Content.Replace(key, ContentFormatter.Replacements()[key]);
+            }
         }
     }
 }

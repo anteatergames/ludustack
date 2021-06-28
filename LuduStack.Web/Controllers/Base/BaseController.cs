@@ -85,5 +85,10 @@ namespace LuduStack.Web.Controllers.Base
 
             return Json((object)operationVo);
         }
+
+        protected IActionResult RedirectToWithMessage(string action, string controller, string area, string message)
+        {
+            return RedirectToAction(action, controller, new { area = area, msg = SharedLocalizer[message] });
+        }
     }
 }
