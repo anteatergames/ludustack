@@ -31,7 +31,7 @@ a {
     color: var(--color-bg-dark);
 }
 
-content a {
+#featurecontainer a {
     font-weight: 600;
 }
 

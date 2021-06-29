@@ -1943,6 +1943,10 @@ button.btn.dropdown-toggle::after, .wysihtml5-toolbar .btn.dropdown-toggle::afte
     margin-top: -38px;
     z-index: 50;
     position: absolute;
+    right: 20px;
+}
+
+.simplecontentpostarea .comment-send-button {
     right: 5px;
 }
 

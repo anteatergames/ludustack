@@ -242,6 +242,6 @@ select.form-control {
     border-top-right-radius: var(--border-radius);
 }
 
-.rounded {
+div.rounded {
     border-radius: var(--border-radius) !important;
 }

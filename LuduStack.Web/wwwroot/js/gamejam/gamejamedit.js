@@ -89,6 +89,22 @@
             ALERTSYSTEM.Toastr.ShowInfo('You need to select the date using<br>the calendar button on the side.');
         }).datetimepicker(options);
 
+        obj.off('change.datetimepicker').on('change.datetimepicker', function (e) {
+            e.preventDefault();
+
+            if (typeof e.oldDate !== 'undefined' && typeof e.date !== 'undefined' && (obj.val() === e.date._i || e.oldDate._i === e.date._i)) {
+
+                var selectedDate = moment(obj.val(), 'L LT');
+
+                var maxDateDateTarget = $(this).attr('data-maxdate');
+                var maxDateDateElement = $(maxDateDateTarget);
+
+                maxDateDateElement.datetimepicker('minDate', selectedDate.add(1, 'd'));
+            }
+
+            return false;
+        });
+
         obj.datetimepicker('defaultDate', pd);
     }
 
