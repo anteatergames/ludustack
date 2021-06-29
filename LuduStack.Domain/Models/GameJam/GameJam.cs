@@ -19,9 +19,11 @@ namespace LuduStack.Domain.Models
 
         public bool HideSubmissions { get; set; }
 
-        public bool HideResults { get; set; }
+        public bool HideRealtimeResults { get; set; }
 
         public bool AllowLateJoin { get; set; }
+
+        public bool HideMainTheme { get; set; }
 
         public string Handler { get; set; }
 
@@ -40,8 +42,6 @@ namespace LuduStack.Domain.Models
         public string Description { get; set; }
 
         public string MainTheme { get; set; }
-
-        public string PrizeDescription { get; set; }
 
         public DateTime StartDate { get; set; }
 

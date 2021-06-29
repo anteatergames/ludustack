@@ -5,9 +5,9 @@ namespace LuduStack.Domain.Core.Enums
 {
     public enum GameJamPhase
     {
-        [UiInfo(Display = "Warming")]
-        [Display(Name = "Warming")]
-        Warming = 1,
+        [UiInfo(Display = "Warmup")]
+        [Display(Name = "Warmup")]
+        Warmup = 1,
 
         [UiInfo(Display = "Submission")]
         [Display(Name = "Submission")]

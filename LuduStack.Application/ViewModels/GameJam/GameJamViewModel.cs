@@ -24,11 +24,14 @@ namespace LuduStack.Application.ViewModels.GameJam
         [Display(Name = "Hide Submissions", Description = "No submissions will be shown, just the counter and the final results.")]
         public bool HideSubmissions { get; set; }
 
-        [Display(Name = "Hide Results", Description = "Hide the results during the Voting Phase")]
-        public bool HideResults { get; set; }
+        [Display(Name = "Hide Realtime Results", Description = "Hide the results during the Voting Phase.")]
+        public bool HideRealtimeResults { get; set; }
 
         [Display(Name = "Allow late join", Description = "Allows users to join this Game Jam after it starts.")]
         public bool AllowLateJoin { get; set; }
+
+        [Display(Name = "Hide Main Theme", Description = "Hide the Main Theme during the Warmup Phase.")]
+        public bool HideMainTheme { get; set; }
 
         [Required]
         [Display(Name = "Handler", Description = "Define a handler for your Game Jam. The handler will be used in the URL like ludustack.com/jam/mycoolhandler. You can only use letters, numbers, dashes and dots. No spaces allowed and all will be saved as lowercase.")]
@@ -58,9 +61,6 @@ namespace LuduStack.Application.ViewModels.GameJam
 
         [Display(Name = "Main Theme")]
         public string MainTheme { get; set; }
-
-        [Display(Name = "Prize Description")]
-        public string PrizeDescription { get; set; }
 
         [Display(Name = "Start Date", Description = "Here you set when this Game Jam starts and participants can start submitting entries.")]
         public DateTime StartDate { get; set; }

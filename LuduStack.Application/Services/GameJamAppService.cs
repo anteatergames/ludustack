@@ -141,6 +141,8 @@ namespace LuduStack.Application.Services
 
                 GameJamViewModel vm = mapper.Map<GameJamViewModel>(model);
 
+                SetPermissions(currentUserId, currentUserIsAdmin, vm);
+
                 return new OperationResultVo<GameJamViewModel>(vm);
             }
             catch (Exception ex)
@@ -307,7 +309,7 @@ namespace LuduStack.Application.Services
             }
             else
             {
-                vm.CurrentPhase = GameJamPhase.Warming;
+                vm.CurrentPhase = GameJamPhase.Warmup;
                 vm.CountDownMessage = "Starts in";
                 diff = vm.StartDate - localTime;
             }
@@ -326,7 +328,7 @@ namespace LuduStack.Application.Services
 
         private static void SetPermissions(Guid currentUserId, bool currentUserIsAdmin, GameJamViewModel vm)
         {
-            bool canJoinOnWarming = vm.CurrentPhase == GameJamPhase.Warming;
+            bool canJoinOnWarming = vm.CurrentPhase == GameJamPhase.Warmup;
             bool canJoinLate = vm.CurrentPhase == GameJamPhase.Submission && vm.AllowLateJoin;
 
             vm.Permissions.CanJoin = vm.UserId != currentUserId && (canJoinOnWarming || canJoinLate);
