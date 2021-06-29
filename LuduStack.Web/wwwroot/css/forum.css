@@ -122,15 +122,3 @@
 .posttopic .ck.ck-content.ck-editor__editable {
     min-height: 300px !important;
 }
-
-.ck-content .media {
-    display: block;
-}
-
-.ck .ck-toolbar {
-    border-radius: var(--border-radius) var(--border-radius) 0 0 !important;
-}
-
-.ck .ck-content {
-    border-radius: 0 0 var(--border-radius) var(--border-radius) !important;
-}
