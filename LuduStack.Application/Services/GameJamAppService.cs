@@ -111,6 +111,8 @@ namespace LuduStack.Application.Services
 
                 SanitizeHtml(vm, sanitizer);
 
+                SetImagesToShow(vm);
+
                 SetPermissions(currentUserId, currentUserIsAdmin, vm);
 
                 return new OperationResultVo<GameJamViewModel>(vm);
@@ -140,6 +142,8 @@ namespace LuduStack.Application.Services
                 }
 
                 GameJamViewModel vm = mapper.Map<GameJamViewModel>(model);
+
+                SetImagesToShow(vm);
 
                 SetPermissions(currentUserId, currentUserIsAdmin, vm);
 
@@ -187,6 +191,11 @@ namespace LuduStack.Application.Services
                     model = mapper.Map<GameJam>(viewModel);
                 }
 
+                if (model.FeaturedImage == Constants.DefaultGamejamThumbnail)
+                {
+                    model.FeaturedImage = null;
+                }
+
                 CommandResult result = await mediator.SendCommand(new SaveGameJamCommand(model));
 
                 if (!result.Validation.IsValid)
@@ -214,6 +223,8 @@ namespace LuduStack.Application.Services
                 newVm.EntryDeadline = newVm.StartDate.AddDays(7);
                 newVm.VotingEndDate = newVm.EntryDeadline.AddDays(7);
                 newVm.ResultDate = newVm.VotingEndDate.AddDays(7);
+
+                newVm.FeaturedImage = Constants.DefaultGamejamThumbnail;
 
                 return Task.FromResult(new OperationResultVo<GameJamViewModel>(newVm));
             }
@@ -334,6 +345,28 @@ namespace LuduStack.Application.Services
             vm.Permissions.CanJoin = vm.UserId != currentUserId && (canJoinOnWarming || canJoinLate);
             vm.Permissions.IsAdmin = currentUserIsAdmin;
             vm.Permissions.CanDelete = vm.Permissions.IsAdmin;
+        }
+
+        private void SetImagesToShow(GameJamViewModel vm)
+        {
+            if (string.IsNullOrWhiteSpace(vm.FeaturedImage))
+            {
+                vm.FeaturedImage = Constants.DefaultGamejamThumbnail;
+            }
+
+            if (string.IsNullOrWhiteSpace(vm.BannerImage))
+            {
+                vm.BannerImage = Constants.DefaultGamejamThumbnail;
+            }
+
+            if (string.IsNullOrWhiteSpace(vm.BackgroundImage))
+            {
+                vm.BackgroundImage = Constants.DefaultGamejamThumbnail;
+            }
+
+            vm.FeaturedImage = UrlFormatter.FormatFeaturedImageUrl(vm.UserId, vm.FeaturedImage, ImageRenderType.Full);
+            vm.BannerImage = UrlFormatter.FormatFeaturedImageUrl(vm.UserId, vm.BannerImage, ImageRenderType.Full);
+            vm.BackgroundImage = UrlFormatter.FormatFeaturedImageUrl(vm.UserId, vm.BackgroundImage, ImageRenderType.Full);
         }
     }
 }

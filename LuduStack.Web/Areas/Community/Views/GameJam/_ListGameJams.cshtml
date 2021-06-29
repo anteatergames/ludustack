@@ -25,8 +25,9 @@ else
                         <input type="hidden" id="@($"secondstocountdown-{item.Handler}")" value="@item.SecondsToCountDown" class="hiddendate" />
 
                         <a asp-area="community" asp-controller="gamejam" asp-action="details" asp-route-handler="@item.Handler">
-                            <div>
-                                <img src="@item.FeaturedImage" class="img-fluid rounded square-bottom" />
+                            <div class="border-bottom square-bottom d-flex justify-content-center gamejamitemimage">
+                                <img src="@Constants.DefaultGamejamThumbnail" class="img-fluid w-100 rounded square-bottom invisible" />
+                                <img src="@item.FeaturedImage" class="img-fluid w-100 rounded square-bottom position-absolute" style="max-width:97%" />
                             </div>
 
                             <partial name="_GameJamCounter" />

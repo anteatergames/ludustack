@@ -42,10 +42,13 @@ namespace LuduStack.Application.ViewModels.GameJam
         [RegularExpression("^(?=.{3,32}$)(?![-.])(?!.*[-.]{2})[a-zA-Z0-9-.]+(?<![-.])$", ErrorMessage = "Invalid hashtag!")]
         public string HashTag { get; set; }
 
+        [Display(Name = "Banner Image", Description = "This image will be shown at the top of your Game Jam page. We recomend you to pick a transparent PNG image.")]
         public string BannerImage { get; set; }
 
+        [Display(Name = "Featured Image", Description = "This image is used when you share the Game Jam to social networks.")]
         public string FeaturedImage { get; set; }
 
+        [Display(Name = "Background Image", Description = "This will be used as background of your Game Jam page.")]
         public string BackgroundImage { get; set; }
 
         [Required]

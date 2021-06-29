@@ -242,7 +242,7 @@ namespace LuduStack.Web.Controllers
 
         [HttpPost]
         [Route("uploadmedia")]
-        public async Task<IActionResult> UploadMedia(IFormFile upload, string tag)
+        public async Task<IActionResult> UploadMedia(IFormFile upload, Guid? userId, string tag)
         {
             try
             {
@@ -260,7 +260,9 @@ namespace LuduStack.Web.Controllers
 
                         string filename = string.Format("{0}-{1}", DateTime.Now.ToString(datetimeFormat), rand.Next().ToString());
 
-                        UploadResultVo uploadResult = await base.UploadContentMedia(CurrentUserId, filename, extension, fileBytes, EnvName, tag);
+                        var destinationUserId = userId.HasValue ? userId.Value : CurrentUserId;
+
+                        UploadResultVo uploadResult = await base.UploadContentMedia(destinationUserId, filename, extension, fileBytes, EnvName, tag);
 
                         return Json(uploadResult);
                     }

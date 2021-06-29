@@ -51,7 +51,7 @@
             "destination": "wwwroot/lib/embedo"
         },
         {
-            "library": "cropperjs@1.5.6",
+            "library": "cropperjs@1.5.12",
             "destination": "wwwroot/lib/cropperjs"
         },
         {

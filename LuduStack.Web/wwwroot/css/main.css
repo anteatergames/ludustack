@@ -419,3 +419,8 @@ mediagallery
 .ck.ck-toolbar.ck-toolbar_grouping > .ck-toolbar__items {
     flex-wrap: wrap !important;
 }
+
+.newimageupload .cropper-container, .cropper-container div {
+    border-bottom-right-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+}
