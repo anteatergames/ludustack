@@ -8,7 +8,7 @@
     function setSelectors() {
         selectors.container = '.content-wrapper';
         selectors.canInteract = '#caninteract';
-        selectors.item = '.box-content';
+        selectors.item = '.feeditem';
         selectors.btnShare = '.btn-share';
         selectors.sharePopup = '.share-popup';
         selectors.btnInteractionComment = '.btn-interaction-comment';
