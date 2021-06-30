@@ -134,7 +134,7 @@ namespace LuduStack.Application.Services
                     return new OperationResultVo<GameJamViewModel>("Entity not found!");
                 }
 
-                var userCanEdit = model.UserId == currentUserId || currentUserIsAdmin;
+                bool userCanEdit = model.UserId == currentUserId || currentUserIsAdmin;
 
                 if (!userCanEdit)
                 {

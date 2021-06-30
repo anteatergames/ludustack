@@ -12,7 +12,7 @@
         date: "fa fa-calendar",
         up: "fa fa-arrow-up",
         down: "fa fa-arrow-down"
-    }
+    };
 
     var croppers = [];
     var imagesProcessed = 0;
@@ -126,11 +126,14 @@
         for (var i = 0; i < images.length; i++) {
 
             var ratioValue = NaN;
-            var ratio = images[i].dataset.aspectratio?.replace(' ', '').split('/');
+            if (images[i].dataset.aspectratio !== undefined) {
+                var ratio = images[i].dataset.aspectratio.replace(' ', '').split('/');
 
-            if (ratio !== undefined) {
-                ratioValue = parseInt(ratio[0]) / parseInt(ratio[1]);
+                if (ratio !== undefined) {
+                    ratioValue = parseInt(ratio[0]) / parseInt(ratio[1]);
+                }
             }
+
             var cropper = new Cropper(images[i], {
                 aspectRatio: ratioValue,
                 viewMode: 0,
