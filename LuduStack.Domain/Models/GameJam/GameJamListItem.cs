@@ -28,5 +28,7 @@ namespace LuduStack.Domain.Models
         public DateTime VotingEndDate { get; set; }
 
         public DateTime ResultDate { get; set; }
+
+        public string ShortDescription { get; set; }
     }
 }

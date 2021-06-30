@@ -20,17 +20,25 @@ else
         <div class="row justify-content-center">
             @foreach (var item in Model)
             {
-                <div class="col-md-12 col-lg-4 col-xl-3 p-1 mb-3">
+                var shortDescription = SharedLocalizer[item.ShortDescription ?? "Check this out!"];
+
+                <div class="col-12 col-md-6 col-lg-4 col-xl-3 p-1 mb-1" data-container="body" data-toggle="popover" data-trigger="hover" data-placement="top" data-content="@shortDescription">
                     <div class="bg-white bordered gamejamitem" id="@($"gamejamcard-{item.Handler}")">
                         <input type="hidden" id="@($"secondstocountdown-{item.Handler}")" value="@item.SecondsToCountDown" class="hiddendate" />
 
                         <a asp-area="community" asp-controller="gamejam" asp-action="details" asp-route-handler="@item.Handler">
                             <div class="border-bottom square-bottom d-flex justify-content-center gamejamitemimage">
-                                <img src="@Constants.DefaultGamejamThumbnail" class="img-fluid w-100 rounded square-bottom invisible" />
-                                <img src="@item.FeaturedImage" class="img-fluid w-100 rounded square-bottom position-absolute" style="max-width:97%" />
+                                <img src="@item.FeaturedImage" class="img-fluid w-100 rounded square-bottom" />
                             </div>
 
-                            <partial name="_GameJamCounter" />
+                            @if (item.CurrentPhase == GameJamPhase.Finished)
+                            {
+                                @SharedLocalizer[item.CountDownMessage]
+                            }
+                            else
+                            {
+                                <partial name="_GameJamCounter" model="@item.CountDownMessage" />
+                            }
                         </a>
                     </div>
                 </div>

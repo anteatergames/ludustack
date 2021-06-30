@@ -2,7 +2,6 @@
     min-height: 300px !important;
 }
 
-/*.gamejamitemimage {
-    min-height: 169px;
+.gamejamitem a {
+    font-weight: normal !important;
 }
-*/

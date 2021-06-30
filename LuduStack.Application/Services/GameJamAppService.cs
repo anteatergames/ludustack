@@ -111,7 +111,7 @@ namespace LuduStack.Application.Services
 
                 SanitizeHtml(vm, sanitizer);
 
-                SetImagesToShow(vm);
+                SetImagesToShow(vm, false);
 
                 SetPermissions(currentUserId, currentUserIsAdmin, vm);
 
@@ -143,7 +143,7 @@ namespace LuduStack.Application.Services
 
                 GameJamViewModel vm = mapper.Map<GameJamViewModel>(model);
 
-                SetImagesToShow(vm);
+                SetImagesToShow(vm, true);
 
                 SetPermissions(currentUserId, currentUserIsAdmin, vm);
 
@@ -225,6 +225,8 @@ namespace LuduStack.Application.Services
                 newVm.ResultDate = newVm.VotingEndDate.AddDays(7);
 
                 newVm.FeaturedImage = Constants.DefaultGamejamThumbnail;
+                newVm.BannerImage = Constants.DefaultGamejamThumbnail;
+                newVm.BackgroundImage = Constants.DefaultGamejamThumbnail;
 
                 return Task.FromResult(new OperationResultVo<GameJamViewModel>(newVm));
             }
@@ -347,21 +349,24 @@ namespace LuduStack.Application.Services
             vm.Permissions.CanDelete = vm.Permissions.IsAdmin;
         }
 
-        private void SetImagesToShow(GameJamViewModel vm)
+        private void SetImagesToShow(GameJamViewModel vm, bool editMode)
         {
-            if (string.IsNullOrWhiteSpace(vm.FeaturedImage))
+            if (editMode)
             {
-                vm.FeaturedImage = Constants.DefaultGamejamThumbnail;
-            }
+                if (string.IsNullOrWhiteSpace(vm.FeaturedImage))
+                {
+                    vm.FeaturedImage = Constants.DefaultGamejamThumbnail;
+                }
 
-            if (string.IsNullOrWhiteSpace(vm.BannerImage))
-            {
-                vm.BannerImage = Constants.DefaultGamejamThumbnail;
-            }
+                if (string.IsNullOrWhiteSpace(vm.BannerImage))
+                {
+                    vm.BannerImage = Constants.DefaultGamejamThumbnail;
+                }
 
-            if (string.IsNullOrWhiteSpace(vm.BackgroundImage))
-            {
-                vm.BackgroundImage = Constants.DefaultGamejamThumbnail;
+                if (string.IsNullOrWhiteSpace(vm.BackgroundImage))
+                {
+                    vm.BackgroundImage = Constants.DefaultGamejamThumbnail;
+                }
             }
 
             vm.FeaturedImage = UrlFormatter.FormatFeaturedImageUrl(vm.UserId, vm.FeaturedImage, ImageRenderType.Full);

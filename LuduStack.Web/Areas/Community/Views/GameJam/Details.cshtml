@@ -76,24 +76,20 @@
                         }
                         else
                         {
-                            <div class="d-flex flex-column justify-content-center">
-                                <span>@SharedLocalizer[Model.CountDownMessage]</span>
-                            </div>
-
-                            <partial name="_GameJamCounter" />
-
-                            <div class="d-flex flex-column justify-content-center">
-                                @if (Model.Permissions.CanJoin)
-                                {
-                                    <button class="btn btn-success btn-join" data-url="@Url.Action("join", "gamejam", new { area = "community" })">@SharedLocalizer["join jam"]</button>
-                                }
-                                else
-                                {
-                                    <button class="btn btn-default disabled" disabled="disabled">@SharedLocalizer["can't join"]</button>
-                                }
-                            </div>
+                            <partial name="_GameJamCounter" model="@Model.CountDownMessage" />
                         }
                     </div>
+                </div>
+
+                <div class="d-flex flex-row justify-content-center mt-n3">
+                    @if (Model.Permissions.CanJoin)
+                    {
+                        <button class="btn btn-lg btn-success btn-join text-uppercase" data-url="@Url.Action("join", "gamejam", new { area = "community" })">@SharedLocalizer["join"]</button>
+                    }
+                    else
+                    {
+                        <button class="btn btn-lg btn-default disabled" disabled="disabled">@SharedLocalizer["can't join"]</button>
+                    }
                 </div>
             </div>
 

@@ -171,6 +171,9 @@
     function bindBtnSaveForm() {
         objs.container.on('click', selectors.btnSave, function () {
             var btn = $(this);
+
+            updateEditors();
+
             var valid = objs.form.valid();
 
             if (valid && canInteract) {
@@ -289,8 +292,6 @@
     function submitForm(btn) {
         var url = objs.form.attr('action');
 
-        updateEditors();
-
         var data = objs.form.serializeObject();
 
         return $.post(url, data).done(function (response) {
@@ -312,4 +313,8 @@
 
 $(function () {
     GAMEJAMEDIT.Init();
+});
+
+$.validator.setDefaults({
+    ignore: ":hidden:not(.wysiwygeditor)"
 });

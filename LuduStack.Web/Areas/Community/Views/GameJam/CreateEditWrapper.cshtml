@@ -22,6 +22,9 @@
 }
 
 @section Scripts {
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
     <environment include="Development">
         <script src="~/lib/moment/moment-with-locales.js"></script>
         <script src="~/lib/tempusdominus/js/tempusdominus-bootstrap-4.js"></script>
@@ -39,8 +42,6 @@
         <script src="~/lib/cropperjs/cropper.min.js"></script>
         <script src="~/js/gamejam/gamejamedit.min.js" asp-append-version="true"></script>
     </environment>
-
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
 
 <section class="content container">

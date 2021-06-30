@@ -29,7 +29,8 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
                 StartDate = x.StartDate,
                 EntryDeadline = x.EntryDeadline,
                 VotingEndDate = x.VotingEndDate,
-                ResultDate = x.ResultDate
+                ResultDate = x.ResultDate,
+                ShortDescription = x.ShortDescription
             });
 
             return Task.FromResult(obj);

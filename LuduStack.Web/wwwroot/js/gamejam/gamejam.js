@@ -48,6 +48,8 @@
         MAINMODULE.Ajax.LoadHtml(url, objs.list).then(() => {
             objs.items = $(selectors.items);
             bindCounters();
+
+            MAINMODULE.Common.BindPopOvers();
         });
     }
 

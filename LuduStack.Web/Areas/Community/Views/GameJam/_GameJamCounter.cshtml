@@ -1,8 +1,15 @@
-﻿@{
+﻿@model string
+@{
     Layout = null;
+
+    var showMessage = !string.IsNullOrWhiteSpace(Model);
 }
 
 <div class="p-2">
+    @if (showMessage)
+    {
+        <span class="d-block text-center text-muted">@SharedLocalizer[Model]</span>
+    }
     <div class="time-left d-flex justify-content-center" id="countdown">
         <div class="text-center">
             <span class="h2 countdown-days">88</span><br><span class="text-muted">@SharedLocalizer["days"]</span>

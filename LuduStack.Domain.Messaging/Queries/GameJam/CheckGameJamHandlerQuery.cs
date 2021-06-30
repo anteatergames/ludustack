@@ -30,9 +30,9 @@ namespace LuduStack.Domain.Messaging.Queries.GameJam
 
         public Task<bool> Handle(CheckGameJamHandlerQuery request, CancellationToken cancellationToken)
         {
-            IQueryable<Models.GameJam> jam = gameJamRepository.Get(x => x.Handler.Equals(request.Handler) && x.Id != request.Id);
+            IQueryable<Models.GameJam> exists = gameJamRepository.Get(x => x.Handler.Equals(request.Handler) && x.Id != request.Id);
 
-            return Task.FromResult(!jam.Any());
+            return Task.FromResult(!exists.Any());
         }
     }
 }

@@ -33,7 +33,7 @@ namespace LuduStack.Application.ViewModels.GameJam
         [Display(Name = "Hide Main Theme", Description = "Hide the Main Theme during the Warmup Phase.")]
         public bool HideMainTheme { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "You must choose a unique handler!")]
         [Display(Name = "Handler", Description = "Define a handler for your Game Jam. The handler will be used in the URL like ludustack.com/jam/mycoolhandler. You can only use letters, numbers, dashes and dots. No spaces allowed and all will be saved as lowercase.")]
         [Remote("validatehandler", "gamejam", "community", AdditionalFields = "Id", HttpMethod = "POST", ErrorMessage = "Oops! That handler is already in use!")]
         [RegularExpression("^(?=.{3,32}$)(?![-.])(?!.*[-.]{2})[a-zA-Z0-9-.]+(?<![-.])$", ErrorMessage = "Invalid handler!")]
@@ -51,14 +51,14 @@ namespace LuduStack.Application.ViewModels.GameJam
         [Display(Name = "Background Image", Description = "This will be used as background of your Game Jam page.")]
         public string BackgroundImage { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "A Game Jam MUST have a name!")]
         [Display(Name = "Name")]
         public string Name { get; set; }
 
         [Display(Name = "Short Description", Description = "Give your Game Jam a killer short description. How would you pitch your Game Jam to an investor?")]
         public string ShortDescription { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Please, provide a nice description of your Game Jam.")]
         [Display(Name = "Description", Description = "This is your place to shine. Give you Game Jam a nice description to set all the details and rules so users feel confortable in joining and your Game Jam will be a success!")]
         public string Description { get; set; }
 
