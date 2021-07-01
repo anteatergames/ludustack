@@ -28,7 +28,7 @@ else
 
                         <a asp-area="community" asp-controller="gamejam" asp-action="details" asp-route-handler="@item.Handler">
                             <div class="border-bottom square-bottom d-flex justify-content-center gamejamitemimage">
-                                <img src="@item.FeaturedImage" class="img-fluid w-100 rounded square-bottom" />
+                                <img src="@item.FeaturedImage" class="img-fluid w-100 square-bottom card-img" />
                             </div>
 
                             @if (item.CurrentPhase == GameJamPhase.Finished)

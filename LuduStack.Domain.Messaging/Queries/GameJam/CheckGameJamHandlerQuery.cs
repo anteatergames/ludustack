@@ -19,6 +19,7 @@ namespace LuduStack.Domain.Messaging.Queries.GameJam
             Id = id;
         }
     }
+
     public class CheckGameJamHandlerQueryHandler : QueryHandler, IRequestHandler<CheckGameJamHandlerQuery, bool>
     {
         private readonly IGameJamRepository gameJamRepository;

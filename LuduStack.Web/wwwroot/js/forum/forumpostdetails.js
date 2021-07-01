@@ -279,7 +279,6 @@
         MAINMODULE.Ajax.LoadHtml(urlEdit, editDiv).then(() => {
             var txtArea = editDiv.find(selectors.txtReply);
 
-
             WYSIWYGEDITOR.BindEditor(`#${txtArea.attr('id')}`).then(() => {
                 viewDiv.removeClass('d-flex').fadeOut("slow", function () {
                     postDiv.animate({ 'height': editDiv.css('height') },

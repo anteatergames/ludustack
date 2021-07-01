@@ -35,15 +35,15 @@ a {
     font-weight: 600;
 }
 
-    #featurecontainer table a, #featurecontainer a.btn, #featurecontainer a.stretched-link, .user-block a {
-        font-weight: normal !important;
-    }
+#featurecontainer table a, #featurecontainer a.btn, #featurecontainer a.stretched-link, .user-block a {
+    font-weight: normal !important;
+}
 
-    a:active, a:focus, a:hover {
-        outline: 0;
-        text-decoration: none;
-        color: var(--color-green);
-    }
+a:active, a:focus, a:hover {
+    outline: 0;
+    text-decoration: none;
+    color: var(--color-green);
+}
 
 blockquote {
     border-radius: 3px;

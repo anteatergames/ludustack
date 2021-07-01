@@ -21,7 +21,6 @@
         setSelectors();
         cacheObjs();
 
-
         FX.StartCountDown('#SecondsToCountDown');
     }
 

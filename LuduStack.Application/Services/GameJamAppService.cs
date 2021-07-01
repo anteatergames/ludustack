@@ -295,7 +295,6 @@ namespace LuduStack.Application.Services
 
         private static void SetCountdown(DateTime localTime, GameJamViewModel vm)
         {
-
             TimeSpan diff;
             if (vm.ResultDate <= localTime)
             {

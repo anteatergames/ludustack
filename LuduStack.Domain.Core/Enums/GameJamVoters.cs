@@ -21,7 +21,6 @@ namespace LuduStack.Domain.Core.Enums
         [Display(Name = "Judges (if any) and Non-Participants")]
         JudgesAndNonParticipants = 4,
 
-
         [UiInfo(Display = "Judges (if any) and the whole community")]
         [Display(Name = "Judges (if any) and the whole community")]
         JudgesAndTheWholeCommunity = 5,

@@ -1,7 +1,6 @@
 ﻿var IMAGEMANIPULAION = (function () {
     "use strict";
 
-
     var croppers = [];
     var imagesProcessed = 0;
 
@@ -81,7 +80,6 @@
         var images = document.querySelectorAll(imageListItemSelector);
 
         for (var i = 0; i < images.length; i++) {
-
             var ratioValue = NaN;
             if (images[i].dataset.aspectratio !== undefined) {
                 var ratio = images[i].dataset.aspectratio.replace(' ', '').split('/');
@@ -229,7 +227,6 @@
     return {
         Init: init,
         Cropper: {
-
             BindCropper: bindCroppers,
             UploadCroppedImages: uploadCroppedImages
         },

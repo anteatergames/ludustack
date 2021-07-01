@@ -92,7 +92,6 @@
             e.preventDefault();
 
             if (typeof e.oldDate !== 'undefined' && typeof e.date !== 'undefined' && (obj.val() === e.date._i || e.oldDate._i === e.date._i)) {
-
                 var selectedDate = moment(obj.val(), 'L LT');
 
                 var maxDateDateTarget = $(this).attr('data-maxdate');
@@ -157,7 +156,6 @@
 $(function () {
     GAMEJAMEDIT.Init();
 });
-
 
 // this must be outside the module
 WYSIWYGEDITOR.SetValidatorDefaults();
