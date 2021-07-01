@@ -11,9 +11,14 @@
         $.validator.unobtrusive.parse(formObject);
     }
 
+    function isNew() {
+        return window.location.href.indexOf('/add') > -1 || window.location.href.indexOf('/new') > -1;
+    }
+
     return {
         Init: init,
-        ResetValidator: resetValidator
+        ResetValidator: resetValidator,
+        IsNew: isNew
     };
 }());
 

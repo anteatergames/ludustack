@@ -95,6 +95,13 @@
         }
     }
 
+    function updateEditors() {
+        $('.wysiwygeditor').each((index, element) => {
+            var editorId = $(element).attr('data-editor-id');
+            WYSIWYGEDITOR.UpdateSourceElement(editorId);
+        });
+    }
+
     function destroyEditor(editorId) {
         var existing = editors.filter((editor) => {
             return editor.id === editorId;
@@ -125,6 +132,12 @@
         }
     }
 
+    function setValidatorDefaults() {
+        $.validator.setDefaults({
+            ignore: ":hidden:not(.wysiwygeditor)"
+        });
+    }
+
     return {
         Editors: editors,
         GetEditor: getEditor,
@@ -132,6 +145,8 @@
         BindEditor: bindEditor,
         BindEditorElement: bindEditorElement,
         BindEditors: bindEditors,
-        UpdateSourceElement: updateSourceElement
+        UpdateSourceElement: updateSourceElement,
+        UpdateEditors: updateEditors,
+        SetValidatorDefaults: setValidatorDefaults
     };
 }());
