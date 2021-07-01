@@ -15,7 +15,7 @@
 
         bindAll();
 
-        canInteract = $(selectors.canInteract).val() === 'true';
+        canInteract = MAINMODULE.CanInteract();
         newIdea = window.location.href.indexOf('newidea') > -1;
         details = window.location.href.indexOf('details') > -1;
 
@@ -28,7 +28,6 @@
 
     function setSelectors() {
         selectors.container = '#contentwrapper';
-        selectors.canInteract = '#caninteract';
         selectors.toolbar = $("#divToolbar");
         selectors.list = $("#divList");
         selectors.btnPostVotingItem = $("#btnPostVotingItem");

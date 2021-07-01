@@ -5,7 +5,6 @@
     var objs = {};
 
     function setSelectors() {
-        selectors.canInteract = '#caninteract';
         selectors.urls = '#urls';
         selectors.container = '#featurecontainer';
         selectors.containerList = '#containerlist';

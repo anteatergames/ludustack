@@ -5,7 +5,6 @@
     var objs = {};
 
     var canInteract = false;
-    var isNew = false;
 
     var imagesToUploadCount = 5;
 
@@ -20,7 +19,6 @@
 
     function setSelectors() {
         selectors.controlsidebar = '.control-sidebar';
-        selectors.canInteract = '#caninteract';
         selectors.urls = '#urls';
         selectors.container = '#featurecontainer';
         selectors.form = '#frmGiveawaySave';
@@ -67,12 +65,7 @@
 
         bindAll();
 
-        canInteract = $(selectors.canInteract).val();
-        isNew = window.location.href.indexOf('add') > -1;
-
-        if (isNew) {
-            console.log('new giveaway');
-        }
+        canInteract = MAINMODULE.CanInteract();
 
         MAINMODULE.Common.BindPopOvers();
     }

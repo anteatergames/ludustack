@@ -8,7 +8,6 @@
 
     function setSelectors() {
         selectors.controlsidebar = '.control-sidebar';
-        selectors.canInteract = '#caninteract';
         selectors.urls = '#urls';
         selectors.container = '#featurecontainer';
         selectors.containerDetails = '#containerdetails';
@@ -19,7 +18,6 @@
     }
 
     function cacheObjsCommon() {
-        objs.canInteract = $(selectors.canInteract);
         objs.controlsidebar = $(selectors.controlsidebar);
         objs.container = $(selectors.container);
         objs.urls = $(selectors.urls);
@@ -39,7 +37,7 @@
 
         cacheObjs();
 
-        canInteract = objs.canInteract.val() === "true";
+        canInteract = MAINMODULE.CanInteract();
 
         var url = objs.urls.data('urlList');
         var urlMine = objs.urls.data('urlMine');

@@ -11,7 +11,6 @@
 
     function setSelectors() {
         selectors.controlsidebar = '.control-sidebar';
-        selectors.canInteract = '#caninteract';
         selectors.urls = '#urls';
         selectors.container = '#featurecontainer';
         selectors.form = '#frmSave';
@@ -33,12 +32,8 @@
 
         bindAll();
 
-        canInteract = $(selectors.canInteract).val();
-        isNew = window.location.href.indexOf('add') > -1;
-
-        if (isNew) {
-            console.log('is New');
-        }
+        canInteract = MAINMODULE.CanInteract();
+        isNew = COMMONEDIT.IsNew();
     }
 
     function bindAll() {
@@ -56,7 +51,7 @@
         objs.container.on('click', selectors.btnSave, function () {
             var btn = $(this);
 
-            WYSIWYGEDITOR.UpdateSourceElement(editorId);
+            WYSIWYGEDITOR.UpdateEditors();
 
             var valid = objs.form.valid();
 
@@ -94,3 +89,6 @@
 $(function () {
     FORUMPOSTEDIT.Init();
 });
+
+// this must be outside the module
+WYSIWYGEDITOR.SetValidatorDefaults();

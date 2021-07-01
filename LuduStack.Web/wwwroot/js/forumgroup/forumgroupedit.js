@@ -5,11 +5,9 @@
     var objs = {};
 
     var canInteract = false;
-    var isNew = false;
 
     function setSelectors() {
         selectors.controlsidebar = '.control-sidebar';
-        selectors.canInteract = '#caninteract';
         selectors.urls = '#urls';
         selectors.container = '#featurecontainer';
         selectors.form = '#frmSave';
@@ -31,12 +29,7 @@
 
         bindAll();
 
-        canInteract = $(selectors.canInteract).val();
-        isNew = window.location.href.indexOf('add') > -1;
-
-        if (isNew) {
-            console.log('is New');
-        }
+        canInteract = MAINMODULE.CanInteract();
     }
 
     function bindAll() {

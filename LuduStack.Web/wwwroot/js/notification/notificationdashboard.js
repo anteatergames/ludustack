@@ -9,7 +9,6 @@
 
     function setSelectors() {
         selectors.controlsidebar = '.control-sidebar';
-        selectors.canInteract = '#caninteract';
         selectors.urls = '#urls';
         selectors.container = '#featurecontainer';
         selectors.list = '#divList';
@@ -17,7 +16,6 @@
     }
 
     function cacheObjs() {
-        objs.canInteract = $(selectors.canInteract);
         objs.controlsidebar = $(selectors.controlsidebar);
         objs.container = $(selectors.container);
         objs.urls = $(selectors.urls);
@@ -28,7 +26,7 @@
         setSelectors();
         cacheObjs();
 
-        canInteract = objs.canInteract.val() === 'true';
+        canInteract = MAINMODULE.CanInteract();
 
         bindAll();
 

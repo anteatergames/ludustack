@@ -7,8 +7,7 @@
 
     function setSelectors() {
         selectors.container = '.content-wrapper';
-        selectors.canInteract = '#caninteract';
-        selectors.item = '.feeditem';
+        selectors.item = '.contentitem';
         selectors.btnShare = '.btn-share';
         selectors.sharePopup = '.share-popup';
         selectors.btnInteractionComment = '.btn-interaction-comment';
@@ -22,14 +21,13 @@
 
     function cacheObjects() {
         objs.container = $(selectors.container);
-        objs.canInteract = $(selectors.canInteract);
     }
 
     function init() {
         setSelectors();
         cacheObjects();
 
-        canInteract = objs.canInteract.val() === 'true';
+        canInteract = MAINMODULE.CanInteract();
 
         bindAll();
     }

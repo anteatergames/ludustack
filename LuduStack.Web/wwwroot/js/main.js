@@ -32,6 +32,7 @@
     }
 
     function setSelectors() {
+        selectors.canInteract = '#caninteract';
         selectors.notificationsMenu = "#notificationsMenu";
         selectors.locale = '#locale';
         selectors.spanMessage = "#spanMessage";
@@ -41,6 +42,7 @@
     }
 
     function cacheObjects() {
+        objs.canInteract = $(selectors.canInteract);
         objs.notificationsMenu = $(selectors.notificationsMenu);
         objs.locale = $(selectors.locale);
         objs.spanMessage = $(selectors.spanMessage);
@@ -519,9 +521,14 @@
         MAINMODULE.Utils.ScrollTo(elementToScroll);
     }
 
+    function canInteract() {
+        return objs.canInteract.val() === 'true';
+    }
+
     return {
         Init: init,
         GetLocale: getLocale,
+        CanInteract: canInteract,
         Layout: {
             SetStickyElement: setStickyElement
         },

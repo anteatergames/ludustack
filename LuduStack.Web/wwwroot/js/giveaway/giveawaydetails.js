@@ -8,7 +8,6 @@
     var saveBtnOriginalText = '';
 
     function setSelectors() {
-        selectors.canInteract = '#caninteract';
         selectors.secondsToEnd = '#SecondsToEnd';
         selectors.status = '#Status';
         selectors.container = '#featurecontainer';

@@ -16,7 +16,6 @@
 
     function setSelectors() {
         selectors.controlsidebar = '.control-sidebar';
-        selectors.canInteract = '#caninteract';
         selectors.urls = '#urls';
         selectors.jobProfile = '#jobprofile';
         selectors.container = '#jobpositioncontainer';
@@ -45,7 +44,6 @@
     }
 
     function cacheObjects() {
-        objs.canInteract = $(selectors.canInteract);
         objs.controlsidebar = $(selectors.controlsidebar);
         objs.container = $(selectors.container);
         objs.urls = $(selectors.urls);
@@ -73,9 +71,9 @@
         setSelectors();
         cacheObjects();
 
-        canInteract = objs.canInteract.val() === 'true';
+        canInteract = MAINMODULE.CanInteract();
+        isNew = COMMONEDIT.IsNew();
         isCompany = objs.container.find(selectors.jobProfile).val() === 'Company';
-        isNew = window.location.href.indexOf('add') > -1;
         isDetails = window.location.href.indexOf('details') > -1;
         isIndex = !isNew && !isDetails;
 

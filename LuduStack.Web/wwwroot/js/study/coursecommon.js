@@ -7,7 +7,6 @@
 
     function setSelectors() {
         selectors.controlsidebar = '.control-sidebar';
-        selectors.canInteract = '#caninteract';
         selectors.urls = '#urls';
         selectors.container = '#featurecontainer';
         selectors.btnDelete = '.btn-course-delete';
@@ -25,7 +24,7 @@
 
         bindAll();
 
-        canInteract = $(selectors.canInteract).val();
+        canInteract = MAINMODULE.CanInteract();
     }
 
     function bindAll() {

@@ -8,7 +8,6 @@
 
     function setSelectors() {
         selectors.controlsidebar = '.control-sidebar';
-        selectors.canInteract = '#caninteract';
         selectors.urls = '#urls';
         selectors.container = '#featurecontainer';
         selectors.form = '#frmSave';
@@ -30,7 +29,7 @@
 
         bindAll();
 
-        canInteract = $(selectors.canInteract).val();
+        canInteract = MAINMODULE.CanInteract();
     }
 
     function bindAll() {
