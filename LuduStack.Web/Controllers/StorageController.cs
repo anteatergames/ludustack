@@ -260,7 +260,7 @@ namespace LuduStack.Web.Controllers
 
                         string filename = string.Format("{0}-{1}", DateTime.Now.ToString(datetimeFormat), rand.Next().ToString());
 
-                        Guid destinationUserId = userId.HasValue ? userId.Value : CurrentUserId;
+                        Guid destinationUserId = userId.HasValue && userId.Value != Guid.Empty ? userId.Value : CurrentUserId;
 
                         UploadResultVo uploadResult = await base.UploadContentMedia(destinationUserId, filename, extension, fileBytes, EnvName, tag);
 
