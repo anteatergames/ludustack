@@ -45,7 +45,7 @@
 
 
 <section class="content container">
-    <div id="featurecontainer" class="col">
+    <div id="featurecontainer" class="col htmlcontent">
         <input asp-for="SecondsToCountDown" type="hidden" />
 
         @if (!string.IsNullOrWhiteSpace(Model.BannerImage))
@@ -67,7 +67,7 @@
                 </div>
             </div>
 
-            <div class="text-center mx-auto p-2">
+            <div class="text-center mx-auto p-2 mt-n2">
                 <div class="d-flex flex-row justify-content-center">
                     <div class="p-3 row justify-content-center bg-white bordered">
                         @if (Model.CurrentPhase == GameJamPhase.Finished)
@@ -84,7 +84,7 @@
                 <div class="d-flex flex-row justify-content-center mt-n3">
                     @if (Model.Permissions.CanJoin)
                     {
-                        <button class="btn btn-lg btn-success btn-join text-uppercase" data-url="@Url.Action("join", "gamejam", new { area = "community" })">@SharedLocalizer["join"]</button>
+                        <button class="btn btn-lg btn-success btn-join text-uppercase" data-url="@Url.Action("join", "gamejam", new { area = "community" })">@SharedLocalizer["join now"]</button>
                     }
                     else
                     {

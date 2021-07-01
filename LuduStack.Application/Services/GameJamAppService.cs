@@ -218,6 +218,7 @@ namespace LuduStack.Application.Services
             {
                 GameJamViewModel newVm = new GameJamViewModel
                 {
+                    UserId = currentUserId,
                     StartDate = DateTime.Now.AddDays(7)
                 };
                 newVm.EntryDeadline = newVm.StartDate.AddDays(7);
