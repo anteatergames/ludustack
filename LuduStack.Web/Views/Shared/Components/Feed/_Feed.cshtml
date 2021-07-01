@@ -7,7 +7,7 @@
 
 @foreach (var item in Model)
 {
-    <div class="p-0 bg-white mb-2 bordered feeditem" data-id="@item.Id">
+    <div class="p-0 bg-white mb-2 bordered contentitem" data-id="@item.Id">
         <div class="box-header with-border">
             <div class="user-block">
                 <a asp-area="" asp-controller="profile" asp-action="details" asp-route-userHandler="@item.UserHandler">

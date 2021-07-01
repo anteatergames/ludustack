@@ -31,7 +31,7 @@ a {
     color: var(--color-bg-dark);
 }
 
-#featurecontainer a {
+.htmlcontent a {
     font-weight: 600;
 }
 
@@ -43,10 +43,6 @@ a {
         outline: 0;
         text-decoration: none;
         color: var(--color-green);
-    }
-
-    a.boldlink {
-        font-weight: 500;
     }
 
 blockquote {
