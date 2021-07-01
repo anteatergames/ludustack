@@ -14,6 +14,9 @@
 }
 
 @section Scripts {
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
     <environment include="Development">
         <script src="~/thirdparty/ckeditor5-build-classic/build/ckeditor.js"></script>
         <script src="~/js/shared/wysiwygeditor.js"></script>
@@ -25,8 +28,6 @@
         <script src="~/thirdparty/ckeditor5-build-classic/build/ckeditor.js"></script>
         <script src="~/js/forum/forumpostedit.min.js" asp-append-version="true"></script>
     </environment>
-
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
 
 <section class="content container">
