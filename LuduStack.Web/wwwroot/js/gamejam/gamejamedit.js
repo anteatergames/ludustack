@@ -5,7 +5,6 @@
     var objs = {};
 
     var canInteract = false;
-    var isNew = false;
 
     var datetimePickerIcons = {
         time: "fa fa-clock",
@@ -14,12 +13,8 @@
         down: "fa fa-arrow-down"
     };
 
-    var croppers = [];
-    var imagesProcessed = 0;
-
     function setSelectors() {
         selectors.controlsidebar = '.control-sidebar';
-        selectors.canInteract = '#caninteract';
         selectors.urls = '#urls';
         selectors.container = '#featurecontainer';
         selectors.form = '#frmSave';
@@ -31,7 +26,6 @@
         selectors.resultDate = 'input#ResultDate';
         selectors.inputImageListItem = 'input.imageinput';
         selectors.imageListItem = 'img.uploadimage';
-        selectors.featuredImage = '#FeaturedImage';
     }
 
     function cacheObjs() {
@@ -45,7 +39,6 @@
         objs.votingEndDate = $(selectors.votingEndDate);
         objs.resultDate = $(selectors.resultDate);
         objs.inputImageListItem = $(selectors.inputImageListItem);
-        objs.featuredImage = $(selectors.featuredImage);
     }
 
     function init() {
@@ -54,12 +47,7 @@
 
         bindAll();
 
-        canInteract = $(selectors.canInteract).val();
-        isNew = window.location.href.indexOf('add') > -1;
-
-        if (isNew) {
-            console.log('is New');
-        }
+        canInteract = MAINMODULE.CanInteract();
 
         MAINMODULE.Common.BindPopOvers();
     }
@@ -69,8 +57,7 @@
 
         WYSIWYGEDITOR.BindEditors('.wysiwygeditor');
 
-        bindCropper();
-        bindChangeImage();
+        IMAGEMANIPULAION.Cropper.BindCropper(selectors.imageListItem, objs.inputImageListItem);
 
         bindBtnSaveForm();
     }
@@ -120,57 +107,6 @@
         obj.datetimepicker('defaultDate', pd);
     }
 
-    function bindCropper() {
-        var images = document.querySelectorAll(selectors.imageListItem);
-
-        for (var i = 0; i < images.length; i++) {
-
-            var ratioValue = NaN;
-            if (images[i].dataset.aspectratio !== undefined) {
-                var ratio = images[i].dataset.aspectratio.replace(' ', '').split('/');
-
-                if (ratio !== undefined) {
-                    ratioValue = parseInt(ratio[0]) / parseInt(ratio[1]);
-                }
-            }
-
-            var cropper = new Cropper(images[i], {
-                aspectRatio: ratioValue,
-                viewMode: 0,
-                autoCropArea: 1,
-                zoomOnWheel: false,
-                modal: false,
-                dragMode: 'move'
-            });
-
-            cropper.disabled = true;
-
-            croppers.push(cropper);
-
-            images[i].dataset.cropperIndex = i;
-        }
-    }
-
-    function bindChangeImage() {
-        objs.inputImageListItem.on('change', function (e) {
-            var image = document.getElementById(e.target.dataset.targetImg);
-            var cropper = croppers[image.dataset.cropperIndex];
-            var extension = $(this).val().split('.').pop().toLowerCase();
-            var isGif = extension === 'gif';
-
-            if (isGif) {
-                image.dataset.isgif = true;
-                //cropper.destroy();
-            }
-
-            var files = e.target.files;
-
-            MAINMODULE.Utils.GetSelectedFileUrl(files, function (url2) {
-                changeDone(url2, e.target, image, isGif);
-            });
-        });
-    }
-
     function bindBtnSaveForm() {
         objs.container.on('click', selectors.btnSave, function () {
             var btn = $(this);
@@ -182,7 +118,7 @@
             if (valid && canInteract) {
                 MAINMODULE.Common.DisableButton(btn);
 
-                uploadCroppedImages(function () {
+                IMAGEMANIPULAION.Cropper.UploadCroppedImages(objs.inputImageListItem, function () {
                     submitForm(btn);
                 });
             }
@@ -193,102 +129,6 @@
         $('.wysiwygeditor').each((index, element) => {
             var editorId = $(element).attr('data-editor-id');
             WYSIWYGEDITOR.UpdateSourceElement(editorId);
-        });
-    }
-
-    function changeDone(blobUrl, inputElement, image, isGif) {
-        //inputElement.value = '';
-        image.src = blobUrl;
-
-        inputElement.dataset.changed = true;
-
-        var cropper = croppers[image.dataset.cropperIndex];
-        cropper.disabled = false;
-
-        cropper.replace(blobUrl);
-
-        if (isGif) {
-            cropper.disabled = true;
-        }
-    }
-
-    function uploadCroppedImages(callback) {
-        var imagesChanged = objs.inputImageListItem.filter(function (index) {
-            return objs.inputImageListItem[index].dataset.changed === 'true';
-        });
-
-        var imagesToProcessCount = imagesChanged.length;
-
-        if (imagesChanged.length > 0) {
-            processImages(imagesChanged, imagesToProcessCount, callback);
-        }
-        else {
-            if (callback) {
-                callback();
-            }
-        }
-    }
-
-    function processImages(imagesChanged, imagesToProcessCount, callback) {
-        imagesProcessed = 0;
-
-        for (var i = 0; i < imagesToProcessCount; i++) {
-            var inputElement = imagesChanged[i];
-            var changed = inputElement.dataset.changed === 'true';
-
-            if (!changed) {
-                console.log('skipping...');
-                imagesProcessed++;
-                continue;
-            }
-
-            var image = document.getElementById(inputElement.dataset.targetImg);
-            var hidden = document.getElementById(inputElement.dataset.targetHidden);
-
-            var cropper = croppers[image.dataset.cropperIndex];
-
-            var uploadValue = inputElement.files[0];
-
-            if (image.dataset.isgif !== 'true') {
-                var canvas = cropper.getCroppedCanvas();
-
-                var dataUri = canvas.toDataURL();
-
-                uploadValue = MAINMODULE.Utils.DataURItoBlob(dataUri);
-            }
-
-            var formData = new FormData();
-            formData.append('userId', objs.userId.val());
-
-            formData.append('upload', uploadValue);
-
-            formData.append("randomName", true);
-
-            uploadImage(formData, imagesToProcessCount, hidden, callback);
-        }
-    }
-
-    function uploadImage(formData, imagesToProcessCount, hidden, callback) {
-        $.ajax('/storage/uploadmedia', {
-            method: "POST",
-            data: formData,
-            async: false,
-            processData: false,
-            contentType: false,
-            success: function (response) {
-                imagesProcessed++;
-                hidden.value = response.filename;
-
-                if (imagesProcessed === imagesToProcessCount) {
-                    if (callback) {
-                        callback();
-                    }
-                }
-            },
-            error: function (response) {
-                console.log(response);
-                imgFeaturedImage.src = initialUrl;
-            }
         });
     }
 
@@ -318,6 +158,6 @@ $(function () {
     GAMEJAMEDIT.Init();
 });
 
-$.validator.setDefaults({
-    ignore: ":hidden:not(.wysiwygeditor)"
-});
+
+// this must be outside the module
+WYSIWYGEDITOR.SetValidatorDefaults();
