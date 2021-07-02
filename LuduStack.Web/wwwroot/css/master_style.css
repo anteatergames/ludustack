@@ -1902,7 +1902,7 @@ button.btn.dropdown-toggle::after, .wysihtml5-toolbar .btn.dropdown-toggle::afte
     }
 
         .flex-square:hover .flex-square-inner-content {
-            color: rgb(0 0 0) !important;
+            color: rgb(0, 0, 0) !important;
         }
 
 .clickable {

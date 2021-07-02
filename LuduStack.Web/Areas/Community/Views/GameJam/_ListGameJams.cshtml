@@ -20,25 +20,18 @@ else
         <div class="row justify-content-center">
             @foreach (var item in Model)
             {
-                var shortDescription = SharedLocalizer[item.ShortDescription ?? "Check this out!"];
+                var shortDescription = SharedLocalizer[item.ShortDescription ?? item.Name];
 
-                <div class="col-12 col-md-6 col-lg-4 col-xl-3 p-1 mb-1" data-container="body" data-toggle="popover" data-trigger="hover" data-placement="top" data-content="@shortDescription">
+                <div class="col-12 col-md-6 col-lg-4 col-xl-3 p-1 mb-1">
                     <div class="bg-white bordered gamejamitem" id="@($"gamejamcard-{item.Handler}")">
                         <input type="hidden" id="@($"secondstocountdown-{item.Handler}")" value="@item.SecondsToCountDown" class="hiddendate" />
 
                         <a asp-area="community" asp-controller="gamejam" asp-action="details" asp-route-handler="@item.Handler">
                             <div class="border-bottom square-bottom d-flex justify-content-center gamejamitemimage">
-                                <img src="@item.FeaturedImage" class="img-fluid w-100 square-bottom card-img" />
+                                <img src="@item.FeaturedImage" class="img-fluid w-100 square-bottom card-img" data-container="body" data-toggle="popover" data-trigger="hover" data-placement="bottom" data-content="@shortDescription" />
                             </div>
 
-                            @if (item.CurrentPhase == GameJamPhase.Finished)
-                            {
-                                @SharedLocalizer[item.CountDownMessage]
-                            }
-                            else
-                            {
-                                <partial name="_GameJamCounter" model="@item.CountDownMessage" />
-                            }
+                            <partial name="_GameJamCounter" model="@new KeyValuePair<GameJamPhase, string>(item.CurrentPhase, item.CountDownMessage)" />
                         </a>
                     </div>
                 </div>
