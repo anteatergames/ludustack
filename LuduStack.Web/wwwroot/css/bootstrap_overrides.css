@@ -112,6 +112,10 @@ select.form-control {
 .btn {
     font-size: 0.8rem;
     border-radius: var(--border-radius);
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
 }
 
     .btn:active {
@@ -122,13 +126,6 @@ select.form-control {
 
     .btn:focus {
         outline: 0;
-    }
-
-    .btn, .btn:hover {
-        -webkit-transition: none;
-        -o-transition: none;
-        -moz-transition: none;
-        transition: none;
     }
 
 .btn-default {
