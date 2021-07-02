@@ -27,5 +27,9 @@ namespace LuduStack.Application.Interfaces
         Task<OperationResultVo<GameJamViewModel>> GenerateNew(Guid currentUserId);
 
         Task<OperationResultVo> ValidateHandler(Guid currentUserId, string handler, Guid id);
+
+        Task<OperationResultVo> Join(Guid currentUserId, Guid jamId);
+
+        Task<OperationResultVo<GameJamEntryViewModel>> GetEntry(Guid currentUserId, bool currentUserIsAdmin, string jamHandler);
     }
 }

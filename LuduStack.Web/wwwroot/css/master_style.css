@@ -9,14 +9,15 @@ body {
 /*body, layout*/
 .wrapper, body, html {
     padding-right: 0 !important;
+    height: 100%;
 }
 
-.wrapper, body {
+/*.wrapper, body {
     overflow-x: hidden;
-}
+}*/
 
 .wrapper {
-    overflow-y: hidden;
+    /*overflow-y: hidden;*/
     position: relative;
     border-radius: 0;
 }

@@ -5,6 +5,9 @@
 
 @inject IOptions<ConfigOptions> ConfigOptions
 
+@removeTagHelper Microsoft.AspNetCore.Mvc.Razor.TagHelpers.BodyTagHelper, Microsoft.AspNetCore.Mvc.Razor
+
+
 @{
     var childTitle = ViewData["Title"]?.ToString();
     var title = string.IsNullOrWhiteSpace(childTitle) || childTitle.Equals(Constants.DefaultTitle) ? Constants.DefaultTitle : ViewData["Title"].ToString();
@@ -161,7 +164,7 @@
 
     @await Html.PartialAsync("_TagManagerHead")
 </head>
-<body class="hold-transition skin-ludustack sidebar-mini">
+<body class="hold-transition skin-ludustack sidebar-mini" @(string.IsNullOrWhiteSpace(backgroundImage) ? string.Empty : $"style=background-image:url({Html.Raw(backgroundImage)});background-repeat:repeat")>
     <input type="hidden" id="caninteract" value="@canInteract.ToString().ToLower()" />
     <input type="hidden" id="locale" value="@ViewBag.Locale" />
     @await Html.PartialAsync("_TagManagerBody")
@@ -179,7 +182,7 @@
         <span id="spanMessage" class="d-none" data-ismodal="@isModal">@TempData["Message"]</span>
     }
 
-    <div class="wrapper" @(string.IsNullOrWhiteSpace(backgroundImage) ? string.Empty : $"style=background-image:url({Html.Raw(backgroundImage)})")>
+    <div class="wrapper">
         <header class="main-header">
             <a asp-area="" asp-controller="home" asp-action="index" class="logo d-none d-md-block">
                 <span class="logo-mini"><img src="~/images/icon30h.png" alt="LUDUSTACK"></span>

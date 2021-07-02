@@ -22,23 +22,15 @@ namespace LuduStack.Web.Areas.Staff.Controllers
         }
 
         [Route("/gamejam")]
-        public IActionResult Index(string msg)
+        public IActionResult Index()
         {
-            if (!string.IsNullOrWhiteSpace(msg))
-            {
-                TempData["Message"] = SharedLocalizer[msg];
-            }
 
             return View();
         }
 
         [Route("/gamejam/manage")]
-        public IActionResult Manage(string msg)
+        public IActionResult Manage()
         {
-            if (!string.IsNullOrWhiteSpace(msg))
-            {
-                TempData["Message"] = SharedLocalizer[msg];
-            }
 
             return View();
         }
@@ -221,12 +213,69 @@ namespace LuduStack.Web.Areas.Staff.Controllers
                 }
                 else
                 {
-                    return Json(new OperationResultVo(false));
+                    return Json(deleteResult);
                 }
             }
             catch (Exception ex)
             {
                 return Json(new OperationResultVo(ex.Message));
+            }
+        }
+
+        [HttpPost("/gamejam/{jamId:guid}/join")]
+        public async Task<IActionResult> Join(Guid jamId, string handler)
+        {
+            OperationResultVo result;
+
+            try
+            {
+                OperationResultVo joinResult = await gameJamAppService.Join(CurrentUserId, jamId);
+
+                if (joinResult.Success)
+                {
+                    string url = Url.Action("details", "gamejam", new { area = "community", handler, msg = joinResult.Message, msgModal = true });
+                    joinResult.Message = null;
+
+                    return Json(new OperationResultRedirectVo(joinResult, url));
+                }
+                else
+                {
+                    return Json(joinResult);
+                }
+            }
+            catch (Exception)
+            {
+                result = new OperationResultVo(false);
+            }
+
+            return Json(result);
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("/jam/{jamhandler}/myentry")]
+        public async Task<IActionResult> MyEntry(string jamHandler)
+        {
+            try
+            {
+                OperationResultVo<GameJamEntryViewModel> serviceResult = await gameJamAppService.GetEntry(CurrentUserId, CurrentUserIsAdmin, jamHandler);
+
+                if (serviceResult.Success)
+                {
+                    var model = serviceResult.Value;
+
+                    model.Title = SharedLocalizer[model.Title];
+
+                    return View("EntryDetails", model);
+                }
+                else
+                {
+                    return RedirectToIndex();
+                }
+            }
+            catch
+            {
+                return RedirectToIndex();
             }
         }
 

@@ -1,0 +1,96 @@
+﻿@model GameJamEntryViewModel
+@{
+    ViewData["Title"] = Model.Title;
+    if (Model.Game != null)
+    {
+        ViewData["Description"] = Model.Game.Description;
+    }
+    ViewData["Url"] = ViewBag.BaseUrl + Url.Action("entry", "gamejam", new { area = "community", id = Model.Id, jamHandler = Model.GameJam.Handler });
+    ViewData["OgImage"] = Model.FeaturedImage;
+
+    if (!string.IsNullOrWhiteSpace(Model.GameJam.BackgroundImage))
+    {
+        ViewData["BackgroundImage"] = Model.GameJam.BackgroundImage;
+    }
+
+    var showAds = (bool)(ViewBag.ShowAds ?? false);
+
+    var authorUrl = Url.Action("details", "profile", new { area = string.Empty, userHandler = Model.UserHandler });
+    var authorLink = string.Format("<a href=\"{0}\" class=\"boldlink text-nowrap\">{1}</a>", authorUrl, Model.AuthorName);
+
+    var gameJamUrl = Url.Action("details", "gamejam", new { area = "community", handler = Model.GameJam.Handler });
+    var gameJamLink = string.Format("<a href=\"{0}\" class=\"boldlink text-nowrap\">{1}</a>", gameJamUrl, Model.GameJam.Name);
+}
+
+<section class="content container">
+    <div id="featurecontainer" class="htmlcontent">
+        <input asp-for="SecondsToCountDown" type="hidden" />
+
+        @if (!string.IsNullOrWhiteSpace(Model.GameJam.BannerImage))
+        {
+            <div class="mb-3 text-center">
+                <a href="@Url.Action("details", "gamejam", new { area = "community", handler = Model.GameJam.Handler })">
+                    <img src="@Model.GameJam.BannerImage" class="img-fluid rounded" />
+                </a>
+            </div>
+        }
+
+        <div class="box bg-light">
+            <div class="row mx-2">
+                <div class="mr-auto mb-2 d-flex flex-column justify-content-center">
+                    <h1 class="m-0 text-capitalize">@Model.Title</h1>
+                    @if (Model.Submitted)
+                    {
+                        <span class="text-left text-muted">@Html.Raw(SharedLocalizer["Submitted by {0} for {1}", authorLink, gameJamLink])</span>
+                    }
+                    else
+                    {
+                        <span class="text-left text-muted">@Html.Raw(SharedLocalizer["Entry by {0} for {1}", authorLink, gameJamLink])</span>
+                    }
+                </div>
+                <div class="ml-auto mb-2 d-flex flex-column justify-content-center">
+                    @if (Model.Submitted)
+                    {
+                        <span class="h3 text-center">@Model.SubmissionDate</span>
+                        <span class="text-right text-muted">@SharedLocalizer["submission date"]</span>
+                    }
+                    else
+                    {
+                        <span class="h3 text-center">@Model.JoinDate</span>
+                        <span class="text-right text-muted">@SharedLocalizer["join date"]</span>
+                    }
+                </div>
+            </div>
+
+            @if (Model.Game != null)
+            {
+                <div class="bg-white mx-auto p-3 row">
+                    <div class="col-12 col-lg-6 mb-2 text-center">
+                        <a href="@Url.Action("details", "game", new { area = string.Empty, id = Model.Game.Id })">
+                            <img src="@Model.Game.ThumbnailUrl" class="img-fluid rounded" />
+                        </a>
+                    </div>
+                    <div class="col-12 col-lg-6 mb-2">
+                        @Html.Raw(Model.Game.Description)
+                    </div>
+                    <div class="col-12 text-uppercase">
+                        <a href="@Url.Action("details", "game", new { area = string.Empty, id = Model.Game.Id })" class="btn btn-large btn-block btn-secondary">
+                            @SharedLocalizer["visit game page"]
+                        </a>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="bg-white mx-auto p-3 row">
+                    <div class="col-12 col-lg-6 mb-2 text-center">
+                        <img src="@Constants.DefaultGameThumbnail" class="img-fluid rounded" />
+                    </div>
+                    <div class="col-12 col-lg-6 mb-2">
+                        <span>@SharedLocalizer["The game description will be shown here."]</span>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>

@@ -94,5 +94,9 @@ namespace LuduStack.Application.ViewModels.GameJam
         public GameJamPhase CurrentPhase { get; set; }
 
         public string CountDownMessage { get; set; }
+
+        public bool CurrentUserJoined { get; set; }
+
+        public bool ShowMainTheme { get; set; }
     }
 }

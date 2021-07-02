@@ -5,7 +5,6 @@
     ViewData["Description"] = Model.Description;
     ViewData["Url"] = ViewBag.BaseUrl + Url.Action("details", "gamejam", new { area = "community", id = Model.Id });
     ViewData["OgImage"] = Model.FeaturedImage;
-    ViewData["OgType"] = "article";
 
     if (!string.IsNullOrWhiteSpace(Model.BackgroundImage))
     {
@@ -15,11 +14,9 @@
     var showAds = (bool)(ViewBag.ShowAds ?? false);
 
     var authorUrl = Url.Action("details", "profile", new { area = string.Empty, userHandler = Model.AuthorHandler });
-    var authorLink = string.Format("<a href=\"{0}\" class=\"boldlink\">{1}</a>", authorUrl, Model.AuthorName);
+    var authorLink = string.Format("<a href=\"{0}\" class=\"boldlink text-nowrap\">{1}</a>", authorUrl, Model.AuthorName);
 
     Model.Permissions.CanJoin = Model.Permissions.CanJoin && User.Identity.IsAuthenticated;
-
-    var showMainTheme = !string.IsNullOrWhiteSpace(Model.MainTheme) && (Model.CurrentPhase != GameJamPhase.Warmup || !Model.HideMainTheme);
 }
 
 @section Styles {
@@ -44,25 +41,27 @@
 }
 
 <section class="content container">
-    <div id="featurecontainer" class="col htmlcontent">
+    <div id="featurecontainer" class="htmlcontent">
         <input asp-for="SecondsToCountDown" type="hidden" />
 
         @if (!string.IsNullOrWhiteSpace(Model.BannerImage))
         {
             <div class="mb-3 text-center">
-                <img src="@Model.BannerImage" class="img-fluid rounded" />
+                <a href="@Url.Action("details", "gamejam", new { area = "community", handler = Model.Handler })">
+                    <img src="@Model.BannerImage" class="img-fluid rounded" />
+                </a>
             </div>
         }
 
         <div class="box bg-light">
             <div class="row mx-2">
-                <div class="mr-auto d-flex flex-column justify-content-center">
+                <div class="mr-auto mb-2 d-flex flex-column justify-content-center">
                     <h1 class="m-0 text-capitalize">@Model.Name</h1>
-                    <span class="text-center text-muted">@Html.Raw(SharedLocalizer["Hosted by {0}", authorLink])</span>
+                    <span class="text-left text-muted">@Html.Raw(SharedLocalizer["Hosted by {0}", authorLink])</span>
                 </div>
-                <div class="d-flex flex-column justify-content-center">
+                <div class="ml-auto mb-2 d-flex flex-column justify-content-center">
                     <span class="h3 text-center">@Model.JoinCount</span>
-                    <span class="text-center text-muted">@SharedLocalizer["participants"]</span>
+                    <span class="text-right text-muted">@SharedLocalizer[Model.JoinCount == 1 ? "participant" : "participants"]</span>
                 </div>
             </div>
 
@@ -74,20 +73,29 @@
                 </div>
                 @if (Model.CurrentPhase == GameJamPhase.Warmup || Model.CurrentPhase == GameJamPhase.Submission)
                 {
-                    <div class="d-flex flex-row justify-content-center mt-n3">
-                        @if (Model.Permissions.CanJoin)
+            <div class="d-flex flex-row justify-content-center mt-n3">
+                <div class="bg-white">
+                    @if (Model.Permissions.CanJoin)
+                    {
+                        if (Model.CurrentUserJoined)
                         {
-                            <button class="btn btn-lg btn-success btn-join text-uppercase" data-url="@Url.Action("join", "gamejam", new { area = "community" })">@SharedLocalizer["join now"]</button>
+                            <a class="btn btn-lg btn-outline-success text-uppercase" href="@Url.Action("myentry", "gamejam", new { area = "community", jamHandler = Model.Handler })">@SharedLocalizer["my entry"]</a>
                         }
                         else
                         {
-                            <button class="btn btn-lg btn-default disabled" disabled="disabled">@SharedLocalizer["can't join"]</button>
+                            <button class="btn btn-lg btn-success btn-join text-uppercase" data-url="@Url.Action("join", "gamejam", new { area = "community", jamId = Model.Id, handler = Model.Handler })">@SharedLocalizer["join now"]</button>
                         }
-                    </div>
+                    }
+                    else
+                    {
+                        <button class="btn btn-lg btn-default disabled" disabled="disabled">@SharedLocalizer["can't join"]</button>
+                    }
+                </div>
+            </div>
                 }
             </div>
 
-            @if (showMainTheme)
+            @if (Model.ShowMainTheme)
             {
                 <div class="text-center mx-auto p-2 alert alert-dark">
                     <span class="h4">@Model.MainTheme</span>

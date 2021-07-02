@@ -29,13 +29,13 @@ namespace LuduStack.Domain.Messaging
     public class SaveGameJamCommandHandler : CommandHandler, IRequestHandler<SaveGameJamCommand, CommandResult>
     {
         protected readonly IUnitOfWork unitOfWork;
-        protected readonly IGameJamRepository forumGroupRepository;
+        protected readonly IGameJamRepository gameJamRepository;
         protected readonly IGamificationDomainService gamificationDomainService;
 
-        public SaveGameJamCommandHandler(IUnitOfWork unitOfWork, IGameJamRepository forumGroupRepository, IGamificationDomainService gamificationDomainService)
+        public SaveGameJamCommandHandler(IUnitOfWork unitOfWork, IGameJamRepository gameJamRepository, IGamificationDomainService gamificationDomainService)
         {
             this.unitOfWork = unitOfWork;
-            this.forumGroupRepository = forumGroupRepository;
+            this.gameJamRepository = gameJamRepository;
             this.gamificationDomainService = gamificationDomainService;
         }
 
@@ -49,11 +49,11 @@ namespace LuduStack.Domain.Messaging
 
             if (request.GameJam.Id == Guid.Empty)
             {
-                await forumGroupRepository.Add(request.GameJam);
+                await gameJamRepository.Add(request.GameJam);
             }
             else
             {
-                forumGroupRepository.Update(request.GameJam);
+                gameJamRepository.Update(request.GameJam);
             }
 
             result.Validation = await Commit(unitOfWork);

@@ -4,6 +4,8 @@
     var selectors = {};
     var objs = {};
 
+    var canInteract = false;
+
     function setSelectors() {
         selectors.controlsidebar = '.control-sidebar';
         selectors.urls = '#urls';
@@ -22,6 +24,8 @@
         cacheObjs();
 
         bindAll();
+
+        canInteract = MAINMODULE.CanInteract();
     }
 
     function bindAll() {

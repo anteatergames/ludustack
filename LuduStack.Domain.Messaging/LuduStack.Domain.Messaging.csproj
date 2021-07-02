@@ -12,8 +12,4 @@
     <ProjectReference Include="..\LuduStack.Infra.CrossCutting.Messaging\LuduStack.Infra.CrossCutting.Messaging.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Commands\GameJam\" />
-  </ItemGroup>
-
 </Project>

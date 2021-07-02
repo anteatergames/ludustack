@@ -2,9 +2,12 @@
 using LuduStack.Application.Formatters;
 using LuduStack.Application.Helpers;
 using LuduStack.Application.Interfaces;
+using LuduStack.Application.ViewModels.Game;
 using LuduStack.Application.ViewModels.GameJam;
 using LuduStack.Domain.Core.Enums;
+using LuduStack.Domain.Core.Extensions;
 using LuduStack.Domain.Messaging;
+using LuduStack.Domain.Messaging.Queries.Game;
 using LuduStack.Domain.Messaging.Queries.GameJam;
 using LuduStack.Domain.Messaging.Queries.UserProfile;
 using LuduStack.Domain.Models;
@@ -102,6 +105,7 @@ namespace LuduStack.Application.Services
                 GameJamViewModel vm = mapper.Map<GameJamViewModel>(model);
 
                 UserProfileEssentialVo authorProfile = await mediator.Query<GetBasicUserProfileDataByUserIdQuery, UserProfileEssentialVo>(new GetBasicUserProfileDataByUserIdQuery(model.UserId));
+                var entries = await mediator.Query<GetEntriesUserIdsQuery, IEnumerable<Guid>>(new GetEntriesUserIdsQuery(x => x.GameJamId == model.Id));
 
                 vm.AuthorName = authorProfile.Name;
                 vm.AuthorHandler = authorProfile.Handler;
@@ -116,6 +120,8 @@ namespace LuduStack.Application.Services
                 SetImagesToShow(vm, false);
 
                 SetPermissions(currentUserId, currentUserIsAdmin, vm);
+
+                SetViewModelState(currentUserId, vm, entries);
 
                 return new OperationResultVo<GameJamViewModel>(vm);
             }
@@ -251,6 +257,100 @@ namespace LuduStack.Application.Services
             {
                 return new OperationResultVo(ex.Message);
             }
+        }
+
+        public async Task<OperationResultVo> Join(Guid currentUserId, Guid jamId)
+        {
+            try
+            {
+                GameJam model = await mediator.Query<GetGameJamByIdQuery, GameJam>(new GetGameJamByIdQuery(jamId));
+
+                if (model == null)
+                {
+                    return new OperationResultVo<GameJamViewModel>("Jam not found!");
+                }
+
+                CommandResult result = await mediator.SendCommand(new JoinGameJamCommand(currentUserId, jamId));
+
+
+                if (!result.Validation.IsValid)
+                {
+                    string message = result.Validation.Errors.FirstOrDefault().ErrorMessage;
+                    return new OperationResultVo<Guid>(model.Id, false, message);
+                }
+
+                return new OperationResultVo<Guid>(model.Id, result.PointsEarned, "You are in!");
+            }
+            catch (Exception ex)
+            {
+                return new OperationResultVo(ex.Message);
+            }
+        }
+
+        public async Task<OperationResultVo<GameJamEntryViewModel>> GetEntry(Guid currentUserId, bool currentUserIsAdmin, string jamHandler)
+        {
+            try
+            {
+                GameJam gameJamModel = await mediator.Query<GetGameJamByIdQuery, GameJam>(new GetGameJamByIdQuery(Guid.Empty, jamHandler));
+
+                if (gameJamModel == null)
+                {
+                    return new OperationResultVo<GameJamEntryViewModel>("Jam not found!");
+                }
+
+                GameJamEntry model = await mediator.Query<GetGameJamEntryQuery, GameJamEntry>(new GetGameJamEntryQuery(currentUserId, gameJamModel.Id));
+
+                if (model == null)
+                {
+                    return new OperationResultVo<GameJamEntryViewModel>("Entry not found!");
+                }
+
+                GameJamViewModel gameJamVm = mapper.Map<GameJamViewModel>(gameJamModel);
+                GameJamEntryViewModel vm = mapper.Map<GameJamEntryViewModel>(model);
+
+                if (vm.GameId != Guid.Empty)
+                {
+                    Game game = await mediator.Query<GetGameByIdQuery, Game>(new GetGameByIdQuery(vm.GameId));
+
+                    GameViewModel gameVm = mapper.Map<GameViewModel>(game);
+
+                    gameVm.ThumbnailUrl = string.IsNullOrWhiteSpace(gameVm.ThumbnailUrl) || Constants.DefaultGameThumbnail.NoExtension().Contains(gameVm.ThumbnailUrl.NoExtension()) ? Constants.DefaultGameThumbnail : UrlFormatter.Image(gameVm.UserId, ImageType.GameThumbnail, gameVm.ThumbnailUrl);
+                    
+                    vm.Game = gameVm;
+                    vm.Title = game.Title;
+                }
+                else
+                {
+                    vm.Title = "Not Submited Yet";
+                }
+
+                SetImagesToShow(gameJamVm, false);
+                vm.GameJam = gameJamVm;
+
+                UserProfileEssentialVo authorProfile = await mediator.Query<GetBasicUserProfileDataByUserIdQuery, UserProfileEssentialVo>(new GetBasicUserProfileDataByUserIdQuery(model.UserId));
+
+                vm.AuthorName = authorProfile.Name;
+                vm.UserHandler = authorProfile.Handler;
+
+                return new OperationResultVo<GameJamEntryViewModel>(vm);
+            }
+            catch (Exception ex)
+            {
+                return new OperationResultVo<GameJamEntryViewModel>(ex.Message);
+            }
+        }
+
+        private static void SetViewModelState(Guid currentUserId, GameJamViewModel vm, IEnumerable<Guid> entries)
+        {
+            vm.JoinCount = entries.Count();
+            vm.CurrentUserJoined = entries.Any(x => x == currentUserId);
+            vm.ShowMainTheme = !string.IsNullOrWhiteSpace(vm.MainTheme) && (
+                (vm.CurrentPhase == GameJamPhase.Warmup && !vm.HideMainTheme && vm.CurrentUserJoined) ||
+                (vm.CurrentPhase == GameJamPhase.Submission && vm.CurrentUserJoined) ||
+                (vm.CurrentPhase == GameJamPhase.Voting && vm.CurrentUserJoined) ||
+                (vm.CurrentPhase == GameJamPhase.Results && vm.CurrentUserJoined) ||
+                (vm.CurrentPhase == GameJamPhase.Finished)
+            );
         }
 
         private static void SetViewModelStates(Guid currentUserId, bool currentUserIsAdmin, IEnumerable<GameJamViewModel> vms)
