@@ -155,9 +155,9 @@
 
             var valid = objs.form.valid();
             if (valid && canInteract) {
-                MAINMODULE.Common.DisableButton(btn);
-
-                submitForm(btn);
+                MAINMODULE.Common.DisableButton(btn).ready(() => {
+                    submitForm(btn);
+                });
             }
 
             return false;

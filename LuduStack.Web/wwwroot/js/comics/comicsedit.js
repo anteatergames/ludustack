@@ -214,11 +214,12 @@
             var valid = objs.form.valid();
 
             if (valid && canInteract) {
-                MAINMODULE.Common.DisableButton(btn);
-
-                uploadCroppedImages(function () {
-                    submitForm(btn);
+                MAINMODULE.Common.DisableButton(btn).ready(() => {
+                    uploadCroppedImages(function () {
+                        submitForm(btn);
+                    });
                 });
+
             }
         });
     }

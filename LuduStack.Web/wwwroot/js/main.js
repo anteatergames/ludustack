@@ -151,7 +151,7 @@
     function disableButton(btn) {
         btn.addClass('disabled');
         saveBtnOriginalText = btn.html();
-        btn.html(MAINMODULE.Default.SpinnerBtn);
+        return btn.html(MAINMODULE.Default.SpinnerBtn);
     }
 
     function enableButton(btn) {
@@ -174,11 +174,10 @@
 
     function postSaveCallback(response, btn) {
         if (response.success === true) {
-            btn.removeClass('disabled').html(MAINMODULE.Default.DoneBtn);
+            btn.removeClass('disabled').addClass('btn-success').removeClass('btn-primary').html(MAINMODULE.Default.DoneBtn);
         }
         else {
-            btn.html(saveBtnOriginalText);
-            btn.removeClass('disabled');
+            btn.removeClass('disabled').html(saveBtnOriginalText);
         }
     }
 

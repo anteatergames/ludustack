@@ -51,10 +51,10 @@
             var valid = objs.form.valid();
 
             if (valid && canInteract) {
-                MAINMODULE.Common.DisableButton(btn);
-
-                IMAGEMANIPULAION.Cropper.UploadCroppedImages(objs.inputImageListItem, function () {
-                    submitForm(btn);
+                MAINMODULE.Common.DisableButton(btn).ready(() => {
+                    IMAGEMANIPULAION.Cropper.UploadCroppedImages(objs.inputImageListItem, function () {
+                        submitForm(btn);
+                    });
                 });
             }
         });

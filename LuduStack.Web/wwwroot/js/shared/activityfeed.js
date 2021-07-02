@@ -44,9 +44,9 @@ var ACTIVITYFEED = (function () {
             oldestGuid = btn.data('oldestid');
             oldestDate = btn.data('oldestdate');
 
-            MAINMODULE.Common.DisableButton(btn);
-
-            ACTIVITYFEED.Methods.LoadActivityFeed(false);
+            MAINMODULE.Common.DisableButton(btn).ready(() => {
+                ACTIVITYFEED.Methods.LoadActivityFeed(false);
+            });
         });
     }
 

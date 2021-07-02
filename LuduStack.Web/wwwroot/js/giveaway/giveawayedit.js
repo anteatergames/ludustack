@@ -224,14 +224,14 @@
             var valid = objs.form.valid();
 
             if (valid && canInteract) {
-                MAINMODULE.Common.DisableButton(btn);
-
-                if (!IMAGEMANIPULAION.Dropzone.Get(0) || IMAGEMANIPULAION.Dropzone.Get(0).getQueuedFiles().length === 0) {
-                    submitForm(btn);
-                }
-                else {
-                    uploadImages(btn);
-                }
+                MAINMODULE.Common.DisableButton(btn).ready(() => {
+                    if (!IMAGEMANIPULAION.Dropzone.Get(0) || IMAGEMANIPULAION.Dropzone.Get(0).getQueuedFiles().length === 0) {
+                        submitForm(btn);
+                    }
+                    else {
+                        uploadImages(btn);
+                    }
+                });
             }
         });
     }

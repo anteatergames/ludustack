@@ -289,28 +289,28 @@
 
             var valid = selectors.form.valid();
             if (valid) {
-                MAINMODULE.Common.DisableButton(btn);
-
-                if (croppedGameThumbnail && croppedGameCoverImage) {
-                    uploadGameCoverImage(function () {
+                MAINMODULE.Common.DisableButton(btn).ready(() => {
+                    if (croppedGameThumbnail && croppedGameCoverImage) {
+                        uploadGameCoverImage(function () {
+                            uploadGameThumbnailCropped(function () {
+                                submitForm(btn);
+                            });
+                        });
+                    }
+                    else if (croppedGameThumbnail && !croppedGameCoverImage) {
                         uploadGameThumbnailCropped(function () {
                             submitForm(btn);
                         });
-                    });
-                }
-                else if (croppedGameThumbnail && !croppedGameCoverImage) {
-                    uploadGameThumbnailCropped(function () {
+                    }
+                    else if (!croppedGameThumbnail && croppedGameCoverImage) {
+                        uploadGameCoverImage(function () {
+                            submitForm(btn);
+                        });
+                    }
+                    else {
                         submitForm(btn);
-                    });
-                }
-                else if (!croppedGameThumbnail && croppedGameCoverImage) {
-                    uploadGameCoverImage(function () {
-                        submitForm(btn);
-                    });
-                }
-                else {
-                    submitForm(btn);
-                }
+                    }
+                });
             }
 
             return false;

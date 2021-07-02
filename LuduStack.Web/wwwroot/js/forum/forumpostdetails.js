@@ -73,9 +73,9 @@
             var btn = $(this);
 
             if (canInteract) {
-                MAINMODULE.Common.DisableButton(btn);
-
-                saveReply(btn);
+                MAINMODULE.Common.DisableButton(btn).ready(() => {
+                    saveReply(btn);
+                });
             }
 
             e.preventDefault();
@@ -88,9 +88,9 @@
             var btn = $(this);
 
             if (canInteract) {
-                MAINMODULE.Common.DisableButton(btn);
-
-                savePost(btn);
+                MAINMODULE.Common.DisableButton(btn).ready(() => {
+                    savePost(btn);
+                });
             }
 
             e.preventDefault();
@@ -272,24 +272,24 @@
 
         editDiv.hide();
 
-        MAINMODULE.Common.DisableButton(btn);
+        MAINMODULE.Common.DisableButton(btn).ready(() => {
+            postDiv.css('height', postDiv.css('height'));
 
-        postDiv.css('height', postDiv.css('height'));
+            MAINMODULE.Ajax.LoadHtml(urlEdit, editDiv).then(() => {
+                var txtArea = editDiv.find(selectors.txtReply);
 
-        MAINMODULE.Ajax.LoadHtml(urlEdit, editDiv).then(() => {
-            var txtArea = editDiv.find(selectors.txtReply);
+                WYSIWYGEDITOR.BindEditor(`#${txtArea.attr('id')}`).then(() => {
+                    viewDiv.removeClass('d-flex').fadeOut("slow", function () {
+                        postDiv.animate({ 'height': editDiv.css('height') },
+                            {
+                                complete: () => {
+                                    editDiv.fadeIn("slow");
 
-            WYSIWYGEDITOR.BindEditor(`#${txtArea.attr('id')}`).then(() => {
-                viewDiv.removeClass('d-flex').fadeOut("slow", function () {
-                    postDiv.animate({ 'height': editDiv.css('height') },
-                        {
-                            complete: () => {
-                                editDiv.fadeIn("slow");
-
-                                MAINMODULE.Common.EnableButton(btn);
-                                postDiv.css('height', '');
-                            }
-                        });
+                                    MAINMODULE.Common.EnableButton(btn);
+                                    postDiv.css('height', '');
+                                }
+                            });
+                    });
                 });
             });
         });

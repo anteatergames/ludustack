@@ -200,9 +200,9 @@
             }
 
             if (valid && canInteract) {
-                MAINMODULE.Common.DisableButton(btn);
-
-                submitForm(btn);
+                MAINMODULE.Common.DisableButton(btn).ready(() => {
+                    submitForm(btn);
+                });
             }
         });
     }
@@ -306,12 +306,12 @@
             var btn = $(this);
 
             if (canInteract) {
-                MAINMODULE.Common.DisableButton(btn);
+                MAINMODULE.Common.DisableButton(btn).ready(() => {
+                    var url = btn.data('url');
 
-                var url = btn.data('url');
-
-                apply(url, function (response) {
-                    MAINMODULE.Common.PostSaveCallback(response, btn);
+                    apply(url, function (response) {
+                        MAINMODULE.Common.PostSaveCallback(response, btn);
+                    });
                 });
             }
 
