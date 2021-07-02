@@ -101,9 +101,12 @@
         <span class="msg" data-msg-id="msgNotImplementedYet">@SharedLocalizer["Keep calm! This is not implemented yet!"]</span>
         @RenderSection("TranslatedMessages", required: false)
     </div>
+
     @if (TempData["Message"] != null)
     {
-        <span id="spanMessage" class="d-none">@TempData["Message"]</span>
+        var isModal = TempData["MessageModal"] != null ? (TempData["MessageModal"]).ToString().ToLower() : "false";
+
+        <span id="spanMessage" class="d-none" data-ismodal="@isModal">@TempData["Message"]</span>
     }
 
     <div id="contentwrapper" class="mt-0 mt-sm-3">

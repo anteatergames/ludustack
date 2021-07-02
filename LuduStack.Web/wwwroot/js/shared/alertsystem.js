@@ -34,6 +34,17 @@ var ALERTSYSTEM = (function () {
         );
     }
 
+    function showInfoMessage(msg, callback) {
+        Swal.fire({
+            text: msg,
+            type: "info"
+        }).then(
+            function (result) {
+                callbackResult(callback, result);
+            }
+        );
+    }
+
     function showSuccessMessage(msg, callback) {
         Swal.fire({
             title: "Good job!",
@@ -93,6 +104,7 @@ var ALERTSYSTEM = (function () {
     }
 
     return {
+        ShowInfoMessage: showInfoMessage,
         ShowSuccessMessage: showSuccessMessage,
         ShowWarningMessage: showWarningMessage,
         ShowConfirmMessage: showConfirmMessage,

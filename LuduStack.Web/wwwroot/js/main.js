@@ -76,8 +76,14 @@
 
     function showMessage() {
         var msg = objs.spanMessage.text();
+        var isModal = objs.spanMessage.data('ismodal');
         if (msg !== undefined && msg.length > 0) {
-            ALERTSYSTEM.Toastr.ShowWarning(msg);
+            if (isModal) {
+                ALERTSYSTEM.ShowInfoMessage(msg);
+            }
+            else {
+                ALERTSYSTEM.Toastr.ShowWarning(msg);
+            }
             history.replaceState({}, null, window.location.href.split('?')[0]);
         }
     }

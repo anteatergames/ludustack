@@ -108,6 +108,12 @@ namespace LuduStack.Web.Controllers.Base
                 {
                     TempData["Message"] = SharedLocalizer[msg];
                 }
+
+                string msgModal = context.HttpContext.Request.Query["msgModal"].FirstOrDefault();
+                if (!string.IsNullOrWhiteSpace(msgModal))
+                {
+                    TempData["MessageModal"] = msgModal;
+                }
             }
 
             CurrentLocale = await GetAspNetCultureCookie();

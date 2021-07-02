@@ -21,13 +21,8 @@ namespace LuduStack.Web.Areas.Staff.Controllers
             this.gamificationLevelAppService = gamificationLevelAppService;
         }
 
-        public IActionResult Index(string msg)
+        public IActionResult Index()
         {
-            if (!string.IsNullOrWhiteSpace(msg))
-            {
-                TempData["Message"] = SharedLocalizer[msg];
-            }
-
             return View();
         }
 
