@@ -60,7 +60,7 @@ namespace LuduStack.Application.Services
 
                 SetViewModelStates(currentUserId, currentUserIsAdmin, vms);
 
-                vms = vms.OrderBy(x => x.SecondsToCountDown);
+                vms = vms.OrderBy(x => x.CurrentPhase).ThenBy(x => x.SecondsToCountDown);
 
                 return new OperationResultListVo<GameJamViewModel>(vms);
             }

@@ -3,6 +3,27 @@
     Layout = null;
 
     var showMessage = !string.IsNullOrWhiteSpace(Model.Value);
+
+    var textColor = String.Empty;
+
+    switch (Model.Key)
+    {
+        case GameJamPhase.Warmup:
+            textColor = " text-warning";
+            break;
+        case GameJamPhase.Submission:
+            textColor = " text-danger";
+            break;
+        case GameJamPhase.Voting:
+            textColor = " text-secondary";
+            break;
+        case GameJamPhase.Results:
+            textColor = " text-info";
+            break;
+        case GameJamPhase.Finished:
+            textColor = " text-success";
+            break;
+    }
 }
 
 
@@ -12,7 +33,7 @@
         <span class="d-block text-center text-muted">@SharedLocalizer[GameJamPhase.Finished.ToUiInfo().Display]</span>
         <div class="time-left d-flex justify-content-center" id="countdown">
             <div class="text-center">
-                <span class="h2 countdown-days">@SharedLocalizer[Model.Value]</span>
+                <span class="h2 countdown-days@(textColor)">@SharedLocalizer[Model.Value]</span>
                 <br>
                 <span class="text-muted">@SharedLocalizer["Good job, everyone!"]</span>
             </div>
@@ -24,7 +45,7 @@
         {
             <span class="d-block text-center text-muted">@SharedLocalizer[Model.Value]</span>
         }
-        <div class="time-left d-flex justify-content-center" id="countdown">
+        <div class="time-left d-flex justify-content-center@(textColor)" id="countdown">
             <div class="text-center">
                 <span class="h2 countdown-days">88</span>
                 <br>
