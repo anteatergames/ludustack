@@ -44,7 +44,7 @@ namespace LuduStack.Web.Controllers
 
         [AllowAnonymous]
         [Route("game/{id:guid}")]
-        public async Task<IActionResult> Details(Guid id, int? pointsEarned, Guid notificationclicked, bool refreshImages)
+        public async Task<IActionResult> Details(Guid id, Guid notificationclicked, bool refreshImages)
         {
             await notificationAppService.MarkAsRead(notificationclicked);
 
@@ -75,8 +75,6 @@ namespace LuduStack.Web.Controllers
 
             vm.Permissions.CanEdit = vm.UserId == CurrentUserId || isAdmin;
             vm.Permissions.CanPostActivity = vm.UserId == CurrentUserId;
-
-            SetGamificationMessage(pointsEarned);
 
             SetImagesToRefresh(vm, refreshImages);
 

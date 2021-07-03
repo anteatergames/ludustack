@@ -131,7 +131,7 @@ namespace LuduStack.Web.Areas.Tools.Controllers
 
         [Authorize]
         [Route("tools/localization/translate/{id:guid}/{language?}")]
-        public async Task<IActionResult> Translate(Guid id, SupportedLanguage language, int? pointsEarned)
+        public async Task<IActionResult> Translate(Guid id, SupportedLanguage language)
         {
             OperationResultVo result = await translationAppService.GetById(CurrentUserId, id);
 
@@ -142,8 +142,6 @@ namespace LuduStack.Web.Areas.Tools.Controllers
                 LocalizationViewModel model = castRestult.Value;
 
                 SetLocalization(model);
-
-                SetGamificationMessage(pointsEarned);
 
                 ViewData["language"] = language.ToString();
 
@@ -156,7 +154,7 @@ namespace LuduStack.Web.Areas.Tools.Controllers
         }
 
         [Route("tools/localization/review/{id:guid}/{language?}")]
-        public async Task<IActionResult> Review(Guid id, SupportedLanguage language, int? pointsEarned)
+        public async Task<IActionResult> Review(Guid id, SupportedLanguage language)
         {
             OperationResultVo result = await translationAppService.GetById(CurrentUserId, id);
 
@@ -167,8 +165,6 @@ namespace LuduStack.Web.Areas.Tools.Controllers
                 LocalizationViewModel model = castRestult.Value;
 
                 SetLocalization(model);
-
-                SetGamificationMessage(pointsEarned);
 
                 ViewData["language"] = language.ToString();
 

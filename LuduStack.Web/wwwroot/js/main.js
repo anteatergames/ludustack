@@ -77,14 +77,26 @@
     function showMessage() {
         var msg = objs.spanMessage.text();
         var isModal = objs.spanMessage.data('ismodal');
+        var pointsMessage = objs.spanMessage.data('pointsmessage');
+
         if (msg !== undefined && msg.length > 0) {
             if (isModal) {
                 ALERTSYSTEM.ShowInfoMessage(msg);
             }
             else {
-                ALERTSYSTEM.Toastr.ShowWarning(msg);
+                if (pointsMessage !== undefined && pointsMessage.length > 0) {
+                    ALERTSYSTEM.Toastr.ShowInfo(msg, () => ALERTSYSTEM.Toastr.ShowInfo(pointsMessage));
+                }
+                else {
+                    ALERTSYSTEM.Toastr.ShowInfo(msg);
+                }
             }
             history.replaceState({}, null, window.location.href.split('?')[0]);
+        }
+        else {
+            if (pointsMessage !== undefined && pointsMessage.length > 0) {
+                ALERTSYSTEM.Toastr.ShowInfo(pointsMessage);
+            }
         }
     }
 

@@ -54,14 +54,6 @@ namespace LuduStack.Web.Controllers.Base
             }
         }
 
-        protected void SetGamificationMessage(int? pointsEarned)
-        {
-            if (pointsEarned.HasValue && pointsEarned.Value > 0)
-            {
-                TempData["Message"] = SharedLocalizer["You earned {0} points. Awesome!", pointsEarned].Value;
-            }
-        }
-
         protected static string GetFileExtension(IFormFile uploadedFile)
         {
             string extension = GetFileExtension(uploadedFile.FileName);

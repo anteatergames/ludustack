@@ -31,7 +31,7 @@ namespace LuduStack.Web.Controllers
             this.gameAppService = gameAppService;
         }
 
-        public async Task<IActionResult> Index(int? pointsEarned)
+        public async Task<IActionResult> Index()
         {
             await SetFeaturedCarousel();
 
@@ -45,8 +45,6 @@ namespace LuduStack.Web.Controllers
             IEnumerable<SelectListItemVo> games = await gameAppService.GetByUser(CurrentUserId);
             List<SelectListItem> gamesDropDown = games.ToSelectList();
             ViewBag.UserGames = gamesDropDown;
-
-            SetGamificationMessage(pointsEarned);
 
             SetEmailConfirmed();
 

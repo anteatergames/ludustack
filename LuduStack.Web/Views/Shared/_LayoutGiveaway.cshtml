@@ -105,8 +105,9 @@
     @if (TempData["Message"] != null)
     {
         var isModal = TempData["MessageModal"] != null ? (TempData["MessageModal"]).ToString().ToLower() : "false";
+        var pointsMessage = TempData["MessagePoints"] != null ? (TempData["MessagePoints"]).ToString() : string.Empty;
 
-        <span id="spanMessage" class="d-none" data-ismodal="@isModal">@TempData["Message"]</span>
+        <span id="spanMessage" class="d-none" data-ismodal="@isModal" data-pointsmessage="@pointsMessage">@TempData["Message"]</span>
     }
 
     <div id="contentwrapper" class="mt-0 mt-sm-3">
