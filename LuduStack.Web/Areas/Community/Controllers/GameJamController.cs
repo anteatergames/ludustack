@@ -3,8 +3,10 @@ using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels.GameJam;
 using LuduStack.Domain.ValueObjects;
 using LuduStack.Web.Areas.Community.Controllers;
+using LuduStack.Web.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,10 +17,12 @@ namespace LuduStack.Web.Areas.Staff.Controllers
     public class GameJamController : CommunityBaseController
     {
         private readonly IGameJamAppService gameJamAppService;
+        private readonly IGameAppService gameAppService;
 
-        public GameJamController(IGameJamAppService gameJamAppService)
+        public GameJamController(IGameJamAppService gameJamAppService, IGameAppService gameAppService)
         {
             this.gameJamAppService = gameJamAppService;
+            this.gameAppService = gameAppService;
         }
 
         [Route("/gamejam")]
@@ -233,7 +237,7 @@ namespace LuduStack.Web.Areas.Staff.Controllers
 
                 if (joinResult.Success)
                 {
-                    string url = Url.Action("details", "gamejam", new { area = "community", handler, msg = joinResult.Message, msgModal = true });
+                    string url = Url.Action("myentry", "gamejam", new { area = "community", jamHandler = handler, msg = joinResult.Message });
                     joinResult.Message = null;
 
                     return Json(new OperationResultRedirectVo(joinResult, url));
@@ -262,21 +266,57 @@ namespace LuduStack.Web.Areas.Staff.Controllers
 
                 if (serviceResult.Success)
                 {
-                    var model = serviceResult.Value;
+                    GameJamEntryViewModel model = serviceResult.Value;
 
-                    model.Title = SharedLocalizer[model.Title];
+                    if (model.Game == null)
+                    {
+                        model.Title = SharedLocalizer["{0}'s entry", model.AuthorName];
+
+                        IEnumerable<SelectListItemVo> myGames = await gameAppService.GetByUser(CurrentUserId);
+                        List<SelectListItem> gamesDropDown = myGames.ToSelectList();
+                        ViewBag.UserGames = gamesDropDown;
+                    }
 
                     return View("EntryDetails", model);
                 }
                 else
                 {
-                    return RedirectToIndex();
+                    return RedirectToWithMessage("index", "gamejam", "community", "Entry not found!");
                 }
             }
             catch
             {
-                return RedirectToIndex();
+                return RedirectToWithMessage("index", "gamejam", "community", "Unable to get that Entry!");
             }
+        }
+
+        [HttpPost("/gamejam/submitgame")]
+        public async Task<IActionResult> SubmitGame(string jamHandler, Guid gameId)
+        {
+            OperationResultVo result;
+
+            try
+            {
+                OperationResultVo submitGameResult = await gameJamAppService.SubmitGame(CurrentUserId, jamHandler, gameId);
+
+                if (submitGameResult.Success)
+                {
+                    string url = Url.Action("myentry", "gamejam", new { area = "community", jamHandler, msg = submitGameResult.Message, pointsEarned = submitGameResult.PointsEarned });
+                    submitGameResult.Message = null;
+
+                    return Json(new OperationResultRedirectVo(submitGameResult, url));
+                }
+                else
+                {
+                    return Json(submitGameResult);
+                }
+            }
+            catch (Exception)
+            {
+                result = new OperationResultVo(false);
+            }
+
+            return Json(result);
         }
 
         private IActionResult RedirectToIndex()

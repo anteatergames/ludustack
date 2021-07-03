@@ -4,10 +4,13 @@
     var selectors = {};
     var objs = {};
 
+    var canInteract = false;
+
     function setSelectors() {
         selectors.urls = '#urls';
         selectors.container = '#featurecontainer';
         selectors.btnJoin = '.btn-join';
+        selectors.btnCantJoin = '.btn-cantjoin';
     }
 
     function cacheObjs() {
@@ -22,11 +25,14 @@
 
         bindAll();
 
+        canInteract = MAINMODULE.CanInteract();
+
         FX.StartCountDown('#SecondsToCountDown');
     }
 
     function bindAll() {
         bindBtnJoin();
+        bindBtnCantJoin();
     }
 
     function bindBtnJoin() {
@@ -34,6 +40,17 @@
             var btn = $(this);
 
             MAINMODULE.Common.PostWithoutConfirmation(btn, handleResponse);
+
+            return false;
+        });
+    }
+
+    function bindBtnCantJoin() {
+        objs.container.on('click', selectors.btnCantJoin, function () {
+            var btn = $(this);
+            var msg = btn.data('msg');
+
+            ALERTSYSTEM.Toastr.ShowWarning(msg);
 
             return false;
         });

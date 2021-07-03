@@ -98,5 +98,7 @@ namespace LuduStack.Application.ViewModels.GameJam
         public bool CurrentUserJoined { get; set; }
 
         public bool ShowMainTheme { get; set; }
+
+        public string CantJoinMessage { get; set; }
     }
 }

@@ -625,5 +625,11 @@
         "inputFiles": [
             "wwwroot/js/gamejam/gamejamdetails.js"
         ]
+    },
+    {
+        "outputFileName": "wwwroot/js/gamejam/gamejamentrydetails.min.js",
+        "inputFiles": [
+            "wwwroot/js/gamejam/gamejamentrydetails.js"
+        ]
     }
 ]

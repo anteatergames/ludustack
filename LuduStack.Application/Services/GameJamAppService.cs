@@ -105,7 +105,7 @@ namespace LuduStack.Application.Services
                 GameJamViewModel vm = mapper.Map<GameJamViewModel>(model);
 
                 UserProfileEssentialVo authorProfile = await mediator.Query<GetBasicUserProfileDataByUserIdQuery, UserProfileEssentialVo>(new GetBasicUserProfileDataByUserIdQuery(model.UserId));
-                var entries = await mediator.Query<GetEntriesUserIdsQuery, IEnumerable<Guid>>(new GetEntriesUserIdsQuery(x => x.GameJamId == model.Id));
+                IEnumerable<Guid> entries = await mediator.Query<GetEntriesUserIdsQuery, IEnumerable<Guid>>(new GetEntriesUserIdsQuery(x => x.GameJamId == model.Id));
 
                 vm.AuthorName = authorProfile.Name;
                 vm.AuthorHandler = authorProfile.Handler;
@@ -119,7 +119,7 @@ namespace LuduStack.Application.Services
 
                 SetImagesToShow(vm, false);
 
-                SetPermissions(currentUserId, currentUserIsAdmin, vm);
+                SetJamPermissions(currentUserId, currentUserIsAdmin, vm);
 
                 SetViewModelState(currentUserId, vm, entries);
 
@@ -153,7 +153,7 @@ namespace LuduStack.Application.Services
 
                 SetImagesToShow(vm, true);
 
-                SetPermissions(currentUserId, currentUserIsAdmin, vm);
+                SetJamPermissions(currentUserId, currentUserIsAdmin, vm);
 
                 return new OperationResultVo<GameJamViewModel>(vm);
             }
@@ -202,6 +202,16 @@ namespace LuduStack.Application.Services
                 if (model.FeaturedImage == Constants.DefaultGamejamThumbnail)
                 {
                     model.FeaturedImage = null;
+                }
+
+                if (model.BannerImage == Constants.DefaultGamejamThumbnail)
+                {
+                    model.BannerImage = null;
+                }
+
+                if (model.BackgroundImage == Constants.DefaultGamejamThumbnail)
+                {
+                    model.BackgroundImage = null;
                 }
 
                 CommandResult result = await mediator.SendCommand(new SaveGameJamCommand(model));
@@ -287,25 +297,59 @@ namespace LuduStack.Application.Services
             }
         }
 
+        public async Task<OperationResultVo> SubmitGame(Guid currentUserId, string jamHandler, Guid gameId)
+        {
+            try
+            {
+                GameJam gameJam = await mediator.Query<GetGameJamByIdQuery, GameJam>(new GetGameJamByIdQuery(jamHandler));
+
+                if (gameJam == null)
+                {
+                    return new OperationResultVo<GameJamViewModel>("Jam not found!");
+                }
+
+                GameJamEntry entry = await mediator.Query<GetGameJamEntryQuery, GameJamEntry>(new GetGameJamEntryQuery(currentUserId, gameJam.Id));
+
+                if (entry == null)
+                {
+                    return new OperationResultVo<GameJamEntryViewModel>("Entry not found!");
+                }
+
+                CommandResult result = await mediator.SendCommand(new SubmitGameJamEntryCommand(currentUserId, entry.Id, gameId));
+
+                if (!result.Validation.IsValid)
+                {
+                    string message = result.Validation.Errors.FirstOrDefault().ErrorMessage;
+                    return new OperationResultVo<Guid>(entry.Id, false, message);
+                }
+
+                return new OperationResultVo<Guid>(entry.Id, result.PointsEarned, "Game Submitted! Good luck!");
+            }
+            catch (Exception ex)
+            {
+                return new OperationResultVo(ex.Message);
+            }
+        }
+
         public async Task<OperationResultVo<GameJamEntryViewModel>> GetEntry(Guid currentUserId, bool currentUserIsAdmin, string jamHandler)
         {
             try
             {
-                GameJam gameJamModel = await mediator.Query<GetGameJamByIdQuery, GameJam>(new GetGameJamByIdQuery(Guid.Empty, jamHandler));
+                GameJam gameJam = await mediator.Query<GetGameJamByIdQuery, GameJam>(new GetGameJamByIdQuery(Guid.Empty, jamHandler));
 
-                if (gameJamModel == null)
+                if (gameJam == null)
                 {
                     return new OperationResultVo<GameJamEntryViewModel>("Jam not found!");
                 }
 
-                GameJamEntry model = await mediator.Query<GetGameJamEntryQuery, GameJamEntry>(new GetGameJamEntryQuery(currentUserId, gameJamModel.Id));
+                GameJamEntry model = await mediator.Query<GetGameJamEntryQuery, GameJamEntry>(new GetGameJamEntryQuery(currentUserId, gameJam.Id));
 
                 if (model == null)
                 {
                     return new OperationResultVo<GameJamEntryViewModel>("Entry not found!");
                 }
 
-                GameJamViewModel gameJamVm = mapper.Map<GameJamViewModel>(gameJamModel);
+                GameJamViewModel gameJamVm = mapper.Map<GameJamViewModel>(gameJam);
                 GameJamEntryViewModel vm = mapper.Map<GameJamEntryViewModel>(model);
 
                 if (vm.GameId != Guid.Empty)
@@ -315,13 +359,9 @@ namespace LuduStack.Application.Services
                     GameViewModel gameVm = mapper.Map<GameViewModel>(game);
 
                     gameVm.ThumbnailUrl = string.IsNullOrWhiteSpace(gameVm.ThumbnailUrl) || Constants.DefaultGameThumbnail.NoExtension().Contains(gameVm.ThumbnailUrl.NoExtension()) ? Constants.DefaultGameThumbnail : UrlFormatter.Image(gameVm.UserId, ImageType.GameThumbnail, gameVm.ThumbnailUrl);
-                    
+
                     vm.Game = gameVm;
                     vm.Title = game.Title;
-                }
-                else
-                {
-                    vm.Title = "Not Submited Yet";
                 }
 
                 SetImagesToShow(gameJamVm, false);
@@ -331,6 +371,12 @@ namespace LuduStack.Application.Services
 
                 vm.AuthorName = authorProfile.Name;
                 vm.UserHandler = authorProfile.Handler;
+
+                DateTime localTime = DateTime.Now.ToLocalTime();
+                SetCountdown(localTime, gameJamVm);
+                vm.SecondsToCountDown = gameJamVm.SecondsToCountDown;
+
+                SetEntryPermissions(currentUserId, currentUserIsAdmin, gameJamVm, vm);
 
                 return new OperationResultVo<GameJamEntryViewModel>(vm);
             }
@@ -364,7 +410,7 @@ namespace LuduStack.Application.Services
 
                 vm.FeaturedImage = SetFeaturedImage(vm.UserId, vm.FeaturedImage, ImageRenderType.Small, Constants.DefaultGamejamThumbnail);
 
-                SetPermissions(currentUserId, currentUserIsAdmin, vm);
+                SetJamPermissions(currentUserId, currentUserIsAdmin, vm);
             }
         }
 
@@ -441,14 +487,31 @@ namespace LuduStack.Application.Services
             }
         }
 
-        private static void SetPermissions(Guid currentUserId, bool currentUserIsAdmin, GameJamViewModel vm)
+        private static void SetJamPermissions(Guid currentUserId, bool currentUserIsAdmin, GameJamViewModel vm)
         {
             bool canJoinOnWarming = vm.CurrentPhase == GameJamPhase.Warmup;
             bool canJoinLate = vm.CurrentPhase == GameJamPhase.Submission && vm.AllowLateJoin;
+            bool sameUser = vm.UserId == currentUserId;
 
-            vm.Permissions.CanJoin = vm.UserId != currentUserId && (canJoinOnWarming || canJoinLate);
+            vm.Permissions.CanJoin = !sameUser && (canJoinOnWarming || canJoinLate);
+
+            if (!vm.Permissions.CanJoin)
+            {
+                vm.CantJoinMessage = sameUser ? "You can't join your own Game Jam!" : "You can't join anymore!";
+            }
+
             vm.Permissions.IsAdmin = currentUserIsAdmin;
             vm.Permissions.CanDelete = vm.Permissions.IsAdmin;
+            vm.Permissions.CanSubmit = vm.CurrentPhase == GameJamPhase.Submission;
+        }
+
+        private static void SetEntryPermissions(Guid currentUserId, bool currentUserIsAdmin, GameJamViewModel gameJamVm, GameJamEntryViewModel vm)
+        {
+            SetJamPermissions(currentUserId, currentUserIsAdmin, gameJamVm);
+
+            vm.Permissions.IsMe = currentUserId == vm.UserId;
+            vm.Permissions.IsAdmin = currentUserIsAdmin;
+            vm.Permissions.CanSubmit = gameJamVm.Permissions.CanSubmit || (gameJamVm.CurrentPhase == GameJamPhase.Voting && vm.LateSubmission);
         }
 
         private void SetImagesToShow(GameJamViewModel vm, bool editMode)

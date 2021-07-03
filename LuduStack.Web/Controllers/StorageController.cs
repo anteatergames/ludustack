@@ -208,7 +208,7 @@ namespace LuduStack.Web.Controllers
 
                         Random rand = new Random(Guid.NewGuid().ToString().GetHashCode());
 
-                        var filename = string.Format("{0}-{1}", DateTime.Now.ToString(datetimeFormat), rand.Next().ToString());
+                        string filename = string.Format("{0}-{1}", DateTime.Now.ToString(datetimeFormat), rand.Next().ToString());
 
                         UploadResultVo uploadResult = await base.UploadImage(destinationUserId, type, filename, extension, fileBytes, EnvName);
 

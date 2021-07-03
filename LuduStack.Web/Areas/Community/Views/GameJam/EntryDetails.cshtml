@@ -20,6 +20,36 @@
 
     var gameJamUrl = Url.Action("details", "gamejam", new { area = "community", handler = Model.GameJam.Handler });
     var gameJamLink = string.Format("<a href=\"{0}\" class=\"boldlink text-nowrap\">{1}</a>", gameJamUrl, Model.GameJam.Name);
+
+
+    List<SelectListItem> userGames = new List<SelectListItem>();
+    if (Model.Game == null)
+    {
+        userGames = ViewBag.UserGames as List<SelectListItem>;
+    }
+}
+
+@section Styles {
+    <environment include="Development">
+        <link rel="stylesheet" href="~/css/gamejamdetails.css" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="~/css/gamejamdetails.min.css" asp-append-version="true" />
+    </environment>
+}
+
+@section Scripts {
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <environment include="Development">
+        <script src="~/js/shared/fx.js"></script>
+        <script src="~/js/gamejam/gamejamentrydetails.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/js/shared/fx.js"></script>
+        <script src="~/js/gamejam/gamejamentrydetails.min.js" asp-append-version="true"></script>
+    </environment>
 }
 
 <section class="content container">
@@ -28,10 +58,19 @@
 
         @if (!string.IsNullOrWhiteSpace(Model.GameJam.BannerImage))
         {
-            <div class="mb-3 text-center">
-                <a href="@Url.Action("details", "gamejam", new { area = "community", handler = Model.GameJam.Handler })">
-                    <img src="@Model.GameJam.BannerImage" class="img-fluid rounded" />
-                </a>
+            <div class="row mb-3 ">
+                <div class="col-12 col-md-6 text-center">
+                    <a href="@Url.Action("details", "gamejam", new { area = "community", handler = Model.GameJam.Handler })">
+                        <img src="@Model.GameJam.BannerImage" class="img-fluid rounded jambanner" />
+                    </a>
+                </div>
+                <div class="col-12 col-md-6 d-flex flex-row justify-content-center">
+                    <div class=" d-flex flex-column justify-content-center">
+                        <div class="p-3 row justify-content-center bg-white bordered">
+                            <partial name="_GameJamCounter" model="@new KeyValuePair<GameJamPhase, string>(Model.GameJam.CurrentPhase, Model.GameJam.CountDownMessage)" />
+                        </div>
+                    </div>
+                </div>
             </div>
         }
 
@@ -45,20 +84,19 @@
                     }
                     else
                     {
-                        <span class="text-left text-muted">@Html.Raw(SharedLocalizer["Entry by {0} for {1}", authorLink, gameJamLink])</span>
+                        <span class="text-left text-muted">@Html.Raw(SharedLocalizer["For {1}", authorLink, gameJamLink])</span>
                     }
                 </div>
                 <div class="ml-auto mb-2 d-flex flex-column justify-content-center">
                     @if (Model.Submitted)
                     {
                         <span class="h3 text-center">@Model.SubmissionDate</span>
-                        <span class="text-right text-muted">@SharedLocalizer["submission date"]</span>
                     }
                     else
                     {
-                        <span class="h3 text-center">@Model.JoinDate</span>
-                        <span class="text-right text-muted">@SharedLocalizer["join date"]</span>
+                        <span class="h3 text-center">@SharedLocalizer["Not submitted yet"]</span>
                     }
+                    <span class="text-right text-muted">@SharedLocalizer["submission date"]</span>
                 </div>
             </div>
 
@@ -80,16 +118,32 @@
                     </div>
                 </div>
             }
-            else
+
+            @if (Model.Game == null && userGames != null && userGames.Any() && Model.Permissions.CanSubmit)
             {
-                <div class="bg-white mx-auto p-3 row">
-                    <div class="col-12 col-lg-6 mb-2 text-center">
-                        <img src="@Constants.DefaultGameThumbnail" class="img-fluid rounded" />
+                <form id="frmSubmitGame" asp-area="community" asp-controller="gamejam" asp-action="submitgame" method="post">
+                    <input type="hidden" name="JamHandler" value="@Model.GameJam.Handler" />
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="alert alert-heading alert-light">@SharedLocalizer["This is your entry for this Game Jam. Start working on your game and submit it on this page when it is ready."]</div>
+                        </div>
+                        <div class="col-12">
+                            <h2 class="m-0 text-capitalize">@SharedLocalizer["Submit your game"]</h2>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <select asp-for="GameId" asp-items="@userGames" class="form-control select2">
+                                    <option selected="selected" value="">@SharedLocalizer["Select the game to submit"]</option>
+                                </select>
+                                <span asp-validation-for="GameId" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-lg-6 offset-lg-6 col-xl-4 offset-xl-8 mt-1 mb-2">
+                            <button type="button" id="btnSubmitGame" class="btn btn-lg btn-primary btn-block"><i class="fas fa-save" aria-hidden="true"></i> @SharedLocalizer["Submit"]</button>
+                        </div>
                     </div>
-                    <div class="col-12 col-lg-6 mb-2">
-                        <span>@SharedLocalizer["The game description will be shown here."]</span>
-                    </div>
-                </div>
+                </form>
             }
         </div>
     </div>

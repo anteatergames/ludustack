@@ -2,7 +2,6 @@
 using LuduStack.Infra.CrossCutting.Messaging;
 using MediatR;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
@@ -66,7 +65,7 @@ namespace LuduStack.Domain.Messaging.Queries.GameJam
             }
             else
             {
-                var items = repository.Get(x => x.UserId == request.UserId && x.GameJamId == request.JamId);
+                IQueryable<Models.GameJamEntry> items = repository.Get(x => x.UserId == request.UserId && x.GameJamId == request.JamId);
 
                 return Task.FromResult(items.FirstOrDefault());
             }

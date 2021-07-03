@@ -1,7 +1,6 @@
 ﻿using LuduStack.Domain.Interfaces.Repository;
 using LuduStack.Domain.Messaging.Queries.Base;
 using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 

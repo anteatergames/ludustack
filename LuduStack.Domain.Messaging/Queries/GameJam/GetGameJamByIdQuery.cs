@@ -15,6 +15,11 @@ namespace LuduStack.Domain.Messaging.Queries.GameJam
         {
         }
 
+        public GetGameJamByIdQuery(string handler) : this(Guid.Empty)
+        {
+            Handler = handler;
+        }
+
         public GetGameJamByIdQuery(Guid id, string handler) : this(id)
         {
             Handler = handler;
