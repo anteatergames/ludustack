@@ -26,17 +26,19 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 p-2">
-            <div class="flex-square clickable rectangle bg-red">
-                <div class="flex-square-inner">
-                    <a asp-area="community" asp-controller="gamejam" asp-action="manage">
-                        <div class="flex-square-inner-content text-white">
-                            <div><i class="fas fa-3x fa-shapes" aria-hidden="true"></i></div>
-                            <div>@SharedLocalizer["Game Jam"]</div>
-                        </div>
-                    </a>
+        <environment include="Development">
+            <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 p-2">
+                <div class="flex-square clickable rectangle bg-red">
+                    <div class="flex-square-inner">
+                        <a asp-area="community" asp-controller="gamejam" asp-action="manage">
+                            <div class="flex-square-inner-content text-white">
+                                <div><i class="fas fa-3x fa-shapes" aria-hidden="true"></i></div>
+                                <div>@SharedLocalizer["Game Jam"]</div>
+                            </div>
+                        </a>
+                    </div>
                 </div>
             </div>
-        </div>
+        </environment>
     </div>
 </div>
