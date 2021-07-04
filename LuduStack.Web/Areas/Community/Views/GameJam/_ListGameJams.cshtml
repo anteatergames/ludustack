@@ -28,7 +28,7 @@ else
 
                         <a asp-area="community" asp-controller="gamejam" asp-action="details" asp-route-handler="@item.Handler">
                             <div class="border-bottom square-bottom d-flex justify-content-center gamejamitemimage">
-                                <img src="@item.FeaturedImage" class="img-fluid w-100 square-bottom card-img" data-container="body" data-toggle="popover" data-trigger="hover" data-placement="bottom" data-content="@shortDescription" />
+                                <img src="@item.FeaturedImage" class="img-fluid w-100 square-bottom card-img" data-container="body" data-toggle="popover" data-trigger="hover" data-placement="bottom" data-content="@shortDescription" alt="@item.Name" />
                             </div>
 
                             <partial name="_GameJamCounter" model="@new KeyValuePair<GameJamPhase, string>(item.CurrentPhase, item.CountDownMessage)" />

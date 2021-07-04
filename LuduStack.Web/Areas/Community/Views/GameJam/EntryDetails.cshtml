@@ -61,7 +61,7 @@
             <div class="row mb-3 ">
                 <div class="col-12 col-md-6 text-center">
                     <a href="@Url.Action("details", "gamejam", new { area = "community", handler = Model.GameJam.Handler })">
-                        <img src="@Model.GameJam.BannerImage" class="img-fluid rounded jambanner" />
+                        <img src="@Model.GameJam.BannerImage" class="img-fluid rounded jambanner" alt="@Model.GameJam.Name" />
                     </a>
                 </div>
                 <div class="col-12 col-md-6 d-flex flex-row justify-content-center">
@@ -110,7 +110,7 @@
                 <div class="bg-white mx-auto p-3 row">
                     <div class="col-12 col-lg-6 mb-2 text-center">
                         <a href="@Url.Action("details", "game", new { area = string.Empty, id = Model.Game.Id })">
-                            <img src="@Model.Game.ThumbnailUrl" class="img-fluid rounded" />
+                            <img src="@Model.Game.ThumbnailUrl" class="img-fluid rounded" alt="@Model.Game.Title" />
                         </a>
                     </div>
                     <div class="col-12 col-lg-6 mb-2">

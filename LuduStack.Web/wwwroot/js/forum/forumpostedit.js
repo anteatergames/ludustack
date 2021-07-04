@@ -5,9 +5,6 @@
     var objs = {};
 
     var canInteract = false;
-    var isNew = false;
-
-    var editorId = '';
 
     function setSelectors() {
         selectors.controlsidebar = '.control-sidebar';
@@ -33,7 +30,6 @@
         bindAll();
 
         canInteract = MAINMODULE.CanInteract();
-        isNew = COMMONEDIT.IsNew();
     }
 
     function bindAll() {

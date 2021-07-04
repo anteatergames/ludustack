@@ -5,7 +5,6 @@
     var objs = {};
 
     var canInteract = false;
-    var isNew = false;
 
     var croppers = [];
     var imagesProcessed = 0;
@@ -59,7 +58,6 @@
         bindAll();
 
         canInteract = MAINMODULE.CanInteract();
-        isNew = COMMONEDIT.IsNew();
 
         MAINMODULE.Common.BindPopOvers();
     }
