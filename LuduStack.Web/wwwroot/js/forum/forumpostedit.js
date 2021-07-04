@@ -38,9 +38,7 @@
     }
 
     function bindEditor() {
-        WYSIWYGEDITOR.BindEditor('.wysiwygeditor').then((id) => {
-            editorId = id;
-        });
+        WYSIWYGEDITOR.BindEditor('.wysiwygeditor');
     }
 
     function bindBtnSaveForm() {
