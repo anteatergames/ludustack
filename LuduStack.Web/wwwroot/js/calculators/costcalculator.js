@@ -50,7 +50,6 @@
 
     function setSelectors() {
         selectors.urls = '#urls';
-        selectors.canInteract = '#caninteract';
         selectors.container = '#featurecontainer';
         selectors.form = '#frmRateCalculator';
         selectors.userEntry = '.user-entry';

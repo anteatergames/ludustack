@@ -13,7 +13,6 @@
 
     function setSelectors() {
         selectors.controlsidebar = '.control-sidebar';
-        selectors.canInteract = '#caninteract';
         selectors.urls = '#urls';
         selectors.container = '#featurecontainer';
         selectors.form = '#frmCourseSave';
@@ -56,8 +55,8 @@
 
         bindAll();
 
-        canInteract = $(selectors.canInteract).val();
-        isNew = window.location.href.indexOf('add') > -1;
+        canInteract = MAINMODULE.CanInteract();
+        isNew = COMMONEDIT.IsNew();
 
         if (isNew) {
             console.log('new course');
@@ -99,10 +98,10 @@
             var valid = objs.form.valid();
 
             if (valid && canInteract) {
-                MAINMODULE.Common.DisableButton(btn);
-
-                uploadCroppedImages(function () {
-                    submitForm(btn);
+                MAINMODULE.Common.DisableButton(btn).ready(() => {
+                    uploadCroppedImages(function () {
+                        submitForm(btn);
+                    });
                 });
             }
         });

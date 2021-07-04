@@ -16,7 +16,6 @@
 
     function setSelectors() {
         selectors.controlsidebar = '.control-sidebar';
-        selectors.canInteract = '#caninteract';
         selectors.urls = '#urls';
         selectors.jobProfile = '#jobprofile';
         selectors.container = '#jobpositioncontainer';
@@ -45,7 +44,6 @@
     }
 
     function cacheObjects() {
-        objs.canInteract = $(selectors.canInteract);
         objs.controlsidebar = $(selectors.controlsidebar);
         objs.container = $(selectors.container);
         objs.urls = $(selectors.urls);
@@ -73,9 +71,9 @@
         setSelectors();
         cacheObjects();
 
-        canInteract = objs.canInteract.val() === 'true';
+        canInteract = MAINMODULE.CanInteract();
+        isNew = COMMONEDIT.IsNew();
         isCompany = objs.container.find(selectors.jobProfile).val() === 'Company';
-        isNew = window.location.href.indexOf('add') > -1;
         isDetails = window.location.href.indexOf('details') > -1;
         isIndex = !isNew && !isDetails;
 
@@ -202,9 +200,9 @@
             }
 
             if (valid && canInteract) {
-                MAINMODULE.Common.DisableButton(btn);
-
-                submitForm(btn);
+                MAINMODULE.Common.DisableButton(btn).ready(() => {
+                    submitForm(btn);
+                });
             }
         });
     }
@@ -308,12 +306,12 @@
             var btn = $(this);
 
             if (canInteract) {
-                MAINMODULE.Common.DisableButton(btn);
+                MAINMODULE.Common.DisableButton(btn).ready(() => {
+                    var url = btn.data('url');
 
-                var url = btn.data('url');
-
-                apply(url, function (response) {
-                    MAINMODULE.Common.PostSaveCallback(response, btn);
+                    apply(url, function (response) {
+                        MAINMODULE.Common.PostSaveCallback(response, btn);
+                    });
                 });
             }
 

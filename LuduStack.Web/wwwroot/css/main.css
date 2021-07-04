@@ -403,3 +403,24 @@ mediagallery
         border-top-right-radius: var(--border-radius);
         border-bottom-right-radius: var(--border-radius);
     }
+
+.ck-content .media {
+    display: block;
+}
+
+.ck .ck-toolbar {
+    border-radius: var(--border-radius) var(--border-radius) 0 0 !important;
+}
+
+.ck .ck-content {
+    border-radius: 0 0 var(--border-radius) var(--border-radius) !important;
+}
+
+.ck.ck-toolbar.ck-toolbar_grouping > .ck-toolbar__items {
+    flex-wrap: wrap !important;
+}
+
+.newimageupload .cropper-container, .cropper-container div {
+    border-bottom-right-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+}

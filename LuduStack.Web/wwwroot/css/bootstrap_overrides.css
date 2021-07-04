@@ -84,12 +84,10 @@ select.form-control {
     .alert .close {
         color: var(--color-black);
         opacity: 0.2;
-        filter: alpha(opacity=20);
     }
 
         .alert .close:hover {
             opacity: .5;
-            filter: alpha(opacity=50);
         }
 
     .alert a {
@@ -112,6 +110,10 @@ select.form-control {
 .btn {
     font-size: 0.8rem;
     border-radius: var(--border-radius);
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
 }
 
     .btn:active {
@@ -122,13 +124,6 @@ select.form-control {
 
     .btn:focus {
         outline: 0;
-    }
-
-    .btn, .btn:hover {
-        -webkit-transition: none;
-        -o-transition: none;
-        -moz-transition: none;
-        transition: none;
     }
 
 .btn-default {
@@ -233,11 +228,15 @@ select.form-control {
     border-radius: var(--border-radius) !important;
 }
 
-.swal2-container .swal2-actions {
+.swal2-container.swal2-top-end .swal2-actions {
     width: inherit !important;
 }
 
 .card-img, .card-img-top {
-    border-top-left-radius: var(--border-radius);
-    border-top-right-radius: var(--border-radius);
+    border-top-left-radius: 0.33rem !important;
+    border-top-right-radius: 0.33rem !important;
+}
+
+.rounded {
+    border-radius: var(--border-radius) !important;
 }

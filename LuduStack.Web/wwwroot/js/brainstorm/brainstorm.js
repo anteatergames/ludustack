@@ -15,7 +15,7 @@
 
         bindAll();
 
-        canInteract = $(selectors.canInteract).val() === 'true';
+        canInteract = MAINMODULE.CanInteract();
         newIdea = window.location.href.indexOf('newidea') > -1;
         details = window.location.href.indexOf('details') > -1;
 
@@ -28,7 +28,6 @@
 
     function setSelectors() {
         selectors.container = '#contentwrapper';
-        selectors.canInteract = '#caninteract';
         selectors.toolbar = $("#divToolbar");
         selectors.list = $("#divList");
         selectors.btnPostVotingItem = $("#btnPostVotingItem");
@@ -96,9 +95,9 @@
 
             var valid = selectors.form.valid();
             if (valid && canInteract) {
-                MAINMODULE.Common.DisableButton(btn);
-
-                submitForm(btn);
+                MAINMODULE.Common.DisableButton(btn).ready(() => {
+                    submitForm(btn);
+                });
             }
 
             return false;

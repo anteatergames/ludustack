@@ -18,7 +18,7 @@ else
         @foreach (var item in Model)
         {
             <div class="col-12 col-sm-6 col-lg-4">
-                <div class="box box-widget widget-user">
+                <div class="box box-widget widget-user mb-4">
                     <div class="widget-user-image">
                         <a asp-area="" asp-controller="profile" asp-action="details" asp-route-userHandler="@item.UserHandler">
                             <img class="rounded-circle lazyload" data-src="@item.ProfileImageUrl" src="@Constants.DefaultAvatar" alt="@SharedLocalizer["This is {0}, believe it or not.", item.TargetUserName]">
@@ -29,18 +29,18 @@ else
                     <div class="box-footer">
                         <div class="row">
                             <div class="col-12">
-                                <h3 class="widget-user-username">@Html.DisplayFor(modelItem => item.TargetUserName)</h3>
+                                <h3 class="widget-user-username text-truncate">@Html.DisplayFor(modelItem => item.TargetUserName)</h3>
                             </div>
-                            <div class="col-sm-6 border-right">
+                            <div class="col-sm-6 border-right rounded-0">
                                 <div class="description-block">
                                     <span class="description-text">Location</span>
-                                    <h5 class="description-header text-truncate">@item.Location</h5>
+                                    <h5 class="m-0 text-truncate">@item.Location</h5>
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="description-block">
                                     <span class="description-text">Member since</span>
-                                    <h5 class="description-header">@item.CreateDate.ToShortDateString()</h5>
+                                    <h5 class="m-0">@item.CreateDate.ToShortDateString()</h5>
                                 </div>
                             </div>
                         </div>

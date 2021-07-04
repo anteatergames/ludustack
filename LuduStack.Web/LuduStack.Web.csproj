@@ -79,6 +79,9 @@
     <Content Update="Areas\Community\Views\Forum\CreateEditPostWrapper.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="Areas\Community\Views\GameJam\CreateEditWrapper.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Areas\Community\Views\_ViewImports.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
@@ -297,6 +300,9 @@
     </Content>
     <Content Update="Views\Team\_ViewImports.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="wwwroot\css\forumgroup - Copy - Copy.min.css">
+      <DependentUpon>forumgroup.min.css</DependentUpon>
     </Content>
     <Content Update="wwwroot\css\forumgroup - Copy.min.css">
       <DependentUpon>forumgroup.min.css</DependentUpon>

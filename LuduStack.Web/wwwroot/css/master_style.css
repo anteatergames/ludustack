@@ -9,15 +9,17 @@ body {
 /*body, layout*/
 .wrapper, body, html {
     padding-right: 0 !important;
+    height: 100%;
 }
 
-.wrapper, body {
+/*.wrapper, body {
     overflow-x: hidden;
-}
+}*/
 
 .wrapper {
-    overflow-y: hidden;
+    /*overflow-y: hidden;*/
     position: relative;
+    border-radius: 0;
 }
 
     .box-body:after, .box-footer:after, .box-header:after, .navbar-nav > .messages-menu > .dropdown-menu > li .menu > li > a:after, .navbar-nav > .user-menu > .dropdown-menu > .user-body:after, .navbar-nav > .user-menu > .dropdown-menu > .user-footer:after, .user-block:after, .user-panel:after, .wrapper:after {
@@ -1901,7 +1903,7 @@ button.btn.dropdown-toggle::after, .wysihtml5-toolbar .btn.dropdown-toggle::afte
     }
 
         .flex-square:hover .flex-square-inner-content {
-            color: #0092ee !important;
+            color: rgb(0, 0, 0) !important;
         }
 
 .clickable {
@@ -1942,6 +1944,10 @@ button.btn.dropdown-toggle::after, .wysihtml5-toolbar .btn.dropdown-toggle::afte
     margin-top: -38px;
     z-index: 50;
     position: absolute;
+    right: 20px;
+}
+
+.simplecontentpostarea .comment-send-button {
     right: 5px;
 }
 

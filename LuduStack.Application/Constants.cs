@@ -58,6 +58,8 @@ namespace LuduStack.Application
 
         public static string DefaultCourseThumbnail => "/images/placeholders/default1200x630.jpg";
 
+        public static string DefaultGamejamThumbnail => "/images/placeholders/default1200x630.jpg";
+
         public static string DefaultGiveawayThumbnail => "/images/placeholders/giveawayplaceholder.png";
 
         public static string DefaultComicStripPlaceholder => "/images/placeholders/comicstripolaceholder.jpg";

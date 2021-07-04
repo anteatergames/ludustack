@@ -12,7 +12,6 @@
 
     function setSelectors() {
         selectors.controlsidebar = '.control-sidebar';
-        selectors.canInteract = '#caninteract';
         selectors.urls = '#urls';
         selectors.container = '#featurecontainer';
 
@@ -35,7 +34,6 @@
     }
 
     function cacheObjsCreateEdit() {
-        objs.canInteract = $(selectors.canInteract);
         objs.controlsidebar = $(selectors.controlsidebar);
         objs.container = $(selectors.container);
         objs.urls = $(selectors.urls);
@@ -69,13 +67,12 @@
     }
 
     function init() {
-        isNew = window.location.href.indexOf('new') > -1;
+        canInteract = MAINMODULE.CanInteract();
+        isNew = COMMONEDIT.IsNew();
 
         setSelectors();
 
         setCreateEdit();
-
-        canInteract = objs.canInteract.val() === 'true';
     }
 
     function bindBtnSaveForm() {
@@ -124,10 +121,10 @@
                 }
                 else {
                     MAINMODULE.Common.RemoveErrorFromButton(btn);
-                    MAINMODULE.Common.DisableButton(btn);
-
-                    uploadTerms(btn, function (response) {
-                        MAINMODULE.Ajax.HandleUrlResponse(response);
+                    MAINMODULE.Common.DisableButton(btn).ready(() => {
+                        uploadTerms(btn, function (response) {
+                            MAINMODULE.Ajax.HandleUrlResponse(response);
+                        });
                     });
                 }
             }

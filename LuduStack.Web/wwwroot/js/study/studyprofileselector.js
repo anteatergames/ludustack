@@ -8,12 +8,10 @@
 
     function setSelectors() {
         selectors.container = '.content-wrapper';
-        selectors.canInteract = '#caninteract';
         selectors.btnSetStudyProfile = '.btnsetstudyprofile';
     }
 
     function cacheObjects() {
-        objs.canInteract = $(selectors.canInteract);
         objs.container = $(selectors.container);
     }
 
@@ -21,7 +19,7 @@
         setSelectors();
         cacheObjects();
 
-        canInteract = objs.canInteract.val() === 'true';
+        canInteract = MAINMODULE.CanInteract();
 
         bindAll();
     }

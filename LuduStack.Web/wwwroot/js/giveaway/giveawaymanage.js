@@ -6,7 +6,6 @@
     var canInteract = false;
 
     function setSelectors() {
-        selectors.canInteract = '#caninteract';
         selectors.urls = '#urls';
         selectors.container = '#featurecontainer';
         selectors.btnDeleteParticipant = '.btn-participant-delete';
@@ -18,7 +17,6 @@
     }
 
     function cacheObjs() {
-        objs.canInteract = $(selectors.canInteract);
         objs.container = $(selectors.container);
         objs.urls = $(selectors.urls);
         objs.containerDetails = $(selectors.containerDetails);
@@ -28,7 +26,7 @@
         setSelectors();
         cacheObjs();
 
-        canInteract = objs.canInteract.val() === 'true';
+        canInteract = MAINMODULE.CanInteract();
 
         bindAll();
 

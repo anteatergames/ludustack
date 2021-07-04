@@ -5,7 +5,6 @@
     var objs = {};
 
     var canInteract = false;
-    var isNew = false;
 
     var croppers = [];
     var imagesProcessed = 0;
@@ -19,7 +18,6 @@
 
     function setSelectors() {
         selectors.controlsidebar = '.control-sidebar';
-        selectors.canInteract = '#caninteract';
         selectors.urls = '#urls';
         selectors.container = '#featurecontainer';
         selectors.form = '#frmComicsSave';
@@ -59,12 +57,7 @@
 
         bindAll();
 
-        canInteract = $(selectors.canInteract).val();
-        isNew = window.location.href.indexOf('add') > -1;
-
-        if (isNew) {
-            console.log('new comic strip');
-        }
+        canInteract = MAINMODULE.CanInteract();
 
         MAINMODULE.Common.BindPopOvers();
     }
@@ -219,11 +212,12 @@
             var valid = objs.form.valid();
 
             if (valid && canInteract) {
-                MAINMODULE.Common.DisableButton(btn);
-
-                uploadCroppedImages(function () {
-                    submitForm(btn);
+                MAINMODULE.Common.DisableButton(btn).ready(() => {
+                    uploadCroppedImages(function () {
+                        submitForm(btn);
+                    });
                 });
+
             }
         });
     }

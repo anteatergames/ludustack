@@ -6,6 +6,10 @@
     function bindEditor(selector) {
         var element = document.querySelector(selector);
 
+        return bindEditorElement(element);
+    }
+
+    function bindEditorElement(element) {
         return ClassicEditor
             .create(element, {
                 ckfinder: {
@@ -58,8 +62,10 @@
                 });
 
                 if (existing.length === 0) {
-                    editors.push({ id: editor.sourceElement.id, editor: editor });
+                    editors.push({ id: editor.id, editor: editor });
                 }
+
+                element.setAttribute('data-editor-id', editor.id);
 
                 return editor.id;
             })
@@ -71,6 +77,14 @@
             });
     }
 
+    function bindEditors(selector) {
+        var elements = document.querySelectorAll(selector);
+
+        for (const element of elements) {
+            bindEditorElement(element);
+        }
+    }
+
     function updateSourceElement(editorId) {
         var existing = editors.filter((editor) => {
             return editor.id === editorId;
@@ -79,6 +93,13 @@
         if (existing) {
             existing[0].editor.updateSourceElement();
         }
+    }
+
+    function updateEditors() {
+        $('.wysiwygeditor').each((index, element) => {
+            var editorId = $(element).attr('data-editor-id');
+            WYSIWYGEDITOR.UpdateSourceElement(editorId);
+        });
     }
 
     function destroyEditor(editorId) {
@@ -111,11 +132,21 @@
         }
     }
 
+    function setValidatorDefaults() {
+        $.validator.setDefaults({
+            ignore: ":hidden:not(.wysiwygeditor)"
+        });
+    }
+
     return {
         Editors: editors,
         GetEditor: getEditor,
         DestroyEditor: destroyEditor,
         BindEditor: bindEditor,
-        UpdateSourceElement: updateSourceElement
+        BindEditorElement: bindEditorElement,
+        BindEditors: bindEditors,
+        UpdateSourceElement: updateSourceElement,
+        UpdateEditors: updateEditors,
+        SetValidatorDefaults: setValidatorDefaults
     };
 }());

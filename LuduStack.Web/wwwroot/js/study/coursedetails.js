@@ -7,7 +7,6 @@
 
     function setSelectors() {
         selectors.controlsidebar = '.control-sidebar';
-        selectors.canInteract = '#caninteract';
         selectors.urls = '#urls';
         selectors.container = '#featurecontainer';
         selectors.listPlans = '#divPlans';
@@ -28,7 +27,7 @@
 
         bindAll();
 
-        canInteract = $(selectors.canInteract).val();
+        canInteract = MAINMODULE.CanInteract();
 
         var urlPlans = objs.urls.data('urlListplans');
         listPlans(urlPlans);

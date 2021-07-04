@@ -74,7 +74,7 @@
         border-left: 1px solid #dedada;
         float: left;
         height: 100%;
-        margin-left: -20px;
+        margin-left: -8px;
     }
 
     .forumlistitem .forumlisttitle {
@@ -121,16 +121,4 @@
 
 .posttopic .ck.ck-content.ck-editor__editable {
     min-height: 300px !important;
-}
-
-.ck-content .media {
-    display: block;
-}
-
-.ck .ck-toolbar {
-    border-radius: var(--border-radius) var(--border-radius) 0 0 !important;
-}
-
-.ck .ck-content {
-    border-radius: 0 0 var(--border-radius) var(--border-radius) !important;
 }

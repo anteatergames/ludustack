@@ -9,7 +9,6 @@
 
     function setSelectors() {
         selectors.controlsidebar = '.control-sidebar';
-        selectors.canInteract = '#caninteract';
         selectors.urls = '#urls';
         selectors.container = '#featurecontainer';
         selectors.form = '#frmBillRateSave';
@@ -49,8 +48,8 @@
 
         bindAll();
 
-        canInteract = $(selectors.canInteract).val();
-        isNew = window.location.href.indexOf('add') > -1;
+        canInteract = MAINMODULE.CanInteract();
+        isNew = COMMONEDIT.IsNew();
 
         MAINMODULE.Common.BindPopOvers();
 
@@ -114,9 +113,9 @@
             var valid = objs.form.valid();
 
             if (valid && canInteract) {
-                MAINMODULE.Common.DisableButton(btn);
-
-                submitForm(btn);
+                MAINMODULE.Common.DisableButton(btn).ready(() => {
+                    submitForm(btn);
+                });
             }
         });
     }

@@ -190,10 +190,12 @@ namespace LuduStack.Web.Controllers
             return await UploadGameImage(image, ImageType.GameCover, Constants.DefaultGameCoverImage, gameId, currentImage, userId);
         }
 
-        private async Task<IActionResult> UploadGameImage(IFormFile image, ImageType type, string defaultImage, Guid gameId, string currentImage, Guid userId)
+        private async Task<IActionResult> UploadGameImage(IFormFile image, ImageType type, string defaultImage, Guid gameId, string currentImage, Guid? userId)
         {
             try
             {
+                Guid destinationUserId = userId.HasValue && userId.Value != Guid.Empty ? userId.Value : CurrentUserId;
+
                 if (image != null && image.Length > 0)
                 {
                     using (MemoryStream ms = new MemoryStream())
@@ -204,14 +206,11 @@ namespace LuduStack.Web.Controllers
 
                         string extension = GetFileExtension(image);
 
-                        string filename = DateTime.Now.ToString(datetimeFormat);
+                        Random rand = new Random(Guid.NewGuid().ToString().GetHashCode());
 
-                        if (type == ImageType.GameCover || type == ImageType.GameThumbnail)
-                        {
-                            filename = gameId.ToString();
-                        }
+                        string filename = string.Format("{0}-{1}", DateTime.Now.ToString(datetimeFormat), rand.Next().ToString());
 
-                        UploadResultVo uploadResult = await base.UploadImage(userId, type, filename, extension, fileBytes, EnvName);
+                        UploadResultVo uploadResult = await base.UploadImage(destinationUserId, type, filename, extension, fileBytes, EnvName);
 
                         uploadResult.FileSize = image?.Length;
                         uploadResult.OldImage = currentImage;
@@ -225,7 +224,7 @@ namespace LuduStack.Web.Controllers
                 {
                     string currentParam = GetImageNameFromUrl(currentImage);
 
-                    base.DeleteGameImage(userId, type, currentParam);
+                    base.DeleteGameImage(destinationUserId, type, currentParam);
                 }
 
                 return Json(new UploadResultVo("No file to upload"));
@@ -242,7 +241,7 @@ namespace LuduStack.Web.Controllers
 
         [HttpPost]
         [Route("uploadmedia")]
-        public async Task<IActionResult> UploadMedia(IFormFile upload, string tag)
+        public async Task<IActionResult> UploadMedia(IFormFile upload, Guid? userId, string tag)
         {
             try
             {
@@ -260,7 +259,9 @@ namespace LuduStack.Web.Controllers
 
                         string filename = string.Format("{0}-{1}", DateTime.Now.ToString(datetimeFormat), rand.Next().ToString());
 
-                        UploadResultVo uploadResult = await base.UploadContentMedia(CurrentUserId, filename, extension, fileBytes, EnvName, tag);
+                        Guid destinationUserId = userId.HasValue && userId.Value != Guid.Empty ? userId.Value : CurrentUserId;
+
+                        UploadResultVo uploadResult = await base.UploadContentMedia(destinationUserId, filename, extension, fileBytes, EnvName, tag);
 
                         return Json(uploadResult);
                     }

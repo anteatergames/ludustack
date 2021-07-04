@@ -10,7 +10,6 @@
     var objs = {};
 
     function setSelectors() {
-        selectors.canInteract = '#caninteract';
         selectors.urls = '#urls';
         selectors.container = '#featurecontainer';
     }
@@ -43,12 +42,11 @@
         }
     }
 
-    function countDownClock(number = 100, format = 'seconds') {
-        const d = document;
-        const daysElement = d.querySelector('#countdown-days');
-        const hoursElement = d.querySelector('#countdown-hours');
-        const minutesElement = d.querySelector('#countdown-minutes');
-        const secondsElement = d.querySelector('#countdown-seconds');
+    function countDownClock(number = 100, format = 'seconds', parentContainerSelector = 'body') {
+        const daysElement = document.querySelector(parentContainerSelector + ' .countdown-days');
+        const hoursElement = document.querySelector(parentContainerSelector + ' .countdown-hours');
+        const minutesElement = document.querySelector(parentContainerSelector + ' .countdown-minutes');
+        const secondsElement = document.querySelector(parentContainerSelector + ' .countdown-seconds');
 
         let countdown;
         if (daysElement !== null && hoursElement !== null && minutesElement !== null && secondsElement !== null) {
@@ -72,6 +70,11 @@
             const now = Date.now();
             const then = now + seconds * 1000;
 
+            daysElement.parentElement.style.width = `${daysElement.parentElement.offsetWidth}px`;
+            hoursElement.parentElement.style.width = `${hoursElement.parentElement.offsetWidth}px`;
+            minutesElement.parentElement.style.width = `${minutesElement.parentElement.offsetWidth}px`;
+            secondsElement.parentElement.style.width = `${secondsElement.parentElement.offsetWidth}px`;
+
             countdown = setInterval(() => {
                 const secondsLeft = Math.round((then - Date.now()) / 1000);
 
@@ -85,18 +88,18 @@
         }
 
         function displayTimeLeft(seconds) {
-            daysElement.textContent = Math.floor(seconds / 86400);
-            hoursElement.textContent = Math.floor((seconds % 86400) / 3600);
-            minutesElement.textContent = Math.floor((seconds % 86400) % 3600 / 60);
-            secondsElement.textContent = seconds % 60 < 10 ? `0${seconds % 60}` : seconds % 60;
+            daysElement.textContent = (Math.floor(seconds / 86400)).toString().padStart(2, "0");
+            hoursElement.textContent = (Math.floor((seconds % 86400) / 3600)).toString().padStart(2, "0");
+            minutesElement.textContent = (Math.floor((seconds % 86400) % 3600 / 60)).toString().padStart(2, "0");
+            secondsElement.textContent = (seconds % 60 < 10 ? `0${seconds % 60}` : seconds % 60).toString().padStart(2, "0");
         }
     }
 
-    function startCountDown(selector) {
+    function startCountDown(selector, parentContainerSelector) {
         var secondsToEnd = document.querySelector(selector);
 
         if (secondsToEnd !== null) {
-            countDownClock(secondsToEnd.value, 'seconds');
+            countDownClock(secondsToEnd.value, 'seconds', parentContainerSelector);
         }
     }
 

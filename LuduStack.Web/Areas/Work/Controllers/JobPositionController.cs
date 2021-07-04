@@ -210,7 +210,7 @@ namespace LuduStack.Web.Areas.Work.Controllers
 
         [AllowAnonymous]
         [Route("work/jobposition/details/{id:guid}")]
-        public async Task<IActionResult> Details(Guid id, int? pointsEarned)
+        public async Task<IActionResult> Details(Guid id)
         {
             OperationResultVo<JobPositionViewModel> op = await jobPositionAppService.GetById(CurrentUserId, id);
 
@@ -218,8 +218,6 @@ namespace LuduStack.Web.Areas.Work.Controllers
             viewModel.Url = Url.Action("details", "jobposition", new { area = "work", id = viewModel.Id }, (string)ViewData["protocol"], (string)ViewData["host"]);
 
             SetLocalization(viewModel);
-
-            SetGamificationMessage(pointsEarned);
 
             return View("_Details", viewModel);
         }

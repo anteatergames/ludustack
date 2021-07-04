@@ -20,13 +20,30 @@ var ALERTSYSTEM = (function () {
     }
 
     function showAlert(text, type, callback) {
-        Swal.fire({
+        var message = generateAlert(text, type);
+
+        Swal.fire(message).then(
+            function (result) {
+                callbackResult(callback, result);
+            }
+        );
+    }
+
+    function generateAlert(text, type) {
+        return {
             toast: true,
             position: 'top-end',
             type: type,
             showConfirmButton: false,
             title: text,
             timer: 3000
+        };
+    }
+
+    function showInfoMessage(msg, callback) {
+        Swal.fire({
+            text: msg,
+            type: "info"
         }).then(
             function (result) {
                 callbackResult(callback, result);
@@ -93,6 +110,7 @@ var ALERTSYSTEM = (function () {
     }
 
     return {
+        ShowInfoMessage: showInfoMessage,
         ShowSuccessMessage: showSuccessMessage,
         ShowWarningMessage: showWarningMessage,
         ShowConfirmMessage: showConfirmMessage,

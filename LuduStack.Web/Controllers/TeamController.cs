@@ -33,10 +33,8 @@ namespace LuduStack.Web.Controllers
         }
 
         [AllowAnonymous]
-        public IActionResult Index(int? pointsEarned)
+        public IActionResult Index()
         {
-            SetGamificationMessage(pointsEarned);
-
             return View();
         }
 
@@ -88,7 +86,7 @@ namespace LuduStack.Web.Controllers
 
         [AllowAnonymous]
         [Route("{teamId:guid}")]
-        public async Task<IActionResult> Details(Guid teamId, int? pointsEarned, Guid notificationclicked)
+        public async Task<IActionResult> Details(Guid teamId, Guid notificationclicked)
         {
             await notificationAppService.MarkAsRead(notificationclicked);
 
@@ -105,8 +103,6 @@ namespace LuduStack.Web.Controllers
             {
                 model.Name = SharedLocalizer["{0} Team", model.Name];
             }
-
-            SetGamificationMessage(pointsEarned);
 
             return View(model);
         }

@@ -5,13 +5,9 @@
     var objs = {};
 
     var canInteract = false;
-    var isNew = false;
-
-    var editorId = '';
 
     function setSelectors() {
         selectors.controlsidebar = '.control-sidebar';
-        selectors.canInteract = '#caninteract';
         selectors.urls = '#urls';
         selectors.container = '#featurecontainer';
         selectors.form = '#frmSave';
@@ -33,12 +29,7 @@
 
         bindAll();
 
-        canInteract = $(selectors.canInteract).val();
-        isNew = window.location.href.indexOf('add') > -1;
-
-        if (isNew) {
-            console.log('is New');
-        }
+        canInteract = MAINMODULE.CanInteract();
     }
 
     function bindAll() {
@@ -47,26 +38,21 @@
     }
 
     function bindEditor() {
-        var element = document.querySelector('.wysiwygeditor');
-        WYSIWYGEDITOR.BindEditor('.wysiwygeditor').then(() => {
-            editorId = element.id;
-        });
+        WYSIWYGEDITOR.BindEditor('.wysiwygeditor');
     }
 
     function bindBtnSaveForm() {
         objs.container.on('click', selectors.btnSave, function () {
             var btn = $(this);
 
-            var data = WYSIWYGEDITOR.GetEditor(editorId).editor.getData();
-
-            WYSIWYGEDITOR.UpdateSourceElement(editorId);
+            WYSIWYGEDITOR.UpdateEditors();
 
             var valid = objs.form.valid();
 
             if (valid && canInteract) {
-                MAINMODULE.Common.DisableButton(btn);
-
-                submitForm(btn);
+                MAINMODULE.Common.DisableButton(btn).ready(() => {
+                    submitForm(btn);
+                });
             }
         });
     }
@@ -97,3 +83,6 @@
 $(function () {
     FORUMPOSTEDIT.Init();
 });
+
+// this must be outside the module
+WYSIWYGEDITOR.SetValidatorDefaults();

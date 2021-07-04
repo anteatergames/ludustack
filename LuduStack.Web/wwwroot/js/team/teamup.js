@@ -15,7 +15,6 @@
     function setSelectors() {
         selectors.container = '#teamcontainer';
         selectors.isAjax = '#isajax';
-        selectors.canInteract = '#caninteract';
         selectors.Id = '#Id';
         selectors.divListTeams = '#divListTeams';
         selectors.divListMyTeams = '#divListMyTeams';
@@ -47,7 +46,6 @@
     }
 
     function cacheObjects() {
-        objs.canInteract = $(selectors.canInteract);
         objs.container = $(selectors.container);
         objs.Id = $(selectors.Id);
         objs.divListTeams = $(selectors.divListTeams);
@@ -74,7 +72,7 @@
 
         isList = objs.Id.val() === undefined;
 
-        canInteract = objs.canInteract.val() === 'true';
+        canInteract = MAINMODULE.CanInteract();
         isAjax = $(selectors.container).find(selectors.isAjax).val();
 
         bindAll();
@@ -157,9 +155,9 @@
 
             var valid = objs.form.valid();
             if (valid && canInteract) {
-                MAINMODULE.Common.DisableButton(btn);
-
-                submitForm(btn);
+                MAINMODULE.Common.DisableButton(btn).ready(() => {
+                    submitForm(btn);
+                });
             }
 
             return false;

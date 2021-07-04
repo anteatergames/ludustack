@@ -8,20 +8,18 @@
 
     function setSelectors() {
         selectors.container = '.content-wrapper';
-        selectors.canInteract = '#caninteract';
         selectors.btnSetJobProfile = '.btnsetjobprofile';
     }
 
     function cacheObjects() {
         objs.container = $(selectors.container);
-        objs.canInteract = $(selectors.canInteract);
     }
 
     function init() {
         setSelectors();
         cacheObjects();
 
-        canInteract = objs.canInteract.val() === 'true';
+        canInteract = MAINMODULE.CanInteract();
 
         bindAll();
     }

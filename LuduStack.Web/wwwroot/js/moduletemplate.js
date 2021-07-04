@@ -10,7 +10,6 @@
 
     function setSelectors() {
         selectors.controlsidebar = '.control-sidebar';
-        selectors.canInteract = '#caninteract';
         selectors.urls = '#urls';
         selectors.container = '#featurecontainer';
         selectors.containerDetails = '#containerdetails';
@@ -23,7 +22,6 @@
     }
 
     function cacheObjs() {
-        objs.canInteract = $(selectors.canInteract);
         objs.controlsidebar = $(selectors.controlsidebar);
         objs.container = $(selectors.container);
         objs.urls = $(selectors.urls);
@@ -44,8 +42,8 @@
         setSelectors();
         cacheObjs();
 
-        canInteract = objs.canInteract.val() === 'true';
-        isNew = window.location.href.indexOf('add') > -1;
+        canInteract = MAINMODULE.CanInteract();
+        isNew = COMMONEDIT.IsNew();
         isDetails = window.location.href.indexOf('details') > -1;
         isIndex = !isNew && !isDetails;
 
@@ -84,9 +82,9 @@
             var valid = objs.form.valid();
 
             if (valid && canInteract) {
-                MAINMODULE.Common.DisableButton(btn);
-
-                submitForm(btn);
+                MAINMODULE.Common.DisableButton(btn).ready(() => {
+                    submitForm(btn);
+                });
             }
         });
     }

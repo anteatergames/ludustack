@@ -24,15 +24,10 @@ namespace LuduStack.Web.Areas.Member.Controllers
             this.billRateAppService = billRateAppService;
         }
 
-        public IActionResult Index(string msg)
+        public IActionResult Index()
         {
             if (User.Identity.IsAuthenticated)
             {
-                if (!string.IsNullOrWhiteSpace(msg))
-                {
-                    TempData["Message"] = SharedLocalizer[msg];
-                }
-
                 return View("Dashboard");
             }
             else
@@ -88,13 +83,8 @@ namespace LuduStack.Web.Areas.Member.Controllers
         }
 
         [Route("edit/{id:guid}")]
-        public async Task<IActionResult> Edit(Guid id, string msg)
+        public async Task<IActionResult> Edit(Guid id)
         {
-            if (!string.IsNullOrWhiteSpace(msg))
-            {
-                TempData["Message"] = SharedLocalizer[msg];
-            }
-
             BillRateViewModel viewModel;
 
             OperationResultVo serviceResult = await billRateAppService.GetForEdit(CurrentUserId, id);

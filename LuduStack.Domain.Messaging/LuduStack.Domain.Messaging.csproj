@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Queries\GameJam\CheckGameJamHandlerQuery.cs~RF63edd72.TMP" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\LuduStack.Infra.CrossCutting.Messaging\LuduStack.Infra.CrossCutting.Messaging.csproj" />
   </ItemGroup>
 

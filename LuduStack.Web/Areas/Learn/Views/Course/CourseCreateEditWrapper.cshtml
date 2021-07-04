@@ -18,6 +18,9 @@
 
 @section Scripts {
     <script src="~/lib/rangeslider/rangeslider.min.js"></script>
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
     <environment include="Development">
         <script src="~/lib/cropperjs/cropper.js"></script>
         <script src="~/lib/select2/js/select2.full.min.js"></script>
@@ -31,8 +34,6 @@
         <script src="~/lib/cropperjs/cropper.min.js"></script>
         <script src="~/js/study/courseedit.min.js" asp-append-version="true"></script>
     </environment>
-
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
 
 <input type="hidden" id="urls" value="urls"

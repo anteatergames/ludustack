@@ -260,30 +260,31 @@
             e.preventDefault();
 
             var btn = $(this);
-            MAINMODULE.Common.DisableButton(btn);
 
             var valid = objs.form.valid();
             if (valid) {
-                if (croppedAvatar && croppedCoverImage) {
-                    uploadCoverImage(function () {
+                MAINMODULE.Common.DisableButton(btn).ready(() => {
+                    if (croppedAvatar && croppedCoverImage) {
+                        uploadCoverImage(function () {
+                            uploadAvatarCropped(function () {
+                                submitForm(btn);
+                            });
+                        });
+                    }
+                    else if (croppedAvatar && !croppedCoverImage) {
                         uploadAvatarCropped(function () {
                             submitForm(btn);
                         });
-                    });
-                }
-                else if (croppedAvatar && !croppedCoverImage) {
-                    uploadAvatarCropped(function () {
+                    }
+                    else if (!croppedAvatar && croppedCoverImage) {
+                        uploadCoverImage(function () {
+                            submitForm(btn);
+                        });
+                    }
+                    else {
                         submitForm(btn);
-                    });
-                }
-                else if (!croppedAvatar && croppedCoverImage) {
-                    uploadCoverImage(function () {
-                        submitForm(btn);
-                    });
-                }
-                else {
-                    submitForm(btn);
-                }
+                    }
+                });
             }
 
             return false;

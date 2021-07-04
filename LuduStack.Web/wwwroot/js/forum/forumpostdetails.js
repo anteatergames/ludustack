@@ -8,7 +8,6 @@
     var urlReplies;
 
     function setSelectors() {
-        selectors.canInteract = '#caninteract';
         selectors.urls = '#urls';
         selectors.container = '#featurecontainer';
         selectors.replies = '#divReplies';
@@ -46,7 +45,7 @@
         setSelectors();
         cacheObjs();
 
-        canInteract = $(selectors.canInteract).val();
+        canInteract = MAINMODULE.CanInteract();
         urlReplies = objs.urls.data('urlReplies');
 
         bindAll();
@@ -59,7 +58,7 @@
     }
 
     function bindAll() {
-        bindEditors();
+        WYSIWYGEDITOR.BindEditors('.wysiwygeditor');
         bindBtnSaveReply();
         bindBtnSavePost();
         bindBtnEdit();
@@ -69,33 +68,14 @@
         bindBtnScrollTo();
     }
 
-    function bindEditors() {
-        $(selectors.txtReply).each((index, element) => {
-            var id = element.id;
-
-            WYSIWYGEDITOR.BindEditor(`#${id}`).then((editorId) => {
-                $(element).attr('data-editor-id', editorId);
-            });
-        });
-    }
-
-    function bindEditor(selector) {
-        var element = document.querySelector(selector);
-
-        return WYSIWYGEDITOR.BindEditor(selector).then((editorId) => {
-            $(element).attr('data-editor-id', editorId);
-            return editorId;
-        });
-    }
-
     function bindBtnSaveReply() {
         objs.container.on('click', selectors.btnSaveReply, function (e) {
             var btn = $(this);
 
             if (canInteract) {
-                MAINMODULE.Common.DisableButton(btn);
-
-                saveReply(btn);
+                MAINMODULE.Common.DisableButton(btn).ready(() => {
+                    saveReply(btn);
+                });
             }
 
             e.preventDefault();
@@ -108,9 +88,9 @@
             var btn = $(this);
 
             if (canInteract) {
-                MAINMODULE.Common.DisableButton(btn);
-
-                savePost(btn);
+                MAINMODULE.Common.DisableButton(btn).ready(() => {
+                    savePost(btn);
+                });
             }
 
             e.preventDefault();
@@ -234,7 +214,7 @@
         var form = btn.closest('form');
         var url = form.attr('action');
         var txtArea = form.find(selectors.txtReply);
-        var editorId = txtArea.attr('id');
+        var editorId = txtArea.attr('data-editor-id');
 
         WYSIWYGEDITOR.UpdateSourceElement(editorId);
 
@@ -259,7 +239,7 @@
         var form = btn.closest('form');
         var url = form.attr('action');
         var txtArea = form.find(selectors.txtReply);
-        var editorId = txtArea.attr('id');
+        var editorId = txtArea.attr('data-editor-id');
 
         WYSIWYGEDITOR.UpdateSourceElement(editorId);
 
@@ -292,24 +272,24 @@
 
         editDiv.hide();
 
-        MAINMODULE.Common.DisableButton(btn);
+        MAINMODULE.Common.DisableButton(btn).ready(() => {
+            postDiv.css('height', postDiv.css('height'));
 
-        postDiv.css('height', postDiv.css('height'));
+            MAINMODULE.Ajax.LoadHtml(urlEdit, editDiv).then(() => {
+                var txtArea = editDiv.find(selectors.txtReply);
 
-        MAINMODULE.Ajax.LoadHtml(urlEdit, editDiv).then(() => {
-            var txtArea = editDiv.find(selectors.txtReply);
+                WYSIWYGEDITOR.BindEditor(`#${txtArea.attr('id')}`).then(() => {
+                    viewDiv.removeClass('d-flex').fadeOut("slow", function () {
+                        postDiv.animate({ 'height': editDiv.css('height') },
+                            {
+                                complete: () => {
+                                    editDiv.fadeIn("slow");
 
-            bindEditor(`#${txtArea.attr('id')}`).then(() => {
-                viewDiv.removeClass('d-flex').fadeOut("slow", function () {
-                    postDiv.animate({ 'height': editDiv.css('height') },
-                        {
-                            complete: () => {
-                                editDiv.fadeIn("slow");
-
-                                MAINMODULE.Common.EnableButton(btn);
-                                postDiv.css('height', '');
-                            }
-                        });
+                                    MAINMODULE.Common.EnableButton(btn);
+                                    postDiv.css('height', '');
+                                }
+                            });
+                    });
                 });
             });
         });

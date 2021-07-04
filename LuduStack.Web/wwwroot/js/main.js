@@ -32,6 +32,7 @@
     }
 
     function setSelectors() {
+        selectors.canInteract = '#caninteract';
         selectors.notificationsMenu = "#notificationsMenu";
         selectors.locale = '#locale';
         selectors.spanMessage = "#spanMessage";
@@ -41,6 +42,7 @@
     }
 
     function cacheObjects() {
+        objs.canInteract = $(selectors.canInteract);
         objs.notificationsMenu = $(selectors.notificationsMenu);
         objs.locale = $(selectors.locale);
         objs.spanMessage = $(selectors.spanMessage);
@@ -74,9 +76,27 @@
 
     function showMessage() {
         var msg = objs.spanMessage.text();
+        var isModal = objs.spanMessage.data('ismodal');
+        var pointsMessage = objs.spanMessage.data('pointsmessage');
+
         if (msg !== undefined && msg.length > 0) {
-            ALERTSYSTEM.Toastr.ShowWarning(msg);
+            if (isModal) {
+                ALERTSYSTEM.ShowInfoMessage(msg);
+            }
+            else {
+                if (pointsMessage !== undefined && pointsMessage.length > 0) {
+                    ALERTSYSTEM.Toastr.ShowInfo(msg, () => ALERTSYSTEM.Toastr.ShowInfo(pointsMessage));
+                }
+                else {
+                    ALERTSYSTEM.Toastr.ShowInfo(msg);
+                }
+            }
             history.replaceState({}, null, window.location.href.split('?')[0]);
+        }
+        else {
+            if (pointsMessage !== undefined && pointsMessage.length > 0) {
+                ALERTSYSTEM.Toastr.ShowInfo(pointsMessage);
+            }
         }
     }
 
@@ -149,7 +169,7 @@
     function disableButton(btn) {
         btn.addClass('disabled');
         saveBtnOriginalText = btn.html();
-        btn.html(MAINMODULE.Default.SpinnerBtn);
+        return btn.html(MAINMODULE.Default.SpinnerBtn);
     }
 
     function enableButton(btn) {
@@ -172,11 +192,10 @@
 
     function postSaveCallback(response, btn) {
         if (response.success === true) {
-            btn.removeClass('disabled').html(MAINMODULE.Default.DoneBtn);
+            btn.removeClass('disabled').addClass('btn-success').removeClass('btn-primary').html(MAINMODULE.Default.DoneBtn);
         }
         else {
-            btn.html(saveBtnOriginalText);
-            btn.removeClass('disabled');
+            btn.removeClass('disabled').html(saveBtnOriginalText);
         }
     }
 
@@ -519,9 +538,14 @@
         MAINMODULE.Utils.ScrollTo(elementToScroll);
     }
 
+    function canInteract() {
+        return objs.canInteract.val() === 'true';
+    }
+
     return {
         Init: init,
         GetLocale: getLocale,
+        CanInteract: canInteract,
         Layout: {
             SetStickyElement: setStickyElement
         },

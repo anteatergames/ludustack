@@ -24,13 +24,8 @@ namespace LuduStack.Web.Areas.Community.Controllers
         }
 
         [Route("community/forum")]
-        public IActionResult Index(string msg)
+        public IActionResult Index()
         {
-            if (!string.IsNullOrWhiteSpace(msg))
-            {
-                TempData["Message"] = SharedLocalizer[msg];
-            }
-
             return View();
         }
 

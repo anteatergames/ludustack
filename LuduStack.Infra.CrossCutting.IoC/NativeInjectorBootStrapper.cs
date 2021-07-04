@@ -193,6 +193,14 @@ namespace LuduStack.Infra.CrossCutting.IoC
 
             #endregion PlatformSetting
 
+            #region GameJam
+
+            services.AddScoped<IGameJamAppService, GameJamAppService>();
+            services.AddScoped<IGameJamRepository, GameJamRepository>();
+            services.AddScoped<IGameJamEntryRepository, GameJamEntryRepository>();
+
+            #endregion GameJam
+
             #region Common
 
             services.AddScoped<IBaseAppServiceCommon, BaseAppServiceCommon>();

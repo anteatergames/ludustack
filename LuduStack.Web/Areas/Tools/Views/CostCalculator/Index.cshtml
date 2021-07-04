@@ -27,6 +27,9 @@
 }
 
 @section Scripts {
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
     <script src="~/lib/rangeslider/rangeslider.min.js"></script>
     <environment include="Development">
         <script src="~/lib/moment/moment-with-locales.js"></script>
@@ -36,8 +39,6 @@
         <script src="~/lib/moment/moment-with-locales.min.js"></script>
         <script src="~/js/calculators/costcalculator.min.js" asp-append-version="true"></script>
     </environment>
-
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
 
 <section class="content container">

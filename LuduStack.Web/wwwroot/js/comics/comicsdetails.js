@@ -21,7 +21,6 @@
 
     function setSelectors() {
         selectors.container = '.container';
-        selectors.canInteract = '#caninteract';
         selectors.urls = '#urls';
         selectors.btnLanguage = '.btn-changelanguage';
         selectors.imgMultilanguage = '.img-multilanguage';
@@ -32,7 +31,6 @@
 
     function cacheObjs() {
         objs.container = $(selectors.container);
-        objs.canInteract = $(selectors.canInteract);
         objs.urls = $(selectors.urls);
         objs.imgMultilanguage = $(selectors.imgMultilanguage);
         objs.totalRating = $(selectors.totalRating);
@@ -44,7 +42,7 @@
         setSelectors();
         cacheObjs();
 
-        canInteract = objs.canInteract.val() === 'true';
+        canInteract = MAINMODULE.CanInteract();
 
         bindAll();
     }

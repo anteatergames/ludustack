@@ -590,5 +590,46 @@
             "wwwroot/js/platformsetting/platformsettingcommon.js",
             "wwwroot/js/platformsetting/platformsettingedit.js"
         ]
+    },
+    {
+        "outputFileName": "wwwroot/css/gamejam.min.css",
+        "inputFiles": [
+            "wwwroot/css/gamejam.css"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/js/gamejam/gamejam.min.js",
+        "inputFiles": [
+            "wwwroot/js/gamejam/gamejamcommon.js",
+            "wwwroot/js/gamejam/gamejam.js"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/js/gamejam/gamejammanagement.min.js",
+        "inputFiles": [
+            "wwwroot/js/gamejam/gamejamcommon.js",
+            "wwwroot/js/gamejam/gamejammanagement.js"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/js/gamejam/gamejamedit.min.js",
+        "inputFiles": [
+            "wwwroot/js/shared/wysiwygeditor.js",
+            "wwwroot/js/common-edit.js",
+            "wwwroot/js/gamejam/gamejamcommon.js",
+            "wwwroot/js/gamejam/gamejamedit.js"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/js/gamejam/gamejamdetails.min.js",
+        "inputFiles": [
+            "wwwroot/js/gamejam/gamejamdetails.js"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/js/gamejam/gamejamentrydetails.min.js",
+        "inputFiles": [
+            "wwwroot/js/gamejam/gamejamentrydetails.js"
+        ]
     }
 ]
