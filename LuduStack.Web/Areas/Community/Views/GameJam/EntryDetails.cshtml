@@ -139,7 +139,7 @@
                 var createGameUrl = Url.Action("add", "game", new { area = string.Empty });
                 var createGameLink = string.Format("<a href=\"{0}\" class=\"boldlink text-nowrap\">{1}</a>", createGameUrl, SharedLocalizer["click here"].Value);
 
-                <form id="frmSubmitGame" asp-area="community" asp-controller="gamejam" asp-action="submitgame" method="post">
+                <form id="frmSubmitGame" asp-area="community" asp-controller="gamejam" asp-action="submitgame" method="post" class="mt-2">
                     <input type="hidden" name="JamHandler" value="@Model.GameJam.Handler" />
                     <div class="row">
                         <div class="col-12">

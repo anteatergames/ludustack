@@ -68,10 +68,14 @@ namespace LuduStack.Application
 
         public static int PagingThreshold => 5;
 
+        public static int HugeAvatarSize => 84;
+
         public static int BigAvatarSize => 50;
 
         public static int SmallAvatarSize => 40;
 
         public static int TinyAvatarSize => 30;
+
+        public static int ProfileCoverSize => 300;
     }
 }

@@ -355,8 +355,8 @@ namespace LuduStack.Application.Services
                     CreateDate = x.CreateDate,
                     Handler = x.Handler,
                     Name = x.Name,
-                    ProfileImageUrl = UrlFormatter.ProfileImage(x.UserId, Constants.SmallAvatarSize),
-                    CoverImageUrl = UrlFormatter.ProfileCoverImage(x.UserId, x.Id)
+                    ProfileImageUrl = UrlFormatter.ProfileImage(x.UserId, Constants.HugeAvatarSize),
+                    CoverImageUrl = UrlFormatter.ProfileCoverImage(x.UserId, x.Id, x.LastUpdateDate, x.HasCoverImage, Constants.ProfileCoverSize)
                 }).ToList();
 
                 return new OperationResultListVo<ProfileViewModel>(finalList);

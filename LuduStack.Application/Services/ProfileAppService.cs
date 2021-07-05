@@ -81,8 +81,8 @@ namespace LuduStack.Application.Services
                 {
                     UserProfileEssentialVo model = profiles.First(x => x.UserId == vm.UserId);
 
-                    vm.ProfileImageUrl = UrlFormatter.ProfileImage(vm.UserId, 84);
-                    vm.CoverImageUrl = UrlFormatter.ProfileCoverImage(vm.UserId, vm.Id, vm.LastUpdateDate, model.HasCoverImage, 300);
+                    vm.ProfileImageUrl = UrlFormatter.ProfileImage(vm.UserId, Constants.HugeAvatarSize);
+                    vm.CoverImageUrl = UrlFormatter.ProfileCoverImage(vm.UserId, vm.Id, vm.LastUpdateDate, model.HasCoverImage, Constants.ProfileCoverSize);
                 }
 
                 return new OperationResultListVo<ProfileViewModel>(vms);
