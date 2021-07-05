@@ -43,7 +43,7 @@
 }
 
 <section class="content container">
-    <div id="featurecontainer" class="htmlcontent">
+    <div id="featurecontainer">
         <input asp-for="SecondsToCountDown" type="hidden" />
 
         <div class="row mb-3 ">
@@ -88,7 +88,7 @@
         </div>
 
         <div class="box bg-light">
-            <div class="row mx-2">
+            <div class="row mx-2 htmlcontent">
                 <div class="mr-auto mb-2 d-flex flex-column justify-content-center">
                     <h1 class="m-0 text-capitalize">@Model.Name</h1>
                     <span class="text-left text-muted">@Html.Raw(SharedLocalizer["Hosted by {0}", authorLink])</span>
@@ -123,7 +123,7 @@
             </ul>
             <div class="tab-content" id="tabsContent">
                 <div class="tab-pane fade show active" id="taboverview" role="tabpanel" aria-labelledby="overview-tab">
-                    <div class="bg-white mx-auto p-3">
+                    <div class="bg-white mx-auto p-3 htmlcontent">
                         @Html.Raw(Model.Description)
                     </div>
                 </div>
