@@ -108,9 +108,9 @@ namespace LuduStack.Web.Areas.Staff.Controllers
         [Route("/gamejam/{jamHandler}/{jamId:guid}/listparticipants")]
         public async Task<PartialViewResult> ListParticipants(string jamHandler, Guid jamId)
         {
-            List<ProfileViewModel> model;
+            List<GameJamEntryViewModel> model;
 
-            OperationResultListVo<ProfileViewModel> serviceResult = await gameJamAppService.GetParticipantsByJam(CurrentUserId, CurrentUserIsAdmin, jamHandler, jamId);
+            OperationResultListVo<GameJamEntryViewModel> serviceResult = await gameJamAppService.GetParticipantsByJam(CurrentUserId, CurrentUserIsAdmin, jamHandler, jamId);
 
             if (serviceResult.Success)
             {
@@ -118,7 +118,7 @@ namespace LuduStack.Web.Areas.Staff.Controllers
             }
             else
             {
-                model = new List<ProfileViewModel>();
+                model = new List<GameJamEntryViewModel>();
             }
 
             ViewData["ListDescription"] = SharedLocalizer["All Participants"].ToString();

@@ -31,7 +31,7 @@ namespace LuduStack.Application.Interfaces
 
         Task<OperationResultListVo<GameJamEntryViewModel>> GetEntriesByJam(Guid currentUserId, bool currentUserIsAdmin, string jamHandler, Guid jamId, bool submittedOnly);
 
-        Task<OperationResultListVo<ProfileViewModel>> GetParticipantsByJam(Guid currentUserId, bool currentUserIsAdmin, string jamHandler, Guid jamId);
+        Task<OperationResultListVo<GameJamEntryViewModel>> GetParticipantsByJam(Guid currentUserId, bool currentUserIsAdmin, string jamHandler, Guid jamId);
 
         Task<OperationResultVo> Join(Guid currentUserId, Guid jamId);
 

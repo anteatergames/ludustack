@@ -323,6 +323,8 @@ namespace LuduStack.Application.Services
                     }
                 }
 
+                vmList = vmList.OrderByDescending(x => x.SubmissionDate).ToList();
+
                 return new OperationResultListVo<GameJamEntryViewModel>(vmList);
             }
             catch (Exception ex)
@@ -332,38 +334,49 @@ namespace LuduStack.Application.Services
         }
 
 
-        public async Task<OperationResultListVo<ProfileViewModel>> GetParticipantsByJam(Guid currentUserId, bool currentUserIsAdmin, string jamHandler, Guid jamId)
+        public async Task<OperationResultListVo<GameJamEntryViewModel>> GetParticipantsByJam(Guid currentUserId, bool currentUserIsAdmin, string jamHandler, Guid jamId)
         {
             try
             {
-                List<ProfileViewModel> finalList;
+                List<GameJamEntryViewModel> finalList = new List<GameJamEntryViewModel>();
 
                 IEnumerable<GameJamEntry> allModels = await mediator.Query<GetGameJamEntryListQuery, IEnumerable<GameJamEntry>>(new GetGameJamEntryListQuery(jamId, false));
 
-                IEnumerable<GameJamEntryViewModel> vms = mapper.Map<IEnumerable<GameJamEntry>, IEnumerable<GameJamEntryViewModel>>(allModels);
-
-                var vmList = vms.ToList();
-
-                var userIds = vmList.Select(x => x.UserId);
+                var userIds = allModels.Select(x => x.UserId);
 
                 IEnumerable<UserProfileEssentialVo> userProfiles = await mediator.Query<GetBasicUserProfileDataByUserIdsQuery, IEnumerable<UserProfileEssentialVo>>(new GetBasicUserProfileDataByUserIdsQuery(userIds));
 
-                finalList = userProfiles.Select(x => new ProfileViewModel
+                foreach (var entry in allModels)
                 {
-                    Id = x.Id,
-                    UserId = x.UserId,
-                    CreateDate = x.CreateDate,
-                    Handler = x.Handler,
-                    Name = x.Name,
-                    ProfileImageUrl = UrlFormatter.ProfileImage(x.UserId, Constants.HugeAvatarSize),
-                    CoverImageUrl = UrlFormatter.ProfileCoverImage(x.UserId, x.Id, x.LastUpdateDate, x.HasCoverImage, Constants.ProfileCoverSize)
-                }).ToList();
+                    var profile = userProfiles.FirstOrDefault(x => x.UserId == entry.UserId);
+                    if (profile != null)
+                    {
+                        var entryVm = new GameJamEntryViewModel
+                        {
+                            Id = entry.Id,
+                            UserId = entry.UserId,
+                            JoinDate = entry.JoinDate,
+                            SubmissionDate = entry.SubmissionDate,
+                            JamHandler = jamHandler,
+                            CreateDate = profile.CreateDate,
+                            Handler = profile.Handler,
+                            Name = profile.Name,
+                            Location = profile.Location,
+                            ProfileImageUrl = UrlFormatter.ProfileImage(profile.UserId, Constants.HugeAvatarSize),
+                            CoverImageUrl = UrlFormatter.ProfileCoverImage(profile.UserId, profile.Id, profile.LastUpdateDate, profile.HasCoverImage, Constants.ProfileCoverSize)
+                        };
 
-                return new OperationResultListVo<ProfileViewModel>(finalList);
+                        finalList.Add(entryVm);
+                    }
+                }
+
+                finalList = finalList.OrderByDescending(x => x.JoinDate).ToList();
+
+                return new OperationResultListVo<GameJamEntryViewModel>(finalList);
             }
             catch (Exception ex)
             {
-                return new OperationResultListVo<ProfileViewModel>(ex.Message);
+                return new OperationResultListVo<GameJamEntryViewModel>(ex.Message);
             }
         }
 

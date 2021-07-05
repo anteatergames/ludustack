@@ -1,10 +1,11 @@
 ﻿using LuduStack.Application.ViewModels.Game;
+using LuduStack.Domain.Interfaces.Models;
 using System;
 using System.Collections.Generic;
 
 namespace LuduStack.Application.ViewModels.GameJam
 {
-    public class GameJamEntryViewModel : UserGeneratedBaseViewModel
+    public class GameJamEntryViewModel : UserGeneratedBaseViewModel, IUserProfileBasic
     {
         public bool LateSubmission { get; set; }
 
@@ -37,5 +38,19 @@ namespace LuduStack.Application.ViewModels.GameJam
         public bool Submitted => SubmissionDate != default;
 
         public string JamHandler { get; set; }
+
+        #region IUserProfileBasic
+        public string Handler { get; set; }
+
+        public string ProfileImageUrl { get; set; }
+
+        public string CoverImageUrl { get; set; }
+
+        public string Name { get; set; }
+
+        public string Country { get; set; }
+
+        public string Location { get; set; }
+        #endregion IUserProfileBasic
     }
 }

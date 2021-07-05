@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ProfileViewModel>
+﻿@model IEnumerable<GameJamEntryViewModel>
 
 @{
     Layout = null;
@@ -14,12 +14,15 @@
         <span>@SharedLocalizer["{0} users are participating", Model.Count()]</span>
     }
 </div>
-<div class="row mx-1">
+<div class="row justify-content-center mx-1">
     @foreach (var item in Model)
     {
         <div class="col-12 col-md-6 col-lg-4 col-xl-3 px-0 px-md-2 mb-3">
             <div class="bordered">
                 <partial name="_UserCard" model="item" />
+                <div class="col-12 mb-2 text-center">
+                    <a asp-area="community" asp-controller="gamejam" asp-action="entry" asp-route-jamHandler="@item.JamHandler" asp-route-id="@item.Id" class="btn btn-default">@SharedLocalizer["Check Entry"]</a>
+                </div>
             </div>
         </div>
     }
