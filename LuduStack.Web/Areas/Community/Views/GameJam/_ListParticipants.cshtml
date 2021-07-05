@@ -1,0 +1,26 @@
+﻿@model IEnumerable<ProfileViewModel>
+
+@{
+    Layout = null;
+}
+
+<div class="col-12 text-center">
+    @if (Model.Count() == 1)
+    {
+        <span>@SharedLocalizer["Just 1 user is participating"]</span>
+    }
+    else
+    {
+        <span>@SharedLocalizer["{0} users are participating", Model.Count()]</span>
+    }
+</div>
+<div class="row mx-1">
+    @foreach (var item in Model)
+    {
+        <div class="col-12 col-md-6 col-lg-4 col-xl-3 px-0 px-md-2 mb-3">
+            <div class="bordered">
+                <partial name="_UserCard" model="item" />
+            </div>
+        </div>
+    }
+</div>

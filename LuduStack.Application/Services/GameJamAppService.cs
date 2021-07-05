@@ -4,6 +4,7 @@ using LuduStack.Application.Helpers;
 using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels.Game;
 using LuduStack.Application.ViewModels.GameJam;
+using LuduStack.Application.ViewModels.User;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Core.Extensions;
 using LuduStack.Domain.Messaging;
@@ -327,6 +328,42 @@ namespace LuduStack.Application.Services
             catch (Exception ex)
             {
                 return new OperationResultListVo<GameJamEntryViewModel>(ex.Message);
+            }
+        }
+
+
+        public async Task<OperationResultListVo<ProfileViewModel>> GetParticipantsByJam(Guid currentUserId, bool currentUserIsAdmin, string jamHandler, Guid jamId)
+        {
+            try
+            {
+                List<ProfileViewModel> finalList;
+
+                IEnumerable<GameJamEntry> allModels = await mediator.Query<GetGameJamEntryListQuery, IEnumerable<GameJamEntry>>(new GetGameJamEntryListQuery(jamId, false));
+
+                IEnumerable<GameJamEntryViewModel> vms = mapper.Map<IEnumerable<GameJamEntry>, IEnumerable<GameJamEntryViewModel>>(allModels);
+
+                var vmList = vms.ToList();
+
+                var userIds = vmList.Select(x => x.UserId);
+
+                IEnumerable<UserProfileEssentialVo> userProfiles = await mediator.Query<GetBasicUserProfileDataByUserIdsQuery, IEnumerable<UserProfileEssentialVo>>(new GetBasicUserProfileDataByUserIdsQuery(userIds));
+
+                finalList = userProfiles.Select(x => new ProfileViewModel
+                {
+                    Id = x.Id,
+                    UserId = x.UserId,
+                    CreateDate = x.CreateDate,
+                    Handler = x.Handler,
+                    Name = x.Name,
+                    ProfileImageUrl = UrlFormatter.ProfileImage(x.UserId, Constants.SmallAvatarSize),
+                    CoverImageUrl = UrlFormatter.ProfileCoverImage(x.UserId, x.Id)
+                }).ToList();
+
+                return new OperationResultListVo<ProfileViewModel>(finalList);
+            }
+            catch (Exception ex)
+            {
+                return new OperationResultListVo<ProfileViewModel>(ex.Message);
             }
         }
 

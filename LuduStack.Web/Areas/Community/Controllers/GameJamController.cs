@@ -1,6 +1,7 @@
 ﻿using LuduStack.Application;
 using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels.GameJam;
+using LuduStack.Application.ViewModels.User;
 using LuduStack.Domain.ValueObjects;
 using LuduStack.Web.Areas.Community.Controllers;
 using LuduStack.Web.Extensions;
@@ -102,6 +103,27 @@ namespace LuduStack.Web.Areas.Staff.Controllers
             ViewData["ListDescription"] = SharedLocalizer["All Submissions"].ToString();
 
             return PartialView("_ListGameJamSubmissions", model);
+        }
+
+        [Route("/gamejam/{jamHandler}/{jamId:guid}/listparticipants")]
+        public async Task<PartialViewResult> ListParticipants(string jamHandler, Guid jamId)
+        {
+            List<ProfileViewModel> model;
+
+            OperationResultListVo<ProfileViewModel> serviceResult = await gameJamAppService.GetParticipantsByJam(CurrentUserId, CurrentUserIsAdmin, jamHandler, jamId);
+
+            if (serviceResult.Success)
+            {
+                model = serviceResult.Value.ToList();
+            }
+            else
+            {
+                model = new List<ProfileViewModel>();
+            }
+
+            ViewData["ListDescription"] = SharedLocalizer["All Participants"].ToString();
+
+            return PartialView("_ListParticipants", model);
         }
 
         [AllowAnonymous]

@@ -1,4 +1,5 @@
 ﻿using LuduStack.Application.ViewModels.GameJam;
+using LuduStack.Application.ViewModels.User;
 using LuduStack.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
@@ -29,6 +30,8 @@ namespace LuduStack.Application.Interfaces
         Task<OperationResultVo> ValidateHandler(Guid currentUserId, string handler, Guid id);
 
         Task<OperationResultListVo<GameJamEntryViewModel>> GetEntriesByJam(Guid currentUserId, bool currentUserIsAdmin, string jamHandler, Guid jamId, bool submittedOnly);
+
+        Task<OperationResultListVo<ProfileViewModel>> GetParticipantsByJam(Guid currentUserId, bool currentUserIsAdmin, string jamHandler, Guid jamId);
 
         Task<OperationResultVo> Join(Guid currentUserId, Guid jamId);
 

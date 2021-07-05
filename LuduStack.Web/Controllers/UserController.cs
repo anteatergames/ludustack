@@ -47,7 +47,7 @@ namespace LuduStack.Web.Controllers
 
             List<ProfileViewModel> profiles = serviceResult.Value.OrderByDescending(x => x.CreateDate).ToList();
 
-            return View(profiles);
+            return View("_UserList", profiles);
         }
 
         [Route("search")]

@@ -16,16 +16,16 @@
 }
 else
 {
-<div class="col-12 text-center">
-    @if (Model.Count() == 1)
-    {
-        <span>@SharedLocalizer["{0} participant submitted a game", Model.Count()]</span>
-    }
-    else
-    {
-        <span>@SharedLocalizer["{0} participants submitted their games", Model.Count()]</span>
-    }
-</div>
+    <div class="col-12 text-center">
+        @if (Model.Count() == 1)
+        {
+            <span>@SharedLocalizer["1 participant submitted a game"]</span>
+        }
+        else
+        {
+            <span>@SharedLocalizer["{0} participants submitted their games", Model.Count()]</span>
+        }
+    </div>
     <div class="col-12">
         <div class="row justify-content-center">
             @foreach (var item in Model)

@@ -12,7 +12,6 @@
         selectors.Id = '#Id';
         selectors.btnJoin = '.btn-join';
         selectors.btnCantJoin = '.btn-cantjoin';
-        selectors.tabSubmissions = '#tabsubmissions';
     }
 
     function cacheObjs() {
@@ -20,7 +19,6 @@
         objs.urls = $(selectors.urls);
         objs.containerDetails = $(selectors.containerDetails);
         objs.Id = $(selectors.Id);
-        objs.tabSubmissions = $(selectors.tabSubmissions);
     }
 
     function init() {
@@ -76,11 +74,11 @@
 
             var tabDestination = e.target.getAttribute('href');
 
-            if (tabDestination === '#' + objs.tabSubmissions.prop('id')) {
-                loadTab(objs.tabSubmissions, url);
+            if (tabDestination === '#taboverview') {
+                history.replaceState({}, document.title, ".");
             }
             else {
-                history.replaceState({}, document.title, ".");
+                loadTab($(tabDestination), url);
             }
 
             return false;
