@@ -192,7 +192,6 @@ namespace LuduStack.Application.Services
                 GameJam existing = await mediator.Query<GetGameJamByIdQuery, GameJam>(new GetGameJamByIdQuery(viewModel.Id));
                 if (existing != null)
                 {
-                    Guid existingUserId = existing.UserId;
                     model = mapper.Map(viewModel, existing);
                     model.UserId = existing.UserId;
                 }
@@ -341,7 +340,7 @@ namespace LuduStack.Application.Services
                     }
                     else
                     {
-                        vm.CreateDate = vm.SubmissionDate.ToLocalTime();
+                        vm.CreateDate = vm.JoinDate.ToLocalTime();
                     }
                 }
 
@@ -565,11 +564,6 @@ namespace LuduStack.Application.Services
 
                 vm.JoinDate = vm.JoinDate.ToLocalTime();
                 vm.SubmissionDate = vm.SubmissionDate.ToLocalTime();
-
-                foreach (var item in vm.Votes)
-                {
-
-                }
 
                 foreach (var criteria in gameJamVm.Criteria)
                 {

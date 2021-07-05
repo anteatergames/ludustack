@@ -37,7 +37,7 @@ else
                     <div class="bg-white bordered gamejamitem">
                         <a asp-area="community" asp-controller="gamejam" asp-action="entry" asp-route-jamHandler="@item.JamHandler" asp-route-id="@item.Id">
                             <div class="border-bottom square-bottom d-flex justify-content-center gamejamitemimage">
-                                <img src="@item.FeaturedImage" class="img-fluid w-100 square-bottom card-img" />
+                                <img src="@item.FeaturedImage" class="img-fluid w-100 square-bottom card-img" alt="@SharedLocalizer["This is {0}'s submission", item.AuthorName]" />
                             </div>
                         </a>
 

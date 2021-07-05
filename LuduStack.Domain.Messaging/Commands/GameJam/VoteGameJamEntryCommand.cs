@@ -26,7 +26,7 @@ namespace LuduStack.Domain.Messaging
 
         public VoteGameJamEntryCommand(Guid userId, Guid id, GameJamCriteriaType criteriaType, decimal score, string comment, bool isCommunityVote) : base(userId, id)
         {
-            CriteriaType = CriteriaType;
+            CriteriaType = criteriaType;
             Score = score;
             Comment = comment;
             IsCommunityVote = isCommunityVote;
