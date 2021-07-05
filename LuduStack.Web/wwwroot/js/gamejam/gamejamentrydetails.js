@@ -11,6 +11,7 @@
         selectors.container = '#featurecontainer';
         selectors.form = '#frmSubmitGame';
         selectors.btnSubmitGame = '#btnSubmitGame';
+        selectors.scoreRating = '.criteria-rating';
     }
 
     function cacheObjs() {
@@ -33,6 +34,7 @@
 
     function bindAll() {
         bindBtnSubmitGame();
+        bindRatings();
     }
 
     function bindBtnSubmitGame() {
@@ -48,6 +50,39 @@
             }
 
             return false;
+        });
+    }
+
+    function bindRatings() {
+        $(selectors.scoreRating).rating({
+            theme: 'krajee-fas',
+            showClear: false,
+            showCaption: false,
+            size: 'md',
+            animate: false,
+            step: 0.5,
+            filledStar: '<i class="fas fa-gamepad tilt-20"></i>',
+            emptyStar: '<i class="fas fa-gamepad tilt-20"></i>',
+            starCaptions: {
+                0.5: '0.5',
+                1: '1.0',
+                1.5: '1.5',
+                2: '2.0',
+                2.5: '2.5',
+                3: '3.0',
+                3.5: '3.5',
+                4: '4.0',
+                4.5: '4.5',
+                5: '5.0'
+            }
+        });
+
+        objs.container.on('rating:change', selectors.scoreRating, function (event, value, caption) {
+            var url = $(this).data('url');
+
+            var data = { score: value };
+
+            MAINMODULE.Ajax.Post(url, data);
         });
     }
 

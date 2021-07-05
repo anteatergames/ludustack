@@ -484,6 +484,10 @@ namespace LuduStack.Application.Services
 
                     GameViewModel gameVm = mapper.Map<GameViewModel>(game);
 
+                    GameFormatter.FilCharacteristics(gameVm);
+
+                    await GameFormatter.FormatExternalLinks(mediator, gameVm);
+
                     gameVm.ThumbnailUrl = string.IsNullOrWhiteSpace(gameVm.ThumbnailUrl) || Constants.DefaultGameThumbnail.NoExtension().Contains(gameVm.ThumbnailUrl.NoExtension()) ? Constants.DefaultGameThumbnail : UrlFormatter.Image(gameVm.UserId, ImageType.GameThumbnail, gameVm.ThumbnailUrl);
 
                     vm.Game = gameVm;
@@ -507,6 +511,21 @@ namespace LuduStack.Application.Services
                 vm.SubmissionDate = vm.SubmissionDate.ToLocalTime();
 
                 SetEntryPermissions(currentUserId, currentUserIsAdmin, gameJamVm, vm);
+
+                foreach (var criteria in gameJamVm.Criteria)
+                {
+                    var currentVote = vm.Votes.FirstOrDefault(x => x.UserId == currentUserId && x.CriteriaType == criteria.Type);
+                    if (currentVote == null)
+                    {
+                        var vote = new GameJamVoteViewModel
+                        {
+                            UserId = currentUserId,
+                            CriteriaType = criteria.Type
+                        };
+
+                        vm.Votes.Add(vote);
+                    }
+                }
 
                 return new OperationResultVo<GameJamEntryViewModel>(vm);
             }

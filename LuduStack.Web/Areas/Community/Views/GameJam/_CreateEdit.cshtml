@@ -138,60 +138,6 @@
                 </div>
 
                 <div class="col-12">
-                    <div class="col-12 col-lg-6 pb-3 mb-3 mx-auto d-block text-center bg-light bordered newimageupload">
-                        <div class="form-group m-0">
-                            <label asp-for="FeaturedImage" class="col-form-label"></label>
-                            <span asp-description-for="FeaturedImage" class="col-form-label" />
-                        </div>
-                        <div class="w-100">
-                            <img class="rounded img-fluid border w-100 square-bottom uploadimage" id="featuredImage" src="@Model.FeaturedImage" data-aspectratio="40/21" alt="@Html.DisplayNameFor(x => x.FeaturedImage)">
-                        </div>
-                        <label class="btn btn-block btn-outline-secondary square-top text-uppercase" data-toggle="tooltip" title="" data-original-title="@SharedLocalizer["Click here to change this image"]">
-                            <i class="fas fa-fw fa-upload" aria-hidden="true"></i>
-                            <span>@SharedLocalizer["change"]</span>
-                            <input type="file" class="sr-only imageinput" accept="image/png, image/jpeg" data-target-img="featuredImage" data-target-hidden="FeaturedImage">
-                            <input type="hidden" asp-for="FeaturedImage" />
-                        </label>
-                    </div>
-                </div>
-
-                <div class="col-12">
-                    <div class="col-12 col-lg-6 pb-3 mb-3 mx-auto d-block text-center bg-light bordered newimageupload">
-                        <div class="form-group m-0">
-                            <label asp-for="BannerImage" class="col-form-label"></label>
-                            <span asp-description-for="BannerImage" class="col-form-label" />
-                        </div>
-                        <div class="w-100">
-                            <img class="rounded img-fluid border w-100 square-bottom uploadimage" id="bannerImage" src="@Model.BannerImage" alt="@Html.DisplayNameFor(x => x.BannerImage)">
-                        </div>
-                        <label class="btn btn-block btn-outline-secondary square-top text-uppercase" data-toggle="tooltip" title="" data-original-title="@SharedLocalizer["Click here to change this image"]">
-                            <i class="fas fa-fw fa-upload" aria-hidden="true"></i>
-                            <span>@SharedLocalizer["change"]</span>
-                            <input type="file" class="sr-only imageinput" accept="image/*" data-target-img="bannerImage" data-target-hidden="BannerImage">
-                            <input type="hidden" asp-for="BannerImage" />
-                        </label>
-                    </div>
-                </div>
-
-                <div class="col-12">
-                    <div class="col-12 col-lg-6 pb-3 mb-3 mx-auto d-block text-center bg-light bordered newimageupload">
-                        <div class="form-group m-0">
-                            <label asp-for="BackgroundImage" class="col-form-label"></label>
-                            <span asp-description-for="BackgroundImage" class="col-form-label" />
-                        </div>
-                        <div class="w-100">
-                            <img class="rounded img-fluid border w-100 square-bottom uploadimage" id="backgroundImage" src="@Model.BackgroundImage" alt="@Html.DisplayNameFor(x => x.BackgroundImage)">
-                        </div>
-                        <label class="btn btn-block btn-outline-secondary square-top text-uppercase" data-toggle="tooltip" title="" data-original-title="@SharedLocalizer["Click here to change this image"]">
-                            <i class="fas fa-fw fa-upload" aria-hidden="true"></i>
-                            <span>@SharedLocalizer["change"]</span>
-                            <input type="file" class="sr-only imageinput" accept="image/*" data-target-img="backgroundImage" data-target-hidden="BackgroundImage">
-                            <input type="hidden" asp-for="BackgroundImage" />
-                        </label>
-                    </div>
-                </div>
-
-                <div class="col-12">
                     <div class="form-group">
                         <label asp-for="Description" class="col-form-label"></label>
                         <span asp-description-for="Description" class="col-form-label" />
@@ -262,6 +208,69 @@
                                 <span class="slider round"></span>
                             </label>
                             <span asp-description-for="HideMainTheme" class="col-form-label" />
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label asp-for="Voters" class="col-form-label"></label>
+                            <span asp-description-for="Voters" class="col-form-label" />
+                            <select asp-for="Voters" asp-items="Html.GetEnumSelectList<GameJamVoters>()" class="form-control"></select>
+                            <span asp-validation-for="Voters" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="col-12 col-lg-6 pb-3 mb-3 mx-auto d-block text-center bg-light bordered newimageupload">
+                            <div class="form-group m-0">
+                                <label asp-for="FeaturedImage" class="col-form-label"></label>
+                                <span asp-description-for="FeaturedImage" class="col-form-label" />
+                            </div>
+                            <div class="w-100">
+                                <img class="rounded img-fluid border w-100 square-bottom uploadimage" id="featuredImage" src="@Model.FeaturedImage" data-aspectratio="40/21" alt="@Html.DisplayNameFor(x => x.FeaturedImage)">
+                            </div>
+                            <label class="btn btn-block btn-outline-secondary square-top text-uppercase" data-toggle="tooltip" title="" data-original-title="@SharedLocalizer["Click here to change this image"]">
+                                <i class="fas fa-fw fa-upload" aria-hidden="true"></i>
+                                <span>@SharedLocalizer["change"]</span>
+                                <input type="file" class="sr-only imageinput" accept="image/png, image/jpeg" data-target-img="featuredImage" data-target-hidden="FeaturedImage">
+                                <input type="hidden" asp-for="FeaturedImage" />
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="col-12 col-lg-6 pb-3 mb-3 mx-auto d-block text-center bg-light bordered newimageupload">
+                            <div class="form-group m-0">
+                                <label asp-for="BannerImage" class="col-form-label"></label>
+                                <span asp-description-for="BannerImage" class="col-form-label" />
+                            </div>
+                            <div class="w-100">
+                                <img class="rounded img-fluid border w-100 square-bottom uploadimage" id="bannerImage" src="@Model.BannerImage" alt="@Html.DisplayNameFor(x => x.BannerImage)">
+                            </div>
+                            <label class="btn btn-block btn-outline-secondary square-top text-uppercase" data-toggle="tooltip" title="" data-original-title="@SharedLocalizer["Click here to change this image"]">
+                                <i class="fas fa-fw fa-upload" aria-hidden="true"></i>
+                                <span>@SharedLocalizer["change"]</span>
+                                <input type="file" class="sr-only imageinput" accept="image/*" data-target-img="bannerImage" data-target-hidden="BannerImage">
+                                <input type="hidden" asp-for="BannerImage" />
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="col-12 col-lg-6 pb-3 mb-3 mx-auto d-block text-center bg-light bordered newimageupload">
+                            <div class="form-group m-0">
+                                <label asp-for="BackgroundImage" class="col-form-label"></label>
+                                <span asp-description-for="BackgroundImage" class="col-form-label" />
+                            </div>
+                            <div class="w-100">
+                                <img class="rounded img-fluid border w-100 square-bottom uploadimage" id="backgroundImage" src="@Model.BackgroundImage" alt="@Html.DisplayNameFor(x => x.BackgroundImage)">
+                            </div>
+                            <label class="btn btn-block btn-outline-secondary square-top text-uppercase" data-toggle="tooltip" title="" data-original-title="@SharedLocalizer["Click here to change this image"]">
+                                <i class="fas fa-fw fa-upload" aria-hidden="true"></i>
+                                <span>@SharedLocalizer["change"]</span>
+                                <input type="file" class="sr-only imageinput" accept="image/*" data-target-img="backgroundImage" data-target-hidden="BackgroundImage">
+                                <input type="hidden" asp-for="BackgroundImage" />
+                            </label>
                         </div>
                     </div>
                 </div>

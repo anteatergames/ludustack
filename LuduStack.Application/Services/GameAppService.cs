@@ -102,9 +102,9 @@ namespace LuduStack.Application.Services
                     FormatExternalLinksForEdit(ref vm);
                 }
 
-                await FormatExternalLinks(vm);
+                await GameFormatter.FormatExternalLinks(mediator, vm);
 
-                FilCharacteristics(vm);
+                GameFormatter.FilCharacteristics(vm);
 
                 if (string.IsNullOrWhiteSpace(vm.ThumbnailUrl) || Constants.DefaultGameThumbnail.Contains(vm.ThumbnailUrl) || vm.ThumbnailUrl.Contains(Constants.DefaultGameThumbnail))
                 {
@@ -331,94 +331,6 @@ namespace LuduStack.Application.Services
             }
         }
 
-        private async Task FormatExternalLinks(GameViewModel vm)
-        {
-            IEnumerable<UserProfile> profiles = await mediator.Query<GetUserProfileByUserIdQuery, IEnumerable<UserProfile>>(new GetUserProfileByUserIdQuery(vm.UserId));
-            UserProfile authorProfile = profiles.FirstOrDefault();
-            ExternalLinkVo itchProfile = authorProfile.ExternalLinks.FirstOrDefault(x => x.Provider == ExternalLinkProvider.ItchIo);
-
-            foreach (ExternalLinkBaseViewModel item in vm.ExternalLinks)
-            {
-                ExternalLinkInfoAttribute uiInfo = item.Provider.GetAttributeOfType<ExternalLinkInfoAttribute>();
-                item.Display = uiInfo.Display;
-                item.IconClass = uiInfo.Class;
-                item.ColorClass = uiInfo.ColorClass;
-                item.IsStore = uiInfo.IsStore;
-                item.Order = uiInfo.Order;
-
-                switch (item.Provider)
-                {
-                    case ExternalLinkProvider.Website:
-                        item.Value = UrlFormatter.Website(item.Value);
-                        break;
-
-                    case ExternalLinkProvider.Facebook:
-                        item.Value = UrlFormatter.Facebook(item.Value);
-                        break;
-
-                    case ExternalLinkProvider.Twitter:
-                        item.Value = UrlFormatter.Twitter(item.Value);
-                        break;
-
-                    case ExternalLinkProvider.Instagram:
-                        item.Value = UrlFormatter.Instagram(item.Value);
-                        break;
-
-                    case ExternalLinkProvider.Youtube:
-                        item.Value = UrlFormatter.Youtube(item.Value);
-                        break;
-
-                    case ExternalLinkProvider.XboxLive:
-                        item.Value = UrlFormatter.XboxLiveGame(item.Value);
-                        break;
-
-                    case ExternalLinkProvider.PlaystationStore:
-                        item.Value = UrlFormatter.PlayStationStoreGame(item.Value);
-                        break;
-
-                    case ExternalLinkProvider.Steam:
-                        item.Value = UrlFormatter.SteamGame(item.Value);
-                        break;
-
-                    case ExternalLinkProvider.GameJolt:
-                        item.Value = UrlFormatter.GameJoltGame(item.Value);
-                        break;
-
-                    case ExternalLinkProvider.ItchIo:
-                        item.Value = UrlFormatter.ItchIoGame(itchProfile?.Value, item.Value);
-                        break;
-
-                    case ExternalLinkProvider.GamedevNet:
-                        item.Value = UrlFormatter.GamedevNetGame(item.Value);
-                        break;
-
-                    case ExternalLinkProvider.IndieDb:
-                        item.Value = UrlFormatter.IndieDbGame(item.Value);
-                        break;
-
-                    case ExternalLinkProvider.UnityConnect:
-                        item.Value = UrlFormatter.UnityConnectGame(item.Value);
-                        break;
-
-                    case ExternalLinkProvider.GooglePlayStore:
-                        item.Value = UrlFormatter.GooglePlayStoreGame(item.Value);
-                        break;
-
-                    case ExternalLinkProvider.AppleAppStore:
-                        item.Value = UrlFormatter.AppleAppStoreGame(item.Value);
-                        break;
-
-                    case ExternalLinkProvider.IndiExpo:
-                        item.Value = UrlFormatter.IndiExpoGame(item.Value);
-                        break;
-
-                    case ExternalLinkProvider.Discord:
-                        item.Value = UrlFormatter.DiscordGame(item.Value);
-                        break;
-                }
-            }
-        }
-
         private static void FormatExternalLinksForEdit(ref GameViewModel vm)
         {
             foreach (ExternalLinkProvider provider in Enum.GetValues(typeof(ExternalLinkProvider)))
@@ -454,23 +366,6 @@ namespace LuduStack.Application.Services
             }
 
             vm.ExternalLinks = vm.ExternalLinks.OrderByDescending(x => x.Type).ThenBy(x => x.Provider).ToList();
-        }
-
-        private static void FilCharacteristics(GameViewModel vm)
-        {
-            if (vm.Characteristics == null)
-            {
-                vm.Characteristics = new List<GameCharacteristicVo>();
-            }
-            List<GameCharacteristcs> allBenefits = Enum.GetValues(typeof(GameCharacteristcs)).Cast<GameCharacteristcs>().Where(x => x != GameCharacteristcs.NotInformed).ToList();
-
-            foreach (GameCharacteristcs characteristic in allBenefits)
-            {
-                if (!vm.Characteristics.Any(x => x.Characteristic == characteristic))
-                {
-                    vm.Characteristics.Add(new GameCharacteristicVo { Characteristic = characteristic, Available = false });
-                }
-            }
         }
     }
 }

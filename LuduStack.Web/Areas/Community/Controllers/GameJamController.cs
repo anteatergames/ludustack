@@ -100,6 +100,11 @@ namespace LuduStack.Web.Areas.Staff.Controllers
                 model = new List<GameJamEntryViewModel>();
             }
 
+            foreach (var item in model)
+            {
+                item.Url = Url.Action("entry", "gamejam", new { area = "community", jamHandler = jamHandler, id = item.Id });
+            }
+
             ViewData["ListDescription"] = SharedLocalizer["All Submissions"].ToString();
 
             return PartialView("_ListGameJamSubmissions", model);

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LuduStack.Domain.Core.Enums;
+using System;
 
 namespace LuduStack.Application.ViewModels.GameJam
 {
@@ -8,7 +9,7 @@ namespace LuduStack.Application.ViewModels.GameJam
 
         public bool IsCommunityVote { get; set; }
 
-        public Guid CriteriaId { get; set; }
+        public GameJamCriteriaType CriteriaType { get; set; }
 
         public decimal Score { get; set; }
 
