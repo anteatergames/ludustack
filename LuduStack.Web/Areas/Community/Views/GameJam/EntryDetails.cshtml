@@ -124,36 +124,48 @@
 
                     <div class="col-12 pt-2">
                         <div class="row">
-                            <div class="col-12 col-md-6">
+                            <div class="col-12 col-md-6 mb-2">
                                 <partial name="_GameInfoPanel" model="Model.Game" />
                             </div>
                             <div class="col-12 col-md-6">
                                 <div class="row">
-                                    <div class="col-12 text-uppercase mb-2">
+                                    <div class="col-12 text-uppercase mb-3">
                                         <a href="@Url.Action("details", "game", new { area = string.Empty, id = Model.Game.Id })" class="btn btn-large btn-block btn-secondary">
                                             @SharedLocalizer["visit game page"]
                                         </a>
                                     </div>
-                                    <div class="col-12 mb-3">
+                                    <div class="col-12">
                                         @Html.Raw(Model.Game.Description)
                                     </div>
-                                    <div class="col-12 mb-2">
-                                        <h2>@SharedLocalizer["Vote"]</h2>
 
-                                        @foreach (var criteria in Model.GameJam.Criteria)
-                                        {
-                                            var vote = Model.Votes.FirstOrDefault(x => x.CriteriaType == criteria.Type);
+                                    <div class="col-12">
+                                        <hr />
+                                    </div>
 
-                                    <div class="d-flex">
-                                        <div class="d-flex flex-column justify-content-center">
-                                            <span class="col-form-label">@criteria.Name</span>
+                                    @if (Model.Permissions.CanVote)
+                                    {
+                                        <div class="col-12 mb-2">
+                                            <h2>@SharedLocalizer["Vote"]</h2>
+
+                                            @foreach (var criteria in Model.GameJam.Criteria)
+                                            {
+                                                var vote = Model.Votes.FirstOrDefault(x => x.CriteriaType == criteria.Type);
+
+                                                <div class="row mx-1">
+                                                    <div class="col-12 col-lg-6">
+                                                        <div class="d-flex flex-column justify-content-center">
+                                                            <span class="display-4">@criteria.Name</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 col-lg-6">
+                                                        <div class="h-100 d-flex flex-column justify-content-center">
+                                                            <input id="txtScore" name="Score" type="number" class="d-none criteria-rating" step="1" value="@vote.Score.ToString(new System.Globalization.CultureInfo("en-US"))" data-url="@Url.Action("voteentry", "gamejam", new { area = "community", jamHandler = Model.GameJam.Handler, userId = ViewBag.CurrentUserId, entryId = Model.Id, criteriaType = vote.CriteriaType })">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
                                         </div>
-                                        <div class="col">
-                                            <input id="txtScore" name="Score" type="number" class="d-none criteria-rating" step="1" value="@vote.Score.ToString(new System.Globalization.CultureInfo("en-US"))" data-url="@Url.Action("voteentry", "gamejam", new { area = "community", jamHandler = Model.GameJam.Handler, userId = ViewBag.CurrentUserId, entryId = Model.Id })">
-                                        </div>
-                                    </div>
-                                        }
-                                    </div>
+                                    }
                                 </div>
                             </div>
                         </div>

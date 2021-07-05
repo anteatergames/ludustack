@@ -112,19 +112,47 @@
 
             <ul class="nav nav-tabs text-capitalize" id="tabs" role="tablist">
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link active" id="overview-tab" data-toggle="tab" href="#taboverview" role="tab" aria-controls="taboverview" aria-selected="true"><i class="fas fa-info-circle" aria-hidden="true"></i><span class="d-none d-sm-inline-block">&nbsp;@SharedLocalizer["overview"]</span></a>
+                    <a class="nav-link active" id="overview-tab" data-toggle="tab" href="#taboverview" role="tab" aria-controls="taboverview" aria-selected="true"><i class="fas fa-info-circle" aria-hidden="true"></i><span class="d-none d-md-inline-block">&nbsp;@SharedLocalizer["overview"]</span></a>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link" id="participants-tab" data-toggle="tab" href="#tabparticipants" role="tab" aria-controls="tabparticipants" aria-selected="false" data-url="@Url.Action("listparticipants", "gamejam", new { area = "community", jamHandler = Model.Handler, jamId = Model.Id })"><i class="fas fa-user" aria-hidden="true"></i><span class="d-none d-sm-inline-block">&nbsp;@SharedLocalizer["participants"]</span></a>
+                    <a class="nav-link" id="judges-tab" data-toggle="tab" href="#tabjudges" role="tab" aria-controls="tabjudges" aria-selected="false"><i class="fas fa-gavel" aria-hidden="true"></i><span class="d-none d-md-inline-block">&nbsp;@SharedLocalizer["judges"]</span></a>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link" id="submissions-tab" data-toggle="tab" href="#tabsubmissions" role="tab" aria-controls="tabsubmissions" aria-selected="false" data-url="@Url.Action("listsubmissions", "gamejam", new { area = "community", jamHandler = Model.Handler, jamId = Model.Id })"><i class="fas fa-gamepad" aria-hidden="true"></i><span class="d-none d-sm-inline-block">&nbsp;@SharedLocalizer["submissions"]</span></a>
+                    <a class="nav-link" id="participants-tab" data-toggle="tab" href="#tabparticipants" role="tab" aria-controls="tabparticipants" aria-selected="false" data-url="@Url.Action("listparticipants", "gamejam", new { area = "community", jamHandler = Model.Handler, jamId = Model.Id })"><i class="fas fa-user" aria-hidden="true"></i><span class="d-none d-md-inline-block">&nbsp;@SharedLocalizer["participants"]</span></a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="submissions-tab" data-toggle="tab" href="#tabsubmissions" role="tab" aria-controls="tabsubmissions" aria-selected="false" data-url="@Url.Action("listsubmissions", "gamejam", new { area = "community", jamHandler = Model.Handler, jamId = Model.Id })"><i class="fas fa-gamepad" aria-hidden="true"></i><span class="d-none d-md-inline-block">&nbsp;@SharedLocalizer["submissions"]</span></a>
                 </li>
             </ul>
             <div class="tab-content" id="tabsContent">
                 <div class="tab-pane fade show active" id="taboverview" role="tabpanel" aria-labelledby="overview-tab">
                     <div class="bg-white mx-auto p-3 square-top htmlcontent">
                         @Html.Raw(Model.Description)
+                    </div>
+                </div>
+                <div class="tab-pane fade p-2 bg-white" id="tabjudges" role="tabpanel" aria-labelledby="judges-tab">
+                    <div class="col-12 text-center">
+                        @if (Model.Judges.Count == 1)
+                        {
+                            <span>@SharedLocalizer["Just 1 user will judge the submissions"]</span>
+                        }
+                        else
+                        {
+                            <span>@SharedLocalizer["{0} users will judge the submissions", Model.Judges.Count]</span>
+                        }
+                    </div>
+                    <div class="row justify-content-center">
+                        @for (int i = 0; i < Model.JudgesProfiles.Count; i++)
+                        {
+                            var judge = Model.JudgesProfiles.ElementAt(i);
+
+                            <div class="col-12 col-md-6 col-lg-4 col-xl-3 p-1">
+                                <input type="hidden" name="Judges[@i]" value="@judge.UserId" />
+                                <div class="bordered">
+                                    <partial name="_UserCard" model="judge" />
+                                </div>
+                            </div>
+                        }
                     </div>
                 </div>
                 <div class="tab-pane fade p-2 bg-white" id="tabparticipants" role="tabpanel" aria-labelledby="participants-tab">...</div>

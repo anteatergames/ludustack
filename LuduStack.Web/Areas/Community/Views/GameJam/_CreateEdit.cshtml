@@ -211,6 +211,10 @@
                         </div>
                     </div>
 
+                    <div class="col-12">
+                        <h2 class="h2">@SharedLocalizer["Voters"]</h2>
+                    </div>
+
                     <div class="col-md-12">
                         <div class="form-group">
                             <label asp-for="Voters" class="col-form-label"></label>
@@ -218,6 +222,27 @@
                             <select asp-for="Voters" asp-items="Html.GetEnumSelectList<GameJamVoters>()" class="form-control"></select>
                             <span asp-validation-for="Voters" class="text-danger"></span>
                         </div>
+                    </div>
+
+                    <div class="col-12 mb-3">
+                        <label asp-for="Judges" class="col-form-label"></label>
+                        <div class="row justify-content-center">
+                            @for (int i = 0; i < Model.JudgesProfiles.Count; i++)
+                            {
+                                var judge = Model.JudgesProfiles.ElementAt(i);
+
+                                <div class="col-12 col-md-6 col-lg-4">
+                                    <input type="hidden" name="Judges[@i]" value="@judge.UserId" />
+                                    <div class="bordered">
+                                        <partial name="_UserCard" model="judge" />
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <h2 class="h2">@SharedLocalizer["Look and Feel"]</h2>
                     </div>
 
                     <div class="col-12">

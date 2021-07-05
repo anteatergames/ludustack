@@ -77,7 +77,7 @@
             if (tabDestination === '#taboverview') {
                 history.replaceState({}, document.title, ".");
             }
-            else {
+            else if (url !== undefined) {
                 loadTab($(tabDestination), url);
             }
 

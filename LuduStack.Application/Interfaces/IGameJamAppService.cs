@@ -35,10 +35,12 @@ namespace LuduStack.Application.Interfaces
 
         Task<OperationResultVo> Join(Guid currentUserId, Guid jamId);
 
+        Task<OperationResultVo> SubmitGame(Guid currentUserId, string jamHandler, Guid gameId);
+
+        Task<OperationResultVo> VoteEntry(Guid currentUserId, string jamHandler, Guid entryId, Domain.Core.Enums.GameJamCriteriaType criteriaType, decimal score, string comment, bool isCommunityVote);
+
         Task<OperationResultVo<GameJamEntryViewModel>> GetEntry(Guid currentUserId, bool currentUserIsAdmin, string jamHandler);
 
         Task<OperationResultVo<GameJamEntryViewModel>> GetEntry(Guid currentUserId, bool currentUserIsAdmin, string jamHandler, Guid? id);
-
-        Task<OperationResultVo> SubmitGame(Guid currentUserId, string jamHandler, Guid gameId);
     }
 }

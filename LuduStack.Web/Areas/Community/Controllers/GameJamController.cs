@@ -2,6 +2,7 @@
 using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels.GameJam;
 using LuduStack.Application.ViewModels.User;
+using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.ValueObjects;
 using LuduStack.Web.Areas.Community.Controllers;
 using LuduStack.Web.Extensions;
@@ -371,7 +372,7 @@ namespace LuduStack.Web.Areas.Staff.Controllers
             }
         }
 
-        [HttpPost("/gamejam/submitgame")]
+        [HttpPost("/jam/{jamHandler}/submitgame")]
         public async Task<IActionResult> SubmitGame(string jamHandler, Guid gameId)
         {
             OperationResultVo result;
@@ -391,6 +392,25 @@ namespace LuduStack.Web.Areas.Staff.Controllers
                 {
                     return Json(submitGameResult);
                 }
+            }
+            catch (Exception)
+            {
+                result = new OperationResultVo(false);
+            }
+
+            return Json(result);
+        }
+
+        [HttpPost("/jam/{jamHandler}/voteentry")]
+        public async Task<IActionResult> VoteEntry(string jamHandler, Guid entryId, GameJamCriteriaType criteriaType, decimal score, string comment, bool isCommunityVote)
+        {
+            OperationResultVo result;
+
+            try
+            {
+                OperationResultVo submitGameResult = await gameJamAppService.VoteEntry(CurrentUserId, jamHandler, entryId, criteriaType, score, comment, isCommunityVote);
+
+                return Json(submitGameResult);
             }
             catch (Exception)
             {

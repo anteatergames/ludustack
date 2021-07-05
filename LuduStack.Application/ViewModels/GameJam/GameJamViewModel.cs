@@ -1,4 +1,6 @@
-﻿using LuduStack.Domain.Core.Enums;
+﻿using LuduStack.Application.ViewModels.User;
+using LuduStack.Domain.Core.Enums;
+using LuduStack.Domain.ValueObjects;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -82,6 +84,8 @@ namespace LuduStack.Application.ViewModels.GameJam
         public List<GameJamSponsorViewModel> Sponsors { get; set; }
 
         public List<GameJamCriteriaViewModel> Criteria { get; set; }
+
+        public List<ProfileViewModel> JudgesProfiles { get; set; }
 
         public string AuthorName { get; set; }
 

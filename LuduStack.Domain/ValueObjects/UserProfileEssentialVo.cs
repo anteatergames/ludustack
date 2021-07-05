@@ -1,4 +1,5 @@
 ﻿using LuduStack.Domain.Core.Models;
+using LuduStack.Domain.Interfaces.Models;
 
 namespace LuduStack.Domain.ValueObjects
 {
