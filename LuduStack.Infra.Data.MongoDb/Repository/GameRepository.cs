@@ -4,6 +4,7 @@ using LuduStack.Infra.Data.MongoDb.Interfaces;
 using LuduStack.Infra.Data.MongoDb.Repository.Base;
 using MongoDB.Driver;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -99,6 +100,30 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
             int result = DbSet.AsQueryable().Where(x => x.Id == gameId).SelectMany(x => x.Likes).Count();
 
             return Task.FromResult(result);
+        }
+
+        public async Task<IEnumerable<Game>> GetByIds(List<Guid> ids)
+        {
+            ProjectionDefinition<Game, Game> projection1 =
+                Builders<Game>.Projection.Expression(x => new Game
+                {
+                    Id = x.Id,
+                    UserId = x.UserId,
+                    CreateDate = x.CreateDate,
+                    Title = x.Title,
+                    ThumbnailUrl = x.ThumbnailUrl
+                });
+
+            FindOptions<Game, Game> findOptions = new FindOptions<Game, Game>
+            {
+                Projection = projection1
+            };
+
+            FilterDefinition<Game> filter = new ExpressionFilterDefinition<Game>(x => ids.Contains(x.Id));
+
+            List<Game> games = await (await DbSet.FindAsync(filter, findOptions)).ToListAsync();
+
+            return games;
         }
     }
 }

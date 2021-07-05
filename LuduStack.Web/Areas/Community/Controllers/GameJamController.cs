@@ -44,13 +44,11 @@ namespace LuduStack.Web.Areas.Staff.Controllers
         {
             List<GameJamViewModel> model;
 
-            OperationResultVo serviceResult = await gameJamAppService.GetAll(CurrentUserId, CurrentUserIsAdmin);
+            OperationResultListVo<GameJamViewModel> serviceResult = await gameJamAppService.GetAll(CurrentUserId, CurrentUserIsAdmin);
 
             if (serviceResult.Success)
             {
-                OperationResultListVo<GameJamViewModel> castResult = serviceResult as OperationResultListVo<GameJamViewModel>;
-
-                model = castResult.Value.ToList();
+                model = serviceResult.Value.ToList();
             }
             else
             {
@@ -83,6 +81,27 @@ namespace LuduStack.Web.Areas.Staff.Controllers
             ViewData["ListDescription"] = SharedLocalizer["All Game Jams"].ToString();
 
             return PartialView("_ListMyGameJams", model);
+        }
+
+        [Route("/gamejam/{jamHandler}/{jamId:guid}/listsubmissions")]
+        public async Task<PartialViewResult> ListSubmissions(string jamHandler, Guid jamId)
+        {
+            List<GameJamEntryViewModel> model;
+
+            OperationResultListVo<GameJamEntryViewModel> serviceResult = await gameJamAppService.GetEntriesByJam(CurrentUserId, CurrentUserIsAdmin, jamHandler, jamId, true);
+
+            if (serviceResult.Success)
+            {
+                model = serviceResult.Value.ToList();
+            }
+            else
+            {
+                model = new List<GameJamEntryViewModel>();
+            }
+
+            ViewData["ListDescription"] = SharedLocalizer["All Submissions"].ToString();
+
+            return PartialView("_ListGameJamSubmissions", model);
         }
 
         [AllowAnonymous]
@@ -263,6 +282,41 @@ namespace LuduStack.Web.Areas.Staff.Controllers
             try
             {
                 OperationResultVo<GameJamEntryViewModel> serviceResult = await gameJamAppService.GetEntry(CurrentUserId, CurrentUserIsAdmin, jamHandler);
+
+                if (serviceResult.Success)
+                {
+                    GameJamEntryViewModel model = serviceResult.Value;
+
+                    if (model.Game == null)
+                    {
+                        model.Title = SharedLocalizer["{0}'s entry", model.AuthorName];
+
+                        IEnumerable<SelectListItemVo> myGames = await gameAppService.GetByUser(CurrentUserId);
+                        List<SelectListItem> gamesDropDown = myGames.ToSelectList();
+                        ViewBag.UserGames = gamesDropDown;
+                    }
+
+                    return View("EntryDetails", model);
+                }
+                else
+                {
+                    return RedirectToWithMessage("index", "gamejam", "community", "Entry not found!");
+                }
+            }
+            catch
+            {
+                return RedirectToWithMessage("index", "gamejam", "community", "Unable to get that Entry!");
+            }
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("/jam/{jamhandler}/entry/{id:guid}")]
+        public async Task<IActionResult> Entry(string jamHandler, Guid id)
+        {
+            try
+            {
+                OperationResultVo<GameJamEntryViewModel> serviceResult = await gameJamAppService.GetEntry(CurrentUserId, CurrentUserIsAdmin, jamHandler, id);
 
                 if (serviceResult.Success)
                 {

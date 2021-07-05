@@ -16,7 +16,7 @@ namespace LuduStack.Domain.Models
 
         public DateTime SubmissionDate { get; set; }
 
-        public Guid GameId { get; set; }
+        public Guid? GameId { get; set; }
 
         public Guid? TeamId { get; set; }
 

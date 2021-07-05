@@ -35,5 +35,7 @@ namespace LuduStack.Application.ViewModels.GameJam
         public GameViewModel Game { get; set; }
 
         public bool Submitted => SubmissionDate != default;
+
+        public string JamHandler { get; set; }
     }
 }

@@ -1,10 +1,11 @@
-﻿using System;
+﻿using LuduStack.Domain.Core.Enums;
+using System;
 
 namespace LuduStack.Domain.Models
 {
     public class GameJamCriteria
     {
-        public Guid Id { get; set; }
+        public GameJamCriteriaType Type { get; set; }
 
         public string Name { get; set; }
 

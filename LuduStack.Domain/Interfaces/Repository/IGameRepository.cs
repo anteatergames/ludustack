@@ -1,5 +1,7 @@
 ﻿using LuduStack.Domain.Models;
+using LuduStack.Domain.ValueObjects;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace LuduStack.Domain.Interfaces.Repository
@@ -25,5 +27,7 @@ namespace LuduStack.Domain.Interfaces.Repository
         Task<int> CountFollowers(Guid gameId);
 
         Task<int> CountLikes(Guid gameId);
+
+        Task<IEnumerable<Game>> GetByIds(List<Guid> ids);
     }
 }

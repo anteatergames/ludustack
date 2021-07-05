@@ -71,7 +71,7 @@
                         </div>
                         <div class="d-flex flex-row justify-content-center mt-n3">
                             <div class="bg-white">
-                                <a asp-area="community" asp-controller="gamejam" asp-action="details" asp-route-handler="@Model.GameJam.Handler" class="btn btn-lg btn-success btn-join text-uppercase">@SharedLocalizer["see other entries"]</a>
+                                <a asp-area="community" asp-controller="gamejam" asp-action="details" asp-route-handler="@Model.GameJam.Handler" asp-fragment="tabsubmissions" class="btn btn-lg btn-success btn-join text-uppercase">@SharedLocalizer["see other entries"]</a>
                             </div>
                         </div>
                     </div>
@@ -81,6 +81,11 @@
 
         <div class="box bg-light">
             <div class="row mx-2">
+                <div class="mb-2 mr-2 d-flex flex-column justify-content-center">
+                    <a asp-area="" asp-controller="profile" asp-action="details" asp-route-userHandler="@Model.UserHandler">
+                        <img class="rounded-circle" src="@Model.AuthorPicture" alt="This is @Model.AuthorName">
+                    </a>
+                </div>
                 <div class="mr-auto mb-2 d-flex flex-column justify-content-center">
                     <h1 class="m-0 text-capitalize">@Model.Title</h1>
                     @if (Model.Submitted)
@@ -123,14 +128,25 @@
                     </div>
                 </div>
             }
+            else
+            {
+                var noSubmissionModel = new ListNoItemsViewModel("fas fa-dizzy", "This Entry was not submitted yet!");
+                <partial name="_ListNoItems" model="noSubmissionModel" />
+            }
 
             @if (Model.Game == null && userGames != null && userGames.Any() && Model.Permissions.CanSubmit)
             {
+                var createGameUrl = Url.Action("add", "game", new { area = string.Empty });
+                var createGameLink = string.Format("<a href=\"{0}\" class=\"boldlink text-nowrap\">{1}</a>", createGameUrl, SharedLocalizer["click here"].Value);
+
                 <form id="frmSubmitGame" asp-area="community" asp-controller="gamejam" asp-action="submitgame" method="post">
                     <input type="hidden" name="JamHandler" value="@Model.GameJam.Handler" />
                     <div class="row">
                         <div class="col-12">
-                            <div class="alert alert-heading alert-light">@SharedLocalizer["This is your entry for this Game Jam. Start working on your game and submit it on this page when it is ready."]</div>
+                            <div class="alert alert-heading alert-warning text-center">
+                                <span class="d-block">@SharedLocalizer["This is your entry for this Game Jam. Start working on your game and submit it on this page when it is ready."]</span>
+                                <span class="d-block">@Html.Raw(SharedLocalizer["If your game is not listed below, {0} to create a new game on the LuduStack platform.", createGameLink])</span>
+                            </div>
                         </div>
                         <div class="col-12">
                             <h2 class="m-0 text-capitalize">@SharedLocalizer["Submit your game"]</h2>

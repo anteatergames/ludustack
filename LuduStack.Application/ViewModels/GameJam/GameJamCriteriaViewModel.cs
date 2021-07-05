@@ -1,10 +1,11 @@
-﻿using System;
+﻿using LuduStack.Domain.Core.Enums;
+using System;
 
 namespace LuduStack.Application.ViewModels.GameJam
 {
     public class GameJamCriteriaViewModel
     {
-        public Guid Id { get; set; }
+        public GameJamCriteriaType Type { get; set; }
 
         public string Name { get; set; }
 
