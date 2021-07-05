@@ -119,6 +119,7 @@ namespace LuduStack.Application.Services
                 SanitizeHtml(vm, sanitizer);
 
                 await SetJudges(vm);
+                SetHighlights(vm);
 
                 SetImagesToShow(vm, false);
 
@@ -773,6 +774,43 @@ namespace LuduStack.Application.Services
             vm.FeaturedImage = UrlFormatter.FormatFeaturedImageUrl(vm.UserId, vm.FeaturedImage, ImageRenderType.Full);
             vm.BannerImage = UrlFormatter.FormatFeaturedImageUrl(vm.UserId, vm.BannerImage, ImageRenderType.Full);
             vm.BackgroundImage = UrlFormatter.FormatFeaturedImageUrl(vm.UserId, vm.BackgroundImage, ImageRenderType.Full);
+        }
+
+        private static void SetHighlights(GameJamViewModel vm)
+        {
+            vm.Highlights = new List<GameJamHighlightsVo>();
+            if (vm.HideSubmissions)
+            {
+                vm.Highlights.Add(new GameJamHighlightsVo { Highlight = GameJamHighlight.SubmissionsSecret });
+            }
+            else
+            {
+                vm.Highlights.Add(new GameJamHighlightsVo { Highlight = GameJamHighlight.SubmissionsPublic });
+            }
+
+            if (vm.HideRealtimeResults)
+            {
+                vm.Highlights.Add(new GameJamHighlightsVo { Highlight = GameJamHighlight.ResultsSecret });
+            }
+            else
+            {
+                vm.Highlights.Add(new GameJamHighlightsVo { Highlight = GameJamHighlight.ResultsPublic });
+            }
+
+            if (vm.Unlisted)
+            {
+                vm.Highlights.Add(new GameJamHighlightsVo { Highlight = GameJamHighlight.Unlisted });
+            }
+
+            if (vm.HideMainTheme)
+            {
+                vm.Highlights.Add(new GameJamHighlightsVo { Highlight = GameJamHighlight.MainThemeSecret });
+            }
+
+            if (!vm.AllowLateJoin)
+            {
+                vm.Highlights.Add(new GameJamHighlightsVo { Highlight = GameJamHighlight.LateJoinForbidden });
+            }
         }
     }
 }

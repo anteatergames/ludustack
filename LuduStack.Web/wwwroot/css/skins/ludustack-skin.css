@@ -115,16 +115,11 @@ blockquote {
     }
 
 .bg-label {
-    background-color: #416788 !important;
+    background-color: var(--color-green) !important;
     color: white;
-    border: 1px solid #b5bad0 !important;
+    border: 2px solid white !important;
+    pointer-events: none;
 }
-
-    .bg-label:hover {
-        background-color: #416788 !important;
-        color: #ffbf36;
-        border: 1px solid #b5bad0 !important;
-    }
 
 .dropdown-item {
     color: var(--color-accent);

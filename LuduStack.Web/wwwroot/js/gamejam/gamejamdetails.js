@@ -41,6 +41,8 @@
         bindBtnJoin();
         bindBtnCantJoin();
         bindTabs();
+
+        MAINMODULE.Common.BindPopOvers();
     }
 
     function bindBtnJoin() {

@@ -129,6 +129,20 @@
                     <div class="bg-white mx-auto p-3 square-top htmlcontent">
                         @Html.Raw(Model.Description)
                     </div>
+
+                    <hr />
+
+                    <div class="row m-2 justify-content-center">
+                        @foreach (var highlight in Model.Highlights)
+                        {
+                            <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-2">
+                                <div class="border bg-dark text-white p-1" data-container="body" data-toggle="popover" data-trigger="hover" data-placement="top" data-content="@highlight.Highlight.ToUiInfo().Description">
+                                    <span class="btn border p-1 rounded-circle btn-icon-sm bg-label"><i class="fas fa-@(highlight.Highlight.ToUiInfo().Class)" aria-hidden="true"></i></span>
+                                    <span>@SharedLocalizer[highlight.Highlight.ToUiInfo().Display]</span>
+                                </div>
+                            </div>
+                        }
+                    </div>
                 </div>
                 <div class="tab-pane fade p-2 bg-white" id="tabjudges" role="tabpanel" aria-labelledby="judges-tab">
                     <div class="col-12 text-center">

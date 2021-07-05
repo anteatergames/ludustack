@@ -23,16 +23,16 @@ namespace LuduStack.Application.ViewModels.GameJam
         [Display(Name = "Community can vote", Description = "Any user from the platform can vote on entries for this Game Jam.")]
         public bool CommunityCanVote { get; set; }
 
-        [Display(Name = "Hide Submissions", Description = "No submissions will be shown, just the counter and the final results.")]
+        [Display(Name = "Hide Submissions", Description = "All submissions to this Game Jam would not be visible during the submission phase.")]
         public bool HideSubmissions { get; set; }
 
-        [Display(Name = "Hide Realtime Results", Description = "Hide the results during the Voting Phase.")]
+        [Display(Name = "Hide Realtime Results", Description = "The voting results will only be visible after the voting phase.")]
         public bool HideRealtimeResults { get; set; }
 
         [Display(Name = "Allow late join", Description = "Allows users to join this Game Jam after it starts.")]
         public bool AllowLateJoin { get; set; }
 
-        [Display(Name = "Hide Main Theme", Description = "Hide the Main Theme during the Warmup Phase.")]
+        [Display(Name = "Hide Main Theme", Description = "The Main Theme will be hidden during the warmup phase.")]
         public bool HideMainTheme { get; set; }
 
         [Required(ErrorMessage = "You must choose a unique handler!")]
@@ -104,5 +104,7 @@ namespace LuduStack.Application.ViewModels.GameJam
         public bool ShowMainTheme { get; set; }
 
         public string CantJoinMessage { get; set; }
+
+        public List<GameJamHighlightsVo> Highlights { get; set; }
     }
 }
