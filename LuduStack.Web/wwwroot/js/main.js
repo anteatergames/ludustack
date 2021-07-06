@@ -542,12 +542,22 @@
         return objs.canInteract.val() === 'true';
     }
 
+    function isBreakpoint(alias) {
+        return $('.bootstrapbreakpointdetector.device-' + alias).is(':visible');
+    }
+
+    function getCurrentBreakpoint() {
+        return $('.bootstrapbreakpointdetector:visible').data('device');
+    }
+
     return {
         Init: init,
         GetLocale: getLocale,
         CanInteract: canInteract,
         Layout: {
-            SetStickyElement: setStickyElement
+            SetStickyElement: setStickyElement,
+            IsBreakpoint: isBreakpoint,
+            GetCurrentBreakpoint: getCurrentBreakpoint
         },
         Ajax: {
             Post: post,
