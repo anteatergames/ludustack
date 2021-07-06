@@ -27,7 +27,7 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
         {
             FilterDefinition<GameJamEntry> filter = Builders<GameJamEntry>.Filter.And(
                 Builders<GameJamEntry>.Filter.Eq(x => x.Id, id),
-                Builders<GameJamEntry>.Filter.ElemMatch(x => x.Votes, x => x.UserId == vote.UserId));
+                Builders<GameJamEntry>.Filter.ElemMatch(x => x.Votes, x => x.UserId == vote.UserId && x.CriteriaType == vote.CriteriaType));
 
             UpdateDefinition<GameJamEntry> update = Builders<GameJamEntry>.Update
                 .Set(c => c.Votes[-1].Score, vote.Score);

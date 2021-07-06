@@ -111,8 +111,7 @@ namespace LuduStack.Application.Services
                 vm.AuthorName = authorProfile.Name;
                 vm.AuthorHandler = authorProfile.Handler;
 
-                DateTime localTime = DateTime.Now.ToLocalTime();
-                SetCountdown(localTime, vm);
+                SetGameJamState(DateTime.Now.ToLocalTime(), vm);
 
                 HtmlSanitizer sanitizer = ContentHelper.GetHtmlSanitizer();
 
@@ -295,6 +294,11 @@ namespace LuduStack.Application.Services
         {
             try
             {
+                GameJam gameJam = await mediator.Query<GetGameJamByIdQuery, GameJam>(new GetGameJamByIdQuery(jamId));
+                GameJamViewModel gameJamVm = mapper.Map<GameJamViewModel>(gameJam);
+
+                SetGameJamState(DateTime.Now.ToLocalTime(), gameJamVm);
+
                 IEnumerable<GameJamEntry> allModels = await mediator.Query<GetGameJamEntryListQuery, IEnumerable<GameJamEntry>>(new GetGameJamEntryListQuery(jamId, submittedOnly));
 
                 IEnumerable<GameJamEntryViewModel> vms = mapper.Map<IEnumerable<GameJamEntry>, IEnumerable<GameJamEntryViewModel>>(allModels);
@@ -342,9 +346,20 @@ namespace LuduStack.Application.Services
                     {
                         vm.CreateDate = vm.JoinDate.ToLocalTime();
                     }
+
+                    vm.GameJam = gameJamVm;
+
+                    SetVotes(currentUserId, gameJamVm, vm);
                 }
 
-                vmList = vmList.OrderByDescending(x => x.SubmissionDate).ToList();
+                if (!gameJamVm.HideRealtimeResults && gameJamVm.CurrentPhase == GameJamPhase.Voting)
+                {
+                    vmList = vmList.OrderByDescending(x => x.TotalScore).ToList();
+                }
+                else
+                {
+                    vmList = vmList.OrderByDescending(x => x.SubmissionDate).ToList();
+                }
 
                 return new OperationResultListVo<GameJamEntryViewModel>(vmList);
             }
@@ -558,27 +573,13 @@ namespace LuduStack.Application.Services
                 vm.UserHandler = authorProfile.Handler;
                 vm.AuthorPicture = UrlFormatter.ProfileImage(vm.UserId, Constants.BigAvatarSize);
 
-                DateTime localTime = DateTime.Now.ToLocalTime();
-                SetCountdown(localTime, gameJamVm);
+                SetGameJamState(DateTime.Now.ToLocalTime(), gameJamVm);
                 vm.SecondsToCountDown = gameJamVm.SecondsToCountDown;
 
                 vm.JoinDate = vm.JoinDate.ToLocalTime();
                 vm.SubmissionDate = vm.SubmissionDate.ToLocalTime();
 
-                foreach (var criteria in gameJamVm.Criteria)
-                {
-                    var currentVote = vm.Votes.FirstOrDefault(x => x.UserId == currentUserId && x.CriteriaType == criteria.Type);
-                    if (currentVote == null)
-                    {
-                        var vote = new GameJamVoteViewModel
-                        {
-                            UserId = currentUserId,
-                            CriteriaType = criteria.Type
-                        };
-
-                        vm.Votes.Add(vote);
-                    }
-                }
+                SetVotes(currentUserId, gameJamVm, vm);
 
                 SetEntryPermissions(currentUserId, currentUserIsAdmin, gameJamVm, vm);
 
@@ -588,6 +589,42 @@ namespace LuduStack.Application.Services
             {
                 return new OperationResultVo<GameJamEntryViewModel>(ex.Message);
             }
+        }
+
+        private static void SetVotes(Guid currentUserId, GameJamViewModel gameJamVm, GameJamEntryViewModel vm)
+        {
+            List<decimal> medians = new List<decimal>();
+
+            foreach (var criteria in gameJamVm.Criteria)
+            {
+                decimal median = 0;
+                var allVotes = vm.Votes.Where(x => x.CriteriaType == criteria.Type);
+                if (allVotes.Any())
+                {
+                    median = allVotes.Median(x => x.Score);
+                }
+
+                var currentUserVote = allVotes.FirstOrDefault(x => x.UserId == currentUserId);
+                if (currentUserVote == null)
+                {
+                    var vote = new GameJamVoteViewModel
+                    {
+                        UserId = currentUserId,
+                        CriteriaType = criteria.Type,
+                        Median = median
+                    };
+
+                    vm.Votes.Add(vote);
+                }
+                else
+                {
+                    currentUserVote.Median = median;
+                }
+
+                medians.Add(median);
+            }
+
+            vm.TotalScore = medians.Median();
         }
 
         private static void SetViewModelState(Guid currentUserId, GameJamViewModel vm, IEnumerable<Guid> entries)
@@ -610,7 +647,7 @@ namespace LuduStack.Application.Services
             {
                 SetDates(vm);
 
-                SetCountdown(localTime, vm);
+                SetGameJamState(localTime, vm);
 
                 vm.FeaturedImage = SetFeaturedImage(vm.UserId, vm.FeaturedImage, ImageRenderType.Small, Constants.DefaultGamejamThumbnail);
 
@@ -645,7 +682,7 @@ namespace LuduStack.Application.Services
             vm.ResultDate = vm.ResultDate.ToLocalTime();
         }
 
-        private static void SetCountdown(DateTime localTime, GameJamViewModel vm)
+        private static void SetGameJamState(DateTime localTime, GameJamViewModel vm)
         {
             TimeSpan diff;
             if (vm.ResultDate <= localTime)

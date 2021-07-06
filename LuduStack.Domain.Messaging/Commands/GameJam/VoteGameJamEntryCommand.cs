@@ -72,14 +72,12 @@ namespace LuduStack.Domain.Messaging
 
             IEnumerable<GameJamVote> existing = await mediator.Query<GetGameJamEntryVotesQuery, IEnumerable<GameJamVote>>(new GetGameJamEntryVotesQuery(x => x.Id == request.Id));
 
-            bool alreadyRated = existing.Any(x => x.UserId == request.UserId);
-            if (alreadyRated)
+            var existingVote = existing.FirstOrDefault(x => x.UserId == request.UserId && x.CriteriaType == request.CriteriaType);
+            if (existingVote != null)
             {
-                vote = existing.First(x => x.UserId == request.UserId);
+                existingVote.Score = request.Score;
 
-                vote.Score = request.Score;
-
-                await repository.UpdateRating(request.Id, vote);
+                await repository.UpdateRating(request.Id, existingVote);
             }
             else
             {

@@ -12,6 +12,7 @@
         selectors.Id = '#Id';
         selectors.btnJoin = '.btn-join';
         selectors.btnCantJoin = '.btn-cantjoin';
+        selectors.scoreRating = '.criteria-rating';
     }
 
     function cacheObjs() {
@@ -41,6 +42,7 @@
         bindBtnJoin();
         bindBtnCantJoin();
         bindTabs();
+        bindWindowResize();
 
         MAINMODULE.Common.BindPopOvers();
     }
@@ -80,17 +82,92 @@
                 history.replaceState({}, document.title, ".");
             }
             else if (url !== undefined) {
-                loadTab($(tabDestination), url);
+                loadTab($(tabDestination), url).then(() => {
+                    if (tabDestination === '#tabsubmissions') {
+                        bindRatings();
+                    }
+                });
             }
 
             return false;
         });
     }
 
+    function bindRatings() {
+        $(selectors.scoreRating).rating({
+            theme: 'krajee-fas',
+            showClear: false,
+            showCaption: false,
+            hoverEnabled: false,
+            displayOnly: true,
+            size: getDesiredStarRatingBreakpoint(),
+            animate: false,
+            step: 0.5,
+            filledStar: '<i class="fas fa-gamepad tilt-20"></i>',
+            emptyStar: '<i class="fas fa-gamepad tilt-20"></i>',
+            starCaptions: {
+                0.5: 'Score: 0.5',
+                1: 'Score: 1',
+                1.5: 'Score: 1.5',
+                2: 'Score: 2',
+                2.5: 'Score: 2.5',
+                3: 'Score: 3',
+                3.5: 'Score: 3.5',
+                4: 'Score: 4',
+                4.5: 'Score: 4.5',
+                5: 'Score: 5'
+            }
+        });
+
+        objs.container.on('rating:change', selectors.scoreRating, function (event, value, caption) {
+            var url = $(this).data('url');
+
+            var data = { score: value };
+
+            MAINMODULE.Ajax.Post(url, data);
+        });
+    }
+
+    function bindWindowResize() {
+        window.onresize = handleWindowResize
+    }
+
+    function handleWindowResize() {
+        var starRatingBreakpoint = getDesiredStarRatingBreakpoint();
+
+        $(selectors.scoreRating).rating('refresh', {
+            size: starRatingBreakpoint,
+        });
+    }
+
+    function getDesiredStarRatingBreakpoint() {
+        var starRatingBreakpoint = 'xs';
+
+        switch (MAINMODULE.Layout.GetCurrentBreakpoint()) {
+            case 'xs':
+                starRatingBreakpoint = 'md';
+                break;
+            case 'sm':
+                starRatingBreakpoint = 'lg';
+                break;
+            case 'md':
+                starRatingBreakpoint = 'md';
+                break;
+            case 'lg':
+                starRatingBreakpoint = 'sm';
+                break;
+            case 'xl':
+                starRatingBreakpoint = 'sm';
+                break;
+        }
+
+        return starRatingBreakpoint;
+    }
+
     function loadTab(tab, url) {
         tab.html(MAINMODULE.Default.Spinner);
 
-        MAINMODULE.Ajax.LoadHtml(url, tab);
+        return MAINMODULE.Ajax.LoadHtml(url, tab);
     }
 
     function handleResponse(response) {

@@ -14,5 +14,7 @@ namespace LuduStack.Application.ViewModels.GameJam
         public decimal Score { get; set; }
 
         public string Comment { get; set; }
+
+        public decimal Median { get; set; }
     }
 }

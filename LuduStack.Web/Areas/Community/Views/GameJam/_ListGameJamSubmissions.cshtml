@@ -44,6 +44,26 @@ else
                         <div class="p-2">
                             <partial name="_AuthorDetails" model="item" />
                         </div>
+
+                        <div class="row no-gutters">
+                            @foreach (var criteria in item.GameJam.Criteria)
+                            {
+                                var vote = item.Votes.FirstOrDefault(x => x.UserId == ViewBag.CurrentUserId && x.CriteriaType == criteria.Type);
+
+                                <div class="col-12 row no-gutters">
+                                    <div class="col-12 col-lg-4">
+                                        <div class="h-100 d-flex flex-column justify-content-center text-center">
+                                            <span class="text-muted">@criteria.Name</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-lg-8">
+                                        <div class="h-100 d-flex flex-column justify-content-center text-center">
+                                            <input id="txtScore" name="Score" type="number" class="d-none criteria-rating" step="1" value="@vote.Median.ToString(new System.Globalization.CultureInfo("en-US"))" data-url="@Url.Action("voteentry", "gamejam", new { area = "community", jamHandler = item.GameJam.Handler, userId = ViewBag.CurrentUserId, entryId = item.Id, criteriaType = vote.CriteriaType })">
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
                     </div>
                 </div>
             }

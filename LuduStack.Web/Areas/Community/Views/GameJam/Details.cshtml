@@ -23,9 +23,13 @@
 
 @section Styles {
     <environment include="Development">
+        <link rel="stylesheet" href="~/lib/bootstrap-star-rating/css/star-rating.css">
+        <link rel="stylesheet" href="~/lib/bootstrap-star-rating/themes/krajee-fa/theme.css" media="all" type="text/css" />
         <link rel="stylesheet" href="~/css/gamejamdetails.css" />
     </environment>
     <environment exclude="Development">
+        <link rel="stylesheet" href="~/lib/bootstrap-star-rating/css/star-rating.min.css">
+        <link rel="stylesheet" href="~/lib/bootstrap-star-rating/themes/krajee-fas/theme.min.css" media="all" type="text/css" />
         <link rel="stylesheet" href="~/css/gamejamdetails.min.css" asp-append-version="true" />
     </environment>
 }
@@ -33,10 +37,14 @@
 @section Scripts {
 
     <environment include="Development">
+        <script src="~/lib/bootstrap-star-rating/js/star-rating.js"></script>
+        <script src="~/lib/bootstrap-star-rating/themes/krajee-fas/theme.js"></script>
         <script src="~/js/shared/fx.js"></script>
         <script src="~/js/gamejam/gamejamdetails.js"></script>
     </environment>
     <environment exclude="Development">
+        <script src="~/lib/bootstrap-star-rating/js/star-rating.min.js"></script>
+        <script src="~/lib/bootstrap-star-rating/themes/krajee-fa/theme.min.js"></script>
         <script src="~/js/shared/fx.js"></script>
         <script src="~/js/gamejam/gamejamdetails.min.js" asp-append-version="true"></script>
     </environment>
