@@ -54,26 +54,29 @@
     }
 
     function bindRatings() {
+        var readOnly = $(selectors.scoreRating).data('readonly') === true;
+
         $(selectors.scoreRating).rating({
             theme: 'krajee-fas',
             showClear: false,
             showCaption: false,
+            displayOnly: readOnly,
             size: 'md',
             animate: false,
             step: 0.5,
             filledStar: '<i class="fas fa-gamepad tilt-20"></i>',
             emptyStar: '<i class="fas fa-gamepad tilt-20"></i>',
             starCaptions: {
-                0.5: 'Your Rating: 0.5',
-                1: 'Your Rating: 1',
-                1.5: 'Your Rating: 1.5',
-                2: 'Your Rating: 2',
-                2.5: 'Your Rating: 2.5',
-                3: 'Your Rating: 3',
-                3.5: 'Your Rating: 3.5',
-                4: 'Your Rating: 4',
-                4.5: 'Your Rating: 4.5',
-                5: 'Your Rating: 5'
+                0.5: 'Rating: 0.5',
+                1: 'Rating: 1',
+                1.5: 'Rating: 1.5',
+                2: 'Rating: 2',
+                2.5: 'Rating: 2.5',
+                3: 'Rating: 3',
+                3.5: 'Rating: 3.5',
+                4: 'Rating: 4',
+                4.5: 'Rating: 4.5',
+                5: 'Rating: 5'
             }
         });
 
