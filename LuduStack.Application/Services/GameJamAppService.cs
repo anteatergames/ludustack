@@ -598,27 +598,36 @@ namespace LuduStack.Application.Services
             foreach (var criteria in gameJamVm.Criteria)
             {
                 decimal median = 0;
+
                 var allVotes = vm.Votes.Where(x => x.CriteriaType == criteria.Type);
                 if (allVotes.Any())
                 {
                     median = allVotes.Median(x => x.Score);
                 }
 
-                var currentUserVote = allVotes.FirstOrDefault(x => x.UserId == currentUserId);
-                if (currentUserVote == null)
+                var newVote = new GameJamVoteViewModel
                 {
-                    var vote = new GameJamVoteViewModel
-                    {
-                        UserId = currentUserId,
-                        CriteriaType = criteria.Type,
-                        Median = median
-                    };
+                    UserId = currentUserId,
+                    CriteriaType = criteria.Type,
+                    Median = median
+                };
 
-                    vm.Votes.Add(vote);
+                if (currentUserId == Guid.Empty)
+                {
+                    vm.Votes.Add(newVote);
                 }
                 else
                 {
-                    currentUserVote.Median = median;
+
+                    var currentUserVote = allVotes.FirstOrDefault(x => x.UserId == currentUserId);
+                    if (currentUserVote == null)
+                    {
+                        vm.Votes.Add(newVote);
+                    }
+                    else
+                    {
+                        currentUserVote.Median = median;
+                    }
                 }
 
                 medians.Add(median);

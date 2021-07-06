@@ -8,6 +8,8 @@
     var noItemsModel = new ListNoItemsViewModel("fas fa-dizzy", "There are no Submissions for this Game Jam!");
 
     var description = ViewData["ListDescription"] == null ? SharedLocalizer["Submissions"] : (string)ViewData["ListDescription"];
+
+    var currentUserId = ViewBag.CurrentUserId ?? Guid.Empty;
 }
 
 @if (!Model.Any())
@@ -48,7 +50,7 @@ else
                         <div class="row no-gutters">
                             @foreach (var criteria in item.GameJam.Criteria)
                             {
-                                var vote = item.Votes.FirstOrDefault(x => x.UserId == ViewBag.CurrentUserId && x.CriteriaType == criteria.Type);
+                                var vote = item.Votes.FirstOrDefault(x => x.UserId == currentUserId && x.CriteriaType == criteria.Type);
 
                                 <div class="col-12 row no-gutters">
                                     <div class="col-12 col-lg-4">
