@@ -2,7 +2,6 @@
 using LuduStack.Domain.Interfaces;
 using LuduStack.Domain.Interfaces.Repository;
 using LuduStack.Domain.Messaging.Queries.GameJam;
-using LuduStack.Domain.Messaging.Queries.UserContent;
 using LuduStack.Domain.Models;
 using LuduStack.Infra.CrossCutting.Messaging;
 using MediatR;
@@ -72,7 +71,7 @@ namespace LuduStack.Domain.Messaging
 
             IEnumerable<GameJamVote> existing = await mediator.Query<GetGameJamEntryVotesQuery, IEnumerable<GameJamVote>>(new GetGameJamEntryVotesQuery(x => x.Id == request.Id));
 
-            var existingVote = existing.FirstOrDefault(x => x.UserId == request.UserId && x.CriteriaType == request.CriteriaType);
+            GameJamVote existingVote = existing.FirstOrDefault(x => x.UserId == request.UserId && x.CriteriaType == request.CriteriaType);
             if (existingVote != null)
             {
                 existingVote.Score = request.Score;

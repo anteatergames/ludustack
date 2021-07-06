@@ -1,5 +1,4 @@
 ﻿using LuduStack.Domain.Interfaces.Repository;
-using LuduStack.Domain.ValueObjects;
 using LuduStack.Infra.CrossCutting.Messaging;
 using MediatR;
 using System;
@@ -31,7 +30,7 @@ namespace LuduStack.Domain.Messaging.Queries.UserProfile
 
         public async Task<IEnumerable<Models.Game>> Handle(GetGamesByIdsQuery request, CancellationToken cancellationToken)
         {
-            var games = await gameRepository.GetByIds(request.Ids);
+            IEnumerable<Models.Game> games = await gameRepository.GetByIds(request.Ids);
 
             return games;
         }

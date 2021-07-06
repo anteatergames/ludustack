@@ -9,7 +9,6 @@ using LuduStack.Domain.Core.Extensions;
 using LuduStack.Domain.Core.Interfaces;
 using LuduStack.Domain.Messaging;
 using LuduStack.Domain.Messaging.Queries.Game;
-using LuduStack.Domain.Messaging.Queries.UserProfile;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.Specifications;
 using LuduStack.Domain.ValueObjects;

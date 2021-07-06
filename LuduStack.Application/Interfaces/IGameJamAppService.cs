@@ -1,5 +1,4 @@
 ﻿using LuduStack.Application.ViewModels.GameJam;
-using LuduStack.Application.ViewModels.User;
 using LuduStack.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;

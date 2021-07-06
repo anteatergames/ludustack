@@ -1,7 +1,6 @@
 ﻿using LuduStack.Application;
 using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels.GameJam;
-using LuduStack.Application.ViewModels.User;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.ValueObjects;
 using LuduStack.Web.Areas.Community.Controllers;
@@ -101,7 +100,7 @@ namespace LuduStack.Web.Areas.Staff.Controllers
                 model = new List<GameJamEntryViewModel>();
             }
 
-            foreach (var item in model)
+            foreach (GameJamEntryViewModel item in model)
             {
                 item.Url = Url.Action("entry", "gamejam", new { area = "community", jamHandler = jamHandler, id = item.Id });
             }

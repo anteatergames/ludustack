@@ -54,7 +54,7 @@ namespace LuduStack.Domain.Messaging.Queries.GameJam
         {
             if (request.Where != null)
             {
-                var result = repository.Get(request.Where);
+                IQueryable<Models.GameJamEntry> result = repository.Get(request.Where);
 
                 if (request.Take > 0)
                 {
@@ -65,7 +65,7 @@ namespace LuduStack.Domain.Messaging.Queries.GameJam
             }
             else
             {
-                var query = repository.Get();
+                IQueryable<Models.GameJamEntry> query = repository.Get();
 
                 if (request.JamId != Guid.Empty)
                 {

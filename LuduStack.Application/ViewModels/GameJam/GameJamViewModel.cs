@@ -106,5 +106,9 @@ namespace LuduStack.Application.ViewModels.GameJam
         public string CantJoinMessage { get; set; }
 
         public List<GameJamHighlightsVo> Highlights { get; set; }
+
+        public bool ShowSubmissions { get; set; }
+
+        public bool ShowJudges { get; set; }
     }
 }

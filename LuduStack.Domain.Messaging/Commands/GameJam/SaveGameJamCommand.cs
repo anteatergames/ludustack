@@ -81,9 +81,9 @@ namespace LuduStack.Domain.Messaging
         {
             if (request.GameJam.Criteria == null || !request.GameJam.Criteria.Any())
             {
-                var overallUiInfo = GameJamCriteriaType.Overall.ToUiInfo();
+                Core.Attributes.UiInfoAttribute overallUiInfo = GameJamCriteriaType.Overall.ToUiInfo();
 
-                var criteria = new GameJamCriteria
+                GameJamCriteria criteria = new GameJamCriteria
                 {
                     Type = GameJamCriteriaType.Overall,
                     Description = overallUiInfo.Description,

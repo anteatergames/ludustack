@@ -48,7 +48,7 @@ namespace LuduStack.Domain.Messaging
 
             if (!request.IsValid()) { return request.Result; }
 
-            System.Collections.Generic.IEnumerable<GameJamEntry> existing = await entryRepository.GetByUserId(request.UserId);
+            IQueryable<GameJamEntry> existing = entryRepository.Get(x => x.UserId == request.UserId && x.GameJamId == request.Id);
 
             if (existing.Any())
             {

@@ -255,7 +255,7 @@ namespace LuduStack.Application.Services
 
 
                 UserProfileEssentialVo myProfile = await mediator.Query<GetBasicUserProfileDataByUserIdQuery, UserProfileEssentialVo>(new GetBasicUserProfileDataByUserIdQuery(currentUserId));
-                var profile = new ProfileViewModel
+                ProfileViewModel profile = new ProfileViewModel
                 {
                     UserId = myProfile.UserId,
                     Handler = myProfile.Handler,
@@ -303,21 +303,21 @@ namespace LuduStack.Application.Services
 
                 IEnumerable<GameJamEntryViewModel> vms = mapper.Map<IEnumerable<GameJamEntry>, IEnumerable<GameJamEntryViewModel>>(allModels);
 
-                var vmList = vms.ToList();
+                List<GameJamEntryViewModel> vmList = vms.ToList();
 
-                var gamesIds = vms.Where(x => x.GameId != Guid.Empty).Select(x => x.GameId);
+                IEnumerable<Guid> gamesIds = vms.Where(x => x.GameId != Guid.Empty).Select(x => x.GameId);
 
                 IEnumerable<Game> games = await mediator.Query<GetGamesByIdsQuery, IEnumerable<Game>>(new GetGamesByIdsQuery(gamesIds));
 
-                var userIds = vmList.Select(x => x.UserId);
+                IEnumerable<Guid> userIds = vmList.Select(x => x.UserId);
 
                 IEnumerable<UserProfileEssentialVo> userProfiles = await mediator.Query<GetBasicUserProfileDataByUserIdsQuery, IEnumerable<UserProfileEssentialVo>>(new GetBasicUserProfileDataByUserIdsQuery(userIds));
 
-                foreach (var vm in vmList)
+                foreach (GameJamEntryViewModel vm in vmList)
                 {
                     if (vm.GameId != Guid.Empty)
                     {
-                        var relatedGame = games.FirstOrDefault(x => x.Id == vm.GameId);
+                        Game relatedGame = games.FirstOrDefault(x => x.Id == vm.GameId);
                         if (relatedGame != null)
                         {
                             vm.FeaturedImage = UrlFormatter.FormatFeaturedImageUrl(relatedGame.UserId, relatedGame.ThumbnailUrl, ImageRenderType.Full);
@@ -330,7 +330,7 @@ namespace LuduStack.Application.Services
 
                     vm.JamHandler = jamHandler;
 
-                    var authorProfile = userProfiles.FirstOrDefault(x => x.UserId == vm.UserId);
+                    UserProfileEssentialVo authorProfile = userProfiles.FirstOrDefault(x => x.UserId == vm.UserId);
                     if (authorProfile != null)
                     {
                         vm.UserHandler = authorProfile.Handler;
@@ -378,16 +378,16 @@ namespace LuduStack.Application.Services
 
                 IEnumerable<GameJamEntry> allModels = await mediator.Query<GetGameJamEntryListQuery, IEnumerable<GameJamEntry>>(new GetGameJamEntryListQuery(jamId, false));
 
-                var userIds = allModels.Select(x => x.UserId);
+                IEnumerable<Guid> userIds = allModels.Select(x => x.UserId);
 
                 IEnumerable<UserProfileEssentialVo> userProfiles = await mediator.Query<GetBasicUserProfileDataByUserIdsQuery, IEnumerable<UserProfileEssentialVo>>(new GetBasicUserProfileDataByUserIdsQuery(userIds));
 
-                foreach (var entry in allModels)
+                foreach (GameJamEntry entry in allModels)
                 {
-                    var profile = userProfiles.FirstOrDefault(x => x.UserId == entry.UserId);
+                    UserProfileEssentialVo profile = userProfiles.FirstOrDefault(x => x.UserId == entry.UserId);
                     if (profile != null)
                     {
-                        var entryVm = new GameJamEntryViewModel
+                        GameJamEntryViewModel entryVm = new GameJamEntryViewModel
                         {
                             Id = entry.Id,
                             UserId = entry.UserId,
@@ -595,17 +595,17 @@ namespace LuduStack.Application.Services
         {
             List<decimal> medians = new List<decimal>();
 
-            foreach (var criteria in gameJamVm.Criteria)
+            foreach (GameJamCriteriaViewModel criteria in gameJamVm.Criteria)
             {
                 decimal median = 0;
 
-                var allVotes = vm.Votes.Where(x => x.CriteriaType == criteria.Type);
+                IEnumerable<GameJamVoteViewModel> allVotes = vm.Votes.Where(x => x.CriteriaType == criteria.Type);
                 if (allVotes.Any())
                 {
                     median = allVotes.Median(x => x.Score);
                 }
 
-                var newVote = new GameJamVoteViewModel
+                GameJamVoteViewModel newVote = new GameJamVoteViewModel
                 {
                     UserId = currentUserId,
                     CriteriaType = criteria.Type,
@@ -619,7 +619,7 @@ namespace LuduStack.Application.Services
                 else
                 {
 
-                    var currentUserVote = allVotes.FirstOrDefault(x => x.UserId == currentUserId);
+                    GameJamVoteViewModel currentUserVote = allVotes.FirstOrDefault(x => x.UserId == currentUserId);
                     if (currentUserVote == null)
                     {
                         vm.Votes.Add(newVote);
@@ -633,20 +633,19 @@ namespace LuduStack.Application.Services
                 medians.Add(median);
             }
 
-            vm.TotalScore = medians.Median();
+            vm.TotalScore = medians.Any() ? medians.Median() : 0;
         }
 
         private static void SetViewModelState(Guid currentUserId, GameJamViewModel vm, IEnumerable<Guid> entries)
         {
             vm.JoinCount = entries.Count();
             vm.CurrentUserJoined = entries.Any(x => x == currentUserId);
-            vm.ShowMainTheme = !string.IsNullOrWhiteSpace(vm.MainTheme) && (
+            vm.ShowMainTheme = 
                 (vm.CurrentPhase == GameJamPhase.Warmup && !vm.HideMainTheme && vm.CurrentUserJoined) ||
                 (vm.CurrentPhase == GameJamPhase.Submission && vm.CurrentUserJoined) ||
                 (vm.CurrentPhase == GameJamPhase.Voting && vm.CurrentUserJoined) ||
                 (vm.CurrentPhase == GameJamPhase.Results && vm.CurrentUserJoined) ||
-                (vm.CurrentPhase == GameJamPhase.Finished)
-            );
+                (vm.CurrentPhase == GameJamPhase.Finished);
         }
 
         private static void SetViewModelStates(Guid currentUserId, bool currentUserIsAdmin, IEnumerable<GameJamViewModel> vms)
@@ -742,9 +741,9 @@ namespace LuduStack.Application.Services
             IEnumerable<UserProfileEssentialVo> judgesProfiles = await mediator.Query<GetBasicUserProfileDataByUserIdsQuery, IEnumerable<UserProfileEssentialVo>>(new GetBasicUserProfileDataByUserIdsQuery(vm.Judges));
 
             vm.JudgesProfiles = new List<ProfileViewModel>();
-            foreach (var profileEssential in judgesProfiles)
+            foreach (UserProfileEssentialVo profileEssential in judgesProfiles)
             {
-                var profile = new ProfileViewModel
+                ProfileViewModel profile = new ProfileViewModel
                 {
                     UserId = profileEssential.UserId,
                     Handler = profileEssential.Handler,
@@ -764,6 +763,8 @@ namespace LuduStack.Application.Services
             bool canJoinOnWarming = vm.CurrentPhase == GameJamPhase.Warmup;
             bool canJoinLate = vm.CurrentPhase == GameJamPhase.Submission && vm.AllowLateJoin;
             bool sameUser = vm.UserId == currentUserId;
+            bool iAmJudge = vm.Judges != null && vm.Judges.Contains(currentUserId);
+            bool isNotWarmup = vm.CurrentPhase != GameJamPhase.Warmup;
 
             vm.Permissions.CanJoin = !sameUser && (canJoinOnWarming || canJoinLate);
 
@@ -771,6 +772,9 @@ namespace LuduStack.Application.Services
             {
                 vm.CantJoinMessage = sameUser ? "You can't join your own Game Jam!" : "You can't join anymore!";
             }
+
+            vm.ShowSubmissions = (isNotWarmup && iAmJudge) || (isNotWarmup && !vm.HideSubmissions || vm.CurrentPhase == GameJamPhase.Results || vm.CurrentPhase == GameJamPhase.Finished);
+            vm.ShowJudges = vm.Judges != null && vm.Judges.Any();
 
             vm.Permissions.IsAdmin = currentUserIsAdmin;
             vm.Permissions.CanDelete = vm.Permissions.IsAdmin;
@@ -785,8 +789,8 @@ namespace LuduStack.Application.Services
             vm.Permissions.IsAdmin = currentUserIsAdmin;
             vm.Permissions.CanSubmit = vm.Permissions.IsMe && (gameJamVm.Permissions.CanSubmit || (gameJamVm.CurrentPhase == GameJamPhase.Voting && vm.LateSubmission));
 
-            var iAmJudge = gameJamVm.Judges.Any(x => x == currentUserId);
-            var jamPhaseAllowsVote = gameJamVm.CurrentPhase == GameJamPhase.Voting;
+            bool iAmJudge = gameJamVm.Judges != null && gameJamVm.Judges.Any(x => x == currentUserId);
+            bool jamPhaseAllowsVote = gameJamVm.CurrentPhase == GameJamPhase.Voting;
 
             vm.Permissions.CanVote = iAmJudge && !vm.Permissions.IsMe && jamPhaseAllowsVote && vm.GameId != Guid.Empty;
         }
