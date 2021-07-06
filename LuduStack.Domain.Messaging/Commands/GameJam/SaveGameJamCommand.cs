@@ -1,4 +1,5 @@
-﻿using LuduStack.Domain.Core.Enums;
+﻿using LuduStack.Domain.Core.Attributes;
+using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Core.Extensions;
 using LuduStack.Domain.Interfaces;
 using LuduStack.Domain.Interfaces.Repository;
@@ -81,7 +82,7 @@ namespace LuduStack.Domain.Messaging
         {
             if (request.GameJam.Criteria == null || !request.GameJam.Criteria.Any())
             {
-                Core.Attributes.UiInfoAttribute overallUiInfo = GameJamCriteriaType.Overall.ToUiInfo();
+                UiInfoAttribute overallUiInfo = GameJamCriteriaType.Overall.ToUiInfo();
 
                 GameJamCriteria criteria = new GameJamCriteria
                 {
@@ -93,6 +94,18 @@ namespace LuduStack.Domain.Messaging
 
                 request.GameJam.Criteria = new List<GameJamCriteria> { criteria };
             }
+
+            foreach (var criteria in request.GameJam.Criteria)
+            {
+                if (string.IsNullOrWhiteSpace(criteria.Name))
+                {
+                    var uiInfo = criteria.Type.ToUiInfo();
+
+                    criteria.Name = uiInfo.Display;
+                }
+            }
+
+            request.GameJam.Criteria = request.GameJam.Criteria.Where(x => x.Enabled).ToList();
         }
     }
 }

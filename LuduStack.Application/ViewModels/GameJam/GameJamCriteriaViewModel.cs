@@ -4,6 +4,8 @@ namespace LuduStack.Application.ViewModels.GameJam
 {
     public class GameJamCriteriaViewModel
     {
+        public bool Enabled { get; set; }
+
         public GameJamCriteriaType Type { get; set; }
 
         public string Name { get; set; }

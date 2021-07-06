@@ -144,7 +144,14 @@
                                         <hr />
                                     </div>
                                     <div class="col-12 mb-2">
-                                        <h2>@SharedLocalizer["Vote"]</h2>
+                                        @if (Model.Permissions.CanVote)
+                                        {
+                                            <h2>@SharedLocalizer["Vote"]</h2>
+                                        }
+                                        else
+                                        {
+                                            <h2>@SharedLocalizer["Score"]</h2>
+                                        }
 
                                         @foreach (var criteria in Model.GameJam.Criteria)
                                         {

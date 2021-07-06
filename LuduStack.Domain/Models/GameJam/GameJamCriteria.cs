@@ -4,6 +4,8 @@ namespace LuduStack.Domain.Models
 {
     public class GameJamCriteria
     {
+        public bool Enabled { get; set; }
+
         public GameJamCriteriaType Type { get; set; }
 
         public string Name { get; set; }

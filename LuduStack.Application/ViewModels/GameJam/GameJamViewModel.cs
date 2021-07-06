@@ -57,6 +57,7 @@ namespace LuduStack.Application.ViewModels.GameJam
         [Display(Name = "Name")]
         public string Name { get; set; }
 
+        [Required(ErrorMessage = "Give your Game Jam a short description.")]
         [Display(Name = "Short Description", Description = "Give your Game Jam a killer short description. How would you pitch your Game Jam to an investor?")]
         public string ShortDescription { get; set; }
 
@@ -67,15 +68,19 @@ namespace LuduStack.Application.ViewModels.GameJam
         [Display(Name = "Main Theme")]
         public string MainTheme { get; set; }
 
+        [Required(ErrorMessage = "This is needed")]
         [Display(Name = "Start Date", Description = "Here you set when this Game Jam starts and participants can start submitting entries.")]
         public DateTime StartDate { get; set; }
 
+        [Required(ErrorMessage = "This is needed")]
         [Display(Name = "Deadline", Description = "Here you set the limit date for the participants to submit their entries to this Game Jam. After this, the if the participant still wants to submit and entry, it should be requested a Late Submission permit.")]
         public DateTime EntryDeadline { get; set; }
 
+        [Required(ErrorMessage = "This is needed")]
         [Display(Name = "Voting End", Description = "This is the limit date for all voters to cast their votes. After this date, no one can vote anymore unless the Voting Date is pushing forward.")]
         public DateTime VotingEndDate { get; set; }
 
+        [Required(ErrorMessage = "This is needed")]
         [Display(Name = "Results Date", Description = "The date where the results should be made public.")]
         public DateTime ResultDate { get; set; }
 

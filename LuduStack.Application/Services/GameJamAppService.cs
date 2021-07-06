@@ -122,9 +122,9 @@ namespace LuduStack.Application.Services
 
                 SetImagesToShow(vm, false);
 
-                SetJamPermissions(currentUserId, currentUserIsAdmin, vm);
-
                 SetViewModelState(currentUserId, vm, entries);
+
+                SetJamPermissions(currentUserId, currentUserIsAdmin, vm);
 
                 return new OperationResultVo<GameJamViewModel>(vm);
             }
@@ -155,6 +155,8 @@ namespace LuduStack.Application.Services
                 GameJamViewModel vm = mapper.Map<GameJamViewModel>(model);
 
                 await SetJudges(vm);
+
+                SetCriteria(vm, false);
 
                 SetImagesToShow(vm, true);
 
@@ -253,7 +255,6 @@ namespace LuduStack.Application.Services
 
                 newVm.JudgesProfiles = new List<ProfileViewModel>();
 
-
                 UserProfileEssentialVo myProfile = await mediator.Query<GetBasicUserProfileDataByUserIdQuery, UserProfileEssentialVo>(new GetBasicUserProfileDataByUserIdQuery(currentUserId));
                 ProfileViewModel profile = new ProfileViewModel
                 {
@@ -267,6 +268,8 @@ namespace LuduStack.Application.Services
                 };
 
                 newVm.JudgesProfiles.Add(profile);
+
+                SetCriteria(newVm, true);
 
                 return new OperationResultVo<GameJamViewModel>(newVm);
             }
@@ -640,7 +643,7 @@ namespace LuduStack.Application.Services
         {
             vm.JoinCount = entries.Count();
             vm.CurrentUserJoined = entries.Any(x => x == currentUserId);
-            vm.ShowMainTheme = 
+            vm.ShowMainTheme =
                 (vm.CurrentPhase == GameJamPhase.Warmup && !vm.HideMainTheme && vm.CurrentUserJoined) ||
                 (vm.CurrentPhase == GameJamPhase.Submission && vm.CurrentUserJoined) ||
                 (vm.CurrentPhase == GameJamPhase.Voting && vm.CurrentUserJoined) ||
@@ -756,6 +759,47 @@ namespace LuduStack.Application.Services
 
                 vm.JudgesProfiles.Add(profile);
             }
+        }
+
+        private static void SetCriteria(GameJamViewModel gameJamVm, bool isNew)
+        {
+            if (gameJamVm.Criteria == null)
+            {
+                gameJamVm.Criteria = new List<GameJamCriteriaViewModel>();
+            }
+
+            var allCriteria = Enum.GetValues(typeof(GameJamCriteriaType)).Cast<GameJamCriteriaType>();
+
+            foreach (var item in allCriteria)
+            {
+                var uiInfo = item.ToUiInfo();
+
+                var existingCriteria = gameJamVm.Criteria.FirstOrDefault(x => x.Type == item);
+                if (existingCriteria != null)
+                {
+                    existingCriteria.Enabled = true;
+
+                    if (string.IsNullOrWhiteSpace(existingCriteria.Name))
+                    {
+                        existingCriteria.Name = uiInfo.Display;
+                    }
+                }
+                else
+                {
+
+                    var newCriteria = new GameJamCriteriaViewModel
+                    {
+                        Enabled = isNew,
+                        Type = item,
+                        Name = uiInfo.Display,
+                        Weight = 1
+                    };
+
+                    gameJamVm.Criteria.Add(newCriteria);
+                }
+            }
+
+            gameJamVm.Criteria = gameJamVm.Criteria.OrderBy(x => x.Type).ToList();
         }
 
         private static void SetJamPermissions(Guid currentUserId, bool currentUserIsAdmin, GameJamViewModel vm)

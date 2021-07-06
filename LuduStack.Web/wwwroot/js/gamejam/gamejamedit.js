@@ -18,6 +18,7 @@
         selectors.urls = '#urls';
         selectors.container = '#featurecontainer';
         selectors.form = '#frmSave';
+        selectors.validationError = '.field-validation-error';
         selectors.userId = '#UserId';
         selectors.btnSave = '#btnSave';
         selectors.startDate = 'input#StartDate';
@@ -121,6 +122,9 @@
                     });
                 });
             }
+            else {
+                scrollToFirstError();
+            }
         });
     }
 
@@ -146,6 +150,12 @@
                 MAINMODULE.Ajax.HandleErrorResponse(response);
             }
         });
+    }
+
+    function scrollToFirstError() {
+        var elementToScroll = $(selectors.form).first();
+
+        MAINMODULE.Utils.ScrollTo(elementToScroll.parent());
     }
 
     return {

@@ -160,7 +160,7 @@
                 </div>
 
                 <div class="row px-3">
-                    <div class="col-12 col-md-6">
+                    <div class="col-12 col-md-6 col-xl-4">
                         <div class="form-group switch">
                             <label asp-for="HideSubmissions" class="col-form-label"></label>
                             <label class="switch left">
@@ -171,7 +171,7 @@
                         </div>
                     </div>
 
-                    <div class="col-12 col-md-6">
+                    <div class="col-12 col-md-6 col-xl-4">
                         <div class="form-group switch">
                             <label asp-for="HideRealtimeResults" class="col-form-label"></label>
                             <label class="switch left">
@@ -182,7 +182,7 @@
                         </div>
                     </div>
 
-                    <div class="col-12 col-md-6">
+                    <div class="col-12 col-md-6 col-xl-4">
                         <div class="form-group switch">
                             <label asp-for="Unlisted" class="col-form-label"></label>
                             <label class="switch left">
@@ -193,7 +193,7 @@
                         </div>
                     </div>
 
-                    <div class="col-12 col-md-6">
+                    <div class="col-12 col-md-6 col-xl-4">
                         <div class="form-group switch">
                             <label asp-for="AllowLateJoin" class="col-form-label"></label>
                             <label class="switch left">
@@ -204,7 +204,7 @@
                         </div>
                     </div>
 
-                    <div class="col-12 col-md-6">
+                    <div class="col-12 col-md-6 col-xl-4">
                         <div class="form-group switch">
                             <label asp-for="HideMainTheme" class="col-form-label"></label>
                             <label class="switch left">
@@ -217,7 +217,7 @@
 
                     <div class="col-12 text-uppercase">
                         <hr />
-                        <h2 class="h2">@SharedLocalizer["voters"]</h2>
+                        <h2 class="h2">@SharedLocalizer["scoring"]</h2>
                     </div>
 
                     <div class="col-md-12">
@@ -240,6 +240,29 @@
                                     <input type="hidden" name="Judges[@i]" value="@judge.UserId" />
                                     <div class="bordered">
                                         <partial name="_UserCard" model="judge" />
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="col-12 mb-3">
+                        <label asp-for="Criteria" class="col-form-label"></label>
+                        <div class="row">
+                            @for (int i = 0; i < Model.Criteria.Count; i++)
+                            {
+                                var criteria = Model.Criteria.ElementAt(i);
+                                var uiInfo = criteria.Type.ToUiInfo();
+
+                                <div class="col-12 col-md-6 col-lg-4 col-xl-3">
+                                    <input asp-for="Criteria[i].Type" type="hidden" class="default" />
+                                    <input asp-for="Criteria[i].Name" type="hidden" class="default" />
+                                    <div class="form-group switch">
+                                        <label class="col-form-label">@uiInfo.Display</label>
+                                        <label class="switch left">
+                                            <input asp-for="Criteria[i].Enabled" type="checkbox" class="default" />
+                                            <span class="slider round"></span>
+                                        </label>
                                     </div>
                                 </div>
                             }
