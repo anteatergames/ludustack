@@ -95,11 +95,11 @@ namespace LuduStack.Domain.Messaging
                 request.GameJam.Criteria = new List<GameJamCriteria> { criteria };
             }
 
-            foreach (var criteria in request.GameJam.Criteria)
+            foreach (GameJamCriteria criteria in request.GameJam.Criteria)
             {
                 if (string.IsNullOrWhiteSpace(criteria.Name))
                 {
-                    var uiInfo = criteria.Type.ToUiInfo();
+                    UiInfoAttribute uiInfo = criteria.Type.ToUiInfo();
 
                     criteria.Name = uiInfo.Display;
                 }

@@ -341,6 +341,8 @@ namespace LuduStack.Application.Services
                         vm.AuthorPicture = UrlFormatter.ProfileImage(authorProfile.UserId, Constants.SmallAvatarSize);
                     }
 
+                    SetVotes(currentUserId, gameJamVm, vm);
+
                     if (vm.SubmissionDate != default)
                     {
                         vm.CreateDate = vm.SubmissionDate.ToLocalTime();
@@ -351,8 +353,6 @@ namespace LuduStack.Application.Services
                     }
 
                     vm.GameJam = gameJamVm;
-
-                    SetVotes(currentUserId, gameJamVm, vm);
                 }
 
                 if (!gameJamVm.HideRealtimeResults && gameJamVm.CurrentPhase == GameJamPhase.Voting)
@@ -637,6 +637,8 @@ namespace LuduStack.Application.Services
             }
 
             vm.TotalScore = medians.Any() ? medians.Median() : 0;
+
+            vm.CanShowResults = gameJamVm.CurrentPhase == GameJamPhase.Results || gameJamVm.CurrentPhase == GameJamPhase.Finished || (gameJamVm.CurrentPhase == GameJamPhase.Voting && !gameJamVm.HideRealtimeResults);
         }
 
         private static void SetViewModelState(Guid currentUserId, GameJamViewModel vm, IEnumerable<Guid> entries)
@@ -768,13 +770,13 @@ namespace LuduStack.Application.Services
                 gameJamVm.Criteria = new List<GameJamCriteriaViewModel>();
             }
 
-            var allCriteria = Enum.GetValues(typeof(GameJamCriteriaType)).Cast<GameJamCriteriaType>();
+            IEnumerable<GameJamCriteriaType> allCriteria = Enum.GetValues(typeof(GameJamCriteriaType)).Cast<GameJamCriteriaType>();
 
-            foreach (var item in allCriteria)
+            foreach (GameJamCriteriaType item in allCriteria)
             {
-                var uiInfo = item.ToUiInfo();
+                Domain.Core.Attributes.UiInfoAttribute uiInfo = item.ToUiInfo();
 
-                var existingCriteria = gameJamVm.Criteria.FirstOrDefault(x => x.Type == item);
+                GameJamCriteriaViewModel existingCriteria = gameJamVm.Criteria.FirstOrDefault(x => x.Type == item);
                 if (existingCriteria != null)
                 {
                     existingCriteria.Enabled = true;
@@ -787,7 +789,7 @@ namespace LuduStack.Application.Services
                 else
                 {
 
-                    var newCriteria = new GameJamCriteriaViewModel
+                    GameJamCriteriaViewModel newCriteria = new GameJamCriteriaViewModel
                     {
                         Enabled = isNew,
                         Type = item,

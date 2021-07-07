@@ -150,33 +150,43 @@
                                         }
                                         else
                                         {
-                                            <h2>@SharedLocalizer["Score"]</h2>
+                                            if (Model.CanShowResults)
+                                            {
+                                                <h2>@SharedLocalizer["Score"]</h2>
+                                            }
                                         }
 
-                                        @foreach (var criteria in Model.GameJam.Criteria)
+                                        @if (Model.CanShowResults || Model.Permissions.CanVote)
                                         {
-                                            var vote = Model.Votes.FirstOrDefault(x => x.UserId == currentUserId && x.CriteriaType == criteria.Type);
+                                            foreach (var criteria in Model.GameJam.Criteria)
+                                            {
+                                                var vote = Model.Votes.FirstOrDefault(x => x.UserId == currentUserId && x.CriteriaType == criteria.Type);
 
-                                            <div class="row no-gutters">
-                                                <div class="col-12 col-lg-6">
-                                                    <div class="d-flex flex-column justify-content-center text-center">
-                                                        <span class="display-4">@criteria.Name</span>
+                                                <div class="row no-gutters">
+                                                    <div class="col-12 col-lg-6">
+                                                        <div class="d-flex flex-column justify-content-center text-center">
+                                                            <span class="display-4">@criteria.Name</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 col-lg-6">
+                                                        <div class="h-100 d-flex flex-column justify-content-center text-center">
+
+                                                            @if (Model.Permissions.CanVote)
+                                                            {
+                                                                <input id="txtScore" name="Score" type="number" class="d-none criteria-rating" step="1" value="@vote.Score.ToString(new System.Globalization.CultureInfo("en-US"))" data-url="@Url.Action("voteentry", "gamejam", new { area = "community", jamHandler = Model.GameJam.Handler, userId = ViewBag.CurrentUserId, entryId = Model.Id, criteriaType = vote.CriteriaType })">
+                                                            }
+                                                            else
+                                                            {
+                                                                <input id="txtScore" name="Score" type="number" class="d-none criteria-rating" step="1" data-readonly="true" value="@vote.Median.ToString(new System.Globalization.CultureInfo("en-US"))">
+                                                            }
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-12 col-lg-6">
-                                                    <div class="h-100 d-flex flex-column justify-content-center text-center">
-
-                                                        @if (Model.Permissions.CanVote)
-                                                        {
-                                                            <input id="txtScore" name="Score" type="number" class="d-none criteria-rating" step="1" value="@vote.Score.ToString(new System.Globalization.CultureInfo("en-US"))" data-url="@Url.Action("voteentry", "gamejam", new { area = "community", jamHandler = Model.GameJam.Handler, userId = ViewBag.CurrentUserId, entryId = Model.Id, criteriaType = vote.CriteriaType })">
-                                                        }
-                                                        else
-                                                        {
-                                                            <input id="txtScore" name="Score" type="number" class="d-none criteria-rating" step="1" data-readonly="true" value="@vote.Median.ToString(new System.Globalization.CultureInfo("en-US"))">
-                                                        }
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <span class="display-4">@SharedLocalizer["Results will be revealed later."]</span>
                                         }
                                     </div>
                                 </div>

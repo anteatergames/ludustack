@@ -53,6 +53,8 @@ namespace LuduStack.Application.ViewModels.GameJam
         public string Location { get; set; }
         #endregion IUserProfileBasic
 
-        public decimal TotalScore { get; internal set; }
+        public decimal TotalScore { get; set; }
+
+        public bool CanShowResults { get; set; }
     }
 }
