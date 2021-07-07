@@ -248,11 +248,18 @@
 
                     <div class="col-12 mb-3">
                         <label asp-for="Criteria" class="col-form-label"></label>
+                        <span asp-description-for="Criteria" class="col-form-label" />
                         <div class="row">
-                            @for (int i = 0; i < Model.Criteria.Count; i++)
+                            @for (int i = 0; i < Model.Criteria.Where(x => x.Type == GameJamCriteriaType.Overall).Count(); i++)
                             {
-                                var criteria = Model.Criteria.ElementAt(i);
-                                var uiInfo = criteria.Type.ToUiInfo();
+                                <input asp-for="Criteria[i].Type" type="hidden" class="default" />
+                                <input asp-for="Criteria[i].Name" type="hidden" class="default" />
+                                <input asp-for="Criteria[i].Enabled" type="hidden" class="default" />
+                            }
+
+                            @for (int i = 1; i <= Model.Criteria.Where(x => x.Type != GameJamCriteriaType.Overall).Count(); i++)
+                            {
+                                var uiInfo = Model.Criteria[i].Type.ToUiInfo();
 
                                 <div class="col-12 col-md-6 col-lg-4 col-xl-3">
                                     <input asp-for="Criteria[i].Type" type="hidden" class="default" />

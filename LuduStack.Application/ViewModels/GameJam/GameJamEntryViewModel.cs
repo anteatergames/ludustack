@@ -56,5 +56,9 @@ namespace LuduStack.Application.ViewModels.GameJam
         public decimal TotalScore { get; set; }
 
         public bool CanShowResults { get; set; }
+
+        public bool IsOverallVote { get; set; }
+
+        public bool ShowAllCriteria { get; set; }
     }
 }

@@ -14,9 +14,9 @@
             <img class="rounded-circle lazyload" data-src="@Model.ProfileImageUrl" src="@Constants.DefaultAvatar" alt="@SharedLocalizer["This is {0}, believe it or not.", Model.Name]">
         </a>
     </div>
-    <div class="widget-user-header bg-black card-img" style="background-image: url('@Model.CoverImageUrl')">
+    <div class="mb-1 bg-black square-bottom widget-user-header card-img" style="background-image: url('@Model.CoverImageUrl')">
     </div>
-    <div class="box-footer">
+    <div class="p-2 pt-4">
         <div class="row">
             <div class="col-12">
                 <h3 class="widget-user-username text-truncate">@Model.Name.Substring(0, nameLimit)</h3>

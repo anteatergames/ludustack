@@ -88,6 +88,7 @@ namespace LuduStack.Application.ViewModels.GameJam
 
         public List<GameJamSponsorViewModel> Sponsors { get; set; }
 
+        [Display(Name = "Criteria", Description = "Select the criteria to be used on the voting phase. If no criteria is selected a \"Overall\" criteria will be used.")]
         public List<GameJamCriteriaViewModel> Criteria { get; set; }
 
         public List<ProfileViewModel> JudgesProfiles { get; set; }

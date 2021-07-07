@@ -5,6 +5,7 @@ using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels.Game;
 using LuduStack.Application.ViewModels.GameJam;
 using LuduStack.Application.ViewModels.User;
+using LuduStack.Domain.Core.Attributes;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Core.Extensions;
 using LuduStack.Domain.Messaging;
@@ -602,10 +603,10 @@ namespace LuduStack.Application.Services
             {
                 decimal median = 0;
 
-                IEnumerable<GameJamVoteViewModel> allVotes = vm.Votes.Where(x => x.CriteriaType == criteria.Type);
-                if (allVotes.Any())
+                IEnumerable<GameJamVoteViewModel> allVotesForThisCategory = vm.Votes.Where(x => x.CriteriaType == criteria.Type);
+                if (allVotesForThisCategory.Any())
                 {
-                    median = allVotes.Median(x => x.Score);
+                    median = allVotesForThisCategory.Median(x => x.Score);
                 }
 
                 GameJamVoteViewModel newVote = new GameJamVoteViewModel
@@ -621,8 +622,7 @@ namespace LuduStack.Application.Services
                 }
                 else
                 {
-
-                    GameJamVoteViewModel currentUserVote = allVotes.FirstOrDefault(x => x.UserId == currentUserId);
+                    GameJamVoteViewModel currentUserVote = allVotesForThisCategory.FirstOrDefault(x => x.UserId == currentUserId);
                     if (currentUserVote == null)
                     {
                         vm.Votes.Add(newVote);
@@ -639,6 +639,8 @@ namespace LuduStack.Application.Services
             vm.TotalScore = medians.Any() ? medians.Median() : 0;
 
             vm.CanShowResults = gameJamVm.CurrentPhase == GameJamPhase.Results || gameJamVm.CurrentPhase == GameJamPhase.Finished || (gameJamVm.CurrentPhase == GameJamPhase.Voting && !gameJamVm.HideRealtimeResults);
+
+            vm.IsOverallVote = !gameJamVm.Criteria.Any(x => x.Type != GameJamCriteriaType.Overall);
         }
 
         private static void SetViewModelState(Guid currentUserId, GameJamViewModel vm, IEnumerable<Guid> entries)
@@ -774,7 +776,7 @@ namespace LuduStack.Application.Services
 
             foreach (GameJamCriteriaType item in allCriteria)
             {
-                Domain.Core.Attributes.UiInfoAttribute uiInfo = item.ToUiInfo();
+                UiInfoAttribute uiInfo = item.ToUiInfo();
 
                 GameJamCriteriaViewModel existingCriteria = gameJamVm.Criteria.FirstOrDefault(x => x.Type == item);
                 if (existingCriteria != null)
@@ -788,7 +790,6 @@ namespace LuduStack.Application.Services
                 }
                 else
                 {
-
                     GameJamCriteriaViewModel newCriteria = new GameJamCriteriaViewModel
                     {
                         Enabled = isNew,

@@ -158,18 +158,29 @@
 
                                         @if (Model.CanShowResults || Model.Permissions.CanVote)
                                         {
-                                            foreach (var criteria in Model.GameJam.Criteria)
+                                            var criteriaToRender = Model.GameJam.Criteria;
+
+                                            if (Model.IsOverallVote)
+                                            {
+                                                criteriaToRender = Model.GameJam.Criteria.Where(x => x.Type == GameJamCriteriaType.Overall).ToList();
+                                            }
+                                            else
+                                            {
+                                                criteriaToRender = Model.GameJam.Criteria.Where(x => x.Type != GameJamCriteriaType.Overall).ToList();
+                                            }
+
+                                            foreach (var criteria in criteriaToRender)
                                             {
                                                 var vote = Model.Votes.FirstOrDefault(x => x.UserId == currentUserId && x.CriteriaType == criteria.Type);
 
-                                                <div class="row no-gutters">
+                                                <div class="row no-gutters px-1">
                                                     <div class="col-12 col-lg-6">
-                                                        <div class="d-flex flex-column justify-content-center text-center">
+                                                        <div class="d-flex flex-column justify-content-center text-center text-lg-left">
                                                             <span class="display-4">@criteria.Name</span>
                                                         </div>
                                                     </div>
                                                     <div class="col-12 col-lg-6">
-                                                        <div class="h-100 d-flex flex-column justify-content-center text-center">
+                                                        <div class="h-100 d-flex flex-column justify-content-center text-center text-lg-right">
 
                                                             @if (Model.Permissions.CanVote)
                                                             {
@@ -183,6 +194,20 @@
                                                     </div>
                                                 </div>
                                             }
+
+                                            <hr />
+                                            <div class="row no-gutters px-1">
+                                                <div class="col-12 col-lg-6">
+                                                    <div class="d-flex flex-column justify-content-center text-center text-uppercase text-lg-left">
+                                                        <span class="display-4">@SharedLocalizer["final score"]</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-lg-6">
+                                                    <div class="h-100 d-flex flex-column justify-content-center text-center text-lg-right">
+                                                        <input id="txtScore" name="Score" type="number" class="d-none criteria-rating" step="1" data-readonly="true" value="@Model.TotalScore.ToString(new System.Globalization.CultureInfo("en-US"))">
+                                                    </div>
+                                                </div>
+                                            </div>
                                         }
                                         else
                                         {
