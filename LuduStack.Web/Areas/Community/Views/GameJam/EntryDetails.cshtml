@@ -135,24 +135,22 @@
                                             @SharedLocalizer["visit game page"]
                                         </a>
                                     </div>
-                                    <div class="col-12">
-                                        @Html.Raw(Model.Game.Description)
-                                    </div>
 
-                                    <div class="col-12">
-                                        <hr />
-                                    </div>
+                                    @if (!string.IsNullOrWhiteSpace(Model.Game.Description))
+                                    {
+                                        <div class="col-12">
+                                            @Html.Raw(Model.Game.Description)
+                                        </div>
+
+                                        <div class="col-12">
+                                            <hr />
+                                        </div>
+                                    }
+
                                     <div class="col-12 mb-2">
                                         @if (Model.Permissions.CanVote)
                                         {
-                                            <h2>@SharedLocalizer["Vote"]</h2>
-                                        }
-                                        else
-                                        {
-                                            if (Model.CanShowResults)
-                                            {
-                                                <h2>@SharedLocalizer["Score"]</h2>
-                                            }
+                                            <h2 class="text-center">@SharedLocalizer["Cast your vote"]</h2>
                                         }
 
                                         @if (Model.CanShowResults || Model.Permissions.CanVote)

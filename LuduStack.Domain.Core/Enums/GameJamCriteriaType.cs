@@ -21,16 +21,32 @@ namespace LuduStack.Domain.Core.Enums
         [Display(Name = "Theme")]
         Theme = 4,
 
-        [UiInfo(Display = "Fun")]
-        [Display(Name = "Fun")]
-        Fun = 5,
-
         [UiInfo(Display = "Gameplay")]
         [Display(Name = "Gameplay")]
-        Gameplay = 6,
+        Gameplay = 5,
 
         [UiInfo(Display = "Level Design")]
         [Display(Name = "Level Design")]
-        LevelDesign = 7,
+        LevelDesign = 6,
+
+        [UiInfo(Display = "Story")]
+        [Display(Name = "Story")]
+        Story = 7,
+
+        [UiInfo(Display = "Fun")]
+        [Display(Name = "Fun")]
+        Fun = 8,
+
+        [UiInfo(Display = "Controls")]
+        [Display(Name = "Controls")]
+        Controls = 9,
+
+        [UiInfo(Display = "Mechanics")]
+        [Display(Name = "Mechanics")]
+        Mechanics = 10,
+
+        [UiInfo(Display = "Innovation")]
+        [Display(Name = "Innovation")]
+        Innovation = 11,
     }
 }
