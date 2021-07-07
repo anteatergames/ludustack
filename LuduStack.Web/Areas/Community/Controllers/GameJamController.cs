@@ -29,14 +29,12 @@ namespace LuduStack.Web.Areas.Staff.Controllers
         [Route("/gamejam")]
         public IActionResult Index()
         {
-
             return View();
         }
 
         [Route("/gamejam/manage")]
         public IActionResult Manage()
         {
-
             return View();
         }
 

@@ -21,7 +21,6 @@
     var gameJamUrl = Url.Action("details", "gamejam", new { area = "community", handler = Model.GameJam.Handler });
     var gameJamLink = string.Format("<a href=\"{0}\" class=\"boldlink text-nowrap\">{1}</a>", gameJamUrl, Model.GameJam.Name);
 
-
     List<SelectListItem> userGames = new List<SelectListItem>();
     if (Model.Game == null)
     {
@@ -195,19 +194,22 @@
                                                 </div>
                                             }
 
-                                            <hr />
-                                            <div class="row no-gutters px-1">
-                                                <div class="col-12 col-lg-6">
-                                                    <div class="d-flex flex-column justify-content-center text-center text-uppercase text-lg-left">
-                                                        <span class="display-4">@SharedLocalizer["final score"]</span>
+                                            @if (Model.CanShowResults)
+                                            {
+                                                <hr />
+                                                <div class="row no-gutters px-1">
+                                                    <div class="col-12 col-lg-6">
+                                                        <div class="d-flex flex-column justify-content-center text-center text-uppercase text-lg-left">
+                                                            <span class="display-4">@SharedLocalizer["final score"]</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 col-lg-6">
+                                                        <div class="h-100 d-flex flex-column justify-content-center text-center text-lg-right">
+                                                            <input id="txtScore" name="Score" type="number" class="d-none criteria-rating" step="1" data-readonly="true" value="@Model.TotalScore.ToString(new System.Globalization.CultureInfo("en-US"))">
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-12 col-lg-6">
-                                                    <div class="h-100 d-flex flex-column justify-content-center text-center text-lg-right">
-                                                        <input id="txtScore" name="Score" type="number" class="d-none criteria-rating" step="1" data-readonly="true" value="@Model.TotalScore.ToString(new System.Globalization.CultureInfo("en-US"))">
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            }
                                         }
                                         else
                                         {

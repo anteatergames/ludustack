@@ -373,7 +373,6 @@ namespace LuduStack.Application.Services
             }
         }
 
-
         public async Task<OperationResultListVo<GameJamEntryViewModel>> GetParticipantsByJam(Guid currentUserId, bool currentUserIsAdmin, string jamHandler, Guid jamId)
         {
             try
@@ -432,7 +431,6 @@ namespace LuduStack.Application.Services
                 }
 
                 CommandResult result = await mediator.SendCommand(new JoinGameJamCommand(currentUserId, jamId));
-
 
                 if (!result.Validation.IsValid)
                 {
@@ -536,7 +534,6 @@ namespace LuduStack.Application.Services
 
                 if (id.HasValue)
                 {
-
                     model = await mediator.Query<GetGameJamEntryByIdQuery, GameJamEntry>(new GetGameJamEntryByIdQuery(id.Value));
                 }
                 else

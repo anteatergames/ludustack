@@ -33,8 +33,6 @@ namespace LuduStack.Application.Formatters
             }
         }
 
-
-
         public static async Task FormatExternalLinks(IMediatorHandler mediator, GameViewModel vm)
         {
             IEnumerable<UserProfile> profiles = await mediator.Query<GetUserProfileByUserIdQuery, IEnumerable<UserProfile>>(new GetUserProfileByUserIdQuery(vm.UserId));

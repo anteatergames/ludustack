@@ -2,6 +2,10 @@
     padding-bottom: 200px;
 }
 
+    #featurecontainer .btn-group .dropdown-toggle {
+        border-left: 0;
+    }
+
     #featurecontainer .btn {
         font-size: 16px;
     }

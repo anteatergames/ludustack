@@ -40,6 +40,7 @@ namespace LuduStack.Application.ViewModels.GameJam
         public string JamHandler { get; set; }
 
         #region IUserProfileBasic
+
         public string Handler { get; set; }
 
         public string ProfileImageUrl { get; set; }
@@ -51,6 +52,7 @@ namespace LuduStack.Application.ViewModels.GameJam
         public string Country { get; set; }
 
         public string Location { get; set; }
+
         #endregion IUserProfileBasic
 
         public decimal TotalScore { get; set; }

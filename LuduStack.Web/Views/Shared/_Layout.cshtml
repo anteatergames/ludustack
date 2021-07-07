@@ -7,7 +7,6 @@
 
 @removeTagHelper Microsoft.AspNetCore.Mvc.Razor.TagHelpers.BodyTagHelper, Microsoft.AspNetCore.Mvc.Razor
 
-
 @{
     var childTitle = ViewData["Title"]?.ToString();
     var title = string.IsNullOrWhiteSpace(childTitle) || childTitle.Equals(Constants.DefaultTitle) ? Constants.DefaultTitle : ViewData["Title"].ToString();

@@ -23,6 +23,7 @@ namespace LuduStack.Domain.Messaging.Queries.GameJam
         public GetGameJamEntryListQuery()
         {
         }
+
         public GetGameJamEntryListQuery(Guid jamId, bool submittedOnly)
         {
             JamId = jamId;

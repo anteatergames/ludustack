@@ -8,7 +8,6 @@
     var description = ViewData["ListDescription"] == null ? SharedLocalizer["Participants"] : (string)ViewData["ListDescription"];
 }
 
-
 @if (!Model.Any())
 {
     <partial name="_ListNoItems" model="noItemsModel" />
