@@ -58,7 +58,7 @@
                     </div>
                 </div>
 
-                <div class="col-12 col-md-6">
+                <div class="col-12 col-md-5">
                     <div class="form-group">
                         <label asp-for="Handler" class="col-form-label"></label>
                         <span asp-description-for="Handler" class="col-form-label" />
@@ -67,12 +67,21 @@
                     </div>
                 </div>
 
-                <div class="col-12 col-md-6">
+                <div class="col-12 col-md-5">
                     <div class="form-group">
                         <label asp-for="HashTag" class="col-form-label"></label>
                         <span asp-description-for="HashTag" class="col-form-label" />
                         <input asp-for="HashTag" class="form-control" placeholder="@SharedLocalizer["Type the HashTag name here"]" />
                         <span asp-validation-for="HashTag" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-2">
+                    <div class="form-group">
+                        <label asp-for="Winners" class="col-form-label"></label>
+                        <span asp-description-for="Winners" class="col-form-label" />
+                        <input asp-for="Winners" class="form-control" />
+                        <span asp-validation-for="Winners" class="text-danger"></span>
                     </div>
                 </div>
 

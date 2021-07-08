@@ -83,7 +83,7 @@
             }
             else if (url !== undefined) {
                 loadTab($(tabDestination), url).then(() => {
-                    if (tabDestination === '#tabsubmissions') {
+                    if (tabDestination === '#tabsubmissions' || tabDestination === '#tabresults') {
                         bindRatings();
                     }
                 });

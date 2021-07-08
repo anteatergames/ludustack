@@ -22,6 +22,8 @@ namespace LuduStack.Domain.Models
 
         public int FinalPlace { get; set; }
 
+        public decimal TotalScore { get; set; }
+
         public List<GameJamVote> Votes { get; set; }
     }
 }

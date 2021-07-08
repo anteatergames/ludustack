@@ -135,7 +135,7 @@
                 </div>
             }
 
-            <ul class="nav nav-tabs text-capitalize" id="tabs" role="tablist">
+            <ul class="nav nav-tabs nav-justified text-capitalize" id="tabs" role="tablist">
                 <li class="nav-item" role="presentation">
                     <a class="nav-link active" id="overview-tab" data-toggle="tab" href="#taboverview" role="tab" aria-controls="taboverview" aria-selected="true"><i class="fas fa-info-circle" aria-hidden="true"></i><span class="d-none d-md-inline-block">&nbsp;@SharedLocalizer["overview"]</span></a>
                 </li>
@@ -158,6 +158,12 @@
                 {
                     <li class="nav-item" role="presentation">
                         <a class="nav-link" id="submissions-tab" data-toggle="tab" href="#tabsubmissions" role="tab" aria-controls="tabsubmissions" aria-selected="false" data-url="@Url.Action("listsubmissions", "gamejam", new { area = "community", jamHandler = Model.Handler, jamId = Model.Id })"><i class="fas fa-gamepad" aria-hidden="true"></i><span class="d-none d-md-inline-block">&nbsp;@SharedLocalizer["submissions"]</span></a>
+                    </li>
+                }
+                @if (Model.ShowFinalResults)
+                {
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="results-tab" data-toggle="tab" href="#tabresults" role="tab" aria-controls="tabresults" aria-selected="false" data-url="@Url.Action("listwinners", "gamejam", new { area = "community", jamHandler = Model.Handler, jamId = Model.Id, winnerCount = Model.Winners })"><i class="fas fa-trophy" aria-hidden="true"></i><span class="d-none d-md-inline-block">&nbsp;@SharedLocalizer["results"]</span></a>
                     </li>
                 }
             </ul>
@@ -259,6 +265,10 @@
                 @if (Model.ShowSubmissions)
                 {
                     <div class="tab-pane fade p-2 bg-white" id="tabsubmissions" role="tabpanel" aria-labelledby="submissions-tab">...</div>
+                }
+                @if (Model.ShowFinalResults)
+                {
+                    <div class="tab-pane fade p-2 bg-white" id="tabresults" role="tabpanel" aria-labelledby="results-tab">...</div>
                 }
             </div>
         </div>

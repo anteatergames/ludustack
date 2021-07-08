@@ -29,6 +29,8 @@ namespace LuduStack.Domain.Models
 
         public string HashTag { get; set; }
 
+        public int Winners { get; set; }
+
         public string BannerImage { get; set; }
 
         public string FeaturedImage { get; set; }

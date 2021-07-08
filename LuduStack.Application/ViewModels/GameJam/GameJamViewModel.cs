@@ -44,6 +44,8 @@ namespace LuduStack.Application.ViewModels.GameJam
         [RegularExpression("^(?=.{3,32}$)(?![-.])(?!.*[-.]{2})[a-zA-Z0-9-.]+(?<![-.])$", ErrorMessage = "Invalid hashtag!")]
         public string HashTag { get; set; }
 
+        public int Winners { get; set; }
+
         [Display(Name = "Banner Image", Description = "This image will be shown at the top of your Game Jam page. We recomend you to pick a transparent PNG image.")]
         public string BannerImage { get; set; }
 
@@ -118,5 +120,9 @@ namespace LuduStack.Application.ViewModels.GameJam
         public bool ShowJudges { get; set; }
 
         public bool ShowCriteria { get; set; }
+
+        public bool HasWinners { get { return Winners > 0; } }
+
+        public bool ShowFinalResults { get; set; }
     }
 }

@@ -56,6 +56,8 @@ namespace LuduStack.Domain.Messaging
 
             CheckCriteria(request);
 
+            CheckImages(request);
+
             if (request.GameJam.Id == Guid.Empty)
             {
                 await gameJamRepository.Add(request.GameJam);
@@ -68,6 +70,27 @@ namespace LuduStack.Domain.Messaging
             result.Validation = await Commit(unitOfWork);
 
             return result;
+        }
+
+        private static void CheckImages(SaveGameJamCommand request)
+        {
+            if (!string.IsNullOrWhiteSpace(request.GameJam.FeaturedImage))
+            {
+                var splitedValues = request.GameJam.FeaturedImage.Split('/');
+                request.GameJam.FeaturedImage = splitedValues.Last();
+            }
+
+            if (!string.IsNullOrWhiteSpace(request.GameJam.BannerImage))
+            {
+                var splitedValues = request.GameJam.BannerImage.Split('/');
+                request.GameJam.BannerImage = splitedValues.Last();
+            }
+
+            if (!string.IsNullOrWhiteSpace(request.GameJam.BackgroundImage))
+            {
+                var splitedValues = request.GameJam.BackgroundImage.Split('/');
+                request.GameJam.BackgroundImage = splitedValues.Last();
+            }
         }
 
         private static void CheckJudges(SaveGameJamCommand request)

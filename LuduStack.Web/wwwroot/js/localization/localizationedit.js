@@ -223,7 +223,7 @@
     function deleteProject(btn, callback) {
         var url = btn.data('url');
 
-        var msgs = MAINMODULE.Common.GetDeleteMessages(btn);
+        var msgs = MAINMODULE.Common.GetPostConfirmationMessages(btn);
 
         ALERTSYSTEM.ShowConfirmMessage(msgs.confirmationTitle, msgs.msg, msgs.confirmationButtonText, msgs.cancelButtonText, function () {
             $.ajax({

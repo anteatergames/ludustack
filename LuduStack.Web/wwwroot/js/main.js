@@ -253,14 +253,14 @@
         });
     }
 
-    function getDeleteMessages(btn) {
+    function getPostConfirmationMessages(btn) {
         var msg = btn.data('confirmationmessage');
         var confirmationTitle = btn.data('confirmationtitle');
         var confirmationButtonText = btn.data('confirmationbuttontext');
         var cancelButtonText = btn.data('cancelbuttontext');
 
         if (msg === undefined) {
-            msg = 'Are you sure you want to delete this?';
+            msg = 'Are you sure you want to do this?';
         }
 
         if (confirmationTitle === undefined) {
@@ -268,7 +268,7 @@
         }
 
         if (confirmationButtonText === undefined) {
-            confirmationButtonText = 'Yes, delete it!';
+            confirmationButtonText = 'Yes, do it!';
         }
 
         if (cancelButtonText === undefined) {
@@ -449,7 +449,7 @@
     function postOrDeleteWithConfirmation(btn, httpmethod, callback) {
         var url = btn.data('url');
 
-        var msgs = MAINMODULE.Common.GetDeleteMessages(btn);
+        var msgs = MAINMODULE.Common.GetPostConfirmationMessages(btn);
 
         ALERTSYSTEM.ShowConfirmMessage(msgs.confirmationTitle, msgs.msg, msgs.confirmationButtonText, msgs.cancelButtonText, function () {
             $.ajax({
@@ -580,7 +580,7 @@
             RemoveErrorFromButton: removeErrorFromButton,
             PostSaveCallback: postSaveCallback,
             RenameInputs: renameInputs,
-            GetDeleteMessages: getDeleteMessages,
+            GetPostConfirmationMessages: getPostConfirmationMessages,
             BindPopOvers: bindPopOvers
         },
         Default: {

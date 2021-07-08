@@ -27,14 +27,42 @@
                 <thead>
                     <tr class="text-capitalize">
                         <th scope="col">@SharedLocalizer["Name"]</th>
+                        <th scope="col">@SharedLocalizer["phase"]</th>
+                        <th scope="col" class="text-center">@SharedLocalizer["start"]</th>
+                        <th scope="col" class="text-center">@SharedLocalizer["deadline"]</th>
+                        <th scope="col" class="text-center">@SharedLocalizer["voting"]</th>
+                        <th scope="col" class="text-center">@SharedLocalizer["results"]</th>
                         <th scope="col" class="text-right text-wrap" style="width:1px">@SharedLocalizer["actions"]</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var item in Model)
                     {
+                        var phaseColor = string.Empty;
+
+                        switch (item.CurrentPhase)
+                        {
+                            case GameJamPhase.Warmup:
+                                phaseColor = " text-warning";
+                                break;
+                            case GameJamPhase.Submission:
+                                phaseColor = " text-danger";
+                                break;
+                            case GameJamPhase.Voting:
+                                phaseColor = " text-info";
+                                break;
+                            case GameJamPhase.Results:
+                                phaseColor = " text-success";
+                                break;
+                        }
+
                         <tr class="row-clickable">
                             <td class="col"><span>@item.Name</span></td>
+                            <td class="col@(phaseColor)">@item.CurrentPhase</td>
+                            <td class="col text-center text-nowrap@(item.CurrentPhase == GameJamPhase.Warmup ? string.Format(" text-bold{0}", phaseColor) : string.Empty)" title="@item.StartDate.ToShortTimeString()">@item.StartDate.ToShortDateString()</td>
+                            <td class="col text-center text-nowrap@(item.CurrentPhase == GameJamPhase.Submission ? string.Format(" text-bold{0}", phaseColor) : string.Empty)" title="@item.EntryDeadline.ToShortTimeString()">@item.EntryDeadline.ToShortDateString()</td>
+                            <td class="col text-center text-nowrap@(item.CurrentPhase == GameJamPhase.Voting ? string.Format(" text-bold{0}", phaseColor) : string.Empty)" title="@item.VotingEndDate.ToShortTimeString()">@item.VotingEndDate.ToShortDateString()</td>
+                            <td class="col text-center text-nowrap@(item.CurrentPhase == GameJamPhase.Results ? string.Format(" text-bold{0}", phaseColor) : string.Empty)" title="@item.ResultDate.ToShortTimeString()">@item.ResultDate.ToShortDateString()</td>
                             <td class="text-right">
                                 @if (canInteract)
                                 {
@@ -43,6 +71,10 @@
                                         <button class="btn btn-sm btn-outline-info dropdown-toggle my-1" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
                                         <div class="dropdown-menu dropdown-menu-right btn-sm p-1" aria-labelledby="dropdownMenuButton" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(-30px, 38px, 0px);">
                                             <a asp-area="community" asp-controller="gamejam" asp-action="details" asp-route-handler="@item.Handler" class="dropdown-item text-default btn-eye py-2 btn-entity-view" target="_blank"><i class="fas fa-fw fa-eye" aria-hidden="true"></i> @SharedLocalizer["view"]</a>
+                                            @if (item.CurrentPhase == GameJamPhase.Results)
+                                            {
+                                                <a class="dropdown-item text-success btn-trophy py-2 btn-results-calculate" href="#" data-url="@Url.Action("calculateresults", "gamejam", new { area = "community", jamId = item.Id })" data-confirmationmessage="@SharedLocalizer["Are you sure you want to calculate the results for this Game Jam?"]" data-confirmationtitle="@SharedLocalizer["Are you sure?"]" data-confirmationbuttontext="@SharedLocalizer["Yes, do it!"]" data-cancelbuttontext="@SharedLocalizer["Cancel"]"><i class="fas fa-fw fa-trophy" aria-hidden="true"></i> @SharedLocalizer["Calculate results"]</a>
+                                            }
                                             <a class="dropdown-item text-danger btn-trash py-2 btn-entity-delete" href="#" data-url="@Url.Action("delete", "gamejam", new { area = "community", id = item.Id })" data-confirmationmessage="@SharedLocalizer["Are you sure you want to delete this Game Jam?"]" data-confirmationtitle="@SharedLocalizer["Are you sure?"]" data-confirmationbuttontext="@SharedLocalizer["Yes, delete it!"]" data-cancelbuttontext="@SharedLocalizer["Cancel"]"><i class="fas fa-fw fa-trash-alt" aria-hidden="true"></i> @SharedLocalizer["delete"]</a>
                                         </div>
                                     </div>

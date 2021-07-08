@@ -130,6 +130,23 @@
                             </div>
                             <div class="col-12 col-md-8">
                                 <div class="row">
+
+                                    @if (Model.FinalPlace > 0)
+                                    {
+                                        <div class="col-12 text-center">
+                                            <div class="mt-n5 mr-2">
+                                                @if (Model.FinalPlace == 1)
+                                                {
+                                                    <img src="~/images/gamejam/winner-1.png" class="img-fluid" alt="@SharedLocalizer["First place"]" />
+                                                }
+                                                else
+                                                {
+                                                    <img src="~/images/gamejam/winner-other.png" class="img-fluid" alt="@SharedLocalizer["One of the winners"]" />
+                                                }
+                                            </div>
+                                        </div>
+                                    }
+
                                     <div class="col-12 text-uppercase mb-3">
                                         <a href="@Url.Action("details", "game", new { area = string.Empty, id = Model.Game.Id })" class="btn btn-large btn-block btn-secondary">
                                             @SharedLocalizer["visit game page"]

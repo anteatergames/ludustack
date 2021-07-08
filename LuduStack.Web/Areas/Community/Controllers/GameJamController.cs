@@ -108,6 +108,32 @@ namespace LuduStack.Web.Areas.Staff.Controllers
             return PartialView("_ListGameJamSubmissions", model);
         }
 
+        [Route("/gamejam/{jamId:guid}/listwinners")]
+        public async Task<PartialViewResult> ListWinners(string jamHandler, Guid jamId, int winnerCount)
+        {
+            List<GameJamEntryViewModel> model;
+
+            OperationResultListVo<GameJamEntryViewModel> serviceResult = await gameJamAppService.GetWinnersByJam(CurrentUserId, CurrentUserIsAdmin, jamId, jamHandler, winnerCount);
+
+            if (serviceResult.Success)
+            {
+                model = serviceResult.Value.ToList();
+            }
+            else
+            {
+                model = new List<GameJamEntryViewModel>();
+            }
+
+            foreach (GameJamEntryViewModel item in model)
+            {
+                item.Url = Url.Action("entry", "gamejam", new { area = "community", jamHandler = jamHandler, id = item.Id });
+            }
+
+            ViewData["ListDescription"] = SharedLocalizer["All Submissions"].ToString();
+
+            return PartialView("_ListGameJamWinners", model);
+        }
+
         [Route("/gamejam/{jamHandler}/{jamId:guid}/listparticipants")]
         public async Task<PartialViewResult> ListParticipants(string jamHandler, Guid jamId)
         {
@@ -408,6 +434,25 @@ namespace LuduStack.Web.Areas.Staff.Controllers
                 OperationResultVo submitGameResult = await gameJamAppService.VoteEntry(CurrentUserId, jamHandler, entryId, criteriaType, score, comment, isCommunityVote);
 
                 return Json(submitGameResult);
+            }
+            catch (Exception)
+            {
+                result = new OperationResultVo(false);
+            }
+
+            return Json(result);
+        }
+
+        [HttpPost("/gamejam/{jamId:guid}/calculateresults")]
+        public async Task<IActionResult> CalculateResults(Guid jamId)
+        {
+            OperationResultVo result;
+
+            try
+            {
+                OperationResultVo joinResult = await gameJamAppService.CalculateResults(CurrentUserId, jamId);
+
+                return Json(joinResult);
             }
             catch (Exception)
             {

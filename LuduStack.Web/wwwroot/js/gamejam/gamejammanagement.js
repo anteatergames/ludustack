@@ -4,6 +4,8 @@
     var selectors = {};
     var objs = {};
 
+    var canInteract = false;
+
     var urlList;
 
     function setSelectors() {
@@ -11,6 +13,7 @@
         selectors.container = '#featurecontainer';
         selectors.containerList = '#containerlist';
         selectors.list = '#divList';
+        selectors.btnCalculateResults = '.btn-results-calculate';
     }
 
     function cacheObjs() {
@@ -25,18 +28,40 @@
         setSelectors();
         cacheObjs();
 
+        bindAll();
+
+        canInteract = MAINMODULE.CanInteract();
+
         urlList = objs.urls.data('urlList');
 
         loadItems(urlList);
 
-        GAMEJAMCOMMON.Callback.DeleteEntity = deleteCallback;
+        GAMEJAMCOMMON.Callback.DeleteEntity = postActionCallback;
+    }
+
+    function bindAll() {
+        bindCalculateResults();
+    }
+
+    function bindCalculateResults() {
+        objs.container.on('click', selectors.btnCalculateResults, function (e) {
+            e.preventDefault();
+
+            var btn = $(this);
+
+            if (canInteract) {
+                MAINMODULE.Common.PostWithConfirmation(btn, postActionCallback);
+            }
+
+            return false;
+        });
     }
 
     function loadItems(url) {
         MAINMODULE.Ajax.LoadHtml(url, objs.list);
     }
 
-    function deleteCallback(response) {
+    function postActionCallback(response) {
         if (response.success) {
             loadItems(urlList);
         }
