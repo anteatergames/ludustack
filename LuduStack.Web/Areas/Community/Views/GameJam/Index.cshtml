@@ -10,6 +10,7 @@
     ViewData["Title"] = SharedLocalizer["Game Jams"];
     ViewData["Description"] = SharedLocalizer["Manage Game Jams"];
     ViewData["Url"] = ViewBag.BaseUrl + Url.Action("index", "gamejam", new { area = "community" });
+    ViewData["OgImage"] = ViewBag.BaseUrl + "/images/og/oggamejam.png";
 }
 
 @section ComponentStyles {

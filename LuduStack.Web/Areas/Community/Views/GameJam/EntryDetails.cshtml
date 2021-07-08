@@ -6,7 +6,7 @@
         ViewData["Description"] = Model.Game.Description;
     }
     ViewData["Url"] = ViewBag.BaseUrl + Url.Action("entry", "gamejam", new { area = "community", id = Model.Id, jamHandler = Model.GameJam.Handler });
-    ViewData["OgImage"] = Model.FeaturedImage;
+    ViewData["OgImage"] = Model.FeaturedImage ?? ViewBag.BaseUrl + "/images/og/oggamejam.png";
 
     if (!string.IsNullOrWhiteSpace(Model.GameJam.BackgroundImage))
     {
