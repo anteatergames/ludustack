@@ -21,6 +21,10 @@
     var hasBanner = !string.IsNullOrWhiteSpace(Model.BannerImage);
 
     var noJudgesModel = new ListNoItemsViewModel("fas fa-gavel", "There are no Judges on this Game Jam!");
+
+    var noCriteriaModel = new ListNoItemsViewModel("fas fa-balance-scale", "There are no Criteria on this Game Jam!");
+
+    var criteriaToList = Model.Criteria.Where(x => x.Type != GameJamCriteriaType.Overall);
 }
 
 @section Styles {
@@ -141,6 +145,12 @@
                         <a class="nav-link" id="judges-tab" data-toggle="tab" href="#tabjudges" role="tab" aria-controls="tabjudges" aria-selected="false"><i class="fas fa-gavel" aria-hidden="true"></i><span class="d-none d-md-inline-block">&nbsp;@SharedLocalizer["judges"]</span></a>
                     </li>
                 }
+                @if (Model.ShowCriteria)
+                {
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="criteria-tab" data-toggle="tab" href="#tabcriteria" role="tab" aria-controls="tabcriteria" aria-selected="false"><i class="fas fa-balance-scale" aria-hidden="true"></i><span class="d-none d-md-inline-block">&nbsp;@SharedLocalizer["criteria"]</span></a>
+                    </li>
+                }
                 <li class="nav-item" role="presentation">
                     <a class="nav-link" id="participants-tab" data-toggle="tab" href="#tabparticipants" role="tab" aria-controls="tabparticipants" aria-selected="false" data-url="@Url.Action("listparticipants", "gamejam", new { area = "community", jamHandler = Model.Handler, jamId = Model.Id })"><i class="fas fa-users" aria-hidden="true"></i><span class="d-none d-md-inline-block">&nbsp;@SharedLocalizer["participants"]</span></a>
                 </li>
@@ -162,10 +172,12 @@
                     <div class="row m-2 justify-content-center">
                         @foreach (var highlight in Model.Highlights)
                         {
+                            var uiInfo = highlight.Highlight.ToUiInfo();
+
                             <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-2">
-                                <div class="border bg-dark text-white p-1" data-container="body" data-toggle="popover" data-trigger="hover" data-placement="top" data-content="@highlight.Highlight.ToUiInfo().Description">
-                                    <span class="btn border p-1 rounded-circle btn-icon-sm bg-label"><i class="fas fa-@(highlight.Highlight.ToUiInfo().Class)" aria-hidden="true"></i></span>
-                                    <span>@SharedLocalizer[highlight.Highlight.ToUiInfo().Display]</span>
+                                <div class="border bg-dark text-white p-1" data-container="body" data-toggle="popover" data-trigger="hover" data-placement="top" data-content="@uiInfo.Description">
+                                    <span class="btn border p-1 rounded-circle btn-icon-sm bg-label"><i class="fas fa-@(uiInfo.Class)" aria-hidden="true"></i></span>
+                                    <span>@SharedLocalizer[uiInfo.Display]</span>
                                 </div>
                             </div>
                         }
@@ -199,6 +211,43 @@
                                         <input type="hidden" name="Judges[@i]" value="@judge.UserId" />
                                         <div class="bordered">
                                             <partial name="_UserCard" model="judge" />
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        }
+                    </div>
+                }
+                @if (Model.ShowCriteria)
+                {
+                    <div class="tab-pane fade p-2 bg-white" id="tabcriteria" role="tabpanel" aria-labelledby="criteria-tab">
+                        @if (!Model.Criteria.Any())
+                        {
+                            <partial name="_ListNoItems" model="noCriteriaModel" />
+                        }
+                        else
+                        {
+                            <div class="col-12 text-center">
+                                @if (Model.Criteria.Count == 1)
+                                {
+                                    <span>@SharedLocalizer["Just 1 criteria"]</span>
+                                }
+                                else
+                                {
+                                    <span>@SharedLocalizer["{0} criteria", criteriaToList.Count()]</span>
+                                }
+                            </div>
+                            <div class="row">
+                                @for (int i = 0; i < criteriaToList.Count(); i++)
+                                {
+                                    var criteria = criteriaToList.ElementAt(i);
+                                    var uiInfo = criteria.Type.ToUiInfo();
+
+
+                                    <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-2">
+                                        <div class="border bg-dark text-white p-1" data-container="body" data-toggle="popover" data-trigger="hover" data-placement="top" data-content="@uiInfo.Description">
+                                            <span class="btn border p-1 rounded-circle btn-icon-sm bg-label"><i class="fas fa-@(uiInfo.Class)" aria-hidden="true"></i></span>
+                                            <span>@SharedLocalizer[uiInfo.Display]</span>
                                         </div>
                                     </div>
                                 }

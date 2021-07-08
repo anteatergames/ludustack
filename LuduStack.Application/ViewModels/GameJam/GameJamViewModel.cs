@@ -116,5 +116,7 @@ namespace LuduStack.Application.ViewModels.GameJam
         public bool ShowSubmissions { get; set; }
 
         public bool ShowJudges { get; set; }
+
+        public bool ShowCriteria { get; set; }
     }
 }

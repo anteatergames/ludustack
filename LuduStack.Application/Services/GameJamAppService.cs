@@ -789,7 +789,7 @@ namespace LuduStack.Application.Services
                 {
                     GameJamCriteriaViewModel newCriteria = new GameJamCriteriaViewModel
                     {
-                        Enabled = isNew,
+                        Enabled = isNew && ((int)item) < 5,
                         Type = item,
                         Name = uiInfo.Display,
                         Weight = 1
@@ -819,6 +819,7 @@ namespace LuduStack.Application.Services
 
             vm.ShowSubmissions = (isNotWarmup && iAmJudge) || (isNotWarmup && !vm.HideSubmissions || vm.CurrentPhase == GameJamPhase.Results || vm.CurrentPhase == GameJamPhase.Finished);
             vm.ShowJudges = vm.Judges != null && vm.Judges.Any();
+            vm.ShowCriteria = vm.Criteria != null && vm.Criteria.Where(x => x.Type != GameJamCriteriaType.Overall).Any();
 
             vm.Permissions.IsAdmin = currentUserIsAdmin;
             vm.Permissions.CanDelete = vm.Permissions.IsAdmin;
