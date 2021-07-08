@@ -123,7 +123,7 @@ namespace LuduStack.Application.Services
                 await SetJudges(vm);
                 SetHighlights(vm);
 
-                SetImagesToShow(vm, false);
+                SetGameJamImagesToShow(vm, false);
 
                 SetViewModelState(currentUserId, vm, entries);
 
@@ -161,7 +161,7 @@ namespace LuduStack.Application.Services
 
                 SetCriteria(vm, false);
 
-                SetImagesToShow(vm, true);
+                SetGameJamImagesToShow(vm, true);
 
                 SetJamPermissions(currentUserId, currentUserIsAdmin, vm);
 
@@ -656,9 +656,11 @@ namespace LuduStack.Application.Services
 
                     vm.Game = gameVm;
                     vm.Title = game.Title;
+
+                    vm.FeaturedImage = gameVm.ThumbnailUrl;
                 }
 
-                SetImagesToShow(gameJamVm, false);
+                SetGameJamImagesToShow(gameJamVm, false);
                 vm.GameJam = gameJamVm;
 
                 UserProfileEssentialVo authorProfile = await mediator.Query<GetBasicUserProfileDataByUserIdQuery, UserProfileEssentialVo>(new GetBasicUserProfileDataByUserIdQuery(model.UserId));
@@ -934,7 +936,7 @@ namespace LuduStack.Application.Services
             vm.Permissions.CanVote = iAmJudge && !vm.Permissions.IsMe && jamPhaseAllowsVote && vm.GameId != Guid.Empty;
         }
 
-        private void SetImagesToShow(GameJamViewModel vm, bool editMode)
+        private void SetGameJamImagesToShow(GameJamViewModel vm, bool editMode)
         {
             if (editMode)
             {

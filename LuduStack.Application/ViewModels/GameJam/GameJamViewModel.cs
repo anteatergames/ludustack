@@ -121,7 +121,7 @@ namespace LuduStack.Application.ViewModels.GameJam
 
         public bool ShowCriteria { get; set; }
 
-        public bool HasWinners { get { return Winners > 0; } }
+        public bool HasWinners => Winners > 0;
 
         public bool ShowFinalResults { get; set; }
     }

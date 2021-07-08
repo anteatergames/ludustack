@@ -1,5 +1,4 @@
 ﻿using FluentValidation.Results;
-using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Core.Extensions;
 using LuduStack.Domain.Interfaces;
 using LuduStack.Domain.Interfaces.Repository;
@@ -63,7 +62,7 @@ namespace LuduStack.Domain.Messaging
 
             List<GameJamEntry> entryList = entries.ToList();
 
-            foreach (var entry in entryList)
+            foreach (GameJamEntry entry in entryList)
             {
                 CalculateScoreForEntry(gameJam, entry);
             }

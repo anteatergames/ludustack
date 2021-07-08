@@ -76,19 +76,19 @@ namespace LuduStack.Domain.Messaging
         {
             if (!string.IsNullOrWhiteSpace(request.GameJam.FeaturedImage))
             {
-                var splitedValues = request.GameJam.FeaturedImage.Split('/');
+                string[] splitedValues = request.GameJam.FeaturedImage.Split('/');
                 request.GameJam.FeaturedImage = splitedValues.Last();
             }
 
             if (!string.IsNullOrWhiteSpace(request.GameJam.BannerImage))
             {
-                var splitedValues = request.GameJam.BannerImage.Split('/');
+                string[] splitedValues = request.GameJam.BannerImage.Split('/');
                 request.GameJam.BannerImage = splitedValues.Last();
             }
 
             if (!string.IsNullOrWhiteSpace(request.GameJam.BackgroundImage))
             {
-                var splitedValues = request.GameJam.BackgroundImage.Split('/');
+                string[] splitedValues = request.GameJam.BackgroundImage.Split('/');
                 request.GameJam.BackgroundImage = splitedValues.Last();
             }
         }

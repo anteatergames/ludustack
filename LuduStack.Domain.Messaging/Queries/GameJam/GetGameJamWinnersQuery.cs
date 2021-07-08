@@ -4,7 +4,6 @@ using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -46,7 +45,7 @@ namespace LuduStack.Domain.Messaging.Queries.GameJam
             }
             else
             {
-                var emptyList = new List<Models.GameJamEntry>();
+                List<Models.GameJamEntry> emptyList = new List<Models.GameJamEntry>();
 
                 return Task.FromResult(emptyList.AsEnumerable());
             }

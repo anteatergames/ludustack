@@ -1,6 +1,4 @@
-﻿using FluentValidation;
-
-namespace LuduStack.Domain.Messaging
+﻿namespace LuduStack.Domain.Messaging
 {
     public class CalculateResultsGameJamCommandValidation : BaseCommandValidation<CalculateResultsGameJamCommand>
     {

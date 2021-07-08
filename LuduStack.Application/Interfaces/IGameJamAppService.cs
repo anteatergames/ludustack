@@ -41,7 +41,9 @@ namespace LuduStack.Application.Interfaces
         Task<OperationResultVo<GameJamEntryViewModel>> GetEntry(Guid currentUserId, bool currentUserIsAdmin, string jamHandler);
 
         Task<OperationResultVo<GameJamEntryViewModel>> GetEntry(Guid currentUserId, bool currentUserIsAdmin, string jamHandler, Guid? id);
+
         Task<OperationResultVo> CalculateResults(Guid currentUserId, Guid jamId);
+
         Task<OperationResultListVo<GameJamEntryViewModel>> GetWinnersByJam(Guid currentUserId, bool currentUserIsAdmin, Guid jamId, string jamHandler, int winnerCount);
     }
 }

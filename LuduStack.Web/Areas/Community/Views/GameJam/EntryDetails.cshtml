@@ -1,6 +1,6 @@
 ﻿@model GameJamEntryViewModel
 @{
-    ViewData["Title"] = Model.Title;
+    ViewData["Title"] = SharedLocalizer["{0} - Game Jam entry", Model.Title];
     if (Model.Game != null)
     {
         ViewData["Description"] = Model.Game.Description;
