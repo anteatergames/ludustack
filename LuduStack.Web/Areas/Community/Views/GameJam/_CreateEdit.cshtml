@@ -20,7 +20,7 @@
         </span>
         @if (!isNew)
         {
-            <div class="box-tools">
+            <div class="box-tools text-capitalize">
                 <div class="btn-group">
                     <button type="button" class="btn  btn-box-tool" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fas fa-ellipsis-v" aria-hidden="true"></i>
@@ -53,7 +53,7 @@
                     <div class="form-group">
                         <label asp-for="Name" class="col-form-label"></label>
                         <span asp-description-for="Name" class="col-form-label" />
-                        <input asp-for="Name" class="form-control" placeholder="@SharedLocalizer["Type the name here"]" />
+                        <input asp-for="Name" class="form-control" placeholder="@SharedLocalizer["Type the Name here"]" />
                         <span asp-validation-for="Name" class="text-danger"></span>
                     </div>
                 </div>
@@ -62,7 +62,7 @@
                     <div class="form-group">
                         <label asp-for="Handler" class="col-form-label"></label>
                         <span asp-description-for="Handler" class="col-form-label" />
-                        <input asp-for="Handler" class="form-control" placeholder="@SharedLocalizer["Type a handler here"]" />
+                        <input asp-for="Handler" class="form-control" placeholder="@SharedLocalizer["Type a Handler here"]" />
                         <span asp-validation-for="Handler" class="text-danger"></span>
                     </div>
                 </div>
@@ -71,7 +71,7 @@
                     <div class="form-group">
                         <label asp-for="HashTag" class="col-form-label"></label>
                         <span asp-description-for="HashTag" class="col-form-label" />
-                        <input asp-for="HashTag" class="form-control" placeholder="@SharedLocalizer["Type the hashtag here"]" />
+                        <input asp-for="HashTag" class="form-control" placeholder="@SharedLocalizer["Type the Hashtag here"]" />
                         <span asp-validation-for="HashTag" class="text-danger"></span>
                     </div>
                 </div>
@@ -90,7 +90,7 @@
                         <label asp-for="StartDate" class="col-form-label"></label>
                         <span asp-description-for="StartDate" class="col-form-label" />
                         <div class="input-group">
-                            <input asp-for="StartDate" type="text" class="form-control datetimepicker-input" data-maxdate="#EntryDeadline" data-target="#StartDate" aria-describedby="StartDateAddon" placeholder="@SharedLocalizer["When this Jam start?"]" />
+                            <input asp-for="StartDate" type="text" class="form-control datetimepicker-input" data-maxdate="#EntryDeadline" data-target="#StartDate" aria-describedby="StartDateAddon" placeholder="@SharedLocalizer["When this Jam starts?"]" />
                             <div class="input-group-append" data-target="#StartDate" data-toggle="datetimepicker" title="@SharedLocalizer["Select the start date."]">
                                 <span class="input-group-text" id="StartDateAddon"><i class="far fa-calendar-alt" aria-hidden="true"></i></span>
                             </div>
@@ -104,8 +104,8 @@
                         <label asp-for="EntryDeadline" class="col-form-label"></label>
                         <span asp-description-for="EntryDeadline" class="col-form-label" />
                         <div class="input-group">
-                            <input asp-for="EntryDeadline" type="text" class="form-control datetimepicker-input" data-maxdate="#VotingEndDate" data-target="#EntryDeadline" aria-describedby="EntryDeadlineAddon" placeholder="@SharedLocalizer["When this Jam start?"]" />
-                            <div class="input-group-append" data-target="#EntryDeadline" data-toggle="datetimepicker" title="@SharedLocalizer["Select the start date."]">
+                            <input asp-for="EntryDeadline" type="text" class="form-control datetimepicker-input" data-maxdate="#VotingEndDate" data-target="#EntryDeadline" aria-describedby="EntryDeadlineAddon" placeholder="@SharedLocalizer["Submissions deadline"]" />
+                            <div class="input-group-append" data-target="#EntryDeadline" data-toggle="datetimepicker" title="@SharedLocalizer["Select the deadline."]">
                                 <span class="input-group-text" id="EntryDeadlineAddon"><i class="far fa-calendar-alt" aria-hidden="true"></i></span>
                             </div>
                         </div>
@@ -118,8 +118,8 @@
                         <label asp-for="VotingEndDate" class="col-form-label"></label>
                         <span asp-description-for="VotingEndDate" class="col-form-label" />
                         <div class="input-group">
-                            <input asp-for="VotingEndDate" type="text" class="form-control datetimepicker-input" data-maxdate="#ResultDate" data-target="#VotingEndDate" aria-describedby="VotingEndDateAddon" placeholder="@SharedLocalizer["When this Jam start?"]" />
-                            <div class="input-group-append" data-target="#VotingEndDate" data-toggle="datetimepicker" title="@SharedLocalizer["Select the start date."]">
+                            <input asp-for="VotingEndDate" type="text" class="form-control datetimepicker-input" data-maxdate="#ResultDate" data-target="#VotingEndDate" aria-describedby="VotingEndDateAddon" placeholder="@SharedLocalizer["Voting End"]" />
+                            <div class="input-group-append" data-target="#VotingEndDate" data-toggle="datetimepicker" title="@SharedLocalizer["Select the date to end voting"]">
                                 <span class="input-group-text" id="VotingEndDateAddon"><i class="far fa-calendar-alt" aria-hidden="true"></i></span>
                             </div>
                         </div>
@@ -132,8 +132,8 @@
                         <label asp-for="ResultDate" class="col-form-label"></label>
                         <span asp-description-for="ResultDate" class="col-form-label" />
                         <div class="input-group">
-                            <input asp-for="ResultDate" type="text" class="form-control datetimepicker-input" data-target="#ResultDate" aria-describedby="ResultDateAddon" placeholder="@SharedLocalizer["When this Jam start?"]" />
-                            <div class="input-group-append" data-target="#ResultDate" data-toggle="datetimepicker" title="@SharedLocalizer["Select the start date."]">
+                            <input asp-for="ResultDate" type="text" class="form-control datetimepicker-input" data-target="#ResultDate" aria-describedby="ResultDateAddon" placeholder="@SharedLocalizer["Results date"]" />
+                            <div class="input-group-append" data-target="#ResultDate" data-toggle="datetimepicker" title="@SharedLocalizer["Select the date to make the results public."]">
                                 <span class="input-group-text" id="ResultDateAddon"><i class="far fa-calendar-alt" aria-hidden="true"></i></span>
                             </div>
                         </div>
@@ -145,7 +145,7 @@
                     <div class="form-group">
                         <label asp-for="ShortDescription" class="col-form-label"></label>
                         <span asp-description-for="ShortDescription" class="col-form-label" />
-                        <input asp-for="ShortDescription" class="form-control" placeholder="@SharedLocalizer["Give us a short description here (optional)"]" />
+                        <input asp-for="ShortDescription" class="form-control" placeholder="@SharedLocalizer["Give us a short description here"]" />
                         <span asp-validation-for="ShortDescription" class="text-danger"></span>
                     </div>
                 </div>
@@ -154,7 +154,7 @@
                     <div class="form-group">
                         <label asp-for="Description" class="col-form-label"></label>
                         <span asp-description-for="Description" class="col-form-label" />
-                        <textarea asp-for="Description" class="form-control wysiwygeditor invisible" placeholder="@SharedLocalizer["Describe the Game Jam here"]"></textarea>
+                        <textarea asp-for="Description" class="form-control wysiwygeditor invisible" placeholder="@SharedLocalizer["Describe your Game Jam here"]"></textarea>
                         <span asp-validation-for="Description" class="text-danger"></span>
                     </div>
                 </div>
@@ -274,7 +274,7 @@
                                     <input asp-for="Criteria[i].Type" type="hidden" class="default" />
                                     <input asp-for="Criteria[i].Name" type="hidden" class="default" />
                                     <div class="form-group switch">
-                                        <label class="col-form-label">@uiInfo.Display</label>
+                                        <label class="col-form-label">@SharedLocalizer[uiInfo.Display]</label>
                                         <label class="switch left">
                                             <input asp-for="Criteria[i].Enabled" type="checkbox" class="default" />
                                             <span class="slider round"></span>

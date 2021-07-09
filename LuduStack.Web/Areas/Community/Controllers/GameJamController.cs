@@ -54,8 +54,6 @@ namespace LuduStack.Web.Areas.Staff.Controllers
                 model = new List<GameJamViewModel>();
             }
 
-            ViewData["ListDescription"] = SharedLocalizer["All Jams"].ToString();
-
             return PartialView("_ListGameJams", model);
         }
 
@@ -76,8 +74,6 @@ namespace LuduStack.Web.Areas.Staff.Controllers
             {
                 model = new List<GameJamViewModel>();
             }
-
-            ViewData["ListDescription"] = SharedLocalizer["All Jams"].ToString();
 
             return PartialView("_ListMyGameJams", model);
         }
@@ -103,8 +99,6 @@ namespace LuduStack.Web.Areas.Staff.Controllers
                 item.Url = Url.Action("entry", "gamejam", new { area = "community", jamHandler = jamHandler, id = item.Id });
             }
 
-            ViewData["ListDescription"] = SharedLocalizer["All Submissions"].ToString();
-
             return PartialView("_ListGameJamSubmissions", model);
         }
 
@@ -129,8 +123,6 @@ namespace LuduStack.Web.Areas.Staff.Controllers
                 item.Url = Url.Action("entry", "gamejam", new { area = "community", jamHandler = jamHandler, id = item.Id });
             }
 
-            ViewData["ListDescription"] = SharedLocalizer["All Submissions"].ToString();
-
             return PartialView("_ListGameJamWinners", model);
         }
 
@@ -149,8 +141,6 @@ namespace LuduStack.Web.Areas.Staff.Controllers
             {
                 model = new List<GameJamEntryViewModel>();
             }
-
-            ViewData["ListDescription"] = SharedLocalizer["All Participants"].ToString();
 
             return PartialView("_ListParticipants", model);
         }

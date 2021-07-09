@@ -64,5 +64,7 @@ namespace LuduStack.Application.ViewModels.GameJam
         public bool ShowAllCriteria { get; set; }
 
         public bool CanShowFinalResults { get; set; }
+
+        public bool IsWinner { get; set; }
     }
 }

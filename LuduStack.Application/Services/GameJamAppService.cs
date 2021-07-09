@@ -677,6 +677,8 @@ namespace LuduStack.Application.Services
 
                 SetVotes(currentUserId, gameJamVm, vm);
 
+                vm.IsWinner = vm.FinalPlace <= gameJamVm.Winners;
+
                 SetEntryPermissions(currentUserId, currentUserIsAdmin, gameJamVm, vm);
 
                 return new OperationResultVo<GameJamEntryViewModel>(vm);

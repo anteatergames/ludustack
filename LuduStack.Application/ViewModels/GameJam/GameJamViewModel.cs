@@ -12,6 +12,7 @@ namespace LuduStack.Application.ViewModels.GameJam
     {
         public GameJamType Type { get; set; }
 
+        [Display(Name = "Voters", Description = "Who can cast votes on entries for this Game Jam?")]
         public GameJamVoters Voters { get; set; }
 
         [Display(Name = "Is Draft")]
@@ -26,7 +27,7 @@ namespace LuduStack.Application.ViewModels.GameJam
         [Display(Name = "Hide Submissions", Description = "All submissions to this Game Jam would not be visible during the submission phase.")]
         public bool HideSubmissions { get; set; }
 
-        [Display(Name = "Hide Realtime Results", Description = "The voting results will only be visible after the voting phase.")]
+        [Display(Name = "Hide Realtime Results", Description = "The results will only be visible after the voting phase.")]
         public bool HideRealtimeResults { get; set; }
 
         [Display(Name = "Allow late join", Description = "Allows users to join this Game Jam after it starts.")]
@@ -44,12 +45,13 @@ namespace LuduStack.Application.ViewModels.GameJam
         [RegularExpression("^(?=.{3,32}$)(?![-.])(?!.*[-.]{2})[a-zA-Z0-9-.]+(?<![-.])$", ErrorMessage = "Invalid hashtag!")]
         public string HashTag { get; set; }
 
+        [Display(Name = "Winners", Description = "If this Game Jam has winners, define the amount of winners here.")]
         public int Winners { get; set; }
 
         [Display(Name = "Banner Image", Description = "This image will be shown at the top of your Game Jam page. We recomend you to pick a transparent PNG image.")]
         public string BannerImage { get; set; }
 
-        [Display(Name = "Featured Image", Description = "This image is used when you share the Game Jam to social networks.")]
+        [Display(Name = "Featured Image", Description = "This image will be used when someone shares the Game Jam to social networks.")]
         public string FeaturedImage { get; set; }
 
         [Display(Name = "Background Image", Description = "This will be used as background of your Game Jam page.")]
@@ -71,7 +73,7 @@ namespace LuduStack.Application.ViewModels.GameJam
         public string MainTheme { get; set; }
 
         [Required(ErrorMessage = "This is needed")]
-        [Display(Name = "Start Date", Description = "Here you set when this Game Jam starts and participants can start submitting entries.")]
+        [Display(Name = "Start Date", Description = "Here you set when this Game Jam starts.")]
         public DateTime StartDate { get; set; }
 
         [Required(ErrorMessage = "This is needed")]
@@ -86,11 +88,12 @@ namespace LuduStack.Application.ViewModels.GameJam
         [Display(Name = "Results Date", Description = "The date where the results should be made public.")]
         public DateTime ResultDate { get; set; }
 
+        [Display(Name = "Judges", Description = "These are the selected Judges.")]
         public List<Guid> Judges { get; set; }
 
         public List<GameJamSponsorViewModel> Sponsors { get; set; }
 
-        [Display(Name = "Criteria", Description = "Select the criteria to be used on the voting phase. If no criteria is selected a \"Overall\" criteria will be used.")]
+        [Display(Name = "Criteria", Description = "Select the criteria to be used on the voting phase. If no criteria is selected a Overall criteria will be used.")]
         public List<GameJamCriteriaViewModel> Criteria { get; set; }
 
         public List<ProfileViewModel> JudgesProfiles { get; set; }
