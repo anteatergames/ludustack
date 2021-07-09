@@ -54,7 +54,7 @@ namespace LuduStack.Web.Areas.Staff.Controllers
                 model = new List<GameJamViewModel>();
             }
 
-            ViewData["ListDescription"] = SharedLocalizer["All Game Jams"].ToString();
+            ViewData["ListDescription"] = SharedLocalizer["All Jams"].ToString();
 
             return PartialView("_ListGameJams", model);
         }
@@ -77,7 +77,7 @@ namespace LuduStack.Web.Areas.Staff.Controllers
                 model = new List<GameJamViewModel>();
             }
 
-            ViewData["ListDescription"] = SharedLocalizer["All Game Jams"].ToString();
+            ViewData["ListDescription"] = SharedLocalizer["All Jams"].ToString();
 
             return PartialView("_ListMyGameJams", model);
         }

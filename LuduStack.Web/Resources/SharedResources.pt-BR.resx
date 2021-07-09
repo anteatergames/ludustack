@@ -2390,7 +2390,7 @@
     <comment>Giveaway</comment>
   </data>
   <data name="starts" xml:space="preserve">
-    <value>começa em</value>
+    <value>começa</value>
     <comment>Giveaway</comment>
   </data>
   <data name="starts in" xml:space="preserve">
@@ -3378,5 +3378,285 @@
   </data>
   <data name="String1" xml:space="preserve">
     <value />
+  </data>
+  <data name="All Jams" xml:space="preserve">
+    <value>Todas as Jams</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Are you sure you want to calculate the results for this Game Jam?" xml:space="preserve">
+    <value>Tem certeza que deseja calcular os resultados para esta Game Jam?</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Are you sure you want to delete this?" xml:space="preserve">
+    <value>Tem certeza que deseja excluir isto?</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Calculate results" xml:space="preserve">
+    <value>Calcular resultados</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Cast your vote" xml:space="preserve">
+    <value>Lance seu voto</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Check Entry" xml:space="preserve">
+    <value>Ver Envio</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Controls" xml:space="preserve">
+    <value>Controles</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="criteria" xml:space="preserve">
+    <value>critério</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="final score" xml:space="preserve">
+    <value>pontuação</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Finished" xml:space="preserve">
+    <value>Finalizada</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="For {1}" xml:space="preserve">
+    <value>Para {0}</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Fun" xml:space="preserve">
+    <value>Diversão</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Gameplay" xml:space="preserve">
+    <value>Jogabilidade</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Good job, everyone!" xml:space="preserve">
+    <value>Bom trabalho, galera!</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Graphics" xml:space="preserve">
+    <value>Gráficos</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Here are the winners" xml:space="preserve">
+    <value>Aqui estão os vencedores</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Here is the winner" xml:space="preserve">
+    <value>Aqui está o vencedor</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Hosted by {0}" xml:space="preserve">
+    <value>Promovido por {0}</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="If your game is not listed below, {0} to create a new game on the LuduStack platform." xml:space="preserve">
+    <value>Se seu jogo não estiver listado abaixo, {0} para criar um novo jogo na plataforma LuduStack.</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Innovation" xml:space="preserve">
+    <value>Inovação</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Join this Game Jam and get involved with other fellow gamedevs to build great things, just for fun." xml:space="preserve">
+    <value>Entre nessa Game Jam, envolva-se com outros colegas gamedevs e construa grandes coisas, só por diversão.</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="judges" xml:space="preserve">
+    <value>jurados</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Just one criteria" xml:space="preserve">
+    <value>Apenas um critério</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Just one judge will judge the submissions" xml:space="preserve">
+    <value>Apenas um jurado vai julgar os envios</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Just one participant" xml:space="preserve">
+    <value>Só um participante</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Levels" xml:space="preserve">
+    <value>Fases</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Manage Game Jams" xml:space="preserve">
+    <value>Gerencie Game Jams</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Mechanics" xml:space="preserve">
+    <value>Mecânicas</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="My Game Jams" xml:space="preserve">
+    <value>Minhas Game Jams</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="New Jam" xml:space="preserve">
+    <value>Nova Jam</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="No one joined this Game Jam!" xml:space="preserve">
+    <value>Ninguém entrou nesta Game Jam</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Not submitted yet" xml:space="preserve">
+    <value>Não enviado</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="One participant submitted a game" xml:space="preserve">
+    <value>Um participante enviou um jogo</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Only participants can see the Theme before the results" xml:space="preserve">
+    <value>Somente participantes podem ver o Tema antes do resultado</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="overview" xml:space="preserve">
+    <value>geral</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="participant" xml:space="preserve">
+    <value>participante</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="phase" xml:space="preserve">
+    <value>fase</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Results" xml:space="preserve">
+    <value>Resultados</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Results in" xml:space="preserve">
+    <value>Resultados em</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="see other" xml:space="preserve">
+    <value>veja outros</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Submission" xml:space="preserve">
+    <value>Envio</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="submission date" xml:space="preserve">
+    <value>data de envio</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Submission OK!" xml:space="preserve">
+    <value>Envio OK!</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="submissions" xml:space="preserve">
+    <value>envios</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Submit" xml:space="preserve">
+    <value>Enviar</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Submit your game" xml:space="preserve">
+    <value>Envie seu jogo</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Submitted by {0} for {1}" xml:space="preserve">
+    <value>Enviado por {0} para {1}</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Tell us about the Game Jam." xml:space="preserve">
+    <value>Conte um pouco sobre sua Game Jam.</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="The Theme was not set" xml:space="preserve">
+    <value>O Tema não foi definido</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Theme" xml:space="preserve">
+    <value>Tema</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="There are no Criteria on this Game Jam!" xml:space="preserve">
+    <value>Não existem Critérios nesta Game Jam</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="There are no Game Jams here!" xml:space="preserve">
+    <value>Sem Game Jams aqui!</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="There are no Judges on this Game Jam!" xml:space="preserve">
+    <value>Não existem Juízes nesta Game Jam</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="There are no submissions for this Game Jam!" xml:space="preserve">
+    <value>Não existem envios nesta Game Jam</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="There are no Winners for this Game Jam!" xml:space="preserve">
+    <value>Não existem vencedores nesta Game Jam</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="This is your entry for this Game Jam. Start working on your game and submit it on this page when it is ready." xml:space="preserve">
+    <value>Esta é sua participação nesta Game Jam. Comece a trabalhar em seu jogo e envie-o nesta página quando estiver pronto</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="This is {0}'s submission" xml:space="preserve">
+    <value>Este é o envio de {0}</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="This participant didn't submitted yet!" xml:space="preserve">
+    <value>Este participante ainda não enviou seu jogo!</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="visit game page" xml:space="preserve">
+    <value>ver página do jogo</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Voting" xml:space="preserve">
+    <value>Votação</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Wait for the result." xml:space="preserve">
+    <value>Aguarde o resultado</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Warmup" xml:space="preserve">
+    <value>Aquecimento</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="We did it!" xml:space="preserve">
+    <value>Conseguimos!</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Yes, do it!" xml:space="preserve">
+    <value>Sim, manda ver!</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="You are {0} a Game Jam" xml:space="preserve">
+    <value>Você está {0} uma Game Jam</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="{0} - Game Jam entry" xml:space="preserve">
+    <value>{0} - para Game Jam</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="{0} criteria" xml:space="preserve">
+    <value>{0} critérios</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="{0} judges will judge the submissions" xml:space="preserve">
+    <value>{0} jurados vão julgar os envios</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="{0} participants" xml:space="preserve">
+    <value>{0} participantes</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="{0} participants submitted their games" xml:space="preserve">
+    <value>{0} participantes enviaram seus jogos</value>
+    <comment>Game Jam</comment>
   </data>
 </root>

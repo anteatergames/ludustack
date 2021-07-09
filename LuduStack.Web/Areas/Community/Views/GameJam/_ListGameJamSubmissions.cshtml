@@ -5,9 +5,9 @@
 
     Layout = null;
 
-    var noItemsModel = new ListNoItemsViewModel("fas fa-gamepad", "There are no Submissions for this Game Jam!");
+    var noItemsModel = new ListNoItemsViewModel("fas fa-gamepad", "There are no submissions for this Game Jam!");
 
-    var description = ViewData["ListDescription"] == null ? SharedLocalizer["Submissions"] : (string)ViewData["ListDescription"];
+    var description = ViewData["ListDescription"] == null ? SharedLocalizer["submissions"].Value.FirstCharToUpper() : (string)ViewData["ListDescription"];
 
     var currentUserId = ViewBag.CurrentUserId ?? Guid.Empty;
 }
@@ -21,7 +21,7 @@ else
     <div class="col-12 text-center">
         @if (Model.Count() == 1)
         {
-            <span>@SharedLocalizer["1 participant submitted a game"]</span>
+            <span>@SharedLocalizer["One participant submitted a game"]</span>
         }
         else
         {

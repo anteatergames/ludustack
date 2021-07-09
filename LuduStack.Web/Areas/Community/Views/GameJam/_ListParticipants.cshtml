@@ -17,11 +17,11 @@ else
     <div class="col-12 text-center">
         @if (Model.Count() == 1)
         {
-            <span>@SharedLocalizer["Just 1 user is participating"]</span>
+            <span>@SharedLocalizer["Just one participant"]</span>
         }
         else
         {
-            <span>@SharedLocalizer["{0} users are participating", Model.Count()]</span>
+            <span>@SharedLocalizer["{0} participants", Model.Count()]</span>
         }
     </div>
     <div class="row justify-content-center p-1 mx-1">

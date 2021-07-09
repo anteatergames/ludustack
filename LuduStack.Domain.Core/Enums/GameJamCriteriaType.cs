@@ -25,8 +25,8 @@ namespace LuduStack.Domain.Core.Enums
         [Display(Name = "Story")]
         Story = 5,
 
-        [UiInfo(Display = "Level Design", Class = "book")]
-        [Display(Name = "Level Design")]
+        [UiInfo(Display = "Levels", Class = "book")]
+        [Display(Name = "Levels")]
         LevelDesign = 6,
 
         [UiInfo(Display = "Theme", Class = "dungeon")]

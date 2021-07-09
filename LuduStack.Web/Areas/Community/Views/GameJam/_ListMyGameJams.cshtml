@@ -5,7 +5,7 @@
 
     Layout = null;
 
-    var noItemsModel = new ListNoItemsViewModel("fas fa-dizzy", "There are no Game Jams on the platform!");
+    var noItemsModel = new ListNoItemsViewModel("fas fa-dizzy", "There are no Game Jams here!");
 
     var description = ViewData["ListDescription"] == null ? SharedLocalizer["Game Jam"] : (string)ViewData["ListDescription"];
 }
@@ -28,10 +28,10 @@
                     <tr class="text-capitalize">
                         <th scope="col">@SharedLocalizer["Name"]</th>
                         <th scope="col">@SharedLocalizer["phase"]</th>
-                        <th scope="col" class="text-center">@SharedLocalizer["start"]</th>
+                        <th scope="col" class="text-center">@SharedLocalizer["starts"]</th>
                         <th scope="col" class="text-center">@SharedLocalizer["deadline"]</th>
-                        <th scope="col" class="text-center">@SharedLocalizer["voting"]</th>
-                        <th scope="col" class="text-center">@SharedLocalizer["results"]</th>
+                        <th scope="col" class="text-center">@SharedLocalizer["Voting"]</th>
+                        <th scope="col" class="text-center">@SharedLocalizer["Results"]</th>
                         <th scope="col" class="text-right text-wrap" style="width:1px">@SharedLocalizer["actions"]</th>
                     </tr>
                 </thead>
@@ -75,7 +75,7 @@
                                             {
                                                 <a class="dropdown-item text-success btn-trophy py-2 btn-results-calculate" href="#" data-url="@Url.Action("calculateresults", "gamejam", new { area = "community", jamId = item.Id })" data-confirmationmessage="@SharedLocalizer["Are you sure you want to calculate the results for this Game Jam?"]" data-confirmationtitle="@SharedLocalizer["Are you sure?"]" data-confirmationbuttontext="@SharedLocalizer["Yes, do it!"]" data-cancelbuttontext="@SharedLocalizer["Cancel"]"><i class="fas fa-fw fa-trophy" aria-hidden="true"></i> @SharedLocalizer["Calculate results"]</a>
                                             }
-                                            <a class="dropdown-item text-danger btn-trash py-2 btn-entity-delete" href="#" data-url="@Url.Action("delete", "gamejam", new { area = "community", id = item.Id })" data-confirmationmessage="@SharedLocalizer["Are you sure you want to delete this Game Jam?"]" data-confirmationtitle="@SharedLocalizer["Are you sure?"]" data-confirmationbuttontext="@SharedLocalizer["Yes, delete it!"]" data-cancelbuttontext="@SharedLocalizer["Cancel"]"><i class="fas fa-fw fa-trash-alt" aria-hidden="true"></i> @SharedLocalizer["delete"]</a>
+                                            <a class="dropdown-item text-danger btn-trash py-2 btn-entity-delete" href="#" data-url="@Url.Action("delete", "gamejam", new { area = "community", id = item.Id })" data-confirmationmessage="@SharedLocalizer["Are you sure you want to delete this?"]" data-confirmationtitle="@SharedLocalizer["Are you sure?"]" data-confirmationbuttontext="@SharedLocalizer["Yes, delete it!"]" data-cancelbuttontext="@SharedLocalizer["Cancel"]"><i class="fas fa-fw fa-trash-alt" aria-hidden="true"></i> @SharedLocalizer["delete"]</a>
                                         </div>
                                     </div>
                                 }

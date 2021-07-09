@@ -118,7 +118,7 @@
                 @if (string.IsNullOrWhiteSpace(Model.MainTheme))
                 {
                     <div class="text-center mx-auto p-2 alert alert-info">
-                        <span class="h4">@SharedLocalizer["The main Theme was not set"]</span>
+                        <span class="h4">@SharedLocalizer["The Theme was not set"]</span>
                     </div>
                 }
                 else
@@ -131,7 +131,7 @@
             else
             {
                 <div class="text-center mx-auto p-2 alert alert-dark">
-                    <span class="h4">@SharedLocalizer["Only participants can see the main theme before the results"]</span>
+                    <span class="h4">@SharedLocalizer["Only participants can see the Theme before the results"]</span>
                 </div>
             }
 
@@ -163,7 +163,7 @@
                 @if (Model.ShowFinalResults)
                 {
                     <li class="nav-item" role="presentation">
-                        <a class="nav-link" id="results-tab" data-toggle="tab" href="#tabresults" role="tab" aria-controls="tabresults" aria-selected="false" data-url="@Url.Action("listwinners", "gamejam", new { area = "community", jamHandler = Model.Handler, jamId = Model.Id, winnerCount = Model.Winners })"><i class="fas fa-trophy" aria-hidden="true"></i><span class="d-none d-md-inline-block">&nbsp;@SharedLocalizer["results"]</span></a>
+                        <a class="nav-link" id="results-tab" data-toggle="tab" href="#tabresults" role="tab" aria-controls="tabresults" aria-selected="false" data-url="@Url.Action("listwinners", "gamejam", new { area = "community", jamHandler = Model.Handler, jamId = Model.Id, winnerCount = Model.Winners })"><i class="fas fa-trophy" aria-hidden="true"></i><span class="d-none d-md-inline-block">&nbsp;@SharedLocalizer["Results"]</span></a>
                     </li>
                 }
             </ul>
@@ -201,11 +201,11 @@
                             <div class="col-12 text-center">
                                 @if (Model.Judges.Count == 1)
                                 {
-                                    <span>@SharedLocalizer["Just 1 user will judge the submissions"]</span>
+                                    <span>@SharedLocalizer["Just one judge will judge the submissions"]</span>
                                 }
                                 else
                                 {
-                                    <span>@SharedLocalizer["{0} users will judge the submissions", Model.Judges.Count]</span>
+                                    <span>@SharedLocalizer["{0} judges will judge the submissions", Model.Judges.Count]</span>
                                 }
                             </div>
                             <div class="row justify-content-center">
@@ -236,7 +236,7 @@
                             <div class="col-12 text-center">
                                 @if (Model.Criteria.Count == 1)
                                 {
-                                    <span>@SharedLocalizer["Just 1 criteria"]</span>
+                                    <span>@SharedLocalizer["Just one criteria"]</span>
                                 }
                                 else
                                 {

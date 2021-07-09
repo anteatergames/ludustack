@@ -80,7 +80,7 @@
                         </div>
                         <div class="d-flex flex-row justify-content-center mt-n3">
                             <div class="bg-white">
-                                <a asp-area="community" asp-controller="gamejam" asp-action="details" asp-route-handler="@Model.GameJam.Handler" asp-fragment="tabsubmissions" class="btn btn-lg btn-success btn-join text-uppercase">@SharedLocalizer["see other entries"]</a>
+                                <a asp-area="community" asp-controller="gamejam" asp-action="details" asp-route-handler="@Model.GameJam.Handler" asp-fragment="tabsubmissions" class="btn btn-lg btn-success btn-join text-uppercase">@SharedLocalizer["see other"]</a>
                             </div>
                         </div>
                     </div>
@@ -180,10 +180,12 @@
                                             {
                                                 var vote = Model.Votes.FirstOrDefault(x => x.UserId == currentUserId && x.CriteriaType == criteria.Type);
 
+                                                var uiInfo = criteria.Type.ToUiInfo();
+
                                                 <div class="row no-gutters px-1">
                                                     <div class="col-12 col-lg-6">
                                                         <div class="d-flex flex-column justify-content-center text-center text-lg-left">
-                                                            <span class="display-4">@criteria.Name</span>
+                                                            <span class="display-4">@SharedLocalizer[uiInfo.Display]</span>
                                                         </div>
                                                     </div>
                                                     <div class="col-12 col-lg-6">
@@ -227,7 +229,7 @@
                                             }
                                             else
                                             {
-                                                <span class="display-4">@SharedLocalizer["Results will be revealed later."]</span>
+                                                <span class="display-4">@SharedLocalizer["Wait for the result."]</span>
                                             }
                                         }
                                     </div>
@@ -239,7 +241,7 @@
             }
             else
             {
-                var noSubmissionModel = new ListNoItemsViewModel("fas fa-dizzy", "This Entry was not submitted yet!");
+                var noSubmissionModel = new ListNoItemsViewModel("fas fa-dizzy", "This participant didn't submitted yet!");
                 <partial name="_ListNoItems" model="noSubmissionModel" />
             }
 

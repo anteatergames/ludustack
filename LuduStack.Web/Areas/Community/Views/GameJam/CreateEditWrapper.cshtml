@@ -3,7 +3,7 @@
     var isAjax = ViewContext.HttpContext.Request.IsAjaxRequest();
     var canInteract = User.Identity.IsAuthenticated;
 
-    ViewData["Title"] = SharedLocalizer["{0} Game Jam", (Model.Id == Guid.Empty ? "New" : "Edit")];
+    ViewData["Title"] = SharedLocalizer["{0} Game Jam", (Model.Id == Guid.Empty ? SharedLocalizer["new"].Value : SharedLocalizer["edit"].Value).FirstCharToUpper()];
 }
 
 @section ComponentStyles {
