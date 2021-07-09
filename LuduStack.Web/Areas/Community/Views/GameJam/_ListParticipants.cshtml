@@ -24,11 +24,11 @@ else
             <span>@SharedLocalizer["{0} participants", Model.Count()]</span>
         }
     </div>
-    <div class="row justify-content-center p-1 mx-1">
+    <div class="row p-1 mx-1">
         @foreach (var item in Model)
         {
             <div class="col-12 col-md-6 col-lg-4 col-xl-3 px-0 px-md-2 mb-3">
-                <div class="bordered">
+                <div class="bordered hover">
                     <partial name="_UserCard" model="item" />
                     <div class="col-12 px-2 mb-2 text-center">
                         <a asp-area="community" asp-controller="gamejam" asp-action="entry" asp-route-jamHandler="@item.JamHandler" asp-route-id="@item.Id" class="btn btn-block btn-default">@SharedLocalizer["Check Entry"]</a>

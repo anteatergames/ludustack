@@ -312,6 +312,28 @@ namespace LuduStack.Application.Services
             }
         }
 
+        public OperationResultListVo<ProfileSearchViewModel> SearchUserCard(string term)
+        {
+            try
+            {
+                IQueryable<UserProfile> results = profileDomainService.Search(x => x.Name.ToLower().Contains(term.ToLower()));
+
+                var vms = results.ProjectTo<ProfileSearchViewModel>(mapper.ConfigurationProvider).ToList();
+
+                foreach (var item in vms)
+                {
+                    item.ProfileImageUrl = UrlFormatter.ProfileImage(item.UserId, Constants.HugeAvatarSize);
+                    item.CoverImageUrl = UrlFormatter.ProfileCoverImage(item.UserId, item.Id, null, item.HasCoverImage, Constants.ProfileCoverSize);
+                }
+
+                return new OperationResultListVo<ProfileSearchViewModel>(vms);
+            }
+            catch (Exception ex)
+            {
+                return new OperationResultListVo<ProfileSearchViewModel>(ex.Message);
+            }
+        }
+
         public OperationResultVo UserFollow(Guid currentUserId, Guid userId)
         {
             try

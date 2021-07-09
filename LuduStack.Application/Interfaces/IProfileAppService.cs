@@ -37,6 +37,8 @@ namespace LuduStack.Application.Interfaces
 
         OperationResultVo Search(string term);
 
+        OperationResultListVo<ProfileSearchViewModel> SearchUserCard(string term);
+
         OperationResultVo UserFollow(Guid currentUserId, Guid userId);
 
         OperationResultVo UserUnfollow(Guid currentUserId, Guid userId);

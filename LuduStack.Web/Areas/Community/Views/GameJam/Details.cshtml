@@ -72,7 +72,7 @@
             }
             <div class="@(hasBanner ? "col-12 col-md-6" : "col-12") d-flex flex-row justify-content-center">
                 <div class=" d-flex flex-column justify-content-center">
-                    <div class="p-3 row justify-content-center bg-white bordered">
+                    <div class="p-3 row justify-content-center bg-white bordered hover">
                         <partial name="_GameJamCounter" model="@new KeyValuePair<GameJamPhase, string>(Model.CurrentPhase, Model.CountDownMessage)" />
                     </div>
                     @if (Model.CurrentPhase == GameJamPhase.Warmup || Model.CurrentPhase == GameJamPhase.Submission)
@@ -208,14 +208,14 @@
                                     <span>@SharedLocalizer["{0} judges will judge the submissions", Model.Judges.Count]</span>
                                 }
                             </div>
-                            <div class="row justify-content-center">
+                            <div class="row px-2">
                                 @for (int i = 0; i < Model.JudgesProfiles.Count; i++)
                                 {
                                     var judge = Model.JudgesProfiles.ElementAt(i);
 
                                     <div class="col-12 col-md-6 col-lg-4 col-xl-3 p-1">
-                                        <input type="hidden" name="Judges[@i]" value="@judge.UserId" />
-                                        <div class="bordered">
+                                        <input type="hidden" name="Judges[@i].UserId" value="@judge.UserId" />
+                                        <div class="bordered hover">
                                             <partial name="_UserCard" model="judge" />
                                         </div>
                                     </div>
@@ -243,7 +243,7 @@
                                     <span>@SharedLocalizer["{0} criteria", criteriaToList.Count()]</span>
                                 }
                             </div>
-                            <div class="row">
+                            <div class="row px-2">
                                 @for (int i = 0; i < criteriaToList.Count(); i++)
                                 {
                                     var criteria = criteriaToList.ElementAt(i);

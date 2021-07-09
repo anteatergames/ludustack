@@ -91,7 +91,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-12 my-2 bordered bg-light text-center hover">
+                                    <div class="col-12 my-2 bordered hover bg-light text-center hover">
                                         <a href="#" id="exportProject" data-url="@Url.Action("exportxml", "localization", new { area = "tools", projectId = Model.Id, x = 1 })">
                                             <h3>@SharedLocalizer["Export all languages"]</h3>
                                             <partial name="_DonutPercentageChart" model="new DonutChartViewModel(Model.TranslationPercentage)" />
@@ -119,7 +119,7 @@
                                 {
                                     <div class="col-12 col-sm-6 col-md-4 col-lg-3 mt-3">
                                         <a href="#" class="export-language" data-url="@Url.Action("exportxml", "localization", new { area = "tools", projectId = Model.Id, x = 1, language = language.Language })">
-                                            <div class="p-1 bordered bg-light text-center">
+                                            <div class="p-1 bordered hover bg-light text-center">
                                                 <h5 class="text-uppercase">@SharedLocalizer[language.Language.ToDisplayName()] - @language.EntryCount</h5>
                                                 <partial name="_DonutPercentageChart" model="new DonutChartViewModel(language.Percentage, string.Empty)" />
                                             </div>
@@ -138,7 +138,7 @@
                                     {
                                         <div class="col-12">
                                             <div class="row d-inline-flex">
-                                                <div class="bg-light bordered mt-1 mx-1 p-2">
+                                                <div class="bg-light bordered hover mt-1 mx-1 p-2">
                                                     <a href="#" id="btnExportNameProfile" data-url="@Url.Action("exportcontributors", "localization", new { area = "tools", projectId = Model.Id, x = 1, type = ExportContributorsType.NameProfile })">
                                                         <div class="col-12">
                                                             <i class="fas fa-3x fa-signature" aria-hidden="true"></i>

@@ -840,7 +840,9 @@ namespace LuduStack.Application.Services
 
         private async Task SetJudges(GameJamViewModel vm)
         {
-            IEnumerable<UserProfileEssentialVo> judgesProfiles = await mediator.Query<GetBasicUserProfileDataByUserIdsQuery, IEnumerable<UserProfileEssentialVo>>(new GetBasicUserProfileDataByUserIdsQuery(vm.Judges));
+            var judgesIds = vm.Judges.Select(x => x.UserId);
+
+            IEnumerable<UserProfileEssentialVo> judgesProfiles = await mediator.Query<GetBasicUserProfileDataByUserIdsQuery, IEnumerable<UserProfileEssentialVo>>(new GetBasicUserProfileDataByUserIdsQuery(judgesIds));
 
             vm.JudgesProfiles = new List<ProfileViewModel>();
             foreach (UserProfileEssentialVo profileEssential in judgesProfiles)
@@ -905,7 +907,7 @@ namespace LuduStack.Application.Services
             bool canJoinOnWarming = vm.CurrentPhase == GameJamPhase.Warmup;
             bool canJoinLate = vm.CurrentPhase == GameJamPhase.Submission && vm.AllowLateJoin;
             bool sameUser = vm.UserId == currentUserId;
-            bool iAmJudge = vm.Judges != null && vm.Judges.Contains(currentUserId);
+            bool iAmJudge = vm.Judges != null && vm.Judges.Select(x => x.UserId).Contains(currentUserId);
             bool isNotWarmup = vm.CurrentPhase != GameJamPhase.Warmup;
 
             vm.Permissions.CanJoin = !sameUser && (canJoinOnWarming || canJoinLate);
@@ -933,7 +935,7 @@ namespace LuduStack.Application.Services
             vm.Permissions.IsAdmin = currentUserIsAdmin;
             vm.Permissions.CanSubmit = vm.Permissions.IsMe && (gameJamVm.Permissions.CanSubmit || (gameJamVm.CurrentPhase == GameJamPhase.Voting && vm.LateSubmission));
 
-            bool iAmJudge = gameJamVm.Judges != null && gameJamVm.Judges.Any(x => x == currentUserId);
+            bool iAmJudge = gameJamVm.Judges != null && gameJamVm.Judges.Select(x => x.UserId).Any(x => x == currentUserId);
             bool jamPhaseAllowsVote = gameJamVm.CurrentPhase == GameJamPhase.Voting;
 
             vm.Permissions.CanVote = iAmJudge && !vm.Permissions.IsMe && jamPhaseAllowsVote && vm.GameId != Guid.Empty;

@@ -3931,4 +3931,36 @@
     <value>Você deve escolher um handler único!</value>
     <comment>Game Jam</comment>
   </data>
+  <data name="Judges (if any) and Non-Participants" xml:space="preserve">
+    <value>Jurados (se selecionados) e Não-Participantes</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Judges (if any) and Submitters" xml:space="preserve">
+    <value>Jurados (se selecionados) e Participantes</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Judges (if any) and Team Members" xml:space="preserve">
+    <value>Jurados (se selecionados) e Membros da Equipe</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Judges (if any) and the whole community" xml:space="preserve">
+    <value>Jurados (se selecionados) e toda a comunidade</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Judges Only" xml:space="preserve">
+    <value>Somente Jurados</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="You cannot delete the last Judge if Judges Only is selected as voters." xml:space="preserve">
+    <value>Você não pode excluir o último Jurado se Somente Jurados estão selecionados como votantes</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Add Judge" xml:space="preserve">
+    <value>Adicionar Jurado</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="If Only Judges are selected as Voters and there is no Judge selected, you will be added as a Judge upon saving the Game Jam." xml:space="preserve">
+    <value>Se Somente Jurados estiverem selecionados como Votantes e nenhum Jurado for selecionado, você será adicionado como Jurado ao salvar a Game Jam.</value>
+    <comment>Game Jam</comment>
+  </data>
 </root>

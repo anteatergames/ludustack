@@ -36,7 +36,7 @@ else
                 var authorLink = string.Format("<a href=\"{0}\" class=\"boldlink\">{1}</a>", authorUrl, item.AuthorName);
 
                 <div class="col-12 col-md-6 col-lg-4 col-xl-3 p-1 mb-1">
-                    <div class="bg-white bordered gamejamitem">
+                    <div class="bg-white bordered hover gamejamitem">
                         <a asp-area="community" asp-controller="gamejam" asp-action="entry" asp-route-jamHandler="@item.JamHandler" asp-route-id="@item.Id">
                             <div class="border-bottom square-bottom d-flex justify-content-center gamejamitemimage">
                                 <img src="@item.FeaturedImage" class="img-fluid w-100 square-bottom card-img" alt="@SharedLocalizer["This is {0}'s submission", item.AuthorName]" />

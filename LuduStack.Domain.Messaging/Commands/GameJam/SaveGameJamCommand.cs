@@ -95,9 +95,9 @@ namespace LuduStack.Domain.Messaging
 
         private static void CheckJudges(SaveGameJamCommand request)
         {
-            if (request.GameJam.Judges == null || !request.GameJam.Judges.Any())
+            if (request.GameJam.Voters == GameJamVoters.JudgesOnly && (request.GameJam.Judges == null || !request.GameJam.Judges.Any()))
             {
-                request.GameJam.Judges = new List<Guid> { request.GameJam.UserId };
+                request.GameJam.Judges = new List<GameJamJudge> { new GameJamJudge { UserId = request.GameJam.UserId } };
             }
         }
 

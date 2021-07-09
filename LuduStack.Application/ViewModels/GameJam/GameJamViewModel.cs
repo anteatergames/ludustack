@@ -89,7 +89,7 @@ namespace LuduStack.Application.ViewModels.GameJam
         public DateTime ResultDate { get; set; }
 
         [Display(Name = "Judges", Description = "These are the selected Judges.")]
-        public List<Guid> Judges { get; set; }
+        public List<GameJamJudgeViewModel> Judges { get; set; }
 
         public List<GameJamSponsorViewModel> Sponsors { get; set; }
 

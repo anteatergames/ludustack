@@ -230,29 +230,57 @@
                     </div>
 
                     <div class="col-md-12">
-                        <div class="form-group">
-                            <label asp-for="Voters" class="col-form-label"></label>
-                            <span asp-description-for="Voters" class="col-form-label" />
-                            <select asp-for="Voters" asp-items="Html.GetEnumSelectList<GameJamVoters>()" class="form-control"></select>
-                            <span asp-validation-for="Voters" class="text-danger"></span>
+                        <div class="col p-0 mb-3">
+                            <div class="d-flex flex-row justify-content-center">
+                                <div class="d-flex flex-column justify-content-center">
+                                    <label asp-for="Voters" class="col-form-label"></label>
+                                </div>
+                                <div class="d-flex flex-column justify-content-center">
+                                    <span asp-description-for="Voters" class="col-form-label ml-1" />
+                                </div>
+                                <div class="col pr-0">
+                                    <select asp-for="Voters" asp-items="Html.GetEnumSelectList<GameJamVoters>()" class="form-control"></select>
+                                    <span asp-validation-for="Voters" class="text-danger"></span>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
                     <div class="col-12 mb-3">
-                        <label asp-for="Judges" class="col-form-label"></label>
-                        <div class="row justify-content-center">
+                        
+                        <div class="col p-0 mb-3">
+                            <div class="d-flex flex-row justify-content-center">
+                                <div class="d-flex flex-column justify-content-center">
+                                    <label asp-for="Judges" class="col-form-label"></label>
+                                </div>
+                                <div class="d-flex flex-column justify-content-center">
+                                    <span asp-description-for="Judges" class="col-form-label ml-1" />
+                                </div>
+                                <div class="col pr-0">
+                                    <select id="ddlSearchUsers" class="form-control" data-placeholder="@SharedLocalizer["Search for Users"]" data-ajax-url="@Url.Action("searchusercard", "user")"></select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="alertnojudges" style="display:none" class="alert alert-info">@SharedLocalizer["If Only Judges are selected as Voters and there is no Judge selected, you will be added as a Judge upon saving the Game Jam."]</div>
+
+                        <div id="divJudges" class="row">
                             @for (int i = 0; i < Model.JudgesProfiles.Count; i++)
                             {
                                 var judge = Model.JudgesProfiles.ElementAt(i);
 
-                                <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-2">
-                                    <input type="hidden" name="Judges[@i]" value="@judge.UserId" />
-                                    <div class="bordered">
+                                <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-3 judge">
+                                    <input type="hidden" name="Judges[@i].UserId" value="@judge.UserId" />
+                                    <div class="bordered square-bottom border-bottom-0">
                                         <partial name="_UserCard" model="judge" />
+                                    </div>
+                                    <div class="w-100 square-top">
+                                        <button type="button" class="btn btn-block btn-outline-danger square-top btn-judge-delete" data-deleteerrormsg="@SharedLocalizer["You cannot delete the last Judge if Judges Only is selected as voters."]"><i class="fas fa-trash-alt" aria-hidden="true"></i></button>
                                     </div>
                                 </div>
                             }
                         </div>
+
                     </div>
 
                     <div class="col-12 mb-3">
@@ -291,7 +319,7 @@
                     </div>
 
                     <div class="col-12">
-                        <div class="col-12 col-lg-6 pb-3 mb-3 mx-auto d-block text-center bg-light bordered newimageupload">
+                        <div class="col-12 col-lg-6 pb-3 mb-3 mx-auto d-block text-center bg-light bordered hover newimageupload">
                             <div class="form-group m-0">
                                 <label asp-for="FeaturedImage" class="col-form-label"></label>
                                 <span asp-description-for="FeaturedImage" class="col-form-label" />
@@ -309,7 +337,7 @@
                     </div>
 
                     <div class="col-12">
-                        <div class="col-12 col-lg-6 pb-3 mb-3 mx-auto d-block text-center bg-light bordered newimageupload">
+                        <div class="col-12 col-lg-6 pb-3 mb-3 mx-auto d-block text-center bg-light bordered hover newimageupload">
                             <div class="form-group m-0">
                                 <label asp-for="BannerImage" class="col-form-label"></label>
                                 <span asp-description-for="BannerImage" class="col-form-label" />
@@ -327,7 +355,7 @@
                     </div>
 
                     <div class="col-12">
-                        <div class="col-12 col-lg-6 pb-3 mb-3 mx-auto d-block text-center bg-light bordered newimageupload">
+                        <div class="col-12 col-lg-6 pb-3 mb-3 mx-auto d-block text-center bg-light bordered hover newimageupload">
                             <div class="form-group m-0">
                                 <label asp-for="BackgroundImage" class="col-form-label"></label>
                                 <span asp-description-for="BackgroundImage" class="col-form-label" />
@@ -354,3 +382,25 @@
 </div>
 
 <partial name="_CropModal" />
+
+
+@{
+    var templateProfile = new ProfileViewModel
+    {
+        Name = "placeholder",
+        Location = "placeholder",
+        CoverImageUrl = Constants.DefaultProfileCoverImage
+    };
+}
+
+<div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-3 judge template" aria-hidden="true">
+    <input type="hidden" name="Judges[99].UserId" value="placeholder">
+    <div class="bordered square-bottom border-bottom-0">
+
+        <partial name="_UserCard" model="@templateProfile" />
+    </div>
+    <div class="w-100 square-top">
+        <button type="button" class="btn btn-block btn-outline-danger square-top btn-judge-delete" data-deleteerrormsg="@SharedLocalizer["You cannot delete the last Judge if Judges Only is selected as voters."]"><i class="fas fa-trash-alt" aria-hidden="true"></i></button>
+
+    </div>
+</div>

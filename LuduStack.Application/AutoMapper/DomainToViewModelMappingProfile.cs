@@ -222,6 +222,7 @@ namespace LuduStack.Application.AutoMapper
             CreateMap<GameJamCriteria, GameJamCriteriaViewModel>();
             CreateMap<GameJamSponsor, GameJamSponsorViewModel>();
             CreateMap<GameJamVote, GameJamVoteViewModel>();
+            CreateMap<GameJamJudge, GameJamJudgeViewModel>();
 
             #endregion GameJam
         }

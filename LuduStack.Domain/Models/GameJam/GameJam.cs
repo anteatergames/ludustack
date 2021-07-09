@@ -53,7 +53,7 @@ namespace LuduStack.Domain.Models
 
         public DateTime ResultDate { get; set; }
 
-        public List<Guid> Judges { get; set; }
+        public List<GameJamJudge> Judges { get; set; }
 
         public List<GameJamSponsor> Sponsors { get; set; }
 

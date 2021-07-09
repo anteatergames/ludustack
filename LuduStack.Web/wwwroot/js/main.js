@@ -199,11 +199,11 @@
         }
     }
 
-    function renameInputs(objContainer, itemSelector, propPreffix) {
+    function renameInputs(objContainer, itemSelector, propPreffix, direct) {
         var count = 0;
 
         var idPreffix = propPreffix + "_0__";
-        var namePreffix = propPreffix + "[0].";
+        var namePreffix = direct === true ? propPreffix + "[0]" : propPreffix + "[0].";
 
         objContainer.find(itemSelector).each(function () {
             var item = $(this);
@@ -211,22 +211,24 @@
             item.find(':input').each(function () {
                 var inputId = $(this).attr('id');
                 var inputName = $(this).attr('name');
+                var describedBy = $(this).attr('aria-describedby');
 
-                if (inputId !== undefined && inputName !== undefined) {
+                if (inputId !== undefined) {
                     var idProp = inputId.split('__')[1];
                     var newId = idPreffix.replace('0', count) + idProp;
                     $(this).attr('id', newId);
+                }
 
-                    var nameProp = inputName.split('].')[1];
-                    var newName = namePreffix.replace('0', count) + nameProp;
+                if (inputName !== undefined) {
+                    var nameProp = direct === true ? inputName.split(']')[1] : inputName.split('].')[1];
+                    var newName = nameProp !== undefined ? namePreffix.replace('0', count) + nameProp : namePreffix.replace('0', count);
                     $(this).attr('name', newName);
+                }
 
-                    var describedBy = $(this).attr('aria-describedby');
-                    if (describedBy !== undefined) {
-                        var describedByProp = describedBy.split('__')[1];
-                        var newdescribedBy = idPreffix.replace('0', count) + describedByProp;
-                        $(this).attr('aria-describedby', newdescribedBy);
-                    }
+                if (describedBy !== undefined) {
+                    var describedByProp = describedBy.split('__')[1];
+                    var newdescribedBy = idPreffix.replace('0', count) + describedByProp;
+                    $(this).attr('aria-describedby', newdescribedBy);
                 }
             });
 
