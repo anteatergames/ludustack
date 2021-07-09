@@ -162,15 +162,6 @@ blockquote {
             background-color: transparent;
         }
 
-.skin-ludustack .box-header > .box-tools .dropdown-menu {
-    background-color: var(--color-bg-basic);
-    border: 1px solid gray;
-}
-
-    .skin-ludustack .box-header > .box-tools .dropdown-menu a:hover {
-        background-color: var(--color-highlight);
-    }
-
 @media (max-width: 767px) {
     .skin-ludustack .main-header .navbar .dropdown-menu li.divider {
         background-color: rgba(255, 255, 255, 0.1);
