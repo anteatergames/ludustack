@@ -131,18 +131,11 @@
                             <div class="col-12 col-md-8">
                                 <div class="row">
 
-                                    @if (Model.FinalPlace > 0)
+                                    @if (Model.CanShowFinalResults && Model.FinalPlace > 0)
                                     {
                                         <div class="col-12 text-center">
                                             <div class="mt-n5 mr-2">
-                                                @if (Model.FinalPlace == 1)
-                                                {
-                                                    <img src="~/images/gamejam/winner-1.png" class="img-fluid" alt="@SharedLocalizer["First place"]" />
-                                                }
-                                                else
-                                                {
-                                                    <img src="~/images/gamejam/winner-other.png" class="img-fluid" alt="@SharedLocalizer["One of the winners"]" />
-                                                }
+                                                <partial name="_GameJamMedals" model="new KeyValuePair<int, int>(Model.FinalPlace, Model.GameJam.Winners)" />
                                             </div>
                                         </div>
                                     }
@@ -209,7 +202,7 @@
                                                 </div>
                                             }
 
-                                            @if (Model.CanShowResults)
+                                            @if (Model.CanShowResults && Model.CanShowFinalResults)
                                             {
                                                 <hr />
                                                 <div class="row no-gutters px-1">
@@ -228,7 +221,14 @@
                                         }
                                         else
                                         {
-                                            <span class="display-4">@SharedLocalizer["Results will be revealed later."]</span>
+                                            if (Model.GameJam.CurrentPhase == GameJamPhase.Submission)
+                                            {
+                                                <span class="display-4">@SharedLocalizer["Submission OK!"]</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="display-4">@SharedLocalizer["Results will be revealed later."]</span>
+                                            }
                                         }
                                     </div>
                                 </div>

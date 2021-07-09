@@ -5,7 +5,7 @@
 
     Layout = null;
 
-    var noItemsModel = new ListNoItemsViewModel("fas fa-gamepad", "There are no Winners for this Game Jam so everyone won!");
+    var noItemsModel = new ListNoItemsViewModel("fas fa-gamepad", "There are no Winners for this Game Jam!");
 
     var description = ViewData["ListDescription"] == null ? SharedLocalizer["Submissions"] : (string)ViewData["ListDescription"];
 
@@ -45,14 +45,7 @@ else
 
                         <div class="position-absolute text-right w-100">
                             <div class="float-right w-25 mt-n5 mr-2">
-                                @if (item.FinalPlace == 1)
-                                {
-                                    <img src="~/images/gamejam/winner-1.png" class="img-fluid" alt="@SharedLocalizer["First place"]" />
-                                }
-                                else
-                                {
-                                    <img src="~/images/gamejam/winner-other.png" class="img-fluid" alt="@SharedLocalizer["One of the winners"]" />
-                                }
+                                <partial name="_GameJamMedals" model="new KeyValuePair<int, int>(item.FinalPlace, item.GameJam.Winners)" />
                             </div>
                         </div>
 

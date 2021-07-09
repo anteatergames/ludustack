@@ -730,7 +730,8 @@ namespace LuduStack.Application.Services
 
             vm.TotalScore = medians.Any() ? medians.Median() : 0;
 
-            vm.CanShowResults = gameJamVm.CurrentPhase == GameJamPhase.Results || gameJamVm.CurrentPhase == GameJamPhase.Finished || (gameJamVm.CurrentPhase == GameJamPhase.Voting && !gameJamVm.HideRealtimeResults);
+            vm.CanShowFinalResults = gameJamVm.CurrentPhase == GameJamPhase.Finished;
+            vm.CanShowResults = vm.CanShowFinalResults || gameJamVm.CurrentPhase == GameJamPhase.Results || (gameJamVm.CurrentPhase == GameJamPhase.Voting && !gameJamVm.HideRealtimeResults);
 
             vm.IsOverallVote = !gameJamVm.Criteria.Any(x => x.Type != GameJamCriteriaType.Overall);
         }

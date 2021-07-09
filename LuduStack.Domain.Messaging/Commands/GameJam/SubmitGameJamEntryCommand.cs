@@ -6,6 +6,7 @@ using LuduStack.Domain.Models;
 using LuduStack.Infra.CrossCutting.Messaging;
 using MediatR;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,7 +17,7 @@ namespace LuduStack.Domain.Messaging
     {
         public Guid GameId { get; set; }
 
-        public SubmitGameJamEntryCommand(Guid userId, Guid jamId, Guid gameId) : base(userId, jamId)
+        public SubmitGameJamEntryCommand(Guid userId, Guid entryId, Guid gameId) : base(userId, entryId)
         {
             GameId = gameId;
         }
@@ -31,14 +32,12 @@ namespace LuduStack.Domain.Messaging
     public class SubmitGameJamEntryCommandHandler : CommandHandler, IRequestHandler<SubmitGameJamEntryCommand, CommandResult>
     {
         protected readonly IUnitOfWork unitOfWork;
-        protected readonly IGameJamRepository gameJamRepository;
         protected readonly IGameJamEntryRepository entryRepository;
         protected readonly IGamificationDomainService gamificationDomainService;
 
-        public SubmitGameJamEntryCommandHandler(IUnitOfWork unitOfWork, IGameJamRepository gameJamRepository, IGameJamEntryRepository entryRepository, IGamificationDomainService gamificationDomainService)
+        public SubmitGameJamEntryCommandHandler(IUnitOfWork unitOfWork, IGameJamEntryRepository entryRepository, IGamificationDomainService gamificationDomainService)
         {
             this.unitOfWork = unitOfWork;
-            this.gameJamRepository = gameJamRepository;
             this.entryRepository = entryRepository;
             this.gamificationDomainService = gamificationDomainService;
         }
@@ -50,24 +49,22 @@ namespace LuduStack.Domain.Messaging
 
             if (!request.IsValid()) { return request.Result; }
 
-            GameJamEntry entry;
 
-            System.Collections.Generic.IEnumerable<GameJamEntry> existing = await entryRepository.GetByUserId(request.UserId);
+            var existing = await entryRepository.GetById(request.Id);
 
-            if (existing.Any())
+            if (existing != null)
             {
-                entry = existing.FirstOrDefault();
-                entry.GameId = request.GameId;
-                entry.SubmissionDate = DateTime.Now;
+                existing.GameId = request.GameId;
+                existing.SubmissionDate = DateTime.Now;
 
-                entryRepository.Update(entry);
+                entryRepository.Update(existing);
                 pointsEarned += gamificationDomainService.ProcessAction(request.UserId, PlatformAction.GameJamSubmit);
 
                 result.Validation = await Commit(unitOfWork);
             }
             else
             {
-                entry = GenerateNewEntry(request.UserId, request.Id);
+                GameJamEntry entry = GenerateNewEntry(request.UserId, request.Id);
                 entry.GameId = request.GameId;
                 entry.SubmissionDate = DateTime.Now;
 
