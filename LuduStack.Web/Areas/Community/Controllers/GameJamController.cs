@@ -7,6 +7,7 @@ using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.ValueObjects;
 using LuduStack.Web.Areas.Community.Controllers;
 using LuduStack.Web.Extensions;
+using LuduStack.Web.Extensions.ViewModelExtensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -159,7 +160,11 @@ namespace LuduStack.Web.Areas.Staff.Controllers
 
                 if (serviceResult.Success)
                 {
-                    return View(serviceResult.Value);
+                    var model = serviceResult.Value;
+
+                    SetShare(model);
+
+                    return View(model);
                 }
                 else
                 {
@@ -457,6 +462,20 @@ namespace LuduStack.Web.Areas.Staff.Controllers
         private IActionResult RedirectToIndex()
         {
             return RedirectToWithMessage("index", "gamejam", "community", "Unable to get that GameJam!");
+        }
+
+        private void SetShare(GameJamViewModel model)
+        {
+            if (string.IsNullOrWhiteSpace(model.HashTag))
+            {
+                model.SetShareText(SharedLocalizer["{0} - Join now!", model.Name]);
+            }
+            else
+            {
+                model.SetShareText(SharedLocalizer["{0} - Join now! %23{1}", model.Name, model.HashTag]);
+            }
+
+            model.SetShareUrl(Url.Action("details", "gamejam", new { area = "community", handler = model.Handler }));
         }
     }
 }

@@ -8,7 +8,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace LuduStack.Application.ViewModels.GameJam
 {
-    public class GameJamViewModel : BaseViewModel
+    public class GameJamViewModel : UserGeneratedBaseViewModel
     {
         public GameJamType Type { get; set; }
 
@@ -97,8 +97,6 @@ namespace LuduStack.Application.ViewModels.GameJam
         public List<GameJamCriteriaViewModel> Criteria { get; set; }
 
         public List<ProfileViewModel> JudgesProfiles { get; set; }
-
-        public string AuthorName { get; set; }
 
         public string AuthorHandler { get; set; }
 

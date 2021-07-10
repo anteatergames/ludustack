@@ -3963,4 +3963,20 @@
     <value>Se Somente Jurados estiverem selecionados como Votantes e nenhum Jurado for selecionado, você será adicionado como Jurado ao salvar a Game Jam.</value>
     <comment>Game Jam</comment>
   </data>
+  <data name="Joined on {0}" xml:space="preserve">
+    <value>Entrou em {0}</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Search for Users" xml:space="preserve">
+    <value>Pesquisar Usuários</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="{0} - Join now!" xml:space="preserve">
+    <value>{0} - Participe!</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="{0} - Join now! %23{1}" xml:space="preserve">
+    <value>{0} - Participe! %23{1}</value>
+    <comment>Game Jam</comment>
+  </data>
 </root>

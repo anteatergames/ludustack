@@ -378,14 +378,7 @@ namespace LuduStack.Application.Services
                     vm.GameJam = gameJamVm;
                 }
 
-                if (!gameJamVm.HideRealtimeResults && gameJamVm.CurrentPhase == GameJamPhase.Voting)
-                {
-                    vmList = vmList.OrderByDescending(x => x.TotalScore).ToList();
-                }
-                else
-                {
-                    vmList = vmList.OrderByDescending(x => x.SubmissionDate).ToList();
-                }
+                vmList = vmList.OrderBy(x => x.SubmissionDate).ToList();
 
                 return new OperationResultListVo<GameJamEntryViewModel>(vmList);
             }
@@ -431,7 +424,7 @@ namespace LuduStack.Application.Services
                     }
                 }
 
-                finalList = finalList.OrderByDescending(x => x.JoinDate).ToList();
+                finalList = finalList.OrderBy(x => x.JoinDate).ToList();
 
                 return new OperationResultListVo<GameJamEntryViewModel>(finalList);
             }

@@ -46,12 +46,14 @@
         <script src="~/lib/bootstrap-star-rating/js/star-rating.js"></script>
         <script src="~/lib/bootstrap-star-rating/themes/krajee-fas/theme.js"></script>
         <script src="~/js/shared/fx.js"></script>
+        <script src="~/js/shared/contentactions.js"></script>
         <script src="~/js/gamejam/gamejamdetails.js"></script>
     </environment>
     <environment exclude="Development">
         <script src="~/lib/bootstrap-star-rating/js/star-rating.min.js"></script>
         <script src="~/lib/bootstrap-star-rating/themes/krajee-fa/theme.min.js"></script>
         <script src="~/js/shared/fx.js"></script>
+        <script src="~/js/shared/contentactions.min.js" asp-append-version="true"></script>
         <script src="~/js/gamejam/gamejamdetails.min.js" asp-append-version="true"></script>
     </environment>
 }
@@ -169,6 +171,13 @@
             </ul>
             <div class="tab-content" id="tabsContent">
                 <div class="tab-pane fade show active" id="taboverview" role="tabpanel" aria-labelledby="overview-tab">
+
+                    <div class="col-12 pl-0 pr-3 pt-1 position-absolute">
+                        <div class="w-100 text-right">
+                            <partial name="_ShareContent" model="new ShareModel(Model.ShareUrl, Model.ShareText)" />
+                        </div>
+                    </div>
+
                     <div class="bg-white mx-auto p-3 square-top htmlcontent">
                         @Html.Raw(Model.Description)
                     </div>

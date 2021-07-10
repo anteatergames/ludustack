@@ -6,7 +6,7 @@
 
     var url = String.IsNullOrWhiteSpace(Model.Url) ? String.Format("{0}://{1}/", ViewData["protocol"], ViewData["host"]) : Model.Url;
 
-    var shareText = string.IsNullOrWhiteSpace(Model.Text) ? "Help this translation project!" : Model.Text;
+    var shareText = string.IsNullOrWhiteSpace(Model.Text) ? "Check this out!" : Model.Text;
 }
 
 <h5>@SharedLocalizer["Share it!"]</h5>
