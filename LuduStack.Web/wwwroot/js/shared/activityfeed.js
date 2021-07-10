@@ -66,7 +66,7 @@ var ACTIVITYFEED = (function () {
                     type: 'DELETE'
                 }).done(function (response) {
                     if (response.success) {
-                        var elementToDelete = btn.closest('.box-content');
+                        var elementToDelete = btn.closest('.contentitem');
                         elementToDelete.remove();
                     }
                     else {
