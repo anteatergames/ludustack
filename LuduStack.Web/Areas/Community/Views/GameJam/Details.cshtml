@@ -172,14 +172,14 @@
             <div class="tab-content" id="tabsContent">
                 <div class="tab-pane fade show active" id="taboverview" role="tabpanel" aria-labelledby="overview-tab">
 
-                    <div class="col-12 pl-0 pr-3 pt-1 position-absolute">
-                        <div class="w-100 text-right">
-                            <partial name="_ShareContent" model="new ShareModel(Model.ShareUrl, Model.ShareText)" />
-                        </div>
-                    </div>
-
                     <div class="bg-white mx-auto p-3 square-top htmlcontent">
                         @Html.Raw(Model.Description)
+                    </div>
+
+                    <div class="mt-2">
+                        <div class="w-100 text-center">
+                            <partial name="_ShareContent" model="new ShareModel(Model.ShareUrl, Model.ShareText)" />
+                        </div>
                     </div>
 
                     <hr />
