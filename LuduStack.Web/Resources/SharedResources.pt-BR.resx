@@ -3979,4 +3979,52 @@
     <value>{0} - Participe! %23{1}</value>
     <comment>Game Jam</comment>
   </data>
+  <data name="All submissions to this Game Jam are not visible during the submission phase." xml:space="preserve">
+    <value>Nenhum envio para esta Game Jam pode ser visto durante a fase de envios.</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="All submissions to this Game Jam are public and they can be seen during the submission phase." xml:space="preserve">
+    <value>Todos os envios para esta Game Jam são públicos e podem ser vistos durante a fase de envios.</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Late Join Forbidden" xml:space="preserve">
+    <value>Entrada tardia proibida</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Public Results" xml:space="preserve">
+    <value>Resultados Públicos</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Public Submissions" xml:space="preserve">
+    <value>Envios Públicos</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Secret Results" xml:space="preserve">
+    <value>Resultados Secretos</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Secret Submissions" xml:space="preserve">
+    <value>Envios Secretos</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Secret Theme" xml:space="preserve">
+    <value>Tema Secreto</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="The voting results can bee seen in realtime as they happen." xml:space="preserve">
+    <value>Os resultados da votação podem ser vistoe em tempo real conforme vão acontecendo.</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="The voting results will only be visible after the voting phase." xml:space="preserve">
+    <value>Os resultados da votação só serão visíveis após o término da fase de votação.</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="This Game Jam is not listed on the LuduStack platform. Only people with the direct link can see it." xml:space="preserve">
+    <value>Esta Game Jam não é listada na plataforma LuduStack. Somente pessoas com um link direto podem vê-la.</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Users can only join this Game Jam during the warmup phase." xml:space="preserve">
+    <value>Usuários só podem entrar nesta Game Jam durante a fase de aquecimento.</value>
+    <comment>Game Jam</comment>
+  </data>
 </root>

@@ -14,7 +14,7 @@ namespace LuduStack.Domain.Core.Enums
         SubmissionsPublic,
 
         [Display(Name = "Secret Submissions")]
-        [UiInfo(Display = "Secret Submissions", Class = "handshake-slash", Description = ("All submissions to this Game Jam would not be visible during the submission phase."))]
+        [UiInfo(Display = "Secret Submissions", Class = "handshake-slash", Description = ("All submissions to this Game Jam are not visible during the submission phase."))]
         SubmissionsSecret,
 
         [Display(Name = "Public Results")]
@@ -26,7 +26,7 @@ namespace LuduStack.Domain.Core.Enums
         ResultsSecret,
 
         [Display(Name = "Unlisted")]
-        [UiInfo(Display = "Unlisted", Class = "store-alt-slash", Description = ("This Game Jam is not listed on the LuduStack platform. Only people with the direct URL can see it."))]
+        [UiInfo(Display = "Unlisted", Class = "store-alt-slash", Description = ("This Game Jam is not listed on the LuduStack platform. Only people with the direct link can see it."))]
         Unlisted,
 
         [Display(Name = "Secret Theme")]
