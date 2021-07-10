@@ -5,6 +5,8 @@
 
     var spinnerTop = '<div class="spinner bg-transparent text-center my-3"><div class="flex-square-inner"><div class="flex-square-inner-content text-dark"><i class="fa fa-spinner fa-3x fa-spin"></i></div></div></div>';
 
+    var spinnerTopSmall = '<div class="spinner text-center"><div class="mt-1 text-dark"><i class="fa fa-spinner fa-3x fa-spin"></i></div></div>';
+
     var spinnerBtn = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>';
 
     var doneBtn = '<i class="fas fa-check"></i>';
@@ -131,7 +133,7 @@
 
     function loadNotifications() {
         if (objs.notificationsMenu.length > 0) {
-            MAINMODULE.Ajax.LoadHtml("/home/notifications", objs.notificationsMenu);
+            MAINMODULE.Ajax.LoadHtml("/home/notifications", objs.notificationsMenu, true, true);
         }
     }
 
@@ -342,7 +344,7 @@
         return promise;
     }
 
-    async function loadHtml(url, targetObj, placeSpinner) {
+    async function loadHtml(url, targetObj, placeSpinner, smallSpinner) {
         var idList = '';
 
         if (targetObj instanceof jQuery) {
@@ -368,7 +370,12 @@
             }
 
             if (listDiv && (placeSpinner === true || placeSpinner === undefined)) {
-                listDiv.innerHTML = MAINMODULE.Default.SpinnerTop;
+                if (smallSpinner === true) {
+                    listDiv.innerHTML = MAINMODULE.Default.SpinnerTopSmall;
+                }
+                else {
+                    listDiv.innerHTML = MAINMODULE.Default.SpinnerTop;
+                }
             }
 
             return getHtml(url)
@@ -588,6 +595,7 @@
         Default: {
             Spinner: spinnerCenter,
             SpinnerTop: spinnerTop,
+            SpinnerTopSmall: spinnerTopSmall,
             SpinnerBtn: spinnerBtn,
             DoneBtn: doneBtn
         },
