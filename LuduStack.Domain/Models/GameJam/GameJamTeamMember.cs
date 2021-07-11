@@ -6,5 +6,7 @@ namespace LuduStack.Domain.Models
     public class GameJamTeamMember
     {
         public Guid UserId { get; set; }
+
+        public DateTime TeamJoinDate { get; set; }
     }
 }

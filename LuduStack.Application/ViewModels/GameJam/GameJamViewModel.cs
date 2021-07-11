@@ -12,6 +12,9 @@ namespace LuduStack.Application.ViewModels.GameJam
     {
         public GameJamType Type { get; set; }
 
+        [Display(Name = "Participation", Description = "How people can participate on this Game Jam?")]
+        public GameJamParticipationType ParticipationType { get; set; }
+
         [Display(Name = "Voters", Description = "Who can cast votes on entries for this Game Jam?")]
         public GameJamVoters Voters { get; set; }
 

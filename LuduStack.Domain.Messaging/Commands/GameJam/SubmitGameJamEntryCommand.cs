@@ -61,7 +61,7 @@ namespace LuduStack.Domain.Messaging
                 existing.GameId = request.GameId;
                 existing.SubmissionDate = DateTime.Now;
 
-                CheckTeamMembers(request.TeamMembersIds, existing);
+                CheckTeamMembers(existing, request.TeamMembersIds);
 
                 entryRepository.Update(existing);
                 pointsEarned += gamificationDomainService.ProcessAction(request.UserId, PlatformAction.GameJamSubmit);
@@ -74,7 +74,7 @@ namespace LuduStack.Domain.Messaging
                 entry.GameId = request.GameId;
                 entry.SubmissionDate = DateTime.Now;
 
-                CheckTeamMembers(request.TeamMembersIds, entry);
+                CheckTeamMembers(entry, request.TeamMembersIds);
 
                 await entryRepository.Add(entry);
                 pointsEarned += gamificationDomainService.ProcessAction(request.UserId, PlatformAction.GameJamJoin);
@@ -88,7 +88,7 @@ namespace LuduStack.Domain.Messaging
             return result;
         }
 
-        private static void CheckTeamMembers(IEnumerable<Guid> userIds, GameJamEntry entry)
+        private static void CheckTeamMembers(GameJamEntry entry, IEnumerable<Guid> userIds)
         {
             if (userIds != null && userIds.Any())
             {
@@ -97,13 +97,23 @@ namespace LuduStack.Domain.Messaging
                     entry.TeamMembers = new List<GameJamTeamMember>();
                 }
 
-                foreach (var userId in userIds)
+                foreach (Guid newUserId in userIds)
                 {
-                    if (!entry.TeamMembers.Any(x => x.UserId == userId))
+                    if (!entry.TeamMembers.Any(x => x.UserId == newUserId))
                     {
-                        entry.TeamMembers.Add(new GameJamTeamMember { UserId = userId });
+                        GameJamTeamMember newTeamMember = new GameJamTeamMember { UserId = newUserId, TeamJoinDate = DateTime.Now };
+
+                        entry.TeamMembers.Add(newTeamMember);
                     }
                 }
+
+                IEnumerable<Guid> allMembers = entry.TeamMembers.Select(x => x.UserId);
+
+                IEnumerable<Guid> membersToExclude = allMembers.Except(userIds);
+
+                entry.TeamMembers = entry.TeamMembers.Where(x => userIds.Contains(x.UserId)).ToList();
+
+                entry.IsTeam = entry.TeamMembers.Count > 1;
             }
         }
 

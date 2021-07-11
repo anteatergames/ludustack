@@ -129,7 +129,7 @@
 
             var valid = objs.form.valid();
 
-            if (valid && canInteract) {
+            if (valid && canInteract && !btn.hasClass('disabled')) {
                 MAINMODULE.Common.DisableButton(btn).ready(() => {
                     IMAGEMANIPULAION.Cropper.UploadCroppedImages(objs.inputImageListItem, function () {
                         submitForm(btn);

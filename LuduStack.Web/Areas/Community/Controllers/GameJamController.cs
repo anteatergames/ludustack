@@ -392,6 +392,25 @@ namespace LuduStack.Web.Areas.Staff.Controllers
             }
         }
 
+        [HttpPost("/gamejam/entry/{entryId:guid}/saveteam")]
+        public async Task<IActionResult> SaveTeam(Guid entryId, IEnumerable<GameJamTeamMemberViewModel> teamMembers)
+        {
+            OperationResultVo result;
+
+            try
+            {
+                OperationResultVo saveTeamTesult = await gameJamAppService.SaveTeam(CurrentUserId, entryId, teamMembers);
+
+                return Json(saveTeamTesult);
+            }
+            catch (Exception)
+            {
+                result = new OperationResultVo(false);
+            }
+
+            return Json(result);
+        }
+
         [HttpPost("/jam/{jamHandler}/submitgame")]
         public async Task<IActionResult> SubmitGame(string jamHandler, Guid gameId, IEnumerable<GameJamTeamMemberViewModel> teamMembers)
         {

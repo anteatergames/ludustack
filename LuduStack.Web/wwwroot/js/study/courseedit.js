@@ -97,7 +97,7 @@
             var btn = $(this);
             var valid = objs.form.valid();
 
-            if (valid && canInteract) {
+            if (valid && canInteract && !btn.hasClass('disabled')) {
                 MAINMODULE.Common.DisableButton(btn).ready(() => {
                     uploadCroppedImages(function () {
                         submitForm(btn);
@@ -157,7 +157,7 @@
 
             var valid = objs.form.valid();
 
-            if (valid && canInteract) {
+            if (valid && canInteract && !btn.hasClass('disabled')) {
                 savePlans(btn, function (response) {
                     if (response.message) {
                         ALERTSYSTEM.Toastr.ShowWarning(response.message);

@@ -90,9 +90,10 @@ namespace LuduStack.Domain.Messaging
         {
             if (obj.TeamMembers == null || !obj.TeamMembers.Any())
             {
-                var meTeamMember = new Models.GameJamTeamMember
+                GameJamTeamMember meTeamMember = new Models.GameJamTeamMember
                 {
-                    UserId = obj.UserId
+                    UserId = obj.UserId,
+                    TeamJoinDate = DateTime.Now
                 };
 
                 obj.TeamMembers = new List<Models.GameJamTeamMember>() { meTeamMember };

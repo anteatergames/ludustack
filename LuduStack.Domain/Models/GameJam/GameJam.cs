@@ -9,6 +9,8 @@ namespace LuduStack.Domain.Models
     {
         public GameJamType Type { get; set; }
 
+        public GameJamParticipationType ParticipationType { get; set; }
+
         public GameJamVoters Voters { get; set; }
 
         public bool IsDraft { get; set; }

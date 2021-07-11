@@ -6,5 +6,7 @@ namespace LuduStack.Application.ViewModels.GameJam
     public class GameJamTeamMemberViewModel
     {
         public Guid UserId { get; set; }
+
+        public DateTime TeamJoinDate { get; set; }
     }
 }

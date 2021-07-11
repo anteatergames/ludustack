@@ -49,25 +49,34 @@
 
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
-<environment include="Development">
-    <script src="~/lib/bootstrap-star-rating/js/star-rating.js"></script>
-    <script src="~/lib/bootstrap-star-rating/themes/krajee-fas/theme.js"></script>
-    <script src="~/js/shared/fx.js"></script>
-    <script src="~/lib/select2/js/select2.full.js"></script>
-    <script src="~/js/gamejam/gamejamentrydetails.js"></script>
-</environment>
-<environment exclude="Development">
-    <script src="~/lib/bootstrap-star-rating/js/star-rating.min.js"></script>
-    <script src="~/lib/bootstrap-star-rating/themes/krajee-fa/theme.min.js"></script>
-    <script src="~/js/shared/fx.js"></script>
-    <script src="~/lib/select2/js/select2.full.min.js"></script>
-    <script src="~/js/gamejam/gamejamentrydetails.min.js" asp-append-version="true"></script>
-</environment>
+    <environment include="Development">
+        <script src="~/lib/bootstrap-star-rating/js/star-rating.js"></script>
+        <script src="~/lib/bootstrap-star-rating/themes/krajee-fas/theme.js"></script>
+        <script src="~/js/shared/fx.js"></script>
+        <script src="~/js/shared/messages.js"></script>
+        <script src="~/lib/select2/js/select2.full.js"></script>
+        <script src="~/js/gamejam/gamejamentrydetails.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/lib/bootstrap-star-rating/js/star-rating.min.js"></script>
+        <script src="~/lib/bootstrap-star-rating/themes/krajee-fa/theme.min.js"></script>
+        <script src="~/js/shared/fx.js"></script>
+        <script src="~/js/shared/messages.js"></script>
+        <script src="~/lib/select2/js/select2.full.min.js"></script>
+        <script src="~/js/gamejam/gamejamentrydetails.min.js" asp-append-version="true"></script>
+    </environment>
+}
+
+@section TranslatedMessages {
+    <span class="msg" data-msg-id="msgTeamMinimumMember">@SharedLocalizer["Teams must have at least two members."]</span>
+    <span class="msg" data-msg-id="msgDeleteYourself">@SharedLocalizer["You cannot delete yourself from the team."]</span>
+    <span class="msg" data-msg-id="msgAlreadyMember">@SharedLocalizer["Already a member"]</span>
 }
 
 <section class="content container">
     <div id="featurecontainer" class="p-3 htmlcontent">
         <input asp-for="SecondsToCountDown" type="hidden" />
+        <input asp-for="GameJam.ParticipationType" type="hidden" />
 
         @if (!string.IsNullOrWhiteSpace(Model.GameJam.BannerImage))
         {
@@ -107,7 +116,7 @@
                     }
                     else
                     {
-                        <span class="text-left text-muted">@Html.Raw(SharedLocalizer["For {1}", authorLink, gameJamLink])</span>
+                        <span class="text-left text-muted">@Html.Raw(SharedLocalizer["For {0}", gameJamLink])</span>
                     }
                 </div>
                 <div class="ml-auto mb-2 d-flex flex-column justify-content-center">
@@ -241,6 +250,28 @@
                             </div>
                         </div>
                     </div>
+
+                    @if (Model.TeamMembersProfiles.Count > 1)
+                    {
+                        <div class="col-12 text-center">
+                            <hr />
+                            <h2>@SharedLocalizer["The Team"]</h2>
+                        </div>
+                        <div class="col-12">
+                            <div class="row justify-content-center">
+                                @for (int i = 0; i < Model.TeamMembersProfiles.Count; i++)
+                                {
+                                    var teamMember = Model.TeamMembersProfiles.ElementAt(i);
+
+                                    <div class="col-12 col-md-6 col-lg-4 mb-3">
+                                        <div class="bordered">
+                                            <partial name="_UserCard" model="teamMember" />
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    }
                 </div>
             }
             else
@@ -267,40 +298,64 @@
                             </div>
                         </div>
 
-                        <div class="col-12 mb-3">
 
-                            <div class="col p-0 mb-3">
-                                <div class="d-flex flex-row justify-content-center">
-                                    <div class="d-flex flex-column justify-content-center">
-                                        <label asp-for="TeamMembers" class="col-form-label"></label>
+                        @if (Model.GameJam.ParticipationType != GameJamParticipationType.IndividualsOnly)
+                        {
+                            <div class="col-12">
+                                <h2 class="m-0 text-capitalize">@SharedLocalizer["Your Team"]</h2>
+                            </div>
+
+                            <div class="col-12">
+                                <div class="col p-0 mb-3">
+                                    <div class="d-flex flex-row justify-content-center">
+                                        <div class="d-flex flex-column justify-content-center">
+                                            <label asp-for="TeamMembers" class="col-form-label"></label>
+                                        </div>
+                                        <div class="d-flex flex-column justify-content-center">
+                                            <span asp-description-for="TeamMembers" class="col-form-label ml-1" />
+                                        </div>
+                                        <div class="col pr-0">
+                                            <select id="ddlSearchUsers" class="form-control" data-placeholder="@SharedLocalizer["Search for Users"]" data-ajax-url="@Url.Action("searchusercard", "user")"></select>
+                                        </div>
                                     </div>
-                                    <div class="d-flex flex-column justify-content-center">
-                                        <span asp-description-for="TeamMembers" class="col-form-label ml-1" />
-                                    </div>
-                                    <div class="col pr-0">
-                                        <select id="ddlSearchUsers" class="form-control" data-placeholder="@SharedLocalizer["Search for Users"]" data-ajax-url="@Url.Action("searchusercard", "user")"></select>
-                                    </div>
+                                </div>
+
+                                <div id="divTeamMembers" class="row justify-content-center">
+                                    @for (int i = 0; i < Model.TeamMembersProfiles.Count; i++)
+                                    {
+                                        var teamMember = Model.TeamMembersProfiles.ElementAt(i);
+
+                                        <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-3 teammember">
+                                            <input type="hidden" name="TeamMembers[@i].UserId" value="@teamMember.UserId" class="teammemberid" />
+                                            <div class="bordered square-bottom border-bottom-0">
+                                                <partial name="_UserCard" model="teamMember" />
+                                            </div>
+                                            <div class="w-100 square-top">
+                                                <button type="button" class="btn btn-block btn-outline-danger square-top btn-teammember-delete"><i class="fas fa-trash-alt" aria-hidden="true"></i></button>
+                                            </div>
+                                        </div>
+                                    }
                                 </div>
                             </div>
 
-                            <div id="divTeamMembers" class="row">
-                                @for (int i = 0; i < Model.TeamMembersProfiles.Count; i++)
-                                {
-                                    var teamMember = Model.TeamMembersProfiles.ElementAt(i);
-
-                                    <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-3 teammember">
-                                        <input type="hidden" name="TeamMembers[@i].UserId" value="@teamMember.UserId" class="teammemberid" />
-                                        <div class="bordered square-bottom border-bottom-0">
-                                            <partial name="_UserCard" model="teamMember" />
-                                        </div>
-                                        <div class="w-100 square-top">
-                                            <button type="button" class="btn btn-block btn-outline-danger square-top btn-teammember-delete" data-deleteerrormsg="@SharedLocalizer["You cannot delete yourself from the team."]"><i class="fas fa-trash-alt" aria-hidden="true"></i></button>
-                                        </div>
-                                    </div>
-                                }
+                            <div class="col-12">
+                                <div class="alert alert-heading alert-light text-center">
+                                    <span class="d-block">@SharedLocalizer["This is your team for this Game Jam and you can save it as many times as you want before submitting the game."]</span>
+                                    @if (Model.GameJam.ParticipationType == GameJamParticipationType.TeamsOnly)
+                                    {
+                                        <span class="d-block">@SharedLocalizer["You need to have at least two people on your team."]</span>
+                                    }
+                                    @if (Model.GameJam.ParticipationType == GameJamParticipationType.IndividualsAndTeams)
+                                    {
+                                        <span class="d-block">@SharedLocalizer["If you are the only person on your team, you will be participating as an individual."]</span>
+                                    }
+                                </div>
                             </div>
 
-                        </div>
+                            <div class="col-12 col-lg-6 offset-lg-6 col-xl-4 offset-xl-8 mt-1 mb-3">
+                                <button type="button" id="btnSaveTeam" class="btn btn-lg btn-primary btn-block" data-url="@Url.Action("saveteam", "gamejam", new { area = "community", entryId = Model.Id })"><i class="fas fa-users" aria-hidden="true"></i> @SharedLocalizer["Save Team"]</button>
+                            </div>
+                        }
 
                         <div class="col-12">
                             <h2 class="m-0 text-capitalize">@SharedLocalizer["Submit your game"]</h2>
@@ -315,7 +370,7 @@
                         </div>
 
                         <div class="col-12 col-lg-6 offset-lg-6 col-xl-4 offset-xl-8 mt-1 mb-2">
-                            <button type="button" id="btnSubmitGame" class="btn btn-lg btn-primary btn-block"><i class="fas fa-save" aria-hidden="true"></i> @SharedLocalizer["Submit"]</button>
+                            <button type="button" id="btnSubmitGame" class="btn btn-lg btn-primary btn-block" data-confirmationmessage="@SharedLocalizer["Are you sure you are ready to submit your game to this Game Jam? You will not be able to change your team after this."]" data-confirmationtitle="@SharedLocalizer["Are you sure?"]" data-confirmationbuttontext="@SharedLocalizer["Yes, do it!"]" data-cancelbuttontext="@SharedLocalizer["Cancel"]"><i class="fas fa-save" aria-hidden="true"></i> @SharedLocalizer["Submit"]</button>
                         </div>
                     </div>
                 </form>
@@ -334,11 +389,11 @@
 }
 
 <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-3 teammember template" aria-hidden="true">
-    <input type="hidden" name="TeamMembers[99].UserId" value="placeholder" class="teammemberid" >
+    <input type="hidden" name="TeamMembers[99].UserId" value="placeholder" class="teammemberid">
     <div class="bordered square-bottom border-bottom-0">
         <partial name="_UserCard" model="@templateProfile" />
     </div>
     <div class="w-100 square-top">
-        <button type="button" class="btn btn-block btn-outline-danger square-top btn-teammember-delete" data-deleteerrormsg="@SharedLocalizer["You cannot delete yourself from the team."]"><i class="fas fa-trash-alt" aria-hidden="true"></i></button>
+        <button type="button" class="btn btn-block btn-outline-danger square-top btn-teammember-delete"><i class="fas fa-trash-alt" aria-hidden="true"></i></button>
     </div>
 </div>

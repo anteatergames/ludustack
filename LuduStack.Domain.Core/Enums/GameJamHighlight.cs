@@ -36,5 +36,17 @@ namespace LuduStack.Domain.Core.Enums
         [Display(Name = "Late Join Forbidden")]
         [UiInfo(Display = "Late Join Forbidden", Class = "clock", Description = ("Users can only join this Game Jam during the warmup phase."))]
         LateJoinForbidden,
+
+        [Display(Name = "Individuals Only")]
+        [UiInfo(Display = "Individuals Only", Class = "user", Description = "Only individuals can participate on the Jam and must produce the game all alone.")]
+        IndividualsOnly,
+
+        [Display(Name = "Teams Only")]
+        [UiInfo(Display = "Teams Only", Class = "user-friends", Description = "Only teams can participate on the Jam. No individuals allowed.")]
+        TeamsOnly,
+
+        [Display(Name = "Individuals and Teams")]
+        [UiInfo(Display = "Individuals and Teams", Class = "users", Description = "Anyone can join this Jam either as individuals or as teams.")]
+        IndividualsAndTeams,
     }
 }

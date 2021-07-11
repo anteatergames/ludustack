@@ -194,7 +194,12 @@
 
     function postSaveCallback(response, btn) {
         if (response.success === true) {
-            btn.removeClass('disabled').addClass('btn-success').removeClass('btn-primary').html(MAINMODULE.Default.DoneBtn);
+            if (response.url) {
+                btn.removeClass('disabled').addClass('btn-success').removeClass('btn-primary').html(MAINMODULE.Default.DoneBtn);
+            }
+            else {
+                btn.removeClass('disabled').html(MAINMODULE.Default.DoneBtn);
+            }
         }
         else {
             btn.removeClass('disabled').html(saveBtnOriginalText);

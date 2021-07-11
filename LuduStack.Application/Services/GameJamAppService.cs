@@ -532,6 +532,35 @@ namespace LuduStack.Application.Services
             }
         }
 
+        public async Task<OperationResultVo> SaveTeam(Guid currentUserId, Guid entryId, IEnumerable<GameJamTeamMemberViewModel> teamMembers)
+        {
+            try
+            {
+                GameJamEntry entry = await mediator.Query<GetGameJamEntryByIdQuery, GameJamEntry>(new GetGameJamEntryByIdQuery(entryId));
+
+                if (entry == null)
+                {
+                    return new OperationResultVo<GameJamEntryViewModel>("Entry not found!");
+                }
+
+                var teamMembersIds = teamMembers.Select(x => x.UserId);
+
+                CommandResult result = await mediator.SendCommand(new SaveGameJamEntryTeamCommand(entryId, teamMembersIds));
+
+                if (!result.Validation.IsValid)
+                {
+                    string message = result.Validation.Errors.FirstOrDefault().ErrorMessage;
+                    return new OperationResultVo<Guid>(entry.Id, false, message);
+                }
+
+                return new OperationResultVo<Guid>(entry.Id, result.PointsEarned, "Team saved!");
+            }
+            catch (Exception ex)
+            {
+                return new OperationResultVo(ex.Message);
+            }
+        }
+
         public async Task<OperationResultVo> SubmitGame(Guid currentUserId, string jamHandler, Guid gameId, IEnumerable<GameJamTeamMemberViewModel> teamMembers)
         {
             try
@@ -868,12 +897,15 @@ namespace LuduStack.Application.Services
             vm.TeamMembersProfiles = new List<ProfileViewModel>();
             foreach (UserProfileEssentialVo profileEssential in profiles)
             {
+                var teamMember = vm.TeamMembers.First(x => x.UserId == profileEssential.UserId);
+
                 ProfileViewModel profile = new ProfileViewModel
                 {
                     UserId = profileEssential.UserId,
                     Handler = profileEssential.Handler,
                     Location = profileEssential.Location,
                     CreateDate = profileEssential.CreateDate,
+                    LastUpdateDate = teamMember.TeamJoinDate,
                     Name = profileEssential.Name,
                     ProfileImageUrl = UrlFormatter.ProfileImage(profileEssential.UserId, Constants.HugeAvatarSize),
                     CoverImageUrl = UrlFormatter.ProfileCoverImage(profileEssential.UserId, profileEssential.Id, profileEssential.LastUpdateDate, profileEssential.HasCoverImage, Constants.ProfileCoverSize)
@@ -881,6 +913,8 @@ namespace LuduStack.Application.Services
 
                 vm.TeamMembersProfiles.Add(profile);
             }
+
+            vm.TeamMembersProfiles = vm.TeamMembersProfiles.OrderByDescending(x => x.LastUpdateDate).ToList();
         }
 
         private static void SetCriteria(GameJamViewModel gameJamVm, bool isNew)
@@ -1021,6 +1055,19 @@ namespace LuduStack.Application.Services
             if (!vm.AllowLateJoin)
             {
                 vm.Highlights.Add(new GameJamHighlightsVo { Highlight = GameJamHighlight.LateJoinForbidden });
+            }
+
+            switch (vm.ParticipationType)
+            {
+                case GameJamParticipationType.IndividualsOnly:
+                    vm.Highlights.Add(new GameJamHighlightsVo { Highlight = GameJamHighlight.IndividualsOnly });
+                    break;
+                case GameJamParticipationType.TeamsOnly:
+                    vm.Highlights.Add(new GameJamHighlightsVo { Highlight = GameJamHighlight.TeamsOnly });
+                    break;
+                case GameJamParticipationType.IndividualsAndTeams:
+                    vm.Highlights.Add(new GameJamHighlightsVo { Highlight = GameJamHighlight.IndividualsAndTeams });
+                    break;
             }
         }
     }

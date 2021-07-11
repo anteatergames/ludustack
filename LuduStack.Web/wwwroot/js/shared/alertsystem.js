@@ -20,13 +20,18 @@ var ALERTSYSTEM = (function () {
     }
 
     function showAlert(text, type, callback) {
-        var message = generateAlert(text, type);
+        if (text) {
+            var message = generateAlert(text, type);
 
-        Swal.fire(message).then(
-            function (result) {
-                callbackResult(callback, result);
-            }
-        );
+            Swal.fire(message).then(
+                function (result) {
+                    callbackResult(callback, result);
+                }
+            );
+        }
+        else {
+            console.log('no text to show');
+        }
     }
 
     function generateAlert(text, type) {

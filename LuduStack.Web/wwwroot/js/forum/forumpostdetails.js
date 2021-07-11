@@ -72,7 +72,7 @@
         objs.container.on('click', selectors.btnSaveReply, function (e) {
             var btn = $(this);
 
-            if (canInteract) {
+            if (canInteract && !btn.hasClass('disabled')) {
                 MAINMODULE.Common.DisableButton(btn).ready(() => {
                     saveReply(btn);
                 });
@@ -87,7 +87,7 @@
         objs.container.on('click', selectors.btnSavePost, function (e) {
             var btn = $(this);
 
-            if (canInteract) {
+            if (canInteract && !btn.hasClass('disabled')) {
                 MAINMODULE.Common.DisableButton(btn).ready(() => {
                     savePost(btn);
                 });
@@ -218,7 +218,7 @@
 
         WYSIWYGEDITOR.UpdateSourceElement(editorId);
 
-        if (canInteract) {
+        if (canInteract && !btn.hasClass('disabled')) {
             var data = form.serializeObject();
 
             return $.post(url, data).done(function (response) {
@@ -243,7 +243,7 @@
 
         WYSIWYGEDITOR.UpdateSourceElement(editorId);
 
-        if (canInteract) {
+        if (canInteract && !btn.hasClass('disabled')) {
             var data = form.serializeObject();
 
             return $.post(url, data).done(function (response) {

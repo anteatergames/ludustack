@@ -3443,7 +3443,7 @@
     <value>Finalizada</value>
     <comment>Game Jam</comment>
   </data>
-  <data name="For {1}" xml:space="preserve">
+  <data name="For {0}" xml:space="preserve">
     <value>Para {0}</value>
     <comment>Game Jam</comment>
   </data>
@@ -4049,6 +4049,69 @@
   </data>
   <data name="You cannot delete yourself from the team." xml:space="preserve">
     <value>Você não pode se excluir da equipe.</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Anyone can join this Jam either as individuals or as teams." xml:space="preserve">
+    <value>Todos podem participar desta Jam sejam indivíduos ou equipes.</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Are you sure you are ready to submit your game to this Game Jam? You will not be able to change your team after this." xml:space="preserve">
+    <value>Você tem certeza que está pronto para enviar seu jogo para esta Game Jam? Você não poderá alterar sua equipe depois disso.</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="How people can participate on this Game Jam?" xml:space="preserve">
+    <value>Como as pessoas podem participar desta Game Jam?</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="If you are the only person on your team, you will be participating as an individual." xml:space="preserve">
+    <value>Se você for a única pessoa na sua equipe, você estará participando como indivíduo.</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Individuals and Teams" xml:space="preserve">
+    <value>Indivíduos e Equipes</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Individuals Only" xml:space="preserve">
+    <value>Somente Indivíduos</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Only individuals can participate on the Jam and must produce the game all alone." xml:space="preserve">
+    <value>Somente indivíduos podem participar desta Jam e devem produzir o jogo sozinhos.</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Only teams can participate on the Jam. No individuals allowed." xml:space="preserve">
+    <value>Somente equipes podem participar desta Jam. Indivíduos não são permitidos.</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Participation" xml:space="preserve">
+    <value>Participação</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Save Team" xml:space="preserve">
+    <value>Salvar Equipe</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Team saved!" xml:space="preserve">
+    <value>Equipe salva!</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Teams must have at least two members." xml:space="preserve">
+    <value>Equipes devem ter no mínimo dois integrantes.</value>
+  </data>
+  <data name="Teams Only" xml:space="preserve">
+    <value>Somente Equipes</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="This is your team for this Game Jam and you can save it as many times as you want before submitting the game." xml:space="preserve">
+    <value>Esta é sua equipe para esta Game Jam e você pode salvá-la quantas vezes quiser antes de enviar o jogo.</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="You need to have at least two people on your team." xml:space="preserve">
+    <value>Você precisa ter no mínimo duas pessoas na sua equipe.</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Your Team" xml:space="preserve">
+    <value>Sua Equipe</value>
     <comment>Game Jam</comment>
   </data>
 </root>
