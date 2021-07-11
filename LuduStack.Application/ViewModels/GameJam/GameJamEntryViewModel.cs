@@ -1,7 +1,9 @@
 ﻿using LuduStack.Application.ViewModels.Game;
+using LuduStack.Application.ViewModels.User;
 using LuduStack.Domain.Interfaces.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace LuduStack.Application.ViewModels.GameJam
 {
@@ -17,11 +19,15 @@ namespace LuduStack.Application.ViewModels.GameJam
 
         public DateTime SubmissionDate { get; set; }
 
+        [Required(ErrorMessage = "You must select a Game to submit!")]
         public Guid GameId { get; set; }
 
         public Guid? TeamId { get; set; }
 
         public int FinalPlace { get; set; }
+
+        [Display(Name = "Team Members", Description = "This is the team.")]
+        public List<GameJamTeamMemberViewModel> TeamMembers { get; set; }
 
         public List<GameJamVoteViewModel> Votes { get; set; }
 
@@ -66,5 +72,7 @@ namespace LuduStack.Application.ViewModels.GameJam
         public bool CanShowFinalResults { get; set; }
 
         public bool IsWinner { get; set; }
+
+        public List<ProfileViewModel> TeamMembersProfiles { get; set; }
     }
 }

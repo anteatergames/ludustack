@@ -4027,4 +4027,28 @@
     <value>Usuários só podem entrar nesta Game Jam durante a fase de aquecimento.</value>
     <comment>Game Jam</comment>
   </data>
+  <data name="You didn't submit a game!" xml:space="preserve">
+    <value>Você não enviou um jogo!</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Select the game to submit" xml:space="preserve">
+    <value>Selecione o jogo para enviar</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="You must select a Game to submit!" xml:space="preserve">
+    <value>Você deve selecionar um jogo para enviar!</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Team Members" xml:space="preserve">
+    <value>Membros da Equipe</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="This is the team." xml:space="preserve">
+    <value>Esta é a equipe.</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="You cannot delete yourself from the team." xml:space="preserve">
+    <value>Você não pode se excluir da equipe.</value>
+    <comment>Game Jam</comment>
+  </data>
 </root>

@@ -5,7 +5,6 @@
     var objs = {};
 
     var canInteract = false;
-    var avatarBaseUrl = "https://res.cloudinary.com/ludustack/image/upload/f_auto,q_auto/v1/";
 
     var datetimePickerIcons = {
         time: "fa fa-clock",
@@ -202,7 +201,7 @@
             return result.text;
         }
 
-        return $('<span><img class="rounded-circle lazyload avatar" data-src="' + avatarBaseUrl + result.id + '/profileimage_' + result.id + '_Personal' + '" src="/images/placeholders/developer.png" alt="meh"> ' + result.text + '</span>');
+        return $('<span><img class="rounded-circle lazyload avatar" data-src="' + result.profileImageUrl + '" src="/images/placeholders/developer.png" alt="meh"> ' + result.text + '</span>');
     }
 
     function addNewJudge(data) {

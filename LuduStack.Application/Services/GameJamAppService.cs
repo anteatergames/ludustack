@@ -532,7 +532,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public async Task<OperationResultVo> SubmitGame(Guid currentUserId, string jamHandler, Guid gameId)
+        public async Task<OperationResultVo> SubmitGame(Guid currentUserId, string jamHandler, Guid gameId, IEnumerable<GameJamTeamMemberViewModel> teamMembers)
         {
             try
             {
@@ -550,7 +550,9 @@ namespace LuduStack.Application.Services
                     return new OperationResultVo<GameJamEntryViewModel>("Entry not found!");
                 }
 
-                CommandResult result = await mediator.SendCommand(new SubmitGameJamEntryCommand(currentUserId, entry.Id, gameId));
+                var teamMembersIds = teamMembers.Select(x => x.UserId);
+
+                CommandResult result = await mediator.SendCommand(new SubmitGameJamEntryCommand(currentUserId, entry.Id, gameId, teamMembersIds));
 
                 if (!result.Validation.IsValid)
                 {
@@ -664,6 +666,8 @@ namespace LuduStack.Application.Services
 
                 SetGameJamState(DateTime.Now.ToLocalTime(), gameJamVm);
                 vm.SecondsToCountDown = gameJamVm.SecondsToCountDown;
+
+                await SetTeamMembers(vm);
 
                 vm.JoinDate = vm.JoinDate.ToLocalTime();
                 vm.SubmissionDate = vm.SubmissionDate.ToLocalTime();
@@ -852,6 +856,30 @@ namespace LuduStack.Application.Services
                 };
 
                 vm.JudgesProfiles.Add(profile);
+            }
+        }
+
+        private async Task SetTeamMembers(GameJamEntryViewModel vm)
+        {
+            var teamMembersIds = vm.TeamMembers.Select(x => x.UserId);
+
+            IEnumerable<UserProfileEssentialVo> profiles = await mediator.Query<GetBasicUserProfileDataByUserIdsQuery, IEnumerable<UserProfileEssentialVo>>(new GetBasicUserProfileDataByUserIdsQuery(teamMembersIds));
+
+            vm.TeamMembersProfiles = new List<ProfileViewModel>();
+            foreach (UserProfileEssentialVo profileEssential in profiles)
+            {
+                ProfileViewModel profile = new ProfileViewModel
+                {
+                    UserId = profileEssential.UserId,
+                    Handler = profileEssential.Handler,
+                    Location = profileEssential.Location,
+                    CreateDate = profileEssential.CreateDate,
+                    Name = profileEssential.Name,
+                    ProfileImageUrl = UrlFormatter.ProfileImage(profileEssential.UserId, Constants.HugeAvatarSize),
+                    CoverImageUrl = UrlFormatter.ProfileCoverImage(profileEssential.UserId, profileEssential.Id, profileEssential.LastUpdateDate, profileEssential.HasCoverImage, Constants.ProfileCoverSize)
+                };
+
+                vm.TeamMembersProfiles.Add(profile);
             }
         }
 

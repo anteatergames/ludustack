@@ -7,6 +7,7 @@ using LuduStack.Domain.Models;
 using LuduStack.Infra.CrossCutting.Messaging;
 using MediatR;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -80,7 +81,22 @@ namespace LuduStack.Domain.Messaging
                 GameJamId = jamId
             };
 
+            CheckTeamMembers(newEntry);
+
             return newEntry;
+        }
+
+        private static void CheckTeamMembers(Models.GameJamEntry obj)
+        {
+            if (obj.TeamMembers == null || !obj.TeamMembers.Any())
+            {
+                var meTeamMember = new Models.GameJamTeamMember
+                {
+                    UserId = obj.UserId
+                };
+
+                obj.TeamMembers = new List<Models.GameJamTeamMember>() { meTeamMember };
+            }
         }
     }
 }

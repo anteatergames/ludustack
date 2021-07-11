@@ -2,6 +2,7 @@
 using LuduStack.Infra.CrossCutting.Messaging;
 using MediatR;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
@@ -61,13 +62,34 @@ namespace LuduStack.Domain.Messaging.Queries.GameJam
                     items = items.Take(request.Take);
                 }
 
-                return Task.FromResult(items.FirstOrDefault());
+                var obj = items.FirstOrDefault();
+
+                CheckTeamMembers(obj);
+
+                return Task.FromResult(obj);
             }
             else
             {
                 IQueryable<Models.GameJamEntry> items = repository.Get(x => x.UserId == request.UserId && x.GameJamId == request.JamId);
 
-                return Task.FromResult(items.FirstOrDefault());
+                var obj = items.FirstOrDefault();
+
+                CheckTeamMembers(obj);
+
+                return Task.FromResult(obj);
+            }
+        }
+
+        private static void CheckTeamMembers(Models.GameJamEntry obj)
+        {
+            if (obj.TeamMembers == null || !obj.TeamMembers.Any())
+            {
+                var meTeamMember = new Models.GameJamTeamMember
+                {
+                    UserId = obj.UserId
+                };
+
+                obj.TeamMembers = new List<Models.GameJamTeamMember>() { meTeamMember };
             }
         }
     }

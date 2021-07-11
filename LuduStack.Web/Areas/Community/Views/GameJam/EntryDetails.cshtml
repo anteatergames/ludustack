@@ -30,15 +30,17 @@
     var currentUserId = ViewBag.CurrentUserId ?? Guid.Empty;
 }
 
-@section Styles {
+@section ComponentStyles {
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap-star-rating/css/star-rating.css">
         <link rel="stylesheet" href="~/lib/bootstrap-star-rating/themes/krajee-fa/theme.css" media="all" type="text/css" />
+        <link rel="stylesheet" href="~/lib/select2/css/select2.css">
         <link rel="stylesheet" href="~/css/gamejamdetails.css" />
     </environment>
     <environment exclude="Development">
         <link rel="stylesheet" href="~/lib/bootstrap-star-rating/css/star-rating.min.css">
         <link rel="stylesheet" href="~/lib/bootstrap-star-rating/themes/krajee-fas/theme.min.css" media="all" type="text/css" />
+        <link rel="stylesheet" href="~/lib/select2/css/select2.min.css">
         <link rel="stylesheet" href="~/css/gamejamdetails.min.css" asp-append-version="true" />
     </environment>
 }
@@ -47,18 +49,20 @@
 
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
-    <environment include="Development">
-        <script src="~/lib/bootstrap-star-rating/js/star-rating.js"></script>
-        <script src="~/lib/bootstrap-star-rating/themes/krajee-fas/theme.js"></script>
-        <script src="~/js/shared/fx.js"></script>
-        <script src="~/js/gamejam/gamejamentrydetails.js"></script>
-    </environment>
-    <environment exclude="Development">
-        <script src="~/lib/bootstrap-star-rating/js/star-rating.min.js"></script>
-        <script src="~/lib/bootstrap-star-rating/themes/krajee-fa/theme.min.js"></script>
-        <script src="~/js/shared/fx.js"></script>
-        <script src="~/js/gamejam/gamejamentrydetails.min.js" asp-append-version="true"></script>
-    </environment>
+<environment include="Development">
+    <script src="~/lib/bootstrap-star-rating/js/star-rating.js"></script>
+    <script src="~/lib/bootstrap-star-rating/themes/krajee-fas/theme.js"></script>
+    <script src="~/js/shared/fx.js"></script>
+    <script src="~/lib/select2/js/select2.full.js"></script>
+    <script src="~/js/gamejam/gamejamentrydetails.js"></script>
+</environment>
+<environment exclude="Development">
+    <script src="~/lib/bootstrap-star-rating/js/star-rating.min.js"></script>
+    <script src="~/lib/bootstrap-star-rating/themes/krajee-fa/theme.min.js"></script>
+    <script src="~/js/shared/fx.js"></script>
+    <script src="~/lib/select2/js/select2.full.min.js"></script>
+    <script src="~/js/gamejam/gamejamentrydetails.min.js" asp-append-version="true"></script>
+</environment>
 }
 
 <section class="content container">
@@ -241,7 +245,7 @@
             }
             else
             {
-                var msgNoSubmission = Model.GameJam.CurrentPhase == GameJamPhase.Warmup || Model.GameJam.CurrentPhase == GameJamPhase.Submission ? "This participant didn't submit a game yet!" : "This participant didn't submit a game.";
+                var msgNoSubmission = Model.Permissions.IsMe ? "You didn't submit a game!" : Model.GameJam.CurrentPhase == GameJamPhase.Warmup || Model.GameJam.CurrentPhase == GameJamPhase.Submission ? "This participant didn't submit a game yet!" : "This participant didn't submit a game.";
                 var noSubmissionModel = new ListNoItemsViewModel("fas fa-dizzy", msgNoSubmission);
                 <partial name="_ListNoItems" model="noSubmissionModel" />
             }
@@ -252,6 +256,9 @@
                 var createGameLink = string.Format("<a href=\"{0}\" class=\"boldlink text-nowrap\">{1}</a>", createGameUrl, SharedLocalizer["click here"].Value);
 
                 <form id="frmSubmitGame" asp-area="community" asp-controller="gamejam" asp-action="submitgame" asp-route-jamHandler="@Model.GameJam.Handler" method="post" class="mt-2">
+
+                    <input asp-for="UserId" type="hidden" />
+
                     <div class="row">
                         <div class="col-12">
                             <div class="alert alert-heading alert-warning text-center">
@@ -259,6 +266,42 @@
                                 <span class="d-block">@Html.Raw(SharedLocalizer["If your game is not listed below, {0} to create a new game on the LuduStack platform.", createGameLink])</span>
                             </div>
                         </div>
+
+                        <div class="col-12 mb-3">
+
+                            <div class="col p-0 mb-3">
+                                <div class="d-flex flex-row justify-content-center">
+                                    <div class="d-flex flex-column justify-content-center">
+                                        <label asp-for="TeamMembers" class="col-form-label"></label>
+                                    </div>
+                                    <div class="d-flex flex-column justify-content-center">
+                                        <span asp-description-for="TeamMembers" class="col-form-label ml-1" />
+                                    </div>
+                                    <div class="col pr-0">
+                                        <select id="ddlSearchUsers" class="form-control" data-placeholder="@SharedLocalizer["Search for Users"]" data-ajax-url="@Url.Action("searchusercard", "user")"></select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="divTeamMembers" class="row">
+                                @for (int i = 0; i < Model.TeamMembersProfiles.Count; i++)
+                                {
+                                    var teamMember = Model.TeamMembersProfiles.ElementAt(i);
+
+                                    <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-3 teammember">
+                                        <input type="hidden" name="TeamMembers[@i].UserId" value="@teamMember.UserId" class="teammemberid" />
+                                        <div class="bordered square-bottom border-bottom-0">
+                                            <partial name="_UserCard" model="teamMember" />
+                                        </div>
+                                        <div class="w-100 square-top">
+                                            <button type="button" class="btn btn-block btn-outline-danger square-top btn-teammember-delete" data-deleteerrormsg="@SharedLocalizer["You cannot delete yourself from the team."]"><i class="fas fa-trash-alt" aria-hidden="true"></i></button>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+
+                        </div>
+
                         <div class="col-12">
                             <h2 class="m-0 text-capitalize">@SharedLocalizer["Submit your game"]</h2>
                         </div>
@@ -280,3 +323,22 @@
         </div>
     </div>
 </section>
+
+@{
+    var templateProfile = new ProfileViewModel
+    {
+        Name = "placeholder",
+        Location = "placeholder",
+        CoverImageUrl = Constants.DefaultProfileCoverImage
+    };
+}
+
+<div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-3 teammember template" aria-hidden="true">
+    <input type="hidden" name="TeamMembers[99].UserId" value="placeholder" class="teammemberid" >
+    <div class="bordered square-bottom border-bottom-0">
+        <partial name="_UserCard" model="@templateProfile" />
+    </div>
+    <div class="w-100 square-top">
+        <button type="button" class="btn btn-block btn-outline-danger square-top btn-teammember-delete" data-deleteerrormsg="@SharedLocalizer["You cannot delete yourself from the team."]"><i class="fas fa-trash-alt" aria-hidden="true"></i></button>
+    </div>
+</div>

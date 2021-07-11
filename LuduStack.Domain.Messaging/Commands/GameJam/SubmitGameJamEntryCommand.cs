@@ -17,9 +17,13 @@ namespace LuduStack.Domain.Messaging
     {
         public Guid GameId { get; set; }
 
-        public SubmitGameJamEntryCommand(Guid userId, Guid entryId, Guid gameId) : base(userId, entryId)
+        public IEnumerable<Guid> TeamMembersIds { get; }
+
+
+        public SubmitGameJamEntryCommand(Guid userId, Guid entryId, Guid gameId, IEnumerable<Guid> teamMembersIds) : base(userId, entryId)
         {
             GameId = gameId;
+            TeamMembersIds = teamMembersIds;
         }
 
         public override bool IsValid()
@@ -57,6 +61,8 @@ namespace LuduStack.Domain.Messaging
                 existing.GameId = request.GameId;
                 existing.SubmissionDate = DateTime.Now;
 
+                CheckTeamMembers(request.TeamMembersIds, existing);
+
                 entryRepository.Update(existing);
                 pointsEarned += gamificationDomainService.ProcessAction(request.UserId, PlatformAction.GameJamSubmit);
 
@@ -68,6 +74,8 @@ namespace LuduStack.Domain.Messaging
                 entry.GameId = request.GameId;
                 entry.SubmissionDate = DateTime.Now;
 
+                CheckTeamMembers(request.TeamMembersIds, entry);
+
                 await entryRepository.Add(entry);
                 pointsEarned += gamificationDomainService.ProcessAction(request.UserId, PlatformAction.GameJamJoin);
                 pointsEarned += gamificationDomainService.ProcessAction(request.UserId, PlatformAction.GameJamSubmit);
@@ -78,6 +86,25 @@ namespace LuduStack.Domain.Messaging
             result.PointsEarned = pointsEarned;
 
             return result;
+        }
+
+        private static void CheckTeamMembers(IEnumerable<Guid> userIds, GameJamEntry entry)
+        {
+            if (userIds != null && userIds.Any())
+            {
+                if (entry.TeamMembers == null)
+                {
+                    entry.TeamMembers = new List<GameJamTeamMember>();
+                }
+
+                foreach (var userId in userIds)
+                {
+                    if (!entry.TeamMembers.Any(x => x.UserId == userId))
+                    {
+                        entry.TeamMembers.Add(new GameJamTeamMember { UserId = userId });
+                    }
+                }
+            }
         }
 
         private GameJamEntry GenerateNewEntry(Guid userId, Guid jamId)

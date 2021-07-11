@@ -34,7 +34,7 @@ namespace LuduStack.Application.Interfaces
 
         Task<OperationResultVo> Join(Guid currentUserId, Guid jamId);
 
-        Task<OperationResultVo> SubmitGame(Guid currentUserId, string jamHandler, Guid gameId);
+        Task<OperationResultVo> SubmitGame(Guid currentUserId, string jamHandler, Guid gameId, IEnumerable<GameJamTeamMemberViewModel> teamMembers);
 
         Task<OperationResultVo> VoteEntry(Guid currentUserId, string jamHandler, Guid entryId, Domain.Core.Enums.GameJamCriteriaType criteriaType, decimal score, string comment, bool isCommunityVote);
 
