@@ -93,7 +93,8 @@ namespace LuduStack.Domain.Messaging
                 GameJamTeamMember meTeamMember = new Models.GameJamTeamMember
                 {
                     UserId = obj.UserId,
-                    TeamJoinDate = DateTime.Now
+                    TeamJoinDate = DateTime.Now,
+                    IsSubmitter = true
                 };
 
                 obj.TeamMembers = new List<Models.GameJamTeamMember>() { meTeamMember };

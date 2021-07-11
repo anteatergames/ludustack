@@ -8,6 +8,8 @@ namespace LuduStack.Domain.Interfaces.Repository
 {
     public interface IGameJamEntryRepository : IRepository<GameJamEntry>
     {
+        IQueryable<GameJamTeamMember> GetParticipants(Expression<Func<GameJamEntry, bool>> where);
+
         IQueryable<GameJamVote> GetVotes(Expression<Func<GameJamEntry, bool>> where);
 
         Task<bool> UpdateRating(Guid id, GameJamVote vote);

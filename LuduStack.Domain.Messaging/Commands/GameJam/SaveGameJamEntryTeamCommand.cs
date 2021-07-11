@@ -76,7 +76,7 @@ namespace LuduStack.Domain.Messaging
                 {
                     if (!entry.TeamMembers.Any(x => x.UserId == newUserId))
                     {
-                        GameJamTeamMember newTeamMember = new GameJamTeamMember { UserId = newUserId, TeamJoinDate = DateTime.Now };
+                        GameJamTeamMember newTeamMember = new GameJamTeamMember { UserId = newUserId, TeamJoinDate = DateTime.Now, IsSubmitter = entry.UserId == newUserId };
 
                         entry.TeamMembers.Add(newTeamMember);
                     }

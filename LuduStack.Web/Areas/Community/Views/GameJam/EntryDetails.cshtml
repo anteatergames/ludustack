@@ -189,6 +189,13 @@
                                                 criteriaToRender = Model.GameJam.Criteria.Where(x => x.Type != GameJamCriteriaType.Overall).ToList();
                                             }
 
+                                            if (Model.Permissions.IsMe)
+                                            {
+                                                <div class="col-12 mb-3 text-center">
+                                                    <span class="alert alert-info">@SharedLocalizer["You cannot vote on your own game!"]</span>
+                                                </div>
+                                            }
+
                                             foreach (var criteria in criteriaToRender)
                                             {
                                                 var vote = Model.Votes.FirstOrDefault(x => x.UserId == currentUserId && x.CriteriaType == criteria.Type);
@@ -242,6 +249,13 @@
                                             }
                                             else
                                             {
+                                                if (Model.Permissions.IsMe)
+                                                {
+                                                    <div class="col-12 mb-3 text-center">
+                                                        <span class="alert alert-info">@SharedLocalizer["You cannot vote on your own game!"]</span>
+                                                    </div>
+                                                }
+
                                                 <span class="display-4">@SharedLocalizer["Wait for the result."]</span>
                                             }
                                         }

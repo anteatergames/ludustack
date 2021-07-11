@@ -4059,6 +4059,10 @@
     <value>Você tem certeza que está pronto para enviar seu jogo para esta Game Jam? Você não poderá alterar sua equipe depois disso.</value>
     <comment>Game Jam</comment>
   </data>
+  <data name="Earth" xml:space="preserve">
+    <value>Terra</value>
+    <comment>Generic</comment>
+  </data>
   <data name="How people can participate on this Game Jam?" xml:space="preserve">
     <value>Como as pessoas podem participar desta Game Jam?</value>
     <comment>Game Jam</comment>
@@ -4112,6 +4116,10 @@
   </data>
   <data name="Your Team" xml:space="preserve">
     <value>Sua Equipe</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="You cannot vote on your own game!" xml:space="preserve">
+    <value>Você não pode votar em seu próprio jogo!</value>
     <comment>Game Jam</comment>
   </data>
 </root>

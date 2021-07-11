@@ -16,11 +16,18 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
         {
         }
 
-        public IQueryable<GameJamVote> GetVotes(Expression<Func<GameJamEntry, bool>> where)
+        public IQueryable<GameJamTeamMember> GetParticipants(Expression<Func<GameJamEntry, bool>> where)
         {
-            IQueryable<GameJamVote> participants = DbSet.AsQueryable().Where(where).SelectMany(x => x.Votes);
+            IQueryable<GameJamTeamMember> participants = DbSet.AsQueryable().Where(where).SelectMany(x => x.TeamMembers);
 
             return participants;
+        }
+
+        public IQueryable<GameJamVote> GetVotes(Expression<Func<GameJamEntry, bool>> where)
+        {
+            IQueryable<GameJamVote> votes = DbSet.AsQueryable().Where(where).SelectMany(x => x.Votes);
+
+            return votes;
         }
 
         public async Task<bool> UpdateRating(Guid id, GameJamVote vote)

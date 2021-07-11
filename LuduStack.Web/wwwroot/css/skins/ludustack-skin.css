@@ -101,7 +101,7 @@ blockquote {
 }
 
 .rating-container .filled-stars {
-    color: var(--color-accent);
+    color: var(--color-green);
 }
 
 .bg-primary {

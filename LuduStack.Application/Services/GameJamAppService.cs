@@ -543,7 +543,7 @@ namespace LuduStack.Application.Services
                     return new OperationResultVo<GameJamEntryViewModel>("Entry not found!");
                 }
 
-                var teamMembersIds = teamMembers.Select(x => x.UserId);
+                IEnumerable<Guid> teamMembersIds = teamMembers.Select(x => x.UserId);
 
                 CommandResult result = await mediator.SendCommand(new SaveGameJamEntryTeamCommand(entryId, teamMembersIds));
 
@@ -579,7 +579,7 @@ namespace LuduStack.Application.Services
                     return new OperationResultVo<GameJamEntryViewModel>("Entry not found!");
                 }
 
-                var teamMembersIds = teamMembers.Select(x => x.UserId);
+                IEnumerable<Guid> teamMembersIds = teamMembers.Select(x => x.UserId);
 
                 CommandResult result = await mediator.SendCommand(new SubmitGameJamEntryCommand(currentUserId, entry.Id, gameId, teamMembersIds));
 
@@ -705,7 +705,9 @@ namespace LuduStack.Application.Services
 
                 vm.IsWinner = vm.FinalPlace <= gameJamVm.Winners;
 
-                SetEntryPermissions(currentUserId, currentUserIsAdmin, gameJamVm, vm);
+                IEnumerable<GameJamTeamMember> allParticipantIds = await mediator.Query<GetGameJamParticipants, IEnumerable<GameJamTeamMember>>(new GetGameJamParticipants(gameJamVm.Id));
+
+                SetEntryPermissions(currentUserId, currentUserIsAdmin, gameJamVm, vm, allParticipantIds);
 
                 return new OperationResultVo<GameJamEntryViewModel>(vm);
             }
@@ -866,7 +868,7 @@ namespace LuduStack.Application.Services
 
         private async Task SetJudges(GameJamViewModel vm)
         {
-            var judgesIds = vm.Judges.Select(x => x.UserId);
+            IEnumerable<Guid> judgesIds = vm.Judges.Select(x => x.UserId);
 
             IEnumerable<UserProfileEssentialVo> judgesProfiles = await mediator.Query<GetBasicUserProfileDataByUserIdsQuery, IEnumerable<UserProfileEssentialVo>>(new GetBasicUserProfileDataByUserIdsQuery(judgesIds));
 
@@ -890,14 +892,14 @@ namespace LuduStack.Application.Services
 
         private async Task SetTeamMembers(GameJamEntryViewModel vm)
         {
-            var teamMembersIds = vm.TeamMembers.Select(x => x.UserId);
+            IEnumerable<Guid> teamMembersIds = vm.TeamMembers.Select(x => x.UserId);
 
             IEnumerable<UserProfileEssentialVo> profiles = await mediator.Query<GetBasicUserProfileDataByUserIdsQuery, IEnumerable<UserProfileEssentialVo>>(new GetBasicUserProfileDataByUserIdsQuery(teamMembersIds));
 
             vm.TeamMembersProfiles = new List<ProfileViewModel>();
             foreach (UserProfileEssentialVo profileEssential in profiles)
             {
-                var teamMember = vm.TeamMembers.First(x => x.UserId == profileEssential.UserId);
+                GameJamTeamMemberViewModel teamMember = vm.TeamMembers.First(x => x.UserId == profileEssential.UserId);
 
                 ProfileViewModel profile = new ProfileViewModel
                 {
@@ -982,18 +984,35 @@ namespace LuduStack.Application.Services
             vm.Permissions.CanSubmit = vm.CurrentPhase == GameJamPhase.Submission;
         }
 
-        private static void SetEntryPermissions(Guid currentUserId, bool currentUserIsAdmin, GameJamViewModel gameJamVm, GameJamEntryViewModel vm)
+        private static void SetEntryPermissions(Guid currentUserId, bool currentUserIsAdmin, GameJamViewModel gameJamVm, GameJamEntryViewModel vm, IEnumerable<GameJamTeamMember> allParticipantIds)
         {
             SetJamPermissions(currentUserId, currentUserIsAdmin, gameJamVm);
 
-            vm.Permissions.IsMe = currentUserId == vm.UserId;
+            vm.Permissions.IsMe = currentUserId == vm.UserId || vm.TeamMembers.Any(x => x.UserId == currentUserId);
             vm.Permissions.IsAdmin = currentUserIsAdmin;
             vm.Permissions.CanSubmit = vm.Permissions.IsMe && (gameJamVm.Permissions.CanSubmit || (gameJamVm.CurrentPhase == GameJamPhase.Voting && vm.LateSubmission));
 
             bool iAmJudge = gameJamVm.Judges != null && gameJamVm.Judges.Select(x => x.UserId).Any(x => x == currentUserId);
             bool jamPhaseAllowsVote = gameJamVm.CurrentPhase == GameJamPhase.Voting;
+            bool iCanVote = iAmJudge;
 
-            vm.Permissions.CanVote = iAmJudge && !vm.Permissions.IsMe && jamPhaseAllowsVote && vm.GameId != Guid.Empty;
+            switch (gameJamVm.Voters)
+            {
+                case GameJamVoters.JudgesAndSubmitters:
+                    iCanVote = iCanVote || allParticipantIds.Any(x => x.IsSubmitter && x.UserId == currentUserId);
+                    break;
+                case GameJamVoters.JudgesAndTeamMembers:
+                    iCanVote = iCanVote || allParticipantIds.Any(x => x.UserId == currentUserId);
+                    break;
+                case GameJamVoters.JudgesAndNonParticipants:
+                    iCanVote = (iCanVote || !allParticipantIds.Any(x => x.UserId == currentUserId)) && currentUserId != Guid.Empty;
+                    break;
+                case GameJamVoters.JudgesAndTheWholeCommunity:
+                    iCanVote = iCanVote || currentUserId != Guid.Empty;
+                    break;
+            }
+
+            vm.Permissions.CanVote = !vm.Permissions.IsMe && jamPhaseAllowsVote && vm.GameId != Guid.Empty && iCanVote;
         }
 
         private void SetGameJamImagesToShow(GameJamViewModel vm, bool editMode)
