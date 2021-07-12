@@ -43,7 +43,7 @@ namespace LuduStack.Domain.Messaging.Queries.GameJam
         {
             if (obj.TeamMembers == null || !obj.TeamMembers.Any())
             {
-                var meTeamMember = new Models.GameJamTeamMember
+                Models.GameJamTeamMember meTeamMember = new Models.GameJamTeamMember
                 {
                     UserId = obj.UserId
                 };

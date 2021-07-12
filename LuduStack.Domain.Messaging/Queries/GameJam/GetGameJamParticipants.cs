@@ -58,7 +58,7 @@ namespace LuduStack.Domain.Messaging.Queries.GameJam
                 list = projection.AsEnumerable();
             }
 
-            var finalList = list.Distinct();
+            IEnumerable<GameJamTeamMember> finalList = list.Distinct();
 
             return Task.FromResult(finalList);
         }

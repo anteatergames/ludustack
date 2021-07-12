@@ -318,9 +318,9 @@ namespace LuduStack.Application.Services
             {
                 IQueryable<UserProfile> results = profileDomainService.Search(x => x.Name.ToLower().Contains(term.ToLower()));
 
-                var vms = results.ProjectTo<ProfileSearchViewModel>(mapper.ConfigurationProvider).ToList();
+                List<ProfileSearchViewModel> vms = results.ProjectTo<ProfileSearchViewModel>(mapper.ConfigurationProvider).ToList();
 
-                foreach (var item in vms)
+                foreach (ProfileSearchViewModel item in vms)
                 {
                     item.ProfileImageUrl = UrlFormatter.ProfileImage(item.UserId, Constants.HugeAvatarSize);
                     item.CoverImageUrl = UrlFormatter.ProfileCoverImage(item.UserId, item.Id, null, item.HasCoverImage, Constants.ProfileCoverSize);

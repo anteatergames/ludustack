@@ -11,6 +11,8 @@
     ViewData["Description"] = SharedLocalizer["Manage Game Jams"];
     ViewData["Url"] = ViewBag.BaseUrl + Url.Action("index", "gamejam", new { area = "community" });
     ViewData["OgImage"] = ViewBag.BaseUrl + "/images/og/oggamejam.png";
+
+    var showAds = (bool)(ViewBag.ShowAds ?? false);
 }
 
 @section ComponentStyles {
@@ -49,6 +51,14 @@
             <h1 class="h3"><i class="fas fa-fw fa-shapes" aria-hidden="true"></i> @ViewData["Title"]</h1>
         </div>
     </div>
+
+    @if (showAds)
+    {
+        <div class="col-12 rounded-0 p-0 px-lg-5 mb-2 mx-auto">
+            <partial name="_GoogleAdFeed" />
+        </div>
+    }
+
     <div class="row">
         <div id="divList" class="col-12"></div>
     </div>

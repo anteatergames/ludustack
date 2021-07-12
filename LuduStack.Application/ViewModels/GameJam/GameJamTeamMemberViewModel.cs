@@ -1,5 +1,4 @@
-﻿using LuduStack.Domain.Core.Enums;
-using System;
+﻿using System;
 
 namespace LuduStack.Application.ViewModels.GameJam
 {

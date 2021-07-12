@@ -54,7 +54,7 @@ namespace LuduStack.Domain.Messaging
             if (!request.IsValid()) { return request.Result; }
 
 
-            var existing = await entryRepository.GetById(request.Id);
+            GameJamEntry existing = await entryRepository.GetById(request.Id);
 
             if (existing != null)
             {

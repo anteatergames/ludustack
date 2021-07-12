@@ -11,8 +11,6 @@
         ViewData["BackgroundImage"] = Model.BackgroundImage;
     }
 
-    var showAds = (bool)(ViewBag.ShowAds ?? false);
-
     var authorUrl = Url.Action("details", "profile", new { area = string.Empty, userHandler = Model.AuthorHandler });
     var authorLink = string.Format("<a href=\"{0}\" class=\"boldlink text-nowrap\">{1}</a>", authorUrl, Model.AuthorName);
 
@@ -25,6 +23,8 @@
     var noCriteriaModel = new ListNoItemsViewModel("fas fa-balance-scale", "There are no Criteria on this Game Jam!");
 
     var criteriaToList = Model.Criteria.Where(x => x.Type != GameJamCriteriaType.Overall);
+
+    var showAds = (bool)(ViewBag.ShowAds ?? false);
 }
 
 @section Styles {
@@ -62,7 +62,7 @@
     <div id="featurecontainer" class="p-3">
         <input asp-for="SecondsToCountDown" type="hidden" />
 
-        <div class="row mb-3 ">
+        <div class="row mb-2">
 
             @if (hasBanner)
             {
@@ -102,6 +102,13 @@
                 </div>
             </div>
         </div>
+
+        @if (showAds)
+        {
+            <div class="col-12 rounded-0 p-0 px-lg-5 mb-2 mx-auto">
+                <partial name="_GoogleAdFeed" />
+            </div>
+        }
 
         <div class="box bg-light">
             <div class="row mx-2 htmlcontent">

@@ -62,7 +62,7 @@ namespace LuduStack.Domain.Messaging.Queries.GameJam
                     items = items.Take(request.Take);
                 }
 
-                var obj = items.FirstOrDefault();
+                Models.GameJamEntry obj = items.FirstOrDefault();
 
                 CheckTeamMembers(obj);
 
@@ -72,7 +72,7 @@ namespace LuduStack.Domain.Messaging.Queries.GameJam
             {
                 IQueryable<Models.GameJamEntry> items = repository.Get(x => x.UserId == request.UserId && x.GameJamId == request.JamId);
 
-                var obj = items.FirstOrDefault();
+                Models.GameJamEntry obj = items.FirstOrDefault();
 
                 CheckTeamMembers(obj);
 
@@ -84,7 +84,7 @@ namespace LuduStack.Domain.Messaging.Queries.GameJam
         {
             if (obj.TeamMembers == null || !obj.TeamMembers.Any())
             {
-                var meTeamMember = new Models.GameJamTeamMember
+                Models.GameJamTeamMember meTeamMember = new Models.GameJamTeamMember
                 {
                     UserId = obj.UserId
                 };
