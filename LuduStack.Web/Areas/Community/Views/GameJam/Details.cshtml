@@ -119,11 +119,6 @@
 
                     <div class="d-flex flex-row">
                         <span class="text-left text-muted">@Html.Raw(SharedLocalizer["Hosted by {0}", authorLink])</span>
-                        @if (!string.IsNullOrWhiteSpace(Model.HashTag))
-                        {
-                            <text>&nbsp;-&nbsp;</text>
-                            <a href="@string.Format("https://www.twitter.com/hashtag/{0}", Model.HashTag)" target="_blank">@string.Format("#{0}", Model.HashTag)</a>
-                        }
                     </div>
                 </div>
                 <div class="ml-auto mb-2 d-flex flex-column justify-content-center">
@@ -196,6 +191,13 @@
                     <div class="mt-2">
                         <div class="w-100 text-center">
                             <partial name="_ShareContent" model="new ShareModel(Model.ShareUrl, Model.ShareText)" />
+
+                            @if (!string.IsNullOrWhiteSpace(Model.HashTag))
+                            {
+                                <div class="d-flex flex-row justify-content-center">
+                                    <a href="@string.Format("https://www.twitter.com/hashtag/{0}", Model.HashTag)" target="_blank" class="display-4">@string.Format("#{0}", Model.HashTag)</a>
+                                </div>
+                            }
                         </div>
                     </div>
 
