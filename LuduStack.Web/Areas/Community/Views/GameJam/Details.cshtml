@@ -113,8 +113,18 @@
         <div class="box bg-light">
             <div class="row mx-2 htmlcontent">
                 <div class="mr-auto mb-2 d-flex flex-column justify-content-center">
-                    <h1 class="m-0 text-capitalize">@Model.Name</h1>
-                    <span class="text-left text-muted">@Html.Raw(SharedLocalizer["Hosted by {0}", authorLink])</span>
+                    <div class="d-flex flex-row">
+                        <h1 class="m-0 text-capitalize">@Model.Name</h1>
+                    </div>
+
+                    <div class="d-flex flex-row">
+                        <span class="text-left text-muted">@Html.Raw(SharedLocalizer["Hosted by {0}", authorLink])</span>
+                        @if (!string.IsNullOrWhiteSpace(Model.HashTag))
+                        {
+                            <text>&nbsp;-&nbsp;</text>
+                            <a href="@string.Format("https://www.twitter.com/hashtag/{0}", Model.HashTag)" target="_blank">@string.Format("#{0}", Model.HashTag)</a>
+                        }
+                    </div>
                 </div>
                 <div class="ml-auto mb-2 d-flex flex-column justify-content-center">
                     <span class="h3 text-center">@Model.JoinCount</span>
