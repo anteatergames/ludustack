@@ -33,6 +33,25 @@
     var showCookieBanner = !consentFeature?.CanTrack ?? false;
 
     var backgroundImage = (string)(ViewData["BackgroundImage"] ?? string.Empty);
+
+    var backgroundColor = (string)(ViewData["BackgroundColor"] ?? string.Empty);
+
+    System.Text.StringBuilder styleSb = null;
+
+    if (!string.IsNullOrWhiteSpace(backgroundImage) || !string.IsNullOrWhiteSpace(backgroundColor))
+    {
+        styleSb = new System.Text.StringBuilder();
+
+        styleSb.Append("style=");
+        if (!string.IsNullOrWhiteSpace(backgroundImage))
+        {
+            styleSb.Append($"background-image:url({Html.Raw(backgroundImage)});background-repeat:repeat;");
+        }
+        if (!string.IsNullOrWhiteSpace(backgroundColor))
+        {
+            styleSb.Append($"background-color:{Html.Raw(backgroundColor)};");
+        }
+    }
 }
 
 <!DOCTYPE html>
@@ -163,7 +182,7 @@
 
     @await Html.PartialAsync("_TagManagerHead")
 </head>
-<body class="hold-transition skin-ludustack sidebar-mini" @(string.IsNullOrWhiteSpace(backgroundImage) ? string.Empty : $"style=background-image:url({Html.Raw(backgroundImage)});background-repeat:repeat")>
+<body class="hold-transition skin-ludustack sidebar-mini" @(styleSb == null ? string.Empty : styleSb.ToString())>
     <div data-device="xs" class="bootstrapbreakpointdetector device-xs d-block d-sm-none "></div>
     <div data-device="sm" class="bootstrapbreakpointdetector device-sm d-none d-sm-block d-md-none"></div>
     <div data-device="md" class="bootstrapbreakpointdetector device-md d-none d-md-block d-lg-none"></div>

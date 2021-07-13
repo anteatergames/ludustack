@@ -63,6 +63,9 @@ namespace LuduStack.Application.ViewModels.GameJam
         [Display(Name = "Background Image", Description = "This will be used as background of your Game Jam page.")]
         public string BackgroundImage { get; set; }
 
+        [Display(Name = "Background Color", Description = "Select a background color for the Game Jam page.")]
+        public string BackgroundColor { get; set; }
+
         [Required(ErrorMessage = "A Game Jam MUST have a name!")]
         [Display(Name = "Name")]
         public string Name { get; set; }

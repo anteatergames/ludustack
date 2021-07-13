@@ -10,6 +10,10 @@
     {
         ViewData["BackgroundImage"] = Model.BackgroundImage;
     }
+    if (!string.IsNullOrWhiteSpace(Model.BackgroundColor))
+    {
+        ViewData["BackgroundColor"] = Model.BackgroundColor;
+    }
 
     var authorUrl = Url.Action("details", "profile", new { area = string.Empty, userHandler = Model.AuthorHandler });
     var authorLink = string.Format("<a href=\"{0}\" class=\"boldlink text-nowrap\">{1}</a>", authorUrl, Model.AuthorName);

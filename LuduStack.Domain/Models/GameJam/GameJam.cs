@@ -41,6 +41,8 @@ namespace LuduStack.Domain.Models
 
         public string BackgroundImage { get; set; }
 
+        public string BackgroundColor { get; set; }
+
         public string Name { get; set; }
 
         public string ShortDescription { get; set; }

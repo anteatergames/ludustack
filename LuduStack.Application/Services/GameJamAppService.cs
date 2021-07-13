@@ -1038,6 +1038,11 @@ namespace LuduStack.Application.Services
             vm.FeaturedImage = UrlFormatter.FormatFeaturedImageUrl(vm.UserId, vm.FeaturedImage, ImageRenderType.Full);
             vm.BannerImage = UrlFormatter.FormatFeaturedImageUrl(vm.UserId, vm.BannerImage, ImageRenderType.Full);
             vm.BackgroundImage = UrlFormatter.FormatFeaturedImageUrl(vm.UserId, vm.BackgroundImage, ImageRenderType.Full);
+
+            if (string.IsNullOrWhiteSpace(vm.BackgroundColor))
+            {
+                vm.BackgroundColor = "#dedada";
+            }
         }
 
         private static void SetHighlights(GameJamViewModel vm)
