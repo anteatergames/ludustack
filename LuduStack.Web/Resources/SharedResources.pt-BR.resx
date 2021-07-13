@@ -4130,4 +4130,12 @@
     <value>Renderiza o banner superior ocupando a largura toda da página.</value>
     <comment>Game Jam</comment>
   </data>
+  <data name="Background Color" xml:space="preserve">
+    <value>Cor de Fundo</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Select a background color for the Game Jam page." xml:space="preserve">
+    <value>Selecione uma cor de fundo para a página da Game Jam.</value>
+    <comment>Game Jam</comment>
+  </data>
 </root>
