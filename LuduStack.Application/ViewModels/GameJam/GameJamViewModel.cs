@@ -107,6 +107,14 @@ namespace LuduStack.Application.ViewModels.GameJam
 
         public List<ProfileViewModel> JudgesProfiles { get; set; }
 
+        // extra properties
+
+        public bool RemoveFeaturedImage { get; set; }
+
+        public bool RemoveBannerImage { get; set; }
+
+        public bool RemoveBackgroundImage { get; set; }
+
         public string AuthorHandler { get; set; }
 
         public int SecondsToCountDown { get; set; }

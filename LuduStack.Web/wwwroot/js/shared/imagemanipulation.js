@@ -76,7 +76,7 @@
     }
 
     // cropper
-    function bindCroppers(imageListItemSelector, objs) {
+    function bindCroppers(imageListItemSelector, inputObjs) {
         var images = document.querySelectorAll(imageListItemSelector);
 
         for (var i = 0; i < images.length; i++) {
@@ -103,9 +103,14 @@
             croppers.push(cropper);
 
             images[i].dataset.cropperIndex = i;
+
+            var parent = images[i].closest('.newimageupload');
+            var removeBtn = $(parent).find('.btn-remove-image');
+
+            bindRemoveImage(removeBtn);
         }
 
-        bindChangeImage(objs)
+        bindChangeImage(inputObjs);
     }
 
     function bindChangeImage(objs) {
@@ -125,6 +130,26 @@
             MAINMODULE.Utils.GetSelectedFileUrl(files, function (url2) {
                 changeDone(url2, e.target, image, isGif);
             });
+        });
+    }
+
+    function bindRemoveImage(obj) {
+        obj.off('click');
+        obj.on('click', function (e) {
+            var targetImgId = obj.data('targetImg');
+            var image = document.getElementById(targetImgId);
+            if (image) {
+                image.src = image.dataset.defaultImg;
+
+                var cropper = croppers[image.dataset.cropperIndex];
+                cropper.disabled = false;
+
+                cropper.replace(image.dataset.defaultImg);
+                cropper.disabled = true;
+
+                var booleanInput = obj.find('.removeimage');
+                booleanInput.val(booleanInput.data('truevalue'));
+            }
         });
     }
 

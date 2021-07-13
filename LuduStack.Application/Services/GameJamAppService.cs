@@ -208,17 +208,17 @@ namespace LuduStack.Application.Services
                     model = mapper.Map<GameJam>(viewModel);
                 }
 
-                if (model.FeaturedImage == Constants.DefaultGamejamThumbnail)
+                if (model.FeaturedImage == Constants.DefaultGamejamThumbnail || viewModel.RemoveFeaturedImage)
                 {
                     model.FeaturedImage = null;
                 }
 
-                if (model.BannerImage == Constants.DefaultGamejamThumbnail)
+                if (model.BannerImage == Constants.DefaultGamejamThumbnail || viewModel.RemoveBannerImage)
                 {
                     model.BannerImage = null;
                 }
 
-                if (model.BackgroundImage == Constants.DefaultGamejamThumbnail)
+                if (model.BackgroundImage == Constants.DefaultGamejamThumbnail || viewModel.RemoveBackgroundImage)
                 {
                     model.BackgroundImage = null;
                 }

@@ -347,14 +347,25 @@
                                             <span asp-description-for="FeaturedImage" class="col-form-label" />
                                         </div>
                                         <div class="w-100">
-                                            <img class="rounded img-fluid border w-100 square-bottom uploadimage" id="featuredImage" src="@Model.FeaturedImage" data-aspectratio="40/21" alt="@Html.DisplayNameFor(x => x.FeaturedImage)">
+                                            <img class="rounded img-fluid border w-100 square-bottom uploadimage" id="featuredImage" src="@Model.FeaturedImage" data-aspectratio="40/21" alt="@Html.DisplayNameFor(x => x.FeaturedImage)" data-default-img="@Constants.DefaultGamejamThumbnail">
                                         </div>
-                                        <label class="btn btn-block btn-outline-secondary square-top text-uppercase" data-toggle="tooltip" title="" data-original-title="@SharedLocalizer["Click here to change this image"]">
-                                            <i class="fas fa-fw fa-upload" aria-hidden="true"></i>
-                                            <span>@SharedLocalizer["change"]</span>
-                                            <input type="file" class="sr-only imageinput" accept="image/png, image/jpeg" data-target-img="featuredImage" data-target-hidden="FeaturedImage">
-                                            <input type="hidden" asp-for="FeaturedImage" />
-                                        </label>
+                                        <div class="row no-gutters">
+                                            <div class="col-6">
+                                                <label class="btn btn-block btn-outline-secondary square-top square-right text-uppercase" data-toggle="tooltip" title="" data-original-title="@SharedLocalizer["Click here to change this image"]">
+                                                    <i class="fas fa-fw fa-upload" aria-hidden="true"></i>
+                                                    <span>@SharedLocalizer["change"]</span>
+                                                    <input type="file" class="sr-only imageinput" accept="image/*" data-target-img="featuredImage" data-target-hidden="FeaturedImage">
+                                                    <input type="hidden" asp-for="FeaturedImage" />
+                                                </label>
+                                            </div>
+                                            <div class="col-6">
+                                                <label class="btn btn-block btn-outline-danger square-top square-left text-uppercase btn-remove-image" data-target-img="featuredImage" data-toggle="tooltip" title="" data-original-title="@SharedLocalizer["Click here to remove this image"]">
+                                                    <i class="fas fa-fw fa-times" aria-hidden="true"></i>
+                                                    <input type="hidden" asp-for="RemoveFeaturedImage" class="removeimage" data-truevalue="True" />
+                                                    <span>@SharedLocalizer["remove"]</span>
+                                                </label>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -365,14 +376,25 @@
                                             <span asp-description-for="BannerImage" class="col-form-label" />
                                         </div>
                                         <div class="w-100">
-                                            <img class="rounded img-fluid border w-100 square-bottom uploadimage" id="bannerImage" src="@Model.BannerImage" alt="@Html.DisplayNameFor(x => x.BannerImage)">
+                                            <img class="rounded img-fluid border w-100 square-bottom uploadimage" id="bannerImage" src="@Model.BannerImage" alt="@Html.DisplayNameFor(x => x.BannerImage)" data-default-img="@Constants.DefaultGamejamThumbnail">
                                         </div>
-                                        <label class="btn btn-block btn-outline-secondary square-top text-uppercase" data-toggle="tooltip" title="" data-original-title="@SharedLocalizer["Click here to change this image"]">
-                                            <i class="fas fa-fw fa-upload" aria-hidden="true"></i>
-                                            <span>@SharedLocalizer["change"]</span>
-                                            <input type="file" class="sr-only imageinput" accept="image/*" data-target-img="bannerImage" data-target-hidden="BannerImage">
-                                            <input type="hidden" asp-for="BannerImage" />
-                                        </label>
+                                        <div class="row no-gutters">
+                                            <div class="col-6">
+                                                <label class="btn btn-block btn-outline-secondary square-top square-right text-uppercase" data-toggle="tooltip" title="" data-original-title="@SharedLocalizer["Click here to change this image"]">
+                                                    <i class="fas fa-fw fa-upload" aria-hidden="true"></i>
+                                                    <span>@SharedLocalizer["change"]</span>
+                                                    <input type="file" class="sr-only imageinput" accept="image/*" data-target-img="bannerImage" data-target-hidden="BannerImage">
+                                                    <input type="hidden" asp-for="BannerImage" />
+                                                </label>
+                                            </div>
+                                            <div class="col-6">
+                                                <label class="btn btn-block btn-outline-danger square-top square-left text-uppercase btn-remove-image" data-target-img="bannerImage" data-toggle="tooltip" title="" data-original-title="@SharedLocalizer["Click here to remove this image"]">
+                                                    <i class="fas fa-fw fa-times" aria-hidden="true"></i>
+                                                    <input type="hidden" asp-for="RemoveBannerImage" class="removeimage" data-truevalue="True" />
+                                                    <span>@SharedLocalizer["remove"]</span>
+                                                </label>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -383,14 +405,25 @@
                                             <span asp-description-for="BackgroundImage" class="col-form-label" />
                                         </div>
                                         <div class="w-100">
-                                            <img class="rounded img-fluid border w-100 square-bottom uploadimage" id="backgroundImage" src="@Model.BackgroundImage" alt="@Html.DisplayNameFor(x => x.BackgroundImage)">
+                                            <img class="rounded img-fluid border w-100 square-bottom uploadimage" id="backgroundImage" src="@Model.BackgroundImage" alt="@Html.DisplayNameFor(x => x.BackgroundImage)" data-default-img="@Constants.DefaultGamejamThumbnail">
                                         </div>
-                                        <label class="btn btn-block btn-outline-secondary square-top text-uppercase" data-toggle="tooltip" title="" data-original-title="@SharedLocalizer["Click here to change this image"]">
-                                            <i class="fas fa-fw fa-upload" aria-hidden="true"></i>
-                                            <span>@SharedLocalizer["change"]</span>
-                                            <input type="file" class="sr-only imageinput" accept="image/*" data-target-img="backgroundImage" data-target-hidden="BackgroundImage">
-                                            <input type="hidden" asp-for="BackgroundImage" />
-                                        </label>
+                                        <div class="row no-gutters">
+                                            <div class="col-6">
+                                                <label class="btn btn-block btn-outline-secondary square-top square-right text-uppercase" data-toggle="tooltip" title="" data-original-title="@SharedLocalizer["Click here to change this image"]">
+                                                    <i class="fas fa-fw fa-upload" aria-hidden="true"></i>
+                                                    <span>@SharedLocalizer["change"]</span>
+                                                    <input type="file" class="sr-only imageinput" accept="image/*" data-target-img="backgroundImage" data-target-hidden="BackgroundImage">
+                                                    <input type="hidden" asp-for="BackgroundImage" />
+                                                </label>
+                                            </div>
+                                            <div class="col-6">
+                                                <label class="btn btn-block btn-outline-danger square-top square-left text-uppercase btn-remove-image" data-target-img="backgroundImage" data-toggle="tooltip" title="" data-original-title="@SharedLocalizer["Click here to remove this image"]">
+                                                    <i class="fas fa-fw fa-times" aria-hidden="true"></i>
+                                                    <input type="hidden" asp-for="RemoveBackgroundImage" class="removeimage" data-truevalue="True" />
+                                                    <span>@SharedLocalizer["remove"]</span>
+                                                </label>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
