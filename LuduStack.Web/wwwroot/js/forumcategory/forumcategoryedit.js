@@ -13,10 +13,8 @@
         selectors.form = '#frmSave';
         selectors.userId = '#UserId';
         selectors.btnSave = '#btnSave';
-        selectors.inputImageListItem = 'input.featuredimageinput';
-        selectors.imageListItem = 'img.featuredimage';
-        selectors.featuredImage = '#FeaturedImage';
-        selectors.modalCrop = '#modalCrop';
+
+        selectors.imageDivElement = '.newimageupload';
     }
 
     function cacheObjs() {
@@ -25,9 +23,6 @@
         objs.urls = $(selectors.urls);
         objs.form = $(selectors.form);
         objs.userId = $(selectors.userId);
-        objs.inputImageListItem = $(selectors.inputImageListItem);
-        objs.featuredImage = $(selectors.featuredImage);
-        objs.modalCrop = $(selectors.modalCrop);
     }
 
     function init() {
@@ -40,7 +35,7 @@
     }
 
     function bindAll() {
-        IMAGEMANIPULAION.Cropper.BindCropper(selectors.imageListItem, objs.inputImageListItem);
+        IMAGEMANIPULAION.Cropper.BindCropper(selectors.imageDivElement);
 
         bindBtnSaveForm();
     }
@@ -52,7 +47,7 @@
 
             if (valid && canInteract && !btn.hasClass('disabled')) {
                 MAINMODULE.Common.DisableButton(btn).ready(() => {
-                    IMAGEMANIPULAION.Cropper.UploadCroppedImages(objs.inputImageListItem, function () {
+                    IMAGEMANIPULAION.Cropper.UploadCroppedImages(selectors.imageDivElement, function () {
                         submitForm(btn);
                     });
                 });

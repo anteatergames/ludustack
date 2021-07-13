@@ -93,20 +93,25 @@
                     <span asp-validation-for="GroupId" class="text-danger"></span>
                 </div>
 
-                <div class="col-md-12 text-center px-5">
-                    <div class="form-group">
-                        <label class="col-form-label">@SharedLocalizer["Featured Image"]</label>
-                    </div>
-                    <div class="dropzone">
-                        <img class="featuredimage rounded img-fluid border" id="featuredImage" src="@Model.FeaturedImage" alt="@SharedLocalizer["Featured Image"]">
-                    </div>
-
-                    <div class="col-12 text-center">
-                        <label class="btn btn-outline-secondary">
-                            <i class="fas fa-fw fa-upload" aria-hidden="true"></i>
-                            <span>@SharedLocalizer["change"]</span>
-                            <input type="file" class="sr-only featuredimageinput" accept="image/*" data-target-img="featuredImage" data-target-hidden="FeaturedImage">
-                        </label>
+                <div class="col-md-12 text-center mt-4 px-5">
+                    <div class="pb-3 px-3 mb-3 mx-auto d-block text-center bg-light bordered hover newimageupload">
+                        <div class="form-group m-0">
+                            <label asp-for="FeaturedImage" class="col-form-label"></label>
+                            <span asp-description-for="FeaturedImage" class="col-form-label" />
+                        </div>
+                        <div class="w-100">
+                            <img class="rounded img-fluid border w-100 square-bottom uploadimage" id="featuredImage" src="@Model.FeaturedImage" data-aspectratio="40/21" alt="@Html.DisplayNameFor(x => x.FeaturedImage)" data-default-img="@Constants.DefaultGamejamThumbnail">
+                        </div>
+                        <div class="row no-gutters">
+                            <div class="col-12">
+                                <label class="btn btn-block btn-outline-secondary square-top text-uppercase" data-toggle="tooltip" title="" data-original-title="@SharedLocalizer["Click here to change this image"]">
+                                    <i class="fas fa-fw fa-upload" aria-hidden="true"></i>
+                                    <span>@SharedLocalizer["change"]</span>
+                                    <input type="file" class="sr-only imageinput" accept="image/*" data-target-img="featuredImage" data-target-hidden="FeaturedImage">
+                                    <input type="hidden" asp-for="FeaturedImage" />
+                                </label>
+                            </div>
+                        </div>
                     </div>
                 </div>
 

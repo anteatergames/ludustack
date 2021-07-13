@@ -25,8 +25,9 @@
         selectors.entryDeadline = 'input#EntryDeadline';
         selectors.votingEndDate = 'input#VotingEndDate';
         selectors.resultDate = 'input#ResultDate';
-        selectors.inputImageListItem = 'input.imageinput';
-        selectors.imageListItem = 'img.uploadimage';
+
+        selectors.imageDivElement = '.newimageupload';
+
         selectors.divJudges = '#divJudges';
         selectors.btnJudgeDelete = '.btn-judge-delete';
         selectors.judge = '.judge:not(.template)';
@@ -46,7 +47,6 @@
         objs.entryDeadline = $(selectors.entryDeadline);
         objs.votingEndDate = $(selectors.votingEndDate);
         objs.resultDate = $(selectors.resultDate);
-        objs.inputImageListItem = $(selectors.inputImageListItem);
         objs.divJudges = $(selectors.divJudges);
         objs.ddlVoters = $(selectors.ddlVoters);
         objs.ddlSearchUsers = $(selectors.ddlSearchUsers);
@@ -72,7 +72,7 @@
 
         WYSIWYGEDITOR.BindEditors('.wysiwygeditor');
 
-        IMAGEMANIPULAION.Cropper.BindCropper(selectors.imageListItem, objs.inputImageListItem);
+        IMAGEMANIPULAION.Cropper.BindCropper(selectors.imageDivElement);
 
         bindBtnSaveForm();
     }
@@ -131,7 +131,7 @@
 
             if (valid && canInteract && !btn.hasClass('disabled')) {
                 MAINMODULE.Common.DisableButton(btn).ready(() => {
-                    IMAGEMANIPULAION.Cropper.UploadCroppedImages(objs.inputImageListItem, function () {
+                    IMAGEMANIPULAION.Cropper.UploadCroppedImages(selectors.imageDivElement, function () {
                         submitForm(btn);
                     });
                 });

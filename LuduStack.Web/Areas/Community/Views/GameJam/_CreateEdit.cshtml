@@ -341,7 +341,7 @@
 
 
                                 <div class="col-12">
-                                    <div class="col-12 pb-3 mb-3 mx-auto d-block text-center bg-light bordered hover newimageupload">
+                                    <div class="pb-3 px-3 mb-3 mx-auto d-block text-center bg-light bordered hover newimageupload">
                                         <div class="form-group m-0">
                                             <label asp-for="FeaturedImage" class="col-form-label"></label>
                                             <span asp-description-for="FeaturedImage" class="col-form-label" />
@@ -361,7 +361,7 @@
                                             <div class="col-6">
                                                 <label class="btn btn-block btn-outline-danger square-top square-left text-uppercase btn-remove-image" data-target-img="featuredImage" data-toggle="tooltip" title="" data-original-title="@SharedLocalizer["Click here to remove this image"]">
                                                     <i class="fas fa-fw fa-times" aria-hidden="true"></i>
-                                                    <input type="hidden" asp-for="RemoveFeaturedImage" class="removeimage" data-truevalue="True" />
+                                                    <input type="hidden" asp-for="RemoveFeaturedImage" class="removeimage" />
                                                     <span>@SharedLocalizer["remove"]</span>
                                                 </label>
                                             </div>
@@ -370,7 +370,7 @@
                                 </div>
 
                                 <div class="col-12">
-                                    <div class="col-12 pb-3 mb-3 mx-auto d-block text-center bg-light bordered hover newimageupload">
+                                    <div class="pb-3 px-3 mb-3 mx-auto d-block text-center bg-light bordered hover newimageupload">
                                         <div class="form-group m-0">
                                             <label asp-for="BannerImage" class="col-form-label"></label>
                                             <span asp-description-for="BannerImage" class="col-form-label" />
@@ -390,7 +390,7 @@
                                             <div class="col-6">
                                                 <label class="btn btn-block btn-outline-danger square-top square-left text-uppercase btn-remove-image" data-target-img="bannerImage" data-toggle="tooltip" title="" data-original-title="@SharedLocalizer["Click here to remove this image"]">
                                                     <i class="fas fa-fw fa-times" aria-hidden="true"></i>
-                                                    <input type="hidden" asp-for="RemoveBannerImage" class="removeimage" data-truevalue="True" />
+                                                    <input type="hidden" asp-for="RemoveBannerImage" class="removeimage" />
                                                     <span>@SharedLocalizer["remove"]</span>
                                                 </label>
                                             </div>
@@ -399,7 +399,7 @@
                                 </div>
 
                                 <div class="col-12">
-                                    <div class="col-12 pb-3 mb-3 mx-auto d-block text-center bg-light bordered hover newimageupload">
+                                    <div class="pb-3 px-3 mb-3 mx-auto d-block text-center bg-light bordered hover newimageupload">
                                         <div class="form-group m-0">
                                             <label asp-for="BackgroundImage" class="col-form-label"></label>
                                             <span asp-description-for="BackgroundImage" class="col-form-label" />
@@ -419,7 +419,7 @@
                                             <div class="col-6">
                                                 <label class="btn btn-block btn-outline-danger square-top square-left text-uppercase btn-remove-image" data-target-img="backgroundImage" data-toggle="tooltip" title="" data-original-title="@SharedLocalizer["Click here to remove this image"]">
                                                     <i class="fas fa-fw fa-times" aria-hidden="true"></i>
-                                                    <input type="hidden" asp-for="RemoveBackgroundImage" class="removeimage" data-truevalue="True" />
+                                                    <input type="hidden" asp-for="RemoveBackgroundImage" class="removeimage" />
                                                     <span>@SharedLocalizer["remove"]</span>
                                                 </label>
                                             </div>

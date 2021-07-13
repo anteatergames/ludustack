@@ -7,8 +7,13 @@
     var dropzones = [];
     var random = [];
 
+    var selectors = {};
+
     function init() {
         console.log('IMAGEMANIPULAION init');
+
+        selectors.inputImageListItem = 'input.imageinput';
+        selectors.imageListItem = 'img.uploadimage';
     }
 
     // dropzone
@@ -76,20 +81,23 @@
     }
 
     // cropper
-    function bindCroppers(imageListItemSelector, inputObjs) {
-        var images = document.querySelectorAll(imageListItemSelector);
+    function bindCroppers(imageDivSelector) {
+        var imageDivElements = document.querySelectorAll(`${imageDivSelector}`);
 
-        for (var i = 0; i < images.length; i++) {
+        for (var i = 0; i < imageDivElements.length; i++) {
+            var imageElements = imageDivElements[i].querySelectorAll(`${selectors.imageListItem}`);
+            var inputElements = imageDivElements[i].querySelectorAll(`${selectors.inputImageListItem}`);
+
             var ratioValue = NaN;
-            if (images[i].dataset.aspectratio !== undefined) {
-                var ratio = images[i].dataset.aspectratio.replace(' ', '').split('/');
+            if (imageElements[0].dataset.aspectratio !== undefined) {
+                var ratio = imageElements[0].dataset.aspectratio.replace(' ', '').split('/');
 
                 if (ratio !== undefined) {
                     ratioValue = parseInt(ratio[0]) / parseInt(ratio[1]);
                 }
             }
 
-            var cropper = new Cropper(images[i], {
+            var cropper = new Cropper(imageElements[0], {
                 aspectRatio: ratioValue,
                 viewMode: 0,
                 autoCropArea: 1,
@@ -102,41 +110,41 @@
 
             croppers.push(cropper);
 
-            images[i].dataset.cropperIndex = i;
+            imageElements[0].dataset.cropperIndex = i;
 
-            var parent = images[i].closest('.newimageupload');
+            var parent = imageElements[0].closest('.newimageupload');
             var removeBtn = $(parent).find('.btn-remove-image');
+
+            bindChangeImage(inputElements, removeBtn);
 
             bindRemoveImage(removeBtn);
         }
-
-        bindChangeImage(inputObjs);
     }
 
-    function bindChangeImage(objs) {
-        objs.on('change', function (e) {
+    function bindChangeImage(inputElement, removeButtonObj) {
+        $(inputElement).on('change', function (e) {
             var image = document.getElementById(e.target.dataset.targetImg);
-            var cropper = croppers[image.dataset.cropperIndex];
             var extension = $(this).val().split('.').pop().toLowerCase();
             var isGif = extension === 'gif';
 
             if (isGif) {
                 image.dataset.isgif = true;
-                //cropper.destroy();
             }
 
             var files = e.target.files;
 
             MAINMODULE.Utils.GetSelectedFileUrl(files, function (url2) {
                 changeDone(url2, e.target, image, isGif);
+
+                setRemoveHiddenInput(removeButtonObj, false);
             });
         });
     }
 
-    function bindRemoveImage(obj) {
-        obj.off('click');
-        obj.on('click', function (e) {
-            var targetImgId = obj.data('targetImg');
+    function bindRemoveImage(removeButtonObj) {
+        removeButtonObj.off('click');
+        removeButtonObj.on('click', function (e) {
+            var targetImgId = removeButtonObj.data('targetImg');
             var image = document.getElementById(targetImgId);
             if (image) {
                 image.src = image.dataset.defaultImg;
@@ -147,10 +155,14 @@
                 cropper.replace(image.dataset.defaultImg);
                 cropper.disabled = true;
 
-                var booleanInput = obj.find('.removeimage');
-                booleanInput.val(booleanInput.data('truevalue'));
+                setRemoveHiddenInput(removeButtonObj, true);
             }
         });
+    }
+
+    function setRemoveHiddenInput(removeButtonObj, booleanValue) {
+        var booleanInput = removeButtonObj.find('.removeimage');
+        booleanInput.val(booleanValue ? 'True' : 'False');
     }
 
     function changeDone(blobUrl, inputElement, image, isGif) {
@@ -169,19 +181,23 @@
         }
     }
 
-    function uploadCroppedImages(objs, callback) {
-        var imagesChanged = objs.filter(function (index) {
-            return objs[index].dataset.changed === 'true';
-        });
+    function uploadCroppedImages(imageDivSelector, callback) {
+        var imageDivElements = document.querySelectorAll(`${imageDivSelector}`);
 
-        var imagesToProcessCount = imagesChanged.length;
+        for (var i = 0; i < imageDivElements.length; i++) {
+            var inputElements = imageDivElements[i].querySelectorAll(`${selectors.inputImageListItem}`);
 
-        if (imagesChanged.length > 0) {
-            processImages(imagesChanged, imagesToProcessCount, callback);
-        }
-        else {
-            if (callback) {
-                callback();
+            var imagesChanged = [...inputElements].filter(n => n.dataset.changed === 'true');
+
+            var imagesToProcessCount = imagesChanged.length;
+
+            if (imagesChanged.length > 0) {
+                processImages(imagesChanged, imagesToProcessCount, callback);
+            }
+            else {
+                if (callback) {
+                    callback();
+                }
             }
         }
     }
@@ -207,6 +223,7 @@
             var uploadValue = inputElement.files[0];
 
             if (image.dataset.isgif !== 'true') {
+                console.log('is not a gif');
                 var canvas = cropper.getCroppedCanvas();
 
                 var dataUri = canvas.toDataURL();
