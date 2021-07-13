@@ -240,3 +240,7 @@ select.form-control {
 .rounded {
     border-radius: var(--border-radius) !important;
 }
+
+.nav-tabs .nav-item {
+    margin-bottom: -2px;
+}

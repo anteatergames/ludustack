@@ -4122,4 +4122,12 @@
     <value>Você não pode votar em seu próprio jogo!</value>
     <comment>Game Jam</comment>
   </data>
+  <data name="Full Width Banner" xml:space="preserve">
+    <value>Banner de Largura Inteira</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Renders the top banner with full width." xml:space="preserve">
+    <value>Renderiza o banner superior ocupando a largura toda da página.</value>
+    <comment>Game Jam</comment>
+  </data>
 </root>

@@ -126,7 +126,8 @@ namespace LuduStack.Application.Formatters
                 { "<figcaption>", @"<figcaption class=""text-center"">" },
                 { "<pre>", @"<pre class=""bg-light p-0 p-md-2 p-lg-3 p-xl-4"">" },
                 { "<iframe src=", @"<iframe frameBorder=""0"" src=" },
-                { "<table>", @"<table class=""table table-hover"">" }
+                { "<table>", @"<div class=""table-responsive""><table class=""table table-hover"">" },
+                { "</table>", @"</table></div>" },
             };
         }
     }

@@ -39,6 +39,9 @@ namespace LuduStack.Application.ViewModels.GameJam
         [Display(Name = "Hide Main Theme", Description = "The Main Theme will be hidden during the warmup phase.")]
         public bool HideMainTheme { get; set; }
 
+        [Display(Name = "Full Width Banner", Description = "Renders the top banner with full width.")]
+        public bool FullWidthBanner { get; set; }
+
         [Required(ErrorMessage = "You must choose a unique handler!")]
         [Display(Name = "Handler", Description = "Define a handler for your Game Jam. The handler will be used in the URL like ludustack.com/jam/mycoolhandler. You can only use letters, numbers, dashes and dots. No spaces allowed and all will be saved as lowercase.")]
         [Remote("validatehandler", "gamejam", "community", AdditionalFields = "Id", HttpMethod = "POST", ErrorMessage = "Oops! That handler is already in use!")]

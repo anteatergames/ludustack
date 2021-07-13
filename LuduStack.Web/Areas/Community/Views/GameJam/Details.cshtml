@@ -58,22 +58,38 @@
     </environment>
 }
 
+
+@if (hasBanner)
+{
+    @if (Model.FullWidthBanner)
+    {
+        <div class="col-12 p-0 mt-n3 mb-3 text-center">
+            <a href="@Url.Action("details", "gamejam", new { area = "community", handler = Model.Handler })">
+                <img src="@Model.BannerImage" class="img-fluid" alt="@Model.Name" />
+            </a>
+        </div>
+    }
+}
+
 <section class="content container">
-    <div id="featurecontainer" class="p-3">
+    <div id="featurecontainer" class="pb-3">
         <input asp-for="SecondsToCountDown" type="hidden" />
 
-        <div class="row mb-2">
+        <div class="row mx-0 mb-3">
 
             @if (hasBanner)
             {
-                <div class="col-12 col-md-6 text-center">
-                    <a href="@Url.Action("details", "gamejam", new { area = "community", handler = Model.Handler })">
-                        <img src="@Model.BannerImage" class="img-fluid rounded jambanner" alt="@Model.Name" />
-                    </a>
-                </div>
+                @if (!Model.FullWidthBanner)
+                {
+                    <div class="col-12 px-0 col-md-6 text-center">
+                        <a href="@Url.Action("details", "gamejam", new { area = "community", handler = Model.Handler })">
+                            <img src="@Model.BannerImage" class="img-fluid rounded jambanner" alt="@Model.Name" />
+                        </a>
+                    </div>
+                }
             }
-            <div class="@(hasBanner ? "col-12 col-md-6" : "col-12") d-flex flex-row justify-content-center">
-                <div class=" d-flex flex-column justify-content-center">
+            <div class="@(hasBanner && !Model.FullWidthBanner ? "col-12 col-md-6" : "col-12") px-0 d-flex flex-row justify-content-center">
+                <div class="d-flex flex-column justify-content-center">
                     <div class="p-3 row justify-content-center bg-white bordered hover">
                         <partial name="_GameJamCounter" model="@new KeyValuePair<GameJamPhase, string>(Model.CurrentPhase, Model.CountDownMessage)" />
                     </div>
@@ -195,7 +211,7 @@
                             @if (!string.IsNullOrWhiteSpace(Model.HashTag))
                             {
                                 <div class="d-flex flex-row justify-content-center">
-                                    <a href="@string.Format("https://www.twitter.com/hashtag/{0}", Model.HashTag)" target="_blank" class="display-4">@string.Format("#{0}", Model.HashTag)</a>
+                                    <a href="@string.Format("https://www.twitter.com/hashtag/{0}", Model.HashTag)" target="_blank" class="h5">@string.Format("#{0}", Model.HashTag)</a>
                                 </div>
                             }
                         </div>

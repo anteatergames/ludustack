@@ -27,6 +27,8 @@ namespace LuduStack.Domain.Models
 
         public bool HideMainTheme { get; set; }
 
+        public bool FullWidthBanner { get; set; }
+
         public string Handler { get; set; }
 
         public string HashTag { get; set; }
