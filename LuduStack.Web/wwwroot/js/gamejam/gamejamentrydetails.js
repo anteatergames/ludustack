@@ -159,7 +159,6 @@
                 var valid = objs.form.valid();
 
                 if (valid && canInteract && !btn.hasClass('disabled')) {
-
                     var msgs = MAINMODULE.Common.GetPostConfirmationMessages(btn);
 
                     ALERTSYSTEM.ShowConfirmMessage(msgs.confirmationTitle, msgs.msg, msgs.confirmationButtonText, msgs.cancelButtonText, function () {

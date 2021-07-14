@@ -16,6 +16,7 @@ namespace LuduStack.Domain.Core.Extensions
                 default: return input.First().ToString().ToUpper() + input.Substring(1);
             }
         }
+
         public static string GetFirstWords(this string input, int count)
         {
             return string.Join(' ', input.GetWords(count, StringSplitOptions.RemoveEmptyEntries));

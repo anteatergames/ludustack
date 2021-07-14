@@ -16,7 +16,6 @@ namespace LuduStack.Domain.Messaging
     {
         public IEnumerable<Guid> TeamMembersIds { get; }
 
-
         public SaveGameJamEntryTeamCommand(Guid entryId, IEnumerable<Guid> teamMembersIds) : base(entryId)
         {
             TeamMembersIds = teamMembersIds;

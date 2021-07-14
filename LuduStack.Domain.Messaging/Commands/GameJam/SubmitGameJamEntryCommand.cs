@@ -18,7 +18,6 @@ namespace LuduStack.Domain.Messaging
 
         public IEnumerable<Guid> TeamMembersIds { get; }
 
-
         public SubmitGameJamEntryCommand(Guid userId, Guid entryId, Guid gameId, IEnumerable<Guid> teamMembersIds) : base(userId, entryId)
         {
             GameId = gameId;
@@ -53,7 +52,6 @@ namespace LuduStack.Domain.Messaging
             int pointsEarned = 0;
 
             if (!request.IsValid()) { return request.Result; }
-
 
             GameJamEntry existing = await entryRepository.GetById(request.Id);
 

@@ -16,7 +16,6 @@ namespace LuduStack.Domain.Messaging
 {
     public class CalculateResultsGameJamCommand : BaseCommand
     {
-
         public CalculateResultsGameJamCommand(Guid id) : base(id)
         {
         }

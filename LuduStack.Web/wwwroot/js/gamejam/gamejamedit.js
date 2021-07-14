@@ -214,7 +214,7 @@
         var sincedate = newJudgeObj.find('.sincedate');
         var avatarImg = newJudgeObj.find('.widget-user-image img');
         var coverImg = newJudgeObj.find('.card-img');
-        
+
         hdn.val(data.id);
         name.text(data.text);
         location.text(data.location);

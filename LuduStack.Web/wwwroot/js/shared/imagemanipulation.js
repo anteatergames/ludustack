@@ -196,7 +196,6 @@
     }
 
     function processImage(inputElement, totalImageCont, callback) {
-
         var changed = inputElement.dataset.changed === 'true';
 
         if (!changed) {
@@ -208,7 +207,6 @@
             }
         }
         else {
-
             var image = document.getElementById(inputElement.dataset.targetImg);
             var hidden = document.getElementById(inputElement.dataset.targetHidden);
 

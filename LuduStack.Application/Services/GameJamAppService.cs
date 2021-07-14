@@ -1002,12 +1002,15 @@ namespace LuduStack.Application.Services
                 case GameJamVoters.JudgesAndSubmitters:
                     iCanVote = iCanVote || allParticipantIds.Any(x => x.IsSubmitter && x.UserId == currentUserId);
                     break;
+
                 case GameJamVoters.JudgesAndTeamMembers:
                     iCanVote = iCanVote || allParticipantIds.Any(x => x.UserId == currentUserId);
                     break;
+
                 case GameJamVoters.JudgesAndNonParticipants:
                     iCanVote = (iCanVote || !allParticipantIds.Any(x => x.UserId == currentUserId)) && currentUserId != Guid.Empty;
                     break;
+
                 case GameJamVoters.JudgesAndTheWholeCommunity:
                     iCanVote = iCanVote || currentUserId != Guid.Empty;
                     break;
@@ -1087,9 +1090,11 @@ namespace LuduStack.Application.Services
                 case GameJamParticipationType.IndividualsOnly:
                     vm.Highlights.Add(new GameJamHighlightsVo { Highlight = GameJamHighlight.IndividualsOnly });
                     break;
+
                 case GameJamParticipationType.TeamsOnly:
                     vm.Highlights.Add(new GameJamHighlightsVo { Highlight = GameJamHighlight.TeamsOnly });
                     break;
+
                 case GameJamParticipationType.IndividualsAndTeams:
                     vm.Highlights.Add(new GameJamHighlightsVo { Highlight = GameJamHighlight.IndividualsAndTeams });
                     break;
