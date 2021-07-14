@@ -166,7 +166,6 @@
     }
 
     function changeDone(blobUrl, inputElement, image, isGif) {
-        //inputElement.value = '';
         image.src = blobUrl;
 
         inputElement.dataset.changed = true;
@@ -182,38 +181,33 @@
     }
 
     function uploadCroppedImages(imageDivSelector, callback) {
+        imagesProcessed = 0;
         var imageDivElements = document.querySelectorAll(`${imageDivSelector}`);
+        var changedInputs = Array.from(document.querySelectorAll(`${selectors.inputImageListItem}`)).filter(x => x.dataset.changed === 'true');
+
+        var totalImageCont = imageDivElements.length;
 
         for (var i = 0; i < imageDivElements.length; i++) {
             var inputElements = imageDivElements[i].querySelectorAll(`${selectors.inputImageListItem}`);
+            var element = inputElements[0];
 
-            var imagesChanged = [...inputElements].filter(n => n.dataset.changed === 'true');
-
-            var imagesToProcessCount = imagesChanged.length;
-
-            if (imagesChanged.length > 0) {
-                processImages(imagesChanged, imagesToProcessCount, callback);
-            }
-            else {
-                if (callback) {
-                    callback();
-                }
-            }
+            processImage(element, totalImageCont, callback);
         }
     }
 
-    function processImages(imagesChanged, imagesToProcessCount, callback) {
-        imagesProcessed = 0;
+    function processImage(inputElement, totalImageCont, callback) {
 
-        for (var i = 0; i < imagesToProcessCount; i++) {
-            var inputElement = imagesChanged[i];
-            var changed = inputElement.dataset.changed === 'true';
+        var changed = inputElement.dataset.changed === 'true';
 
-            if (!changed) {
-                console.log('skipping...');
-                imagesProcessed++;
-                continue;
+        if (!changed) {
+            imagesProcessed++;
+            console.log('skipping...');
+
+            if (totalImageCont === imagesProcessed && callback) {
+                callback();
             }
+        }
+        else {
 
             var image = document.getElementById(inputElement.dataset.targetImg);
             var hidden = document.getElementById(inputElement.dataset.targetHidden);
@@ -223,7 +217,6 @@
             var uploadValue = inputElement.files[0];
 
             if (image.dataset.isgif !== 'true') {
-                console.log('is not a gif');
                 var canvas = cropper.getCroppedCanvas();
 
                 var dataUri = canvas.toDataURL();
@@ -238,25 +231,23 @@
 
             formData.append("randomName", true);
 
-            uploadImage(formData, imagesToProcessCount, hidden, callback);
+            uploadImage(formData, totalImageCont, hidden, callback);
         }
     }
 
-    function uploadImage(formData, imagesToProcessCount, hidden, callback) {
-        $.ajax('/storage/uploadmedia', {
+    function uploadImage(formData, totalImageCont, hidden, callback) {
+        return $.ajax('/storage/uploadmedia', {
             method: "POST",
             data: formData,
-            async: false,
+            async: true,
             processData: false,
             contentType: false,
             success: function (response) {
                 imagesProcessed++;
                 hidden.value = response.filename;
 
-                if (imagesProcessed === imagesToProcessCount) {
-                    if (callback) {
-                        callback();
-                    }
+                if (totalImageCont === imagesProcessed && callback) {
+                    callback();
                 }
             },
             error: function (response) {

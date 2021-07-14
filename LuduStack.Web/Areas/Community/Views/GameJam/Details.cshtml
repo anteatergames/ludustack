@@ -215,7 +215,7 @@
                             @if (!string.IsNullOrWhiteSpace(Model.HashTag))
                             {
                                 <div class="d-flex flex-row justify-content-center">
-                                    <a href="@string.Format("https://www.twitter.com/hashtag/{0}", Model.HashTag)" target="_blank" class="h5">@string.Format("#{0}", Model.HashTag)</a>
+                                    <a href="@string.Format("https://www.twitter.com/hashtag/{0}", Model.HashTag)" target="_blank" rel="noopener" class="h5">@string.Format("#{0}", Model.HashTag)</a>
                                 </div>
                             }
                         </div>

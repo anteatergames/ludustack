@@ -67,7 +67,7 @@ namespace LuduStack.Domain.Messaging
                 CalculateScoreForEntry(gameJam, entry);
             }
 
-            entryList.OrderByDescending(x => x.TotalScore).ToList();
+            entryList = entryList.OrderByDescending(x => x.TotalScore).ToList();
 
             for (int i = 0; i < entryList.Count; i++)
             {

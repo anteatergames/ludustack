@@ -7,7 +7,6 @@ using LuduStack.Infra.CrossCutting.Messaging;
 using MediatR;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -37,12 +36,14 @@ namespace LuduStack.Domain.Messaging
     {
         protected readonly IUnitOfWork unitOfWork;
         protected readonly IGameJamEntryRepository entryRepository;
+        protected readonly IGameJamDomainService gameJamDomainService;
         protected readonly IGamificationDomainService gamificationDomainService;
 
-        public SubmitGameJamEntryCommandHandler(IUnitOfWork unitOfWork, IGameJamEntryRepository entryRepository, IGamificationDomainService gamificationDomainService)
+        public SubmitGameJamEntryCommandHandler(IUnitOfWork unitOfWork, IGameJamEntryRepository entryRepository, IGameJamDomainService gameJamDomainService, IGamificationDomainService gamificationDomainService)
         {
             this.unitOfWork = unitOfWork;
             this.entryRepository = entryRepository;
+            this.gameJamDomainService = gameJamDomainService;
             this.gamificationDomainService = gamificationDomainService;
         }
 
@@ -61,7 +62,7 @@ namespace LuduStack.Domain.Messaging
                 existing.GameId = request.GameId;
                 existing.SubmissionDate = DateTime.Now;
 
-                CheckTeamMembers(existing, request.TeamMembersIds);
+                gameJamDomainService.CheckTeamMembers(existing, request.TeamMembersIds);
 
                 entryRepository.Update(existing);
                 pointsEarned += gamificationDomainService.ProcessAction(request.UserId, PlatformAction.GameJamSubmit);
@@ -74,7 +75,7 @@ namespace LuduStack.Domain.Messaging
                 entry.GameId = request.GameId;
                 entry.SubmissionDate = DateTime.Now;
 
-                CheckTeamMembers(entry, request.TeamMembersIds);
+                gameJamDomainService.CheckTeamMembers(entry, request.TeamMembersIds);
 
                 await entryRepository.Add(entry);
                 pointsEarned += gamificationDomainService.ProcessAction(request.UserId, PlatformAction.GameJamJoin);
@@ -86,35 +87,6 @@ namespace LuduStack.Domain.Messaging
             result.PointsEarned = pointsEarned;
 
             return result;
-        }
-
-        private static void CheckTeamMembers(GameJamEntry entry, IEnumerable<Guid> userIds)
-        {
-            if (userIds != null && userIds.Any())
-            {
-                if (entry.TeamMembers == null)
-                {
-                    entry.TeamMembers = new List<GameJamTeamMember>();
-                }
-
-                foreach (Guid newUserId in userIds)
-                {
-                    if (!entry.TeamMembers.Any(x => x.UserId == newUserId))
-                    {
-                        GameJamTeamMember newTeamMember = new GameJamTeamMember { UserId = newUserId, TeamJoinDate = DateTime.Now, IsSubmitter = entry.UserId == newUserId };
-
-                        entry.TeamMembers.Add(newTeamMember);
-                    }
-                }
-
-                IEnumerable<Guid> allMembers = entry.TeamMembers.Select(x => x.UserId);
-
-                IEnumerable<Guid> membersToExclude = allMembers.Except(userIds);
-
-                entry.TeamMembers = entry.TeamMembers.Where(x => userIds.Contains(x.UserId)).ToList();
-
-                entry.IsTeam = entry.TeamMembers.Count > 1;
-            }
         }
 
         private GameJamEntry GenerateNewEntry(Guid userId, Guid jamId)

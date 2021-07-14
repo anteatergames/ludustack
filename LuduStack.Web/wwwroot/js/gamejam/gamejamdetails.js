@@ -4,8 +4,6 @@
     var selectors = {};
     var objs = {};
 
-    var canInteract = false;
-
     function setSelectors() {
         selectors.urls = '#urls';
         selectors.container = '#featurecontainer';
@@ -27,8 +25,6 @@
         cacheObjs();
 
         bindAll();
-
-        canInteract = MAINMODULE.CanInteract();
 
         FX.StartCountDown('#SecondsToCountDown');
 

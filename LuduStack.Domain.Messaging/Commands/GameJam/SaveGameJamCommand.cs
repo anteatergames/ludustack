@@ -52,7 +52,7 @@ namespace LuduStack.Domain.Messaging
 
             request.GameJam.Handler = request.GameJam.Handler.ToLower();
 
-            request.GameJam.HashTag = request.GameJam.HashTag.Replace("#", string.Empty);
+            request.GameJam.HashTag = request.GameJam.HashTag?.Replace("#", string.Empty);
 
             CheckJudges(request);
 

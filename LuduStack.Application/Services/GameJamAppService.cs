@@ -263,11 +263,12 @@ namespace LuduStack.Application.Services
         {
             try
             {
-                GameJamViewModel newVm = new GameJamViewModel
+                GameJamViewModel newVm = new()
                 {
                     UserId = currentUserId,
                     StartDate = DateTime.Now.AddDays(7)
                 };
+
                 newVm.EntryDeadline = newVm.StartDate.AddDays(7);
                 newVm.VotingEndDate = newVm.EntryDeadline.AddDays(7);
                 newVm.ResultDate = newVm.VotingEndDate.AddDays(7);
@@ -976,7 +977,7 @@ namespace LuduStack.Application.Services
 
             vm.ShowSubmissions = (isNotWarmup && iAmJudge) || (isNotWarmup && !vm.HideSubmissions || vm.CurrentPhase == GameJamPhase.Results || vm.CurrentPhase == GameJamPhase.Finished);
             vm.ShowJudges = vm.Judges != null && vm.Judges.Any();
-            vm.ShowCriteria = vm.Criteria != null && vm.Criteria.Where(x => x.Type != GameJamCriteriaType.Overall).Any();
+            vm.ShowCriteria = vm.Criteria != null && vm.Criteria.Any(x => x.Type != GameJamCriteriaType.Overall);
             vm.ShowFinalResults = vm.CurrentPhase == GameJamPhase.Finished && vm.HasWinners;
 
             vm.Permissions.IsAdmin = currentUserIsAdmin;

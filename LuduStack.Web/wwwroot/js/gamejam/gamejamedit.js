@@ -139,6 +139,8 @@
             else {
                 scrollToFirstError();
             }
+
+            return false;
         });
     }
 
@@ -237,6 +239,7 @@
     }
 
     function submitForm(btn) {
+        console.log('submitForm');
         var url = objs.form.attr('action');
 
         var data = objs.form.serializeObject();
