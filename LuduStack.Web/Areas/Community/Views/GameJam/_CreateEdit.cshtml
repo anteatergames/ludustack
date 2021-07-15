@@ -317,8 +317,11 @@
                                             </div>
                                         </div>
                                         <div class="col-6 col-md-2 col-lg-2">
-                                            <label asp-for="Criteria[i].Weight" class="col-form-label"></label>
-                                            <input asp-for="Criteria[i].Weight" type="number" step="0.1" class="form-control" value="@Model.Criteria[i].Weight.ToString(new System.Globalization.CultureInfo("en-US"))" />
+                                            <div class="form-group">
+                                                <label asp-for="Criteria[i].Weight" class="col-form-label"></label>
+                                                <input asp-for="Criteria[i].Weight" class="form-control numberonly" value="@Model.Criteria[i].Weight.ToString(new System.Globalization.CultureInfo("en-US"))" />
+                                                <span asp-validation-for="Criteria[i].Weight" class="text-danger"></span>
+                                            </div>
                                         </div>
                                         <div class="col-12 col-md-8">
                                             <label asp-for="Criteria[i].Description" class="col-form-label"></label>

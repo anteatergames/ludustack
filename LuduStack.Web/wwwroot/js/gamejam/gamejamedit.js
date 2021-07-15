@@ -35,6 +35,7 @@
         selectors.ddlVoters = '#Voters';
         selectors.ddlSearchUsers = '#ddlSearchUsers';
         selectors.alertNoJudges = '#alertnojudges';
+        selectors.numberOnly = '.numberonly';
     }
 
     function cacheObjs() {
@@ -69,6 +70,7 @@
         bindChangeVoters();
         bindBtnJudgeDelete();
         bindSelect2();
+        bundNumbersOnly();
 
         WYSIWYGEDITOR.BindEditors('.wysiwygeditor');
 
@@ -119,6 +121,18 @@
         });
 
         obj.datetimepicker('defaultDate', pd);
+    }
+
+    function bundNumbersOnly() {
+        objs.container.on('keypress', selectors.numberOnly, function (e) {
+
+            var code = (event.keyCode ? event.keyCode : event.which);
+
+            if (!(code >= 48 && code <= 57)) {
+                e.preventDefault();
+                return false;
+            }
+        });
     }
 
     function bindBtnSaveForm() {

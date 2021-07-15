@@ -4194,4 +4194,12 @@
     <value>Digite uma descrição desse critério aqui.</value>
     <comment>Game Jam</comment>
   </data>
+  <data name="Must be a number!" xml:space="preserve">
+    <value>Tem que ser um número!</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Need a weight!" xml:space="preserve">
+    <value>Precisa de peso!</value>
+    <comment>Game Jam</comment>
+  </data>
 </root>

@@ -17,6 +17,8 @@ namespace LuduStack.Application.ViewModels.GameJam
         public string Description { get; set; }
 
         [Display(Name = "Weight")]
+        [Required(ErrorMessage = "Need a weight!")]
+        [RegularExpression(@"^[\d]*$", ErrorMessage = "Must be a number!")]
         public decimal Weight { get; set; }
     }
 }

@@ -244,3 +244,7 @@ select.form-control {
 .nav-tabs .nav-item {
     margin-bottom: -2px;
 }
+
+.nav-tabs .nav-link:hover, .nav-tabs .nav-link:focus {
+    border-bottom: 0;
+}
