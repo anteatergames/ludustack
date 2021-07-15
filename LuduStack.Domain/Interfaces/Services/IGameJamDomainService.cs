@@ -7,5 +7,7 @@ namespace LuduStack.Domain.Interfaces.Services
     public interface IGameJamDomainService
     {
         void CheckTeamMembers(GameJamEntry entry, IEnumerable<Guid> userIds);
+
+        void CheckTeamMembers(GameJamEntry obj);
     }
 }

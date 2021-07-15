@@ -36,5 +36,18 @@ namespace LuduStack.Domain.Services
                 entry.IsTeam = entry.TeamMembers.Count > 1;
             }
         }
+
+        public void CheckTeamMembers(Models.GameJamEntry obj)
+        {
+            if (obj.TeamMembers == null || !obj.TeamMembers.Any())
+            {
+                Models.GameJamTeamMember meTeamMember = new Models.GameJamTeamMember
+                {
+                    UserId = obj.UserId
+                };
+
+                obj.TeamMembers = new List<Models.GameJamTeamMember>() { meTeamMember };
+            }
+        }
     }
 }

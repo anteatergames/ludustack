@@ -609,7 +609,7 @@ namespace LuduStack.Application.Services
                     return new OperationResultVo<GameJamViewModel>("Jam not found!");
                 }
 
-                GameJamEntry entry = await mediator.Query<GetGameJamEntryQuery, GameJamEntry>(new GetGameJamEntryQuery(currentUserId, gameJam.Id));
+                GameJamEntry entry = await mediator.Query<GetGameJamEntryByIdQuery, GameJamEntry>(new GetGameJamEntryByIdQuery(entryId));
 
                 if (entry == null)
                 {
@@ -756,7 +756,7 @@ namespace LuduStack.Application.Services
                     }
                 }
 
-                medians.Add(median);
+                medians.Add(median * criteria.Weight);
             }
 
             vm.TotalScore = medians.Any() ? medians.Median() : 0;

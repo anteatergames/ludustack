@@ -95,7 +95,7 @@ namespace LuduStack.Domain.Messaging
                 IEnumerable<GameJamVote> allVotesForThisCategory = entry.Votes?.Where(x => x.CriteriaType == criteria.Type);
                 if (allVotesForThisCategory != null && allVotesForThisCategory.Any())
                 {
-                    median = allVotesForThisCategory.Median(x => x.Score);
+                    median = allVotesForThisCategory.Median(x => (x.Score * criteria.Weight));
                 }
 
                 medians.Add(median);

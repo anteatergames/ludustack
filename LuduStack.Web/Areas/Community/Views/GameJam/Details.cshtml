@@ -297,9 +297,10 @@
                                     var uiInfo = criteria.Type.ToUiInfo();
 
                                     <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-2">
-                                        <div class="border bg-dark text-white p-1" data-container="body" data-toggle="popover" data-trigger="hover" data-placement="top" data-content="@uiInfo.Description">
+                                        <div class="border bg-dark text-white p-1" data-container="body" data-toggle="popover" data-trigger="hover" data-placement="top" data-content="@SharedLocalizer[criteria.Description ?? string.Empty]">
                                             <span class="btn border p-1 rounded-circle btn-icon-sm bg-label"><i class="fas fa-@(uiInfo.Class)" aria-hidden="true"></i></span>
                                             <span>@SharedLocalizer[uiInfo.Display]</span>
+                                            <span>(@SharedLocalizer["Weight {0}", criteria.Weight.ToString("n1")])</span>
                                         </div>
                                     </div>
                                 }

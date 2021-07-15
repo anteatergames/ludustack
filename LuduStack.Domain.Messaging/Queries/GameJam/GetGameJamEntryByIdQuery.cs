@@ -1,4 +1,5 @@
 ﻿using LuduStack.Domain.Interfaces.Repository;
+using LuduStack.Domain.Interfaces.Services;
 using LuduStack.Domain.Messaging.Queries.Base;
 using System;
 using System.Collections.Generic;
@@ -24,8 +25,11 @@ namespace LuduStack.Domain.Messaging.Queries.GameJam
 
     public class GetGameJamEntryByIdQueryHandler : GetByIdBaseQueryHandler<GetGameJamEntryByIdQuery, Models.GameJamEntry, IGameJamEntryRepository>
     {
-        public GetGameJamEntryByIdQueryHandler(IGameJamEntryRepository repository) : base(repository)
+        private readonly IGameJamDomainService gameJamDomainService;
+
+        public GetGameJamEntryByIdQueryHandler(IGameJamEntryRepository repository, IGameJamDomainService gameJamDomainService) : base(repository)
         {
+            this.gameJamDomainService = gameJamDomainService;
         }
 
         public override async Task<Models.GameJamEntry> Handle(GetGameJamEntryByIdQuery request, CancellationToken cancellationToken)
@@ -34,22 +38,9 @@ namespace LuduStack.Domain.Messaging.Queries.GameJam
 
             obj = await repository.GetById(request.Id);
 
-            CheckTeamMembers(obj);
+            gameJamDomainService.CheckTeamMembers(obj);
 
             return obj;
-        }
-
-        private static void CheckTeamMembers(Models.GameJamEntry obj)
-        {
-            if (obj.TeamMembers == null || !obj.TeamMembers.Any())
-            {
-                Models.GameJamTeamMember meTeamMember = new Models.GameJamTeamMember
-                {
-                    UserId = obj.UserId
-                };
-
-                obj.TeamMembers = new List<Models.GameJamTeamMember>() { meTeamMember };
-            }
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using LuduStack.Domain.Interfaces.Repository;
+using LuduStack.Domain.Interfaces.Services;
 using LuduStack.Infra.CrossCutting.Messaging;
 using MediatR;
 using System;
@@ -45,10 +46,12 @@ namespace LuduStack.Domain.Messaging.Queries.GameJam
     public class GetGameJamEntryQueryHandler : QueryHandler, IRequestHandler<GetGameJamEntryQuery, Models.GameJamEntry>
     {
         private readonly IGameJamEntryRepository repository;
+        private readonly IGameJamDomainService gameJamDomainService;
 
-        public GetGameJamEntryQueryHandler(IGameJamEntryRepository repository)
+        public GetGameJamEntryQueryHandler(IGameJamEntryRepository repository, IGameJamDomainService gameJamDomainService)
         {
             this.repository = repository;
+            this.gameJamDomainService = gameJamDomainService;
         }
 
         public Task<Models.GameJamEntry> Handle(GetGameJamEntryQuery request, CancellationToken cancellationToken)
@@ -64,7 +67,7 @@ namespace LuduStack.Domain.Messaging.Queries.GameJam
 
                 Models.GameJamEntry obj = items.FirstOrDefault();
 
-                CheckTeamMembers(obj);
+                gameJamDomainService.CheckTeamMembers(obj);
 
                 return Task.FromResult(obj);
             }
@@ -74,22 +77,9 @@ namespace LuduStack.Domain.Messaging.Queries.GameJam
 
                 Models.GameJamEntry obj = items.FirstOrDefault();
 
-                CheckTeamMembers(obj);
+                gameJamDomainService.CheckTeamMembers(obj);
 
                 return Task.FromResult(obj);
-            }
-        }
-
-        private static void CheckTeamMembers(Models.GameJamEntry obj)
-        {
-            if (obj.TeamMembers == null || !obj.TeamMembers.Any())
-            {
-                Models.GameJamTeamMember meTeamMember = new Models.GameJamTeamMember
-                {
-                    UserId = obj.UserId
-                };
-
-                obj.TeamMembers = new List<Models.GameJamTeamMember>() { meTeamMember };
             }
         }
     }

@@ -185,7 +185,7 @@
 
     function bindSelect2() {
         objs.ddlSearchUsers.select2({
-            width: 'element',
+            width: 'resolve',
             minimumInputLength: 2,
             templateResult: select2FormatResult
         });

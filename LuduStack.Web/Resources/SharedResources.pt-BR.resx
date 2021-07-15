@@ -4138,4 +4138,60 @@
     <value>Selecione uma cor de fundo para a página da Game Jam.</value>
     <comment>Game Jam</comment>
   </data>
+  <data name="Weight" xml:space="preserve">
+    <value>Peso</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Weight {0}" xml:space="preserve">
+    <value>Peso {0}</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Are the controls of the submitted game easy to learn and use?" xml:space="preserve">
+    <value>Os controles do jogo enviado são fáceis de aprender e usar?</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Did the submitted game use the Game Jam theme well?" xml:space="preserve">
+    <value>O jogo enviado usou bem o tema da Game Jam?</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Do the levels of the submitted game have a good design?" xml:space="preserve">
+    <value>As fases do jogo enviado possuem um bom design?</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Does the submitted game bring some innovation to the game industry?" xml:space="preserve">
+    <value>O jogo enviado trás alguma inovação à indústria de jogos?</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Does the submitted game have a good story?" xml:space="preserve">
+    <value>O jogo enviado tem uma boa história?</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Does the submitted game look beautiful?" xml:space="preserve">
+    <value>O jogo enviado é bonito?</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Does the submitted game make use of good and clever mechanics?" xml:space="preserve">
+    <value>O jogo enviado fez uso de mecânicas boas e inteligentes?</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Does the submitted game sound beautiful?" xml:space="preserve">
+    <value>O jogo enviado soa bem?</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Is the submitted game easy to play?" xml:space="preserve">
+    <value>O jogo enviado é fácil de jogar?</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Is the submitted game fun to play?" xml:space="preserve">
+    <value>O jogo enviado é divertido de jogar?</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Overall feeling about the game." xml:space="preserve">
+    <value>Sentimento geral sobre o jogo.</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Type a description of this criteria here." xml:space="preserve">
+    <value>Digite uma descrição desse critério aqui.</value>
+    <comment>Game Jam</comment>
+  </data>
 </root>
