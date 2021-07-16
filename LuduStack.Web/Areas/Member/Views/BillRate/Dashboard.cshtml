@@ -36,28 +36,30 @@
     <span class="msg" data-msg-id="msgUrlPlaceholder">@SharedLocalizer["placeholder message"]</span>
 }
 
-<div id="featurecontainer" class="col-12 container">
-    <input type="hidden" id="isajax" value="@isAjax.ToString().ToLower()" />
-    <input type="hidden" id="urls" value="urls"
-           data-url-list="@Url.Action("listbyme", "billrate", new { area = "member" })" />
+<section class="content container">
+    <div id="featurecontainer" class="pb-3">
+        <input type="hidden" id="isajax" value="@isAjax.ToString().ToLower()" />
+        <input type="hidden" id="urls" value="urls"
+               data-url-list="@Url.Action("listbyme", "billrate", new { area = "member" })" />
 
-    <div id="containerlist" class="row">
-        <div class="col-12 mb-2">
-            <h1><i class="fas fa-fw fa-dollar-sign" aria-hidden="true"></i> @ViewData["Title"]</h1>
-        </div>
+        <div id="containerlist" class="row">
+            <div class="col-12 mb-2">
+                <h1><i class="fas fa-fw fa-dollar-sign" aria-hidden="true"></i> @ViewData["Title"]</h1>
+            </div>
 
-        <div class="col">
-            <p class="alert alert-warning text-center">@Html.Raw(SharedLocalizer["The values you put in here are used only under the hood by the {0} and we will not publish them anywhere.", string.Format("<a href=\"{0}\">{1}</a>", Url.Action("index", "costcalculator", new { area = "tools" }), SharedLocalizer["Cost Calculator"])])</p>
-        </div>
+            <div class="col">
+                <p class="alert alert-warning text-center">@Html.Raw(SharedLocalizer["The values you put in here are used only under the hood by the {0} and we will not publish them anywhere.", string.Format("<a href=\"{0}\">{1}</a>", Url.Action("index", "costcalculator", new { area = "tools" }), SharedLocalizer["Cost Calculator"])])</p>
+            </div>
 
-        <div class="col-12 mb-3">
-            @if (canInteract)
-            {
-                <div class="col-lg-12 mb-2 p-0 text-right">
-                    <a asp-area="member" asp-controller="billrate" asp-action="add" class="btn btn-success">@SharedLocalizer["New Bill Rate"] <i class="fas fa-plus" aria-hidden="true"></i></a>
-                </div>
-            }
-            <div id="divList"></div>
+            <div class="col-12 mb-3">
+                @if (canInteract)
+                {
+                    <div class="col-lg-12 mb-2 p-0 text-right">
+                        <a asp-area="member" asp-controller="billrate" asp-action="add" class="btn btn-success">@SharedLocalizer["New Bill Rate"] <i class="fas fa-plus" aria-hidden="true"></i></a>
+                    </div>
+                }
+                <div id="divList"></div>
+            </div>
         </div>
     </div>
-</div>
+</section>
