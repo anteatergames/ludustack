@@ -4202,4 +4202,8 @@
     <value>Precisa de peso!</value>
     <comment>Game Jam</comment>
   </data>
+  <data name="What is the main language of the Game Jam?" xml:space="preserve">
+    <value>Qual é o idioma principal da Game Jam?</value>
+    <comment>Game Jam</comment>
+  </data>
 </root>

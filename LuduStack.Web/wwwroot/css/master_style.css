@@ -12,12 +12,7 @@ body {
     height: 100%;
 }
 
-/*.wrapper, body {
-    overflow-x: hidden;
-}*/
-
 .wrapper {
-    /*overflow-y: hidden;*/
     position: relative;
     border-radius: 0;
 }
@@ -40,6 +35,7 @@ div {
 }
 
 .content-wrapper {
+    overflow-x: hidden;
     margin-top: 50px;
     padding-top: 10px;
     -webkit-transition: -webkit-transform .3s ease-in-out, margin .3s ease-in-out;

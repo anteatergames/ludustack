@@ -61,11 +61,11 @@ namespace LuduStack.Application.Services
             {
                 IEnumerable<GameJamListItem> allModels = await mediator.Query<GetGameJamListQuery, IEnumerable<GameJamListItem>>(new GetGameJamListQuery());
 
-                IEnumerable<GameJamViewModel> vms = mapper.Map<IEnumerable<GameJamListItem>, IEnumerable<GameJamViewModel>>(allModels);
+                List<GameJamViewModel> vms = mapper.Map<IEnumerable<GameJamListItem>, IEnumerable<GameJamViewModel>>(allModels).ToList();
 
                 SetViewModelStates(currentUserId, currentUserIsAdmin, vms);
 
-                vms = vms.OrderBy(x => x.CurrentPhase).ThenBy(x => x.SecondsToCountDown);
+                vms = vms.OrderBy(x => x.CurrentPhase).ThenBy(x => x.SecondsToCountDown).ToList();
 
                 return new OperationResultListVo<GameJamViewModel>(vms);
             }
@@ -598,7 +598,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public async Task<OperationResultVo> VoteEntry(Guid currentUserId, string jamHandler, Guid entryId, GameJamCriteriaType criteriaType, decimal score, string comment, bool isCommunityVote)
+        public async Task<OperationResultVo> VoteEntry(Guid currentUserId, string jamHandler, Guid entryId, GameJamCriteriaType criteriaType, decimal score, string comment)
         {
             try
             {
@@ -615,6 +615,8 @@ namespace LuduStack.Application.Services
                 {
                     return new OperationResultVo<GameJamEntryViewModel>("Entry not found!");
                 }
+
+                bool isCommunityVote = currentUserId != gameJam.UserId && !gameJam.Judges.Any(x => x.UserId == currentUserId);
 
                 CommandResult result = await mediator.SendCommand(new VoteGameJamEntryCommand(currentUserId, entryId, criteriaType, score, comment, isCommunityVote));
 
@@ -784,6 +786,11 @@ namespace LuduStack.Application.Services
             DateTime localTime = DateTime.Now.ToLocalTime();
             foreach (GameJamViewModel vm in vms)
             {
+                if (vm.Language == 0)
+                {
+                    vm.Language = SupportedLanguage.English;
+                }
+
                 SetDates(vm);
 
                 SetGameJamState(localTime, vm);

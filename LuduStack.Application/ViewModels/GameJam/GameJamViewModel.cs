@@ -18,6 +18,9 @@ namespace LuduStack.Application.ViewModels.GameJam
         [Display(Name = "Voters", Description = "Who can cast votes on entries for this Game Jam?")]
         public GameJamVoters Voters { get; set; }
 
+        [Display(Name = "Language", Description = "What is the main language of the Game Jam?")]
+        public SupportedLanguage Language { get; set; }
+
         [Display(Name = "Is Draft")]
         public bool IsDraft { get; set; }
 

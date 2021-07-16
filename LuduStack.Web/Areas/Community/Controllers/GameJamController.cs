@@ -439,13 +439,13 @@ namespace LuduStack.Web.Areas.Staff.Controllers
         }
 
         [HttpPost("/jam/{jamHandler}/voteentry")]
-        public async Task<IActionResult> VoteEntry(string jamHandler, Guid entryId, GameJamCriteriaType criteriaType, decimal score, string comment, bool isCommunityVote)
+        public async Task<IActionResult> VoteEntry(string jamHandler, Guid entryId, GameJamCriteriaType criteriaType, decimal score, string comment)
         {
             OperationResultVo result;
 
             try
             {
-                OperationResultVo submitGameResult = await gameJamAppService.VoteEntry(CurrentUserId, jamHandler, entryId, criteriaType, score, comment, isCommunityVote);
+                OperationResultVo submitGameResult = await gameJamAppService.VoteEntry(CurrentUserId, jamHandler, entryId, criteriaType, score, comment);
 
                 return Json(submitGameResult);
             }

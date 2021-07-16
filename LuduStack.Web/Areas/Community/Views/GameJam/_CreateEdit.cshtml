@@ -143,6 +143,14 @@
 
                 <div class="col-12">
                     <div class="form-group">
+                        <label asp-for="Language"></label>
+                        <select asp-for="Language" asp-items="Html.GetEnumSelectList<SupportedLanguage>()" class="form-control select2" data-placeholder="@SharedLocalizer["Set the language"]" tabindex="-1" aria-hidden="true"></select>
+                        <span asp-validation-for="Language" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <div class="form-group">
                         <label asp-for="ShortDescription" class="col-form-label"></label>
                         <span asp-description-for="ShortDescription" class="col-form-label" />
                         <input asp-for="ShortDescription" class="form-control" placeholder="@SharedLocalizer["Give us a short description here"]" />

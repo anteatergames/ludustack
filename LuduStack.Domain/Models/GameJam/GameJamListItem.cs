@@ -30,5 +30,7 @@ namespace LuduStack.Domain.Models
         public DateTime ResultDate { get; set; }
 
         public string ShortDescription { get; set; }
+
+        public SupportedLanguage Language { get; set; }
     }
 }

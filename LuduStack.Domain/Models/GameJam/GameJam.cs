@@ -13,6 +13,8 @@ namespace LuduStack.Domain.Models
 
         public GameJamVoters Voters { get; set; }
 
+        public SupportedLanguage Language { get; set; }
+
         public bool IsDraft { get; set; }
 
         public bool Unlisted { get; set; }
