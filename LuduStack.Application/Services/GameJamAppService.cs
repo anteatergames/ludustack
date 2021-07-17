@@ -223,6 +223,10 @@ namespace LuduStack.Application.Services
                     model.BackgroundImage = null;
                 }
 
+                HtmlSanitizer sanitizer = ContentHelper.GetHtmlSanitizer();
+
+                model.Description = sanitizer.Sanitize(model.Description, Constants.DefaultLuduStackPath);
+
                 CommandResult result = await mediator.SendCommand(new SaveGameJamCommand(model));
 
                 if (!result.Validation.IsValid)
@@ -868,9 +872,11 @@ namespace LuduStack.Application.Services
         {
             viewModel.Description = sanitizer.Sanitize(viewModel.Description, Constants.DefaultLuduStackPath);
 
-            foreach (string key in ContentFormatter.Replacements().Keys)
+            var replacements = ContentFormatter.Replacements();
+
+            foreach (string key in replacements.Keys)
             {
-                viewModel.Description = viewModel.Description.Replace(key, ContentFormatter.Replacements()[key]);
+                viewModel.Description = viewModel.Description.Replace(key, replacements[key]);
             }
         }
 

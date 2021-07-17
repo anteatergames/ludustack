@@ -18,6 +18,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace LuduStack.Application.Services
@@ -220,6 +221,10 @@ namespace LuduStack.Application.Services
                 {
                     model = mapper.Map<ForumPost>(viewModel);
                 }
+
+                HtmlSanitizer sanitizer = ContentHelper.GetHtmlSanitizer();
+
+                model.Content = sanitizer.Sanitize(model.Content, Constants.DefaultLuduStackPath);
 
                 CommandResult result = await mediator.SendCommand(new SaveForumPostCommand(model));
 
@@ -481,9 +486,11 @@ namespace LuduStack.Application.Services
         {
             viewModel.Content = sanitizer.Sanitize(viewModel.Content, Constants.DefaultLuduStackPath);
 
-            foreach (string key in ContentFormatter.Replacements().Keys)
+            var replacements = ContentFormatter.Replacements();
+
+            foreach (string key in replacements.Keys)
             {
-                viewModel.Content = viewModel.Content.Replace(key, ContentFormatter.Replacements()[key]);
+                viewModel.Content = viewModel.Content.Replace(key, replacements[key]);
             }
         }
     }
