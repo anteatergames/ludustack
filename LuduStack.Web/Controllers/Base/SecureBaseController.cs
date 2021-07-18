@@ -210,26 +210,11 @@ namespace LuduStack.Web.Controllers.Base
                 case "pt-BR":
                 case "pt":
                     return SupportedLanguage.Portuguese;
-
                 case "ru":
                 case "ru-RU":
                     return SupportedLanguage.Russian;
-
-                case "de":
-                    return SupportedLanguage.German;
-
                 case "es":
                     return SupportedLanguage.Spanish;
-
-                case "bs":
-                    return SupportedLanguage.Bosnian;
-
-                case "sr":
-                    return SupportedLanguage.Serbian;
-
-                case "hr":
-                    return SupportedLanguage.Croatian;
-
                 default:
                     return SupportedLanguage.English;
             }

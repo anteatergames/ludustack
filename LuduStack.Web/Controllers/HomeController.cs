@@ -391,6 +391,14 @@ namespace LuduStack.Web.Controllers
             };
             model.Items.Add(june2021);
 
+            TimeLineItemViewModel july2021 = GenerateTimeLineItem(new DateTime(2021, 07, 01), "fas fa-shapes", "danger", "July 2021", "C'mon and slam!", "And welcome to the Jam!");
+            july2021.Items = new List<string>() {
+                "Game Jam system with many options",
+                "With or without Judges",
+                "Community vote",
+            };
+            model.Items.Add(july2021);
+
             // Future
 
             model.Items.Add(GenerateTimeLineItem(new DateTime(2098, 11, 01), "fas fa-bug", "danger", "Soon", "Open Beta", "At this point, we hope to have a consistent beta tester base so we can polish the platform and fix every possible bug tha shows up."));

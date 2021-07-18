@@ -14,18 +14,6 @@ namespace LuduStack.Domain.Core.Enums
         Russian = 3,
 
         [UiInfo(Locale = "es")]
-        Spanish = 4,
-
-        [UiInfo(Locale = "bs")]
-        Bosnian = 5,
-
-        [UiInfo(Locale = "sr")]
-        Serbian = 6,
-
-        [UiInfo(Locale = "hr")]
-        Croatian = 7,
-
-        [UiInfo(Locale = "de")]
-        German = 8
+        Spanish = 4
     }
 }
