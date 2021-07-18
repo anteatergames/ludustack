@@ -1400,6 +1400,62 @@ button.btn.dropdown-toggle::after, .wysihtml5-toolbar .btn.dropdown-toggle::afte
     border-radius: 0;
 }
 
+@media screen and (max-width: 767px) {
+    .table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
+        white-space: nowrap;
+    }
+}
+
+@media (min-width: 768px) {
+    .table-responsive {
+        overflow: inherit;
+    }
+}
+
+.table tr.row-clickable td a {
+    display: block;
+}
+
+.table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
+    border-top: 1px solid #f4f4f4;
+    padding: 0;
+    padding-left: 5px;
+    padding-right: 5px;
+    line-height: 40px;
+}
+
+.table > thead > tr > th {
+    border-bottom: 2px solid #f4f4f4;
+}
+
+.table th, .table thead th {
+    font-weight: 500;
+}
+
+.table-bordered, .table-bordered > tbody > tr > td, .table-bordered > tbody > tr > th, .table-bordered > tfoot > tr > td, .table-bordered > tfoot > tr > th, .table-bordered > thead > tr > td, .table-bordered > thead > tr > th {
+    border: 1px solid #f4f4f4;
+}
+
+    .table-bordered > thead > tr > td, .table-bordered > thead > tr > th {
+        border-bottom-width: 2px;
+    }
+
+.table.no-border, .table.no-border td, .table.no-border th {
+    border: 0;
+}
+
+.table.align th {
+    text-align: left;
+}
+
+.table.align td {
+    text-align: right;
+}
+
+.tablesaw-bar .btn-group label {
+    color: #67757c;
+}
+
 .dt-bootstrap {
     display: block;
 }

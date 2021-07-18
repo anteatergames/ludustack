@@ -16,5 +16,7 @@ namespace LuduStack.Domain.Models
         public string Description { get; set; }
 
         public string Icon { get; set; }
+
+        public bool IsForGameJam { get; set; }
     }
 }

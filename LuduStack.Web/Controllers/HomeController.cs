@@ -395,7 +395,7 @@ namespace LuduStack.Web.Controllers
             july2021.Items = new List<string>() {
                 "Game Jam system with many options",
                 "With or without Judges",
-                "Community vote",
+                "Community vote"
             };
             model.Items.Add(july2021);
 

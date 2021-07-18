@@ -10,6 +10,8 @@ namespace LuduStack.Application.ViewModels.GameJam
 {
     public class GameJamViewModel : UserGeneratedBaseViewModel
     {
+        public string ForumCategoryHandler { get; set; }
+
         public GameJamType Type { get; set; }
 
         [Display(Name = "Participation", Description = "How people can participate on this Game Jam?")]

@@ -9,6 +9,7 @@ using LuduStack.Domain.Core.Attributes;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Core.Extensions;
 using LuduStack.Domain.Messaging;
+using LuduStack.Domain.Messaging.Queries.ForumCategory;
 using LuduStack.Domain.Messaging.Queries.Game;
 using LuduStack.Domain.Messaging.Queries.GameJam;
 using LuduStack.Domain.Messaging.Queries.UserProfile;
@@ -157,6 +158,8 @@ namespace LuduStack.Application.Services
 
                 GameJamViewModel vm = mapper.Map<GameJamViewModel>(model);
 
+                await SetForum(vm);
+
                 await SetJudges(vm);
 
                 SetCriteria(vm, false);
@@ -298,6 +301,8 @@ namespace LuduStack.Application.Services
                 newVm.JudgesProfiles.Add(profile);
 
                 SetCriteria(newVm, true);
+
+                await SetForum(newVm);
 
                 return new OperationResultVo<GameJamViewModel>(newVm);
             }
@@ -1111,6 +1116,19 @@ namespace LuduStack.Application.Services
                 case GameJamParticipationType.IndividualsAndTeams:
                     vm.Highlights.Add(new GameJamHighlightsVo { Highlight = GameJamHighlight.IndividualsAndTeams });
                     break;
+            }
+        }
+
+        private async Task SetForum(GameJamViewModel gameJamVm)
+        {
+            if (string.IsNullOrWhiteSpace(gameJamVm.ForumCategoryHandler))
+            {
+                IEnumerable<ForumCategory> allModels = await mediator.Query<GetForumCategoryQuery, IEnumerable<ForumCategory>>(new GetForumCategoryQuery(x => x.IsForGameJam));
+
+                if (allModels.Any())
+                {
+                    gameJamVm.ForumCategoryHandler = allModels.First().Handler;
+                }
             }
         }
     }

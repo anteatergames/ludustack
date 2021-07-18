@@ -86,11 +86,25 @@
                 </div>
 
                 <div class="col-md-12">
-                    <label class="col-form-label text-capitalize">@SharedLocalizer["group"]</label>
-                    <select asp-for="GroupId" asp-items="@forumGroups" class="form-control select2">
-                        <option selected="selected" value="">@SharedLocalizer["Select"]</option>
-                    </select>
-                    <span asp-validation-for="GroupId" class="text-danger"></span>
+                    <div class="form-group">
+                        <label class="col-form-label text-capitalize">@SharedLocalizer["group"]</label>
+                        <select asp-for="GroupId" asp-items="@forumGroups" class="form-control select2">
+                            <option selected="selected" value="">@SharedLocalizer["Select"]</option>
+                        </select>
+                        <span asp-validation-for="GroupId" class="text-danger"></span>
+                    </div>
+                </div>
+
+
+                <div class="col-12 col-md-6 col-xl-4">
+                    <div class="form-group switch">
+                        <label asp-for="IsForGameJam" class="col-form-label"></label>
+                        <label class="switch left">
+                            <input asp-for="IsForGameJam" type="checkbox" class="default" />
+                            <span class="slider round"></span>
+                        </label>
+                        <span asp-description-for="IsForGameJam" class="col-form-label"></span>
+                    </div>
                 </div>
 
                 <div class="col-md-12 text-center mt-4 px-5">

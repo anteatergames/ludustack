@@ -7,6 +7,8 @@ namespace LuduStack.Domain.Models
 {
     public class GameJam : Entity
     {
+        public string ForumCategoryHandler { get; set; }
+
         public GameJamType Type { get; set; }
 
         public GameJamParticipationType ParticipationType { get; set; }
