@@ -60,10 +60,14 @@ namespace LuduStack.Application.Helpers
         {
             HtmlSanitizer sanitizer = new HtmlSanitizer();
             sanitizer.AllowedTags.Add("iframe");
+            sanitizer.AllowedAttributes.Add("class");
             sanitizer.AllowedAttributes.Add("data-oembed-url");
-            sanitizer.AllowedClasses.Add("media");
             sanitizer.AllowedCssProperties.Remove("margin");
             sanitizer.AllowedCssProperties.Add("position");
+            //sanitizer.AllowedClasses.Add("media");
+            //sanitizer.AllowedClasses.Add("language-cs");
+            //sanitizer.AllowedClasses.Add("language-csharp");
+            //sanitizer.AllowedClasses.Add("language-js");
 
             return sanitizer;
         }

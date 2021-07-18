@@ -52,7 +52,7 @@
                 <div class="col-md-12">
                     <div class="form-group">
                         <label asp-for="Handler" class="col-form-label"></label>
-                        <span asp-description-for="Handler" class="col-form-label" />
+                        <span asp-description-for="Handler" class="col-form-label"></span>
                         <input asp-for="Handler" class="form-control" placeholder="@SharedLocalizer["Type the Forum Category handler here"]" />
                         <span asp-validation-for="Handler" class="text-danger"></span>
                     </div>
@@ -61,7 +61,7 @@
                 <div class="col-md-12">
                     <div class="form-group">
                         <label asp-for="Icon" class="col-form-label"></label>
-                        <span asp-description-for="Icon" class="col-form-label" />
+                        <span asp-description-for="Icon" class="col-form-label"></span>
                         <input asp-for="Icon" class="form-control" placeholder="@SharedLocalizer["Choose an icon for this category."]" />
                         <span asp-validation-for="Icon" class="text-danger"></span>
                     </div>
@@ -70,7 +70,7 @@
                 <div class="col-md-12">
                     <div class="form-group">
                         <label asp-for="Name" class="col-form-label"></label>
-                        <span asp-description-for="Name" class="col-form-label" />
+                        <span asp-description-for="Name" class="col-form-label"></span>
                         <input asp-for="Name" class="form-control" placeholder="@SharedLocalizer["Type the Forum Category name here"]" />
                         <span asp-validation-for="Name" class="text-danger"></span>
                     </div>
@@ -79,7 +79,7 @@
                 <div class="col-md-12">
                     <div class="form-group">
                         <label asp-for="Description" class="col-form-label"></label>
-                        <span asp-description-for="Description" class="col-form-label" />
+                        <span asp-description-for="Description" class="col-form-label"></span>
                         <textarea asp-for="Description" class="form-control" placeholder="@SharedLocalizer["Describe the Forum Category here"]"></textarea>
                         <span asp-validation-for="Description" class="text-danger"></span>
                     </div>
@@ -97,7 +97,7 @@
                     <div class="pb-3 px-3 mb-3 mx-auto d-block text-center bg-light bordered hover newimageupload">
                         <div class="form-group m-0">
                             <label asp-for="FeaturedImage" class="col-form-label"></label>
-                            <span asp-description-for="FeaturedImage" class="col-form-label" />
+                            <span asp-description-for="FeaturedImage" class="col-form-label"></span>
                         </div>
                         <div class="w-100">
                             <img class="rounded img-fluid border w-100 square-bottom uploadimage" id="featuredImage" src="@Model.FeaturedImage" data-aspectratio="40/21" alt="@Html.DisplayNameFor(x => x.FeaturedImage)" data-default-img="@Constants.DefaultGamejamThumbnail">

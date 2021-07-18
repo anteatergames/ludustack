@@ -52,7 +52,7 @@
                 <div class="col-md-12">
                     <div class="form-group">
                         <label asp-for="Title" class="col-form-label"></label>
-                        <span asp-description-for="Title" class="col-form-label" />
+                        <span asp-description-for="Title" class="col-form-label"></span>
                         <input asp-for="Title" class="form-control" placeholder="@SharedLocalizer["Type the Forum Post title here"]" />
                         <span asp-validation-for="Title" class="text-danger"></span>
                     </div>
@@ -61,7 +61,7 @@
                 <div class="col-md-12">
                     <div class="form-group">
                         <label asp-for="Content" class="col-form-label"></label>
-                        <span asp-description-for="Content" class="col-form-label" />
+                        <span asp-description-for="Content" class="col-form-label"></span>
                         <textarea asp-for="Content" class="form-control wysiwygeditor" placeholder="@SharedLocalizer["Describe the Forum Post here"]"></textarea>
                         <span asp-validation-for="Content" class="text-danger"></span>
                     </div>

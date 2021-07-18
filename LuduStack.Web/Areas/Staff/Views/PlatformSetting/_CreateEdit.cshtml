@@ -50,7 +50,7 @@
                 <div class="col-12 col-md-6">
                     <div class="form-group">
                         <label asp-for="Type" class="col-form-label"></label>
-                        <span asp-description-for="Type" class="col-form-label" />
+                        <span asp-description-for="Type" class="col-form-label"></span>
                         <input class="form-control" disabled="disabled" value="@SharedLocalizer[Model.Type.ToUiInfo().Display]" />
                     </div>
                 </div>
@@ -58,7 +58,7 @@
                 <div class="col-12 col-md-6">
                     <div class="form-group">
                         <label asp-for="Group" class="col-form-label"></label>
-                        <span asp-description-for="Group" class="col-form-label" />
+                        <span asp-description-for="Group" class="col-form-label"></span>
                         <input class="form-control" disabled="disabled" value="@SharedLocalizer[Model.Group.ToUiInfo().Display]" />
                     </div>
                 </div>
@@ -66,7 +66,7 @@
                 <div class="col-md-12">
                     <div class="form-group">
                         <label asp-for="Element" class="col-form-label"></label>
-                        <span asp-description-for="Element" class="col-form-label" />
+                        <span asp-description-for="Element" class="col-form-label"></span>
                         <input class="form-control" disabled="disabled" value="@SharedLocalizer[Model.Element.ToUiInfo().Display]" />
                     </div>
                 </div>
@@ -74,7 +74,7 @@
                 <div class="col-md-12">
                     <div class="form-group">
                         <label asp-for="Value" class="col-form-label"></label>
-                        <span asp-description-for="Value" class="col-form-label" />
+                        <span asp-description-for="Value" class="col-form-label"></span>
                         @switch (Model.Type)
                         {
                             case PlatformSettingType.Boolean:

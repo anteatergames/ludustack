@@ -32,22 +32,29 @@ main .ck-editor[role='application'] .ck.ck-content,
 	padding: 1.5em 2em;
 }
 
+main .ck-editor[role='application'] {
+	overflow: auto;
+}
+
 .ck.ck-editor__editable {
 	background: #fff;
 	border: 1px solid hsl(0, 0%, 70%);
 	width: 100%;
 }
 
-.ck.ck-editor {
-	/* To enable toolbar wrapping. */
-	width: 100%;
-	overflow-x: hidden;
-}
-
 /* Because of sidebar `position: relative`, Edge is overriding the outline of a focused editor. */
 .ck.ck-editor__editable {
 	position: relative;
 	z-index: var(--ck-sample-editor-z-index);
+}
+
+.editor-container {
+	display: flex;
+	flex-direction: row;
+    flex-wrap: nowrap;
+    position: relative;
+	width: 100%;
+	justify-content: center;
 }
 
 /* --------- DECOUPLED (DOCUMENT) BUILD. ---------------------------------------------*/
@@ -310,6 +317,29 @@ body[ data-editor='InlineEditor'] .collaboration-demo__row {
    otherwise it will be hidden underneath. */
 .ck.ck-pagination-view-line {
 	z-index: var(--ck-sample-editor-z-index);
+}
+
+/* --------- REVISION HISTORY FEATURE ------------------------------------------------------------------------------ */
+
+.revision-viewer-container {
+    display: none;
+}
+
+.revision-viewer-sidebar {
+    position: relative;
+    min-width: 310px;
+    overflow: hidden;
+    background: var(--ck-color-toolbar-background);
+    border: 1px solid var(--ck-color-toolbar-border);
+    margin-left: -1px;
+}
+
+/* Move the square with page number from the Pagination plugin to the left side,
+   so that it does not cover the sidebar. */
+.ck.ck-pagination-view-line::after {
+	transform: translateX(-100%);
+	left: -1px;
+	right: unset;
 }
 
 /* --------- SAMPLE GENERIC STYLES (not related to CKEditor) ------------------------------------------------------- */

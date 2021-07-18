@@ -29,20 +29,27 @@
 
 @section Styles {
     <environment include="Development">
-        <link rel="stylesheet" href="~/css/forum.css" />
+        <link rel="stylesheet" href="~/lib/highlightjs/styles/default.min.css">
         <link rel="stylesheet" href="~/lib/nanogallery2/css/nanogallery2.min.css">
+        <link rel="stylesheet" href="~/css/forum.css" />
     </environment>
     <environment exclude="Development">
-        <link rel="stylesheet" href="~/css/contentdetails.min.css" asp-append-version="true" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/styles/default.min.css"
+              integrity="sha512-3xLMEigMNYLDJLAgaGlDSxpGykyb+nQnJBzbkQy2a0gyVKL2ZpNOPIj1rD8IPFaJbwAgId/atho1+LBpWu5DhA=="
+              crossorigin="anonymous"
+              referrerpolicy="no-referrer" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/nanogallery2/3.0.5/css/nanogallery2.min.css"
               integrity="sha512-6sOT9zKSKq1CYgNMqtcY84tFPDnG1yX5mxwdGQiAVpAomVr2kUKJ//pFeU/KfaZDVCOru5iFOVswpT4RWWF2dQ=="
               crossorigin="anonymous" />
+        <link rel="stylesheet" href="~/css/contentdetails.min.css" asp-append-version="true" />
     </environment>
 }
 
 @section Scripts {
     <environment include="Development">
         <script src="~/thirdparty/ckeditor5-build-classic/build/ckeditor.js"></script>
+        <script src="~/lib/highlightjs/highlight.min.js"></script>
+        <script src="~/lib/highlightjs/languages/csharp.min.js"></script>
         <script src="~/js/shared/pagination.js"></script>
         <script src="~/js/shared/wysiwygeditor.js"></script>
         <script src="~/js/forum/forumcommon.js"></script>
@@ -50,6 +57,14 @@
     </environment>
     <environment exclude="Development">
         <script src="~/thirdparty/ckeditor5-build-classic/build/ckeditor.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/highlight.min.js"
+                integrity="sha512-z+/WWfyD5tccCukM4VvONpEtLmbAm5LDu7eKiyMQJ9m7OfPEDL7gENyDRL3Yfe8XAuGsS2fS4xSMnl6d30kqGQ=="
+                crossorigin="anonymous"
+                referrerpolicy="no-referrer"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/csharp.min.js" 
+                integrity="sha512-X18ZEfQ3SPnexB5QRmg4fp9QjaFa/jEiw7J1TsWWPIJGgvVyLXrI8fdaZOqbbsfX5byF9/CovS++zG5QL8EZ+A==" 
+                crossorigin="anonymous" 
+                referrerpolicy="no-referrer"></script>
         <script src="~/js/forum/forumpostdetails.min.js" asp-append-version="true"></script>
     </environment>
     <script type="application/ld+json">

@@ -872,7 +872,7 @@ namespace LuduStack.Application.Services
         {
             viewModel.Description = sanitizer.Sanitize(viewModel.Description, Constants.DefaultLuduStackPath);
 
-            var replacements = ContentFormatter.Replacements();
+            var replacements = ContentFormatter.DisplayReplacements();
 
             foreach (string key in replacements.Keys)
             {

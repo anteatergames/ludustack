@@ -51,7 +51,7 @@
                 <div class="col-12 col-sm-6 col-md-2">
                     <div class="form-group">
                         <label asp-for="IssueNumber" class="col-form-label"></label>
-                        <span asp-description-for="IssueNumber" class="col-form-label" />
+                        <span asp-description-for="IssueNumber" class="col-form-label"></span>
                         <input asp-for="IssueNumber" class="form-control" placeholder="@SharedLocalizer["Choose the issue number"]" />
                         <span asp-validation-for="IssueNumber" class="text-danger"></span>
                     </div>
@@ -73,7 +73,7 @@
                 <div class="col-12 col-md-5">
                     <div class="form-group">
                         <label asp-for="Language" class="col-form-label"></label>
-                        <span asp-description-for="Language" class="col-form-label" />
+                        <span asp-description-for="Language" class="col-form-label"></span>
                         <input asp-for="Language" class="form-control" placeholder="@SharedLocalizer["The comic strip language"]" readonly />
                         <span asp-validation-for="Language" class="text-danger"></span>
                     </div>
@@ -82,7 +82,7 @@
                 <div class="col-12">
                     <div class="form-group">
                         <label asp-for="Title" class="col-form-label"></label>
-                        <span asp-description-for="Title" class="col-form-label" />
+                        <span asp-description-for="Title" class="col-form-label"></span>
                         <input asp-for="Title" class="form-control" placeholder="@SharedLocalizer["Type the comic strip title here"]" />
                         <span asp-validation-for="Title" class="text-danger"></span>
                     </div>
@@ -91,7 +91,7 @@
                 <div class="col-md-12">
                     <div class="form-group">
                         <label asp-for="Content" class="col-form-label"></label>
-                        <span asp-description-for="Content" class="col-form-label" />
+                        <span asp-description-for="Content" class="col-form-label"></span>
                         <textarea asp-for="Content" class="form-control" placeholder="@SharedLocalizer["Describe the comic strip here"]"></textarea>
                         <span asp-validation-for="Content" class="text-danger"></span>
                     </div>

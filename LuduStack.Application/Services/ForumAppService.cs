@@ -223,8 +223,7 @@ namespace LuduStack.Application.Services
                 }
 
                 HtmlSanitizer sanitizer = ContentHelper.GetHtmlSanitizer();
-
-                model.Content = sanitizer.Sanitize(model.Content, Constants.DefaultLuduStackPath);
+                model.Content = SanitizeHtmlToSave(model.Content, sanitizer);
 
                 CommandResult result = await mediator.SendCommand(new SaveForumPostCommand(model));
 
@@ -269,7 +268,7 @@ namespace LuduStack.Application.Services
                 SetPermissions(currentUserId, viewModel);
 
                 HtmlSanitizer sanitizer = ContentHelper.GetHtmlSanitizer();
-                SanitizeHtml(viewModel, sanitizer);
+                SanitizeHtmlToDisplay(viewModel, sanitizer);
 
                 if (viewModel.Language == 0)
                 {
@@ -338,7 +337,7 @@ namespace LuduStack.Application.Services
 
                     SetPermissions(currentUserId, topicReply);
 
-                    SanitizeHtml(topicReply, sanitizer);
+                    SanitizeHtmlToDisplay(topicReply, sanitizer);
                 }
 
                 OperationResultListVo<ForumPostViewModel> result = new OperationResultListVo<ForumPostViewModel>(vms)
@@ -482,16 +481,30 @@ namespace LuduStack.Application.Services
             SetBasePermissions(currentUserId, viewModel);
         }
 
-        private static void SanitizeHtml(ForumPostViewModel viewModel, HtmlSanitizer sanitizer)
+        private static void SanitizeHtmlToDisplay(ForumPostViewModel viewModel, HtmlSanitizer sanitizer)
         {
             viewModel.Content = sanitizer.Sanitize(viewModel.Content, Constants.DefaultLuduStackPath);
 
-            var replacements = ContentFormatter.Replacements();
+            var replacements = ContentFormatter.DisplayReplacements();
 
             foreach (string key in replacements.Keys)
             {
                 viewModel.Content = viewModel.Content.Replace(key, replacements[key]);
             }
+        }
+
+        private static string SanitizeHtmlToSave(string content, HtmlSanitizer sanitizer)
+        {
+            content = sanitizer.Sanitize(content, Constants.DefaultLuduStackPath);
+
+            var replacements = ContentFormatter.SaveReplacements();
+
+            foreach (string key in replacements.Keys)
+            {
+                content = content.Replace(key, replacements[key]);
+            }
+
+            return content;
         }
     }
 }

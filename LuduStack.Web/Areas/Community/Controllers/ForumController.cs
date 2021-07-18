@@ -5,7 +5,6 @@ using LuduStack.Application.ViewModels.Forum;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.ValueObjects;
 using LuduStack.Web.Helpers;
-using Markdig;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -139,11 +138,6 @@ namespace LuduStack.Web.Areas.Community.Controllers
                 if (isNew)
                 {
                     vm.UserId = CurrentUserId;
-                }
-
-                if (!string.IsNullOrWhiteSpace(vm.Content))
-                {
-                    vm.Content = Markdown.Normalize(vm.Content);
                 }
 
                 OperationResultVo<Guid> saveResult = await forumAppService.SavePost(CurrentUserId, vm);

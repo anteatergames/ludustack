@@ -55,6 +55,8 @@
         FORUMCOMMON.Callback.DeleteEntity = deleteCallback;
 
         PAGINATION.Init(selectors.btnPage, selectors.replies);
+
+        hljs.highlightAll();
     }
 
     function bindAll() {
@@ -207,6 +209,8 @@
                     }
                 }, 100);
             });
+
+            hljs.highlightAll();
         });
     }
 
@@ -218,21 +222,19 @@
 
         WYSIWYGEDITOR.UpdateSourceElement(editorId);
 
-        if (canInteract && !btn.hasClass('disabled')) {
-            var data = form.serializeObject();
+        var data = form.serializeObject();
 
-            return $.post(url, data).done(function (response) {
-                if (response.success === true) {
-                    MAINMODULE.Common.PostSaveCallback(response, btn);
+        return $.post(url, data).done(function (response) {
+            if (response.success === true) {
+                MAINMODULE.Common.PostSaveCallback(response, btn);
 
-                    MAINMODULE.Ajax.HandleUrlResponse(response);
-                }
-                else {
-                    MAINMODULE.Common.EnableButton(btn);
-                    MAINMODULE.Ajax.HandleErrorResponse(response);
-                }
-            });
-        }
+                MAINMODULE.Ajax.HandleUrlResponse(response);
+            }
+            else {
+                MAINMODULE.Common.EnableButton(btn);
+                MAINMODULE.Ajax.HandleErrorResponse(response);
+            }
+        });
     }
 
     function savePost(btn) {
@@ -243,23 +245,21 @@
 
         WYSIWYGEDITOR.UpdateSourceElement(editorId);
 
-        if (canInteract && !btn.hasClass('disabled')) {
-            var data = form.serializeObject();
+        var data = form.serializeObject();
 
-            return $.post(url, data).done(function (response) {
-                if (response.success === true) {
-                    MAINMODULE.Common.PostSaveCallback(response, btn);
+        return $.post(url, data).done(function (response) {
+            if (response.success === true) {
+                MAINMODULE.Common.PostSaveCallback(response, btn);
 
-                    var detailsContainer = btn.closest(selectors.postItem).find(selectors.postItemContainer);
+                var detailsContainer = btn.closest(selectors.postItem).find(selectors.postItemContainer);
 
-                    MAINMODULE.Ajax.LoadHtml(response.url, detailsContainer).then(() => editCancel(btn));
-                }
-                else {
-                    MAINMODULE.Common.EnableButton(btn);
-                    MAINMODULE.Ajax.HandleErrorResponse(response);
-                }
-            });
-        }
+                MAINMODULE.Ajax.LoadHtml(response.url, detailsContainer).then(() => editCancel(btn));
+            }
+            else {
+                MAINMODULE.Common.EnableButton(btn);
+                MAINMODULE.Ajax.HandleErrorResponse(response);
+            }
+        });
     }
 
     function edit(btn) {
@@ -316,6 +316,9 @@
                         viewDiv.addClass('d-flex').fadeIn();
 
                         postDiv.css('height', '');
+
+
+                        hljs.highlightAll();
                     }
                 });
         });

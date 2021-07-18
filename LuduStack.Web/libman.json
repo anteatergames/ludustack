@@ -99,8 +99,8 @@
             "destination": "wwwroot/lib/nanogallery2"
         },
         {
-            "library": "ckeditor5@27.1.0",
-            "destination": "wwwroot/lib/ckeditor5"
+            "library": "highlight.js@11.1.0",
+            "destination": "wwwroot/lib/highlightjs"
         }
     ]
 }

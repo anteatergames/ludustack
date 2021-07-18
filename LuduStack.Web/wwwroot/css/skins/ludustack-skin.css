@@ -35,6 +35,15 @@ a {
     font-weight: 600;
 }
 
+.htmlcontent th {
+    background: hsla(0,0%,0%,5%);
+}
+
+.htmlcontent th p {
+    margin-bottom: 0;
+}
+
+
 #featurecontainer table a, #featurecontainer a.btn, #featurecontainer a.stretched-link, .user-block a {
     font-weight: normal !important;
 }
