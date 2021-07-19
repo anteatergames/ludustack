@@ -237,7 +237,7 @@ namespace LuduStack.Web.Areas.Staff.Controllers
 
             try
             {
-                OperationResultVo<Guid> saveResult = await gameJamAppService.Save(CurrentUserId, vm);
+                OperationResultVo<Guid> saveResult = await gameJamAppService.Save(CurrentUserId, CurrentUserIsAdmin, vm);
 
                 if (saveResult.Success)
                 {
@@ -252,7 +252,7 @@ namespace LuduStack.Web.Areas.Staff.Controllers
                 }
                 else
                 {
-                    return Json(new OperationResultVo(false));
+                    return Json(saveResult);
                 }
             }
             catch (Exception ex)

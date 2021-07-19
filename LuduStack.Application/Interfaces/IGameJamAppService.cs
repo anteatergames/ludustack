@@ -22,7 +22,7 @@ namespace LuduStack.Application.Interfaces
 
         Task<OperationResultVo> Remove(Guid currentUserId, Guid id);
 
-        Task<OperationResultVo<Guid>> Save(Guid currentUserId, GameJamViewModel viewModel);
+        Task<OperationResultVo<Guid>> Save(Guid currentUserId, bool currentUserIsAdmin, GameJamViewModel viewModel);
 
         Task<OperationResultVo<GameJamViewModel>> GenerateNew(Guid currentUserId);
 

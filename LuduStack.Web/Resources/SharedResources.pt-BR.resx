@@ -4206,4 +4206,16 @@
     <value>Qual é o idioma principal da Game Jam?</value>
     <comment>Game Jam</comment>
   </data>
+  <data name="Discuss about this Jam on the forums." xml:space="preserve">
+    <value>Converse sobre esta Jam nos fórums.</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="from {0}" xml:space="preserve">
+    <value>de {0}</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="until {0}" xml:space="preserve">
+    <value>até {0}</value>
+    <comment>Game Jam</comment>
+  </data>
 </root>

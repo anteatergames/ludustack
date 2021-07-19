@@ -190,10 +190,15 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public async Task<OperationResultVo<Guid>> Save(Guid currentUserId, GameJamViewModel viewModel)
+        public async Task<OperationResultVo<Guid>> Save(Guid currentUserId, bool currentUserIsAdmin, GameJamViewModel viewModel)
         {
             try
             {
+                if (!(viewModel.UserId == currentUserId) && !currentUserIsAdmin)
+                {
+                    return new OperationResultVo<Guid>("You cannot save this!");
+                }
+
                 GameJam model;
 
                 GameJam existing = await mediator.Query<GetGameJamByIdQuery, GameJam>(new GetGameJamByIdQuery(viewModel.Id));
@@ -877,7 +882,7 @@ namespace LuduStack.Application.Services
         {
             viewModel.Description = sanitizer.Sanitize(viewModel.Description, Constants.DefaultLuduStackPath);
 
-            var replacements = ContentFormatter.DisplayReplacements();
+            System.Collections.Specialized.StringDictionary replacements = ContentFormatter.DisplayReplacements();
 
             foreach (string key in replacements.Keys)
             {

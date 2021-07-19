@@ -18,7 +18,6 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace LuduStack.Application.Services
@@ -485,7 +484,7 @@ namespace LuduStack.Application.Services
         {
             viewModel.Content = sanitizer.Sanitize(viewModel.Content, Constants.DefaultLuduStackPath);
 
-            var replacements = ContentFormatter.DisplayReplacements();
+            System.Collections.Specialized.StringDictionary replacements = ContentFormatter.DisplayReplacements();
 
             foreach (string key in replacements.Keys)
             {
@@ -497,7 +496,7 @@ namespace LuduStack.Application.Services
         {
             content = sanitizer.Sanitize(content, Constants.DefaultLuduStackPath);
 
-            var replacements = ContentFormatter.SaveReplacements();
+            System.Collections.Specialized.StringDictionary replacements = ContentFormatter.SaveReplacements();
 
             foreach (string key in replacements.Keys)
             {
