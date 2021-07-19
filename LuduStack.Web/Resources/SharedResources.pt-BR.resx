@@ -4218,4 +4218,8 @@
     <value>até {0}</value>
     <comment>Game Jam</comment>
   </data>
+  <data name="appraisal" xml:space="preserve">
+    <value>avaliação</value>
+    <comment>Game Jam</comment>
+  </data>
 </root>

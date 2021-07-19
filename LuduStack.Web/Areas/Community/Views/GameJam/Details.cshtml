@@ -172,16 +172,10 @@
                 <li class="nav-item" role="presentation">
                     <a class="nav-link active" id="overview-tab" data-toggle="tab" href="#taboverview" role="tab" aria-controls="taboverview" aria-selected="true"><i class="fas fa-info-circle" aria-hidden="true"></i><span class="d-none d-md-block d-lg-inline-block">&nbsp;@SharedLocalizer["overview"]</span></a>
                 </li>
-                @if (Model.ShowJudges)
+                @if (Model.ShowJudges || Model.ShowCriteria)
                 {
                     <li class="nav-item" role="presentation">
-                        <a class="nav-link" id="judges-tab" data-toggle="tab" href="#tabjudges" role="tab" aria-controls="tabjudges" aria-selected="false"><i class="fas fa-gavel" aria-hidden="true"></i><span class="d-none d-md-block d-lg-inline-block">&nbsp;@SharedLocalizer["Judges"]</span></a>
-                    </li>
-                }
-                @if (Model.ShowCriteria)
-                {
-                    <li class="nav-item" role="presentation">
-                        <a class="nav-link" id="criteria-tab" data-toggle="tab" href="#tabcriteria" role="tab" aria-controls="tabcriteria" aria-selected="false"><i class="fas fa-balance-scale" aria-hidden="true"></i><span class="d-none d-md-block d-lg-inline-block">&nbsp;@SharedLocalizer["Criteria"]</span></a>
+                        <a class="nav-link" id="appraisal-tab" data-toggle="tab" href="#tabappraisal" role="tab" aria-controls="tabappraisal" aria-selected="false"><i class="fas fa-balance-scale" aria-hidden="true"></i><span class="d-none d-md-block d-lg-inline-block">&nbsp;@SharedLocalizer["appraisal"]</span></a>
                     </li>
                 }
                 <li class="nav-item" role="presentation">
@@ -249,9 +243,9 @@
                         }
                     </div>
                 </div>
-                @if (Model.ShowJudges)
-                {
-                    <div class="tab-pane fade p-2 bg-white" id="tabjudges" role="tabpanel" aria-labelledby="judges-tab">
+                <div class="tab-pane fade p-2 bg-white" id="tabappraisal" role="tabpanel" aria-labelledby="appraisal-tab">
+                    @if (Model.ShowJudges)
+                    {
                         @if (!Model.Judges.Any())
                         {
                             <partial name="_ListNoItems" model="noJudgesModel" />
@@ -268,7 +262,7 @@
                                     <span>@SharedLocalizer["{0} judges will judge the submissions", Model.Judges.Count]</span>
                                 }
                             </div>
-                            <div class="row px-2">
+                            <div class="row px-2 justify-content-center">
                                 @for (int i = 0; i < Model.JudgesProfiles.Count; i++)
                                 {
                                     var judge = Model.JudgesProfiles.ElementAt(i);
@@ -282,11 +276,10 @@
                                 }
                             </div>
                         }
-                    </div>
-                }
-                @if (Model.ShowCriteria)
-                {
-                    <div class="tab-pane fade p-2 bg-white" id="tabcriteria" role="tabpanel" aria-labelledby="criteria-tab">
+                    }
+
+                    @if (Model.ShowCriteria)
+                    {
                         @if (!Model.Criteria.Any())
                         {
                             <partial name="_ListNoItems" model="noCriteriaModel" />
@@ -303,7 +296,7 @@
                                     <span>@SharedLocalizer["{0} criteria", criteriaToList.Count()]</span>
                                 }
                             </div>
-                            <div class="row px-2">
+                            <div class="row px-2 justify-content-center">
                                 @for (int i = 0; i < criteriaToList.Count(); i++)
                                 {
                                     var criteria = criteriaToList.ElementAt(i);
@@ -319,8 +312,9 @@
                                 }
                             </div>
                         }
-                    </div>
-                }
+                    }
+                </div>
+
                 <div class="tab-pane fade p-2 bg-white" id="tabparticipants" role="tabpanel" aria-labelledby="participants-tab">...</div>
                 @if (Model.ShowSubmissions)
                 {

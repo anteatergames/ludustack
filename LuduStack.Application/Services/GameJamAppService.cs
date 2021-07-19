@@ -288,6 +288,7 @@ namespace LuduStack.Application.Services
                 newVm.FeaturedImage = Constants.DefaultGamejamThumbnail;
                 newVm.BannerImage = Constants.DefaultGamejamThumbnail;
                 newVm.BackgroundImage = Constants.DefaultGamejamThumbnail;
+                newVm.BackgroundColor = "#dedada";
 
                 newVm.JudgesProfiles = new List<ProfileViewModel>();
 
