@@ -142,7 +142,7 @@
             postReplyAlert.hide().removeClass('d-none').slideDown();
 
             var txtArea = $(selectors.txtReply);
-            var editorId = txtArea.attr('id');
+            var editorId = txtArea.attr('data-editor-id');
 
             var complete = false;
             $('html, body').animate({
@@ -304,7 +304,7 @@
         postDiv.css('height', postDiv.css('height'));
         editDiv.fadeOut("slow", function () {
             var txtArea = editDiv.find(selectors.txtReply);
-            var editorId = txtArea.attr('id');
+            var editorId = txtArea.attr('data-editor-id');
 
             WYSIWYGEDITOR.DestroyEditor(editorId);
 
