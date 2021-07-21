@@ -27,5 +27,7 @@ namespace LuduStack.Domain.Models
         public List<GameJamTeamMember> TeamMembers { get; set; }
 
         public List<GameJamVote> Votes { get; set; }
+
+        public List<GameJamCriteriaResult> CriteriaResults { get; set; }
     }
 }

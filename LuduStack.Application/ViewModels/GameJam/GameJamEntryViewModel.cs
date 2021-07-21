@@ -31,6 +31,8 @@ namespace LuduStack.Application.ViewModels.GameJam
 
         public List<GameJamVoteViewModel> Votes { get; set; }
 
+        public List<GameJamCriteriaResultViewModel> CriteriaResults { get; set; }
+
         public int SecondsToCountDown { get; set; }
 
         public string Title { get; set; }

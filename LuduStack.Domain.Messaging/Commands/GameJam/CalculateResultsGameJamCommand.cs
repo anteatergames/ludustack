@@ -66,6 +66,21 @@ namespace LuduStack.Domain.Messaging
                 CalculateScoreForEntry(gameJam, entry);
             }
 
+
+            foreach (GameJamCriteria criteria in gameJam.Criteria)
+            {
+                entryList = entryList.OrderByDescending(x => x.CriteriaResults.FirstOrDefault(y => y.Criteria == criteria.Type)?.Score).ToList();
+
+                for (int i = 0; i < entryList.Count; i++)
+                {
+                    var criteriaResult = entryList[i].CriteriaResults.FirstOrDefault(x => x.Criteria == criteria.Type);
+                    if (criteriaResult != null)
+                    {
+                        criteriaResult.FinalPosition = criteriaResult.Score == 0 ? 0 : i + 1;
+                    }
+                }
+            }
+
             entryList = entryList.OrderByDescending(x => x.TotalScore).ToList();
 
             for (int i = 0; i < entryList.Count; i++)
@@ -87,6 +102,10 @@ namespace LuduStack.Domain.Messaging
         private void CalculateScoreForEntry(GameJam gameJam, GameJamEntry entry)
         {
             List<decimal> medians = new List<decimal>();
+            if (entry.CriteriaResults == null)
+            {
+                entry.CriteriaResults = new List<GameJamCriteriaResult>();
+            }
 
             foreach (GameJamCriteria criteria in gameJam.Criteria)
             {
@@ -99,6 +118,22 @@ namespace LuduStack.Domain.Messaging
                 }
 
                 medians.Add(median);
+
+                GameJamCriteriaResult existingCriteriaResult = entry.CriteriaResults.FirstOrDefault(x => x.Criteria == criteria.Type);
+                if (existingCriteriaResult == null)
+                {
+                    GameJamCriteriaResult newCriteriaResult = new GameJamCriteriaResult
+                    {
+                        Criteria = criteria.Type,
+                        Score = median
+                    };
+
+                    entry.CriteriaResults.Add(newCriteriaResult);
+                }
+                else
+                {
+                    existingCriteriaResult.Score = median;
+                }
             }
 
             entry.TotalScore = medians.Any() ? medians.Median() : 0;

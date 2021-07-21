@@ -206,15 +206,23 @@
                                             foreach (var criteria in criteriaToRender)
                                             {
                                                 var vote = Model.Votes.FirstOrDefault(x => x.UserId == currentUserId && x.CriteriaType == criteria.Type);
+                                                var criteriaResult = Model.CriteriaResults.FirstOrDefault(x => x.Criteria == criteria.Type);
 
                                                 var uiInfo = criteria.Type.ToUiInfo();
 
                                                 <div class="row no-gutters px-1">
                                                     <div class="col-12 col-lg-6">
                                                         <div class="d-flex flex-column justify-content-center text-center text-lg-left">
-                                                            <span class="display-4">@SharedLocalizer[uiInfo.Display]</span>
+                                                            <div class="d-flex flex-row">
+                                                                <span class="display-4">@SharedLocalizer[uiInfo.Display]</span>
+                                                                @if (criteriaResult != null && criteriaResult.FinalPosition > 0)
+                                                                {
+                                                                    <span>@string.Format("#{0}", criteriaResult.FinalPosition)</span>
+                                                                }
+                                                            </div>
                                                         </div>
-                                                    </div>
+
+                                                        </div>
                                                     <div class="col-12 col-lg-6">
                                                         <div class="h-100 d-flex flex-column justify-content-center text-center text-lg-right">
 
