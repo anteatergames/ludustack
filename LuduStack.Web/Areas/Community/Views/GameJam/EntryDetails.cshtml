@@ -212,17 +212,17 @@
 
                                                 <div class="row no-gutters px-1">
                                                     <div class="col-12 col-lg-6">
-                                                        <div class="d-flex flex-column justify-content-center text-center text-lg-left">
-                                                            <div class="d-flex flex-row">
-                                                                <span class="display-4">@SharedLocalizer[uiInfo.Display]</span>
+                                                        <div class="h-100 d-flex flex-column justify-content-center text-center text-lg-left">
+                                                            <span class="display-5">
+                                                                @SharedLocalizer[uiInfo.Display]
                                                                 @if (criteriaResult != null && criteriaResult.FinalPosition > 0)
                                                                 {
-                                                                    <span>@string.Format("#{0}", criteriaResult.FinalPosition)</span>
+                                                                    <i class="fas fa-medal" aria-hidden="true"></i>@string.Format("#{0}", criteriaResult.FinalPosition)
                                                                 }
-                                                            </div>
+                                                            </span>
                                                         </div>
 
-                                                        </div>
+                                                    </div>
                                                     <div class="col-12 col-lg-6">
                                                         <div class="h-100 d-flex flex-column justify-content-center text-center text-lg-right">
 
@@ -245,7 +245,7 @@
                                                 <div class="row no-gutters px-1">
                                                     <div class="col-12 col-lg-6">
                                                         <div class="d-flex flex-column justify-content-center text-center text-uppercase text-lg-left">
-                                                            <span class="display-4">@SharedLocalizer["final score"]</span>
+                                                            <span class="display-5">@SharedLocalizer["final score"]</span>
                                                         </div>
                                                     </div>
                                                     <div class="col-12 col-lg-6">

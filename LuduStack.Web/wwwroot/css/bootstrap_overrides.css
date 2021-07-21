@@ -248,3 +248,9 @@ select.form-control {
 .nav-tabs .nav-link:hover, .nav-tabs .nav-link:focus {
     border-bottom: 0;
 }
+
+.display-5 {
+    font-size: 1.8rem;
+    font-weight: 300;
+    line-height: 1.2;
+}

@@ -73,7 +73,7 @@ namespace LuduStack.Domain.Messaging
 
                 for (int i = 0; i < entryList.Count; i++)
                 {
-                    var criteriaResult = entryList[i].CriteriaResults.FirstOrDefault(x => x.Criteria == criteria.Type);
+                    GameJamCriteriaResult criteriaResult = entryList[i].CriteriaResults.FirstOrDefault(x => x.Criteria == criteria.Type);
                     if (criteriaResult != null)
                     {
                         criteriaResult.FinalPosition = criteriaResult.Score == 0 ? 0 : i + 1;
