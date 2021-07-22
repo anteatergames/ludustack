@@ -86,6 +86,9 @@ namespace LuduStack.Application.ViewModels.GameJam
         [Display(Name = "Main Theme")]
         public string MainTheme { get; set; }
 
+        [Display(Name = "Time Zone")]
+        public string TimeZone { get; set; }
+
         [Required(ErrorMessage = "This is needed")]
         [Display(Name = "Start Date", Description = "Here you set when this Game Jam starts.")]
         public DateTime StartDate { get; set; }

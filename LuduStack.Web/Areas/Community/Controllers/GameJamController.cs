@@ -186,6 +186,8 @@ namespace LuduStack.Web.Areas.Staff.Controllers
 
                 GameJamViewModel model = castResult.Value;
 
+                SetTimeZoneDropdown(model);
+
                 return View("CreateEditWrapper", model);
             }
             else
@@ -226,6 +228,8 @@ namespace LuduStack.Web.Areas.Staff.Controllers
             }
 
             viewModel = serviceResult.Value;
+
+            SetTimeZoneDropdown(viewModel);
 
             return View("CreateEditWrapper", viewModel);
         }
@@ -493,6 +497,18 @@ namespace LuduStack.Web.Areas.Staff.Controllers
             }
 
             model.SetShareUrl(Url.Action("details", "gamejam", new { area = "community", handler = model.Handler }));
+        }
+
+        private void SetTimeZoneDropdown(GameJamViewModel model)
+        {
+            List<SelectListItem> timeZones = Constants.TimeZoneSelectList.ToList();
+
+            foreach (SelectListItem timeZone in timeZones)
+            {
+                timeZone.Selected = (!string.IsNullOrWhiteSpace(model.TimeZone) && model.TimeZone.Equals(timeZone.Value)) || timeZone.Value.Equals("0");
+            }
+
+            ViewBag.TimeZones = timeZones;
         }
     }
 }

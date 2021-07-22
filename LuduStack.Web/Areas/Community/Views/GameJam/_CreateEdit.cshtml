@@ -4,6 +4,8 @@
     Layout = null;
 
     var isNew = Model.Id == Guid.Empty;
+
+    var timeZoneList = (IEnumerable<SelectListItem>)ViewBag.TimeZones;
 }
 
 <h1 class="sr-only">@ViewData["Title"]</h1>
@@ -83,6 +85,15 @@
                         <span asp-description-for="Winners" class="col-form-label"></span>
                         <input asp-for="Winners" class="form-control" />
                         <span asp-validation-for="Winners" class="text-danger"></span>
+                    </div>
+                </div>
+
+
+                <div class="col-12">
+                    <div class="form-group">
+                        <label asp-for="TimeZone" class="col-form-label"></label>
+                        <select asp-for="TimeZone" asp-items="timeZoneList" class="form-control"></select>
+                        <span asp-validation-for="TimeZone" class="text-danger"></span>
                     </div>
                 </div>
 

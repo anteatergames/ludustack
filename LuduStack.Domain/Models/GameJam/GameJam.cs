@@ -55,6 +55,8 @@ namespace LuduStack.Domain.Models
 
         public string MainTheme { get; set; }
 
+        public string TimeZone { get; set; }
+
         public DateTime StartDate { get; set; }
 
         public DateTime EntryDeadline { get; set; }
