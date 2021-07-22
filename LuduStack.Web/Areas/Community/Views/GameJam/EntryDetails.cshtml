@@ -217,7 +217,7 @@
                                                                 @SharedLocalizer[uiInfo.Display]
                                                                 @if (criteriaResult != null && criteriaResult.FinalPosition > 0)
                                                                 {
-                                                                    <i class="fas fa-medal" aria-hidden="true"></i>@string.Format("#{0}", criteriaResult.FinalPosition)
+                                                                    <i class="fas fa-medal@(criteriaResult.FinalPosition == 1 ? " text-warning" : " text-muted")" aria-hidden="true"></i>@string.Format("#{0}", criteriaResult.FinalPosition)
                                                                 }
                                                             </span>
                                                         </div>

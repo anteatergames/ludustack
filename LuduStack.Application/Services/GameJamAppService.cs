@@ -115,7 +115,7 @@ namespace LuduStack.Application.Services
                 vm.AuthorName = authorProfile.Name;
                 vm.AuthorHandler = authorProfile.Handler;
 
-                SetGameJamState(DateTime.Now.ToLocalTime(), vm);
+                SetGameJamState(DateTime.Now, vm);
 
                 HtmlSanitizer sanitizer = ContentHelper.GetHtmlSanitizer();
 
@@ -339,7 +339,7 @@ namespace LuduStack.Application.Services
                 GameJam gameJam = await mediator.Query<GetGameJamByIdQuery, GameJam>(new GetGameJamByIdQuery(jamId));
                 GameJamViewModel gameJamVm = mapper.Map<GameJamViewModel>(gameJam);
 
-                SetGameJamState(DateTime.Now.ToLocalTime(), gameJamVm);
+                SetGameJamState(DateTime.Now, gameJamVm);
 
                 IEnumerable<GameJamEntry> allModels = await mediator.Query<GetGameJamEntryListQuery, IEnumerable<GameJamEntry>>(new GetGameJamEntryListQuery(jamId, submittedOnly));
 
@@ -384,11 +384,11 @@ namespace LuduStack.Application.Services
 
                     if (vm.SubmissionDate != default)
                     {
-                        vm.CreateDate = vm.SubmissionDate.ToLocalTime();
+                        vm.CreateDate = vm.SubmissionDate;
                     }
                     else
                     {
-                        vm.CreateDate = vm.JoinDate.ToLocalTime();
+                        vm.CreateDate = vm.JoinDate;
                     }
 
                     vm.GameJam = gameJamVm;
@@ -457,7 +457,7 @@ namespace LuduStack.Application.Services
                 GameJam gameJam = await mediator.Query<GetGameJamByIdQuery, GameJam>(new GetGameJamByIdQuery(jamId));
                 GameJamViewModel gameJamVm = mapper.Map<GameJamViewModel>(gameJam);
 
-                SetGameJamState(DateTime.Now.ToLocalTime(), gameJamVm);
+                SetGameJamState(DateTime.Now, gameJamVm);
 
                 IEnumerable<GameJamEntry> allModels = await mediator.Query<GetGameJamWinnersQuery, IEnumerable<GameJamEntry>>(new GetGameJamWinnersQuery(jamId, winnerCount));
 
@@ -500,11 +500,11 @@ namespace LuduStack.Application.Services
 
                     if (vm.SubmissionDate != default)
                     {
-                        vm.CreateDate = vm.SubmissionDate.ToLocalTime();
+                        vm.CreateDate = vm.SubmissionDate;
                     }
                     else
                     {
-                        vm.CreateDate = vm.JoinDate.ToLocalTime();
+                        vm.CreateDate = vm.JoinDate;
                     }
 
                     vm.GameJam = gameJamVm;
@@ -711,13 +711,13 @@ namespace LuduStack.Application.Services
                 vm.UserHandler = authorProfile.Handler;
                 vm.AuthorPicture = UrlFormatter.ProfileImage(vm.UserId, Constants.BigAvatarSize);
 
-                SetGameJamState(DateTime.Now.ToLocalTime(), gameJamVm);
+                SetGameJamState(DateTime.Now, gameJamVm);
                 vm.SecondsToCountDown = gameJamVm.SecondsToCountDown;
 
                 await SetTeamMembers(vm);
 
-                vm.JoinDate = vm.JoinDate.ToLocalTime();
-                vm.SubmissionDate = vm.SubmissionDate.ToLocalTime();
+                vm.JoinDate = vm.JoinDate;
+                vm.SubmissionDate = vm.SubmissionDate;
 
                 SetVotes(currentUserId, gameJamVm, vm);
 
@@ -798,7 +798,7 @@ namespace LuduStack.Application.Services
 
         private static void SetViewModelStates(Guid currentUserId, bool currentUserIsAdmin, IEnumerable<GameJamViewModel> vms)
         {
-            DateTime localTime = DateTime.Now.ToLocalTime();
+            DateTime localTime = DateTime.Now;
             foreach (GameJamViewModel vm in vms)
             {
                 if (vm.Language == 0)
@@ -835,12 +835,12 @@ namespace LuduStack.Application.Services
                 vm.ResultDate = vm.VotingEndDate.AddDays(7);
             }
 
-            vm.CreateDate = vm.CreateDate.ToLocalTime();
+            vm.CreateDate = vm.CreateDate;
 
-            vm.StartDate = vm.StartDate.ToLocalTime();
-            vm.EntryDeadline = vm.EntryDeadline.ToLocalTime();
-            vm.VotingEndDate = vm.VotingEndDate.ToLocalTime();
-            vm.ResultDate = vm.ResultDate.ToLocalTime();
+            vm.StartDate = vm.StartDate;
+            vm.EntryDeadline = vm.EntryDeadline;
+            vm.VotingEndDate = vm.VotingEndDate;
+            vm.ResultDate = vm.ResultDate;
         }
 
         private static void SetGameJamState(DateTime localTime, GameJamViewModel vm)
