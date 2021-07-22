@@ -158,6 +158,8 @@ namespace LuduStack.Application.Services
 
                 GameJamViewModel vm = mapper.Map<GameJamViewModel>(model);
 
+                SetGameJamState(DateTime.Now, vm);
+
                 await SetForum(vm);
 
                 await SetJudges(vm);
@@ -845,6 +847,18 @@ namespace LuduStack.Application.Services
 
         private static void SetGameJamState(DateTime localTime, GameJamViewModel vm)
         {
+            int timeZoneDifference = 0;
+
+            if (!string.IsNullOrWhiteSpace(vm.TimeZone))
+            {
+                int.TryParse(vm.TimeZone, out timeZoneDifference);
+            }
+
+            vm.StartDate = vm.StartDate.ToLocalTime().AddHours(timeZoneDifference);
+            vm.EntryDeadline = vm.EntryDeadline.ToLocalTime().AddHours(timeZoneDifference);
+            vm.VotingEndDate = vm.VotingEndDate.ToLocalTime().AddHours(timeZoneDifference);
+            vm.ResultDate = vm.ResultDate.ToLocalTime().AddHours(timeZoneDifference);
+
             TimeSpan diff;
             if (vm.ResultDate <= localTime)
             {

@@ -76,20 +76,19 @@ namespace LuduStack.Domain.Messaging.Queries.GameJam
 
 
 
-            int timeZoneDifference = 0;
+            //int timeZoneDifference = 0;
 
-            if (!string.IsNullOrWhiteSpace(model.TimeZone))
-            {
-                int.TryParse(model.TimeZone, out timeZoneDifference);
-            }
+            //if (!string.IsNullOrWhiteSpace(model.TimeZone))
+            //{
+            //    int.TryParse(model.TimeZone, out timeZoneDifference);
+            //}
 
-
-            model.CreateDate = model.CreateDate;
-            model.PublishDate = model.PublishDate;
-            model.StartDate = model.StartDate.ToLocalTime().AddHours(timeZoneDifference);
-            model.EntryDeadline = model.EntryDeadline.ToLocalTime().AddHours(timeZoneDifference);
-            model.VotingEndDate = model.VotingEndDate.ToLocalTime().AddHours(timeZoneDifference);
-            model.ResultDate = model.ResultDate.ToLocalTime().AddHours(timeZoneDifference);
+            //model.CreateDate = model.CreateDate;
+            //model.PublishDate = model.PublishDate;
+            //model.StartDate = model.StartDate.AddHours(timeZoneDifference);
+            //model.EntryDeadline = model.EntryDeadline.AddHours(timeZoneDifference);
+            //model.VotingEndDate = model.VotingEndDate.AddHours(timeZoneDifference);
+            //model.ResultDate = model.ResultDate.AddHours(timeZoneDifference);
         }
     }
 }
