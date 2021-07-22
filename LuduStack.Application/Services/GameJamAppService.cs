@@ -115,8 +115,6 @@ namespace LuduStack.Application.Services
                 vm.AuthorName = authorProfile.Name;
                 vm.AuthorHandler = authorProfile.Handler;
 
-                SetGameJamState(DateTime.Now, vm);
-
                 HtmlSanitizer sanitizer = ContentHelper.GetHtmlSanitizer();
 
                 SanitizeHtml(vm, sanitizer);
@@ -125,6 +123,10 @@ namespace LuduStack.Application.Services
                 SetHighlights(vm);
 
                 SetGameJamImagesToShow(vm, false);
+
+                SetDates(vm);
+
+                SetGameJamCountdown(DateTime.Now, vm);
 
                 SetViewModelState(currentUserId, vm, entries);
 
@@ -158,7 +160,7 @@ namespace LuduStack.Application.Services
 
                 GameJamViewModel vm = mapper.Map<GameJamViewModel>(model);
 
-                SetGameJamState(DateTime.Now, vm);
+                SetDates(vm);
 
                 await SetForum(vm);
 
@@ -341,7 +343,7 @@ namespace LuduStack.Application.Services
                 GameJam gameJam = await mediator.Query<GetGameJamByIdQuery, GameJam>(new GetGameJamByIdQuery(jamId));
                 GameJamViewModel gameJamVm = mapper.Map<GameJamViewModel>(gameJam);
 
-                SetGameJamState(DateTime.Now, gameJamVm);
+                SetGameJamCountdown(DateTime.Now, gameJamVm);
 
                 IEnumerable<GameJamEntry> allModels = await mediator.Query<GetGameJamEntryListQuery, IEnumerable<GameJamEntry>>(new GetGameJamEntryListQuery(jamId, submittedOnly));
 
@@ -459,7 +461,7 @@ namespace LuduStack.Application.Services
                 GameJam gameJam = await mediator.Query<GetGameJamByIdQuery, GameJam>(new GetGameJamByIdQuery(jamId));
                 GameJamViewModel gameJamVm = mapper.Map<GameJamViewModel>(gameJam);
 
-                SetGameJamState(DateTime.Now, gameJamVm);
+                SetGameJamCountdown(DateTime.Now, gameJamVm);
 
                 IEnumerable<GameJamEntry> allModels = await mediator.Query<GetGameJamWinnersQuery, IEnumerable<GameJamEntry>>(new GetGameJamWinnersQuery(jamId, winnerCount));
 
@@ -713,7 +715,7 @@ namespace LuduStack.Application.Services
                 vm.UserHandler = authorProfile.Handler;
                 vm.AuthorPicture = UrlFormatter.ProfileImage(vm.UserId, Constants.BigAvatarSize);
 
-                SetGameJamState(DateTime.Now, gameJamVm);
+                SetGameJamCountdown(DateTime.Now, gameJamVm);
                 vm.SecondsToCountDown = gameJamVm.SecondsToCountDown;
 
                 await SetTeamMembers(vm);
@@ -810,7 +812,7 @@ namespace LuduStack.Application.Services
 
                 SetDates(vm);
 
-                SetGameJamState(localTime, vm);
+                SetGameJamCountdown(localTime, vm);
 
                 vm.FeaturedImage = SetFeaturedImage(vm.UserId, vm.FeaturedImage, ImageRenderType.Small, Constants.DefaultGamejamThumbnail);
 
@@ -837,16 +839,6 @@ namespace LuduStack.Application.Services
                 vm.ResultDate = vm.VotingEndDate.AddDays(7);
             }
 
-            vm.CreateDate = vm.CreateDate;
-
-            vm.StartDate = vm.StartDate;
-            vm.EntryDeadline = vm.EntryDeadline;
-            vm.VotingEndDate = vm.VotingEndDate;
-            vm.ResultDate = vm.ResultDate;
-        }
-
-        private static void SetGameJamState(DateTime localTime, GameJamViewModel vm)
-        {
             int timeZoneDifference = 0;
 
             if (!string.IsNullOrWhiteSpace(vm.TimeZone))
@@ -858,7 +850,10 @@ namespace LuduStack.Application.Services
             vm.EntryDeadline = vm.EntryDeadline.ToLocalTime().AddHours(timeZoneDifference);
             vm.VotingEndDate = vm.VotingEndDate.ToLocalTime().AddHours(timeZoneDifference);
             vm.ResultDate = vm.ResultDate.ToLocalTime().AddHours(timeZoneDifference);
+        }
 
+        private static void SetGameJamCountdown(DateTime localTime, GameJamViewModel vm)
+        {
             TimeSpan diff;
             if (vm.ResultDate <= localTime)
             {

@@ -26,6 +26,7 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
                 Handler = x.Handler,
                 Name = x.Name,
                 FeaturedImage = x.FeaturedImage,
+                TimeZone = x.TimeZone,
                 StartDate = x.StartDate,
                 EntryDeadline = x.EntryDeadline,
                 VotingEndDate = x.VotingEndDate,
