@@ -109,22 +109,19 @@ namespace LuduStack.Application.Services
 
                 GameJamViewModel vm = mapper.Map<GameJamViewModel>(model);
 
-                UserProfileEssentialVo authorProfile = await mediator.Query<GetBasicUserProfileDataByUserIdQuery, UserProfileEssentialVo>(new GetBasicUserProfileDataByUserIdQuery(model.UserId));
-                IEnumerable<Guid> entries = await mediator.Query<GetEntriesUserIdsQuery, IEnumerable<Guid>>(new GetEntriesUserIdsQuery(x => x.GameJamId == model.Id));
+                SetDates(vm);
 
-                vm.AuthorName = authorProfile.Name;
-                vm.AuthorHandler = authorProfile.Handler;
+                IEnumerable<Guid> entries = await mediator.Query<GetEntriesUserIdsQuery, IEnumerable<Guid>>(new GetEntriesUserIdsQuery(x => x.GameJamId == model.Id));
 
                 HtmlSanitizer sanitizer = ContentHelper.GetHtmlSanitizer();
 
                 SanitizeHtml(vm, sanitizer);
 
-                await SetJudges(vm);
+                await SetProfiles(vm);
+
                 SetHighlights(vm);
 
                 SetGameJamImagesToShow(vm, false);
-
-                SetDates(vm);
 
                 SetGameJamCountdown(DateTime.Now, vm);
 
@@ -164,7 +161,7 @@ namespace LuduStack.Application.Services
 
                 await SetForum(vm);
 
-                await SetJudges(vm);
+                await SetProfiles(vm);
 
                 SetCriteria(vm, false);
 
@@ -846,10 +843,10 @@ namespace LuduStack.Application.Services
                 int.TryParse(vm.TimeZone, out timeZoneDifference);
             }
 
-            vm.StartDate = vm.StartDate.AddHours(timeZoneDifference);
-            vm.EntryDeadline = vm.EntryDeadline.AddHours(timeZoneDifference);
-            vm.VotingEndDate = vm.VotingEndDate.AddHours(timeZoneDifference);
-            vm.ResultDate = vm.ResultDate.AddHours(timeZoneDifference);
+            vm.StartDate = vm.StartDate.ToUniversalTime().AddHours(timeZoneDifference);
+            vm.EntryDeadline = vm.EntryDeadline.ToUniversalTime().AddHours(timeZoneDifference);
+            vm.VotingEndDate = vm.VotingEndDate.ToUniversalTime().AddHours(timeZoneDifference);
+            vm.ResultDate = vm.ResultDate.ToUniversalTime().AddHours(timeZoneDifference);
         }
 
         private static void SetGameJamCountdown(DateTime localTime, GameJamViewModel vm)
@@ -900,14 +897,22 @@ namespace LuduStack.Application.Services
             }
         }
 
-        private async Task SetJudges(GameJamViewModel vm)
+        private async Task SetProfiles(GameJamViewModel vm)
         {
-            IEnumerable<Guid> judgesIds = vm.Judges.Select(x => x.UserId);
+            List<Guid> userIds = vm.Judges.Select(x => x.UserId).ToList();
+            userIds.Add(vm.UserId);
 
-            IEnumerable<UserProfileEssentialVo> judgesProfiles = await mediator.Query<GetBasicUserProfileDataByUserIdsQuery, IEnumerable<UserProfileEssentialVo>>(new GetBasicUserProfileDataByUserIdsQuery(judgesIds));
+            IEnumerable<UserProfileEssentialVo> profiles = await mediator.Query<GetBasicUserProfileDataByUserIdsQuery, IEnumerable<UserProfileEssentialVo>>(new GetBasicUserProfileDataByUserIdsQuery(userIds));
+
+            var authorProfile = profiles.FirstOrDefault(x => x.UserId == vm.UserId);
+            if (authorProfile != null)
+            {
+                vm.AuthorName = authorProfile.Name;
+                vm.AuthorHandler = authorProfile.Handler;
+            }
 
             vm.JudgesProfiles = new List<ProfileViewModel>();
-            foreach (UserProfileEssentialVo profileEssential in judgesProfiles)
+            foreach (UserProfileEssentialVo profileEssential in profiles)
             {
                 ProfileViewModel profile = new ProfileViewModel
                 {

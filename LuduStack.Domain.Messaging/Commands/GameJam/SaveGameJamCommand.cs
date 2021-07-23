@@ -60,17 +60,17 @@ namespace LuduStack.Domain.Messaging
 
             CheckImages(request);
 
-            int timeZoneDifference = 0;
+            //int timeZoneDifference = 0;
 
-            if (!string.IsNullOrWhiteSpace(request.GameJam.TimeZone))
-            {
-                int.TryParse(request.GameJam.TimeZone, out timeZoneDifference);
-            }
+            //if (!string.IsNullOrWhiteSpace(request.GameJam.TimeZone))
+            //{
+            //    int.TryParse(request.GameJam.TimeZone, out timeZoneDifference);
+            //}
 
-            request.GameJam.StartDate = (new DateTimeOffset(request.GameJam.StartDate, TimeSpan.Zero)).DateTime; //  request.GameJam.StartDate.AddHours(timeZoneDifference * -1);
-            request.GameJam.EntryDeadline = request.GameJam.EntryDeadline.AddHours(timeZoneDifference * -1);
-            request.GameJam.VotingEndDate = request.GameJam.VotingEndDate.AddHours(timeZoneDifference * -1);
-            request.GameJam.ResultDate = request.GameJam.ResultDate.AddHours(timeZoneDifference * -1);
+            //request.GameJam.StartDate = request.GameJam.StartDate.AddHours(timeZoneDifference * -1);
+            //request.GameJam.EntryDeadline = request.GameJam.EntryDeadline.AddHours(timeZoneDifference * -1);
+            //request.GameJam.VotingEndDate = request.GameJam.VotingEndDate.AddHours(timeZoneDifference * -1);
+            //request.GameJam.ResultDate = request.GameJam.ResultDate.AddHours(timeZoneDifference * -1);
 
             if (request.GameJam.Id == Guid.Empty)
             {
