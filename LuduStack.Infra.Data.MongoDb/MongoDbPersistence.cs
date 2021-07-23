@@ -24,7 +24,7 @@ namespace LuduStack.Infra.Data.MongoDb
 #pragma warning restore CS0618 // Type or member is obsolete
 
             BsonSerializer.RegisterSerializer(new GuidSerializer(GuidRepresentation.Standard));
-            BsonSerializer.RegisterSerializer(DateTimeSerializer.UtcInstance);
+            BsonSerializer.RegisterSerializer(DateTimeSerializer.LocalInstance);
 
             EntityBaseMap.Configure();
             UserProfileMap.Configure();

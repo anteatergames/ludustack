@@ -846,10 +846,10 @@ namespace LuduStack.Application.Services
                 int.TryParse(vm.TimeZone, out timeZoneDifference);
             }
 
-            vm.StartDate = vm.StartDate.ToLocalTime().AddHours(timeZoneDifference);
-            vm.EntryDeadline = vm.EntryDeadline.ToLocalTime().AddHours(timeZoneDifference);
-            vm.VotingEndDate = vm.VotingEndDate.ToLocalTime().AddHours(timeZoneDifference);
-            vm.ResultDate = vm.ResultDate.ToLocalTime().AddHours(timeZoneDifference);
+            vm.StartDate = vm.StartDate.AddHours(timeZoneDifference);
+            vm.EntryDeadline = vm.EntryDeadline.AddHours(timeZoneDifference);
+            vm.VotingEndDate = vm.VotingEndDate.AddHours(timeZoneDifference);
+            vm.ResultDate = vm.ResultDate.AddHours(timeZoneDifference);
         }
 
         private static void SetGameJamCountdown(DateTime localTime, GameJamViewModel vm)
