@@ -67,7 +67,7 @@ namespace LuduStack.Domain.Messaging
                 int.TryParse(request.GameJam.TimeZone, out timeZoneDifference);
             }
 
-            request.GameJam.StartDate = request.GameJam.StartDate.AddHours(timeZoneDifference * -1);
+            request.GameJam.StartDate = (new DateTimeOffset(request.GameJam.StartDate, TimeSpan.Zero)).DateTime; //  request.GameJam.StartDate.AddHours(timeZoneDifference * -1);
             request.GameJam.EntryDeadline = request.GameJam.EntryDeadline.AddHours(timeZoneDifference * -1);
             request.GameJam.VotingEndDate = request.GameJam.VotingEndDate.AddHours(timeZoneDifference * -1);
             request.GameJam.ResultDate = request.GameJam.ResultDate.AddHours(timeZoneDifference * -1);
