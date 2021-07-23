@@ -60,17 +60,7 @@ namespace LuduStack.Domain.Messaging
 
             CheckImages(request);
 
-            //int timeZoneDifference = 0;
-
-            //if (!string.IsNullOrWhiteSpace(request.GameJam.TimeZone))
-            //{
-            //    int.TryParse(request.GameJam.TimeZone, out timeZoneDifference);
-            //}
-
-            //request.GameJam.StartDate = request.GameJam.StartDate.AddHours(timeZoneDifference * -1);
-            //request.GameJam.EntryDeadline = request.GameJam.EntryDeadline.AddHours(timeZoneDifference * -1);
-            //request.GameJam.VotingEndDate = request.GameJam.VotingEndDate.AddHours(timeZoneDifference * -1);
-            //request.GameJam.ResultDate = request.GameJam.ResultDate.AddHours(timeZoneDifference * -1);
+            CheckDates(request);
 
             if (request.GameJam.Id == Guid.Empty)
             {
@@ -84,6 +74,21 @@ namespace LuduStack.Domain.Messaging
             result.Validation = await Commit(unitOfWork);
 
             return result;
+        }
+
+        private static void CheckDates(SaveGameJamCommand request)
+        {
+            int timeZoneDifference = 0;
+
+            if (!string.IsNullOrWhiteSpace(request.GameJam.TimeZone))
+            {
+                int.TryParse(request.GameJam.TimeZone, out timeZoneDifference);
+            }
+
+            request.GameJam.StartDate = request.GameJam.StartDate.ToLocalTime().AddHours(timeZoneDifference * -1);
+            request.GameJam.EntryDeadline = request.GameJam.EntryDeadline.ToLocalTime().AddHours(timeZoneDifference * -1);
+            request.GameJam.VotingEndDate = request.GameJam.VotingEndDate.ToLocalTime().AddHours(timeZoneDifference * -1);
+            request.GameJam.ResultDate = request.GameJam.ResultDate.ToLocalTime().AddHours(timeZoneDifference * -1);
         }
 
         private static void CheckImages(SaveGameJamCommand request)

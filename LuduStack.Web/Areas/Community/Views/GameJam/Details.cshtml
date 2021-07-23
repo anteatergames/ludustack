@@ -17,6 +17,9 @@
 
     var authorUrl = Url.Action("details", "profile", new { area = string.Empty, userHandler = Model.AuthorHandler });
     var authorLink = string.Format("<a href=\"{0}\" class=\"boldlink text-nowrap\">{1}</a>", authorUrl, Model.AuthorName);
+    var startDateLink = string.Format("<a target=\"_blank\" href=\"https://www.timeanddate.com/worldclock/fixedtime.html?iso={0}\">{1}</a>", Model.StartDate.ToUniversalTime().ToString("s", System.Globalization.CultureInfo.InvariantCulture), Model.StartDateToDisplay.ToString());
+    var deadLineDateLink = string.Format("<a target=\"_blank\" href=\"https://www.timeanddate.com/worldclock/fixedtime.html?iso={0}\">{1}</a>", Model.EntryDeadline.ToUniversalTime().ToString("s", System.Globalization.CultureInfo.InvariantCulture), Model.EntryDeadlineToDisplay.ToString());
+
 
     Model.Permissions.CanJoin = Model.Permissions.CanJoin && User.Identity.IsAuthenticated;
 
@@ -223,10 +226,22 @@
 
                     <hr />
 
-                    <div class="row m-2 justify-content-center">
-                        <span>@SharedLocalizer["from {0}", Model.StartDate.ToString()]</span>
-                        &nbsp;
-                        <span>@SharedLocalizer["until {0}", Model.EntryDeadline.ToString()]</span>
+                    <div class="row m-2 text-center">
+                        <div class="col-12">
+                            <span>@Html.Raw(SharedLocalizer["from {0}", startDateLink])</span>
+                            <span>@Html.Raw(SharedLocalizer["until {0}", deadLineDateLink])</span>
+                            @if (!string.IsNullOrWhiteSpace(Model.DurationText))
+                            {
+                                <text>&nbsp;</text>
+                                    <span>(@Model.DurationText)</span>
+                                    }
+                                </div>
+                        @if (!string.IsNullOrWhiteSpace(Model.TimeZone))
+                        {
+                            <div class="col-12">
+                                <span>@Model.TimeZone</span>
+                            </div>
+                        }
                     </div>
 
                     <div class="row m-2 justify-content-center">

@@ -89,6 +89,20 @@ namespace LuduStack.Application.ViewModels.GameJam
         [Display(Name = "Time Zone")]
         public string TimeZone { get; set; }
 
+        public int TimeZoneDifference {
+            get
+            {
+                int timeZoneDifference = 0;
+
+                if (!string.IsNullOrWhiteSpace(TimeZone))
+                {
+                    int.TryParse(TimeZone, out timeZoneDifference);
+                }
+
+                return timeZoneDifference;
+            }
+        }
+
         [Required(ErrorMessage = "This is needed")]
         [Display(Name = "Start Date", Description = "Here you set when this Game Jam starts.")]
         public DateTime StartDate { get; set; }
@@ -150,5 +164,14 @@ namespace LuduStack.Application.ViewModels.GameJam
         public bool HasWinners => Winners > 0;
 
         public bool ShowFinalResults { get; set; }
+
+        public DateTime EntryDeadlineToDisplay { get; set; }
+
+        public DateTime StartDateToDisplay { get; set; }
+
+        public DateTime VotingEndDateToDisplay { get; set; }
+
+        public DateTime ResultDateToDisplay { get; set; }
+        public string DurationText { get; set; }
     }
 }

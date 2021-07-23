@@ -6,6 +6,7 @@ using LuduStack.Domain.ValueObjects;
 using LuduStack.Web.Areas.Community.Controllers;
 using LuduStack.Web.Extensions;
 using LuduStack.Web.Extensions.ViewModelExtensions;
+using LuduStack.Web.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -161,6 +162,10 @@ namespace LuduStack.Web.Areas.Staff.Controllers
                     GameJamViewModel model = serviceResult.Value;
 
                     SetShare(model);
+
+                    SetTimeZoneText(model);
+
+                    model.DurationText = DateTimeHelper.DurationBetweenDatesForGameJam(model.StartDate, model.EntryDeadline, SharedLocalizer);
 
                     return View(model);
                 }
@@ -509,6 +514,15 @@ namespace LuduStack.Web.Areas.Staff.Controllers
             }
 
             ViewBag.TimeZones = timeZones;
+        }
+
+        private void SetTimeZoneText(GameJamViewModel model)
+        {
+            List<SelectListItem> timeZones = Constants.TimeZoneSelectList.ToList();
+
+            var selectedTimeZone = timeZones.FirstOrDefault(x => x.Value.Equals(model.TimeZoneDifference.ToString()));
+
+            model.TimeZone = selectedTimeZone == null ? string.Empty : selectedTimeZone.Text;
         }
     }
 }

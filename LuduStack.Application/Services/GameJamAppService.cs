@@ -109,7 +109,9 @@ namespace LuduStack.Application.Services
 
                 GameJamViewModel vm = mapper.Map<GameJamViewModel>(model);
 
-                SetDates(vm);
+                SetGameJamCountdown(DateTime.Now, vm);
+
+                SetDatesForDisplay(vm);
 
                 IEnumerable<Guid> entries = await mediator.Query<GetEntriesUserIdsQuery, IEnumerable<Guid>>(new GetEntriesUserIdsQuery(x => x.GameJamId == model.Id));
 
@@ -122,8 +124,6 @@ namespace LuduStack.Application.Services
                 SetHighlights(vm);
 
                 SetGameJamImagesToShow(vm, false);
-
-                SetGameJamCountdown(DateTime.Now, vm);
 
                 SetViewModelState(currentUserId, vm, entries);
 
@@ -157,7 +157,7 @@ namespace LuduStack.Application.Services
 
                 GameJamViewModel vm = mapper.Map<GameJamViewModel>(model);
 
-                SetDates(vm);
+                SetDatesForEdit(vm);
 
                 await SetForum(vm);
 
@@ -807,9 +807,9 @@ namespace LuduStack.Application.Services
                     vm.Language = SupportedLanguage.English;
                 }
 
-                SetDates(vm);
-
                 SetGameJamCountdown(localTime, vm);
+
+                SetDatesForDisplay(vm);
 
                 vm.FeaturedImage = SetFeaturedImage(vm.UserId, vm.FeaturedImage, ImageRenderType.Small, Constants.DefaultGamejamThumbnail);
 
@@ -817,7 +817,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        private static void SetDates(GameJamViewModel vm)
+        private static void SetInitialDates(GameJamViewModel vm)
         {
             if (vm.StartDate == default)
             {
@@ -835,6 +835,21 @@ namespace LuduStack.Application.Services
             {
                 vm.ResultDate = vm.VotingEndDate.AddDays(7);
             }
+        }
+
+        private static void SetDatesForDisplay(GameJamViewModel vm)
+        {
+            SetInitialDates(vm);
+
+            vm.StartDateToDisplay = vm.StartDate.AddHours(vm.TimeZoneDifference);
+            vm.EntryDeadlineToDisplay = vm.EntryDeadline.AddHours(vm.TimeZoneDifference);
+            vm.VotingEndDateToDisplay = vm.VotingEndDate.AddHours(vm.TimeZoneDifference);
+            vm.ResultDateToDisplay = vm.ResultDate.AddHours(vm.TimeZoneDifference);
+        }
+
+        private static void SetDatesForEdit(GameJamViewModel vm)
+        {
+            SetInitialDates(vm);
 
             int timeZoneDifference = 0;
 
@@ -843,44 +858,51 @@ namespace LuduStack.Application.Services
                 int.TryParse(vm.TimeZone, out timeZoneDifference);
             }
 
-            vm.StartDate = vm.StartDate.ToUniversalTime().AddHours(timeZoneDifference);
-            vm.EntryDeadline = vm.EntryDeadline.ToUniversalTime().AddHours(timeZoneDifference);
-            vm.VotingEndDate = vm.VotingEndDate.ToUniversalTime().AddHours(timeZoneDifference);
-            vm.ResultDate = vm.ResultDate.ToUniversalTime().AddHours(timeZoneDifference);
+            vm.StartDate = vm.StartDate.AddHours(timeZoneDifference);
+            vm.EntryDeadline = vm.EntryDeadline.AddHours(timeZoneDifference);
+            vm.VotingEndDate = vm.VotingEndDate.AddHours(timeZoneDifference);
+            vm.ResultDate = vm.ResultDate.AddHours(timeZoneDifference);
         }
 
         private static void SetGameJamCountdown(DateTime localTime, GameJamViewModel vm)
         {
+            localTime = localTime.ToUniversalTime();
+
+            var startDateUtc = vm.StartDate.ToUniversalTime();
+            var deadLineDateUtc = vm.EntryDeadline.ToUniversalTime();
+            var votingEndDateUtc = vm.VotingEndDate.ToUniversalTime();
+            var resultDateDateUtc = vm.ResultDate.ToUniversalTime();
+
             TimeSpan diff;
-            if (vm.ResultDate <= localTime)
+            if (resultDateDateUtc <= localTime)
             {
                 vm.CurrentPhase = GameJamPhase.Finished;
                 vm.CountDownMessage = "We did it!";
                 diff = new TimeSpan();
             }
-            else if (vm.VotingEndDate <= localTime && vm.ResultDate > localTime)
+            else if (votingEndDateUtc <= localTime && resultDateDateUtc > localTime)
             {
                 vm.CurrentPhase = GameJamPhase.Results;
                 vm.CountDownMessage = "Results in";
-                diff = vm.ResultDate - localTime;
+                diff = resultDateDateUtc - localTime;
             }
-            else if (vm.EntryDeadline <= localTime && vm.VotingEndDate > localTime)
+            else if (deadLineDateUtc <= localTime && votingEndDateUtc > localTime)
             {
                 vm.CurrentPhase = GameJamPhase.Voting;
                 vm.CountDownMessage = "Voting";
-                diff = vm.VotingEndDate - localTime;
+                diff = votingEndDateUtc - localTime;
             }
-            else if (vm.StartDate <= localTime && vm.EntryDeadline > localTime)
+            else if (startDateUtc <= localTime && deadLineDateUtc > localTime)
             {
                 vm.CurrentPhase = GameJamPhase.Submission;
                 vm.CountDownMessage = "Deadline";
-                diff = vm.EntryDeadline - localTime;
+                diff = deadLineDateUtc - localTime;
             }
             else
             {
                 vm.CurrentPhase = GameJamPhase.Warmup;
                 vm.CountDownMessage = "Starts in";
-                diff = vm.StartDate - localTime;
+                diff = startDateUtc - localTime;
             }
             vm.SecondsToCountDown = (int)diff.TotalSeconds;
         }

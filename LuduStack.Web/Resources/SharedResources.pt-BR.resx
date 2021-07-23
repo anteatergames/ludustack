@@ -4222,4 +4222,24 @@
     <value>avaliação</value>
     <comment>Game Jam</comment>
   </data>
+  <data name="and {0} hours" xml:space="preserve">
+    <value>e {0} horas</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="{0} days" xml:space="preserve">
+    <value>{0} dias</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="and {0} hour" xml:space="preserve">
+    <value>e {0} hora</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="{0} hour" xml:space="preserve">
+    <value>{0} hora</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="{0} hours" xml:space="preserve">
+    <value>{0} horas</value>
+    <comment>Game Jam</comment>
+  </data>
 </root>
