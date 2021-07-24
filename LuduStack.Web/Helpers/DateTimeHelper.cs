@@ -119,17 +119,12 @@ namespace LuduStack.Web.Helpers
 
         public static string DurationBetweenDatesForGameJam(DateTime dateOne, DateTime dateTwo, IStringLocalizer localizer)
         {
-            const int SECOND = 1;
-            const int MINUTE = 60 * SECOND;
-            const int HOUR = 60 * MINUTE;
-            const int DAY = 24 * HOUR;
-
             TimeSpan ts = new TimeSpan(dateTwo.Ticks - dateOne.Ticks);
             double delta = Math.Abs(ts.TotalSeconds);
 
             StringBuilder sb = new StringBuilder();
 
-            var totalHours = Math.Ceiling((decimal)ts.TotalHours);
+            decimal totalHours = Math.Ceiling((decimal)ts.TotalHours);
 
             if (totalHours < 73)
             {
@@ -158,7 +153,7 @@ namespace LuduStack.Web.Helpers
 
                 if (ts.Hours > 0)
                 {
-                    var remainingHours = Math.Ceiling((decimal)ts.Hours);
+                    decimal remainingHours = Math.Ceiling((decimal)ts.Hours);
 
                     sb.Append(" ");
                     if (remainingHours == 1)

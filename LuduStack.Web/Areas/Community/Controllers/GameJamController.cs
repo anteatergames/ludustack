@@ -520,7 +520,7 @@ namespace LuduStack.Web.Areas.Staff.Controllers
         {
             List<SelectListItem> timeZones = Constants.TimeZoneSelectList.ToList();
 
-            var selectedTimeZone = timeZones.FirstOrDefault(x => x.Value.Equals(model.TimeZoneDifference.ToString()));
+            SelectListItem selectedTimeZone = timeZones.FirstOrDefault(x => x.Value.Equals(model.TimeZoneDifference.ToString()));
 
             model.TimeZone = selectedTimeZone == null ? string.Empty : selectedTimeZone.Text;
         }

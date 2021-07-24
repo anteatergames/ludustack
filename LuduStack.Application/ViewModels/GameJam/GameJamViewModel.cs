@@ -89,7 +89,8 @@ namespace LuduStack.Application.ViewModels.GameJam
         [Display(Name = "Time Zone")]
         public string TimeZone { get; set; }
 
-        public int TimeZoneDifference {
+        public int TimeZoneDifference
+        {
             get
             {
                 int timeZoneDifference = 0;

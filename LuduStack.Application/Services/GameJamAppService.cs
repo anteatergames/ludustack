@@ -868,10 +868,10 @@ namespace LuduStack.Application.Services
         {
             localTime = localTime.ToUniversalTime();
 
-            var startDateUtc = vm.StartDate.ToUniversalTime();
-            var deadLineDateUtc = vm.EntryDeadline.ToUniversalTime();
-            var votingEndDateUtc = vm.VotingEndDate.ToUniversalTime();
-            var resultDateDateUtc = vm.ResultDate.ToUniversalTime();
+            DateTime startDateUtc = vm.StartDate.ToUniversalTime();
+            DateTime deadLineDateUtc = vm.EntryDeadline.ToUniversalTime();
+            DateTime votingEndDateUtc = vm.VotingEndDate.ToUniversalTime();
+            DateTime resultDateDateUtc = vm.ResultDate.ToUniversalTime();
 
             TimeSpan diff;
             if (resultDateDateUtc <= localTime)
@@ -926,7 +926,7 @@ namespace LuduStack.Application.Services
 
             IEnumerable<UserProfileEssentialVo> profiles = await mediator.Query<GetBasicUserProfileDataByUserIdsQuery, IEnumerable<UserProfileEssentialVo>>(new GetBasicUserProfileDataByUserIdsQuery(userIds));
 
-            var authorProfile = profiles.FirstOrDefault(x => x.UserId == vm.UserId);
+            UserProfileEssentialVo authorProfile = profiles.FirstOrDefault(x => x.UserId == vm.UserId);
             if (authorProfile != null)
             {
                 vm.AuthorName = authorProfile.Name;
