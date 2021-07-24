@@ -184,6 +184,7 @@
         imagesProcessed = 0;
         var imageDivElements = document.querySelectorAll(`${imageDivSelector}`);
         var changedInputs = Array.from(document.querySelectorAll(`${selectors.inputImageListItem}`)).filter(x => x.dataset.changed === 'true');
+        console.log(changedInputs);
 
         var totalImageCont = imageDivElements.length;
 

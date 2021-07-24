@@ -717,9 +717,6 @@ namespace LuduStack.Application.Services
 
                 await SetTeamMembers(vm);
 
-                vm.JoinDate = vm.JoinDate;
-                vm.SubmissionDate = vm.SubmissionDate;
-
                 SetVotes(currentUserId, gameJamVm, vm);
 
                 vm.IsWinner = vm.FinalPlace <= gameJamVm.Winners;

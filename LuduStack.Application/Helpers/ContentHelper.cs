@@ -64,10 +64,6 @@ namespace LuduStack.Application.Helpers
             sanitizer.AllowedAttributes.Add("data-oembed-url");
             sanitizer.AllowedCssProperties.Remove("margin");
             sanitizer.AllowedCssProperties.Add("position");
-            //sanitizer.AllowedClasses.Add("media");
-            //sanitizer.AllowedClasses.Add("language-cs");
-            //sanitizer.AllowedClasses.Add("language-csharp");
-            //sanitizer.AllowedClasses.Add("language-js");
 
             return sanitizer;
         }

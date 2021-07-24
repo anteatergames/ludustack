@@ -120,7 +120,6 @@ namespace LuduStack.Web.Helpers
         public static string DurationBetweenDatesForGameJam(DateTime dateOne, DateTime dateTwo, IStringLocalizer localizer)
         {
             TimeSpan ts = new TimeSpan(dateTwo.Ticks - dateOne.Ticks);
-            double delta = Math.Abs(ts.TotalSeconds);
 
             StringBuilder sb = new StringBuilder();
 
