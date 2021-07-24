@@ -419,13 +419,13 @@ namespace LuduStack.Web.Areas.Staff.Controllers
         }
 
         [HttpPost("/jam/{jamHandler}/submitgame")]
-        public async Task<IActionResult> SubmitGame(string jamHandler, Guid gameId, IEnumerable<GameJamTeamMemberViewModel> teamMembers)
+        public async Task<IActionResult> SubmitGame(string jamHandler, Guid gameId, string extraInformation, IEnumerable<GameJamTeamMemberViewModel> teamMembers)
         {
             OperationResultVo result;
 
             try
             {
-                OperationResultVo submitGameResult = await gameJamAppService.SubmitGame(CurrentUserId, jamHandler, gameId, teamMembers);
+                OperationResultVo submitGameResult = await gameJamAppService.SubmitGame(CurrentUserId, jamHandler, gameId, extraInformation, teamMembers);
 
                 if (submitGameResult.Success)
                 {

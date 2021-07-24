@@ -26,6 +26,11 @@ namespace LuduStack.Application.ViewModels.GameJam
 
         public int FinalPlace { get; set; }
 
+        public decimal TotalScore { get; set; }
+
+        [Display(Name = "Extra Information", Description = "Fill this if you want to give any extra information about your game to the judges or to the community.")]
+        public string ExtraInformation { get; set; }
+
         [Display(Name = "Team Members", Description = "This is the team.")]
         public List<GameJamTeamMemberViewModel> TeamMembers { get; set; }
 
@@ -62,8 +67,6 @@ namespace LuduStack.Application.ViewModels.GameJam
         public string Location { get; set; }
 
         #endregion IUserProfileBasic
-
-        public decimal TotalScore { get; set; }
 
         public bool CanShowResults { get; set; }
 

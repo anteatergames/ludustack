@@ -15,12 +15,14 @@ namespace LuduStack.Domain.Messaging
     public class SubmitGameJamEntryCommand : BaseUserCommand
     {
         public Guid GameId { get; set; }
+        public string ExtraInformation { get; set; }
 
         public IEnumerable<Guid> TeamMembersIds { get; }
 
-        public SubmitGameJamEntryCommand(Guid userId, Guid entryId, Guid gameId, IEnumerable<Guid> teamMembersIds) : base(userId, entryId)
+        public SubmitGameJamEntryCommand(Guid userId, Guid entryId, Guid gameId, string extraInformation, IEnumerable<Guid> teamMembersIds) : base(userId, entryId)
         {
             GameId = gameId;
+            ExtraInformation = extraInformation;
             TeamMembersIds = teamMembersIds;
         }
 
@@ -58,6 +60,7 @@ namespace LuduStack.Domain.Messaging
             if (existing != null)
             {
                 existing.GameId = request.GameId;
+                existing.ExtraInformation = request.ExtraInformation;
                 existing.SubmissionDate = DateTime.Now;
 
                 gameJamDomainService.CheckTeamMembers(existing, request.TeamMembersIds);
@@ -71,6 +74,7 @@ namespace LuduStack.Domain.Messaging
             {
                 GameJamEntry entry = GenerateNewEntry(request.UserId, request.Id);
                 entry.GameId = request.GameId;
+                entry.ExtraInformation = request.ExtraInformation;
                 entry.SubmissionDate = DateTime.Now;
 
                 gameJamDomainService.CheckTeamMembers(entry, request.TeamMembersIds);

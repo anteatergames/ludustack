@@ -295,6 +295,7 @@
 
                     @if (Model.ShowCriteria)
                     {
+                        <hr />
                         @if (!Model.Criteria.Any())
                         {
                             <partial name="_ListNoItems" model="noCriteriaModel" />

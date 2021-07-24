@@ -578,7 +578,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public async Task<OperationResultVo> SubmitGame(Guid currentUserId, string jamHandler, Guid gameId, IEnumerable<GameJamTeamMemberViewModel> teamMembers)
+        public async Task<OperationResultVo> SubmitGame(Guid currentUserId, string jamHandler, Guid gameId, string extraInformation, IEnumerable<GameJamTeamMemberViewModel> teamMembers)
         {
             try
             {
@@ -598,7 +598,7 @@ namespace LuduStack.Application.Services
 
                 IEnumerable<Guid> teamMembersIds = teamMembers.Select(x => x.UserId);
 
-                CommandResult result = await mediator.SendCommand(new SubmitGameJamEntryCommand(currentUserId, entry.Id, gameId, teamMembersIds));
+                CommandResult result = await mediator.SendCommand(new SubmitGameJamEntryCommand(currentUserId, entry.Id, gameId, extraInformation, teamMembersIds));
 
                 if (!result.Validation.IsValid)
                 {

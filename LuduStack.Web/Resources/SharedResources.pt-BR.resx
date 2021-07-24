@@ -4242,4 +4242,12 @@
     <value>{0} horas</value>
     <comment>Game Jam</comment>
   </data>
+  <data name="Extra Information" xml:space="preserve">
+    <value>Informação Extra</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Fill this if you want to give any extra information about your game to the judges or to the community." xml:space="preserve">
+    <value>Preencha isso se você deseja fornecer alguma informação extra sobre seu jogo para os jurados ou para a comunidade.</value>
+    <comment>Game Jam</comment>
+  </data>
 </root>
