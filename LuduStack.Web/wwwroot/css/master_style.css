@@ -17,7 +17,7 @@ body {
     border-radius: 0;
 }
 
-    .box-body:after, .box-footer:after, .box-header:after, .navbar-nav > .messages-menu > .dropdown-menu > li .menu > li > a:after, .navbar-nav > .user-menu > .dropdown-menu > .user-body:after, .navbar-nav > .user-menu > .dropdown-menu > .user-footer:after, .user-block:after, .user-panel:after, .wrapper:after {
+    .box-body::after, .box-footer::after, .box-header::after, .navbar-nav > .messages-menu > .dropdown-menu > li .menu > li > a::after, .navbar-nav > .user-menu > .dropdown-menu > .user-body::after, .navbar-nav > .user-menu > .dropdown-menu > .user-footer::after, .user-block::after, .user-panel::after, .wrapper::after {
         clear: both;
     }
 
@@ -29,7 +29,7 @@ div {
     overflow: hidden;
 }
 
-.wrapper:after, .wrapper:before {
+.wrapper::after, .wrapper::before {
     content: " ";
     display: table;
 }
@@ -107,13 +107,13 @@ div {
         float: right;
     }
 
-@media (max-width:991px) {
+@media (max-width: 991px) {
     .main-header .navbar-custom-menu a, .main-header .navbar-right a {
         color: inherit;
     }
 }
 
-@media (max-width:767px) {
+@media (max-width: 767px) {
     .main-header .navbar-right {
         float: none;
     }
@@ -128,7 +128,7 @@ div {
     }
 }
 
-@media (max-width:991px) {
+@media (max-width: 991px) {
     .navbar-custom-menu .navbar-nav > li {
         float: left;
     }
@@ -152,7 +152,7 @@ div {
     padding: 15px;
 }
 
-@media (max-width:767px) {
+@media (max-width: 767px) {
     .main-header {
         position: fixed;
     }
@@ -250,7 +250,7 @@ div {
     background-color: #f83f37;
 }
 
-@media (max-width:991px) {
+@media (max-width: 991px) {
     .main-header .messages-menu .dropdown-toggle i::after, .main-header .notifications-menu .dropdown-toggle.newmessages i::after, .main-header .tasks-menu .dropdown-toggle i::after {
         right: auto;
     }
@@ -332,7 +332,7 @@ div {
         display: block;
     }
 
-@media (max-width:991px) {
+@media (max-width: 991px) {
     .navbar-nav > .notifications-menu > .dropdown-menu > li.footer > a {
         background: #fff;
         color: #444 !important;
@@ -388,7 +388,7 @@ div {
         left: auto;
     }
 
-@media (max-width:991px) {
+@media (max-width: 991px) {
     .navbar-nav > .user-menu > .dropdown-menu > .user-footer .btn-default:hover {
         background-color: #f9f9f9;
     }
@@ -774,7 +774,7 @@ ul.flexbox {
     z-index: 2;
 }
 
-    .percent:after {
+    .percent::after {
         content: '%';
         margin-left: 0.1em;
         font-size: .8em;
@@ -1043,12 +1043,12 @@ ul.flexbox {
     padding-top: 8px;
 }
 
-    .box-comments .box-comment:after, .box-comments .box-comment:before {
+    .box-comments .box-comment::after, .box-comments .box-comment::before {
         content: " ";
         display: table;
     }
 
-    .box-comments .box-comment:after {
+    .box-comments .box-comment::after {
         clear: both;
     }
 
@@ -1126,14 +1126,14 @@ ul.flexbox {
     pointer-events: none;
 }
 
-.control_indicator:after {
+.control_indicator::after {
     box-sizing: unset;
     content: '';
     position: absolute;
     display: none;
 }
 
-.control input:checked ~ .control_indicator:after {
+.control input:checked ~ .control_indicator::after {
     display: block;
 }
 
@@ -1550,18 +1550,18 @@ button.btn.dropdown-toggle::after, .wysihtml5-toolbar .btn.dropdown-toggle::afte
 
 /*lable floting*/
 
-.has-warning .bar:before,
-.has-warning .bar:after {
+.has-warning .bar::before,
+.has-warning .bar::after {
     background: #ffbf36;
 }
 
-.has-success .bar:before,
-.has-success .bar:after {
+.has-success .bar::before,
+.has-success .bar::after {
     background: #22af47;
 }
 
-.has-error .bar:before,
-.has-error .bar:after {
+.has-error .bar::before,
+.has-error .bar::after {
     background: #f83f37;
 }
 
@@ -1643,7 +1643,7 @@ button.btn.dropdown-toggle::after, .wysihtml5-toolbar .btn.dropdown-toggle::afte
     display: inline-block;
 }
 
-@media (max-width:767px) {
+@media (max-width: 767px) {
     .error-page .headline {
         font-size: 72px;
         font-weight: 900;
@@ -1655,7 +1655,7 @@ button.btn.dropdown-toggle::after, .wysihtml5-toolbar .btn.dropdown-toggle::afte
     font-size: 25px;
 }
 
-@media (max-width:991px) {
+@media (max-width: 991px) {
     .error-page {
         width: 100%
     }
@@ -1744,7 +1744,7 @@ button.btn.dropdown-toggle::after, .wysihtml5-toolbar .btn.dropdown-toggle::afte
     font-size: 16px;
 }
 
-.user-block:after, .user-block:before {
+.user-block::after, .user-block::before {
     content: " ";
     display: table;
 }

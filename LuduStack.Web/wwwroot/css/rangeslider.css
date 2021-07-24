@@ -21,7 +21,7 @@
     border-radius: 50%;
 }
 
-    .rangeslider__handle:after {
+    .rangeslider__handle::after {
         background: 0;
         content: "";
         display: block;

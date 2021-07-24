@@ -138,6 +138,7 @@
     }
 
     function handlePointsEarned(response) {
+        console.log(response);
         if (response.pointsEarned > 0) {
             var msg = translatedMessages['mgsPointsEarned'];
             msg = msg.replace('0', response.pointsEarned);

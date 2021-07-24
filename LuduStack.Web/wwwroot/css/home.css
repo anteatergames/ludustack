@@ -1,4 +1,9 @@
-﻿.commentmodal .modal-body {
+﻿/* Firefox < 19 */
+input:-moz-placeholder {
+    color: #999;
+}
+
+.commentmodal .modal-body {
     height: 58px;
 }
 
@@ -114,11 +119,6 @@ input::-webkit-input-placeholder {
 
 input:focus::-webkit-input-placeholder {
     color: #c7c7c7;
-}
-
-/* Firefox < 19 */
-input:-moz-placeholder {
-    color: #999;
 }
 
 input:focus:-moz-placeholder {

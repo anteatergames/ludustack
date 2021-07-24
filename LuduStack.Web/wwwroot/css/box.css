@@ -74,7 +74,7 @@
         font-size: 78px;
     }
 
-@media (max-width:767px) {
+@media (max-width: 767px) {
     .small-box {
         text-align: center;
     }
@@ -115,7 +115,7 @@
         background: rgba(0, 0, 0, .5);
     }
 
-.box-body:after, .box-body:before, .box-footer:after, .box-footer:before, .box-header:after, .box-header:before {
+.box-body::after, .box-body::before, .box-footer::after, .box-footer::before, .box-header::after, .box-header::before {
     content: " ";
     display: table;
 }

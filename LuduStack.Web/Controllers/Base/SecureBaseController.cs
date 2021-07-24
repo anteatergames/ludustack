@@ -116,7 +116,7 @@ namespace LuduStack.Web.Controllers.Base
                 }
 
                 string pointsEarned = context.HttpContext.Request.Query["pointsEarned"].FirstOrDefault();
-                if (!string.IsNullOrWhiteSpace(pointsEarned))
+                if (!string.IsNullOrWhiteSpace(pointsEarned) && !pointsEarned.Equals("0"))
                 {
                     TempData["MessagePoints"] = SharedLocalizer["You earned {0} points. Awesome!", pointsEarned].Value;
                 }
@@ -210,11 +210,14 @@ namespace LuduStack.Web.Controllers.Base
                 case "pt-BR":
                 case "pt":
                     return SupportedLanguage.Portuguese;
+
                 case "ru":
                 case "ru-RU":
                     return SupportedLanguage.Russian;
+
                 case "es":
                     return SupportedLanguage.Spanish;
+
                 default:
                     return SupportedLanguage.English;
             }

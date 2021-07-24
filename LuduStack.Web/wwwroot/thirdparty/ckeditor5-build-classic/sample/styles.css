@@ -295,8 +295,8 @@ body[ data-editor='InlineEditor'] .collaboration-demo__row {
 	border-top: none;
 }
 
-.collaboration-demo__share button[data-tooltip]:hover:before,
-.collaboration-demo__share button[data-tooltip]:hover:after {
+.collaboration-demo__share button[data-tooltip]:hover::before,
+.collaboration-demo__share button[data-tooltip]:hover::after {
 	visibility: visible;
     opacity: 1;
 }

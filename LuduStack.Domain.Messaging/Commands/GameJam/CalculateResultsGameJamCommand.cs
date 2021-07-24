@@ -66,7 +66,6 @@ namespace LuduStack.Domain.Messaging
                 CalculateScoreForEntry(gameJam, entry);
             }
 
-
             foreach (GameJamCriteria criteria in gameJam.Criteria)
             {
                 entryList = entryList.OrderByDescending(x => x.CriteriaResults.FirstOrDefault(y => y.Criteria == criteria.Type)?.Score).ToList();

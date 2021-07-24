@@ -4250,4 +4250,12 @@
     <value>Preencha isso se você deseja fornecer alguma informação extra sobre seu jogo para os jurados ou para a comunidade.</value>
     <comment>Game Jam</comment>
   </data>
+  <data name="Content saved!" xml:space="preserve">
+    <value>Conteúdo salvo!</value>
+    <comment>Generic</comment>
+  </data>
+  <data name="Post published!" xml:space="preserve">
+    <value>Post publicado!</value>
+    <comment>Generic</comment>
+  </data>
 </root>

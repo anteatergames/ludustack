@@ -148,7 +148,7 @@ html {
     position: relative;
 }
 
-    .hr-arrow-down:before {
+    .hr-arrow-down::before {
         position: absolute;
         left: 0;
         right: 0;
@@ -177,7 +177,7 @@ html {
     position: relative;
 }
 
-    .hr-top:before {
+    .hr-top::before {
         position: absolute;
         left: 0;
         right: 0;
@@ -347,7 +347,7 @@ img.imagelistitem {
     background-color: var(--light);
 }
 
-.entryoption:before {
+.entryoption::before {
     margin-top: 0.5rem !important;
     content: "";
     border-radius: 5px;
@@ -359,7 +359,7 @@ img.imagelistitem {
     background-color: #fff;
 }
 
-.entryoption.checked:before {
+.entryoption.checked::before {
     background-color: var(--success);
     border: 2px solid var(--success);
     background-image: url(/images/giveaway/icon-check.svg);
@@ -388,7 +388,7 @@ img.imagelistitem {
         text-decoration: none;
     }
 
-.entryoption .btn-points:before {
+.entryoption .btn-points::before {
     content: "";
     height: 25px;
     width: 25px;

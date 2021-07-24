@@ -125,7 +125,6 @@
 
     function bundNumbersOnly() {
         objs.container.on('keypress', selectors.numberOnly, function (e) {
-
             var code = (event.keyCode ? event.keyCode : event.which);
 
             if (!(code >= 48 && code <= 57)) {

@@ -317,7 +317,6 @@
 
                         postDiv.css('height', '');
 
-
                         hljs.highlightAll();
                     }
                 });

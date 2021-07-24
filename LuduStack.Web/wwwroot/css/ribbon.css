@@ -10,7 +10,7 @@
     z-index: 50;
 }
 
-    #ribbon-container:before {
+    #ribbon-container::before {
         content: "";
         height: 0;
         width: 0;
@@ -24,7 +24,7 @@
         border-left: 29px solid transparent;
     }
 
-    #ribbon-container:after { /* This adds the second part of our dropshadow */
+    #ribbon-container::after { /* This adds the second part of our dropshadow */
         content: "";
         height: 3px;
         background: rgba(0, 0, 0, .3);
@@ -47,7 +47,7 @@
         text-decoration: none;
     }
 
-        #ribbon-container span:after { /* this creates the "folded" part of our ribbon */
+        #ribbon-container span::after { /* this creates the "folded" part of our ribbon */
             content: "";
             height: 0;
             width: 0;
@@ -59,7 +59,7 @@
             border-right: 15px solid transparent;
         }
 
-        #ribbon-container span:before { /* this creates the "forked" part of our ribbon */
+        #ribbon-container span::before { /* this creates the "forked" part of our ribbon */
             content: "";
             height: 0;
             width: 0;
@@ -77,7 +77,7 @@
             background: #009ff1;
         }
 
-            #ribbon-container span a:hover:before { /* this makes sure that the "forked" part of the ribbon changes color with the anchor on :hover */
+            #ribbon-container span a:hover::before { /* this makes sure that the "forked" part of the ribbon changes color with the anchor on :hover */
                 border-top: 29px solid #009ff1;
                 border-bottom: 29px solid #009ff1;
             }
@@ -86,12 +86,12 @@
         background: var(--blue);
     }
 
-        #ribbon-container.blue span:before {
+        #ribbon-container.blue span::before {
             border-top: 29px solid var(--blue);
             border-bottom: 29px solid var(--blue);
         }
 
-        #ribbon-container.blue span:after {
+        #ribbon-container.blue span::after {
             border-top: 15px solid #004a70;
         }
 
@@ -144,7 +144,7 @@
             transition: width .12s ease-in-out;
         }
 
-        .ribbon [class*="ribbon-"]:before {
+        .ribbon [class*="ribbon-"]::before {
             content: '';
             -webkit-transform-origin: 0 0;
             transform-origin: 0 0;
@@ -176,7 +176,7 @@
         transition-delay: .82s;
     }
 
-    .ribbon.active .ribbon-1:before {
+    .ribbon.active .ribbon-1::before {
         width: 158px;
         -webkit-transform: rotate(-17.25deg) skewX(-9deg) translateX(0);
         transform: rotate(-17.25deg) skewX(-9deg) translateX(0);
@@ -194,7 +194,7 @@
             padding: 19px 0;
         }
 
-            .ribbon .ribbon-2 .inner:before, .ribbon .ribbon-2 .inner:after {
+            .ribbon .ribbon-2 .inner::before, .ribbon .ribbon-2 .inner::after {
                 content: '';
                 position: absolute;
                 top: 14px;
@@ -208,14 +208,14 @@
                 transition: opacity .3s ease-in-out 1.86s;
             }
 
-            .ribbon .ribbon-2 .inner:before {
+            .ribbon .ribbon-2 .inner::before {
                 -webkit-transform-origin: 50% 50%;
                 transform-origin: 50% 50%;
                 -webkit-transform: rotate(180deg);
                 transform: rotate(180deg);
             }
 
-        .ribbon .ribbon-2:before {
+        .ribbon .ribbon-2::before {
             width: 0;
             left: 11px;
             -webkit-transform: rotate(-10.25deg) skewX(-9deg) translateX(451px);
@@ -230,11 +230,11 @@
         transition-delay: 1.06s;
     }
 
-        .ribbon.active .ribbon-2 .inner:before, .ribbon.active .ribbon-2 .inner:after {
+        .ribbon.active .ribbon-2 .inner::before, .ribbon.active .ribbon-2 .inner::after {
             opacity: 1;
         }
 
-    .ribbon.active .ribbon-2:before {
+    .ribbon.active .ribbon-2::before {
         width: 376px;
         -webkit-transform: rotate(-10.25deg) skewX(-9deg) translateX(0);
         transform: rotate(-10.25deg) skewX(-9deg) translateX(0);
@@ -253,7 +253,7 @@
             padding: 19px 0;
         }
 
-        .ribbon .ribbon-3:before {
+        .ribbon .ribbon-3::before {
             width: 0;
             height: 47px;
             left: 11px;
@@ -263,7 +263,7 @@
             transition-delay: 1.18s;
         }
 
-        .ribbon .ribbon-3:after {
+        .ribbon .ribbon-3::after {
             content: '';
             -webkit-transform-origin: 100% 100%;
             transform-origin: 100% 100%;
@@ -286,13 +286,13 @@
         transition-delay: 1.3s;
     }
 
-    .ribbon.active .ribbon-3:before {
+    .ribbon.active .ribbon-3::before {
         width: 387px;
         -webkit-transform: rotate(-10.25deg) skewX(-9deg) translateX(0);
         transform: rotate(-10.25deg) skewX(-9deg) translateX(0);
     }
 
-    .ribbon.active .ribbon-3:after {
+    .ribbon.active .ribbon-3::after {
         width: 56px;
         -webkit-transform: rotate(-15.3deg) skewX(9deg) translateX(0);
         transform: rotate(-15.3deg) skewX(9deg) translateX(0);

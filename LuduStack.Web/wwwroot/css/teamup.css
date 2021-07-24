@@ -59,7 +59,7 @@
         border-left: 1px solid #ced4da;
     }
 
-@media (max-width:575px) {
+@media (max-width: 575px) {
     .team-member img.avatar {
         width: 64px;
         height: 64px;

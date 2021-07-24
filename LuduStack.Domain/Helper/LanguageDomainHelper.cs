@@ -9,8 +9,7 @@ namespace LuduStack.Domain.Helper
     {
         public static IEnumerable<SupportedLanguage> FormatList(string contentLanguages)
         {
-            string[] languages = (contentLanguages ?? string.Empty)
-                .Split(new char[] { '|' });
+            string[] languages = (contentLanguages ?? string.Empty).Split(new[] { '|' });
 
             IEnumerable<SupportedLanguage> languagesConverted = languages.Where(x => !string.IsNullOrWhiteSpace(x)).Select(x => (SupportedLanguage)Enum.Parse(typeof(SupportedLanguage), x));
 

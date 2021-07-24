@@ -20,7 +20,6 @@
     var startDateLink = string.Format("<a target=\"_blank\" href=\"https://www.timeanddate.com/worldclock/fixedtime.html?iso={0}\">{1}</a>", Model.StartDate.ToUniversalTime().ToString("s", System.Globalization.CultureInfo.InvariantCulture), Model.StartDateToDisplay.ToString());
     var deadLineDateLink = string.Format("<a target=\"_blank\" href=\"https://www.timeanddate.com/worldclock/fixedtime.html?iso={0}\">{1}</a>", Model.EntryDeadline.ToUniversalTime().ToString("s", System.Globalization.CultureInfo.InvariantCulture), Model.EntryDeadlineToDisplay.ToString());
 
-
     Model.Permissions.CanJoin = Model.Permissions.CanJoin && User.Identity.IsAuthenticated;
 
     var hasBanner = !string.IsNullOrWhiteSpace(Model.BannerImage);
