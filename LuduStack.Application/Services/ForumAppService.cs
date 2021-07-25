@@ -372,11 +372,11 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public async Task<OperationResultVo<int>> Vote(Guid currentUserId, Guid postId, VoteValue vote)
+        public async Task<OperationResultVo<int>> Vote(Guid currentUserId, Guid postId, VoteValue voteValue)
         {
             try
             {
-                CommandResult<int> result = await mediator.SendCommand<SaveForumPostVoteCommand, int>(new SaveForumPostVoteCommand(currentUserId, postId, vote));
+                CommandResult<int> result = await mediator.SendCommand<SaveForumPostVoteCommand, int>(new SaveForumPostVoteCommand(currentUserId, postId, voteValue));
 
                 if (!result.Validation.IsValid)
                 {

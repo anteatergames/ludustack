@@ -10,7 +10,6 @@ input:-moz-placeholder {
 .commentmodal {
     position: relative;
     width: 100%;
-    /*min-height: 160px;*/
 }
 
     .commentmodal .modal-header, .commentmodal .modal-body, .commentmodal .modal-footer {
@@ -57,7 +56,7 @@ input:-moz-placeholder {
     display: none;
     border: 1px dashed rgba(0, 0, 0, 0.3) !important;
     border-radius: 5px;
-    background: white
+    background: white;
 }
 
     .dropzone .dz-message {

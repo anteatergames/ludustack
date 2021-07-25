@@ -39,9 +39,5 @@ namespace LuduStack.Application.ViewModels.Localization
                 }
             }
         }
-
-        public TranslationStatsLanguageViewModel()
-        {
-        }
     }
 }

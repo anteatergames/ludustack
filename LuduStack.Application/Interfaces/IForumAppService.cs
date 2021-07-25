@@ -28,6 +28,6 @@ namespace LuduStack.Application.Interfaces
 
         Task<OperationResultVo<ForumPostViewModel>> RemovePost(Guid currentUserId, Guid id);
 
-        Task<OperationResultVo<int>> Vote(Guid currentUserId, Guid postId, VoteValue vote);
+        Task<OperationResultVo<int>> Vote(Guid currentUserId, Guid postId, VoteValue voteValue);
     }
 }

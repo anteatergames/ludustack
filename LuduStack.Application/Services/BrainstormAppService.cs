@@ -147,11 +147,11 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public async Task<OperationResultVo> Vote(Guid userId, Guid ideaId, VoteValue vote)
+        public async Task<OperationResultVo> Vote(Guid userId, Guid ideaId, VoteValue voteValue)
         {
             try
             {
-                CommandResult result = await mediator.SendCommand(new SaveBrainstormIdeaVoteCommand(userId, ideaId, vote));
+                CommandResult result = await mediator.SendCommand(new SaveBrainstormIdeaVoteCommand(userId, ideaId, voteValue));
 
                 if (!result.Validation.IsValid)
                 {

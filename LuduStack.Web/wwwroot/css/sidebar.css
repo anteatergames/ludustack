@@ -5,10 +5,10 @@
     left: 0;
     min-height: 100%;
     z-index: 810;
-    -webkit-transition: -webkit-transform .3s ease-in-out, width .3s ease-in-out;
-    -moz-transition: -moz-transform .3s ease-in-out, width .3s ease-in-out;
-    -o-transition: -o-transform .3s ease-in-out, width .3s ease-in-out;
-    transition: transform .3s ease-in-out, width .3s ease-in-out;
+    -webkit-transition: -webkit-transform 0.3s ease-in-out, width 0.3s ease-in-out;
+    -moz-transition: -moz-transform 0.3s ease-in-out, width 0.3s ease-in-out;
+    -o-transition: -o-transform 0.3s ease-in-out, width 0.3s ease-in-out;
+    transition: transform 0.3s ease-in-out, width 0.3s ease-in-out;
 }
 
     .main-sidebar .sidebar-footer {
@@ -23,7 +23,7 @@
     transition: 0.2s ease-out;
     width: 230px;
     background: #fff;
-    border-top: 1px solid rgba(120, 130, 140, .13);
+    border-top: 1px solid rgba(120, 130, 140, 0.13);
 }
 
     .sidebar-footer a {
@@ -187,7 +187,7 @@
     }
 
         .mainmenu a:hover {
-            background: #333333;
+            background: #333;
             transition: all 1s ease-in;
         }
 
@@ -211,9 +211,9 @@
     width: 100%;
     border-top: 1px solid black;
     border-radius: 0;
-    color: #aaa
+    color: #aaa;
 }
 
     #menufooter a {
-        color: #fff
+        color: #fff;
     }

@@ -5,9 +5,6 @@ namespace LuduStack.Domain.Messaging.Queries.Brainstorm
 {
     public class CountBrainstormSessionQuery : CountBaseQuery<Models.Game>
     {
-        public CountBrainstormSessionQuery()
-        {
-        }
     }
 
     public class CountBrainstormSessionQueryHandler : CountBaseQueryHandler<CountBrainstormSessionQuery, Models.Game, IGameRepository>

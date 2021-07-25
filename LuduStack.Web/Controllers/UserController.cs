@@ -21,7 +21,7 @@ namespace LuduStack.Web.Controllers
         private readonly INotificationAppService notificationAppService;
 
         public UserController(IProfileAppService profileAppService
-            , INotificationAppService notificationAppService) : base()
+            , INotificationAppService notificationAppService)
         {
             this.profileAppService = profileAppService;
             this.notificationAppService = notificationAppService;

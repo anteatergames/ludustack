@@ -98,7 +98,7 @@ namespace LuduStack.Web.Areas.Staff.Controllers
 
             foreach (GameJamEntryViewModel item in model)
             {
-                item.Url = Url.Action("entry", "gamejam", new { area = "community", jamHandler = jamHandler, id = item.Id });
+                item.Url = Url.Action("entry", "gamejam", new { area = "community", jamHandler, id = item.Id });
             }
 
             return PartialView("_ListGameJamSubmissions", model);
@@ -122,7 +122,7 @@ namespace LuduStack.Web.Areas.Staff.Controllers
 
             foreach (GameJamEntryViewModel item in model)
             {
-                item.Url = Url.Action("entry", "gamejam", new { area = "community", jamHandler = jamHandler, id = item.Id });
+                item.Url = Url.Action("entry", "gamejam", new { area = "community", jamHandler, id = item.Id });
             }
 
             return PartialView("_ListGameJamWinners", model);

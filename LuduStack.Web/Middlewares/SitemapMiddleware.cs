@@ -274,7 +274,6 @@ namespace LuduStack.Web.Middlewares
         private async Task<List<string>> CheckDetailsMethod(Type controller)
         {
             List<string> methodList = new List<string>();
-            List<string> handlers = new List<string>();
 
             if (controller.Name.Equals("ProfileController"))
             {
@@ -341,7 +340,12 @@ namespace LuduStack.Web.Middlewares
 
     public static class BuilderExtensions
     {
-        public static IApplicationBuilder UseSitemapMiddleware(this IApplicationBuilder app, string rootUrl = "https://www.ludustack.com")
+        public static IApplicationBuilder UseSitemapMiddleware(this IApplicationBuilder app)
+        {
+            return UseSitemapMiddleware(app, "https://www.ludustack.com");
+        }
+
+        public static IApplicationBuilder UseSitemapMiddleware(this IApplicationBuilder app, string rootUrl)
         {
             return app.UseMiddleware<SitemapMiddleware>(new[] { rootUrl });
         }

@@ -195,7 +195,7 @@ namespace LuduStack.Application.Services
         {
             try
             {
-                if (!(viewModel.UserId == currentUserId) && !currentUserIsAdmin)
+                if (viewModel.UserId != currentUserId && !currentUserIsAdmin)
                 {
                     return new OperationResultVo<Guid>("You cannot save this!");
                 }

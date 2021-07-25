@@ -26,7 +26,7 @@
 }
 
 .convidado {
-    background-color: rgba(0, 0, 0, .05);
+    background-color: rgba(0, 0, 0, 0.05);
 }
 
     .convidado .div-details {
@@ -72,5 +72,5 @@
 }
 
 #divApplication .team-member {
-    background-color: #F8F5F5;
+    background-color: #f8f5f5;
 }

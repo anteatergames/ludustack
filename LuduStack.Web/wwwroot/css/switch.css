@@ -1,6 +1,6 @@
 /* The switch - the box around the slider */
 
-/*.switch.form-group {
+/* .switch.form-group {
     line-height: 38px;
     padding: 0;
 }*/
@@ -42,8 +42,8 @@ label.switch {
     right: 0;
     bottom: 0;
     background-color: #ccc;
-    -webkit-transition: .4s;
-    transition: .4s;
+    -webkit-transition: 0.4s;
+    transition: 0.4s;
 }
 
     .slider::before {
@@ -54,8 +54,8 @@ label.switch {
         left: 4px;
         bottom: 5px;
         background-color: white;
-        -webkit-transition: .4s;
-        transition: .4s;
+        -webkit-transition: 0.4s;
+        transition: 0.4s;
     }
 
 input.default:checked + .slider {
@@ -63,7 +63,7 @@ input.default:checked + .slider {
 }
 
 input.primary:checked + .slider {
-    background-color: #2196F3;
+    background-color: #2196f3;
 }
 
 input.success:checked + .slider {
@@ -75,7 +75,7 @@ input.info:checked + .slider {
 }
 
 input.warning:checked + .slider {
-    background-color: #FFC107;
+    background-color: #ffc107;
 }
 
 input.danger:checked + .slider {
@@ -83,7 +83,7 @@ input.danger:checked + .slider {
 }
 
 input:focus + .slider {
-    box-shadow: 0 0 1px #2196F3;
+    box-shadow: 0 0 1px #2196f3;
 }
 
 input:checked + .slider::before {

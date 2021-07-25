@@ -18,16 +18,16 @@
         position: absolute;
         top: 3px;
         left: 0;
-        border-top: 29px solid rgba(0, 0, 0, .3); /* These 4 border properties create the first part of our drop-shadow */
-        border-bottom: 29px solid rgba(0, 0, 0, .3);
-        border-right: 29px solid rgba(0, 0, 0, .3);
+        border-top: 29px solid rgba(0, 0, 0, 0.3); /* These 4 border properties create the first part of our drop-shadow */
+        border-bottom: 29px solid rgba(0, 0, 0, 0.3);
+        border-right: 29px solid rgba(0, 0, 0, 0.3);
         border-left: 29px solid transparent;
     }
 
     #ribbon-container::after { /* This adds the second part of our dropshadow */
         content: "";
         height: 3px;
-        background: rgba(0, 0, 0, .3);
+        background: rgba(0, 0, 0, 0.3);
         display: block;
         position: absolute;
         bottom: -3px;
@@ -95,7 +95,7 @@
             border-top: 15px solid #004a70;
         }
 
-/*animated ribbon*/
+/* animated ribbon */
 .ribbon * {
     box-sizing: border-box;
 }
@@ -140,8 +140,8 @@
             z-index: 2;
             -webkit-transform: skewX(-9deg);
             transform: skewX(-9deg);
-            -webkit-transition: width .12s ease-in-out;
-            transition: width .12s ease-in-out;
+            -webkit-transition: width 0.12s ease-in-out;
+            transition: width 0.12s ease-in-out;
         }
 
         .ribbon [class*="ribbon-"]::before {
@@ -158,8 +158,8 @@
             left: 4px;
             background: #001b47;
             z-index: -1;
-            -webkit-transition: all .12s ease-in-out .7s;
-            transition: all .12s ease-in-out .7s;
+            -webkit-transition: all 0.12s ease-in-out 0.7s;
+            transition: all 0.12s ease-in-out 0.7s;
         }
 
     .ribbon .ribbon-1 .inner {
@@ -172,8 +172,8 @@
     }
 
     .ribbon.active .ribbon-1 .inner {
-        -webkit-transition-delay: .82s;
-        transition-delay: .82s;
+        -webkit-transition-delay: 0.82s;
+        transition-delay: 0.82s;
     }
 
     .ribbon.active .ribbon-1::before {
@@ -204,8 +204,8 @@
                 background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeYAAAALCAYAAACqPi4nAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyhpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMDE0IDc5LjE1Njc5NywgMjAxNC8wOC8yMC0wOTo1MzowMiAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTQgKE1hY2ludG9zaCkiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6NjEyM0FFRTU0NUUzMTFFNTlDMjdDMEJDMDFCNjlGNDkiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6NjEyM0FFRTY0NUUzMTFFNTlDMjdDMEJDMDFCNjlGNDkiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDpEOUZEM0I5NDQ1QkQxMUU1OUMyN0MwQkMwMUI2OUY0OSIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo2MTIzQUVFNDQ1RTMxMUU1OUMyN0MwQkMwMUI2OUY0OSIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/Pm3y348AAAIOSURBVHja7JvhboIwEMfbOZgyQF9h2cPtrfZ8+7APU0RQt7FrciQ3QqHodFT+v+RCc9ikHtX/tUe1GjFVVc3okij/0GRL5ScrT8edkt15OG4zv2cejvuRLPBw3BFZ6OG452y+8UC28HDcAc/xa/FN9k72RvaqSfzMH/EL2RPZMwcyFRMh4YkcKwAAAGC6GAHNyHZke7I1Wcm2Zp+5t+F2Trbltku/TGv9pQeuYGuxTjmjSISAS99CCHwt6l2+JfeNOaMN8PwBAAAMkSgWxIKF7oOvRYdQ5tx26kei+XmNL6JHG+Gqaop1yAIe8hZD7VuJbYc2X73ltuJ7kfAtMZcBAOAqWFeJ3N62CGXp2o9E83grgdJTnymUAEixluIfcVIQdPjq+knM91PhS/hztW+O3yUAYMSi2be6PHn7lkTzgBBDmMeaBEixbtbwkx6frVTQ5sNzBeB22DiuLvu2b8u2fiSae4QYwgwunwDcK3sN31bXt5UKusoHEaINJk524urSafuWRLNEiCHMAAxNAmQNv6+u3ywV9JUPZKlghmiDgeS2VaJyfznIJrBGNAuEGECYwZQTAHNGOVXudX1ZFnApH6RiBwFcnp0QynNWl60CS6KZI8QAwgzA7SQBlzgCGCp/jgUWLUJ5zuryl8CSaG4xywCAMAMw1iTgr44AmutBnfdykBHNDE8FgP/lR4ABABGzGigi55YSAAAAAElFTkSuQmCC") center bottom no-repeat;
                 background-size: 100%;
                 opacity: 0;
-                -webkit-transition: opacity .3s ease-in-out 1.86s;
-                transition: opacity .3s ease-in-out 1.86s;
+                -webkit-transition: opacity 0.3s ease-in-out 1.86s;
+                transition: opacity 0.3s ease-in-out 1.86s;
             }
 
             .ribbon .ribbon-2 .inner::before {
@@ -221,8 +221,8 @@
             -webkit-transform: rotate(-10.25deg) skewX(-9deg) translateX(451px);
             transform: rotate(-10.25deg) skewX(-9deg) translateX(451px);
             height: 47px;
-            -webkit-transition-delay: .94s;
-            transition-delay: .94s;
+            -webkit-transition-delay: 0.94s;
+            transition-delay: 0.94s;
         }
 
     .ribbon.active .ribbon-2 .inner {
@@ -336,8 +336,8 @@
         opacity: 0;
         -webkit-transform: translateX(-100%);
         transform: translateX(-100%);
-        -webkit-transition: all .3s ease-in-out 1.56s;
-        transition: all .3s ease-in-out 1.56s;
+        -webkit-transition: all 0.3s ease-in-out 1.56s;
+        transition: all 0.3s ease-in-out 1.56s;
         display: block;
     }
 
@@ -345,15 +345,15 @@
         opacity: 0;
         -webkit-transform: translateX(100%);
         transform: translateX(100%);
-        -webkit-transition: all .3s ease-in-out 1.56s;
-        transition: all .3s ease-in-out 1.56s;
+        -webkit-transition: all 0.3s ease-in-out 1.56s;
+        transition: all 0.3s ease-in-out 1.56s;
         display: block;
     }
 
     .ribbon .fadeIn {
         opacity: 0;
-        -webkit-transition: all .3s ease-in-out 1.42s;
-        transition: all .3s ease-in-out 1.42s;
+        -webkit-transition: all 0.3s ease-in-out 1.42s;
+        transition: all 0.3s ease-in-out 1.42s;
         display: block;
     }
 
@@ -367,4 +367,4 @@
     .ribbon.active .fadeIn {
         opacity: 1;
     }
-/*animated ribbon*/
+/* animated ribbon */
