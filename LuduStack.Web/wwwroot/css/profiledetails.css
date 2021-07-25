@@ -77,7 +77,7 @@
     border-top: 1px solid white;
     margin-top: 10px;
     padding-top: 10px;
-    display: inline-block
+    display: inline-block;
 }
 
     .user-profile-header .user-social-acount .btn-social-icon {
@@ -218,7 +218,7 @@
 }
 
 .profile-user-info {
-    /*    border-top: 1px solid #ccc;*/
+    /* border-top: 1px solid #ccc;*/
 }
 
     .profile-user-info .map-box {

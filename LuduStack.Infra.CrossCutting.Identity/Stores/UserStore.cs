@@ -624,7 +624,7 @@ namespace LuduStack.Infra.CrossCutting.Identity.Stores
             await Update(user, x => x.TwoFactorEnabled, enabled);
         }
 
-        protected virtual void Dispose(bool dispose)
+        protected virtual void Dispose(bool disposing)
         {
             // Nothing to dispose
         }

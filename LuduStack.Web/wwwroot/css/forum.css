@@ -44,55 +44,52 @@
     line-height: 37px;
 }
 
-.forumlistitem {
-    --line-height: 32px;
+
+.forumlistitem .pinedicon {
+    left: -12px;
+    top: 20px;
 }
 
-    .forumlistitem .pinedicon {
-        left: -12px;
-        top: 20px;
+    .forumlistitem .pinedicon span i {
+        transform: rotate(315deg);
     }
 
-        .forumlistitem .pinedicon span i {
-            transform: rotate( 315deg );
+        .forumlistitem .pinedicon span i.text-success {
+            color: var(--color-highlight) !important;
         }
 
-            .forumlistitem .pinedicon span i.text-success {
-                color: var(--color-highlight) !important;
-            }
+.forumlistitem .badge {
+    transition: none;
+}
 
-    .forumlistitem .badge {
-        transition: none;
+.forumlistitem:hover .badge {
+    background-color: var(--color-white);
+    color: var(--color-highlight);
+}
+
+.forumlistitem .verticaldivider {
+    border-left: 1px solid #dedada;
+    float: left;
+    height: 100%;
+    margin-left: -8px;
+}
+
+.forumlistitem .forumlisttitle {
+    font-weight: bold;
+}
+
+.forumlistitem .forumlistdescription {
+    font-weight: lighter;
+}
+
+.forumlistitem:hover, .forumlistitem:hover a {
+    background-color: var(--color-highlight);
+    color: white;
+}
+
+    .forumlistitem:hover svg {
+        fill: white;
     }
-
-    .forumlistitem:hover .badge {
-        background-color: var(--color-white);
-        color: var(--color-highlight);
-    }
-
-    .forumlistitem .verticaldivider {
-        border-left: 1px solid #dedada;
-        float: left;
-        height: 100%;
-        margin-left: -8px;
-    }
-
-    .forumlistitem .forumlisttitle {
-        font-weight: bold;
-    }
-
-    .forumlistitem .forumlistdescription {
-        font-weight: lighter;
-    }
-
-    .forumlistitem:hover, .forumlistitem:hover a {
-        background-color: var(--color-highlight);
-        color: white;
-    }
-
-        .forumlistitem:hover svg {
-            fill: white;
-        }
 
 .postitem pre {
     white-space: pre-wrap;

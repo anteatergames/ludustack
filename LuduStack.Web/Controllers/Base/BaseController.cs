@@ -80,7 +80,7 @@ namespace LuduStack.Web.Controllers.Base
 
         protected IActionResult RedirectToWithMessage(string action, string controller, string area, string message)
         {
-            return RedirectToAction(action, controller, new { area = area, msg = SharedLocalizer[message] });
+            return RedirectToAction(action, controller, new { area, msg = SharedLocalizer[message] });
         }
     }
 }

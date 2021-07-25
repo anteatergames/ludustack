@@ -97,7 +97,7 @@ namespace LuduStack.Domain.Messaging
                     IsSubmitter = true
                 };
 
-                obj.TeamMembers = new List<Models.GameJamTeamMember>() { meTeamMember };
+                obj.TeamMembers = new List<Models.GameJamTeamMember> { meTeamMember };
             }
         }
     }

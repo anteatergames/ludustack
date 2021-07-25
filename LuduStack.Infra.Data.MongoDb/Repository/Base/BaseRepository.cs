@@ -128,9 +128,9 @@ namespace LuduStack.Infra.Data.MongoDb.Repository.Base
             GC.SuppressFinalize(this);
         }
 
-        protected virtual void Dispose(bool dispose)
+        protected virtual void Dispose(bool disposing)
         {
-            if (dispose)
+            if (disposing)
             {
                 Context?.Dispose();
             }

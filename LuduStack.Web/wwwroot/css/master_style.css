@@ -7,7 +7,7 @@ body {
     background-color: var(--color-bg-basic);
 }
 
-/*body, layout*/
+/* body, layout */
 .wrapper, body, html {
     padding-right: 0 !important;
     height: 100%;
@@ -235,7 +235,7 @@ div {
     }
 
         .navbar-custom-menu .navbar-nav > li > div > .btn {
-            margin-top: 10px
+            margin-top: 10px;
         }
 
 .main-header .messages-menu .dropdown-toggle i::after, .main-header .notifications-menu .dropdown-toggle.newmessages i::after, .main-header .tasks-menu .dropdown-toggle i::after {

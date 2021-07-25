@@ -46,7 +46,7 @@ namespace LuduStack.Domain.Services
                     UserId = obj.UserId
                 };
 
-                obj.TeamMembers = new List<Models.GameJamTeamMember>() { meTeamMember };
+                obj.TeamMembers = new List<Models.GameJamTeamMember> { meTeamMember };
             }
         }
     }

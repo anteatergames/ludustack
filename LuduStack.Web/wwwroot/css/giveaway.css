@@ -57,7 +57,7 @@ html {
     border-radius: 20px;
     margin-top: -40px;
     position: relative;
-    padding: 1.4rem 2rem .7rem;
+    padding: 1.4rem 2rem 0.7rem;
 }
 
     .giv-title.ended {
@@ -95,18 +95,18 @@ html {
         padding-left: 30px;
     }
 
-    .email-input .letter-front .st0 {
-        stroke-dasharray: 67;
-        stroke-dashoffset: 67;
-        opacity: 0;
-        stroke: #f58b00;
-    }
-
     .email-input .st0 {
         fill: none;
         stroke: #aeb8c4;
         stroke-width: 1;
         stroke-miterlimit: 10;
+    }
+
+    .email-input .letter-front .st0 {
+        stroke-dasharray: 67;
+        stroke-dashoffset: 67;
+        opacity: 0;
+        stroke: #f58b00;
     }
 
     .email-input line {

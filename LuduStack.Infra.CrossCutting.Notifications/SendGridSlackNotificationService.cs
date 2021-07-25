@@ -33,7 +33,7 @@ namespace LuduStack.Infra.CrossCutting.Notifications
             SendGridClient client = new SendGridClient(apiKey);
             EmailAddress from = new EmailAddress("noreply@ludustack.com", "LUDUSTACK Community");
 
-            SendGridMessage msg = new SendGridMessage()
+            SendGridMessage msg = new SendGridMessage
             {
                 From = from,
                 Subject = subject,
@@ -58,7 +58,7 @@ namespace LuduStack.Infra.CrossCutting.Notifications
             SendGridClient client = new SendGridClient(apiKey);
             EmailAddress from = new EmailAddress("noreply@ludustack.com", "LUDUSTACK Community");
 
-            SendGridMessage msg = new SendGridMessage()
+            SendGridMessage msg = new SendGridMessage
             {
                 From = from,
                 TemplateId = templateId

@@ -5,10 +5,6 @@ namespace LuduStack.Domain.Specifications
 {
     public class IdNotEmptySpecification<T> : ISpecification<T> where T : IEntity
     {
-        public IdNotEmptySpecification()
-        {
-        }
-
         public string ErrorMessage => "Invalid Id!";
 
         public bool IsSatisfied { get; private set; }

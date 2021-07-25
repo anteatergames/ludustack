@@ -9,9 +9,6 @@ namespace LuduStack.Domain.Messaging.Queries.UserProfile
 {
     public class GetAllUserProfilesQuery : Query<IEnumerable<Models.UserProfile>>
     {
-        public GetAllUserProfilesQuery()
-        {
-        }
     }
 
     public class GetAllUserProfilesQueryHandler : QueryHandler, IRequestHandler<GetAllUserProfilesQuery, IEnumerable<Models.UserProfile>>

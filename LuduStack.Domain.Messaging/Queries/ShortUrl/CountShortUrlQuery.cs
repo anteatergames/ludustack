@@ -5,9 +5,6 @@ namespace LuduStack.Domain.Messaging.Queries.ShortUrl
 {
     public class CountShortUrlQuery : CountBaseQuery<Models.ShortUrl>
     {
-        public CountShortUrlQuery()
-        {
-        }
     }
 
     public class CountShortUrlQueryHandler : CountBaseQueryHandler<CountShortUrlQuery, Models.ShortUrl, IShortUrlRepository>
