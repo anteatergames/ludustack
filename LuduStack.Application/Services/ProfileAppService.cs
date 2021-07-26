@@ -727,6 +727,9 @@ namespace LuduStack.Application.Services
                     case ExternalLinkProvider.Discord:
                         item.Value = UrlFormatter.DiscordProfile(item.Value);
                         break;
+                    default:
+                        item.Value = UrlFormatter.Website(item.Value);
+                        break;
                 }
             }
         }

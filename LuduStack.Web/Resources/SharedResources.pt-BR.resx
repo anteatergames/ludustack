@@ -4258,4 +4258,8 @@
     <value>Post publicado!</value>
     <comment>Generic</comment>
   </data>
+  <data name="Content not found!" xml:space="preserve">
+    <value>Conteúdo não encontrado!</value>
+    <comment>Generic</comment>
+  </data>
 </root>

@@ -1054,6 +1054,13 @@ namespace LuduStack.Application.Services
             bool jamPhaseAllowsVote = gameJamVm.CurrentPhase == GameJamPhase.Voting;
             bool iCanVote = iAmJudge;
 
+            iCanVote = CheckCanVoteConditions(currentUserId, gameJamVm, allParticipantIds, iCanVote);
+
+            vm.Permissions.CanVote = !vm.Permissions.IsMe && jamPhaseAllowsVote && vm.GameId != Guid.Empty && iCanVote;
+        }
+
+        private static bool CheckCanVoteConditions(Guid currentUserId, GameJamViewModel gameJamVm, IEnumerable<GameJamTeamMember> allParticipantIds, bool iCanVote)
+        {
             switch (gameJamVm.Voters)
             {
                 case GameJamVoters.JudgesAndSubmitters:
@@ -1071,9 +1078,12 @@ namespace LuduStack.Application.Services
                 case GameJamVoters.JudgesAndTheWholeCommunity:
                     iCanVote = iCanVote || currentUserId != Guid.Empty;
                     break;
+                default:
+                    iCanVote = iCanVote || allParticipantIds.Any(x => x.IsSubmitter && x.UserId == currentUserId);
+                    break;
             }
 
-            vm.Permissions.CanVote = !vm.Permissions.IsMe && jamPhaseAllowsVote && vm.GameId != Guid.Empty && iCanVote;
+            return iCanVote;
         }
 
         private void SetGameJamImagesToShow(GameJamViewModel vm, bool editMode)
@@ -1154,6 +1164,9 @@ namespace LuduStack.Application.Services
 
                 case GameJamParticipationType.IndividualsAndTeams:
                     vm.Highlights.Add(new GameJamHighlightsVo { Highlight = GameJamHighlight.IndividualsAndTeams });
+                    break;
+                default:
+                    vm.Highlights.Add(new GameJamHighlightsVo { Highlight = GameJamHighlight.IndividualsOnly });
                     break;
             }
         }
