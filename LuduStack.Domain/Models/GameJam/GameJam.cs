@@ -7,9 +7,15 @@ namespace LuduStack.Domain.Models
 {
     public class GameJam : Entity
     {
+        public string ForumCategoryHandler { get; set; }
+
         public GameJamType Type { get; set; }
 
+        public GameJamParticipationType ParticipationType { get; set; }
+
         public GameJamVoters Voters { get; set; }
+
+        public SupportedLanguage Language { get; set; }
 
         public bool IsDraft { get; set; }
 
@@ -25,15 +31,21 @@ namespace LuduStack.Domain.Models
 
         public bool HideMainTheme { get; set; }
 
+        public bool FullWidthBanner { get; set; }
+
         public string Handler { get; set; }
 
         public string HashTag { get; set; }
+
+        public int Winners { get; set; }
 
         public string BannerImage { get; set; }
 
         public string FeaturedImage { get; set; }
 
         public string BackgroundImage { get; set; }
+
+        public string BackgroundColor { get; set; }
 
         public string Name { get; set; }
 
@@ -43,6 +55,8 @@ namespace LuduStack.Domain.Models
 
         public string MainTheme { get; set; }
 
+        public string TimeZone { get; set; }
+
         public DateTime StartDate { get; set; }
 
         public DateTime EntryDeadline { get; set; }
@@ -51,7 +65,7 @@ namespace LuduStack.Domain.Models
 
         public DateTime ResultDate { get; set; }
 
-        public List<Guid> Judges { get; set; }
+        public List<GameJamJudge> Judges { get; set; }
 
         public List<GameJamSponsor> Sponsors { get; set; }
 

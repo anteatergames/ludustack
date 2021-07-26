@@ -22,6 +22,7 @@ namespace LuduStack.Infra.Data.MongoDb
 #pragma warning disable CS0618 // Type or member is obsolete
             BsonDefaults.GuidRepresentationMode = GuidRepresentationMode.V3; // this will be removed in a future version of the MongoDB driver: http://mongodb.github.io/mongo-csharp-driver/2.11/reference/bson/guidserialization/guidrepresentationmode/guidrepresentationmode/
 #pragma warning restore CS0618 // Type or member is obsolete
+
             BsonSerializer.RegisterSerializer(new GuidSerializer(GuidRepresentation.Standard));
 
             EntityBaseMap.Configure();

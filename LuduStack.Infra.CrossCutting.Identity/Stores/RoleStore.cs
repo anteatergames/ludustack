@@ -88,7 +88,7 @@ namespace LuduStack.Infra.CrossCutting.Identity.Stores
             return _collection.FirstOrDefaultAsync(x => x.NormalizedName == normalizedRoleName);
         }
 
-        protected virtual void Dispose(bool dispose)
+        protected virtual void Dispose(bool disposing)
         {
             // Nothing to dispose
         }

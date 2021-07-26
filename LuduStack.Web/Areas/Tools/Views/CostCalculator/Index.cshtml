@@ -42,7 +42,7 @@
 }
 
 <section class="content container">
-    <div id="featurecontainer" class="col">
+    <div id="featurecontainer" class="pb-3">
         <input type="hidden" id="urls" value="urls"
                data-url-get-rates="@Url.Action("getrates", "costcalculator")" />
 
@@ -67,21 +67,21 @@
                                 <div class="col-12 col-sm-6">
                                     <div class="form-group">
                                         <label asp-for="VisualDimensions" class="col-form-label"></label>
-                                        <span asp-description-for="VisualDimensions" class="col-form-label" />
+                                        <span asp-description-for="VisualDimensions" class="col-form-label"></span>
                                         <select asp-for="VisualDimensions" asp-items="visualDimensions" class="form-control user-entry"></select>
                                     </div>
                                 </div>
                                 <div class="col-12 col-sm-6">
                                     <div class="form-group">
                                         <label asp-for="ArtStyle" class="col-form-label"></label>
-                                        <span asp-description-for="ArtStyle" class="col-form-label" />
+                                        <span asp-description-for="ArtStyle" class="col-form-label"></span>
                                         <select asp-for="ArtStyle" asp-items="artStyles" class="form-control user-entry"></select>
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="form-group">
                                         <label asp-for="ConceptArtCount" class="col-form-label"></label>
-                                        <span asp-description-for="ConceptArtCount" class="col-form-label" />
+                                        <span asp-description-for="ConceptArtCount" class="col-form-label"></span>
                                         <div class="mt-2">
                                             <input type="range" min="0" max="50" step="1" id="ConceptArtCount" name="ConceptArtCount" data-gameelement="@((int)GameElement.ConceptArt)" class="form-control" style="visibility:hidden" value="0" />
                                         </div>
@@ -90,7 +90,7 @@
                                 <div class="col-12 art-per-dimension" data-type="@((int)BillRateType.Visual)" data-subtype="@((int)Dimensions.TwoDee)">
                                     <div class="form-group">
                                         <label asp-for="CharacterCount2d" class="col-form-label"></label>
-                                        <span asp-description-for="CharacterCount2d" class="col-form-label" />
+                                        <span asp-description-for="CharacterCount2d" class="col-form-label"></span>
                                         <div class="mt-2">
                                             <input type="range" min="0" max="50" step="1" id="CharacterCount2d" name="CharacterCount2d" data-gameelement="@((int)GameElement.Character2d)" class="form-control" style="visibility:hidden" value="0" />
                                         </div>
@@ -99,7 +99,7 @@
                                 <div class="col-12 art-per-dimension" data-type="@((int)BillRateType.Visual)" data-subtype="@((int)Dimensions.TwoDee)">
                                     <div class="form-group">
                                         <label asp-for="AssetCount2d" class="col-form-label"></label>
-                                        <span asp-description-for="AssetCount2d" class="col-form-label" />
+                                        <span asp-description-for="AssetCount2d" class="col-form-label"></span>
                                         <div class="mt-2">
                                             <input type="range" min="0" max="50" step="1" id="AssetCount2d" name="AssetCount2d" data-gameelement="@((int)GameElement.Asset2d)" class="form-control" style="visibility:hidden" value="0" />
                                         </div>
@@ -108,7 +108,7 @@
                                 <div class="col-12 art-per-dimension" data-type="@((int)BillRateType.Visual)" data-subtype="@((int)Dimensions.TwoDee)">
                                     <div class="form-group">
                                         <label asp-for="LevelCount2d" class="col-form-label"></label>
-                                        <span asp-description-for="LevelCount2d" class="col-form-label" />
+                                        <span asp-description-for="LevelCount2d" class="col-form-label"></span>
                                         <div class="mt-2">
                                             <input type="range" min="0" max="50" step="1" id="LevelCount2d" name="LevelCount2d" data-gameelement="@((int)GameElement.Level2d)" class="form-control" style="visibility:hidden" value="0" />
                                         </div>
@@ -117,7 +117,7 @@
                                 <div class="col-12 art-per-dimension" data-type="@((int)BillRateType.Visual)" data-subtype="@((int)Dimensions.ThreeDee)">
                                     <div class="form-group">
                                         <label asp-for="CharacterCount3d" class="col-form-label"></label>
-                                        <span asp-description-for="CharacterCount3d" class="col-form-label" />
+                                        <span asp-description-for="CharacterCount3d" class="col-form-label"></span>
                                         <div class="mt-2">
                                             <input type="range" min="0" max="50" step="1" id="CharacterCount3d" name="CharacterCount3d" data-gameelement="@((int)GameElement.Character3d)" class="form-control" style="visibility:hidden" value="0" />
                                         </div>
@@ -126,7 +126,7 @@
                                 <div class="col-12 art-per-dimension" data-type="@((int)BillRateType.Visual)" data-subtype="@((int)Dimensions.ThreeDee)">
                                     <div class="form-group">
                                         <label asp-for="AssetCount3d" class="col-form-label"></label>
-                                        <span asp-description-for="AssetCount3d" class="col-form-label" />
+                                        <span asp-description-for="AssetCount3d" class="col-form-label"></span>
                                         <div class="mt-2">
                                             <input type="range" min="0" max="50" step="1" id="AssetCount3d" name="AssetCount3d" data-gameelement="@((int)GameElement.Asset3d)" class="form-control" style="visibility:hidden" value="0" />
                                         </div>
@@ -135,7 +135,7 @@
                                 <div class="col-12 art-per-dimension" data-type="@((int)BillRateType.Visual)" data-subtype="@((int)Dimensions.ThreeDee)">
                                     <div class="form-group">
                                         <label asp-for="LevelCount3d" class="col-form-label"></label>
-                                        <span asp-description-for="LevelCount3d" class="col-form-label" />
+                                        <span asp-description-for="LevelCount3d" class="col-form-label"></span>
                                         <div class="mt-2">
                                             <input type="range" min="0" max="50" step="1" id="LevelCount3d" name="LevelCount3d" data-gameelement="@((int)GameElement.Level3d)" class="form-control" style="visibility:hidden" value="0" />
                                         </div>
@@ -151,14 +151,14 @@
                                 <div class="col-12">
                                     <div class="form-group">
                                         <label asp-for="SoundStyle" class="col-form-label"></label>
-                                        <span asp-description-for="SoundStyle" class="col-form-label" />
+                                        <span asp-description-for="SoundStyle" class="col-form-label"></span>
                                         <select asp-for="SoundStyle" asp-items="soundStyles" class="form-control"></select>
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="form-group">
                                         <label asp-for="SoundEffectCount" class="col-form-label"></label>
-                                        <span asp-description-for="SoundEffectCount" class="col-form-label" />
+                                        <span asp-description-for="SoundEffectCount" class="col-form-label"></span>
                                         <div class="mt-2">
                                             <input type="range" min="0" max="50" step="1" id="SoundEffectCount" name="SoundEffectCount" data-gameelement="@((int)GameElement.SoundFx)" class="form-control" style="visibility:hidden" value="0" />
                                         </div>
@@ -167,7 +167,7 @@
                                 <div class="col-12">
                                     <div class="form-group">
                                         <label asp-for="MusicTrackCount" class="col-form-label"></label>
-                                        <span asp-description-for="MusicTrackCount" class="col-form-label" />
+                                        <span asp-description-for="MusicTrackCount" class="col-form-label"></span>
                                         <div class="mt-2">
                                             <input type="range" min="0" max="50" step="1" id="MusicTrackCount" name="MusicTrackCount" data-gameelement="@((int)GameElement.MusicTrack)" class="form-control" style="visibility:hidden" value="0" />
                                         </div>

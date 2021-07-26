@@ -73,7 +73,7 @@ html {
         font-size: 1.6em;
         border: none;
         text-align: center;
-        width: 100%
+        width: 100%;
     }
 
     .btn-social-icon.btn-lg > :first-child {
@@ -461,7 +461,7 @@ html {
 
     .btn-googleplaystore.active, .btn-googleplaystore.focus, .btn-googleplaystore:active, .btn-googleplaystore:focus, .btn-googleplaystore:hover, .show > .dropdown-toggle.btn-googleplaystore {
         color: #fff;
-        background-color: #A3AA44;
+        background-color: #a3aa44;
         border-color: rgba(0, 0, 0, 0.2);
     }
 
@@ -509,7 +509,7 @@ html {
 }
 
 .bg-paypal {
-    background-color: #00457C !important;
+    background-color: #00457c !important;
 }
 
 .btn-patreon {
@@ -518,7 +518,7 @@ html {
 }
 
 .bg-deviantart {
-    background-color: #05CC46 !important;
+    background-color: #05cc46 !important;
 }
 
 .bg-steam {
@@ -526,5 +526,5 @@ html {
 }
 
 .bg-artstation {
-    background-color: #089CE4 !important;
+    background-color: #089ce4 !important;
 }

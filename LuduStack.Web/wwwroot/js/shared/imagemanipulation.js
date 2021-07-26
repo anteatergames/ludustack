@@ -7,8 +7,13 @@
     var dropzones = [];
     var random = [];
 
+    var selectors = {};
+
     function init() {
         console.log('IMAGEMANIPULAION init');
+
+        selectors.inputImageListItem = 'input.imageinput';
+        selectors.imageListItem = 'img.uploadimage';
     }
 
     // dropzone
@@ -76,20 +81,23 @@
     }
 
     // cropper
-    function bindCroppers(imageListItemSelector, objs) {
-        var images = document.querySelectorAll(imageListItemSelector);
+    function bindCroppers(imageDivSelector) {
+        var imageDivElements = document.querySelectorAll(`${imageDivSelector}`);
 
-        for (var i = 0; i < images.length; i++) {
+        for (var i = 0; i < imageDivElements.length; i++) {
+            var imageElements = imageDivElements[i].querySelectorAll(`${selectors.imageListItem}`);
+            var inputElements = imageDivElements[i].querySelectorAll(`${selectors.inputImageListItem}`);
+
             var ratioValue = NaN;
-            if (images[i].dataset.aspectratio !== undefined) {
-                var ratio = images[i].dataset.aspectratio.replace(' ', '').split('/');
+            if (imageElements[0].dataset.aspectratio !== undefined) {
+                var ratio = imageElements[0].dataset.aspectratio.replace(' ', '').split('/');
 
                 if (ratio !== undefined) {
                     ratioValue = parseInt(ratio[0]) / parseInt(ratio[1]);
                 }
             }
 
-            var cropper = new Cropper(images[i], {
+            var cropper = new Cropper(imageElements[0], {
                 aspectRatio: ratioValue,
                 viewMode: 0,
                 autoCropArea: 1,
@@ -102,34 +110,62 @@
 
             croppers.push(cropper);
 
-            images[i].dataset.cropperIndex = i;
-        }
+            imageElements[0].dataset.cropperIndex = i;
 
-        bindChangeImage(objs)
+            var parent = imageElements[0].closest('.newimageupload');
+            var removeBtn = $(parent).find('.btn-remove-image');
+
+            bindChangeImage(inputElements, removeBtn);
+
+            bindRemoveImage(removeBtn);
+        }
     }
 
-    function bindChangeImage(objs) {
-        objs.on('change', function (e) {
+    function bindChangeImage(inputElement, removeButtonObj) {
+        $(inputElement).on('change', function (e) {
             var image = document.getElementById(e.target.dataset.targetImg);
-            var cropper = croppers[image.dataset.cropperIndex];
             var extension = $(this).val().split('.').pop().toLowerCase();
             var isGif = extension === 'gif';
 
             if (isGif) {
                 image.dataset.isgif = true;
-                //cropper.destroy();
             }
 
             var files = e.target.files;
 
             MAINMODULE.Utils.GetSelectedFileUrl(files, function (url2) {
                 changeDone(url2, e.target, image, isGif);
+
+                setRemoveHiddenInput(removeButtonObj, false);
             });
         });
     }
 
+    function bindRemoveImage(removeButtonObj) {
+        removeButtonObj.off('click');
+        removeButtonObj.on('click', function (e) {
+            var targetImgId = removeButtonObj.data('targetImg');
+            var image = document.getElementById(targetImgId);
+            if (image) {
+                image.src = image.dataset.defaultImg;
+
+                var cropper = croppers[image.dataset.cropperIndex];
+                cropper.disabled = false;
+
+                cropper.replace(image.dataset.defaultImg);
+                cropper.disabled = true;
+
+                setRemoveHiddenInput(removeButtonObj, true);
+            }
+        });
+    }
+
+    function setRemoveHiddenInput(removeButtonObj, booleanValue) {
+        var booleanInput = removeButtonObj.find('.removeimage');
+        booleanInput.val(booleanValue ? 'True' : 'False');
+    }
+
     function changeDone(blobUrl, inputElement, image, isGif) {
-        //inputElement.value = '';
         image.src = blobUrl;
 
         inputElement.dataset.changed = true;
@@ -144,36 +180,34 @@
         }
     }
 
-    function uploadCroppedImages(objs, callback) {
-        var imagesChanged = objs.filter(function (index) {
-            return objs[index].dataset.changed === 'true';
-        });
+    function uploadCroppedImages(imageDivSelector, callback) {
+        imagesProcessed = 0;
+        var imageDivElements = document.querySelectorAll(`${imageDivSelector}`);
+        var changedInputs = Array.from(document.querySelectorAll(`${selectors.inputImageListItem}`)).filter(x => x.dataset.changed === 'true');
+        console.log(changedInputs);
 
-        var imagesToProcessCount = imagesChanged.length;
+        var totalImageCont = imageDivElements.length;
 
-        if (imagesChanged.length > 0) {
-            processImages(imagesChanged, imagesToProcessCount, callback);
-        }
-        else {
-            if (callback) {
-                callback();
-            }
+        for (var i = 0; i < imageDivElements.length; i++) {
+            var inputElements = imageDivElements[i].querySelectorAll(`${selectors.inputImageListItem}`);
+            var element = inputElements[0];
+
+            processImage(element, totalImageCont, callback);
         }
     }
 
-    function processImages(imagesChanged, imagesToProcessCount, callback) {
-        imagesProcessed = 0;
+    function processImage(inputElement, totalImageCont, callback) {
+        var changed = inputElement.dataset.changed === 'true';
 
-        for (var i = 0; i < imagesToProcessCount; i++) {
-            var inputElement = imagesChanged[i];
-            var changed = inputElement.dataset.changed === 'true';
+        if (!changed) {
+            imagesProcessed++;
+            console.log('skipping...');
 
-            if (!changed) {
-                console.log('skipping...');
-                imagesProcessed++;
-                continue;
+            if (totalImageCont === imagesProcessed && callback) {
+                callback();
             }
-
+        }
+        else {
             var image = document.getElementById(inputElement.dataset.targetImg);
             var hidden = document.getElementById(inputElement.dataset.targetHidden);
 
@@ -196,25 +230,23 @@
 
             formData.append("randomName", true);
 
-            uploadImage(formData, imagesToProcessCount, hidden, callback);
+            uploadImage(formData, totalImageCont, hidden, callback);
         }
     }
 
-    function uploadImage(formData, imagesToProcessCount, hidden, callback) {
-        $.ajax('/storage/uploadmedia', {
+    function uploadImage(formData, totalImageCont, hidden, callback) {
+        return $.ajax('/storage/uploadmedia', {
             method: "POST",
             data: formData,
-            async: false,
+            async: true,
             processData: false,
             contentType: false,
             success: function (response) {
                 imagesProcessed++;
                 hidden.value = response.filename;
 
-                if (imagesProcessed === imagesToProcessCount) {
-                    if (callback) {
-                        callback();
-                    }
+                if (totalImageCont === imagesProcessed && callback) {
+                    callback();
                 }
             },
             error: function (response) {

@@ -6,6 +6,8 @@ namespace LuduStack.Domain.ValueObjects
     {
         public Guid Id { get; set; }
 
+        public Guid OriginalPostId { get; set; }
+
         public Guid UserId { get; set; }
 
         public Guid ForumCategoryId { get; set; }

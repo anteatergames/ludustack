@@ -4,9 +4,12 @@ using LuduStack.Application.Helpers;
 using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels.Game;
 using LuduStack.Application.ViewModels.GameJam;
+using LuduStack.Application.ViewModels.User;
+using LuduStack.Domain.Core.Attributes;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Core.Extensions;
 using LuduStack.Domain.Messaging;
+using LuduStack.Domain.Messaging.Queries.ForumCategory;
 using LuduStack.Domain.Messaging.Queries.Game;
 using LuduStack.Domain.Messaging.Queries.GameJam;
 using LuduStack.Domain.Messaging.Queries.UserProfile;
@@ -59,11 +62,11 @@ namespace LuduStack.Application.Services
             {
                 IEnumerable<GameJamListItem> allModels = await mediator.Query<GetGameJamListQuery, IEnumerable<GameJamListItem>>(new GetGameJamListQuery());
 
-                IEnumerable<GameJamViewModel> vms = mapper.Map<IEnumerable<GameJamListItem>, IEnumerable<GameJamViewModel>>(allModels);
+                List<GameJamViewModel> vms = mapper.Map<IEnumerable<GameJamListItem>, IEnumerable<GameJamViewModel>>(allModels).ToList();
 
                 SetViewModelStates(currentUserId, currentUserIsAdmin, vms);
 
-                vms = vms.OrderBy(x => x.CurrentPhase).ThenBy(x => x.SecondsToCountDown);
+                vms = vms.OrderBy(x => x.CurrentPhase).ThenBy(x => x.SecondsToCountDown).ToList();
 
                 return new OperationResultListVo<GameJamViewModel>(vms);
             }
@@ -83,7 +86,9 @@ namespace LuduStack.Application.Services
 
                 SetViewModelStates(userId, currentUserIsAdmin, vms);
 
-                return new OperationResultListVo<GameJamViewModel>(vms.OrderBy(x => x.Name));
+                IOrderedEnumerable<GameJamViewModel> finalLisit = vms.OrderBy(x => x.CurrentPhase).ThenBy(x => x.StartDate).ThenBy(x => x.EntryDeadline).ThenBy(x => x.VotingEndDate).ThenBy(x => x.ResultDate);
+
+                return new OperationResultListVo<GameJamViewModel>(finalLisit);
             }
             catch (Exception ex)
             {
@@ -104,24 +109,25 @@ namespace LuduStack.Application.Services
 
                 GameJamViewModel vm = mapper.Map<GameJamViewModel>(model);
 
-                UserProfileEssentialVo authorProfile = await mediator.Query<GetBasicUserProfileDataByUserIdQuery, UserProfileEssentialVo>(new GetBasicUserProfileDataByUserIdQuery(model.UserId));
+                SetGameJamCountdown(DateTime.Now, vm);
+
+                SetDatesForDisplay(vm);
+
                 IEnumerable<Guid> entries = await mediator.Query<GetEntriesUserIdsQuery, IEnumerable<Guid>>(new GetEntriesUserIdsQuery(x => x.GameJamId == model.Id));
-
-                vm.AuthorName = authorProfile.Name;
-                vm.AuthorHandler = authorProfile.Handler;
-
-                DateTime localTime = DateTime.Now.ToLocalTime();
-                SetCountdown(localTime, vm);
 
                 HtmlSanitizer sanitizer = ContentHelper.GetHtmlSanitizer();
 
                 SanitizeHtml(vm, sanitizer);
 
-                SetImagesToShow(vm, false);
+                await SetProfiles(vm);
 
-                SetJamPermissions(currentUserId, currentUserIsAdmin, vm);
+                SetHighlights(vm);
+
+                SetGameJamImagesToShow(vm, false);
 
                 SetViewModelState(currentUserId, vm, entries);
+
+                SetJamPermissions(currentUserId, currentUserIsAdmin, vm);
 
                 return new OperationResultVo<GameJamViewModel>(vm);
             }
@@ -151,7 +157,15 @@ namespace LuduStack.Application.Services
 
                 GameJamViewModel vm = mapper.Map<GameJamViewModel>(model);
 
-                SetImagesToShow(vm, true);
+                SetDatesForEdit(vm);
+
+                await SetForum(vm);
+
+                await SetProfiles(vm);
+
+                SetCriteria(vm, false);
+
+                SetGameJamImagesToShow(vm, true);
 
                 SetJamPermissions(currentUserId, currentUserIsAdmin, vm);
 
@@ -177,16 +191,20 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public async Task<OperationResultVo<Guid>> Save(Guid currentUserId, GameJamViewModel viewModel)
+        public async Task<OperationResultVo<Guid>> Save(Guid currentUserId, bool currentUserIsAdmin, GameJamViewModel viewModel)
         {
             try
             {
+                if (viewModel.UserId != currentUserId && !currentUserIsAdmin)
+                {
+                    return new OperationResultVo<Guid>("You cannot save this!");
+                }
+
                 GameJam model;
 
                 GameJam existing = await mediator.Query<GetGameJamByIdQuery, GameJam>(new GetGameJamByIdQuery(viewModel.Id));
                 if (existing != null)
                 {
-                    Guid existingUserId = existing.UserId;
                     model = mapper.Map(viewModel, existing);
                     model.UserId = existing.UserId;
                 }
@@ -199,20 +217,24 @@ namespace LuduStack.Application.Services
                     model = mapper.Map<GameJam>(viewModel);
                 }
 
-                if (model.FeaturedImage == Constants.DefaultGamejamThumbnail)
+                if (model.FeaturedImage == Constants.DefaultGamejamThumbnail || viewModel.RemoveFeaturedImage)
                 {
                     model.FeaturedImage = null;
                 }
 
-                if (model.BannerImage == Constants.DefaultGamejamThumbnail)
+                if (model.BannerImage == Constants.DefaultGamejamThumbnail || viewModel.RemoveBannerImage)
                 {
                     model.BannerImage = null;
                 }
 
-                if (model.BackgroundImage == Constants.DefaultGamejamThumbnail)
+                if (model.BackgroundImage == Constants.DefaultGamejamThumbnail || viewModel.RemoveBackgroundImage)
                 {
                     model.BackgroundImage = null;
                 }
+
+                HtmlSanitizer sanitizer = ContentHelper.GetHtmlSanitizer();
+
+                model.Description = sanitizer.Sanitize(model.Description, Constants.DefaultLuduStackPath);
 
                 CommandResult result = await mediator.SendCommand(new SaveGameJamCommand(model));
 
@@ -230,15 +252,36 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public Task<OperationResultVo<GameJamViewModel>> GenerateNew(Guid currentUserId)
+        public async Task<OperationResultVo> CalculateResults(Guid currentUserId, Guid jamId)
         {
             try
             {
-                GameJamViewModel newVm = new GameJamViewModel
+                CommandResult result = await mediator.SendCommand(new CalculateResultsGameJamCommand(jamId));
+
+                if (!result.Validation.IsValid)
+                {
+                    string message = result.Validation.Errors.FirstOrDefault().ErrorMessage;
+                    return new OperationResultVo<Guid>(jamId, false, message);
+                }
+
+                return new OperationResultVo<Guid>(jamId, result.PointsEarned, "Game Jam finished! Results available.");
+            }
+            catch (Exception ex)
+            {
+                return new OperationResultVo(ex.Message);
+            }
+        }
+
+        public async Task<OperationResultVo<GameJamViewModel>> GenerateNew(Guid currentUserId)
+        {
+            try
+            {
+                GameJamViewModel newVm = new()
                 {
                     UserId = currentUserId,
                     StartDate = DateTime.Now.AddDays(7)
                 };
+
                 newVm.EntryDeadline = newVm.StartDate.AddDays(7);
                 newVm.VotingEndDate = newVm.EntryDeadline.AddDays(7);
                 newVm.ResultDate = newVm.VotingEndDate.AddDays(7);
@@ -246,12 +289,33 @@ namespace LuduStack.Application.Services
                 newVm.FeaturedImage = Constants.DefaultGamejamThumbnail;
                 newVm.BannerImage = Constants.DefaultGamejamThumbnail;
                 newVm.BackgroundImage = Constants.DefaultGamejamThumbnail;
+                newVm.BackgroundColor = "#dedada";
 
-                return Task.FromResult(new OperationResultVo<GameJamViewModel>(newVm));
+                newVm.JudgesProfiles = new List<ProfileViewModel>();
+
+                UserProfileEssentialVo myProfile = await mediator.Query<GetBasicUserProfileDataByUserIdQuery, UserProfileEssentialVo>(new GetBasicUserProfileDataByUserIdQuery(currentUserId));
+                ProfileViewModel profile = new ProfileViewModel
+                {
+                    UserId = myProfile.UserId,
+                    Handler = myProfile.Handler,
+                    Location = myProfile.Location,
+                    CreateDate = myProfile.CreateDate,
+                    Name = myProfile.Name,
+                    ProfileImageUrl = UrlFormatter.ProfileImage(myProfile.UserId, Constants.HugeAvatarSize),
+                    CoverImageUrl = UrlFormatter.ProfileCoverImage(myProfile.UserId, myProfile.Id, myProfile.LastUpdateDate, myProfile.HasCoverImage, Constants.ProfileCoverSize)
+                };
+
+                newVm.JudgesProfiles.Add(profile);
+
+                SetCriteria(newVm, true);
+
+                await SetForum(newVm);
+
+                return new OperationResultVo<GameJamViewModel>(newVm);
             }
             catch (Exception ex)
             {
-                return Task.FromResult(new OperationResultVo<GameJamViewModel>(ex.Message));
+                return new OperationResultVo<GameJamViewModel>(ex.Message);
             }
         }
 
@@ -269,6 +333,195 @@ namespace LuduStack.Application.Services
             }
         }
 
+        public async Task<OperationResultListVo<GameJamEntryViewModel>> GetEntriesByJam(Guid currentUserId, bool currentUserIsAdmin, string jamHandler, Guid jamId, bool submittedOnly)
+        {
+            try
+            {
+                GameJam gameJam = await mediator.Query<GetGameJamByIdQuery, GameJam>(new GetGameJamByIdQuery(jamId));
+                GameJamViewModel gameJamVm = mapper.Map<GameJamViewModel>(gameJam);
+
+                SetGameJamCountdown(DateTime.Now, gameJamVm);
+
+                IEnumerable<GameJamEntry> allModels = await mediator.Query<GetGameJamEntryListQuery, IEnumerable<GameJamEntry>>(new GetGameJamEntryListQuery(jamId, submittedOnly));
+
+                IEnumerable<GameJamEntryViewModel> vms = mapper.Map<IEnumerable<GameJamEntry>, IEnumerable<GameJamEntryViewModel>>(allModels);
+
+                List<GameJamEntryViewModel> vmList = vms.ToList();
+
+                IEnumerable<Guid> gamesIds = vms.Where(x => x.GameId != Guid.Empty).Select(x => x.GameId);
+
+                IEnumerable<Game> games = await mediator.Query<GetGamesByIdsQuery, IEnumerable<Game>>(new GetGamesByIdsQuery(gamesIds));
+
+                IEnumerable<Guid> userIds = vmList.Select(x => x.UserId);
+
+                IEnumerable<UserProfileEssentialVo> userProfiles = await mediator.Query<GetBasicUserProfileDataByUserIdsQuery, IEnumerable<UserProfileEssentialVo>>(new GetBasicUserProfileDataByUserIdsQuery(userIds));
+
+                foreach (GameJamEntryViewModel vm in vmList)
+                {
+                    if (vm.GameId != Guid.Empty)
+                    {
+                        Game relatedGame = games.FirstOrDefault(x => x.Id == vm.GameId);
+                        if (relatedGame != null)
+                        {
+                            vm.FeaturedImage = UrlFormatter.FormatFeaturedImageUrl(relatedGame.UserId, relatedGame.ThumbnailUrl, ImageRenderType.Full);
+                        }
+                    }
+                    else
+                    {
+                        vm.FeaturedImage = UrlFormatter.FormatFeaturedImageUrl(vm.UserId, Constants.DefaultGameThumbnail, ImageRenderType.Full);
+                    }
+
+                    vm.JamHandler = jamHandler;
+
+                    UserProfileEssentialVo authorProfile = userProfiles.FirstOrDefault(x => x.UserId == vm.UserId);
+                    if (authorProfile != null)
+                    {
+                        vm.UserHandler = authorProfile.Handler;
+                        vm.AuthorName = authorProfile.Name;
+                        vm.AuthorPicture = UrlFormatter.ProfileImage(authorProfile.UserId, Constants.SmallAvatarSize);
+                    }
+
+                    SetVotes(currentUserId, gameJamVm, vm);
+
+                    if (vm.SubmissionDate != default)
+                    {
+                        vm.CreateDate = vm.SubmissionDate;
+                    }
+                    else
+                    {
+                        vm.CreateDate = vm.JoinDate;
+                    }
+
+                    vm.GameJam = gameJamVm;
+                }
+
+                vmList = vmList.OrderBy(x => x.SubmissionDate).ToList();
+
+                return new OperationResultListVo<GameJamEntryViewModel>(vmList);
+            }
+            catch (Exception ex)
+            {
+                return new OperationResultListVo<GameJamEntryViewModel>(ex.Message);
+            }
+        }
+
+        public async Task<OperationResultListVo<GameJamEntryViewModel>> GetParticipantsByJam(Guid currentUserId, bool currentUserIsAdmin, string jamHandler, Guid jamId)
+        {
+            try
+            {
+                List<GameJamEntryViewModel> finalList = new List<GameJamEntryViewModel>();
+
+                IEnumerable<GameJamEntry> allModels = await mediator.Query<GetGameJamEntryListQuery, IEnumerable<GameJamEntry>>(new GetGameJamEntryListQuery(jamId, false));
+
+                IEnumerable<Guid> userIds = allModels.Select(x => x.UserId);
+
+                IEnumerable<UserProfileEssentialVo> userProfiles = await mediator.Query<GetBasicUserProfileDataByUserIdsQuery, IEnumerable<UserProfileEssentialVo>>(new GetBasicUserProfileDataByUserIdsQuery(userIds));
+
+                foreach (GameJamEntry entry in allModels)
+                {
+                    UserProfileEssentialVo profile = userProfiles.FirstOrDefault(x => x.UserId == entry.UserId);
+                    if (profile != null)
+                    {
+                        GameJamEntryViewModel entryVm = new GameJamEntryViewModel
+                        {
+                            Id = entry.Id,
+                            UserId = entry.UserId,
+                            JoinDate = entry.JoinDate,
+                            SubmissionDate = entry.SubmissionDate,
+                            JamHandler = jamHandler,
+                            CreateDate = profile.CreateDate,
+                            Handler = profile.Handler,
+                            Name = profile.Name,
+                            Location = profile.Location,
+                            ProfileImageUrl = UrlFormatter.ProfileImage(profile.UserId, Constants.HugeAvatarSize),
+                            CoverImageUrl = UrlFormatter.ProfileCoverImage(profile.UserId, profile.Id, profile.LastUpdateDate, profile.HasCoverImage, Constants.ProfileCoverSize)
+                        };
+
+                        finalList.Add(entryVm);
+                    }
+                }
+
+                finalList = finalList.OrderBy(x => x.JoinDate).ToList();
+
+                return new OperationResultListVo<GameJamEntryViewModel>(finalList);
+            }
+            catch (Exception ex)
+            {
+                return new OperationResultListVo<GameJamEntryViewModel>(ex.Message);
+            }
+        }
+
+        public async Task<OperationResultListVo<GameJamEntryViewModel>> GetWinnersByJam(Guid currentUserId, bool currentUserIsAdmin, Guid jamId, string jamHandler, int winnerCount)
+        {
+            try
+            {
+                GameJam gameJam = await mediator.Query<GetGameJamByIdQuery, GameJam>(new GetGameJamByIdQuery(jamId));
+                GameJamViewModel gameJamVm = mapper.Map<GameJamViewModel>(gameJam);
+
+                SetGameJamCountdown(DateTime.Now, gameJamVm);
+
+                IEnumerable<GameJamEntry> allModels = await mediator.Query<GetGameJamWinnersQuery, IEnumerable<GameJamEntry>>(new GetGameJamWinnersQuery(jamId, winnerCount));
+
+                IEnumerable<GameJamEntryViewModel> vms = mapper.Map<IEnumerable<GameJamEntry>, IEnumerable<GameJamEntryViewModel>>(allModels);
+
+                List<GameJamEntryViewModel> vmList = vms.ToList();
+
+                IEnumerable<Guid> gamesIds = vms.Where(x => x.GameId != Guid.Empty).Select(x => x.GameId);
+
+                IEnumerable<Game> games = await mediator.Query<GetGamesByIdsQuery, IEnumerable<Game>>(new GetGamesByIdsQuery(gamesIds));
+
+                IEnumerable<Guid> userIds = vmList.Select(x => x.UserId);
+
+                IEnumerable<UserProfileEssentialVo> userProfiles = await mediator.Query<GetBasicUserProfileDataByUserIdsQuery, IEnumerable<UserProfileEssentialVo>>(new GetBasicUserProfileDataByUserIdsQuery(userIds));
+
+                foreach (GameJamEntryViewModel vm in vmList)
+                {
+                    if (vm.GameId != Guid.Empty)
+                    {
+                        Game relatedGame = games.FirstOrDefault(x => x.Id == vm.GameId);
+                        if (relatedGame != null)
+                        {
+                            vm.FeaturedImage = UrlFormatter.FormatFeaturedImageUrl(relatedGame.UserId, relatedGame.ThumbnailUrl, ImageRenderType.Full);
+                        }
+                    }
+                    else
+                    {
+                        vm.FeaturedImage = UrlFormatter.FormatFeaturedImageUrl(vm.UserId, Constants.DefaultGameThumbnail, ImageRenderType.Full);
+                    }
+
+                    UserProfileEssentialVo authorProfile = userProfiles.FirstOrDefault(x => x.UserId == vm.UserId);
+                    if (authorProfile != null)
+                    {
+                        vm.UserHandler = authorProfile.Handler;
+                        vm.AuthorName = authorProfile.Name;
+                        vm.AuthorPicture = UrlFormatter.ProfileImage(authorProfile.UserId, Constants.SmallAvatarSize);
+                    }
+
+                    SetVotes(currentUserId, gameJamVm, vm);
+
+                    if (vm.SubmissionDate != default)
+                    {
+                        vm.CreateDate = vm.SubmissionDate;
+                    }
+                    else
+                    {
+                        vm.CreateDate = vm.JoinDate;
+                    }
+
+                    vm.GameJam = gameJamVm;
+                    vm.JamHandler = jamHandler;
+                }
+
+                vmList = vmList.OrderBy(x => x.FinalPlace).ToList();
+
+                return new OperationResultListVo<GameJamEntryViewModel>(vmList);
+            }
+            catch (Exception ex)
+            {
+                return new OperationResultListVo<GameJamEntryViewModel>(ex.Message);
+            }
+        }
+
         public async Task<OperationResultVo> Join(Guid currentUserId, Guid jamId)
         {
             try
@@ -281,7 +534,6 @@ namespace LuduStack.Application.Services
                 }
 
                 CommandResult result = await mediator.SendCommand(new JoinGameJamCommand(currentUserId, jamId));
-
 
                 if (!result.Validation.IsValid)
                 {
@@ -297,7 +549,36 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public async Task<OperationResultVo> SubmitGame(Guid currentUserId, string jamHandler, Guid gameId)
+        public async Task<OperationResultVo> SaveTeam(Guid currentUserId, Guid entryId, IEnumerable<GameJamTeamMemberViewModel> teamMembers)
+        {
+            try
+            {
+                GameJamEntry entry = await mediator.Query<GetGameJamEntryByIdQuery, GameJamEntry>(new GetGameJamEntryByIdQuery(entryId));
+
+                if (entry == null)
+                {
+                    return new OperationResultVo<GameJamEntryViewModel>("Entry not found!");
+                }
+
+                IEnumerable<Guid> teamMembersIds = teamMembers.Select(x => x.UserId);
+
+                CommandResult result = await mediator.SendCommand(new SaveGameJamEntryTeamCommand(entryId, teamMembersIds));
+
+                if (!result.Validation.IsValid)
+                {
+                    string message = result.Validation.Errors.FirstOrDefault().ErrorMessage;
+                    return new OperationResultVo<Guid>(entry.Id, false, message);
+                }
+
+                return new OperationResultVo<Guid>(entry.Id, result.PointsEarned, "Team saved!");
+            }
+            catch (Exception ex)
+            {
+                return new OperationResultVo(ex.Message);
+            }
+        }
+
+        public async Task<OperationResultVo> SubmitGame(Guid currentUserId, string jamHandler, Guid gameId, string extraInformation, IEnumerable<GameJamTeamMemberViewModel> teamMembers)
         {
             try
             {
@@ -315,7 +596,9 @@ namespace LuduStack.Application.Services
                     return new OperationResultVo<GameJamEntryViewModel>("Entry not found!");
                 }
 
-                CommandResult result = await mediator.SendCommand(new SubmitGameJamEntryCommand(currentUserId, entry.Id, gameId));
+                IEnumerable<Guid> teamMembersIds = teamMembers.Select(x => x.UserId);
+
+                CommandResult result = await mediator.SendCommand(new SubmitGameJamEntryCommand(currentUserId, entry.Id, gameId, extraInformation, teamMembersIds));
 
                 if (!result.Validation.IsValid)
                 {
@@ -331,7 +614,48 @@ namespace LuduStack.Application.Services
             }
         }
 
+        public async Task<OperationResultVo> VoteEntry(Guid currentUserId, string jamHandler, Guid entryId, GameJamCriteriaType criteriaType, decimal score, string comment)
+        {
+            try
+            {
+                GameJam gameJam = await mediator.Query<GetGameJamByIdQuery, GameJam>(new GetGameJamByIdQuery(jamHandler));
+
+                if (gameJam == null)
+                {
+                    return new OperationResultVo<GameJamViewModel>("Jam not found!");
+                }
+
+                GameJamEntry entry = await mediator.Query<GetGameJamEntryByIdQuery, GameJamEntry>(new GetGameJamEntryByIdQuery(entryId));
+
+                if (entry == null)
+                {
+                    return new OperationResultVo<GameJamEntryViewModel>("Entry not found!");
+                }
+
+                bool isCommunityVote = currentUserId != gameJam.UserId && !gameJam.Judges.Any(x => x.UserId == currentUserId);
+
+                CommandResult result = await mediator.SendCommand(new VoteGameJamEntryCommand(currentUserId, entryId, criteriaType, score, comment, isCommunityVote));
+
+                if (!result.Validation.IsValid)
+                {
+                    string message = result.Validation.Errors.FirstOrDefault().ErrorMessage;
+                    return new OperationResultVo<Guid>(entry.Id, false, message);
+                }
+
+                return new OperationResultVo<Guid>(entry.Id, result.PointsEarned, "Vote cast");
+            }
+            catch (Exception ex)
+            {
+                return new OperationResultVo(ex.Message);
+            }
+        }
+
         public async Task<OperationResultVo<GameJamEntryViewModel>> GetEntry(Guid currentUserId, bool currentUserIsAdmin, string jamHandler)
+        {
+            return await GetEntry(currentUserId, currentUserIsAdmin, jamHandler, null);
+        }
+
+        public async Task<OperationResultVo<GameJamEntryViewModel>> GetEntry(Guid currentUserId, bool currentUserIsAdmin, string jamHandler, Guid? id)
         {
             try
             {
@@ -342,7 +666,16 @@ namespace LuduStack.Application.Services
                     return new OperationResultVo<GameJamEntryViewModel>("Jam not found!");
                 }
 
-                GameJamEntry model = await mediator.Query<GetGameJamEntryQuery, GameJamEntry>(new GetGameJamEntryQuery(currentUserId, gameJam.Id));
+                GameJamEntry model;
+
+                if (id.HasValue)
+                {
+                    model = await mediator.Query<GetGameJamEntryByIdQuery, GameJamEntry>(new GetGameJamEntryByIdQuery(id.Value));
+                }
+                else
+                {
+                    model = await mediator.Query<GetGameJamEntryQuery, GameJamEntry>(new GetGameJamEntryQuery(currentUserId, gameJam.Id));
+                }
 
                 if (model == null)
                 {
@@ -358,25 +691,39 @@ namespace LuduStack.Application.Services
 
                     GameViewModel gameVm = mapper.Map<GameViewModel>(game);
 
+                    GameFormatter.FilCharacteristics(gameVm);
+
+                    await GameFormatter.FormatExternalLinks(mediator, gameVm);
+
                     gameVm.ThumbnailUrl = string.IsNullOrWhiteSpace(gameVm.ThumbnailUrl) || Constants.DefaultGameThumbnail.NoExtension().Contains(gameVm.ThumbnailUrl.NoExtension()) ? Constants.DefaultGameThumbnail : UrlFormatter.Image(gameVm.UserId, ImageType.GameThumbnail, gameVm.ThumbnailUrl);
 
                     vm.Game = gameVm;
                     vm.Title = game.Title;
+
+                    vm.FeaturedImage = gameVm.ThumbnailUrl;
                 }
 
-                SetImagesToShow(gameJamVm, false);
+                SetGameJamImagesToShow(gameJamVm, false);
                 vm.GameJam = gameJamVm;
 
                 UserProfileEssentialVo authorProfile = await mediator.Query<GetBasicUserProfileDataByUserIdQuery, UserProfileEssentialVo>(new GetBasicUserProfileDataByUserIdQuery(model.UserId));
 
                 vm.AuthorName = authorProfile.Name;
                 vm.UserHandler = authorProfile.Handler;
+                vm.AuthorPicture = UrlFormatter.ProfileImage(vm.UserId, Constants.BigAvatarSize);
 
-                DateTime localTime = DateTime.Now.ToLocalTime();
-                SetCountdown(localTime, gameJamVm);
+                SetGameJamCountdown(DateTime.Now, gameJamVm);
                 vm.SecondsToCountDown = gameJamVm.SecondsToCountDown;
 
-                SetEntryPermissions(currentUserId, currentUserIsAdmin, gameJamVm, vm);
+                await SetTeamMembers(vm);
+
+                SetVotes(currentUserId, gameJamVm, vm);
+
+                vm.IsWinner = vm.FinalPlace <= gameJamVm.Winners;
+
+                IEnumerable<GameJamTeamMember> allParticipantIds = await mediator.Query<GetGameJamParticipants, IEnumerable<GameJamTeamMember>>(new GetGameJamParticipants(gameJamVm.Id));
+
+                SetEntryPermissions(currentUserId, currentUserIsAdmin, gameJamVm, vm, allParticipantIds);
 
                 return new OperationResultVo<GameJamEntryViewModel>(vm);
             }
@@ -386,27 +733,80 @@ namespace LuduStack.Application.Services
             }
         }
 
+        private static void SetVotes(Guid currentUserId, GameJamViewModel gameJamVm, GameJamEntryViewModel vm)
+        {
+            List<decimal> medians = new List<decimal>();
+
+            foreach (GameJamCriteriaViewModel criteria in gameJamVm.Criteria)
+            {
+                decimal median = 0;
+
+                IEnumerable<GameJamVoteViewModel> allVotesForThisCategory = vm.Votes.Where(x => x.CriteriaType == criteria.Type);
+                if (allVotesForThisCategory.Any())
+                {
+                    median = allVotesForThisCategory.Median(x => x.Score);
+                }
+
+                GameJamVoteViewModel newVote = new GameJamVoteViewModel
+                {
+                    UserId = currentUserId,
+                    CriteriaType = criteria.Type,
+                    Median = median
+                };
+
+                if (currentUserId == Guid.Empty)
+                {
+                    vm.Votes.Add(newVote);
+                }
+                else
+                {
+                    GameJamVoteViewModel currentUserVote = allVotesForThisCategory.FirstOrDefault(x => x.UserId == currentUserId);
+                    if (currentUserVote == null)
+                    {
+                        vm.Votes.Add(newVote);
+                    }
+                    else
+                    {
+                        currentUserVote.Median = median;
+                    }
+                }
+
+                medians.Add(median * criteria.Weight);
+            }
+
+            vm.TotalScore = medians.Any() ? medians.Median() : 0;
+
+            vm.CanShowFinalResults = gameJamVm.CurrentPhase == GameJamPhase.Finished;
+            vm.CanShowResults = vm.CanShowFinalResults || gameJamVm.CurrentPhase == GameJamPhase.Results || (gameJamVm.CurrentPhase == GameJamPhase.Voting && !gameJamVm.HideRealtimeResults);
+
+            vm.IsOverallVote = !gameJamVm.Criteria.Any(x => x.Type != GameJamCriteriaType.Overall);
+        }
+
         private static void SetViewModelState(Guid currentUserId, GameJamViewModel vm, IEnumerable<Guid> entries)
         {
             vm.JoinCount = entries.Count();
             vm.CurrentUserJoined = entries.Any(x => x == currentUserId);
-            vm.ShowMainTheme = !string.IsNullOrWhiteSpace(vm.MainTheme) && (
+            vm.ShowMainTheme =
                 (vm.CurrentPhase == GameJamPhase.Warmup && !vm.HideMainTheme && vm.CurrentUserJoined) ||
                 (vm.CurrentPhase == GameJamPhase.Submission && vm.CurrentUserJoined) ||
                 (vm.CurrentPhase == GameJamPhase.Voting && vm.CurrentUserJoined) ||
                 (vm.CurrentPhase == GameJamPhase.Results && vm.CurrentUserJoined) ||
-                (vm.CurrentPhase == GameJamPhase.Finished)
-            );
+                (vm.CurrentPhase == GameJamPhase.Finished);
         }
 
         private static void SetViewModelStates(Guid currentUserId, bool currentUserIsAdmin, IEnumerable<GameJamViewModel> vms)
         {
-            DateTime localTime = DateTime.Now.ToLocalTime();
+            DateTime localTime = DateTime.Now;
             foreach (GameJamViewModel vm in vms)
             {
-                SetDates(vm);
+                if (vm.Language == 0)
+                {
+                    vm.Language = SupportedLanguage.English;
+                }
 
-                SetCountdown(localTime, vm);
+                SetGameJamCountdown(localTime, vm);
+
+                SetDatesForDisplay(vm);
 
                 vm.FeaturedImage = SetFeaturedImage(vm.UserId, vm.FeaturedImage, ImageRenderType.Small, Constants.DefaultGamejamThumbnail);
 
@@ -414,7 +814,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        private static void SetDates(GameJamViewModel vm)
+        private static void SetInitialDates(GameJamViewModel vm)
         {
             if (vm.StartDate == default)
             {
@@ -432,47 +832,74 @@ namespace LuduStack.Application.Services
             {
                 vm.ResultDate = vm.VotingEndDate.AddDays(7);
             }
-
-            vm.CreateDate = vm.CreateDate.ToLocalTime();
-
-            vm.StartDate = vm.StartDate.ToLocalTime();
-            vm.EntryDeadline = vm.EntryDeadline.ToLocalTime();
-            vm.VotingEndDate = vm.VotingEndDate.ToLocalTime();
-            vm.ResultDate = vm.ResultDate.ToLocalTime();
         }
 
-        private static void SetCountdown(DateTime localTime, GameJamViewModel vm)
+        private static void SetDatesForDisplay(GameJamViewModel vm)
         {
+            SetInitialDates(vm);
+
+            vm.StartDateToDisplay = vm.StartDate.AddHours(vm.TimeZoneDifference);
+            vm.EntryDeadlineToDisplay = vm.EntryDeadline.AddHours(vm.TimeZoneDifference);
+            vm.VotingEndDateToDisplay = vm.VotingEndDate.AddHours(vm.TimeZoneDifference);
+            vm.ResultDateToDisplay = vm.ResultDate.AddHours(vm.TimeZoneDifference);
+        }
+
+        private static void SetDatesForEdit(GameJamViewModel vm)
+        {
+            SetInitialDates(vm);
+
+            int timeZoneDifference = 0;
+
+            if (!string.IsNullOrWhiteSpace(vm.TimeZone))
+            {
+                int.TryParse(vm.TimeZone, out timeZoneDifference);
+            }
+
+            vm.StartDate = vm.StartDate.AddHours(timeZoneDifference);
+            vm.EntryDeadline = vm.EntryDeadline.AddHours(timeZoneDifference);
+            vm.VotingEndDate = vm.VotingEndDate.AddHours(timeZoneDifference);
+            vm.ResultDate = vm.ResultDate.AddHours(timeZoneDifference);
+        }
+
+        private static void SetGameJamCountdown(DateTime localTime, GameJamViewModel vm)
+        {
+            localTime = localTime.ToUniversalTime();
+
+            DateTime startDateUtc = vm.StartDate.ToUniversalTime();
+            DateTime deadLineDateUtc = vm.EntryDeadline.ToUniversalTime();
+            DateTime votingEndDateUtc = vm.VotingEndDate.ToUniversalTime();
+            DateTime resultDateDateUtc = vm.ResultDate.ToUniversalTime();
+
             TimeSpan diff;
-            if (vm.ResultDate <= localTime)
+            if (resultDateDateUtc <= localTime)
             {
                 vm.CurrentPhase = GameJamPhase.Finished;
                 vm.CountDownMessage = "We did it!";
                 diff = new TimeSpan();
             }
-            else if (vm.VotingEndDate <= localTime && vm.ResultDate > localTime)
+            else if (votingEndDateUtc <= localTime && resultDateDateUtc > localTime)
             {
                 vm.CurrentPhase = GameJamPhase.Results;
                 vm.CountDownMessage = "Results in";
-                diff = vm.ResultDate - localTime;
+                diff = resultDateDateUtc - localTime;
             }
-            else if (vm.EntryDeadline <= localTime && vm.VotingEndDate > localTime)
+            else if (deadLineDateUtc <= localTime && votingEndDateUtc > localTime)
             {
                 vm.CurrentPhase = GameJamPhase.Voting;
                 vm.CountDownMessage = "Voting";
-                diff = vm.VotingEndDate - localTime;
+                diff = votingEndDateUtc - localTime;
             }
-            else if (vm.StartDate <= localTime && vm.EntryDeadline > localTime)
+            else if (startDateUtc <= localTime && deadLineDateUtc > localTime)
             {
                 vm.CurrentPhase = GameJamPhase.Submission;
                 vm.CountDownMessage = "Deadline";
-                diff = vm.EntryDeadline - localTime;
+                diff = deadLineDateUtc - localTime;
             }
             else
             {
                 vm.CurrentPhase = GameJamPhase.Warmup;
                 vm.CountDownMessage = "Starts in";
-                diff = vm.StartDate - localTime;
+                diff = startDateUtc - localTime;
             }
             vm.SecondsToCountDown = (int)diff.TotalSeconds;
         }
@@ -481,10 +908,113 @@ namespace LuduStack.Application.Services
         {
             viewModel.Description = sanitizer.Sanitize(viewModel.Description, Constants.DefaultLuduStackPath);
 
-            foreach (string key in ContentFormatter.Replacements().Keys)
+            System.Collections.Specialized.StringDictionary replacements = ContentFormatter.DisplayReplacements();
+
+            foreach (string key in replacements.Keys)
             {
-                viewModel.Description = viewModel.Description.Replace(key, ContentFormatter.Replacements()[key]);
+                viewModel.Description = viewModel.Description.Replace(key, replacements[key]);
             }
+        }
+
+        private async Task SetProfiles(GameJamViewModel vm)
+        {
+            List<Guid> userIds = vm.Judges.Select(x => x.UserId).ToList();
+            userIds.Add(vm.UserId);
+
+            IEnumerable<UserProfileEssentialVo> profiles = await mediator.Query<GetBasicUserProfileDataByUserIdsQuery, IEnumerable<UserProfileEssentialVo>>(new GetBasicUserProfileDataByUserIdsQuery(userIds));
+
+            UserProfileEssentialVo authorProfile = profiles.FirstOrDefault(x => x.UserId == vm.UserId);
+            if (authorProfile != null)
+            {
+                vm.AuthorName = authorProfile.Name;
+                vm.AuthorHandler = authorProfile.Handler;
+            }
+
+            vm.JudgesProfiles = new List<ProfileViewModel>();
+            foreach (UserProfileEssentialVo profileEssential in profiles)
+            {
+                ProfileViewModel profile = new ProfileViewModel
+                {
+                    UserId = profileEssential.UserId,
+                    Handler = profileEssential.Handler,
+                    Location = profileEssential.Location,
+                    CreateDate = profileEssential.CreateDate,
+                    Name = profileEssential.Name,
+                    ProfileImageUrl = UrlFormatter.ProfileImage(profileEssential.UserId, Constants.HugeAvatarSize),
+                    CoverImageUrl = UrlFormatter.ProfileCoverImage(profileEssential.UserId, profileEssential.Id, profileEssential.LastUpdateDate, profileEssential.HasCoverImage, Constants.ProfileCoverSize)
+                };
+
+                vm.JudgesProfiles.Add(profile);
+            }
+        }
+
+        private async Task SetTeamMembers(GameJamEntryViewModel vm)
+        {
+            IEnumerable<Guid> teamMembersIds = vm.TeamMembers.Select(x => x.UserId);
+
+            IEnumerable<UserProfileEssentialVo> profiles = await mediator.Query<GetBasicUserProfileDataByUserIdsQuery, IEnumerable<UserProfileEssentialVo>>(new GetBasicUserProfileDataByUserIdsQuery(teamMembersIds));
+
+            vm.TeamMembersProfiles = new List<ProfileViewModel>();
+            foreach (UserProfileEssentialVo profileEssential in profiles)
+            {
+                GameJamTeamMemberViewModel teamMember = vm.TeamMembers.First(x => x.UserId == profileEssential.UserId);
+
+                ProfileViewModel profile = new ProfileViewModel
+                {
+                    UserId = profileEssential.UserId,
+                    Handler = profileEssential.Handler,
+                    Location = profileEssential.Location,
+                    CreateDate = profileEssential.CreateDate,
+                    LastUpdateDate = teamMember.TeamJoinDate,
+                    Name = profileEssential.Name,
+                    ProfileImageUrl = UrlFormatter.ProfileImage(profileEssential.UserId, Constants.HugeAvatarSize),
+                    CoverImageUrl = UrlFormatter.ProfileCoverImage(profileEssential.UserId, profileEssential.Id, profileEssential.LastUpdateDate, profileEssential.HasCoverImage, Constants.ProfileCoverSize)
+                };
+
+                vm.TeamMembersProfiles.Add(profile);
+            }
+
+            vm.TeamMembersProfiles = vm.TeamMembersProfiles.OrderByDescending(x => x.LastUpdateDate).ToList();
+        }
+
+        private static void SetCriteria(GameJamViewModel gameJamVm, bool isNew)
+        {
+            if (gameJamVm.Criteria == null)
+            {
+                gameJamVm.Criteria = new List<GameJamCriteriaViewModel>();
+            }
+
+            IEnumerable<GameJamCriteriaType> allCriteria = Enum.GetValues(typeof(GameJamCriteriaType)).Cast<GameJamCriteriaType>();
+
+            foreach (GameJamCriteriaType item in allCriteria)
+            {
+                UiInfoAttribute uiInfo = item.ToUiInfo();
+
+                GameJamCriteriaViewModel existingCriteria = gameJamVm.Criteria.FirstOrDefault(x => x.Type == item);
+                if (existingCriteria != null)
+                {
+                    existingCriteria.Enabled = true;
+
+                    if (string.IsNullOrWhiteSpace(existingCriteria.Name))
+                    {
+                        existingCriteria.Name = uiInfo.Display;
+                    }
+                }
+                else
+                {
+                    GameJamCriteriaViewModel newCriteria = new GameJamCriteriaViewModel
+                    {
+                        Enabled = isNew && ((int)item) < 5,
+                        Type = item,
+                        Name = uiInfo.Display,
+                        Weight = 1
+                    };
+
+                    gameJamVm.Criteria.Add(newCriteria);
+                }
+            }
+
+            gameJamVm.Criteria = gameJamVm.Criteria.OrderBy(x => x.Type).ToList();
         }
 
         private static void SetJamPermissions(Guid currentUserId, bool currentUserIsAdmin, GameJamViewModel vm)
@@ -492,6 +1022,8 @@ namespace LuduStack.Application.Services
             bool canJoinOnWarming = vm.CurrentPhase == GameJamPhase.Warmup;
             bool canJoinLate = vm.CurrentPhase == GameJamPhase.Submission && vm.AllowLateJoin;
             bool sameUser = vm.UserId == currentUserId;
+            bool iAmJudge = vm.Judges != null && vm.Judges.Select(x => x.UserId).Contains(currentUserId);
+            bool isNotWarmup = vm.CurrentPhase != GameJamPhase.Warmup;
 
             vm.Permissions.CanJoin = !sameUser && (canJoinOnWarming || canJoinLate);
 
@@ -500,21 +1032,61 @@ namespace LuduStack.Application.Services
                 vm.CantJoinMessage = sameUser ? "You can't join your own Game Jam!" : "You can't join anymore!";
             }
 
+            vm.ShowSubmissions = (isNotWarmup && iAmJudge) || (isNotWarmup && !vm.HideSubmissions || vm.CurrentPhase == GameJamPhase.Results || vm.CurrentPhase == GameJamPhase.Finished);
+            vm.ShowJudges = vm.Judges != null && vm.Judges.Any();
+            vm.ShowCriteria = vm.Criteria != null && vm.Criteria.Any(x => x.Type != GameJamCriteriaType.Overall);
+            vm.ShowFinalResults = vm.CurrentPhase == GameJamPhase.Finished && vm.HasWinners;
+
             vm.Permissions.IsAdmin = currentUserIsAdmin;
             vm.Permissions.CanDelete = vm.Permissions.IsAdmin;
             vm.Permissions.CanSubmit = vm.CurrentPhase == GameJamPhase.Submission;
         }
 
-        private static void SetEntryPermissions(Guid currentUserId, bool currentUserIsAdmin, GameJamViewModel gameJamVm, GameJamEntryViewModel vm)
+        private static void SetEntryPermissions(Guid currentUserId, bool currentUserIsAdmin, GameJamViewModel gameJamVm, GameJamEntryViewModel vm, IEnumerable<GameJamTeamMember> allParticipantIds)
         {
             SetJamPermissions(currentUserId, currentUserIsAdmin, gameJamVm);
 
-            vm.Permissions.IsMe = currentUserId == vm.UserId;
+            vm.Permissions.IsMe = currentUserId == vm.UserId || vm.TeamMembers.Any(x => x.UserId == currentUserId);
             vm.Permissions.IsAdmin = currentUserIsAdmin;
-            vm.Permissions.CanSubmit = gameJamVm.Permissions.CanSubmit || (gameJamVm.CurrentPhase == GameJamPhase.Voting && vm.LateSubmission);
+            vm.Permissions.CanSubmit = vm.Permissions.IsMe && (gameJamVm.Permissions.CanSubmit || (gameJamVm.CurrentPhase == GameJamPhase.Voting && vm.LateSubmission));
+
+            bool iAmJudge = gameJamVm.Judges != null && gameJamVm.Judges.Select(x => x.UserId).Any(x => x == currentUserId);
+            bool jamPhaseAllowsVote = gameJamVm.CurrentPhase == GameJamPhase.Voting;
+            bool iCanVote = iAmJudge;
+
+            iCanVote = CheckCanVoteConditions(currentUserId, gameJamVm, allParticipantIds, iCanVote);
+
+            vm.Permissions.CanVote = !vm.Permissions.IsMe && jamPhaseAllowsVote && vm.GameId != Guid.Empty && iCanVote;
         }
 
-        private void SetImagesToShow(GameJamViewModel vm, bool editMode)
+        private static bool CheckCanVoteConditions(Guid currentUserId, GameJamViewModel gameJamVm, IEnumerable<GameJamTeamMember> allParticipantIds, bool iCanVote)
+        {
+            switch (gameJamVm.Voters)
+            {
+                case GameJamVoters.JudgesAndSubmitters:
+                    iCanVote = iCanVote || allParticipantIds.Any(x => x.IsSubmitter && x.UserId == currentUserId);
+                    break;
+
+                case GameJamVoters.JudgesAndTeamMembers:
+                    iCanVote = iCanVote || allParticipantIds.Any(x => x.UserId == currentUserId);
+                    break;
+
+                case GameJamVoters.JudgesAndNonParticipants:
+                    iCanVote = (iCanVote || !allParticipantIds.Any(x => x.UserId == currentUserId)) && currentUserId != Guid.Empty;
+                    break;
+
+                case GameJamVoters.JudgesAndTheWholeCommunity:
+                    iCanVote = iCanVote || currentUserId != Guid.Empty;
+                    break;
+                default:
+                    iCanVote = iCanVote || allParticipantIds.Any(x => x.IsSubmitter && x.UserId == currentUserId);
+                    break;
+            }
+
+            return iCanVote;
+        }
+
+        private void SetGameJamImagesToShow(GameJamViewModel vm, bool editMode)
         {
             if (editMode)
             {
@@ -537,6 +1109,79 @@ namespace LuduStack.Application.Services
             vm.FeaturedImage = UrlFormatter.FormatFeaturedImageUrl(vm.UserId, vm.FeaturedImage, ImageRenderType.Full);
             vm.BannerImage = UrlFormatter.FormatFeaturedImageUrl(vm.UserId, vm.BannerImage, ImageRenderType.Full);
             vm.BackgroundImage = UrlFormatter.FormatFeaturedImageUrl(vm.UserId, vm.BackgroundImage, ImageRenderType.Full);
+
+            if (string.IsNullOrWhiteSpace(vm.BackgroundColor))
+            {
+                vm.BackgroundColor = "#dedada";
+            }
+        }
+
+        private static void SetHighlights(GameJamViewModel vm)
+        {
+            vm.Highlights = new List<GameJamHighlightsVo>();
+            if (vm.HideSubmissions)
+            {
+                vm.Highlights.Add(new GameJamHighlightsVo { Highlight = GameJamHighlight.SubmissionsSecret });
+            }
+            else
+            {
+                vm.Highlights.Add(new GameJamHighlightsVo { Highlight = GameJamHighlight.SubmissionsPublic });
+            }
+
+            if (vm.HideRealtimeResults)
+            {
+                vm.Highlights.Add(new GameJamHighlightsVo { Highlight = GameJamHighlight.ResultsSecret });
+            }
+            else
+            {
+                vm.Highlights.Add(new GameJamHighlightsVo { Highlight = GameJamHighlight.ResultsPublic });
+            }
+
+            if (vm.Unlisted)
+            {
+                vm.Highlights.Add(new GameJamHighlightsVo { Highlight = GameJamHighlight.Unlisted });
+            }
+
+            if (vm.HideMainTheme)
+            {
+                vm.Highlights.Add(new GameJamHighlightsVo { Highlight = GameJamHighlight.MainThemeSecret });
+            }
+
+            if (!vm.AllowLateJoin)
+            {
+                vm.Highlights.Add(new GameJamHighlightsVo { Highlight = GameJamHighlight.LateJoinForbidden });
+            }
+
+            switch (vm.ParticipationType)
+            {
+                case GameJamParticipationType.IndividualsOnly:
+                    vm.Highlights.Add(new GameJamHighlightsVo { Highlight = GameJamHighlight.IndividualsOnly });
+                    break;
+
+                case GameJamParticipationType.TeamsOnly:
+                    vm.Highlights.Add(new GameJamHighlightsVo { Highlight = GameJamHighlight.TeamsOnly });
+                    break;
+
+                case GameJamParticipationType.IndividualsAndTeams:
+                    vm.Highlights.Add(new GameJamHighlightsVo { Highlight = GameJamHighlight.IndividualsAndTeams });
+                    break;
+                default:
+                    vm.Highlights.Add(new GameJamHighlightsVo { Highlight = GameJamHighlight.IndividualsOnly });
+                    break;
+            }
+        }
+
+        private async Task SetForum(GameJamViewModel gameJamVm)
+        {
+            if (string.IsNullOrWhiteSpace(gameJamVm.ForumCategoryHandler))
+            {
+                IEnumerable<ForumCategory> allModels = await mediator.Query<GetForumCategoryQuery, IEnumerable<ForumCategory>>(new GetForumCategoryQuery(x => x.IsForGameJam));
+
+                if (allModels.Any())
+                {
+                    gameJamVm.ForumCategoryHandler = allModels.First().Handler;
+                }
+            }
         }
     }
 }

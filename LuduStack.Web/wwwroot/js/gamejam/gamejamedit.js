@@ -18,14 +18,24 @@
         selectors.urls = '#urls';
         selectors.container = '#featurecontainer';
         selectors.form = '#frmSave';
+        selectors.validationError = '.field-validation-error';
         selectors.userId = '#UserId';
         selectors.btnSave = '#btnSave';
         selectors.startDate = 'input#StartDate';
         selectors.entryDeadline = 'input#EntryDeadline';
         selectors.votingEndDate = 'input#VotingEndDate';
         selectors.resultDate = 'input#ResultDate';
-        selectors.inputImageListItem = 'input.imageinput';
-        selectors.imageListItem = 'img.uploadimage';
+
+        selectors.imageDivElement = '.newimageupload';
+
+        selectors.divJudges = '#divJudges';
+        selectors.btnJudgeDelete = '.btn-judge-delete';
+        selectors.judge = '.judge:not(.template)';
+        selectors.judgeTemplate = '.judge.template';
+        selectors.ddlVoters = '#Voters';
+        selectors.ddlSearchUsers = '#ddlSearchUsers';
+        selectors.alertNoJudges = '#alertnojudges';
+        selectors.numberOnly = '.numberonly';
     }
 
     function cacheObjs() {
@@ -38,7 +48,10 @@
         objs.entryDeadline = $(selectors.entryDeadline);
         objs.votingEndDate = $(selectors.votingEndDate);
         objs.resultDate = $(selectors.resultDate);
-        objs.inputImageListItem = $(selectors.inputImageListItem);
+        objs.divJudges = $(selectors.divJudges);
+        objs.ddlVoters = $(selectors.ddlVoters);
+        objs.ddlSearchUsers = $(selectors.ddlSearchUsers);
+        objs.alertNoJudges = $(selectors.alertNoJudges);
     }
 
     function init() {
@@ -54,10 +67,14 @@
 
     function bindAll() {
         bindDateTimePickers();
+        bindChangeVoters();
+        bindBtnJudgeDelete();
+        bindSelect2();
+        bundNumbersOnly();
 
         WYSIWYGEDITOR.BindEditors('.wysiwygeditor');
 
-        IMAGEMANIPULAION.Cropper.BindCropper(selectors.imageListItem, objs.inputImageListItem);
+        IMAGEMANIPULAION.Cropper.BindCropper(selectors.imageDivElement);
 
         bindBtnSaveForm();
     }
@@ -106,6 +123,17 @@
         obj.datetimepicker('defaultDate', pd);
     }
 
+    function bundNumbersOnly() {
+        objs.container.on('keypress', selectors.numberOnly, function (e) {
+            var code = (event.keyCode ? event.keyCode : event.which);
+
+            if (!(code >= 48 && code <= 57)) {
+                e.preventDefault();
+                return false;
+            }
+        });
+    }
+
     function bindBtnSaveForm() {
         objs.container.on('click', selectors.btnSave, function () {
             var btn = $(this);
@@ -114,14 +142,106 @@
 
             var valid = objs.form.valid();
 
-            if (valid && canInteract) {
+            if (valid && canInteract && !btn.hasClass('disabled')) {
                 MAINMODULE.Common.DisableButton(btn).ready(() => {
-                    IMAGEMANIPULAION.Cropper.UploadCroppedImages(objs.inputImageListItem, function () {
+                    IMAGEMANIPULAION.Cropper.UploadCroppedImages(selectors.imageDivElement, function () {
                         submitForm(btn);
                     });
                 });
             }
+            else {
+                scrollToFirstError();
+            }
+
+            return false;
         });
+    }
+
+    function bindChangeVoters() {
+        objs.container.on('change', selectors.ddlVoters, function () {
+            var ddl = $(this);
+            var judgeCount = $(selectors.judge).length;
+
+            if (judgeCount === 0 && ddl.val() === '1') {
+                objs.alertNoJudges.show();
+            }
+            else {
+                objs.alertNoJudges.hide();
+            }
+
+            return false;
+        });
+    }
+
+    function bindBtnJudgeDelete() {
+        objs.container.on('click', selectors.btnJudgeDelete, function () {
+            var btn = $(this);
+            var msg = btn.data('deleteerrormsg');
+            var currentJudges = $(selectors.judge);
+            var judge = btn.closest(selectors.judge);
+            var votersSelection = objs.ddlVoters.val();
+
+            var canDeleteJudge = !(votersSelection === '1' && currentJudges.length === 1) || votersSelection !== '1';
+
+            if (judge && canDeleteJudge) {
+                judge.remove();
+
+                MAINMODULE.Common.RenameInputs(objs.divJudges, selectors.judge, 'Judges');
+            }
+            else {
+                ALERTSYSTEM.Toastr.ShowInfo(msg)
+            }
+
+            return false;
+        });
+    }
+
+    function bindSelect2() {
+        objs.ddlSearchUsers.select2({
+            width: 'resolve',
+            minimumInputLength: 2,
+            templateResult: select2FormatResult
+        });
+
+        objs.ddlSearchUsers.on('select2:select', function (e) {
+            var data = e.params.data;
+            $(this).val(null).trigger('change');
+
+            addNewJudge(data);
+        });
+    }
+
+    function select2FormatResult(result) {
+        if (!result.id) {
+            return result.text;
+        }
+
+        return $('<span><img class="rounded-circle lazyload avatar" data-src="' + result.profileImageUrl + '" src="/images/placeholders/developer.png" alt="meh"> ' + result.text + '</span>');
+    }
+
+    function addNewJudge(data) {
+        var newJudgeObj = $(selectors.judgeTemplate).first().clone();
+        var hdn = newJudgeObj.find('input[type=hidden]');
+        var name = newJudgeObj.find('.widget-user-username');
+        var location = newJudgeObj.find('.location');
+        var sincedate = newJudgeObj.find('.sincedate');
+        var avatarImg = newJudgeObj.find('.widget-user-image img');
+        var coverImg = newJudgeObj.find('.card-img');
+
+        hdn.val(data.id);
+        name.text(data.text);
+        location.text(data.location);
+        sincedate.text(data.createDateText);
+        coverImg.css('background-image', `url(${data.coverImageUrl})`);
+        avatarImg.attr('data-src', data.profileImageUrl);
+
+        newJudgeObj.removeClass('template').removeAttr('aria-hidden');
+
+        newJudgeObj.appendTo(selectors.divJudges);
+
+        objs.alertNoJudges.hide();
+
+        MAINMODULE.Common.RenameInputs(objs.divJudges, selectors.judge, 'Judges');
     }
 
     function updateEditors() {
@@ -146,6 +266,12 @@
                 MAINMODULE.Ajax.HandleErrorResponse(response);
             }
         });
+    }
+
+    function scrollToFirstError() {
+        var elementToScroll = $(selectors.form).first();
+
+        MAINMODULE.Utils.ScrollTo(elementToScroll.parent());
     }
 
     return {

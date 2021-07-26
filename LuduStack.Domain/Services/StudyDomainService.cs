@@ -6,10 +6,6 @@ namespace LuduStack.Domain.Services
 {
     public class StudyDomainService : IStudyDomainService
     {
-        public StudyDomainService()
-        {
-        }
-
         #region Course
 
         public StudyCourse GenerateNewCourse(Guid userId)

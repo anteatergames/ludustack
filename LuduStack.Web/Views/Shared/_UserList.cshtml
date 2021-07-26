@@ -24,22 +24,9 @@
     @foreach (var item in Model)
     {
         <div class="col-12 col-md-6 col-lg-4 col-xl-3 px-0 px-md-2 mb-3">
-            <div class="bordered">
+            <div class="bordered hover">
                 <partial name="_UserCard" model="item" />
             </div>
         </div>
     }
 </div>
-@section Styles {
-    <style>
-        .avatarcol {
-            width: 64px;
-            display: inline-block;
-            vertical-align: top;
-        }
-
-        .infocol {
-            display: inline-block;
-        }
-    </style>
-}

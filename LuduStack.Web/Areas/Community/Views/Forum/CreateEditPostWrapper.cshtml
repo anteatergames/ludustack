@@ -6,9 +6,14 @@
 
 @section ComponentStyles {
     <environment include="Development">
+        <link rel="stylesheet" href="~/lib/highlightjs/styles/default.min.css">
         <link rel="stylesheet" href="~/css/forum.css">
     </environment>
     <environment exclude="Development">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/styles/default.min.css"
+              integrity="sha512-3xLMEigMNYLDJLAgaGlDSxpGykyb+nQnJBzbkQy2a0gyVKL2ZpNOPIj1rD8IPFaJbwAgId/atho1+LBpWu5DhA=="
+              crossorigin="anonymous"
+              referrerpolicy="no-referrer" />
         <link rel="stylesheet" href="~/css/forum.min.css" asp-append-version="true">
     </environment>
 }
@@ -17,21 +22,26 @@
 
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
-    <environment include="Development">
-        <script src="~/thirdparty/ckeditor5-build-classic/build/ckeditor.js"></script>
-        <script src="~/js/shared/wysiwygeditor.js"></script>
-        <script src="~/js/common-edit.js"></script>
-        <script src="~/js/forum/forumcommon.js"></script>
-        <script src="~/js/forum/forumpostedit.js"></script>
-    </environment>
-    <environment exclude="Development">
-        <script src="~/thirdparty/ckeditor5-build-classic/build/ckeditor.js"></script>
-        <script src="~/js/forum/forumpostedit.min.js" asp-append-version="true"></script>
-    </environment>
+<environment include="Development">
+    <script src="~/thirdparty/ckeditor5-build-classic/build/ckeditor.js"></script>
+    <script src="~/lib/highlightjs/highlight.min.js"></script>
+    <script src="~/js/shared/wysiwygeditor.js"></script>
+    <script src="~/js/common-edit.js"></script>
+    <script src="~/js/forum/forumcommon.js"></script>
+    <script src="~/js/forum/forumpostedit.js"></script>
+</environment>
+<environment exclude="Development">
+    <script src="~/thirdparty/ckeditor5-build-classic/build/ckeditor.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/highlight.min.js"
+            integrity="sha512-z+/WWfyD5tccCukM4VvONpEtLmbAm5LDu7eKiyMQJ9m7OfPEDL7gENyDRL3Yfe8XAuGsS2fS4xSMnl6d30kqGQ=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"></script>
+    <script src="~/js/forum/forumpostedit.min.js" asp-append-version="true"></script>
+</environment>
 }
 
 <section class="content container">
-    <div id="featurecontainer" class="col">
+    <div id="featurecontainer" class="pb-3">
         <partial name="_CreateEditPost" model="Model" />
     </div>
 </section>

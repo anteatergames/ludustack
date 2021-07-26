@@ -11,10 +11,6 @@ namespace LuduStack.Application.Services
 {
     public class CloudinaryService : IImageStorageService
     {
-        public CloudinaryService()
-        {
-        }
-
         public async Task<UploadResultVo> StoreMediaAsync(string container, string fileName, string extension, byte[] image, params string[] tags)
         {
             Cloudinary cloudinary = new Cloudinary();
@@ -41,7 +37,7 @@ namespace LuduStack.Application.Services
                     uploadParams.Tags = string.Join(',', tags).ToLower();
                 }
 
-                ImageUploadResult uploadResult = await cloudinary.UploadAsync(uploadParams);
+                await cloudinary.UploadAsync(uploadParams);
 
                 return new UploadResultVo(true, mediaType, fileNameFull, "Image uploaded");
             }

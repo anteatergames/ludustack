@@ -15,10 +15,10 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="10.1.1" />
     <PackageReference Include="CloudinaryDotNet" Version="1.15.2" />
-    <PackageReference Include="CountryData" Version="3.51.0" />
+    <PackageReference Include="CountryData" Version="3.55.0" />
     <PackageReference Include="HtmlSanitizer" Version="5.0.404" />
     <PackageReference Include="MediatR" Version="9.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.8" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="NPOI" Version="2.5.3" />

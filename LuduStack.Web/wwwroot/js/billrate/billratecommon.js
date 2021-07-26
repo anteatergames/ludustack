@@ -37,7 +37,7 @@
 
             var btn = $(this);
 
-            if (canInteract) {
+            if (canInteract && !btn.hasClass('disabled')) {
                 MAINMODULE.Common.DeleteEntity(btn, BILLRATECOMMON.Callback.DeleteEntity);
             }
 

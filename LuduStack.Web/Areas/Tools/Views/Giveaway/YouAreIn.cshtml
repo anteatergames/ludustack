@@ -48,163 +48,165 @@
 <input asp-for="Status" type="hidden" />
 <input asp-for="Name" type="hidden" />
 
-<div id="featurecontainer" class="justify-content-center">
-    <section class="container-fluid position-relative">
-        <div class="row">
-            <div class="col-md-12 px-0 px-md-1">
-                <div class="terms-container animate1 mb-2 d-none">
-                    <div class="p-5">
-                        <p>@Html.Raw(Model.TermsAndConditions)</p>
-                    </div>
-                    <div class="terms-actions col-12 text-uppercase">
-                        <button class="btn btn-info btn-lg btn-block btn-terms">@SharedLocalizer["close"]</button>
-                    </div>
-                </div>
-                <div class="giveaway-container animate1 pb-5 mb-2">
-                    <div id="carouselExampleIndicators" class="carousel slide square-bottom" data-ride="carousel">
-                        <ol class="carousel-indicators">
-                            @for (int i = 0; i < Model.ImageList.Count; i++)
-                            {
-                                <li data-target="#carouselExampleIndicators" data-slide-to="@i" @(i == 0 ? "class=active" : string.Empty)></li>
-                            }
-                        </ol>
-                        <div class="carousel-inner">
-                            @for (int i = 0; i < Model.ImageList.Count; i++)
-                            {
-                                <div class="carousel-item@(i == 0 ? " active" : string.Empty)">
-                                    <img class="d-block w-100" src="@Model.ImageList[i]" alt="@Model.ImageList[i]">
-                                </div>
-                            }
+<section class="content container">
+    <div id="featurecontainer" class="pb-3 justify-content-center">
+        <section class="container-fluid position-relative">
+            <div class="row">
+                <div class="col-md-12 px-0 px-md-1">
+                    <div class="terms-container animate1 mb-2 d-none">
+                        <div class="p-5">
+                            <p>@Html.Raw(Model.TermsAndConditions)</p>
+                        </div>
+                        <div class="terms-actions col-12 text-uppercase">
+                            <button class="btn btn-info btn-lg btn-block btn-terms">@SharedLocalizer["close"]</button>
                         </div>
                     </div>
-
-                    <div class="px-3 px-sm-5 px-md-5">
-                        <div class="giv-title">
-                            <h1>@Model.Name</h1>
-                        </div>
-
-                        <div class="text-center pt-1 pb-0" id="mainSignup">
-                            <div class="giv-entry-title pt-2 pt-sm-3 pb-0 pb-sm-2 mb-2">
-                                <h1 class="display-5">
-                                    <strong>@SharedLocalizer["Congratulations!"]</strong>
-                                    <span class="text-thin">@SharedLocalizer["You're in!"]</span>
-                                </h1>
-                                @if (!Model.EmailConfirmed)
+                    <div class="giveaway-container animate1 pb-5 mb-2">
+                        <div id="carouselExampleIndicators" class="carousel slide square-bottom" data-ride="carousel">
+                            <ol class="carousel-indicators">
+                                @for (int i = 0; i < Model.ImageList.Count; i++)
                                 {
-                                    <div class="text-center alert alert-warning d-inline-block m-auto rounded-0 border-0" role="alert">
-                                        @SharedLocalizer["Check your inbox and confirm your email to receive one more entry!"]
-                                        <br />
-                                        <a href="@ViewData["mailProvider"]" target="_blank">@SharedLocalizer["Go to my email!"]</a>
+                                    <li data-target="#carouselExampleIndicators" data-slide-to="@i" @(i == 0 ? "class=active" : string.Empty)></li>
+                                }
+                            </ol>
+                            <div class="carousel-inner">
+                                @for (int i = 0; i < Model.ImageList.Count; i++)
+                                {
+                                    <div class="carousel-item@(i == 0 ? " active" : string.Empty)">
+                                        <img class="d-block w-100" src="@Model.ImageList[i]" alt="@Model.ImageList[i]">
                                     </div>
                                 }
                             </div>
                         </div>
 
-                        <div class="hr-arrow-down rounded-0"></div>
+                        <div class="px-3 px-sm-5 px-md-5">
+                            <div class="giv-title">
+                                <h1>@Model.Name</h1>
+                            </div>
 
-                        <div class="text-center">
-                            <h3>@SharedLocalizer["Share your tracked link"]</h3>
-                            <p class="text-muted">@SharedLocalizer["Earn 1 entry for each friend who enters!"]</p>
-                            <div class="share-personal-url">
-                                <div class="url-place">
-                                    <input asp-for="ShareUrl" class="form-control form-control-lg url-input" readonly />
-                                    <div class="float-right">
-                                        <button class="btn btn-lg btn-default copy-icon"><i class="far fa-copy" aria-hidden="true"></i></button>
+                            <div class="text-center pt-1 pb-0" id="mainSignup">
+                                <div class="giv-entry-title pt-2 pt-sm-3 pb-0 pb-sm-2 mb-2">
+                                    <h1 class="display-5">
+                                        <strong>@SharedLocalizer["Congratulations!"]</strong>
+                                        <span class="text-thin">@SharedLocalizer["You're in!"]</span>
+                                    </h1>
+                                    @if (!Model.EmailConfirmed)
+                                    {
+                                        <div class="text-center alert alert-warning d-inline-block m-auto rounded-0 border-0" role="alert">
+                                            @SharedLocalizer["Check your inbox and confirm your email to receive one more entry!"]
+                                            <br />
+                                            <a href="@ViewData["mailProvider"]" target="_blank">@SharedLocalizer["Go to my email!"]</a>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+
+                            <div class="hr-arrow-down rounded-0"></div>
+
+                            <div class="text-center">
+                                <h3>@SharedLocalizer["Share your tracked link"]</h3>
+                                <p class="text-muted">@SharedLocalizer["Earn 1 entry for each friend who enters!"]</p>
+                                <div class="share-personal-url">
+                                    <div class="url-place">
+                                        <input asp-for="ShareUrl" class="form-control form-control-lg url-input" readonly />
+                                        <div class="float-right">
+                                            <button class="btn btn-lg btn-default copy-icon"><i class="far fa-copy" aria-hidden="true"></i></button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <section id="extraentries">
-                            <div>
-                                @for (int i = 0; i < Model.EntryOptions.Count; i++)
-                                {
-                                    var entryOption = Model.EntryOptions.ElementAt(i);
+                            <section id="extraentries">
+                                <div>
+                                    @for (int i = 0; i < Model.EntryOptions.Count; i++)
+                                    {
+                                        var entryOption = Model.EntryOptions.ElementAt(i);
 
-                                    if (entryOption.IsMandatory)
-                                    {
-                                        <div class="entryoption checked rounded-0 row@(i == 0 ? " border-top" : string.Empty) border-bottom">
-                                            <div class="col py-2">
-                                                @SharedLocalizer[entryOption.Name]
-                                            </div>
-                                            <div class="btn-points rounded-0">
-                                                @entryOption.Points
-                                            </div>
-                                        </div>
-                                    }
-                                    else
-                                    {
-                                        <div class="entryoption rounded-0 row@(i == 0 ? " border-top" : string.Empty) border-bottom">
-                                            <div class="col">
-                                                <a href="#" data-url="@entryOption.Url" id="@(string.Format("btn-{0}", entryOption.Type.ToString().ToLower()))" data-points="@entryOption.Points">
-                                                    <div class="col py-2 px-0">
-                                                        @SharedLocalizer[entryOption.Name]
-                                                    </div>
-                                                </a>
-                                            </div>
-                                            <div class="btn-points rounded-0" data-count="@entryOption.Points">
-                                                @entryOption.Points <span class="badge btn btn-info btn-outline-light p-1 rounded-circle">+1</span>
-                                            </div>
-                                        </div>
-                                    }
-                                }
-                            </div>
-                        </section>
-
-                        <section id="giveaway-description">
-                            <div class="pt-4 pb-5">
-                                @Html.Raw(Model.Description)
-                            </div>
-                        </section>
-                        @if (Model.ShowTimeZone || Model.ShowSponsor)
-                        {
-                            <div class="p-4 rounded-0 bg-light offered-by-text ">
-                                <div class="text-uppercase d-flex flex-wrap justify-content-center">
-                                    @*@if (Model.ShowTimeZone)
+                                        if (entryOption.IsMandatory)
                                         {
-                                            <div class="mx-3"><small title="America/Sao_Paulo"><span class="h6">@SharedLocalizer["giveaway timezone: UTC {0}", Model.TimeZone]</span></small></div>
-                                        }*@
-                                    @if (Model.ShowSponsor)
-                                    {
-                                        if (!string.IsNullOrWhiteSpace(Model.SponsorWebsite) || Model.SponsorWebsite.Equals("#"))
-                                        {
-                                            <div class="mx-3"><small><span class="h6">@SharedLocalizer["offered by:"] @Model.SponsorName</span></small></div>
+                                            <div class="entryoption checked rounded-0 row@(i == 0 ? " border-top" : string.Empty) border-bottom">
+                                                <div class="col py-2">
+                                                    @SharedLocalizer[entryOption.Name]
+                                                </div>
+                                                <div class="btn-points rounded-0">
+                                                    @entryOption.Points
+                                                </div>
+                                            </div>
                                         }
                                         else
                                         {
-                                            <div class="mx-3"><small><span class="h6">@SharedLocalizer["offered by:"] <a href="@Model.SponsorWebsite" target="_blank" rel="noopener noreferrer">@Model.SponsorName</a> </span></small></div>
+                                            <div class="entryoption rounded-0 row@(i == 0 ? " border-top" : string.Empty) border-bottom">
+                                                <div class="col">
+                                                    <a href="#" data-url="@entryOption.Url" id="@(string.Format("btn-{0}", entryOption.Type.ToString().ToLower()))" data-points="@entryOption.Points">
+                                                        <div class="col py-2 px-0">
+                                                            @SharedLocalizer[entryOption.Name]
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                                <div class="btn-points rounded-0" data-count="@entryOption.Points">
+                                                    @entryOption.Points <span class="badge btn btn-info btn-outline-light p-1 rounded-circle">+1</span>
+                                                </div>
+                                            </div>
                                         }
                                     }
                                 </div>
-                            </div>
-                        }
+                            </section>
+
+                            <section id="giveaway-description">
+                                <div class="pt-4 pb-5">
+                                    @Html.Raw(Model.Description)
+                                </div>
+                            </section>
+                            @if (Model.ShowTimeZone || Model.ShowSponsor)
+                            {
+                                <div class="p-4 rounded-0 bg-light offered-by-text ">
+                                    <div class="text-uppercase d-flex flex-wrap justify-content-center">
+                                        @*@if (Model.ShowTimeZone)
+                                            {
+                                                <div class="mx-3"><small title="America/Sao_Paulo"><span class="h6">@SharedLocalizer["giveaway timezone: UTC {0}", Model.TimeZone]</span></small></div>
+                                            }*@
+                                        @if (Model.ShowSponsor)
+                                        {
+                                            if (!string.IsNullOrWhiteSpace(Model.SponsorWebsite) || Model.SponsorWebsite.Equals("#"))
+                                            {
+                                                <div class="mx-3"><small><span class="h6">@SharedLocalizer["offered by:"] @Model.SponsorName</span></small></div>
+                                            }
+                                            else
+                                            {
+                                                <div class="mx-3"><small><span class="h6">@SharedLocalizer["offered by:"] <a href="@Model.SponsorWebsite" target="_blank" rel="noopener noreferrer">@Model.SponsorName</a> </span></small></div>
+                                            }
+                                        }
+                                    </div>
+                                </div>
+                            }
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <footer>
-        <div class="container pt-2 pb-4 pb-md-5">
-            <div class="row">
-                <div class="col-12 giv-footer">
-                    <p>
-                        <small>
-                            @SharedLocalizer["Unsubscribe anytime."]
-                            @if (!string.IsNullOrWhiteSpace(Model.TermsAndConditions))
-                            {
-                                <a href="#" class="btn-terms">@SharedLocalizer["Read official rules."]</a>
-                            }
-                        </small>
-                    </p>
+        <footer>
+            <div class="container pt-2 pb-4 pb-md-5">
+                <div class="row">
+                    <div class="col-12 giv-footer">
+                        <p>
+                            <small>
+                                @SharedLocalizer["Unsubscribe anytime."]
+                                @if (!string.IsNullOrWhiteSpace(Model.TermsAndConditions))
+                                {
+                                    <a href="#" class="btn-terms">@SharedLocalizer["Read official rules."]</a>
+                                }
+                            </small>
+                        </p>
+                    </div>
                 </div>
             </div>
-        </div>
-    </footer>
-</div>
-
-<div class="status-bar-wrapper">
-    <div class="status-bar mb-0 h6" id="countdown">
-        <div><span class="mr-1 text-uppercase">@SharedLocalizer["your entries"]:</span><span class="h3 mb-0" id="entry-count" data-count="@Model.EntryCount">@Model.EntryCount</span></div>
-        <div><span class="mr-1 text-uppercase">@SharedLocalizer["time left"]:</span><span class="h3 mb-0 countdown-days">00</span> <span class="time-uni">d</span> : <span class="h3 mb-0 countdown-hours">00</span> <span class="time-uni">h</span> : <span class="h3 mb-0 countdown-minutes">00</span> <span class="time-uni">m</span> : <span class="h3 mb-0 countdown-seconds">00</span> <span class="time-uni">s</span></div>
+        </footer>
     </div>
-</div>
+
+    <div class="status-bar-wrapper">
+        <div class="status-bar mb-0 h6" id="countdown">
+            <div><span class="mr-1 text-uppercase">@SharedLocalizer["your entries"]:</span><span class="h3 mb-0" id="entry-count" data-count="@Model.EntryCount">@Model.EntryCount</span></div>
+            <div><span class="mr-1 text-uppercase">@SharedLocalizer["time left"]:</span><span class="h3 mb-0 countdown-days">00</span> <span class="time-uni">d</span> : <span class="h3 mb-0 countdown-hours">00</span> <span class="time-uni">h</span> : <span class="h3 mb-0 countdown-minutes">00</span> <span class="time-uni">m</span> : <span class="h3 mb-0 countdown-seconds">00</span> <span class="time-uni">s</span></div>
+        </div>
+    </div>
+</section>

@@ -195,6 +195,7 @@ namespace LuduStack.Infra.CrossCutting.IoC
 
             #region GameJam
 
+            services.AddScoped<IGameJamDomainService, GameJamDomainService>();
             services.AddScoped<IGameJamAppService, GameJamAppService>();
             services.AddScoped<IGameJamRepository, GameJamRepository>();
             services.AddScoped<IGameJamEntryRepository, GameJamEntryRepository>();

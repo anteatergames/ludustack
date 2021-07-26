@@ -45,37 +45,39 @@
     <span class="msg" data-msg-id="msgUrlPlaceholder">@SharedLocalizer["placeholder message"]</span>
 }
 
-<div id="featurecontainer" class="col-12 py-3 container bg-light">
-    <input type="hidden" id="isajax" value="@isAjax.ToString().ToLower()" />
-    <input type="hidden" id="gameIdeaStandalone" value="true" />
+<section class="content container">
+    <div id="featurecontainer" class="pb-3 bg-light">
+        <input type="hidden" id="isajax" value="@isAjax.ToString().ToLower()" />
+        <input type="hidden" id="gameIdeaStandalone" value="true" />
 
-    <div class="row">
-        <div class="col-12 mb-2">
-            <h1><i class="fas fa-fw fa-dice" aria-hidden="true"></i> @ViewData["Title"]</h1>
+        <div class="row">
+            <div class="col-12 mb-2">
+                <h1><i class="fas fa-fw fa-dice" aria-hidden="true"></i> @ViewData["Title"]</h1>
+            </div>
+
+            <div class="col-12">
+                <p>@SharedLocalizer["Are you in a creative block? Need an idea for a game? Here is where your problems end. Press the button below to generate an awesome brand new idea for you to work on. If you don't like one of the aspects the machine picked for you, just click on it to pick just that aspect again."]</p>
+            </div>
+
+            <div class="col-12 mb-4 px-0">
+                <partial name="_IdeaGenerator" />
+            </div>
+
+            @if (!canInteract)
+            {
+                <div class="col-12 text-center">
+                    <span class="rounded-0 border-0">@SharedLocalizer["If you like this tool, consider joining our community by"] <a asp-area="" asp-controller="account" asp-action="register" asp-route-returnUrl="@Url.Action("index", "gameidea", new { area = "tools" })" class="text-uppercase">@SharedLocalizer["clicking here"]</a>.</span>
+                </div>
+            }
+
+            <div class="col-12 text-center"><span>@SharedLocalizer["Wanna know how much it would cost to produce this game?"]</span> <span class="font-weight-bold">@Html.ActionLink("Check it out!", "index", "costcalculator", new { area = "tools" })</span></div>
         </div>
 
-        <div class="col-12">
-            <p>@SharedLocalizer["Are you in a creative block? Need an idea for a game? Here is where your problems end. Press the button below to generate an awesome brand new idea for you to work on. If you don't like one of the aspects the machine picked for you, just click on it to pick just that aspect again."]</p>
-        </div>
-
-        <div class="col-12 mb-4 px-0">
-            <partial name="_IdeaGenerator" />
-        </div>
-
-        @if (!canInteract)
+        @if (showAds)
         {
-            <div class="col-12 text-center">
-                <span class="rounded-0 border-0">@SharedLocalizer["If you like this tool, consider joining our community by"] <a asp-area="" asp-controller="account" asp-action="register" asp-route-returnUrl="@Url.Action("index", "gameidea", new { area = "tools" })" class="text-uppercase">@SharedLocalizer["clicking here"]</a>.</span>
+            <div class="rounded-0 p-0 mb-2 mt-3">
+                <partial name="_GoogleAdFeed" />
             </div>
         }
-
-        <div class="col-12 text-center"><span>@SharedLocalizer["Wanna know how much it would cost to produce this game?"]</span> <span class="font-weight-bold">@Html.ActionLink("Check it out!", "index", "costcalculator", new { area = "tools" })</span></div>
     </div>
-
-    @if (showAds)
-    {
-        <div class="rounded-0 p-0 mb-2 mt-3">
-            <partial name="_GoogleAdFeed" />
-        </div>
-    }
-</div>
+</section>

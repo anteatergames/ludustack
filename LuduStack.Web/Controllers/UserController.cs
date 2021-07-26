@@ -21,7 +21,7 @@ namespace LuduStack.Web.Controllers
         private readonly INotificationAppService notificationAppService;
 
         public UserController(IProfileAppService profileAppService
-            , INotificationAppService notificationAppService) : base()
+            , INotificationAppService notificationAppService)
         {
             this.profileAppService = profileAppService;
             this.notificationAppService = notificationAppService;
@@ -47,7 +47,7 @@ namespace LuduStack.Web.Controllers
 
             List<ProfileViewModel> profiles = serviceResult.Value.OrderByDescending(x => x.CreateDate).ToList();
 
-            return View(profiles);
+            return View("_UserList", profiles);
         }
 
         [Route("search")]
@@ -63,10 +63,42 @@ namespace LuduStack.Web.Controllers
 
                 foreach (ProfileSearchViewModel item in searchResults)
                 {
-                    Select2SearchResultItemViewModel s2obj = new Select2SearchResultItemViewModel
+                    Select2UserSearchResultItemViewModel s2obj = new Select2UserSearchResultItemViewModel
                     {
                         Id = item.UserId.ToString(),
                         Text = item.Name
+                    };
+
+                    vm.Results.Add(s2obj);
+                }
+
+                return Json(vm);
+            }
+            else
+            {
+                return Json(serviceResult);
+            }
+        }
+
+        [Route("searchusercard")]
+        public IActionResult SearchUserCard(string term)
+        {
+            Select2SearchResultViewModel<Select2UserSearchResultItemViewModel> vm = new Select2SearchResultViewModel<Select2UserSearchResultItemViewModel>();
+
+            OperationResultListVo<ProfileSearchViewModel> serviceResult = profileAppService.SearchUserCard(term);
+
+            if (serviceResult.Success)
+            {
+                foreach (ProfileSearchViewModel item in serviceResult.Value)
+                {
+                    Select2UserSearchResultItemViewModel s2obj = new Select2UserSearchResultItemViewModel
+                    {
+                        Id = item.UserId.ToString(),
+                        Text = item.Name,
+                        Location = item.Location,
+                        CreateDateText = item.CreateDateText.Substring(0, 10),
+                        ProfileImageUrl = item.ProfileImageUrl,
+                        CoverImageUrl = item.CoverImageUrl
                     };
 
                     vm.Results.Add(s2obj);

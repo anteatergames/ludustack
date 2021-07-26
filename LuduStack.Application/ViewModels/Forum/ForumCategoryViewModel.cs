@@ -24,5 +24,7 @@ namespace LuduStack.Application.ViewModels.Forum
         public int TopicCount { get; set; }
 
         public int PostCount { get; set; }
+
+        public bool IsForGameJam { get; set; }
     }
 }

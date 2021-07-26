@@ -94,7 +94,7 @@
             var btn = $(this);
 
             var valid = selectors.form.valid();
-            if (valid && canInteract) {
+            if (valid && canInteract && !btn.hasClass('disabled')) {
                 MAINMODULE.Common.DisableButton(btn).ready(() => {
                     submitForm(btn);
                 });

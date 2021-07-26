@@ -221,6 +221,9 @@ namespace LuduStack.Application.Services
                     model = mapper.Map<ForumPost>(viewModel);
                 }
 
+                HtmlSanitizer sanitizer = ContentHelper.GetHtmlSanitizer();
+                model.Content = SanitizeHtmlToSave(model.Content, sanitizer);
+
                 CommandResult result = await mediator.SendCommand(new SaveForumPostCommand(model));
 
                 if (!result.Validation.IsValid)
@@ -264,7 +267,7 @@ namespace LuduStack.Application.Services
                 SetPermissions(currentUserId, viewModel);
 
                 HtmlSanitizer sanitizer = ContentHelper.GetHtmlSanitizer();
-                SanitizeHtml(viewModel, sanitizer);
+                SanitizeHtmlToDisplay(viewModel, sanitizer);
 
                 if (viewModel.Language == 0)
                 {
@@ -333,7 +336,7 @@ namespace LuduStack.Application.Services
 
                     SetPermissions(currentUserId, topicReply);
 
-                    SanitizeHtml(topicReply, sanitizer);
+                    SanitizeHtmlToDisplay(topicReply, sanitizer);
                 }
 
                 OperationResultListVo<ForumPostViewModel> result = new OperationResultListVo<ForumPostViewModel>(vms)
@@ -369,11 +372,11 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public async Task<OperationResultVo<int>> Vote(Guid currentUserId, Guid postId, VoteValue vote)
+        public async Task<OperationResultVo<int>> Vote(Guid currentUserId, Guid postId, VoteValue voteValue)
         {
             try
             {
-                CommandResult<int> result = await mediator.SendCommand<SaveForumPostVoteCommand, int>(new SaveForumPostVoteCommand(currentUserId, postId, vote));
+                CommandResult<int> result = await mediator.SendCommand<SaveForumPostVoteCommand, int>(new SaveForumPostVoteCommand(currentUserId, postId, voteValue));
 
                 if (!result.Validation.IsValid)
                 {
@@ -477,14 +480,30 @@ namespace LuduStack.Application.Services
             SetBasePermissions(currentUserId, viewModel);
         }
 
-        private static void SanitizeHtml(ForumPostViewModel viewModel, HtmlSanitizer sanitizer)
+        private static void SanitizeHtmlToDisplay(ForumPostViewModel viewModel, HtmlSanitizer sanitizer)
         {
             viewModel.Content = sanitizer.Sanitize(viewModel.Content, Constants.DefaultLuduStackPath);
 
-            foreach (string key in ContentFormatter.Replacements().Keys)
+            System.Collections.Specialized.StringDictionary replacements = ContentFormatter.DisplayReplacements();
+
+            foreach (string key in replacements.Keys)
             {
-                viewModel.Content = viewModel.Content.Replace(key, ContentFormatter.Replacements()[key]);
+                viewModel.Content = viewModel.Content.Replace(key, replacements[key]);
             }
+        }
+
+        private static string SanitizeHtmlToSave(string content, HtmlSanitizer sanitizer)
+        {
+            content = sanitizer.Sanitize(content, Constants.DefaultLuduStackPath);
+
+            System.Collections.Specialized.StringDictionary replacements = ContentFormatter.SaveReplacements();
+
+            foreach (string key in replacements.Keys)
+            {
+                content = content.Replace(key, replacements[key]);
+            }
+
+            return content;
         }
     }
 }

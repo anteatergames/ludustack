@@ -1,4 +1,5 @@
 ﻿using LuduStack.Domain.Interfaces.Repository;
+using LuduStack.Domain.Interfaces.Services;
 using LuduStack.Domain.Messaging.Queries.Base;
 using System;
 using System.Threading;
@@ -22,8 +23,11 @@ namespace LuduStack.Domain.Messaging.Queries.GameJam
 
     public class GetGameJamEntryByIdQueryHandler : GetByIdBaseQueryHandler<GetGameJamEntryByIdQuery, Models.GameJamEntry, IGameJamEntryRepository>
     {
-        public GetGameJamEntryByIdQueryHandler(IGameJamEntryRepository repository) : base(repository)
+        private readonly IGameJamDomainService gameJamDomainService;
+
+        public GetGameJamEntryByIdQueryHandler(IGameJamEntryRepository repository, IGameJamDomainService gameJamDomainService) : base(repository)
         {
+            this.gameJamDomainService = gameJamDomainService;
         }
 
         public override async Task<Models.GameJamEntry> Handle(GetGameJamEntryByIdQuery request, CancellationToken cancellationToken)
@@ -31,6 +35,8 @@ namespace LuduStack.Domain.Messaging.Queries.GameJam
             Models.GameJamEntry obj;
 
             obj = await repository.GetById(request.Id);
+
+            gameJamDomainService.CheckTeamMembers(obj);
 
             return obj;
         }

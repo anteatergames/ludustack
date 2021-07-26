@@ -24,6 +24,7 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
                 Builders<ForumPost>.Projection.Expression(x => new ForumCategoryConterDataVo
                 {
                     Id = x.Id,
+                    OriginalPostId = x.OriginalPostId,
                     UserId = x.UserId,
                     CreateDate = x.CreateDate,
                     ForumCategoryId = x.ForumCategoryId,
@@ -40,11 +41,11 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
 
             if (languages != null && languages.Any())
             {
-                filter = new ExpressionFilterDefinition<ForumPost>(x => x.IsOriginalPost && languages.Contains(x.Language));
+                filter = new ExpressionFilterDefinition<ForumPost>(x => languages.Contains(x.Language));
             }
             else
             {
-                filter = new ExpressionFilterDefinition<ForumPost>(x => x.IsOriginalPost);
+                filter = new ExpressionFilterDefinition<ForumPost>(x => true);
             }
 
             List<ForumCategoryConterDataVo> data = await (await DbSet.FindAsync(filter, findOptions)).ToListAsync();

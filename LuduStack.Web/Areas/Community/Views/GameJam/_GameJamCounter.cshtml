@@ -24,8 +24,9 @@
             textColor = " text-success";
             break;
     }
-}
 
+    var sizeClass = "h3";
+}
 
 <div class="p-2">
     @if (Model.Key == GameJamPhase.Finished)
@@ -33,7 +34,7 @@
         <span class="d-block text-center text-muted">@SharedLocalizer[GameJamPhase.Finished.ToUiInfo().Display]</span>
         <div class="time-left d-flex justify-content-center" id="countdown">
             <div class="text-center">
-                <span class="h2 countdown-days@(textColor)">@SharedLocalizer[Model.Value]</span>
+                <span class="@sizeClass countdown-days@(textColor)">@SharedLocalizer[Model.Value]</span>
                 <br>
                 <span class="text-muted">@SharedLocalizer["Good job, everyone!"]</span>
             </div>
@@ -47,25 +48,43 @@
         }
         <div class="time-left d-flex justify-content-center@(textColor)" id="countdown">
             <div class="text-center">
-                <span class="h2 countdown-days">88</span>
+                <span class="@sizeClass countdown-days">88</span>
                 <br>
                 <span class="text-muted">@SharedLocalizer["days"]</span>
             </div>
-            <div class="h2 text-center">:</div>
+
             <div class="text-center">
-                <span class="h2 countdown-hours">88</span>
+                <span class="@sizeClass">:</span>
+                <br />
+                <span>&nbsp;</span>
+            </div>
+
+            <div class="text-center">
+                <span class="@sizeClass countdown-hours">88</span>
                 <br>
                 <span class="text-muted">@SharedLocalizer["hours"]</span>
             </div>
-            <div class="h2 text-center">:</div>
+
             <div class="text-center">
-                <span class="h2 countdown-minutes">88</span>
+                <span class="@sizeClass">:</span>
+                <br />
+                <span>&nbsp;</span>
+            </div>
+
+            <div class="text-center">
+                <span class="@sizeClass countdown-minutes">88</span>
                 <br>
                 <span class="text-muted">@SharedLocalizer["min"]</span>
             </div>
-            <div class="h2 text-center">:</div>
+
             <div class="text-center">
-                <span class="h2 countdown-seconds">88</span>
+                <span class="@sizeClass">:</span>
+                <br />
+                <span>&nbsp;</span>
+            </div>
+
+            <div class="text-center">
+                <span class="@sizeClass countdown-seconds">88</span>
                 <br>
                 <span class="text-muted">@SharedLocalizer["sec"]</span>
             </div>

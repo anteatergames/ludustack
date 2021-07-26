@@ -30,7 +30,7 @@
                     <button type="button" class="btn  btn-box-tool" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fas fa-ellipsis-v" aria-hidden="true"></i>
                     </button>
-                    <div class="dropdown-menu text-capitalize" x-placement="bottom-start" style="position: absolute; transform: translate3d(-67px, 28px, 0px); top: 0px; left: 0px; will-change: transform;">
+                    <div class="dropdown-menu dropdown-menu-right btn-sm p-1" x-placement="bottom-start" style="position: absolute; transform: translate3d(-67px, 28px, 0px); top: 0px; left: 0px; will-change: transform;">
                         @if (Model.Permissions.CanDelete)
                         {
                             <a class="dropdown-item" asp-area="tools" asp-controller="giveaway" asp-action="manage" asp-route-id="@Model.Id">@SharedLocalizer["manage"]</a>
@@ -71,7 +71,7 @@
                 <div class="col-md-8">
                     <div class="form-group">
                         <label asp-for="Name" class="col-form-label"></label>
-                        <span asp-description-for="Name" class="col-form-label" />
+                        <span asp-description-for="Name" class="col-form-label"></span>
                         <input asp-for="Name" class="form-control" placeholder="@SharedLocalizer["Type the Giveaway name here"]" />
                         <span asp-validation-for="Name" class="text-danger"></span>
                     </div>
@@ -80,7 +80,7 @@
                 <div class="col-md-12">
                     <div class="form-group">
                         <label asp-for="Description" class="col-form-label"></label>
-                        <span asp-description-for="Description" class="col-form-label" />
+                        <span asp-description-for="Description" class="col-form-label"></span>
                         <textarea asp-for="Description" class="form-control" placeholder="@SharedLocalizer["Describe the Giveaway here"]"></textarea>
                         <span asp-validation-for="Description" class="text-danger"></span>
                     </div>
@@ -163,7 +163,7 @@
                 <div class="col-12">
                     <div class="form-group">
                         <label asp-for="TermsAndConditions" class="col-form-label"></label>
-                        <span asp-description-for="TermsAndConditions" class="col-form-label" />
+                        <span asp-description-for="TermsAndConditions" class="col-form-label"></span>
                         <textarea asp-for="TermsAndConditions" class="form-control" rows="10" placeholder="@SharedLocalizer["Write here the terms and conditions for this giveaway"]"></textarea>
                         <span asp-validation-for="TermsAndConditions" class="text-danger"></span>
                     </div>

@@ -73,13 +73,6 @@ namespace LuduStack.Domain.Messaging.Queries.GameJam
             {
                 model.ResultDate = model.VotingEndDate.AddDays(7);
             }
-
-            model.CreateDate = model.CreateDate.ToLocalTime();
-            model.PublishDate = model.PublishDate.ToLocalTime();
-            model.StartDate = model.StartDate.ToLocalTime();
-            model.EntryDeadline = model.EntryDeadline.ToLocalTime();
-            model.VotingEndDate = model.VotingEndDate.ToLocalTime();
-            model.ResultDate = model.ResultDate.ToLocalTime();
         }
     }
 }

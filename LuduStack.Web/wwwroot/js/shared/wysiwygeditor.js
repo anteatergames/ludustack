@@ -17,6 +17,9 @@
                 },
                 toolbar: {
                     items: [
+                        'heading',
+                        '|',
+                        'fontColor',
                         'bold',
                         'italic',
                         'link',
@@ -27,13 +30,22 @@
                         'indent',
                         'alignment',
                         '|',
+                        'imageInsert',
                         'blockQuote',
                         'insertTable',
-                        'todoList',
-                        'imageInsert',
                         'mediaEmbed',
+                        '|',
                         'code',
                         'codeBlock',
+                        '|',
+                        'horizontalLine',
+                        'specialCharacters',
+                        '|',
+                        'strikethrough',
+                        'subscript',
+                        'superscript',
+                        'underline',
+                        '|',
                         'undo',
                         'redo'
                     ]
@@ -45,13 +57,17 @@
                 image: {
                     toolbar: [
                         'imageTextAlternative',
-                    ],
-                    styles: [],
+                        'imageStyle:inline',
+                        'imageStyle:block',
+                        'imageStyle:side',
+                        'linkImage'
+                    ]
                 },
                 table: {
                     contentToolbar: [
                         'tableColumn',
-                        'tableRow'
+                        'tableRow',
+                        'mergeTableCells'
                     ]
                 },
                 licenseKey: '',

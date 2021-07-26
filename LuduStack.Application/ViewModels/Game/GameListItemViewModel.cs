@@ -29,10 +29,6 @@ namespace LuduStack.Application.ViewModels.Game
             }
         }
 
-        public GameListItemViewModel()
-        {
-        }
-
         private List<string> PopulatePlatforms()
         {
             List<string> platformList = new List<string>();

@@ -36,25 +36,27 @@
     <span class="msg" data-msg-id="msgUrlPlaceholder">@SharedLocalizer["placeholder message"]</span>
 }
 
-<div id="featurecontainer" class="col-12 container">
-    <input type="hidden" id="isajax" value="@isAjax.ToString().ToLower()" />
-    <input type="hidden" id="urls" value="urls"
-           data-url-list="@Url.Action("list", "forumgroup", new { area = "staff" })" />
+<section class="content container">
+    <div id="featurecontainer" class="pb-3">
+        <input type="hidden" id="isajax" value="@isAjax.ToString().ToLower()" />
+        <input type="hidden" id="urls" value="urls"
+               data-url-list="@Url.Action("list", "forumgroup", new { area = "staff" })" />
 
-    <div id="containerlist" class="row">
-        <div class="col-12 mb-2 text-uppercase">
-            <h1 class="h3"><i class="fas fa-fw fa-comments" aria-hidden="true"></i> @ViewData["Title"]</h1>
+        <div id="containerlist" class="row">
+            <div class="col-12 mb-2 text-uppercase">
+                <h1 class="h3"><i class="fas fa-fw fa-comments" aria-hidden="true"></i> @ViewData["Title"]</h1>
+            </div>
+            <div class="col-12 mb-3">
+                @if (canInteract)
+                {
+                    <div class="col-lg-12 mb-2 p-0 text-right mt-n5">
+                        <a asp-area="staff" asp-controller="forumgroup" asp-action="add" class="btn btn-sm btn-success">@SharedLocalizer["New Group"] <i class="fas fa-plus" aria-hidden="true"></i></a>
+                    </div>
+                }
+            </div>
         </div>
-        <div class="col-12 mb-3">
-            @if (canInteract)
-            {
-                <div class="col-lg-12 mb-2 p-0 text-right mt-n5">
-                    <a asp-area="staff" asp-controller="forumgroup" asp-action="add" class="btn btn-sm btn-success">@SharedLocalizer["New Group"] <i class="fas fa-plus" aria-hidden="true"></i></a>
-                </div>
-            }
+        <div class="row">
+            <div id="divList" class="col-12"></div>
         </div>
     </div>
-    <div class="row">
-        <div id="divList" class="col-12"></div>
-    </div>
-</div>
+</section>

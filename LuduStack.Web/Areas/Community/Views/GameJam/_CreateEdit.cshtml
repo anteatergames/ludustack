@@ -4,6 +4,8 @@
     Layout = null;
 
     var isNew = Model.Id == Guid.Empty;
+
+    var timeZoneList = (IEnumerable<SelectListItem>)ViewBag.TimeZones;
 }
 
 <h1 class="sr-only">@ViewData["Title"]</h1>
@@ -20,16 +22,16 @@
         </span>
         @if (!isNew)
         {
-            <div class="box-tools">
+            <div class="box-tools text-capitalize">
                 <div class="btn-group">
                     <button type="button" class="btn  btn-box-tool" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fas fa-ellipsis-v" aria-hidden="true"></i>
                     </button>
-                    <div class="dropdown-menu text-capitalize" x-placement="bottom-start" style="position: absolute; transform: translate3d(-67px, 28px, 0px); top: 0px; left: 0px; will-change: transform;">
+                    <div class="dropdown-menu dropdown-menu-right btn-sm p-1" x-placement="bottom-start" style="position: absolute; transform: translate3d(-67px, 28px, 0px); top: 0px; left: 0px; will-change: transform;">
                         <a class="dropdown-item" asp-area="community" asp-controller="gamejam" asp-action="details" asp-route-handler="@Model.Handler" target="_blank">@SharedLocalizer["view"]</a>
                         @if (Model.Permissions.CanDelete)
                         {
-                            <a class="dropdown-item btn-entity-delete" href="#" data-url="@Url.Action("delete", "gamejam", new { area = "community", id = Model.Id, edit = true })" data-confirmationmessage="@SharedLocalizer["Are you sure you want to delete this Game Jam?"]" data-confirmationtitle="@SharedLocalizer["Are you sure?"]" data-confirmationbuttontext="@SharedLocalizer["Yes, delete it!"]" data-cancelbuttontext="@SharedLocalizer["Cancel"]">@SharedLocalizer["delete"]</a>
+                            <a class="dropdown-item btn-entity-delete" href="#" data-url="@Url.Action("delete", "gamejam", new { area = "community", id = Model.Id, edit = true })" data-confirmationmessage="@SharedLocalizer["Are you sure you want to delete this?"]" data-confirmationtitle="@SharedLocalizer["Are you sure?"]" data-confirmationbuttontext="@SharedLocalizer["Yes, delete it!"]" data-cancelbuttontext="@SharedLocalizer["Cancel"]">@SharedLocalizer["delete"]</a>
                         }
                     </div>
                 </div>
@@ -42,42 +44,64 @@
             <input type="hidden" asp-for="Id" />
             <input type="hidden" asp-for="UserId" />
             <input type="hidden" asp-for="CreateDate" />
+            <input type="hidden" asp-for="ForumCategoryHandler" />
 
             <div class="row">
+
+                <div class="col-12 text-uppercase">
+                    <h2 class="h2">@SharedLocalizer["basic"]</h2>
+                </div>
 
                 <div class="col-12">
                     <div class="form-group">
                         <label asp-for="Name" class="col-form-label"></label>
-                        <span asp-description-for="Name" class="col-form-label" />
-                        <input asp-for="Name" class="form-control" placeholder="@SharedLocalizer["Type the Game Jam name here"]" />
+                        <span asp-description-for="Name" class="col-form-label"></span>
+                        <input asp-for="Name" class="form-control" placeholder="@SharedLocalizer["Type the Name here"]" />
                         <span asp-validation-for="Name" class="text-danger"></span>
                     </div>
                 </div>
 
-                <div class="col-12 col-md-6">
+                <div class="col-12 col-md-5">
                     <div class="form-group">
                         <label asp-for="Handler" class="col-form-label"></label>
-                        <span asp-description-for="Handler" class="col-form-label" />
-                        <input asp-for="Handler" class="form-control" placeholder="@SharedLocalizer["Type the handler name here"]" />
+                        <span asp-description-for="Handler" class="col-form-label"></span>
+                        <input asp-for="Handler" class="form-control" placeholder="@SharedLocalizer["Type a Handler here"]" />
                         <span asp-validation-for="Handler" class="text-danger"></span>
                     </div>
                 </div>
 
-                <div class="col-12 col-md-6">
+                <div class="col-12 col-md-5">
                     <div class="form-group">
                         <label asp-for="HashTag" class="col-form-label"></label>
-                        <span asp-description-for="HashTag" class="col-form-label" />
-                        <input asp-for="HashTag" class="form-control" placeholder="@SharedLocalizer["Type the HashTag name here"]" />
+                        <span asp-description-for="HashTag" class="col-form-label"></span>
+                        <input asp-for="HashTag" class="form-control" placeholder="@SharedLocalizer["Type the Hashtag here"]" />
                         <span asp-validation-for="HashTag" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-2">
+                    <div class="form-group">
+                        <label asp-for="Winners" class="col-form-label"></label>
+                        <span asp-description-for="Winners" class="col-form-label"></span>
+                        <input asp-for="Winners" class="form-control" />
+                        <span asp-validation-for="Winners" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <div class="form-group">
+                        <label asp-for="TimeZone" class="col-form-label"></label>
+                        <select asp-for="TimeZone" asp-items="timeZoneList" class="form-control"></select>
+                        <span asp-validation-for="TimeZone" class="text-danger"></span>
                     </div>
                 </div>
 
                 <div class="col-12 col-sm-6 col-lg-3">
                     <div class="form-group">
                         <label asp-for="StartDate" class="col-form-label"></label>
-                        <span asp-description-for="StartDate" class="col-form-label" />
+                        <span asp-description-for="StartDate" class="col-form-label"></span>
                         <div class="input-group">
-                            <input asp-for="StartDate" type="text" class="form-control datetimepicker-input" data-maxdate="#EntryDeadline" data-target="#StartDate" aria-describedby="StartDateAddon" placeholder="@SharedLocalizer["When this Jam start?"]" />
+                            <input asp-for="StartDate" type="text" class="form-control datetimepicker-input" data-maxdate="#EntryDeadline" data-target="#StartDate" aria-describedby="StartDateAddon" placeholder="@SharedLocalizer["When this Jam starts?"]" />
                             <div class="input-group-append" data-target="#StartDate" data-toggle="datetimepicker" title="@SharedLocalizer["Select the start date."]">
                                 <span class="input-group-text" id="StartDateAddon"><i class="far fa-calendar-alt" aria-hidden="true"></i></span>
                             </div>
@@ -89,10 +113,10 @@
                 <div class="col-12 col-sm-6 col-lg-3">
                     <div class="form-group">
                         <label asp-for="EntryDeadline" class="col-form-label"></label>
-                        <span asp-description-for="EntryDeadline" class="col-form-label" />
+                        <span asp-description-for="EntryDeadline" class="col-form-label"></span>
                         <div class="input-group">
-                            <input asp-for="EntryDeadline" type="text" class="form-control datetimepicker-input" data-maxdate="#VotingEndDate" data-target="#EntryDeadline" aria-describedby="EntryDeadlineAddon" placeholder="@SharedLocalizer["When this Jam start?"]" />
-                            <div class="input-group-append" data-target="#EntryDeadline" data-toggle="datetimepicker" title="@SharedLocalizer["Select the start date."]">
+                            <input asp-for="EntryDeadline" type="text" class="form-control datetimepicker-input" data-maxdate="#VotingEndDate" data-target="#EntryDeadline" aria-describedby="EntryDeadlineAddon" placeholder="@SharedLocalizer["Submissions deadline"]" />
+                            <div class="input-group-append" data-target="#EntryDeadline" data-toggle="datetimepicker" title="@SharedLocalizer["Select the deadline."]">
                                 <span class="input-group-text" id="EntryDeadlineAddon"><i class="far fa-calendar-alt" aria-hidden="true"></i></span>
                             </div>
                         </div>
@@ -103,10 +127,10 @@
                 <div class="col-12 col-sm-6 col-lg-3">
                     <div class="form-group">
                         <label asp-for="VotingEndDate" class="col-form-label"></label>
-                        <span asp-description-for="VotingEndDate" class="col-form-label" />
+                        <span asp-description-for="VotingEndDate" class="col-form-label"></span>
                         <div class="input-group">
-                            <input asp-for="VotingEndDate" type="text" class="form-control datetimepicker-input" data-maxdate="#ResultDate" data-target="#VotingEndDate" aria-describedby="VotingEndDateAddon" placeholder="@SharedLocalizer["When this Jam start?"]" />
-                            <div class="input-group-append" data-target="#VotingEndDate" data-toggle="datetimepicker" title="@SharedLocalizer["Select the start date."]">
+                            <input asp-for="VotingEndDate" type="text" class="form-control datetimepicker-input" data-maxdate="#ResultDate" data-target="#VotingEndDate" aria-describedby="VotingEndDateAddon" placeholder="@SharedLocalizer["Voting End"]" />
+                            <div class="input-group-append" data-target="#VotingEndDate" data-toggle="datetimepicker" title="@SharedLocalizer["Select the date to end voting"]">
                                 <span class="input-group-text" id="VotingEndDateAddon"><i class="far fa-calendar-alt" aria-hidden="true"></i></span>
                             </div>
                         </div>
@@ -117,10 +141,10 @@
                 <div class="col-12 col-sm-6 col-lg-3">
                     <div class="form-group">
                         <label asp-for="ResultDate" class="col-form-label"></label>
-                        <span asp-description-for="ResultDate" class="col-form-label" />
+                        <span asp-description-for="ResultDate" class="col-form-label"></span>
                         <div class="input-group">
-                            <input asp-for="ResultDate" type="text" class="form-control datetimepicker-input" data-target="#ResultDate" aria-describedby="ResultDateAddon" placeholder="@SharedLocalizer["When this Jam start?"]" />
-                            <div class="input-group-append" data-target="#ResultDate" data-toggle="datetimepicker" title="@SharedLocalizer["Select the start date."]">
+                            <input asp-for="ResultDate" type="text" class="form-control datetimepicker-input" data-target="#ResultDate" aria-describedby="ResultDateAddon" placeholder="@SharedLocalizer["Results date"]" />
+                            <div class="input-group-append" data-target="#ResultDate" data-toggle="datetimepicker" title="@SharedLocalizer["Select the date to make the results public."]">
                                 <span class="input-group-text" id="ResultDateAddon"><i class="far fa-calendar-alt" aria-hidden="true"></i></span>
                             </div>
                         </div>
@@ -130,72 +154,26 @@
 
                 <div class="col-12">
                     <div class="form-group">
+                        <label asp-for="Language"></label>
+                        <select asp-for="Language" asp-items="Html.GetEnumSelectList<SupportedLanguage>()" class="form-control select2" data-placeholder="@SharedLocalizer["Set the language"]" tabindex="-1" aria-hidden="true"></select>
+                        <span asp-validation-for="Language" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <div class="form-group">
                         <label asp-for="ShortDescription" class="col-form-label"></label>
-                        <span asp-description-for="ShortDescription" class="col-form-label" />
-                        <input asp-for="ShortDescription" class="form-control" placeholder="@SharedLocalizer["Give us a short description here (optional)"]" />
+                        <span asp-description-for="ShortDescription" class="col-form-label"></span>
+                        <input asp-for="ShortDescription" class="form-control" placeholder="@SharedLocalizer["Give us a short description here"]" />
                         <span asp-validation-for="ShortDescription" class="text-danger"></span>
-                    </div>
-                </div>
-
-                <div class="col-12">
-                    <div class="col-12 col-lg-6 pb-3 mb-3 mx-auto d-block text-center bg-light bordered newimageupload">
-                        <div class="form-group m-0">
-                            <label asp-for="FeaturedImage" class="col-form-label"></label>
-                            <span asp-description-for="FeaturedImage" class="col-form-label" />
-                        </div>
-                        <div class="w-100">
-                            <img class="rounded img-fluid border w-100 square-bottom uploadimage" id="featuredImage" src="@Model.FeaturedImage" data-aspectratio="40/21" alt="@Html.DisplayNameFor(x => x.FeaturedImage)">
-                        </div>
-                        <label class="btn btn-block btn-outline-secondary square-top text-uppercase" data-toggle="tooltip" title="" data-original-title="@SharedLocalizer["Click here to change this image"]">
-                            <i class="fas fa-fw fa-upload" aria-hidden="true"></i>
-                            <span>@SharedLocalizer["change"]</span>
-                            <input type="file" class="sr-only imageinput" accept="image/png, image/jpeg" data-target-img="featuredImage" data-target-hidden="FeaturedImage">
-                            <input type="hidden" asp-for="FeaturedImage" />
-                        </label>
-                    </div>
-                </div>
-
-                <div class="col-12">
-                    <div class="col-12 col-lg-6 pb-3 mb-3 mx-auto d-block text-center bg-light bordered newimageupload">
-                        <div class="form-group m-0">
-                            <label asp-for="BannerImage" class="col-form-label"></label>
-                            <span asp-description-for="BannerImage" class="col-form-label" />
-                        </div>
-                        <div class="w-100">
-                            <img class="rounded img-fluid border w-100 square-bottom uploadimage" id="bannerImage" src="@Model.BannerImage" alt="@Html.DisplayNameFor(x => x.BannerImage)">
-                        </div>
-                        <label class="btn btn-block btn-outline-secondary square-top text-uppercase" data-toggle="tooltip" title="" data-original-title="@SharedLocalizer["Click here to change this image"]">
-                            <i class="fas fa-fw fa-upload" aria-hidden="true"></i>
-                            <span>@SharedLocalizer["change"]</span>
-                            <input type="file" class="sr-only imageinput" accept="image/*" data-target-img="bannerImage" data-target-hidden="BannerImage">
-                            <input type="hidden" asp-for="BannerImage" />
-                        </label>
-                    </div>
-                </div>
-
-                <div class="col-12">
-                    <div class="col-12 col-lg-6 pb-3 mb-3 mx-auto d-block text-center bg-light bordered newimageupload">
-                        <div class="form-group m-0">
-                            <label asp-for="BackgroundImage" class="col-form-label"></label>
-                            <span asp-description-for="BackgroundImage" class="col-form-label" />
-                        </div>
-                        <div class="w-100">
-                            <img class="rounded img-fluid border w-100 square-bottom uploadimage" id="backgroundImage" src="@Model.BackgroundImage" alt="@Html.DisplayNameFor(x => x.BackgroundImage)">
-                        </div>
-                        <label class="btn btn-block btn-outline-secondary square-top text-uppercase" data-toggle="tooltip" title="" data-original-title="@SharedLocalizer["Click here to change this image"]">
-                            <i class="fas fa-fw fa-upload" aria-hidden="true"></i>
-                            <span>@SharedLocalizer["change"]</span>
-                            <input type="file" class="sr-only imageinput" accept="image/*" data-target-img="backgroundImage" data-target-hidden="BackgroundImage">
-                            <input type="hidden" asp-for="BackgroundImage" />
-                        </label>
                     </div>
                 </div>
 
                 <div class="col-12">
                     <div class="form-group">
                         <label asp-for="Description" class="col-form-label"></label>
-                        <span asp-description-for="Description" class="col-form-label" />
-                        <textarea asp-for="Description" class="form-control wysiwygeditor invisible" placeholder="@SharedLocalizer["Describe the Game Jam here"]"></textarea>
+                        <span asp-description-for="Description" class="col-form-label"></span>
+                        <textarea asp-for="Description" class="form-control wysiwygeditor invisible" placeholder="@SharedLocalizer["Describe your Game Jam here"]"></textarea>
                         <span asp-validation-for="Description" class="text-danger"></span>
                     </div>
                 </div>
@@ -203,65 +181,294 @@
                 <div class="col-12">
                     <div class="form-group">
                         <label asp-for="MainTheme" class="col-form-label"></label>
-                        <span asp-description-for="MainTheme" class="col-form-label" />
+                        <span asp-description-for="MainTheme" class="col-form-label"></span>
                         <input asp-for="MainTheme" class="form-control" placeholder="@SharedLocalizer["Example: \"Two girls, one Cuphead\""]" />
                         <span asp-validation-for="MainTheme" class="text-danger"></span>
                     </div>
                 </div>
 
                 <div class="row px-3">
-                    <div class="col-12 col-md-6">
+                    <div class="col-12 col-md-6 col-xl-4">
                         <div class="form-group switch">
                             <label asp-for="HideSubmissions" class="col-form-label"></label>
                             <label class="switch left">
                                 <input asp-for="HideSubmissions" type="checkbox" class="default" />
                                 <span class="slider round"></span>
                             </label>
-                            <span asp-description-for="HideSubmissions" class="col-form-label" />
+                            <span asp-description-for="HideSubmissions" class="col-form-label"></span>
                         </div>
                     </div>
 
-                    <div class="col-12 col-md-6">
+                    <div class="col-12 col-md-6 col-xl-4">
                         <div class="form-group switch">
                             <label asp-for="HideRealtimeResults" class="col-form-label"></label>
                             <label class="switch left">
                                 <input asp-for="HideRealtimeResults" type="checkbox" class="default" />
                                 <span class="slider round"></span>
                             </label>
-                            <span asp-description-for="HideRealtimeResults" class="col-form-label" />
+                            <span asp-description-for="HideRealtimeResults" class="col-form-label"></span>
                         </div>
                     </div>
 
-                    <div class="col-12 col-md-6">
+                    <div class="col-12 col-md-6 col-xl-4">
                         <div class="form-group switch">
                             <label asp-for="Unlisted" class="col-form-label"></label>
                             <label class="switch left">
                                 <input asp-for="Unlisted" type="checkbox" class="default" />
                                 <span class="slider round"></span>
                             </label>
-                            <span asp-description-for="Unlisted" class="col-form-label" />
+                            <span asp-description-for="Unlisted" class="col-form-label"></span>
                         </div>
                     </div>
 
-                    <div class="col-12 col-md-6">
+                    <div class="col-12 col-md-6 col-xl-4">
                         <div class="form-group switch">
                             <label asp-for="AllowLateJoin" class="col-form-label"></label>
                             <label class="switch left">
                                 <input asp-for="AllowLateJoin" type="checkbox" class="default" />
                                 <span class="slider round"></span>
                             </label>
-                            <span asp-description-for="AllowLateJoin" class="col-form-label" />
+                            <span asp-description-for="AllowLateJoin" class="col-form-label"></span>
                         </div>
                     </div>
 
-                    <div class="col-12 col-md-6">
+                    <div class="col-12 col-md-6 col-xl-4">
                         <div class="form-group switch">
                             <label asp-for="HideMainTheme" class="col-form-label"></label>
                             <label class="switch left">
                                 <input asp-for="HideMainTheme" type="checkbox" class="default" />
                                 <span class="slider round"></span>
                             </label>
-                            <span asp-description-for="HideMainTheme" class="col-form-label" />
+                            <span asp-description-for="HideMainTheme" class="col-form-label"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-12 text-uppercase">
+                        <hr />
+                        <h2 class="h2">@SharedLocalizer["Mechanics"]</h2>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="col p-0 mb-3">
+                            <div class="col p-0 mb-3">
+                                <div class="form-group">
+                                    <label asp-for="ParticipationType" class="col-form-label"></label>
+                                    <span asp-description-for="ParticipationType" class="col-form-label ml-1" />
+                                    <select asp-for="ParticipationType" asp-items="Html.GetEnumSelectList<GameJamParticipationType>()" class="form-control"></select>
+                                    <span asp-validation-for="ParticipationType" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="col p-0 mb-3">
+                            <div class="form-group">
+                                <label asp-for="Voters" class="col-form-label"></label>
+                                <span asp-description-for="Voters" class="col-form-label ml-1" />
+                                <select asp-for="Voters" asp-items="Html.GetEnumSelectList<GameJamVoters>()" class="form-control"></select>
+                                <span asp-validation-for="Voters" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="col p-0 mb-3">
+                            <div class="form-group">
+                                <label asp-for="Judges" class="col-form-label"></label>
+                                <span asp-description-for="Judges" class="col-form-label ml-1" />
+                                <select id="ddlSearchUsers" class="form-control" data-placeholder="@SharedLocalizer["Search for Users"]" data-ajax-url="@Url.Action("searchusercard", "user")"></select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="alertnojudges" style="display:none" class="alert alert-info">@SharedLocalizer["If Only Judges are selected as Voters and there is no Judge selected, you will be added as a Judge upon saving the Game Jam."]</div>
+
+                    <div class="col-12 mb-3">
+                        <div id="divJudges" class="row">
+                            @for (int i = 0; i < Model.JudgesProfiles.Count; i++)
+                            {
+                                var judge = Model.JudgesProfiles.ElementAt(i);
+
+                                <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-3 judge">
+                                    <input type="hidden" name="Judges[@i].UserId" value="@judge.UserId" />
+                                    <div class="bordered square-bottom border-bottom-0">
+                                        <partial name="_UserCard" model="judge" />
+                                    </div>
+                                    <div class="w-100 square-top">
+                                        <button type="button" class="btn btn-block btn-outline-danger square-top btn-judge-delete" data-deleteerrormsg="@SharedLocalizer["You cannot delete the last Judge if Judges Only is selected as voters."]"><i class="fas fa-trash-alt" aria-hidden="true"></i></button>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="col-12 mb-3">
+                        <label asp-for="Criteria" class="col-form-label"></label>
+                        <span asp-description-for="Criteria" class="col-form-label"></span>
+                        <div class="row">
+                            @for (int i = 0; i < Model.Criteria.Where(x => x.Type == GameJamCriteriaType.Overall).Count(); i++)
+                            {
+                                <input asp-for="Criteria[i].Type" type="hidden" class="default" />
+                                <input asp-for="Criteria[i].Name" type="hidden" class="default" />
+                                <input asp-for="Criteria[i].Enabled" type="hidden" class="default" />
+                                <input asp-for="Criteria[i].Weight" type="hidden" class="default" />
+                            }
+
+                            @for (int i = 1; i <= Model.Criteria.Where(x => x.Type != GameJamCriteriaType.Overall).Count(); i++)
+                            {
+                                var uiInfoType = Model.Criteria[i].Type.ToUiInfo();
+
+                                <div class="col-6 mr-auto">
+                                    <hr class="my-1" />
+                                </div>
+                                <div class="col-12">
+                                    <input asp-for="Criteria[i].Type" type="hidden" class="default" />
+                                    <input asp-for="Criteria[i].Name" type="hidden" class="default" />
+                                    <div class="row">
+                                        <div class="col-6 col-md-2 col-lg-2">
+                                            <label class="col-form-label">@SharedLocalizer[uiInfoType.Display]</label>
+                                            <div class="form-group switch">
+                                                <label class="switch left">
+                                                    <input asp-for="Criteria[i].Enabled" type="checkbox" class="default" />
+                                                    <span class="slider round"></span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 col-md-2 col-lg-2">
+                                            <div class="form-group">
+                                                <label asp-for="Criteria[i].Weight" class="col-form-label"></label>
+                                                <input asp-for="Criteria[i].Weight" class="form-control numberonly" value="@Model.Criteria[i].Weight.ToString(new System.Globalization.CultureInfo("en-US"))" />
+                                                <span asp-validation-for="Criteria[i].Weight" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-md-8">
+                                            <label asp-for="Criteria[i].Description" class="col-form-label"></label>
+                                            <span asp-description-for="Criteria[i].Description" class="col-form-label"></span>
+                                            <input asp-for="Criteria[i].Description" class="form-control" value="@SharedLocalizer[(isNew ? uiInfoType.Description : Model.Criteria[i].Description) ?? string.Empty]" placeholder="@SharedLocalizer["Type a description of this criteria here."]" />
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="col-12 text-uppercase">
+                        <hr />
+                        <h2 class="h2">@SharedLocalizer["look and feel"]</h2>
+                    </div>
+
+                    <div class="col-12 p-0">
+                        <div class="row no-gutters">
+                            <div class="col-12 col-lg-6">
+
+                                <div class="col-12">
+                                    <div class="pb-3 px-3 mb-3 mx-auto d-block text-center bg-light bordered hover newimageupload">
+                                        <div class="form-group m-0">
+                                            <label asp-for="FeaturedImage" class="col-form-label"></label>
+                                            <span asp-description-for="FeaturedImage" class="col-form-label"></span>
+                                        </div>
+                                        <div class="w-100">
+                                            <img class="rounded img-fluid border w-100 square-bottom uploadimage" id="featuredImage" src="@Model.FeaturedImage" data-aspectratio="40/21" alt="@Html.DisplayNameFor(x => x.FeaturedImage)" data-default-img="@Constants.DefaultGamejamThumbnail">
+                                        </div>
+                                        <div class="row no-gutters">
+                                            <div class="col-6">
+                                                <label class="btn btn-block btn-outline-secondary square-top square-right text-uppercase" data-toggle="tooltip" title="" data-original-title="@SharedLocalizer["Click here to change this image"]">
+                                                    <i class="fas fa-fw fa-upload" aria-hidden="true"></i>
+                                                    <span>@SharedLocalizer["change"]</span>
+                                                    <input type="file" class="sr-only imageinput" accept="image/*" data-target-img="featuredImage" data-target-hidden="FeaturedImage">
+                                                    <input type="hidden" asp-for="FeaturedImage" />
+                                                </label>
+                                            </div>
+                                            <div class="col-6">
+                                                <label class="btn btn-block btn-outline-danger square-top square-left text-uppercase btn-remove-image" data-target-img="featuredImage" data-toggle="tooltip" title="" data-original-title="@SharedLocalizer["Click here to remove this image"]">
+                                                    <i class="fas fa-fw fa-times" aria-hidden="true"></i>
+                                                    <input type="hidden" asp-for="RemoveFeaturedImage" class="removeimage" />
+                                                    <span>@SharedLocalizer["remove"]</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <div class="pb-3 px-3 mb-3 mx-auto d-block text-center bg-light bordered hover newimageupload">
+                                        <div class="form-group m-0">
+                                            <label asp-for="BannerImage" class="col-form-label"></label>
+                                            <span asp-description-for="BannerImage" class="col-form-label"></span>
+                                        </div>
+                                        <div class="w-100">
+                                            <img class="rounded img-fluid border w-100 square-bottom uploadimage" id="bannerImage" src="@Model.BannerImage" alt="@Html.DisplayNameFor(x => x.BannerImage)" data-default-img="@Constants.DefaultGamejamThumbnail">
+                                        </div>
+                                        <div class="row no-gutters">
+                                            <div class="col-6">
+                                                <label class="btn btn-block btn-outline-secondary square-top square-right text-uppercase" data-toggle="tooltip" title="" data-original-title="@SharedLocalizer["Click here to change this image"]">
+                                                    <i class="fas fa-fw fa-upload" aria-hidden="true"></i>
+                                                    <span>@SharedLocalizer["change"]</span>
+                                                    <input type="file" class="sr-only imageinput" accept="image/*" data-target-img="bannerImage" data-target-hidden="BannerImage">
+                                                    <input type="hidden" asp-for="BannerImage" />
+                                                </label>
+                                            </div>
+                                            <div class="col-6">
+                                                <label class="btn btn-block btn-outline-danger square-top square-left text-uppercase btn-remove-image" data-target-img="bannerImage" data-toggle="tooltip" title="" data-original-title="@SharedLocalizer["Click here to remove this image"]">
+                                                    <i class="fas fa-fw fa-times" aria-hidden="true"></i>
+                                                    <input type="hidden" asp-for="RemoveBannerImage" class="removeimage" />
+                                                    <span>@SharedLocalizer["remove"]</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <div class="pb-3 px-3 mb-3 mx-auto d-block text-center bg-light bordered hover newimageupload">
+                                        <div class="form-group m-0">
+                                            <label asp-for="BackgroundImage" class="col-form-label"></label>
+                                            <span asp-description-for="BackgroundImage" class="col-form-label"></span>
+                                        </div>
+                                        <div class="w-100">
+                                            <img class="rounded img-fluid border w-100 square-bottom uploadimage" id="backgroundImage" src="@Model.BackgroundImage" alt="@Html.DisplayNameFor(x => x.BackgroundImage)" data-default-img="@Constants.DefaultGamejamThumbnail">
+                                        </div>
+                                        <div class="row no-gutters">
+                                            <div class="col-6">
+                                                <label class="btn btn-block btn-outline-secondary square-top square-right text-uppercase" data-toggle="tooltip" title="" data-original-title="@SharedLocalizer["Click here to change this image"]">
+                                                    <i class="fas fa-fw fa-upload" aria-hidden="true"></i>
+                                                    <span>@SharedLocalizer["change"]</span>
+                                                    <input type="file" class="sr-only imageinput" accept="image/*" data-target-img="backgroundImage" data-target-hidden="BackgroundImage">
+                                                    <input type="hidden" asp-for="BackgroundImage" />
+                                                </label>
+                                            </div>
+                                            <div class="col-6">
+                                                <label class="btn btn-block btn-outline-danger square-top square-left text-uppercase btn-remove-image" data-target-img="backgroundImage" data-toggle="tooltip" title="" data-original-title="@SharedLocalizer["Click here to remove this image"]">
+                                                    <i class="fas fa-fw fa-times" aria-hidden="true"></i>
+                                                    <input type="hidden" asp-for="RemoveBackgroundImage" class="removeimage" />
+                                                    <span>@SharedLocalizer["remove"]</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-6">
+                                <div class="col-12">
+                                    <div class="form-group switch">
+                                        <label asp-for="FullWidthBanner" class="col-form-label"></label>
+                                        <label class="switch left">
+                                            <input asp-for="FullWidthBanner" type="checkbox" class="default" />
+                                            <span class="slider round"></span>
+                                        </label>
+                                        <span asp-description-for="FullWidthBanner" class="col-form-label"></span>
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label asp-for="BackgroundColor" class="col-form-label"></label>
+                                        <span asp-description-for="BackgroundColor" class="col-form-label"></span>
+                                        <input asp-for="BackgroundColor" class="form-control" type="color" placeholder="@SharedLocalizer["#dedada"]" />
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -275,3 +482,22 @@
 </div>
 
 <partial name="_CropModal" />
+
+@{
+    var templateProfile = new ProfileViewModel
+    {
+        Name = "placeholder",
+        Location = "placeholder",
+        CoverImageUrl = Constants.DefaultProfileCoverImage
+    };
+}
+
+<div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-3 judge template" aria-hidden="true">
+    <input type="hidden" name="Judges[99].UserId" value="placeholder">
+    <div class="bordered square-bottom border-bottom-0">
+        <partial name="_UserCard" model="@templateProfile" />
+    </div>
+    <div class="w-100 square-top">
+        <button type="button" class="btn btn-block btn-outline-danger square-top btn-judge-delete" data-deleteerrormsg="@SharedLocalizer["You cannot delete the last Judge if Judges Only is selected as voters."]"><i class="fas fa-trash-alt" aria-hidden="true"></i></button>
+    </div>
+</div>

@@ -23,9 +23,5 @@ namespace LuduStack.Application.ViewModels.Game
         public string DeveloperName { get; set; }
 
         public string DeveloperHandler { get; set; }
-
-        public GameBaseViewModel()
-        {
-        }
     }
 }

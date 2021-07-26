@@ -24,9 +24,5 @@ namespace LuduStack.Web.Middlewares.CanonicalUrl
         /// slash from the middleware
         /// </summary>
         public bool TrailingSlash { get; set; }
-
-        public CanonicalUrlMiddlewareOptions()
-        {
-        }
     }
 }

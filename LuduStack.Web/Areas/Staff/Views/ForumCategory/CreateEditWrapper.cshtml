@@ -6,10 +6,12 @@
 
 @section ComponentStyles {
     <environment include="Development">
+        <link rel="stylesheet" href="~/css/switch.css">
         <link rel="stylesheet" href="~/lib/cropperjs/cropper.css" />
         <link rel="stylesheet" href="~/css/forumcategory.css">
     </environment>
     <environment exclude="Development">
+        <link rel="stylesheet" href="~/css/switch.css">
         <link rel="stylesheet" href="~/lib/cropperjs/cropper.min.css" />
         <link rel="stylesheet" href="~/css/forumcategory.min.css" asp-append-version="true">
     </environment>
@@ -34,7 +36,7 @@
 }
 
 <section class="content container">
-    <div id="featurecontainer" class="col">
+    <div id="featurecontainer" class="pb-3">
         <partial name="_CreateEdit" model="Model" />
     </div>
 </section>

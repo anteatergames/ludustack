@@ -36,17 +36,19 @@
     <span class="msg" data-msg-id="msgUrlPlaceholder">@SharedLocalizer["placeholder message"]</span>
 }
 
-<div id="featurecontainer" class="col-12 container">
-    <input type="hidden" id="isajax" value="@isAjax.ToString().ToLower()" />
-    <input type="hidden" id="urls" value="urls"
-           data-url-list="@Url.Action("list", "platformsetting", new { area = "staff" })" />
+<section class="content container">
+    <div id="featurecontainer" class="pb-3">
+        <input type="hidden" id="isajax" value="@isAjax.ToString().ToLower()" />
+        <input type="hidden" id="urls" value="urls"
+               data-url-list="@Url.Action("list", "platformsetting", new { area = "staff" })" />
 
-    <div id="containerlist" class="row">
-        <div class="col-12 mb-2 text-uppercase">
-            <h1 class="h3"><i class="fas fa-fw fa-cogs" aria-hidden="true"></i> @ViewData["Title"]</h1>
+        <div id="containerlist" class="row">
+            <div class="col-12 mb-2 text-uppercase">
+                <h1 class="h3"><i class="fas fa-fw fa-cogs" aria-hidden="true"></i> @ViewData["Title"]</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div id="divList" class="col-12"></div>
         </div>
     </div>
-    <div class="row">
-        <div id="divList" class="col-12"></div>
-    </div>
-</div>
+</section>

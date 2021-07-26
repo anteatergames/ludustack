@@ -2,30 +2,46 @@
 
 @{
     ViewData["Title"] = Model.Name;
-    ViewData["Description"] = Model.Description;
-    ViewData["Url"] = ViewBag.BaseUrl + Url.Action("details", "gamejam", new { area = "community", id = Model.Id });
-    ViewData["OgImage"] = Model.FeaturedImage;
+    ViewData["Description"] = string.IsNullOrWhiteSpace(Model.ShortDescription) ? SharedLocalizer["Join this Game Jam and get involved with other fellow gamedevs to build great things, just for fun."] : Model.ShortDescription;
+    ViewData["Url"] = ViewBag.BaseUrl + Url.Action("details", "gamejam", new { area = "community", handler = Model.Handler });
+    ViewData["OgImage"] = Model.FeaturedImage ?? ViewBag.BaseUrl + "/images/og/oggamejam.png";
 
     if (!string.IsNullOrWhiteSpace(Model.BackgroundImage))
     {
         ViewData["BackgroundImage"] = Model.BackgroundImage;
     }
-
-    var showAds = (bool)(ViewBag.ShowAds ?? false);
+    if (!string.IsNullOrWhiteSpace(Model.BackgroundColor))
+    {
+        ViewData["BackgroundColor"] = Model.BackgroundColor;
+    }
 
     var authorUrl = Url.Action("details", "profile", new { area = string.Empty, userHandler = Model.AuthorHandler });
     var authorLink = string.Format("<a href=\"{0}\" class=\"boldlink text-nowrap\">{1}</a>", authorUrl, Model.AuthorName);
+    var startDateLink = string.Format("<a target=\"_blank\" href=\"https://www.timeanddate.com/worldclock/fixedtime.html?iso={0}\">{1}</a>", Model.StartDate.ToUniversalTime().ToString("s", System.Globalization.CultureInfo.InvariantCulture), Model.StartDateToDisplay.ToString());
+    var deadLineDateLink = string.Format("<a target=\"_blank\" href=\"https://www.timeanddate.com/worldclock/fixedtime.html?iso={0}\">{1}</a>", Model.EntryDeadline.ToUniversalTime().ToString("s", System.Globalization.CultureInfo.InvariantCulture), Model.EntryDeadlineToDisplay.ToString());
 
     Model.Permissions.CanJoin = Model.Permissions.CanJoin && User.Identity.IsAuthenticated;
 
     var hasBanner = !string.IsNullOrWhiteSpace(Model.BannerImage);
+
+    var noJudgesModel = new ListNoItemsViewModel("fas fa-gavel", "There are no Judges on this Game Jam!");
+
+    var noCriteriaModel = new ListNoItemsViewModel("fas fa-balance-scale", "There are no Criteria on this Game Jam!");
+
+    var criteriaToList = Model.Criteria.Where(x => x.Type != GameJamCriteriaType.Overall).OrderByDescending(x => x.Weight);
+
+    var showAds = (bool)(ViewBag.ShowAds ?? false);
 }
 
 @section Styles {
     <environment include="Development">
+        <link rel="stylesheet" href="~/lib/bootstrap-star-rating/css/star-rating.css">
+        <link rel="stylesheet" href="~/lib/bootstrap-star-rating/themes/krajee-fa/theme.css" media="all" type="text/css" />
         <link rel="stylesheet" href="~/css/gamejamdetails.css" />
     </environment>
     <environment exclude="Development">
+        <link rel="stylesheet" href="~/lib/bootstrap-star-rating/css/star-rating.min.css">
+        <link rel="stylesheet" href="~/lib/bootstrap-star-rating/themes/krajee-fas/theme.min.css" media="all" type="text/css" />
         <link rel="stylesheet" href="~/css/gamejamdetails.min.css" asp-append-version="true" />
     </environment>
 }
@@ -33,37 +49,58 @@
 @section Scripts {
 
     <environment include="Development">
+        <script src="~/lib/bootstrap-star-rating/js/star-rating.js"></script>
+        <script src="~/lib/bootstrap-star-rating/themes/krajee-fas/theme.js"></script>
         <script src="~/js/shared/fx.js"></script>
+        <script src="~/js/shared/contentactions.js"></script>
         <script src="~/js/gamejam/gamejamdetails.js"></script>
     </environment>
     <environment exclude="Development">
+        <script src="~/lib/bootstrap-star-rating/js/star-rating.min.js"></script>
+        <script src="~/lib/bootstrap-star-rating/themes/krajee-fa/theme.min.js"></script>
         <script src="~/js/shared/fx.js"></script>
+        <script src="~/js/shared/contentactions.min.js" asp-append-version="true"></script>
         <script src="~/js/gamejam/gamejamdetails.min.js" asp-append-version="true"></script>
     </environment>
 }
 
+@if (hasBanner)
+{
+    @if (Model.FullWidthBanner)
+    {
+        <div class="col-12 p-0 mt-n3 mb-3 text-center">
+            <a href="@Url.Action("details", "gamejam", new { area = "community", handler = Model.Handler })">
+                <img src="@Model.BannerImage" class="img-fluid" alt="@Model.Name" />
+            </a>
+        </div>
+    }
+}
+
 <section class="content container">
-    <div id="featurecontainer" class="htmlcontent">
+    <div id="featurecontainer" class="pb-3">
         <input asp-for="SecondsToCountDown" type="hidden" />
 
-        <div class="row mb-3 ">
+        <div class="row mx-0 mb-3">
 
             @if (hasBanner)
             {
-                <div class="col-12 col-md-6 text-center">
-                    <a href="@Url.Action("details", "gamejam", new { area = "community", handler = Model.Handler })">
-                        <img src="@Model.BannerImage" class="img-fluid rounded jambanner" alt="@Model.Name" />
-                    </a>
-                </div>
+                @if (!Model.FullWidthBanner)
+                {
+                    <div class="col-12 px-0 col-md-6 text-center">
+                        <a href="@Url.Action("details", "gamejam", new { area = "community", handler = Model.Handler })">
+                            <img src="@Model.BannerImage" class="img-fluid rounded jambanner" alt="@Model.Name" />
+                        </a>
+                    </div>
+                }
             }
-            <div class="@(hasBanner ? "col-12 col-md-6" : "col-12") d-flex flex-row justify-content-center">
-                <div class=" d-flex flex-column justify-content-center">
-                    <div class="p-3 row justify-content-center bg-white bordered">
+            <div class="@(hasBanner && !Model.FullWidthBanner ? "col-12 col-md-6" : "col-12") px-0 d-flex flex-row justify-content-center">
+                <div class="d-flex flex-column justify-content-center">
+                    <div class="p-3 row justify-content-center bg-white bordered hover">
                         <partial name="_GameJamCounter" model="@new KeyValuePair<GameJamPhase, string>(Model.CurrentPhase, Model.CountDownMessage)" />
                     </div>
                     @if (Model.CurrentPhase == GameJamPhase.Warmup || Model.CurrentPhase == GameJamPhase.Submission)
                     {
-                        <div class="d-flex flex-row justify-content-center mt-n3">
+                        <div class="d-flex flex-row justify-content-center mt-n4">
                             <div class="bg-white">
                                 @if (Model.Permissions.CanJoin)
                                 {
@@ -78,7 +115,7 @@
                                 }
                                 else
                                 {
-                                    <button class="btn btn-lg btn-default disabled btn-cantjoin" data-msg="@SharedLocalizer[Model.CantJoinMessage]">@SharedLocalizer["can't join"]</button>
+                                    <button class="btn btn-lg btn-default disabled btn-cantjoin" data-msg="@SharedLocalizer[Model.CantJoinMessage ?? string.Empty]">@SharedLocalizer["can't join"]</button>
                                 }
                             </div>
                         </div>
@@ -87,33 +124,221 @@
             </div>
         </div>
 
+        @if (showAds)
+        {
+            <div class="col-12 rounded-0 p-0 px-lg-5 mb-2 mx-auto">
+                <partial name="_GoogleAdFeed" />
+            </div>
+        }
+
         <div class="box bg-light">
-            <div class="row mx-2">
+            <div class="row mx-2 htmlcontent">
                 <div class="mr-auto mb-2 d-flex flex-column justify-content-center">
-                    <h1 class="m-0 text-capitalize">@Model.Name</h1>
-                    <span class="text-left text-muted">@Html.Raw(SharedLocalizer["Hosted by {0}", authorLink])</span>
+                    <div class="d-flex flex-row">
+                        <h1 class="m-0 text-capitalize">@Model.Name</h1>
+                    </div>
+
+                    <div class="d-flex flex-row">
+                        <span class="text-left text-muted">@Html.Raw(SharedLocalizer["Hosted by {0}", authorLink])</span>
+                    </div>
                 </div>
                 <div class="ml-auto mb-2 d-flex flex-column justify-content-center">
                     <span class="h3 text-center">@Model.JoinCount</span>
-                    <span class="text-right text-muted">@SharedLocalizer[Model.JoinCount == 1 ? "entry" : "entries"]</span>
+                    <span class="text-right text-muted">@SharedLocalizer[Model.JoinCount == 1 ? "participant" : "participants"]</span>
                 </div>
             </div>
 
-            <div class="text-center mx-auto p-2 alert alert-dark">
-                @if (Model.ShowMainTheme)
+            @if (Model.ShowMainTheme)
+            {
+                @if (string.IsNullOrWhiteSpace(Model.MainTheme))
                 {
-                    <span class="h4">@Model.MainTheme</span>
+                    <div class="text-center mx-auto p-2 alert alert-info">
+                        <span class="h4">@SharedLocalizer["The Theme was not set"]</span>
+                    </div>
                 }
                 else
                 {
-                    <span class="h4">@SharedLocalizer["Only participants can see the main theme before the results."]</span>
+                    <div class="text-center mx-auto p-2 alert alert-dark">
+                        <span class="h4">@Model.MainTheme</span>
+                    </div>
                 }
-            </div>
-
-            <div>
-                <div class="bg-white mx-auto p-3">
-                    @Html.Raw(Model.Description)
+            }
+            else
+            {
+                <div class="text-center mx-auto p-2 alert alert-dark">
+                    <span class="h4">@SharedLocalizer["Only participants can see the Theme before the results"]</span>
                 </div>
+            }
+
+            <ul class="nav nav-tabs nav-justified text-capitalize" id="tabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link active" id="overview-tab" data-toggle="tab" href="#taboverview" role="tab" aria-controls="taboverview" aria-selected="true"><i class="fas fa-info-circle" aria-hidden="true"></i><span class="d-none d-md-block d-lg-inline-block">&nbsp;@SharedLocalizer["overview"]</span></a>
+                </li>
+                @if (Model.ShowJudges || Model.ShowCriteria)
+                {
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="appraisal-tab" data-toggle="tab" href="#tabappraisal" role="tab" aria-controls="tabappraisal" aria-selected="false"><i class="fas fa-balance-scale" aria-hidden="true"></i><span class="d-none d-md-block d-lg-inline-block">&nbsp;@SharedLocalizer["appraisal"]</span></a>
+                    </li>
+                }
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="participants-tab" data-toggle="tab" href="#tabparticipants" role="tab" aria-controls="tabparticipants" aria-selected="false" data-url="@Url.Action("listparticipants", "gamejam", new { area = "community", jamHandler = Model.Handler, jamId = Model.Id })"><i class="fas fa-users" aria-hidden="true"></i><span class="d-none d-md-block d-lg-inline-block">&nbsp;@SharedLocalizer["participants"]</span></a>
+                </li>
+                @if (Model.ShowSubmissions)
+                {
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="submissions-tab" data-toggle="tab" href="#tabsubmissions" role="tab" aria-controls="tabsubmissions" aria-selected="false" data-url="@Url.Action("listsubmissions", "gamejam", new { area = "community", jamHandler = Model.Handler, jamId = Model.Id })"><i class="fas fa-gamepad" aria-hidden="true"></i><span class="d-none d-md-block d-lg-inline-block">&nbsp;@SharedLocalizer["submissions"]</span></a>
+                    </li>
+                }
+                @if (Model.ShowFinalResults)
+                {
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="results-tab" data-toggle="tab" href="#tabresults" role="tab" aria-controls="tabresults" aria-selected="false" data-url="@Url.Action("listwinners", "gamejam", new { area = "community", jamHandler = Model.Handler, jamId = Model.Id, winnerCount = Model.Winners })"><i class="fas fa-trophy" aria-hidden="true"></i><span class="d-none d-md-block d-lg-inline-block">&nbsp;@SharedLocalizer["Results"]</span></a>
+                    </li>
+                }
+            </ul>
+            <div class="tab-content" id="tabsContent">
+                <div class="tab-pane fade show active" id="taboverview" role="tabpanel" aria-labelledby="overview-tab">
+
+                    <div class="bg-white mx-auto p-3 square-top htmlcontent">
+                        @Html.Raw(Model.Description)
+                    </div>
+
+                    <div class="mt-2">
+                        <div class="w-100 text-center">
+                            <partial name="_ShareContent" model="new ShareModel(Model.ShareUrl, Model.ShareText)" />
+
+                            @if (!string.IsNullOrWhiteSpace(Model.HashTag))
+                            {
+                                <div class="mt-2 d-flex flex-row justify-content-center">
+                                    <a href="@string.Format("https://www.twitter.com/hashtag/{0}", Model.HashTag)" target="_blank" rel="noopener" class="h5">@string.Format("#{0}", Model.HashTag)</a>
+                                </div>
+                            }
+
+                            @if (!string.IsNullOrWhiteSpace(Model.ForumCategoryHandler))
+                            {
+                                <div class="d-flex flex-row justify-content-center">
+                                    <a asp-area="community" asp-controller="forum" asp-action="category" asp-route-handler="@Model.ForumCategoryHandler">@SharedLocalizer["Discuss about this Jam on the forums."]</a>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    <hr />
+
+                    <div class="row m-2 text-center">
+                        <div class="col-12">
+                            <span>@Html.Raw(SharedLocalizer["from {0}", startDateLink])</span>
+                            <span>@Html.Raw(SharedLocalizer["until {0}", deadLineDateLink])</span>
+                            @if (!string.IsNullOrWhiteSpace(Model.DurationText))
+                            {
+                                <text>&nbsp;</text>
+                                    <span>(@Model.DurationText)</span>
+                                    }
+                                </div>
+                        @if (!string.IsNullOrWhiteSpace(Model.TimeZone))
+                        {
+                            <div class="col-12">
+                                <span>@Model.TimeZone</span>
+                            </div>
+                        }
+                    </div>
+
+                    <div class="row m-2 justify-content-center">
+                        @foreach (var highlight in Model.Highlights)
+                        {
+                            var uiInfo = highlight.Highlight.ToUiInfo();
+
+                            <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-2">
+                                <div class="border bg-dark text-white p-1" data-container="body" data-toggle="popover" data-trigger="hover" data-placement="top" data-content="@SharedLocalizer[uiInfo.Description]">
+                                    <span class="btn border p-1 rounded-circle btn-icon-sm bg-label"><i class="fas fa-@(uiInfo.Class)" aria-hidden="true"></i></span>
+                                    <span>@SharedLocalizer[uiInfo.Display]</span>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="tab-pane fade p-2 bg-white" id="tabappraisal" role="tabpanel" aria-labelledby="appraisal-tab">
+                    @if (Model.ShowJudges)
+                    {
+                        @if (!Model.Judges.Any())
+                        {
+                            <partial name="_ListNoItems" model="noJudgesModel" />
+                        }
+                        else
+                        {
+                            <div class="col-12 text-center">
+                                @if (Model.Judges.Count == 1)
+                                {
+                                    <span>@SharedLocalizer["Just one judge will judge the submissions"]</span>
+                                }
+                                else
+                                {
+                                    <span>@SharedLocalizer["{0} judges will judge the submissions", Model.Judges.Count]</span>
+                                }
+                            </div>
+                            <div class="row px-2 justify-content-center">
+                                @for (int i = 0; i < Model.JudgesProfiles.Count; i++)
+                                {
+                                    var judge = Model.JudgesProfiles.ElementAt(i);
+
+                                    <div class="col-12 col-md-6 col-lg-4 col-xl-3 p-1">
+                                        <input type="hidden" name="Judges[@i].UserId" value="@judge.UserId" />
+                                        <div class="bordered hover">
+                                            <partial name="_UserCard" model="judge" />
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        }
+                    }
+
+                    @if (Model.ShowCriteria)
+                    {
+                        <hr />
+                        @if (!Model.Criteria.Any())
+                        {
+                            <partial name="_ListNoItems" model="noCriteriaModel" />
+                        }
+                        else
+                        {
+                            <div class="col-12 text-center">
+                                @if (Model.Criteria.Count == 1)
+                                {
+                                    <span>@SharedLocalizer["Just one criteria"]</span>
+                                }
+                                else
+                                {
+                                    <span>@SharedLocalizer["{0} criteria", criteriaToList.Count()]</span>
+                                }
+                            </div>
+                            <div class="row px-2 justify-content-center">
+                                @for (int i = 0; i < criteriaToList.Count(); i++)
+                                {
+                                    var criteria = criteriaToList.ElementAt(i);
+                                    var uiInfo = criteria.Type.ToUiInfo();
+
+                                    <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-2">
+                                        <div class="border bg-dark text-white p-1" data-container="body" data-toggle="popover" data-trigger="hover" data-placement="top" data-content="@SharedLocalizer[criteria.Description ?? string.Empty]">
+                                            <span class="btn border p-1 rounded-circle btn-icon-sm bg-label"><i class="fas fa-@(uiInfo.Class)" aria-hidden="true"></i></span>
+                                            <span>@SharedLocalizer[uiInfo.Display]</span>
+                                            <span>(@SharedLocalizer["Weight {0}", criteria.Weight.ToString("n0")])</span>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        }
+                    }
+                </div>
+
+                <div class="tab-pane fade p-2 bg-white" id="tabparticipants" role="tabpanel" aria-labelledby="participants-tab">...</div>
+                @if (Model.ShowSubmissions)
+                {
+                    <div class="tab-pane fade p-2 bg-white" id="tabsubmissions" role="tabpanel" aria-labelledby="submissions-tab">...</div>
+                }
+                @if (Model.ShowFinalResults)
+                {
+                    <div class="tab-pane fade p-2 bg-white" id="tabresults" role="tabpanel" aria-labelledby="results-tab">...</div>
+                }
             </div>
         </div>
     </div>

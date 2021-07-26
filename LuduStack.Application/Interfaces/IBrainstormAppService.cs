@@ -19,7 +19,7 @@ namespace LuduStack.Application.Interfaces
 
         Task<OperationResultVo<Guid>> Save(Guid currentUserId, BrainstormIdeaViewModel viewModel);
 
-        Task<OperationResultVo> Vote(Guid userId, Guid ideaId, VoteValue vote);
+        Task<OperationResultVo> Vote(Guid userId, Guid ideaId, VoteValue voteValue);
 
         Task<OperationResultVo> Comment(Guid currentUserId, CommentViewModel vm);
 

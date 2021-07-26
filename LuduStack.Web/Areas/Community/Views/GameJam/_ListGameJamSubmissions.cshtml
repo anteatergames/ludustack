@@ -1,0 +1,80 @@
+﻿@model IEnumerable<GameJamEntryViewModel>
+
+@{
+    var canInteract = User.Identity.IsAuthenticated;
+
+    Layout = null;
+
+    var noItemsModel = new ListNoItemsViewModel("fas fa-gamepad", "There are no submissions for this Game Jam!");
+
+    var description = ViewData["ListDescription"] == null ? SharedLocalizer["submissions"].Value.FirstCharToUpper() : (string)ViewData["ListDescription"];
+
+    var currentUserId = ViewBag.CurrentUserId ?? Guid.Empty;
+}
+
+@if (!Model.Any())
+{
+    <partial name="_ListNoItems" model="noItemsModel" />
+}
+else
+{
+    <div class="col-12 text-center">
+        @if (Model.Count() == 1)
+        {
+            <span>@SharedLocalizer["One participant submitted a game"]</span>
+        }
+        else
+        {
+            <span>@SharedLocalizer["{0} participants submitted their games", Model.Count()]</span>
+        }
+    </div>
+    <div class="col-12">
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                var authorUrl = Url.Action("details", "profile", new { area = string.Empty, userHandler = item.UserHandler });
+                var authorLink = string.Format("<a href=\"{0}\" class=\"boldlink\">{1}</a>", authorUrl, item.AuthorName);
+
+                <div class="col-12 col-md-6 col-lg-4 col-xl-3 p-1 mb-1">
+                    <div class="bg-white bordered hover gamejamitem">
+                        <a asp-area="community" asp-controller="gamejam" asp-action="entry" asp-route-jamHandler="@item.JamHandler" asp-route-id="@item.Id">
+                            <div class="border-bottom square-bottom d-flex justify-content-center gamejamitemimage">
+                                <img src="@item.FeaturedImage" class="img-fluid w-100 square-bottom card-img" alt="@SharedLocalizer["This is {0}'s submission", item.AuthorName]" />
+                            </div>
+                        </a>
+
+                        <div class="p-2">
+                            <partial name="_AuthorDetails" model="item" />
+                        </div>
+
+                        @if (item.CanShowResults)
+                        {
+                            <div class="row no-gutters">
+                                @if (item.ShowAllCriteria)
+                                {
+                                    foreach (var criteria in item.GameJam.Criteria)
+                                    {
+                                        var vote = item.Votes.FirstOrDefault(x => x.UserId == currentUserId && x.CriteriaType == criteria.Type);
+
+                                        <div class="col-12 row no-gutters px-1">
+                                            <div class="col-12 col-lg-4">
+                                                <div class="h-100 d-flex flex-column justify-content-center text-center text-lg-left">
+                                                    <span class="text-muted">@criteria.Name</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-lg-8">
+                                                <div class="h-100 d-flex flex-column justify-content-center text-center text-lg-right">
+                                                    <input id="txtScore" name="Score" type="number" class="d-none criteria-rating" step="1" value="@vote.Median.ToString(new System.Globalization.CultureInfo("en-US"))">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}

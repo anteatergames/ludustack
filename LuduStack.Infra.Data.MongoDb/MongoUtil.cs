@@ -67,7 +67,7 @@ namespace LuduStack.Infra.Data.MongoDb
 
         public static async Task<IEnumerable<TItem>> TakeAsync<TItem>(this IMongoCollection<TItem> collection, int count, int skip = 0)
         {
-            return await (await collection.FindAsync(x => true, new FindOptions<TItem, TItem>()
+            return await (await collection.FindAsync(x => true, new FindOptions<TItem, TItem>
             {
                 Skip = skip,
                 Limit = count

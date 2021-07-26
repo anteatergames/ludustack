@@ -22,7 +22,7 @@ namespace LuduStack.Web.Controllers
         private readonly IProfileAppService profileAppService;
         private readonly IGamificationAppService gamificationAppService;
 
-        public ProfileController(IProfileAppService profileAppService, IGamificationAppService gamificationAppService) : base()
+        public ProfileController(IProfileAppService profileAppService, IGamificationAppService gamificationAppService)
         {
             this.profileAppService = profileAppService;
             this.gamificationAppService = gamificationAppService;

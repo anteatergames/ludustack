@@ -81,8 +81,8 @@ namespace LuduStack.Application.Services
                 {
                     UserProfileEssentialVo model = profiles.First(x => x.UserId == vm.UserId);
 
-                    vm.ProfileImageUrl = UrlFormatter.ProfileImage(vm.UserId, 84);
-                    vm.CoverImageUrl = UrlFormatter.ProfileCoverImage(vm.UserId, vm.Id, vm.LastUpdateDate, model.HasCoverImage, 300);
+                    vm.ProfileImageUrl = UrlFormatter.ProfileImage(vm.UserId, Constants.HugeAvatarSize);
+                    vm.CoverImageUrl = UrlFormatter.ProfileCoverImage(vm.UserId, vm.Id, vm.LastUpdateDate, model.HasCoverImage, Constants.ProfileCoverSize);
                 }
 
                 return new OperationResultListVo<ProfileViewModel>(vms);
@@ -309,6 +309,28 @@ namespace LuduStack.Application.Services
             catch (Exception ex)
             {
                 return new OperationResultVo(ex.Message);
+            }
+        }
+
+        public OperationResultListVo<ProfileSearchViewModel> SearchUserCard(string term)
+        {
+            try
+            {
+                IQueryable<UserProfile> results = profileDomainService.Search(x => x.Name.ToLower().Contains(term.ToLower()));
+
+                List<ProfileSearchViewModel> vms = results.ProjectTo<ProfileSearchViewModel>(mapper.ConfigurationProvider).ToList();
+
+                foreach (ProfileSearchViewModel item in vms)
+                {
+                    item.ProfileImageUrl = UrlFormatter.ProfileImage(item.UserId, Constants.HugeAvatarSize);
+                    item.CoverImageUrl = UrlFormatter.ProfileCoverImage(item.UserId, item.Id, null, item.HasCoverImage, Constants.ProfileCoverSize);
+                }
+
+                return new OperationResultListVo<ProfileSearchViewModel>(vms);
+            }
+            catch (Exception ex)
+            {
+                return new OperationResultListVo<ProfileSearchViewModel>(ex.Message);
             }
         }
 
@@ -704,6 +726,9 @@ namespace LuduStack.Application.Services
 
                     case ExternalLinkProvider.Discord:
                         item.Value = UrlFormatter.DiscordProfile(item.Value);
+                        break;
+                    default:
+                        item.Value = UrlFormatter.Website(item.Value);
                         break;
                 }
             }

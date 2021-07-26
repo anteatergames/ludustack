@@ -1,4 +1,5 @@
 ﻿using LuduStack.Domain.Interfaces.Repository;
+using LuduStack.Domain.Interfaces.Services;
 using LuduStack.Infra.CrossCutting.Messaging;
 using MediatR;
 using System;
@@ -44,10 +45,12 @@ namespace LuduStack.Domain.Messaging.Queries.GameJam
     public class GetGameJamEntryQueryHandler : QueryHandler, IRequestHandler<GetGameJamEntryQuery, Models.GameJamEntry>
     {
         private readonly IGameJamEntryRepository repository;
+        private readonly IGameJamDomainService gameJamDomainService;
 
-        public GetGameJamEntryQueryHandler(IGameJamEntryRepository repository)
+        public GetGameJamEntryQueryHandler(IGameJamEntryRepository repository, IGameJamDomainService gameJamDomainService)
         {
             this.repository = repository;
+            this.gameJamDomainService = gameJamDomainService;
         }
 
         public Task<Models.GameJamEntry> Handle(GetGameJamEntryQuery request, CancellationToken cancellationToken)
@@ -61,13 +64,21 @@ namespace LuduStack.Domain.Messaging.Queries.GameJam
                     items = items.Take(request.Take);
                 }
 
-                return Task.FromResult(items.FirstOrDefault());
+                Models.GameJamEntry obj = items.FirstOrDefault();
+
+                gameJamDomainService.CheckTeamMembers(obj);
+
+                return Task.FromResult(obj);
             }
             else
             {
                 IQueryable<Models.GameJamEntry> items = repository.Get(x => x.UserId == request.UserId && x.GameJamId == request.JamId);
 
-                return Task.FromResult(items.FirstOrDefault());
+                Models.GameJamEntry obj = items.FirstOrDefault();
+
+                gameJamDomainService.CheckTeamMembers(obj);
+
+                return Task.FromResult(obj);
             }
         }
     }

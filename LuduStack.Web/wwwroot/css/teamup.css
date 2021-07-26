@@ -26,7 +26,7 @@
 }
 
 .convidado {
-    background-color: rgba(0, 0, 0, .05);
+    background-color: rgba(0, 0, 0, 0.05);
 }
 
     .convidado .div-details {
@@ -59,7 +59,7 @@
         border-left: 1px solid #ced4da;
     }
 
-@media (max-width:575px) {
+@media (max-width: 575px) {
     .team-member img.avatar {
         width: 64px;
         height: 64px;
@@ -72,5 +72,5 @@
 }
 
 #divApplication .team-member {
-    background-color: #F8F5F5;
+    background-color: #f8f5f5;
 }

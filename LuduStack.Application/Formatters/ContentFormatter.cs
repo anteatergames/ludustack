@@ -116,17 +116,30 @@ namespace LuduStack.Application.Formatters
             }
         }
 
-        public static StringDictionary Replacements()
+        public static StringDictionary SaveReplacements()
+        {
+            return new StringDictionary
+            {
+                { "<figure><table>", @"<table>" },
+                { "<figure class=\"table\"><table>", @"<table>" },
+                { "</table></figure>", @"</table>" },
+            };
+        }
+
+        public static StringDictionary DisplayReplacements()
         {
             return new StringDictionary
             {
                 { "<img src=", @"<img class=""img-fluid m-0"" src=" },
                 { "<div data-oembed-url=", @"<div class=""col-12 col-lg-8 col-xl-6 mx-auto"" data-oembed-url=" },
-                { "<figure ", @"<figure class=""mx-auto"" " },
+                { "<figure class=\"", @"<figure class=""image text-center mx-auto " },
+                { "<figure", @"<div class=""text-center mx-auto""><figure class=""mx-auto""" },
+                { "</figure>", @"</figure></div>" },
                 { "<figcaption>", @"<figcaption class=""text-center"">" },
-                { "<pre>", @"<pre class=""bg-light p-0 p-md-2 p-lg-3 p-xl-4"">" },
+                { "<pre>", @"<pre class=""p-0 p-md-2 p-lg-3 p-xl-4"">" },
                 { "<iframe src=", @"<iframe frameBorder=""0"" src=" },
-                { "<table>", @"<table class=""table table-hover"">" }
+                { "<table>", @"<div class=""table-responsive""><table class=""table table-hover"">" },
+                { "</table>", @"</table></div>" },
             };
         }
     }

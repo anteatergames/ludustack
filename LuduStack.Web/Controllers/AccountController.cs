@@ -54,7 +54,7 @@ namespace LuduStack.Web.Controllers
             IProfileAppService profileAppService,
             ILogger<AccountController> logger,
             IWebHostEnvironment hostingEnvironment,
-            IConfiguration configuration) : base()
+            IConfiguration configuration)
         {
             _userManager = userManager;
             _signInManager = signInManager;

@@ -34,7 +34,7 @@
                 <div class="col-12 col-md-6 col-lg-6">
                     <div class="form-group">
                         <label asp-for="BillRateType" class="col-form-label"></label>
-                        <span asp-description-for="BillRateType" class="col-form-label" />
+                        <span asp-description-for="BillRateType" class="col-form-label"></span>
                         <select asp-for="BillRateType" asp-items="Html.GetEnumSelectList<BillRateType>()" class="form-control" data-placeholder="@SharedLocalizer["Set the Bill Rate type."]"></select>
                         <span asp-validation-for="BillRateType" class="text-danger"></span>
                     </div>
@@ -46,7 +46,7 @@
                 <div class="col-12 col-md-6 col-lg-6 conditionalbytype" data-visiblewhentype="@((int)BillRateType.Visual)" style="display:none">
                     <div class="form-group">
                         <label asp-for="ArtStyle" class="col-form-label"></label>
-                        <span asp-description-for="ArtStyle" class="col-form-label" />
+                        <span asp-description-for="ArtStyle" class="col-form-label"></span>
                         <select asp-for="ArtStyle" asp-items="Html.GetEnumSelectList<ArtStyle>()" class="form-control" data-placeholder="@SharedLocalizer["Set the Art Style."]"></select>
                         <span asp-validation-for="ArtStyle" class="text-danger"></span>
                     </div>
@@ -55,7 +55,7 @@
                 <div class="col-12 col-md-6 col-lg-6 conditionalbytype" data-visiblewhentype="@((int)BillRateType.Audio)" style="display:none">
                     <div class="form-group">
                         <label asp-for="SoundStyle" class="col-form-label"></label>
-                        <span asp-description-for="SoundStyle" class="col-form-label" />
+                        <span asp-description-for="SoundStyle" class="col-form-label"></span>
                         <select asp-for="SoundStyle" asp-items="Html.GetEnumSelectList<SoundStyle>()" class="form-control" data-placeholder="@SharedLocalizer["Set the Sound Style."]"></select>
                         <span asp-validation-for="SoundStyle" class="text-danger"></span>
                     </div>
@@ -64,7 +64,7 @@
                 <div class="col-md-12 col-lg-6">
                     <div class="form-group">
                         <label asp-for="GameElement" class="col-form-label"></label>
-                        <span asp-description-for="GameElement" class="col-form-label" />
+                        <span asp-description-for="GameElement" class="col-form-label"></span>
                         <select asp-for="GameElement" class="form-control" data-placeholder="@SharedLocalizer["Set the Game Element"]">
                             @foreach (var element in gameElements)
                             {
@@ -85,7 +85,7 @@
                 <div class="col-12 col-sm-6 col-lg-3">
                     <div class="form-group">
                         <label asp-for="HourPrice" class="col-form-label"></label>
-                        <span asp-description-for="HourPrice" class="col-form-label" />
+                        <span asp-description-for="HourPrice" class="col-form-label"></span>
                         <input asp-for="HourPrice" type="number" min="1" step="1" class="form-control" placeholder="@SharedLocalizer["The Hour Price"]" value="@Model.HourPrice.ToString(new System.Globalization.CultureInfo("en-US"))" />
                         <span asp-validation-for="HourPrice" class="text-danger"></span>
                     </div>
@@ -94,7 +94,7 @@
                 <div class="col-12 col-sm-6 col-lg-3 hiddenbytypes" data-hiddenbytypes="3,4">
                     <div class="form-group">
                         <label asp-for="HourQuantity" class="col-form-label"></label>
-                        <span asp-description-for="HourQuantity" class="col-form-label" />
+                        <span asp-description-for="HourQuantity" class="col-form-label"></span>
                         <input asp-for="HourQuantity" type="number" min="1" step="1" class="form-control" placeholder="@SharedLocalizer["The Hour Quantity"]" />
                         <span asp-validation-for="HourQuantity" class="text-danger"></span>
                     </div>

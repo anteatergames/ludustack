@@ -48,7 +48,7 @@ drawer-menu {
     margin-left: 0;
     transition: margin-left var(--tdm-drawer-speed); }
 
-[data-drawer-backdrop]:before {
+[data-drawer-backdrop]::before {
   content: '';
   height: 2rem;
   width: 2rem;

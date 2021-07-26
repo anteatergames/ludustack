@@ -29,8 +29,7 @@ namespace LuduStack.Application.AutoMapper.Resolvers
     {
         public List<WorkType> Resolve(TeamMember source, TeamMemberViewModel destination, List<WorkType> destMember, ResolutionContext context)
         {
-            string[] platforms = (source.Work ?? string.Empty)
-                .Split(new char[] { '|' });
+            string[] platforms = (source.Work ?? string.Empty).Split(new[] { '|' });
 
             IEnumerable<WorkType> platformsConverted = platforms.Where(x => !string.IsNullOrWhiteSpace(x)).Select(x => (WorkType)Enum.Parse(typeof(WorkType), x));
 

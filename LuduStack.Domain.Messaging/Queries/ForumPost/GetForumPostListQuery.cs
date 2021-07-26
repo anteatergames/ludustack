@@ -21,10 +21,6 @@ namespace LuduStack.Domain.Messaging.Queries.ForumPost
         public int Page { get; set; }
 
         public List<SupportedLanguage> Languages { get; set; }
-
-        public GetForumPostListQuery()
-        {
-        }
     }
 
     public class GetForumPostListQueryHandler : QueryHandler, IRequestHandler<GetForumPostListQuery, ForumPostListVo>

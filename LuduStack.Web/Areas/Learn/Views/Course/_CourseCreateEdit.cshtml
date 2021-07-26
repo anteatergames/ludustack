@@ -12,7 +12,7 @@
     var workTypes = Html.GetEnumSelectList<WorkType>();
 }
 
-<div id="featurecontainer" class="col">
+<div id="featurecontainer" class="pb-3">
     <h1 class="sr-only">@ViewData["Title"]</h1>
 
     <div class="box bg-white">
@@ -33,7 +33,7 @@
                         <button type="button" class="btn  btn-box-tool" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fas fa-ellipsis-v" aria-hidden="true"></i>
                         </button>
-                        <div class="dropdown-menu text-capitalize" x-placement="bottom-start" style="position: absolute; transform: translate3d(-67px, 28px, 0px); top: 0px; left: 0px; will-change: transform;">
+                        <div class="dropdown-menu dropdown-menu-right btn-sm p-1" x-placement="bottom-start" style="position: absolute; transform: translate3d(-67px, 28px, 0px); top: 0px; left: 0px; will-change: transform;">
                             <a asp-area="learn" asp-controller="course" asp-action="details" asp-route-id="@Model.Id" class="dropdown-item">@SharedLocalizer["details"]</a>
 
                             @if (Model.Permissions.CanDelete)
@@ -55,7 +55,7 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label class="col-form-label text-capitalize">@SharedLocalizer["name"]</label>
-                            <span asp-description-for="Name" class="col-form-label" />
+                            <span asp-description-for="Name" class="col-form-label"></span>
                             <input asp-for="Name" class="form-control" aria-describedby="Name-description" />
                             <span asp-validation-for="Name" class="text-danger"></span>
                         </div>
@@ -64,7 +64,7 @@
                     <div class="col-12">
                         <div class="form-group">
                             <label asp-for="Description" class="col-form-label"></label>
-                            <span asp-description-for="Description" class="col-form-label" />
+                            <span asp-description-for="Description" class="col-form-label"></span>
                             <textarea asp-for="Description" class="form-control" rows="5"></textarea>
                             <span asp-validation-for="Description" class="text-danger"></span>
                         </div>
@@ -72,7 +72,7 @@
 
                     <div class="col-12">
                         <label asp-for="SkillSet" class="col-form-label"></label>
-                        <span asp-description-for="SkillSet" class="col-form-label" />
+                        <span asp-description-for="SkillSet" class="col-form-label"></span>
                         <select asp-for="SkillSet" asp-items="workTypes" class="form-control select2" multiple="" data-placeholder="@SharedLocalizer["Select the skills you are teaching in this course"]" tabindex="-1" aria-hidden="true"></select>
                         <span asp-validation-for="SkillSet" class="text-danger"></span>
                     </div>

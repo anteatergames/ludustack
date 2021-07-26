@@ -55,6 +55,8 @@
         FORUMCOMMON.Callback.DeleteEntity = deleteCallback;
 
         PAGINATION.Init(selectors.btnPage, selectors.replies);
+
+        hljs.highlightAll();
     }
 
     function bindAll() {
@@ -72,7 +74,7 @@
         objs.container.on('click', selectors.btnSaveReply, function (e) {
             var btn = $(this);
 
-            if (canInteract) {
+            if (canInteract && !btn.hasClass('disabled')) {
                 MAINMODULE.Common.DisableButton(btn).ready(() => {
                     saveReply(btn);
                 });
@@ -87,7 +89,7 @@
         objs.container.on('click', selectors.btnSavePost, function (e) {
             var btn = $(this);
 
-            if (canInteract) {
+            if (canInteract && !btn.hasClass('disabled')) {
                 MAINMODULE.Common.DisableButton(btn).ready(() => {
                     savePost(btn);
                 });
@@ -140,7 +142,7 @@
             postReplyAlert.hide().removeClass('d-none').slideDown();
 
             var txtArea = $(selectors.txtReply);
-            var editorId = txtArea.attr('id');
+            var editorId = txtArea.attr('data-editor-id');
 
             var complete = false;
             $('html, body').animate({
@@ -207,6 +209,8 @@
                     }
                 }, 100);
             });
+
+            hljs.highlightAll();
         });
     }
 
@@ -218,21 +222,19 @@
 
         WYSIWYGEDITOR.UpdateSourceElement(editorId);
 
-        if (canInteract) {
-            var data = form.serializeObject();
+        var data = form.serializeObject();
 
-            return $.post(url, data).done(function (response) {
-                if (response.success === true) {
-                    MAINMODULE.Common.PostSaveCallback(response, btn);
+        return $.post(url, data).done(function (response) {
+            if (response.success === true) {
+                MAINMODULE.Common.PostSaveCallback(response, btn);
 
-                    MAINMODULE.Ajax.HandleUrlResponse(response);
-                }
-                else {
-                    MAINMODULE.Common.EnableButton(btn);
-                    MAINMODULE.Ajax.HandleErrorResponse(response);
-                }
-            });
-        }
+                MAINMODULE.Ajax.HandleUrlResponse(response);
+            }
+            else {
+                MAINMODULE.Common.EnableButton(btn);
+                MAINMODULE.Ajax.HandleErrorResponse(response);
+            }
+        });
     }
 
     function savePost(btn) {
@@ -243,23 +245,21 @@
 
         WYSIWYGEDITOR.UpdateSourceElement(editorId);
 
-        if (canInteract) {
-            var data = form.serializeObject();
+        var data = form.serializeObject();
 
-            return $.post(url, data).done(function (response) {
-                if (response.success === true) {
-                    MAINMODULE.Common.PostSaveCallback(response, btn);
+        return $.post(url, data).done(function (response) {
+            if (response.success === true) {
+                MAINMODULE.Common.PostSaveCallback(response, btn);
 
-                    var detailsContainer = btn.closest(selectors.postItem).find(selectors.postItemContainer);
+                var detailsContainer = btn.closest(selectors.postItem).find(selectors.postItemContainer);
 
-                    MAINMODULE.Ajax.LoadHtml(response.url, detailsContainer).then(() => editCancel(btn));
-                }
-                else {
-                    MAINMODULE.Common.EnableButton(btn);
-                    MAINMODULE.Ajax.HandleErrorResponse(response);
-                }
-            });
-        }
+                MAINMODULE.Ajax.LoadHtml(response.url, detailsContainer).then(() => editCancel(btn));
+            }
+            else {
+                MAINMODULE.Common.EnableButton(btn);
+                MAINMODULE.Ajax.HandleErrorResponse(response);
+            }
+        });
     }
 
     function edit(btn) {
@@ -304,7 +304,7 @@
         postDiv.css('height', postDiv.css('height'));
         editDiv.fadeOut("slow", function () {
             var txtArea = editDiv.find(selectors.txtReply);
-            var editorId = txtArea.attr('id');
+            var editorId = txtArea.attr('data-editor-id');
 
             WYSIWYGEDITOR.DestroyEditor(editorId);
 
@@ -316,6 +316,8 @@
                         viewDiv.addClass('d-flex').fadeIn();
 
                         postDiv.css('height', '');
+
+                        hljs.highlightAll();
                     }
                 });
         });

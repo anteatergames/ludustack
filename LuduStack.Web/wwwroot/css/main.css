@@ -116,7 +116,7 @@
         line-height: 48px;
         border: none;
         text-align: center;
-        width: 100%
+        width: 100%;
     }
 
 .btn-icon-sm {
@@ -137,7 +137,7 @@
         line-height: 32px;
         border: none;
         text-align: center;
-        width: 100%
+        width: 100%;
     }
 
 .tilt-20 {
@@ -162,17 +162,21 @@
 }
 
 .select2-container .select2-selection--single {
-    height: 36px !important;
+    height: 2.7em;
+    line-height: 2.7em;
+    border: 1px solid #ced4da;
+    border-radius: var(--border-radius);
 }
 
-    .select2-container .select2-selection--single .select2-selection__rendered {
-        line-height: 34px !important;
+    .select2-container .select2-selection--single span {
+        line-height: unset !important;
     }
 
-    .select2-container .select2-selection--single .select2-selection__arrow {
-        height: 34px !important;
-        right: 8px !important;
-    }
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    margin-right: 7px;
+    height: 2.6em;
+    line-height: unset !important;
+}
 
 img.grayscale {
     filter: grayscale(100%) contrast(50%) blur(1px);
@@ -184,8 +188,7 @@ img.grayscale {
     z-index: 1000;
 }
 
-/*video play start*/
-/* Just a parent container for the videos */
+/* video play start */
 .videowrapper {
     position: relative;
     margin: 0 auto;
@@ -223,7 +226,7 @@ img.grayscale {
         line-height: 1; /* needed if using Bootstrap */
         text-align: center;
         color: #eaeaea;
-        background-color: rgba(255,255,255,.4);
+        background-color: rgba(255, 255, 255, 0.4);
         border-radius: 50px;
         transition: all 0.2s ease;
         z-index: 99;
@@ -232,7 +235,7 @@ img.grayscale {
     .video-thumbnail:hover .play-btn,
     .video-thumbnail:focus .play-btn {
         color: #000;
-        background-color: rgba(255,255,255,.8);
+        background-color: rgba(255, 255, 255, 0.8);
         cursor: pointer;
     }
 
@@ -242,20 +245,15 @@ img.grayscale {
     font-variant: normal;
     text-rendering: auto;
     -webkit-font-smoothing: antialiased;
-    /*
-  Define the font family, weight, and icon
-  */
     font-family: "Font Awesome 5 Free";
     font-weight: 900;
     font-size: 60px;
     content: "\f04b";
-    /* positioning tweaks */
     padding-top: 20px;
     padding-left: 10px;
 }
 
-/*video play end*/
-
+/* video play end */
 .skeleton {
     -webkit-animation-duration: 1s;
     animation-duration: 1s;
@@ -268,10 +266,10 @@ img.grayscale {
     -webkit-animation-timing-function: linear;
     animation-timing-function: linear;
     background: #f6f7f8;
-    background: #eeeeee;
-    background: -webkit-gradient(linear, left top, right top, color-stop(8%, #eeeeee), color-stop(18%, #dddddd), color-stop(33%, #eeeeee));
-    background: -webkit-linear-gradient(left, #eeeeee 8%, #dddddd 18%, #eeeeee 33%);
-    background: linear-gradient(to right, #eeeeee 8%, #dddddd 18%, #eeeeee 33%);
+    background: #eee;
+    background: -webkit-gradient(linear, left top, right top, color-stop(8%, #eee), color-stop(18%, #ddd), color-stop(33%, #eee));
+    background: -webkit-linear-gradient(left, #eee 8%, #ddd 18%, #eee 33%);
+    background: linear-gradient(to right, #eee 8%, #ddd 18%, #eee 33%);
     background-size: 1200px 104px;
     position: relative;
 }
@@ -296,45 +294,7 @@ img.grayscale {
     }
 }
 
-/*.mediagallery .flex-column {
-    max-width: unset;
-}
-mediagallery
-
-@media (min-width: 576px) {
-    .mediagallery .flex-column {
-        max-width: 250px;
-    }
-}
-
-@media (min-width: 768px) {
-    .mediagallery .flex-column {
-        max-width: 172px;
-    }
-}
-
-@media (min-width: 992px) {
-    .mediagallery .flex-column {
-        max-width: 250px;
-    }
-}
-
-@media (min-width: 1200px) {
-    .mediagallery .flex-column {
-        max-width: 193px;
-    }
-}
-
-.mediagallery img {
-    margin: 5px;
-}
-
-.mediagallery .scale {
-    transform: scaleY(1.05);
-    padding-top: 5px;
-}*/
-
-.mediagallery div {
+.mediagallery div:not(.noitems) {
     border-radius: 0;
 }
 

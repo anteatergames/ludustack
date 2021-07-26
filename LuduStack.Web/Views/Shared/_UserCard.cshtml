@@ -14,9 +14,9 @@
             <img class="rounded-circle lazyload" data-src="@Model.ProfileImageUrl" src="@Constants.DefaultAvatar" alt="@SharedLocalizer["This is {0}, believe it or not.", Model.Name]">
         </a>
     </div>
-    <div class="widget-user-header bg-black" style="background-image: url('@Model.CoverImageUrl')">
+    <div class="mb-1 bg-black square-bottom widget-user-header card-img" style="background-image: url('@Model.CoverImageUrl')">
     </div>
-    <div class="box-footer">
+    <div class="p-2 pt-4">
         <div class="row">
             <div class="col-12">
                 <h3 class="widget-user-username text-truncate">@Model.Name.Substring(0, nameLimit)</h3>
@@ -26,7 +26,7 @@
                     <span class="description-text">
                         @SharedLocalizer["location"]
                     </span>
-                    <h5 class="m-0 text-truncate">@location</h5>
+                    <h5 class="m-0 text-truncate location">@SharedLocalizer[location]</h5>
                 </div>
             </div>
             <div class="col-6">
@@ -34,7 +34,7 @@
                     <span class="description-text">
                         @SharedLocalizer["Member since"]
                     </span>
-                    <h5 class="m-0">@Model.CreateDate.ToShortDateString()</h5>
+                    <h5 class="m-0 sincedate">@Model.CreateDate.ToShortDateString()</h5>
                 </div>
             </div>
         </div>

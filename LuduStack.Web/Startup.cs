@@ -98,19 +98,19 @@ namespace LuduStack.Web
             {
                 options.ModelBinderProviders.Insert(0, new InvariantDecimalModelBinderProvider());
                 options.CacheProfiles.Add("Default",
-                    new CacheProfile()
+                    new CacheProfile
                     {
                         Duration = 2592000,
                         VaryByHeader = HeaderNames.ETag
                     });
                 options.CacheProfiles.Add("Short",
-                    new CacheProfile()
+                    new CacheProfile
                     {
                         Duration = 86400,
                         VaryByHeader = HeaderNames.ETag
                     });
                 options.CacheProfiles.Add("Never",
-                    new CacheProfile()
+                    new CacheProfile
                     {
                         Location = ResponseCacheLocation.None,
                         NoStore = true
@@ -197,7 +197,7 @@ namespace LuduStack.Web
 
             app.UseRewriter(rewriteOptions);
 
-            app.UseStaticFiles(new StaticFileOptions()
+            app.UseStaticFiles(new StaticFileOptions
             {
                 ContentTypeProvider = provider,
                 OnPrepareResponse = ctx =>
@@ -335,7 +335,7 @@ namespace LuduStack.Web
                             });
         }
 
-        private readonly string[] supportedCultures = new string[]
+        private readonly string[] supportedCultures = new []
                 {
                     "en-US",
                     "en",

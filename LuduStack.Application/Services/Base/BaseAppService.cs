@@ -39,7 +39,7 @@ namespace LuduStack.Application.Services
             vm.Permissions.CanDelete = vm.UserId == currentUserId;
         }
 
-        protected virtual void Dispose(bool dispose)
+        protected virtual void Dispose(bool disposing)
         {
             // dispose resources
         }

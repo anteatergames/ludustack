@@ -19,5 +19,7 @@
         public bool IsAdmin { get; set; }
 
         public bool IsMe { get; set; }
+
+        public bool CanVote { get; set; }
     }
 }

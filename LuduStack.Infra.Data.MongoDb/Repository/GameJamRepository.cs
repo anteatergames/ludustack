@@ -26,11 +26,13 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
                 Handler = x.Handler,
                 Name = x.Name,
                 FeaturedImage = x.FeaturedImage,
+                TimeZone = x.TimeZone,
                 StartDate = x.StartDate,
                 EntryDeadline = x.EntryDeadline,
                 VotingEndDate = x.VotingEndDate,
                 ResultDate = x.ResultDate,
-                ShortDescription = x.ShortDescription
+                ShortDescription = x.ShortDescription,
+                Language = x.Language
             });
 
             return Task.FromResult(obj);

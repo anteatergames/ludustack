@@ -6,20 +6,24 @@
 
 <div><img src="@Model.ThumbnailUrl" class="rounded w-100 img-fluid" alt="@SharedLocalizer["Game Thumbnail"]" /></div>
 
-<div class="col-12 game-external-links text-center">
-    @foreach (var item in externalLinks)
-    {
-        <a href="@item.Value" target="_blank" class="mt-1 btn rounded-circle btn-social-icon @(item.ColorClass)">
-            <i class="@item.IconClass" aria-hidden="true"></i>
-        </a>
-    }
-    @if (!externalLinks.Any())
-    {
-        <span>&nbsp;</span>
-    }
-</div>
+@if (externalLinks.Any())
+{
+    <div class="col-12 mt-n4 text-center">
+        @foreach (var item in externalLinks)
+        {
+            <a href="@item.Value" target="_blank" class="mt-1 btn rounded-circle btn-social-icon @(item.ColorClass)">
+                <i class="@item.IconClass" aria-hidden="true"></i>
+            </a>
+        }
+    </div>
+}
+else
+{
+    <span>&nbsp;</span>
+}
 
-<hr />
+<hr class="m-0 my-2" />
+
 <div class="game-info rounded-0 bg-white">
     <div class="row">
         <div class="col-12">
@@ -86,7 +90,7 @@
         {
             <div class="col-12">
                 <hr />
-                <div class="row">
+                <div class="row text-center">
                     <div class="col-12 form-label text-uppercase item">
                         @SharedLocalizer["Platforms"]
                     </div>

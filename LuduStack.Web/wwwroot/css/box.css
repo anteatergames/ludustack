@@ -2,8 +2,8 @@
     position: relative;
     display: block;
     margin-bottom: 20px;
-    -webkit-box-shadow: 0 5px 20px rgba(0, 0, 0, .1);
-    box-shadow: 0 5px 20px rgba(0, 0, 0, .1);
+    -webkit-box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
 }
 
     .small-box > .inner {
@@ -15,10 +15,10 @@
         text-align: right;
         padding: 3px 10px;
         color: #fff;
-        color: rgba(255, 255, 255, .8);
+        color: rgba(255, 255, 255, 0.8);
         display: block;
         z-index: 10;
-        background: rgba(0, 0, 0, .1);
+        background: rgba(0, 0, 0, 0.1);
         text-decoration: none;
         border-bottom-left-radius: 10px;
         border-bottom-right-radius: 10px;
@@ -26,7 +26,7 @@
 
         .small-box > .small-box-footer:hover {
             color: #fff;
-            background: rgba(0, 0, 0, .15);
+            background: rgba(0, 0, 0, 0.15);
         }
 
     .small-box span {
@@ -54,15 +54,15 @@
     }
 
     .small-box .icon {
-        -webkit-transition: all .3s linear;
-        -o-transition: all .3s linear;
-        transition: all .3s linear;
+        -webkit-transition: all 0.3s linear;
+        -o-transition: all 0.3s linear;
+        transition: all 0.3s linear;
         position: absolute;
         top: 5px;
         right: 10px;
         z-index: 0;
         font-size: 72px;
-        color: rgba(0, 0, 0, .15);
+        color: rgba(0, 0, 0, 0.15);
     }
 
     .small-box:hover {
@@ -74,7 +74,7 @@
         font-size: 78px;
     }
 
-@media (max-width:767px) {
+@media (max-width: 767px) {
     .small-box {
         text-align: center;
     }
@@ -112,10 +112,10 @@
         }
 
     .box .overlay.dark, .overlay-wrapper .overlay.dark {
-        background: rgba(0, 0, 0, .5);
+        background: rgba(0, 0, 0, 0.5);
     }
 
-.box-body:after, .box-body:before, .box-footer:after, .box-footer:before, .box-header:after, .box-header:before {
+.box-body::after, .box-body::before, .box-footer::after, .box-footer::before, .box-header::after, .box-header::before {
     content: " ";
     display: table;
 }
@@ -212,4 +212,14 @@
 .square-bottom {
     border-bottom-right-radius: 0 !important;
     border-bottom-left-radius: 0 !important;
+}
+
+.square-left {
+    border-top-left-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+}
+
+.square-right {
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
 }

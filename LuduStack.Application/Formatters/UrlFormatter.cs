@@ -237,7 +237,6 @@ namespace LuduStack.Application.Formatters
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
                 return defaultImage;
             }
         }

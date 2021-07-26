@@ -3,7 +3,9 @@
 
     var spinnerCenter = '<div class="spinner flex-square rectangle bg-transparent"><div class="flex-square-inner"><div class="flex-square-inner-content text-dark"><i class="fa fa-spinner fa-3x fa-spin"></i></div></div></div>';
 
-    var spinnerTop = '<div class="spinner bg-transparent text-center mb-2"><div class="flex-square-inner"><div class="flex-square-inner-content text-dark"><i class="fa fa-spinner fa-3x fa-spin"></i></div></div></div>';
+    var spinnerTop = '<div class="spinner bg-transparent text-center my-3"><div class="flex-square-inner"><div class="flex-square-inner-content text-dark"><i class="fa fa-spinner fa-3x fa-spin"></i></div></div></div>';
+
+    var spinnerTopSmall = '<div class="spinner text-center"><div class="mt-1 text-dark"><i class="fa fa-spinner fa-3x fa-spin"></i></div></div>';
 
     var spinnerBtn = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>';
 
@@ -131,11 +133,12 @@
 
     function loadNotifications() {
         if (objs.notificationsMenu.length > 0) {
-            MAINMODULE.Ajax.LoadHtml("/home/notifications", objs.notificationsMenu);
+            MAINMODULE.Ajax.LoadHtml("/home/notifications", objs.notificationsMenu, true, true);
         }
     }
 
     function handlePointsEarned(response) {
+        console.log(response);
         if (response.pointsEarned > 0) {
             var msg = translatedMessages['mgsPointsEarned'];
             msg = msg.replace('0', response.pointsEarned);
@@ -192,18 +195,23 @@
 
     function postSaveCallback(response, btn) {
         if (response.success === true) {
-            btn.removeClass('disabled').addClass('btn-success').removeClass('btn-primary').html(MAINMODULE.Default.DoneBtn);
+            if (response.url) {
+                btn.removeClass('disabled').addClass('btn-success').removeClass('btn-primary').html(MAINMODULE.Default.DoneBtn);
+            }
+            else {
+                btn.removeClass('disabled').html(MAINMODULE.Default.DoneBtn);
+            }
         }
         else {
             btn.removeClass('disabled').html(saveBtnOriginalText);
         }
     }
 
-    function renameInputs(objContainer, itemSelector, propPreffix) {
+    function renameInputs(objContainer, itemSelector, propPreffix, direct) {
         var count = 0;
 
         var idPreffix = propPreffix + "_0__";
-        var namePreffix = propPreffix + "[0].";
+        var namePreffix = direct === true ? propPreffix + "[0]" : propPreffix + "[0].";
 
         objContainer.find(itemSelector).each(function () {
             var item = $(this);
@@ -211,22 +219,24 @@
             item.find(':input').each(function () {
                 var inputId = $(this).attr('id');
                 var inputName = $(this).attr('name');
+                var describedBy = $(this).attr('aria-describedby');
 
-                if (inputId !== undefined && inputName !== undefined) {
+                if (inputId !== undefined) {
                     var idProp = inputId.split('__')[1];
                     var newId = idPreffix.replace('0', count) + idProp;
                     $(this).attr('id', newId);
+                }
 
-                    var nameProp = inputName.split('].')[1];
-                    var newName = namePreffix.replace('0', count) + nameProp;
+                if (inputName !== undefined) {
+                    var nameProp = direct === true ? inputName.split(']')[1] : inputName.split('].')[1];
+                    var newName = nameProp !== undefined ? namePreffix.replace('0', count) + nameProp : namePreffix.replace('0', count);
                     $(this).attr('name', newName);
+                }
 
-                    var describedBy = $(this).attr('aria-describedby');
-                    if (describedBy !== undefined) {
-                        var describedByProp = describedBy.split('__')[1];
-                        var newdescribedBy = idPreffix.replace('0', count) + describedByProp;
-                        $(this).attr('aria-describedby', newdescribedBy);
-                    }
+                if (describedBy !== undefined) {
+                    var describedByProp = describedBy.split('__')[1];
+                    var newdescribedBy = idPreffix.replace('0', count) + describedByProp;
+                    $(this).attr('aria-describedby', newdescribedBy);
                 }
             });
 
@@ -253,14 +263,14 @@
         });
     }
 
-    function getDeleteMessages(btn) {
+    function getPostConfirmationMessages(btn) {
         var msg = btn.data('confirmationmessage');
         var confirmationTitle = btn.data('confirmationtitle');
         var confirmationButtonText = btn.data('confirmationbuttontext');
         var cancelButtonText = btn.data('cancelbuttontext');
 
         if (msg === undefined) {
-            msg = 'Are you sure you want to delete this?';
+            msg = 'Are you sure you want to do this?';
         }
 
         if (confirmationTitle === undefined) {
@@ -268,7 +278,7 @@
         }
 
         if (confirmationButtonText === undefined) {
-            confirmationButtonText = 'Yes, delete it!';
+            confirmationButtonText = 'Yes, do it!';
         }
 
         if (cancelButtonText === undefined) {
@@ -340,7 +350,7 @@
         return promise;
     }
 
-    async function loadHtml(url, targetObj, placeSpinner) {
+    async function loadHtml(url, targetObj, placeSpinner, smallSpinner) {
         var idList = '';
 
         if (targetObj instanceof jQuery) {
@@ -366,7 +376,12 @@
             }
 
             if (listDiv && (placeSpinner === true || placeSpinner === undefined)) {
-                listDiv.innerHTML = MAINMODULE.Default.SpinnerTop;
+                if (smallSpinner === true) {
+                    listDiv.innerHTML = MAINMODULE.Default.SpinnerTopSmall;
+                }
+                else {
+                    listDiv.innerHTML = MAINMODULE.Default.SpinnerTop;
+                }
             }
 
             return getHtml(url)
@@ -449,7 +464,7 @@
     function postOrDeleteWithConfirmation(btn, httpmethod, callback) {
         var url = btn.data('url');
 
-        var msgs = MAINMODULE.Common.GetDeleteMessages(btn);
+        var msgs = MAINMODULE.Common.GetPostConfirmationMessages(btn);
 
         ALERTSYSTEM.ShowConfirmMessage(msgs.confirmationTitle, msgs.msg, msgs.confirmationButtonText, msgs.cancelButtonText, function () {
             $.ajax({
@@ -542,12 +557,22 @@
         return objs.canInteract.val() === 'true';
     }
 
+    function isBreakpoint(alias) {
+        return $('.bootstrapbreakpointdetector.device-' + alias).is(':visible');
+    }
+
+    function getCurrentBreakpoint() {
+        return $('.bootstrapbreakpointdetector:visible').data('device');
+    }
+
     return {
         Init: init,
         GetLocale: getLocale,
         CanInteract: canInteract,
         Layout: {
-            SetStickyElement: setStickyElement
+            SetStickyElement: setStickyElement,
+            IsBreakpoint: isBreakpoint,
+            GetCurrentBreakpoint: getCurrentBreakpoint
         },
         Ajax: {
             Post: post,
@@ -570,12 +595,13 @@
             RemoveErrorFromButton: removeErrorFromButton,
             PostSaveCallback: postSaveCallback,
             RenameInputs: renameInputs,
-            GetDeleteMessages: getDeleteMessages,
+            GetPostConfirmationMessages: getPostConfirmationMessages,
             BindPopOvers: bindPopOvers
         },
         Default: {
             Spinner: spinnerCenter,
             SpinnerTop: spinnerTop,
+            SpinnerTopSmall: spinnerTopSmall,
             SpinnerBtn: spinnerBtn,
             DoneBtn: doneBtn
         },

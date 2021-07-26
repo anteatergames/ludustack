@@ -34,7 +34,7 @@ namespace LuduStack.Web.Controllers
         public GameController(IGameAppService gameAppService
             , INotificationAppService notificationAppService
             , ITeamAppService teamAppService
-            , ILocalizationAppService translationAppService) : base()
+            , ILocalizationAppService translationAppService)
         {
             this.gameAppService = gameAppService;
             this.notificationAppService = notificationAppService;

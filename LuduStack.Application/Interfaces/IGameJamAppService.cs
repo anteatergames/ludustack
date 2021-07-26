@@ -22,15 +22,30 @@ namespace LuduStack.Application.Interfaces
 
         Task<OperationResultVo> Remove(Guid currentUserId, Guid id);
 
-        Task<OperationResultVo<Guid>> Save(Guid currentUserId, GameJamViewModel viewModel);
+        Task<OperationResultVo<Guid>> Save(Guid currentUserId, bool currentUserIsAdmin, GameJamViewModel viewModel);
 
         Task<OperationResultVo<GameJamViewModel>> GenerateNew(Guid currentUserId);
 
         Task<OperationResultVo> ValidateHandler(Guid currentUserId, string handler, Guid id);
 
+        Task<OperationResultListVo<GameJamEntryViewModel>> GetEntriesByJam(Guid currentUserId, bool currentUserIsAdmin, string jamHandler, Guid jamId, bool submittedOnly);
+
+        Task<OperationResultListVo<GameJamEntryViewModel>> GetParticipantsByJam(Guid currentUserId, bool currentUserIsAdmin, string jamHandler, Guid jamId);
+
         Task<OperationResultVo> Join(Guid currentUserId, Guid jamId);
 
+        Task<OperationResultVo> SubmitGame(Guid currentUserId, string jamHandler, Guid gameId, string extraInformation, IEnumerable<GameJamTeamMemberViewModel> teamMembers);
+
+        Task<OperationResultVo> VoteEntry(Guid currentUserId, string jamHandler, Guid entryId, Domain.Core.Enums.GameJamCriteriaType criteriaType, decimal score, string comment);
+
         Task<OperationResultVo<GameJamEntryViewModel>> GetEntry(Guid currentUserId, bool currentUserIsAdmin, string jamHandler);
-        Task<OperationResultVo> SubmitGame(Guid currentUserId, string jamHandler, Guid gameId);
+
+        Task<OperationResultVo<GameJamEntryViewModel>> GetEntry(Guid currentUserId, bool currentUserIsAdmin, string jamHandler, Guid? id);
+
+        Task<OperationResultVo> CalculateResults(Guid currentUserId, Guid jamId);
+
+        Task<OperationResultListVo<GameJamEntryViewModel>> GetWinnersByJam(Guid currentUserId, bool currentUserIsAdmin, Guid jamId, string jamHandler, int winnerCount);
+
+        Task<OperationResultVo> SaveTeam(Guid currentUserId, Guid entryId, IEnumerable<GameJamTeamMemberViewModel> teamMembers);
     }
 }

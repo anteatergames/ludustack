@@ -207,7 +207,7 @@ namespace LuduStack.Application.Services
                 {
                     pointsEarned += result.PointsEarned;
 
-                    return new OperationResultVo<Guid>(model.Id, pointsEarned, "Content saved!");
+                    return new OperationResultVo<Guid>(model.Id, pointsEarned, isNew ? "Post published!" : "Content saved!");
                 }
             }
             catch (Exception ex)

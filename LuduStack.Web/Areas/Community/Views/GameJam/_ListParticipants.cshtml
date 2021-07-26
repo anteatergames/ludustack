@@ -1,0 +1,41 @@
+﻿@model IEnumerable<GameJamEntryViewModel>
+
+@{
+    Layout = null;
+
+    var noItemsModel = new ListNoItemsViewModel("fas fa-users", "No one joined this Game Jam!");
+
+    var description = ViewData["ListDescription"] == null ? SharedLocalizer["Participants"] : (string)ViewData["ListDescription"];
+}
+
+@if (!Model.Any())
+{
+    <partial name="_ListNoItems" model="noItemsModel" />
+}
+else
+{
+    <div class="col-12 text-center">
+        @if (Model.Count() == 1)
+        {
+            <span>@SharedLocalizer["Just one participant"]</span>
+        }
+        else
+        {
+            <span>@SharedLocalizer["{0} participants", Model.Count()]</span>
+        }
+    </div>
+    <div class="row p-1 mx-1">
+        @foreach (var item in Model)
+        {
+            <div class="col-12 col-md-6 col-lg-4 col-xl-3 px-0 px-md-2 mb-3">
+                <div class="bordered hover">
+                    <partial name="_UserCard" model="item" />
+
+                    <div class="col-12 px-2 mb-2 text-center text-uppercase">
+                        <a asp-area="community" asp-controller="gamejam" asp-action="entry" asp-route-jamHandler="@item.JamHandler" asp-route-id="@item.Id" class="btn btn-block btn-default">@SharedLocalizer["Joined on {0}", item.JoinDate.ToString()]</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

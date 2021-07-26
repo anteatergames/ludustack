@@ -36,7 +36,7 @@
 }
 
 <section class="content container">
-    <div id="featurecontainer" class="col">
+    <div id="featurecontainer" class="pb-3">
         <h1 class="sr-only">@ViewData["Title"]</h1>
 
         <div class="box bg-white">
@@ -54,7 +54,7 @@
                         <div class="col-12 col-md-2">
                             <div class="form-group validation">
                                 <label asp-for="YearWorkDays" class="col-form-label"></label>
-                                <span asp-description-for="YearWorkDays" class="col-form-label" />
+                                <span asp-description-for="YearWorkDays" class="col-form-label"></span>
                                 <input asp-for="YearWorkDays" class="form-control user-entry" placeholder="@SharedLocalizer["e.g. 231"]" />
                                 <span asp-validation-for="YearWorkDays" class="text-danger"></span>
                             </div>
@@ -65,7 +65,7 @@
                         <div class="col-12 col-sm-6 col-md-6">
                             <div class="form-group validation">
                                 <label asp-for="MontlyExpenses" class="col-form-label"></label>
-                                <span asp-description-for="MontlyExpenses" class="col-form-label" />
+                                <span asp-description-for="MontlyExpenses" class="col-form-label"></span>
                                 <input asp-for="MontlyExpenses" type="number" step=".01" class="form-control user-entry" placeholder="@SharedLocalizer["e.g. 99999"]" />
                                 <span asp-validation-for="MontlyExpenses" class="text-danger"></span>
                             </div>
@@ -73,7 +73,7 @@
                         <div class="col-12 col-sm-6 col-md-6">
                             <div class="form-group validation">
                                 <label asp-for="AnnualCost" class="col-form-label"></label>
-                                <span asp-description-for="AnnualCost" class="col-form-label" />
+                                <span asp-description-for="AnnualCost" class="col-form-label"></span>
                                 <input asp-for="AnnualCost" type="number" step=".01" class="form-control user-entry" placeholder="@SharedLocalizer["e.g. 99999"]" />
                                 <span asp-validation-for="AnnualCost" class="text-danger"></span>
                             </div>
@@ -84,7 +84,7 @@
                         <div class="col-12 col-md-4 col-lg-2">
                             <div class="form-group validation">
                                 <label asp-for="SavingsPercentage" class="col-form-label"></label>
-                                <span asp-description-for="SavingsPercentage" class="col-form-label" />
+                                <span asp-description-for="SavingsPercentage" class="col-form-label"></span>
                                 <input asp-for="SavingsPercentage" type="number" step=".01" class="form-control user-entry" placeholder="@SharedLocalizer["for the future"]" />
                                 <span asp-validation-for="SavingsPercentage" class="text-danger"></span>
                             </div>
@@ -92,14 +92,14 @@
                         <div class="col-6 col-md-4 col-lg-5">
                             <div class="form-group">
                                 <label asp-for="SavingsValueMonthly" class="col-form-label"></label>
-                                <span asp-description-for="SavingsValueMonthly" class="col-form-label" />
+                                <span asp-description-for="SavingsValueMonthly" class="col-form-label"></span>
                                 <input asp-for="SavingsValueMonthly" type="number" step=".01" class="form-control user-entry readonly" placeholder="@SharedLocalizer["Savings/month"]" tabindex="-1" readonly />
                             </div>
                         </div>
                         <div class="col-6 col-md-4 col-lg-5">
                             <div class="form-group">
                                 <label asp-for="SavingsValueYearly" class="col-form-label"></label>
-                                <span asp-description-for="SavingsValueYearly" class="col-form-label" />
+                                <span asp-description-for="SavingsValueYearly" class="col-form-label"></span>
                                 <input asp-for="SavingsValueYearly" type="number" step=".01" class="form-control user-entry readonly" placeholder="@SharedLocalizer["Savings/year"]" tabindex="-1" readonly />
                             </div>
                         </div>
@@ -109,7 +109,7 @@
                         <div class="col-12 col-md-4 col-lg-2">
                             <div class="form-group validation">
                                 <label asp-for="YourExtraPercentage" class="col-form-label"></label>
-                                <span asp-description-for="YourExtraPercentage" class="col-form-label" />
+                                <span asp-description-for="YourExtraPercentage" class="col-form-label"></span>
                                 <input asp-for="YourExtraPercentage" type="number" step=".01" class="form-control user-entry" placeholder="@SharedLocalizer["your pleasure"]" />
                                 <span asp-validation-for="YourExtraPercentage" class="text-danger"></span>
                             </div>
@@ -117,14 +117,14 @@
                         <div class="col-6 col-md-4 col-lg-5">
                             <div class="form-group">
                                 <label asp-for="YourExtraValueMontly" class="col-form-label"></label>
-                                <span asp-description-for="YourExtraValueMontly" class="col-form-label" />
+                                <span asp-description-for="YourExtraValueMontly" class="col-form-label"></span>
                                 <input asp-for="YourExtraValueMontly" type="number" step=".01" class="form-control user-entry readonly" placeholder="@SharedLocalizer["Extra/month"]" tabindex="-1" readonly />
                             </div>
                         </div>
                         <div class="col-6 col-md-4 col-lg-5">
                             <div class="form-group">
                                 <label asp-for="YourExtraValueYearly" class="col-form-label"></label>
-                                <span asp-description-for="YourExtraValueYearly" class="col-form-label" />
+                                <span asp-description-for="YourExtraValueYearly" class="col-form-label"></span>
                                 <input asp-for="YourExtraValueYearly" type="number" step=".01" class="form-control user-entry readonly" placeholder="@SharedLocalizer["Extra/year"]" tabindex="-1" readonly />
                             </div>
                         </div>
@@ -134,7 +134,7 @@
                         <div class="col-12 col-md-4 col-lg-2">
                             <div class="form-group validation">
                                 <label asp-for="TaxesPercentage" class="col-form-label"></label>
-                                <span asp-description-for="TaxesPercentage" class="col-form-label" />
+                                <span asp-description-for="TaxesPercentage" class="col-form-label"></span>
                                 <input asp-for="TaxesPercentage" type="number" step=".01" class="form-control user-entry" placeholder="@SharedLocalizer["pay your taxes"]" />
                                 <span asp-validation-for="TaxesPercentage" class="text-danger"></span>
                             </div>
@@ -142,14 +142,14 @@
                         <div class="col-6 col-md-4 col-lg-5">
                             <div class="form-group">
                                 <label asp-for="TaxesValueMontly" class="col-form-label"></label>
-                                <span asp-description-for="TaxesValueMontly" class="col-form-label" />
+                                <span asp-description-for="TaxesValueMontly" class="col-form-label"></span>
                                 <input asp-for="TaxesValueMontly" type="number" step=".01" class="form-control user-entry readonly" placeholder="@SharedLocalizer["Taxes/month"]" tabindex="-1" readonly />
                             </div>
                         </div>
                         <div class="col-6 col-md-4 col-lg-5">
                             <div class="form-group">
                                 <label asp-for="TaxesValueYearly" class="col-form-label"></label>
-                                <span asp-description-for="TaxesValueYearly" class="col-form-label" />
+                                <span asp-description-for="TaxesValueYearly" class="col-form-label"></span>
                                 <input asp-for="TaxesValueYearly" type="number" step=".01" class="form-control user-entry readonly" placeholder="@SharedLocalizer["Taxes/year"]" tabindex="-1" readonly />
                             </div>
                         </div>
@@ -159,7 +159,7 @@
                         <div class="col-12 col-md-4">
                             <div class="form-group validation">
                                 <label asp-for="RevisionFactor" class="col-form-label"></label>
-                                <span asp-description-for="RevisionFactor" class="col-form-label" />
+                                <span asp-description-for="RevisionFactor" class="col-form-label"></span>
                                 <input asp-for="RevisionFactor" type="number" step=".01" class="form-control user-entry" placeholder="@SharedLocalizer["get it right"]" />
                                 <span asp-validation-for="RevisionFactor" class="text-danger"></span>
                             </div>
@@ -168,7 +168,7 @@
                         <div class="col-12 col-md-4">
                             <div class="form-group validation">
                                 <label asp-for="RushFactor" class="col-form-label"></label>
-                                <span asp-description-for="RushFactor" class="col-form-label" />
+                                <span asp-description-for="RushFactor" class="col-form-label"></span>
                                 <input asp-for="RushFactor" type="number" step=".01" class="form-control user-entry" placeholder="@SharedLocalizer["add coffee"]" />
                                 <span asp-validation-for="RushFactor" class="text-danger"></span>
                             </div>
@@ -177,7 +177,7 @@
                         <div class="col-12 col-md-4">
                             <div class="form-group validation">
                                 <label asp-for="AssholeFactor" class="col-form-label"></label>
-                                <span asp-description-for="AssholeFactor" class="col-form-label" />
+                                <span asp-description-for="AssholeFactor" class="col-form-label"></span>
                                 <input asp-for="AssholeFactor" type="number" step=".01" class="form-control user-entry" placeholder="@SharedLocalizer["be a jerk"]" />
                                 <span asp-validation-for="AssholeFactor" class="text-danger"></span>
                             </div>

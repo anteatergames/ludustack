@@ -44,7 +44,7 @@ namespace LuduStack.Web.Areas.Member.Controllers
             , ILogger<PreferencesController> logger
             , UrlEncoder urlEncoder
             , IMapper mapper
-            , IUserPreferencesAppService userPreferencesAppService) : base()
+            , IUserPreferencesAppService userPreferencesAppService)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;

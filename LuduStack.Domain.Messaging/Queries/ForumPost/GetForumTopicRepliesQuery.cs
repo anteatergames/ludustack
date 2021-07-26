@@ -20,10 +20,6 @@ namespace LuduStack.Domain.Messaging.Queries.ForumPost
         public int Page { get; set; }
 
         public bool Latest { get; set; }
-
-        public GetForumTopicRepliesQuery()
-        {
-        }
     }
 
     public class GetForumTopicRepliesQueryHandler : QueryHandler, IRequestHandler<GetForumTopicRepliesQuery, ForumTopicReplyListVo>

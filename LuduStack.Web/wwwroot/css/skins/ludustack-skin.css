@@ -35,6 +35,14 @@ a {
     font-weight: 600;
 }
 
+.htmlcontent th {
+    background: hsla(0, 0%, 0%, 5%);
+}
+
+    .htmlcontent th p {
+        margin-bottom: 0;
+    }
+
 #featurecontainer table a, #featurecontainer a.btn, #featurecontainer a.stretched-link, .user-block a {
     font-weight: normal !important;
 }
@@ -56,19 +64,19 @@ blockquote {
     margin: 1rem auto 2rem;
     background: #d5e4db;
 }
+
     /* -- create the quotation marks -- */
-    blockquote:before,
-    blockquote:after {
+    blockquote::before,
+    blockquote::after {
         font-family: 'Font Awesome 5 Free';
         position: absolute;
-        /* -- inside the relative position of blockquote -- */
         top: 13px;
         font-size: 34px;
         font-weight: 900;
         color: #d5e4db;
     }
 
-    blockquote:before {
+    blockquote::before {
         content: "\f10d";
         margin-right: 13px;
         right: 100%;
@@ -79,7 +87,7 @@ blockquote {
         color: var(--color-green);
     }
 
-    blockquote:after {
+    blockquote::after {
         content: "\f10e";
         margin-left: 13px;
         left: 100%;
@@ -88,11 +96,11 @@ blockquote {
     }
 
 .bordered {
-    border: 1px solid var(--color-border) !important;
+    border: 1px solid var(--color-border);
 }
 
-    .bordered:hover {
-        border: 1px solid var(--color-border-hover) !important;
+    .bordered.hover:hover {
+        border: 1px solid var(--color-border-hover);
         box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2) !important;
     }
 
@@ -101,7 +109,7 @@ blockquote {
 }
 
 .rating-container .filled-stars {
-    color: var(--color-accent);
+    color: var(--color-green);
 }
 
 .bg-primary {
@@ -115,16 +123,11 @@ blockquote {
     }
 
 .bg-label {
-    background-color: #416788 !important;
+    background-color: var(--color-green) !important;
     color: white;
-    border: 1px solid #b5bad0 !important;
+    border: 2px solid white !important;
+    pointer-events: none;
 }
-
-    .bg-label:hover {
-        background-color: #416788 !important;
-        color: #ffbf36;
-        border: 1px solid #b5bad0 !important;
-    }
 
 .dropdown-item {
     color: var(--color-accent);
@@ -155,7 +158,7 @@ blockquote {
         .skin-ludustack .main-header .navbar .nav .open > a:focus,
         .skin-ludustack .main-header .navbar .nav > .active > a {
             background: rgba(0, 0, 0, 0.1);
-            color: #666666;
+            color: #666;
         }
 
     .skin-ludustack .main-header .navbar .sidebar-toggle {
@@ -166,15 +169,6 @@ blockquote {
             color: white;
             background-color: transparent;
         }
-
-.skin-ludustack .box-header > .box-tools .dropdown-menu {
-    background-color: var(--color-bg-basic);
-    border: 1px solid gray;
-}
-
-    .skin-ludustack .box-header > .box-tools .dropdown-menu a:hover {
-        background-color: var(--color-highlight);
-    }
 
 @media (max-width: 767px) {
     .skin-ludustack .main-header .navbar .dropdown-menu li.divider {
@@ -222,13 +216,13 @@ blockquote {
 }
 
 .skin-ludustack .sidebar-menu > li:hover > a {
-    color: #ffffff;
+    color: #fff;
     background: rgba(0, 0, 0, 0.1);
 }
 
 .skin-ludustack .sidebar-menu > li.active > a,
 .skin-ludustack .sidebar-menu > li.menu-open > a {
-    color: #ffffff;
+    color: #fff;
 }
 
 .skin-ludustack .sidebar-menu > li.active > a {
@@ -299,11 +293,11 @@ blockquote {
     }
 
 .skin-ludustack .main-header .messages-menu .dropdown-toggle i::after, .skin-ludustack .main-header .notifications-menu .dropdown-toggle i::after, .skin-ludustack .main-header .tasks-menu .dropdown-toggle i::after {
-    border-color: #ffffff;
+    border-color: #fff;
 }
 
 .sidebar > .user-panel > .info a {
-    color: #ffffff;
+    color: #fff;
 }
 
 .alert-danger, .alert-error, .alert-info, .alert-success, .alert-warning, .bg-aqua, .bg-aqua-active, .bg-black, .bg-black-active, .bg-blue, .bg-blue-active, .bg-fuchsia, .bg-fuchsia-active, .bg-green, .bg-green-active, .bg-light-blue, .bg-light-blue-active, .bg-lime, .bg-lime-active, .bg-maroon, .bg-maroon-active, .bg-navy, .bg-navy-active, .bg-olive, .bg-olive-active, .bg-orange, .bg-orange-active, .bg-purple, .bg-purple-active, .bg-red, .bg-red-active, .bg-teal, .bg-teal-active, .bg-yellow, .bg-yellow-active, .label-danger, .label-info, .label-primary, .label-success, .label-warning, .modal-danger .modal-body, .modal-danger .modal-footer, .modal-danger .modal-header, .modal-info .modal-body, .modal-info .modal-footer, .modal-info .modal-header, .modal-primary .modal-body, .modal-primary .modal-footer, .modal-primary .modal-header, .modal-success .modal-body, .modal-success .modal-footer, .modal-success .modal-header, .modal-warning .modal-body, .modal-warning .modal-footer, .modal-warning .modal-header {
@@ -341,7 +335,7 @@ blockquote {
 }
 
 .bg-info, .bg-primary, .bg-success, .bg-danger, .bg-warning {
-    color: #ffffff;
+    color: #fff;
 }
 
 .bg-light-blue, .bg-primary, .label-primary, .modal-primary .modal-body {

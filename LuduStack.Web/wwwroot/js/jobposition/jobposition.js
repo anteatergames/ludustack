@@ -199,7 +199,7 @@
                 ALERTSYSTEM.ShowWarningMessage(MAINMODULE.Common.TranslatedMessages['msgUrlMissing']);
             }
 
-            if (valid && canInteract) {
+            if (valid && canInteract && !btn.hasClass('disabled')) {
                 MAINMODULE.Common.DisableButton(btn).ready(() => {
                     submitForm(btn);
                 });
@@ -305,7 +305,7 @@
 
             var btn = $(this);
 
-            if (canInteract) {
+            if (canInteract && !btn.hasClass('disabled')) {
                 MAINMODULE.Common.DisableButton(btn).ready(() => {
                     var url = btn.data('url');
 
