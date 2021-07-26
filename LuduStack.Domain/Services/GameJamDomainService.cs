@@ -27,8 +27,6 @@ namespace LuduStack.Domain.Services
                     }
                 }
 
-                IEnumerable<Guid> allMembers = entry.TeamMembers.Select(x => x.UserId);
-
                 entry.TeamMembers = entry.TeamMembers.Where(x => userIds.Contains(x.UserId)).ToList();
 
                 entry.IsTeam = entry.TeamMembers.Count > 1;
