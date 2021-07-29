@@ -919,7 +919,7 @@ namespace LuduStack.Application.Services
         private async Task SetProfiles(GameJamViewModel vm)
         {
             List<Guid> userIds = vm.Judges.Select(x => x.UserId).ToList();
-            userIds.Add(vm.UserId);
+            //userIds.Add(vm.UserId);
 
             IEnumerable<UserProfileEssentialVo> profiles = await mediator.Query<GetBasicUserProfileDataByUserIdsQuery, IEnumerable<UserProfileEssentialVo>>(new GetBasicUserProfileDataByUserIdsQuery(userIds));
 
