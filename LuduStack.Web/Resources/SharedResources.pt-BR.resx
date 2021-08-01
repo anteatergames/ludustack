@@ -2393,8 +2393,8 @@
     <value>começa</value>
     <comment>Giveaway</comment>
   </data>
-  <data name="starts in" xml:space="preserve">
-    <value>começa em</value>
+  <data name="Starts in" xml:space="preserve">
+    <value>Começa em</value>
     <comment>Giveaway</comment>
   </data>
   <data name="Tell us about the Giveaway." xml:space="preserve">
@@ -4261,5 +4261,13 @@
   <data name="Content not found!" xml:space="preserve">
     <value>Conteúdo não encontrado!</value>
     <comment>Generic</comment>
+  </data>
+  <data name="join now" xml:space="preserve">
+    <value>participar</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="You must be logged in to join this Game Jam!" xml:space="preserve">
+    <value>Você precisa estar autenticado para participar desta Game Jam!</value>
+    <comment>Game Jam</comment>
   </data>
 </root>

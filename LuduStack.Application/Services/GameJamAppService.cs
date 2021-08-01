@@ -1021,15 +1021,27 @@ namespace LuduStack.Application.Services
         {
             bool canJoinOnWarming = vm.CurrentPhase == GameJamPhase.Warmup;
             bool canJoinLate = vm.CurrentPhase == GameJamPhase.Submission && vm.AllowLateJoin;
+            bool userIsAuthenticated = currentUserId != Guid.Empty;
             bool sameUser = vm.UserId == currentUserId;
             bool iAmJudge = vm.Judges != null && vm.Judges.Select(x => x.UserId).Contains(currentUserId);
             bool isNotWarmup = vm.CurrentPhase != GameJamPhase.Warmup;
 
-            vm.Permissions.CanJoin = !sameUser && (canJoinOnWarming || canJoinLate);
+            vm.Permissions.CanJoin = userIsAuthenticated && !sameUser && (canJoinOnWarming || canJoinLate);
 
             if (!vm.Permissions.CanJoin)
             {
-                vm.CantJoinMessage = sameUser ? "You can't join your own Game Jam!" : "You can't join anymore!";
+                if (sameUser)
+                {
+                    vm.CantJoinMessage = "You can't join your own Game Jam!";
+                }
+                else if (currentUserId == Guid.Empty)
+                {
+                    vm.CantJoinMessage = "You must be logged in to join this Game Jam!";
+                }
+                else
+                {
+                    vm.CantJoinMessage = "You can't join anymore!";
+                }
             }
 
             vm.ShowSubmissions = (isNotWarmup && iAmJudge) || (isNotWarmup && !vm.HideSubmissions || vm.CurrentPhase == GameJamPhase.Results || vm.CurrentPhase == GameJamPhase.Finished);

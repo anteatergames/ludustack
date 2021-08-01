@@ -12,7 +12,7 @@
     function bindEditorElement(element) {
         return ClassicEditor
             .create(element, {
-                ckfinder: {
+                simpleUpload: {
                     uploadUrl: '/storage/uploadarticleimage'
                 },
                 toolbar: {
