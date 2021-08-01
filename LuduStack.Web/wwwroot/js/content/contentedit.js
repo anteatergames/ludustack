@@ -24,7 +24,8 @@
 
     function bindAll() {
         bindSelect2();
-        bindEditor();
+
+        WYSIWYGEDITOR.BindEditors('.wysiwygeditor');
 
         bindCropper();
 
@@ -33,35 +34,6 @@
 
     function bindSelect2() {
         $('.select2').select2();
-    }
-
-    function bindEditor() {
-        ClassicEditor
-            .create(document.querySelector('.wysiwygeditor'), {
-                ckfinder: {
-                    uploadUrl: '/storage/uploadarticleimage'
-                },
-                toolbar: [
-                    'heading', '|', 'bold', 'italic', 'link', '|', 'bulletedList', 'numberedList', 'insertTable', 'blockQuote', '|', 'imageUpload', 'mediaEmbed', '|', 'undo', 'redo'
-                ],
-                image: {
-                    toolbar: ['imageTextAlternative', '|', 'imageStyle:alignLeft', 'imageStyle:full', 'imageStyle:alignRight'],
-                    styles: [
-                        'full',
-                        'alignLeft',
-                        'alignRight'
-                    ]
-                },
-                mediaEmbed: {
-                    //previewsInData: true
-                }
-            })
-            .then(newEditor => {
-                window.editor = newEditor;
-            })
-            .catch(error => {
-                console.error(error);
-            });
     }
 
     function bindCropper() {
@@ -161,15 +133,19 @@
             e.preventDefault();
 
             var btn = $(this);
+            var form = btn.closest('form');
             btn.button('loading');
             var icon = btn.find('i');
 
             icon.removeClass('fa-save');
             icon.addClass('fa-circle-notch fa-spin');
 
-            editor.updateSourceElement();
+            var txtArea = form.find(selectors.Content);
+            var editorId = txtArea.attr('data-editor-id');
 
-            var valid = $('#frmContentSave').valid();
+            WYSIWYGEDITOR.UpdateSourceElement(editorId);
+
+            var valid = form.valid();
             if (valid) {
                 var templateEmpty = "<p>&nbsp;</p>";
                 if (selectors.Content.val().length === 0 || selectors.Content.val() === templateEmpty) {
