@@ -235,7 +235,7 @@ namespace LuduStack.Application.Formatters
                     return finalUrl;
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return defaultImage;
             }

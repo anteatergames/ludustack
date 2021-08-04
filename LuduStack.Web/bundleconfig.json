@@ -621,6 +621,13 @@
         ]
     },
     {
+        "outputFileName": "wwwroot/css/gamejamdetails.min.css",
+        "inputFiles": [
+            "wwwroot/css/progresscircles.css",
+            "wwwroot/css/gamejamdetails.css"
+        ]
+    },
+    {
         "outputFileName": "wwwroot/js/gamejam/gamejamdetails.min.js",
         "inputFiles": [
             "wwwroot/js/gamejam/gamejamdetails.js"
