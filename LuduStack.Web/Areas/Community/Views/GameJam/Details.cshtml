@@ -17,8 +17,10 @@
 
     var authorUrl = Url.Action("details", "profile", new { area = string.Empty, userHandler = Model.AuthorHandler });
     var authorLink = string.Format("<a href=\"{0}\" class=\"boldlink text-nowrap\">{1}</a>", authorUrl, Model.AuthorName);
-    var startDateLink = string.Format("<a target=\"_blank\" href=\"https://www.timeanddate.com/worldclock/fixedtime.html?iso={0}\">{1}</a>", Model.StartDate.ToUniversalTime().ToString("s", System.Globalization.CultureInfo.InvariantCulture), Model.StartDateToDisplay.ToString());
-    var deadLineDateLink = string.Format("<a target=\"_blank\" href=\"https://www.timeanddate.com/worldclock/fixedtime.html?iso={0}\">{1}</a>", Model.EntryDeadline.ToUniversalTime().ToString("s", System.Globalization.CultureInfo.InvariantCulture), Model.EntryDeadlineToDisplay.ToString());
+    var createDateLink = string.Format("<a class=\"text-muted\" target=\"_blank\" href=\"https://www.timeanddate.com/worldclock/fixedtime.html?iso={0}\">{1}</a>", Model.CreateDate.Date.ToUniversalTime().ToString("s", System.Globalization.CultureInfo.InvariantCulture), Model.CreateDateToDisplay.ToString());
+    var startDateLink = string.Format("<a class=\"text-muted\" target=\"_blank\" href=\"https://www.timeanddate.com/worldclock/fixedtime.html?iso={0}\">{1}</a>", Model.StartDate.ToUniversalTime().ToString("s", System.Globalization.CultureInfo.InvariantCulture), Model.StartDateToDisplay.ToString());
+    var deadLineDateLink = string.Format("<a class=\"text-muted\" target=\"_blank\" href=\"https://www.timeanddate.com/worldclock/fixedtime.html?iso={0}\">{1}</a>", Model.EntryDeadline.ToUniversalTime().ToString("s", System.Globalization.CultureInfo.InvariantCulture), Model.EntryDeadlineToDisplay.ToString());
+    var votingEndDateLink = string.Format("<a class=\"text-muted\" target=\"_blank\" href=\"https://www.timeanddate.com/worldclock/fixedtime.html?iso={0}\">{1}</a>", Model.VotingEndDateToDisplay.ToUniversalTime().ToString("s", System.Globalization.CultureInfo.InvariantCulture), Model.VotingEndDateToDisplay.ToString());
 
     Model.Permissions.CanJoin = Model.Permissions.CanJoin && User.Identity.IsAuthenticated;
 
@@ -37,6 +39,7 @@
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap-star-rating/css/star-rating.css">
         <link rel="stylesheet" href="~/lib/bootstrap-star-rating/themes/krajee-fa/theme.css" media="all" type="text/css" />
+        <link rel="stylesheet" href="~/css/progresscircles.css" />
         <link rel="stylesheet" href="~/css/gamejamdetails.css" />
     </environment>
     <environment exclude="Development">
@@ -203,6 +206,26 @@
                         @Html.Raw(Model.Description)
                     </div>
 
+                    <div class="d-flex flex-row justify-content-center mt-n4">
+                        <div class="bg-white">
+                            @if (Model.Permissions.CanJoin)
+                            {
+                                if (Model.CurrentUserJoined)
+                                {
+                                    <a class="btn btn-lg btn-outline-success text-uppercase p-4" href="@Url.Action("myentry", "gamejam", new { area = "community", jamHandler = Model.Handler })">@SharedLocalizer["my entry"]</a>
+                                }
+                                else
+                                {
+                                    <button class="btn btn-lg btn-success btn-join text-uppercase p-4" data-url="@Url.Action("join", "gamejam", new { area = "community", jamId = Model.Id, handler = Model.Handler })">@SharedLocalizer["join now"]</button>
+                                }
+                            }
+                            else
+                            {
+                                <button class="btn btn-lg btn-success disabled btn-cantjoin text-uppercase p-4" data-msg="@SharedLocalizer[Model.CantJoinMessage ?? string.Empty]">@SharedLocalizer["join now"]</button>
+                            }
+                        </div>
+                    </div>
+
                     <div class="mt-2">
                         <div class="w-100 text-center">
                             <partial name="_ShareContent" model="new ShareModel(Model.ShareUrl, Model.ShareText)" />
@@ -225,24 +248,6 @@
 
                     <hr />
 
-                    <div class="row m-2 text-center">
-                        <div class="col-12">
-                            <span>@Html.Raw(SharedLocalizer["from {0}", startDateLink])</span>
-                            <span>@Html.Raw(SharedLocalizer["until {0}", deadLineDateLink])</span>
-                            @if (!string.IsNullOrWhiteSpace(Model.DurationText))
-                            {
-                                <text>&nbsp;</text>
-                                    <span>(@Model.DurationText)</span>
-                                    }
-                                </div>
-                        @if (!string.IsNullOrWhiteSpace(Model.TimeZone))
-                        {
-                            <div class="col-12">
-                                <span>@Model.TimeZone</span>
-                            </div>
-                        }
-                    </div>
-
                     <div class="row m-2 justify-content-center">
                         @foreach (var highlight in Model.Highlights)
                         {
@@ -253,6 +258,47 @@
                                     <span class="btn border p-1 rounded-circle btn-icon-sm bg-label"><i class="fas fa-@(uiInfo.Class)" aria-hidden="true"></i></span>
                                     <span>@SharedLocalizer[uiInfo.Display]</span>
                                 </div>
+                            </div>
+                        }
+                    </div>
+
+                    <hr />
+
+                    <div class="w-100">
+                        <ol class="progresscircles progresscircles--large">
+                            <li class="progress__step@(Model.PhaseNumber > 1 ? " is-complete" : Model.PhaseNumber == 1 ? " is-active" : string.Empty)" data-step="1" data-container="body" data-toggle="popover" data-placement="top" title="@SharedLocalizer["Warmup Start"]" data-content="@Model.CreateDateToDisplay">
+                                <span class="d-block">@SharedLocalizer["Warmup"]</span>
+                                <span class="d-none d-sm-block datetime">@Html.Raw(createDateLink)</span>
+                            </li>
+                            <li class="progress__step@(Model.PhaseNumber > 2 ? " is-complete" : Model.PhaseNumber == 2 ? " is-active" : string.Empty)" data-step="2" data-container="body" data-toggle="popover" data-placement="top" title="@SharedLocalizer["Jam Start"]" data-content="@Model.StartDateToDisplay">
+                                <span class="d-block">@SharedLocalizer["Starting"]</span>
+                                <span class="d-none d-sm-block datetime">@Html.Raw(startDateLink)</span>
+                            </li>
+                            <li class="progress__step@(Model.PhaseNumber > 3 ? " is-complete" : Model.PhaseNumber == 3 ? " is-active" : string.Empty)" data-step="3" data-container="body" data-toggle="popover" data-placement="top" title="@SharedLocalizer["Votings Start"]" data-content="@Model.EntryDeadlineToDisplay">
+                                <span class="d-block">@SharedLocalizer["Voting"]</span>
+                                <span class="d-none d-sm-block datetime">@Html.Raw(deadLineDateLink)</span>
+                            </li>
+                            <li data-step="4" class="progress__last@(Model.PhaseNumber > 4 ? " is-complete" : Model.PhaseNumber == 4 ? " is-active" : string.Empty)" data-container="body" data-toggle="popover" data-placement="top" title="@SharedLocalizer["Results Date"]" data-content="@Model.ResultDateToDisplay">
+                                <span class="d-block">@SharedLocalizer["Results"]</span>
+                                <span class="d-none d-sm-block datetime">@Html.Raw(votingEndDateLink)</span>
+                            </li>
+                        </ol>
+                    </div>
+
+                    <div class="row m-2 text-center">
+                        <div class="col-12">
+                            <span>@Html.Raw(SharedLocalizer["from {0}", startDateLink])</span>
+                            <span>@Html.Raw(SharedLocalizer["until {0}", deadLineDateLink])</span>
+                            @if (!string.IsNullOrWhiteSpace(Model.DurationText))
+                            {
+                                <text>&nbsp;</text>
+                                <span>(@Model.DurationText)</span>
+                            }
+                        </div>
+                        @if (!string.IsNullOrWhiteSpace(Model.TimeZone))
+                        {
+                            <div class="col-12">
+                                <span>@Model.TimeZone</span>
                             </div>
                         }
                     </div>

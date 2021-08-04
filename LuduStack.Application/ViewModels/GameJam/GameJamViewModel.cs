@@ -146,6 +146,8 @@ namespace LuduStack.Application.ViewModels.GameJam
 
         public GameJamPhase CurrentPhase { get; set; }
 
+        public int PhaseNumber { get; set; }
+
         public string CountDownMessage { get; set; }
 
         public bool CurrentUserJoined { get; set; }
@@ -166,9 +168,11 @@ namespace LuduStack.Application.ViewModels.GameJam
 
         public bool ShowFinalResults { get; set; }
 
-        public DateTime EntryDeadlineToDisplay { get; set; }
+        public DateTime CreateDateToDisplay { get; set; }
 
         public DateTime StartDateToDisplay { get; set; }
+
+        public DateTime EntryDeadlineToDisplay { get; set; }
 
         public DateTime VotingEndDateToDisplay { get; set; }
 

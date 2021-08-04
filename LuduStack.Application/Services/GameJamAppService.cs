@@ -838,6 +838,7 @@ namespace LuduStack.Application.Services
         {
             SetInitialDates(vm);
 
+            vm.CreateDateToDisplay = vm.CreateDate.Date;
             vm.StartDateToDisplay = vm.StartDate.AddHours(vm.TimeZoneDifference);
             vm.EntryDeadlineToDisplay = vm.EntryDeadline.AddHours(vm.TimeZoneDifference);
             vm.VotingEndDateToDisplay = vm.VotingEndDate.AddHours(vm.TimeZoneDifference);
@@ -901,6 +902,9 @@ namespace LuduStack.Application.Services
                 vm.CountDownMessage = "Starts in";
                 diff = startDateUtc - localTime;
             }
+
+            vm.PhaseNumber = (int)vm.CurrentPhase;
+
             vm.SecondsToCountDown = (int)diff.TotalSeconds;
         }
 

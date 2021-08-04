@@ -4270,4 +4270,20 @@
     <value>Você precisa estar autenticado para participar desta Game Jam!</value>
     <comment>Game Jam</comment>
   </data>
+  <data name="Starting" xml:space="preserve">
+    <value>Largada</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Jam Start" xml:space="preserve">
+    <value>Início da Jam</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Votings Start" xml:space="preserve">
+    <value>Início da Votação</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Warmup Start" xml:space="preserve">
+    <value>Início do Aquecimento</value>
+    <comment>Game Jam</comment>
+  </data>
 </root>

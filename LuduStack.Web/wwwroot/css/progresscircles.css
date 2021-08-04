@@ -1,0 +1,111 @@
+﻿.progresscircles {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: table;
+    table-layout: fixed;
+    width: 100%;
+    color: #849397;
+    margin-bottom: 1em;
+}
+
+    .progresscircles > li {
+        position: relative;
+        display: table-cell;
+        text-align: center;
+        font-size: 0.7em;
+    }
+
+        .progresscircles > li .datetime {
+            font-size: 0.6em;
+        }
+
+        .progresscircles > li:before {
+            content: attr(data-step);
+            display: block;
+            margin: 0 auto;
+            background: #DFE3E4;
+            width: 3em;
+            height: 3em;
+            text-align: center;
+            margin-bottom: 0.25em;
+            line-height: 3em;
+            border-radius: 100%;
+            position: relative;
+            z-index: 1000;
+        }
+
+        .progresscircles > li:after {
+            content: '';
+            position: absolute;
+            display: block;
+            background: #DFE3E4;
+            width: 100%;
+            height: 0.5em;
+            top: 1.25em;
+            left: 50%;
+            margin-left: 1.5em\9;
+            z-index: 0;
+        }
+
+        .progresscircles > li:last-child:after {
+            display: none;
+        }
+
+        .progresscircles > li.is-complete {
+            color: #2ECC71;
+        }
+
+            .progresscircles > li.is-complete:before, .progresscircles > li.is-complete:after {
+                color: #FFF;
+                background: #2ECC71;
+            }
+
+        .progresscircles > li.is-active {
+            color: #3498DB;
+        }
+
+            .progresscircles > li.is-active:before {
+                color: #FFF;
+                background: #3498DB;
+            }
+
+/**
+ * Needed for IE8
+ */
+.progress__last:after {
+    display: none !important;
+}
+
+/**
+ * Size Extensions
+ */
+.progresscircles--medium {
+    font-size: 1.5em;
+}
+
+.progresscircles--large {
+    font-size: 2em;
+}
+
+@media (max-width: 767px) {
+    .progresscircles > li {
+        font-size: 0.6em;
+    }
+
+    .progresscircles > li:before {
+        width: 2em;
+        height: 2em;
+        line-height: 2em;
+    }
+
+    .progresscircles > li:after {
+        top: 0.75em;
+    }
+}
+
+@media (max-width: 575px) {
+    .progresscircles > li {
+        font-size: 0.4em;
+    }
+}

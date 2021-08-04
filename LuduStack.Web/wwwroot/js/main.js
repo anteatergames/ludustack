@@ -326,6 +326,10 @@
             });
         } else {
             $("[data-toggle='popover']").popover({ html: true });
+
+            $("[data-toggle='popover']").on('click', function () {
+                $("[data-toggle='popover']").not(this).popover('hide');
+            });
         }
     }
 
