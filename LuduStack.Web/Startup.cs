@@ -335,7 +335,7 @@ namespace LuduStack.Web
                             });
         }
 
-        private readonly string[] supportedCultures = new []
+        private readonly string[] supportedCultures = new[]
                 {
                     "en-US",
                     "en",

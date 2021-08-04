@@ -238,7 +238,7 @@ namespace LuduStack.Web.Areas.Learn.Controllers
                     return PartialView("_ListPlans", model);
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return PartialView("_ListPlans", model);
             }
@@ -266,7 +266,7 @@ namespace LuduStack.Web.Areas.Learn.Controllers
                     return PartialView("_ListPlansForEdit", model);
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return PartialView("_ListPlansForEdit", model);
             }

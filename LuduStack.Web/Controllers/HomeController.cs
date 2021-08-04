@@ -25,7 +25,7 @@ namespace LuduStack.Web.Controllers
         private readonly IFeaturedContentAppService featuredContentAppService;
         private readonly IGameAppService gameAppService;
 
-        public HomeController(IFeaturedContentAppService featuredContentAppService, IGameAppService gameAppService) 
+        public HomeController(IFeaturedContentAppService featuredContentAppService, IGameAppService gameAppService)
         {
             this.featuredContentAppService = featuredContentAppService;
             this.gameAppService = gameAppService;
