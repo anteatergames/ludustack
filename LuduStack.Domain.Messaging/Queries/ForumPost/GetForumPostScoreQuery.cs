@@ -6,7 +6,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace LuduStack.Domain.Messaging.Queries.Game
+namespace LuduStack.Domain.Messaging.Queries.ForumPost
 {
     public class GetForumPostScoreQuery : GetByIdBaseQuery<int>
     {
