@@ -111,102 +111,169 @@
             </div>
         }
 
-        <div class="box bg-light">
-            <div class="row mx-2">
-                <div class="mb-2 mr-2 d-flex flex-column justify-content-center">
-                    <a asp-area="" asp-controller="profile" asp-action="details" asp-route-userHandler="@Model.UserHandler">
-                        <img class="rounded-circle" src="@Model.AuthorPicture" alt="This is @Model.AuthorName">
-                    </a>
-                </div>
-                <div class="mr-auto mb-2 d-flex flex-column justify-content-center">
-                    <h1 class="m-0 text-capitalize">@Model.Title</h1>
-                    @if (Model.Submitted)
-                    {
-                        <span class="text-left text-muted">@Html.Raw(SharedLocalizer["Submitted by {0} for {1}", authorLink, gameJamLink])</span>
-                    }
-                    else
-                    {
-                        <span class="text-left text-muted">@Html.Raw(SharedLocalizer["For {0}", gameJamLink])</span>
-                    }
-                </div>
-                <div class="ml-auto mb-2 d-flex flex-column justify-content-center">
-                    @if (Model.Submitted)
-                    {
-                        <span class="h3 text-center">@Model.SubmissionDate</span>
-                    }
-                    else
-                    {
-                        <span class="h3 text-center">@SharedLocalizer["Not submitted yet"]</span>
-                    }
-                    <span class="text-right text-muted">@SharedLocalizer["submission date"]</span>
-                </div>
+    <div class="box bg-light">
+        <div class="row mx-2">
+            <div class="mb-2 mr-2 d-flex flex-column justify-content-center">
+                <a asp-area="" asp-controller="profile" asp-action="details" asp-route-userHandler="@Model.UserHandler">
+                    <img class="rounded-circle" src="@Model.AuthorPicture" alt="This is @Model.AuthorName">
+                </a>
             </div>
+            <div class="mr-auto mb-2 d-flex flex-column justify-content-center">
+                <h1 class="m-0 text-capitalize">@Model.Title</h1>
+                @if (Model.Submitted)
+                {
+                    <span class="text-left text-muted">@Html.Raw(SharedLocalizer["Submitted by {0} for {1}", authorLink, gameJamLink])</span>
+                }
+                else
+                {
+                    <span class="text-left text-muted">@Html.Raw(SharedLocalizer["For {0}", gameJamLink])</span>
+                }
+            </div>
+            <div class="ml-auto mb-2 d-flex flex-column justify-content-center">
+                @if (Model.Submitted)
+                {
+                    <span class="h3 text-center">@Model.SubmissionDate</span>
+                }
+                else
+                {
+                    <span class="h3 text-center">@SharedLocalizer["Not submitted yet"]</span>
+                }
+                <span class="text-right text-muted">@SharedLocalizer["submission date"]</span>
+            </div>
+        </div>
 
-            @if (Model.Game != null)
-            {
-                <div class="bg-white mx-auto p-3 row">
+        @if (Model.Game != null)
+        {
+            <div class="bg-white mx-auto p-3 row">
 
-                    <div class="col-12 pt-2">
-                        <div class="row">
-                            <div class="col-12 col-md-4 mb-2">
-                                <partial name="_GameInfoPanel" model="Model.Game" />
+                <div class="col-12 pt-2">
+                    <div class="row">
+                        <div class="col-12 col-md-4 mb-2">
+                            <partial name="_GameInfoPanel" model="Model.Game" />
 
-                                @if (!string.IsNullOrWhiteSpace(Model.Game.Description))
-                                {
-                                    <div class="col-12 mt-3 ">
-                                        @Html.Raw(Model.Game.Description)
-                                    </div>
-                                }
-
-                                @if (!string.IsNullOrWhiteSpace(Model.ExtraInformation))
-                                {
-                                    <div class="col-12 mt-3 ">
-                                        <hr />
-                                        @Model.ExtraInformation
-                                    </div>
-                                }
-
-                                <div class="mt-3 text-uppercase">
-                                    <a href="@Url.Action("details", "game", new { area = string.Empty, id = Model.Game.Id })" class="btn btn-large btn-block btn-secondary">
-                                        @SharedLocalizer["visit game page"]
-                                    </a>
+                            @if (!string.IsNullOrWhiteSpace(Model.Game.Description))
+                            {
+                                <div class="col-12 mt-3 ">
+                                    @Html.Raw(Model.Game.Description)
                                 </div>
+                            }
+
+                            @if (!string.IsNullOrWhiteSpace(Model.ExtraInformation))
+                            {
+                                <div class="col-12 mt-3 ">
+                                    <hr />
+                                    @Model.ExtraInformation
+                                </div>
+                            }
+
+                            <div class="mt-3 text-uppercase">
+                                <a href="@Url.Action("details", "game", new { area = string.Empty, id = Model.Game.Id })" class="btn btn-large btn-block btn-secondary">
+                                    @SharedLocalizer["visit game page"]
+                                </a>
                             </div>
-                            <div class="col-12 col-md-8">
-                                <div class="row">
+                        </div>
+                        <div class="col-12 col-md-8">
+                            <div class="row">
 
-                                    @if (Model.CanShowFinalResults && Model.IsWinner)
+                                @if (Model.CanShowFinalResults && Model.IsWinner)
+                                {
+                                    <div class="col-12 text-center">
+                                        <div class="mt-n5 mr-2">
+                                            <partial name="_GameJamMedals" model="new KeyValuePair<int, int>(Model.FinalPlace, Model.GameJam.Winners)" />
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <hr />
+                                    </div>
+                                }
+
+                                <div class="col-12 mb-2">
+                                    @if (Model.Permissions.CanVote)
                                     {
-                                        <div class="col-12 text-center">
-                                            <div class="mt-n5 mr-2">
-                                                <partial name="_GameJamMedals" model="new KeyValuePair<int, int>(Model.FinalPlace, Model.GameJam.Winners)" />
-                                            </div>
-                                        </div>
-
-                                        <div class="col-12">
-                                            <hr />
-                                        </div>
+                                        <h2 class="text-center">@SharedLocalizer["Cast your vote"]</h2>
                                     }
 
-                                    <div class="col-12 mb-2">
-                                        @if (Model.Permissions.CanVote)
+                                    @if (Model.CanShowResults || Model.Permissions.CanVote)
+                                    {
+                                        var criteriaToRender = Model.GameJam.Criteria;
+
+                                        if (Model.IsOverallVote)
                                         {
-                                            <h2 class="text-center">@SharedLocalizer["Cast your vote"]</h2>
+                                            criteriaToRender = Model.GameJam.Criteria.Where(x => x.Type == GameJamCriteriaType.Overall).ToList();
+                                        }
+                                        else
+                                        {
+                                            criteriaToRender = Model.GameJam.Criteria.Where(x => x.Type != GameJamCriteriaType.Overall).ToList();
                                         }
 
-                                        @if (Model.CanShowResults || Model.Permissions.CanVote)
+                                        if (Model.Permissions.IsMe)
                                         {
-                                            var criteriaToRender = Model.GameJam.Criteria;
+                                            <div class="col-12 mb-3 text-center">
+                                                <span class="alert alert-info">@SharedLocalizer["You cannot vote on your own game!"]</span>
+                                            </div>
+                                        }
 
-                                            if (Model.IsOverallVote)
-                                            {
-                                                criteriaToRender = Model.GameJam.Criteria.Where(x => x.Type == GameJamCriteriaType.Overall).ToList();
-                                            }
-                                            else
-                                            {
-                                                criteriaToRender = Model.GameJam.Criteria.Where(x => x.Type != GameJamCriteriaType.Overall).ToList();
-                                            }
+                                        foreach (var criteria in criteriaToRender)
+                                        {
+                                            var vote = Model.Votes.FirstOrDefault(x => x.UserId == currentUserId && x.CriteriaType == criteria.Type);
+                                            var criteriaResult = Model.CriteriaResults.FirstOrDefault(x => x.Criteria == criteria.Type);
 
+                                            var uiInfo = criteria.Type.ToUiInfo();
+
+                                            <div class="row no-gutters px-1">
+                                                <div class="col-12 col-lg-6">
+                                                    <div class="h-100 d-flex flex-column justify-content-center text-center text-lg-left">
+                                                        <span class="display-5">
+                                                            @SharedLocalizer[uiInfo.Display]
+                                                            @if (criteriaResult != null && criteriaResult.FinalPosition > 0)
+                                                            {
+                                                                <i class="fas fa-medal@(criteriaResult.FinalPosition == 1 ? " text-warning" : " text-muted")" aria-hidden="true"></i><span class="text-muted">@string.Format("#{0}", criteriaResult.FinalPosition)</span>
+                                                            }
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-lg-6">
+                                                    <div class="h-100 d-flex flex-column justify-content-center text-center text-lg-right">
+
+                                                        @if (Model.Permissions.CanVote)
+                                                        {
+                                                            <input id="txtScore" name="Score" type="number" class="d-none criteria-rating" step="1" value="@vote.Score.ToString(new System.Globalization.CultureInfo("en-US"))" data-url="@Url.Action("voteentry", "gamejam", new { area = "community", jamHandler = Model.GameJam.Handler, userId = ViewBag.CurrentUserId, entryId = Model.Id, criteriaType = vote.CriteriaType })">
+                                                        }
+                                                        else
+                                                        {
+                                                            <input id="txtScore" name="Score" type="number" class="d-none criteria-rating" step="1" data-readonly="true" value="@vote.Median.ToString(new System.Globalization.CultureInfo("en-US"))">
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+
+                                        @if (Model.CanShowResults && Model.CanShowFinalResults)
+                                        {
+                                            <hr />
+                                            <div class="row no-gutters px-1">
+                                                <div class="col-12 col-lg-6">
+                                                    <div class="d-flex flex-column justify-content-center text-center text-uppercase text-lg-left">
+                                                        <span class="display-5">@SharedLocalizer["final score"]</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-lg-6">
+                                                    <div class="h-100 d-flex flex-column justify-content-center text-center text-lg-right">
+                                                        <input id="txtScore" name="Score" type="number" class="d-none criteria-rating" step="1" data-readonly="true" value="@Model.TotalScore.ToString(new System.Globalization.CultureInfo("en-US"))">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (Model.GameJam.CurrentPhase == GameJamPhase.Submission)
+                                        {
+                                            <span class="display-4">@SharedLocalizer["Submission OK!"]</span>
+                                        }
+                                        else
+                                        {
                                             if (Model.Permissions.IsMe)
                                             {
                                                 <div class="col-12 mb-3 text-center">
@@ -214,223 +281,163 @@
                                                 </div>
                                             }
 
-                                            foreach (var criteria in criteriaToRender)
-                                            {
-                                                var vote = Model.Votes.FirstOrDefault(x => x.UserId == currentUserId && x.CriteriaType == criteria.Type);
-                                                var criteriaResult = Model.CriteriaResults.FirstOrDefault(x => x.Criteria == criteria.Type);
-
-                                                var uiInfo = criteria.Type.ToUiInfo();
-
-                                                <div class="row no-gutters px-1">
-                                                    <div class="col-12 col-lg-6">
-                                                        <div class="h-100 d-flex flex-column justify-content-center text-center text-lg-left">
-                                                            <span class="display-5">
-                                                                @SharedLocalizer[uiInfo.Display]
-                                                                @if (criteriaResult != null && criteriaResult.FinalPosition > 0)
-                                                                {
-                                                                    <i class="fas fa-medal@(criteriaResult.FinalPosition == 1 ? " text-warning" : " text-muted")" aria-hidden="true"></i><span class="text-muted">@string.Format("#{0}", criteriaResult.FinalPosition)</span>
-                                                                }
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-12 col-lg-6">
-                                                        <div class="h-100 d-flex flex-column justify-content-center text-center text-lg-right">
-
-                                                            @if (Model.Permissions.CanVote)
-                                                            {
-                                                                <input id="txtScore" name="Score" type="number" class="d-none criteria-rating" step="1" value="@vote.Score.ToString(new System.Globalization.CultureInfo("en-US"))" data-url="@Url.Action("voteentry", "gamejam", new { area = "community", jamHandler = Model.GameJam.Handler, userId = ViewBag.CurrentUserId, entryId = Model.Id, criteriaType = vote.CriteriaType })">
-                                                            }
-                                                            else
-                                                            {
-                                                                <input id="txtScore" name="Score" type="number" class="d-none criteria-rating" step="1" data-readonly="true" value="@vote.Median.ToString(new System.Globalization.CultureInfo("en-US"))">
-                                                            }
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            }
-
-                                            @if (Model.CanShowResults && Model.CanShowFinalResults)
-                                            {
-                                                <hr />
-                                                <div class="row no-gutters px-1">
-                                                    <div class="col-12 col-lg-6">
-                                                        <div class="d-flex flex-column justify-content-center text-center text-uppercase text-lg-left">
-                                                            <span class="display-5">@SharedLocalizer["final score"]</span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-12 col-lg-6">
-                                                        <div class="h-100 d-flex flex-column justify-content-center text-center text-lg-right">
-                                                            <input id="txtScore" name="Score" type="number" class="d-none criteria-rating" step="1" data-readonly="true" value="@Model.TotalScore.ToString(new System.Globalization.CultureInfo("en-US"))">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            }
+                                            <span class="display-4">@SharedLocalizer["Wait for the result."]</span>
                                         }
-                                        else
-                                        {
-                                            if (Model.GameJam.CurrentPhase == GameJamPhase.Submission)
-                                            {
-                                                <span class="display-4">@SharedLocalizer["Submission OK!"]</span>
-                                            }
-                                            else
-                                            {
-                                                if (Model.Permissions.IsMe)
-                                                {
-                                                    <div class="col-12 mb-3 text-center">
-                                                        <span class="alert alert-info">@SharedLocalizer["You cannot vote on your own game!"]</span>
-                                                    </div>
-                                                }
-
-                                                <span class="display-4">@SharedLocalizer["Wait for the result."]</span>
-                                            }
-                                        }
-                                    </div>
+                                    }
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                    @if (Model.TeamMembersProfiles.Count > 1)
-                    {
-                        <div class="col-12 text-center">
-                            <hr />
-                            <h2>@SharedLocalizer["The Team"]</h2>
-                        </div>
-                        <div class="col-12">
-                            <div class="row justify-content-center">
-                                @for (int i = 0; i < Model.TeamMembersProfiles.Count; i++)
-                                {
-                                    var teamMember = Model.TeamMembersProfiles.ElementAt(i);
-
-                                    <div class="col-12 col-md-6 col-lg-4 mb-3">
-                                        <div class="bordered">
-                                            <partial name="_UserCard" model="teamMember" />
-                                        </div>
-                                    </div>
-                                }
-                            </div>
-                        </div>
-                    }
                 </div>
-            }
-            else
+
+                @if (Model.TeamMembersProfiles.Count > 1)
+                {
+                    <div class="col-12 text-center">
+                        <hr />
+                        <h2>@SharedLocalizer["The Team"]</h2>
+                    </div>
+                    <div class="col-12">
+                        <div class="row justify-content-center">
+                            @for (int i = 0; i < Model.TeamMembersProfiles.Count; i++)
+                            {
+                                var teamMember = Model.TeamMembersProfiles.ElementAt(i);
+
+                                <div class="col-12 col-md-6 col-lg-4 mb-3">
+                                    <div class="bordered">
+                                        <partial name="_UserCard" model="teamMember" />
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            var msgNoSubmission = Model.Permissions.IsMe ? "You didn't submit a game!" : "This participant didn't submit a game.";
+            var noSubmissionModel = new ListNoItemsViewModel("fas fa-sad-crazy", msgNoSubmission);
+
+            if (Model.GameJam.PhaseNumber < ((int)GameJamPhase.Submission))
             {
-                var msgNoSubmission = Model.Permissions.IsMe ? "You didn't submit a game!" : Model.GameJam.CurrentPhase == GameJamPhase.Warmup || Model.GameJam.CurrentPhase == GameJamPhase.Submission ? "This participant didn't submit a game yet!" : "This participant didn't submit a game.";
-                var noSubmissionModel = new ListNoItemsViewModel("fas fa-dizzy", msgNoSubmission);
-                <partial name="_ListNoItems" model="noSubmissionModel" />
+                msgNoSubmission = Model.Permissions.IsMe ? "You are participating!" : "This participant is ready to go!";
+                noSubmissionModel = new ListNoItemsViewModel("fas fa-smile", msgNoSubmission);
+            }
+            else if (Model.GameJam.PhaseNumber == ((int)GameJamPhase.Submission))
+            {
+                msgNoSubmission = Model.Permissions.IsMe ? "You didn't submit a game yet!" : "This participant didn't submit a game yet!";
+                noSubmissionModel = new ListNoItemsViewModel("fas fa-gamepad", msgNoSubmission);
             }
 
-            <form id="frmSubmitGame" asp-area="community" asp-controller="gamejam" asp-action="submitgame" asp-route-jamHandler="@Model.GameJam.Handler" method="post" class="mt-2">
+            <partial name="_ListNoItems" model="noSubmissionModel" />
+        }
 
-                <input asp-for="UserId" type="hidden" />
+        <form id="frmSubmitGame" asp-area="community" asp-controller="gamejam" asp-action="submitgame" asp-route-jamHandler="@Model.GameJam.Handler" method="post" class="mt-2">
 
-                <div class="row">
-                    @if (Model.Permissions.CanSubmit)
+            <input asp-for="UserId" type="hidden" />
+
+            <div class="row">
+                @if (Model.Permissions.IsMe && Model.Game == null && Model.GameJam.ParticipationType != GameJamParticipationType.IndividualsOnly)
+                {
+                    <div class="col-12">
+                        <h2 class="text-capitalize">@SharedLocalizer["Your Team"]</h2>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="col p-0 mb-3">
+                            <div class="d-flex flex-row justify-content-center">
+                                <div class="d-flex flex-column justify-content-center">
+                                    <label asp-for="TeamMembers" class="col-form-label"></label>
+                                </div>
+                                <div class="d-flex flex-column justify-content-center">
+                                    <span asp-description-for="TeamMembers" class="col-form-label ml-1" />
+                                </div>
+                                <div class="col pr-0">
+                                    <select id="ddlSearchUsers" class="form-control" data-placeholder="@SharedLocalizer["Search for Users"]" data-ajax-url="@Url.Action("searchusercard", "user")"></select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="divTeamMembers" class="row justify-content-center">
+                            @for (int i = 0; i < Model.TeamMembersProfiles.Count; i++)
+                            {
+                                var teamMember = Model.TeamMembersProfiles.ElementAt(i);
+
+                                <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-3 teammember">
+                                    <input type="hidden" name="TeamMembers[@i].UserId" value="@teamMember.UserId" class="teammemberid" />
+                                    <div class="bordered square-bottom border-bottom-0">
+                                        <partial name="_UserCard" model="teamMember" />
+                                    </div>
+                                    <div class="w-100 square-top">
+                                        <button type="button" class="btn btn-block btn-outline-danger square-top btn-teammember-delete"><i class="fas fa-trash-alt" aria-hidden="true"></i></button>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="alert alert-heading alert-light text-center">
+                            <span class="d-block">@SharedLocalizer["This is your team for this Game Jam and you can save it as many times as you want before submitting the game."]</span>
+                            @if (Model.GameJam.ParticipationType == GameJamParticipationType.TeamsOnly)
+                            {
+                                <span class="d-block">@SharedLocalizer["You need to have at least two people on your team."]</span>
+                            }
+                            @if (Model.GameJam.ParticipationType == GameJamParticipationType.IndividualsAndTeams)
+                            {
+                                <span class="d-block">@SharedLocalizer["If you are the only person on your team, you will be participating as an individual."]</span>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-lg-6 offset-lg-6 col-xl-4 offset-xl-8 mt-1 mb-3">
+                        <button type="button" id="btnSaveTeam" class="btn btn-lg btn-primary btn-block" data-url="@Url.Action("saveteam", "gamejam", new { area = "community", entryId = Model.Id })"><i class="fas fa-users" aria-hidden="true"></i> @SharedLocalizer["Save Team"]</button>
+                    </div>
+                }
+                @if (Model.Permissions.CanSubmit && Model.Game == null && userGames != null && userGames.Any())
+                {
+                    <div class="col-12">
+                        <hr />
+                    </div>
+
+                    @if (Model.GameJam.PhaseNumber >= ((int)GameJamPhase.Submission))
                     {
-
-
-                        @if (Model.Game == null && userGames != null && userGames.Any())
-                        {
-                            @if (Model.GameJam.PhaseNumber >= ((int)GameJamPhase.Submission))
-                            {
-                                <div class="col-12">
-                                    <div class="alert alert-heading alert-warning text-center">
-                                        <span class="d-block">@SharedLocalizer["This is your entry for this Game Jam. Start working on your game and submit it on this page when it is ready."]</span>
-                                        <span class="d-block">@Html.Raw(SharedLocalizer["If your game is not listed below, {0} to create a new game on the LuduStack platform.", createGameLink])</span>
-                                    </div>
-                                </div>
-                            }
-
-                            @if (Model.GameJam.ParticipationType != GameJamParticipationType.IndividualsOnly)
-                            {
-                                <div class="col-12">
-                                    <h2 class="text-capitalize">@SharedLocalizer["Your Team"]</h2>
-                                </div>
-
-                                <div class="col-12">
-                                    <div class="col p-0 mb-3">
-                                        <div class="d-flex flex-row justify-content-center">
-                                            <div class="d-flex flex-column justify-content-center">
-                                                <label asp-for="TeamMembers" class="col-form-label"></label>
-                                            </div>
-                                            <div class="d-flex flex-column justify-content-center">
-                                                <span asp-description-for="TeamMembers" class="col-form-label ml-1" />
-                                            </div>
-                                            <div class="col pr-0">
-                                                <select id="ddlSearchUsers" class="form-control" data-placeholder="@SharedLocalizer["Search for Users"]" data-ajax-url="@Url.Action("searchusercard", "user")"></select>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div id="divTeamMembers" class="row justify-content-center">
-                                        @for (int i = 0; i < Model.TeamMembersProfiles.Count; i++)
-                                        {
-                                            var teamMember = Model.TeamMembersProfiles.ElementAt(i);
-
-                                            <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-3 teammember">
-                                                <input type="hidden" name="TeamMembers[@i].UserId" value="@teamMember.UserId" class="teammemberid" />
-                                                <div class="bordered square-bottom border-bottom-0">
-                                                    <partial name="_UserCard" model="teamMember" />
-                                                </div>
-                                                <div class="w-100 square-top">
-                                                    <button type="button" class="btn btn-block btn-outline-danger square-top btn-teammember-delete"><i class="fas fa-trash-alt" aria-hidden="true"></i></button>
-                                                </div>
-                                            </div>
-                                        }
-                                    </div>
-                                </div>
-
-                                <div class="col-12">
-                                    <div class="alert alert-heading alert-light text-center">
-                                        <span class="d-block">@SharedLocalizer["This is your team for this Game Jam and you can save it as many times as you want before submitting the game."]</span>
-                                        @if (Model.GameJam.ParticipationType == GameJamParticipationType.TeamsOnly)
-                                        {
-                                            <span class="d-block">@SharedLocalizer["You need to have at least two people on your team."]</span>
-                                        }
-                                        @if (Model.GameJam.ParticipationType == GameJamParticipationType.IndividualsAndTeams)
-                                        {
-                                            <span class="d-block">@SharedLocalizer["If you are the only person on your team, you will be participating as an individual."]</span>
-                                        }
-                                    </div>
-                                </div>
-
-                                <div class="col-12 col-lg-6 offset-lg-6 col-xl-4 offset-xl-8 mt-1 mb-3">
-                                    <button type="button" id="btnSaveTeam" class="btn btn-lg btn-primary btn-block" data-url="@Url.Action("saveteam", "gamejam", new { area = "community", entryId = Model.Id })"><i class="fas fa-users" aria-hidden="true"></i> @SharedLocalizer["Save Team"]</button>
-                                </div>
-                            }
-                            <div class="col-12">
-                                <hr />
+                        <div class="col-12">
+                            <div class="alert alert-heading alert-warning text-center">
+                                <span class="d-block">@SharedLocalizer["This is your entry for this Game Jam. Start working on your game and submit it on this page when it is ready."]</span>
+                                <span class="d-block">@Html.Raw(SharedLocalizer["If your game is not listed below, {0} to create a new game on the LuduStack platform.", createGameLink])</span>
                             </div>
-
-                            <div class="col-12">
-                                <h2 class="text-capitalize">@SharedLocalizer["Submit your game"]</h2>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <select asp-for="GameId" asp-items="@userGames" class="form-control select2">
-                                        <option selected="selected" value="">@SharedLocalizer["Select the game to submit"]</option>
-                                    </select>
-                                    <span asp-validation-for="GameId" class="text-danger"></span>
-                                </div>
-                            </div>
-
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label asp-for="ExtraInformation" class="col-form-label"></label>
-                                    <span asp-description-for="ExtraInformation" class="col-form-label"></span>
-                                    <textarea asp-for="ExtraInformation" class="form-control"></textarea>
-                                    <span asp-validation-for="ExtraInformation" class="text-danger"></span>
-                                </div>
-                            </div>
-
-                            <div class="col-12 col-lg-6 offset-lg-6 col-xl-4 offset-xl-8 mt-1 mb-2">
-                                <button type="button" id="btnSubmitGame" class="btn btn-lg btn-primary btn-block" data-confirmationmessage="@SharedLocalizer["Are you sure you are ready to submit your game to this Game Jam? You will not be able to change your team after this."]" data-confirmationtitle="@SharedLocalizer["Are you sure?"]" data-confirmationbuttontext="@SharedLocalizer["Yes, do it!"]" data-cancelbuttontext="@SharedLocalizer["Cancel"]"><i class="fas fa-save" aria-hidden="true"></i> @SharedLocalizer["Submit"]</button>
-                            </div>
-                        }
+                        </div>
                     }
-                </div>
-            </form>
-        </div>
+
+                    <div class="col-12">
+                        <h2 class="text-capitalize">@SharedLocalizer["Submit your game"]</h2>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <select asp-for="GameId" asp-items="@userGames" class="form-control select2">
+                                <option selected="selected" value="">@SharedLocalizer["Select the game to submit"]</option>
+                            </select>
+                            <span asp-validation-for="GameId" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label asp-for="ExtraInformation" class="col-form-label"></label>
+                            <span asp-description-for="ExtraInformation" class="col-form-label"></span>
+                            <textarea asp-for="ExtraInformation" class="form-control"></textarea>
+                            <span asp-validation-for="ExtraInformation" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-lg-6 offset-lg-6 col-xl-4 offset-xl-8 mt-1 mb-2">
+                        <button type="button" id="btnSubmitGame" class="btn btn-lg btn-primary btn-block" data-confirmationmessage="@SharedLocalizer["Are you sure you are ready to submit your game to this Game Jam? You will not be able to change your team after this."]" data-confirmationtitle="@SharedLocalizer["Are you sure?"]" data-confirmationbuttontext="@SharedLocalizer["Yes, do it!"]" data-cancelbuttontext="@SharedLocalizer["Cancel"]"><i class="fas fa-save" aria-hidden="true"></i> @SharedLocalizer["Submit"]</button>
+                    </div>
+                }
+            </div>
+        </form>
+    </div>
     </div>
 </section>
 

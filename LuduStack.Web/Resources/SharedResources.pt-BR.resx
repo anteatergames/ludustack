@@ -3708,7 +3708,7 @@
     <comment>Game Jam</comment>
   </data>
   <data name="This participant didn't submit a game yet!" xml:space="preserve">
-    <value>Este participante ainda não enviou seu jogo!</value>
+    <value>Este participante ainda não enviou um jogo!</value>
     <comment>Game Jam</comment>
   </data>
   <data name="This participant didn't submit a game." xml:space="preserve">
@@ -4284,6 +4284,18 @@
   </data>
   <data name="Warmup Start" xml:space="preserve">
     <value>Início do Aquecimento</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="This participant is ready to go!" xml:space="preserve">
+    <value>Este participante está pronto pra batalha!</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="You are participating!" xml:space="preserve">
+    <value>Você está participando!</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="You didn't submit a game yet!" xml:space="preserve">
+    <value>Você ainda não enviou um jogo!</value>
     <comment>Game Jam</comment>
   </data>
 </root>
