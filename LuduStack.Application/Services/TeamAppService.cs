@@ -61,6 +61,8 @@ namespace LuduStack.Application.Services
                     await SetUiData(currentUserId, team, profiles);
                 }
 
+                vms = vms.OrderByDescending(x => x.CreateDate).ToList();
+
                 return new OperationResultListVo<TeamViewModel>(vms);
             }
             catch (Exception ex)
