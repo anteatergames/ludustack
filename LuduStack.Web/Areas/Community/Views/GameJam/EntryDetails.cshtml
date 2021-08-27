@@ -329,6 +329,28 @@
                 noSubmissionModel = new ListNoItemsViewModel("fas fa-gamepad", msgNoSubmission);
             }
 
+            @if (Model.TeamMembersProfiles.Count > 1)
+            {
+                <div class="col-12 text-center">
+                    <hr />
+                    <h2>@SharedLocalizer["The Team"]</h2>
+                </div>
+                <div class="col-12">
+                    <div class="row justify-content-center">
+                        @for (int i = 0; i < Model.TeamMembersProfiles.Count; i++)
+                        {
+                            var teamMember = Model.TeamMembersProfiles.ElementAt(i);
+
+                            <div class="col-12 col-md-6 col-lg-4 mb-3">
+                                <div class="bordered">
+                                    <partial name="_UserCard" model="teamMember" />
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+
             <partial name="_ListNoItems" model="noSubmissionModel" />
         }
 

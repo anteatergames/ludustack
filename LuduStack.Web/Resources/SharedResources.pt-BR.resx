@@ -4306,4 +4306,8 @@
     <value>Ou no Discord.</value>
     <comment>Game Jam</comment>
   </data>
+  <data name="The Team" xml:space="preserve">
+    <value>A Equipe</value>
+    <comment>Game Jam</comment>
+  </data>
 </root>
