@@ -109,7 +109,7 @@
                                 {
                                     if (Model.CurrentUserJoined)
                                     {
-                                        <a class="btn btn-lg btn-outline-success text-uppercase" href="@Url.Action("myentry", "gamejam", new { area = "community", jamHandler = Model.Handler })">@SharedLocalizer["my entry"]</a>
+                                        <a class="btn btn-lg btn-outline-success text-uppercase" href="@Url.Action("myentry", "gamejam", new { area = "community", jamHandler = Model.Handler })">@SharedLocalizer["my game"]</a>
                                     }
                                     else
                                     {
@@ -151,25 +151,31 @@
                 </div>
             </div>
 
-            @if (Model.ShowMainTheme)
+
+
+            @if (!string.IsNullOrWhiteSpace(Model.ForumCategoryHandler))
             {
-                @if (string.IsNullOrWhiteSpace(Model.MainTheme))
-                {
-                    <div class="text-center mx-auto p-2 alert alert-info">
-                        <span class="h4">@SharedLocalizer["The Theme was not set"]</span>
-                    </div>
-                }
-                else
-                {
-                    <div class="text-center mx-auto p-2 alert alert-dark">
-                        <span class="h4">@Model.MainTheme</span>
-                    </div>
-                }
+                <div class="d-flex flex-row justify-content-center">
+                    <a asp-area="community" asp-controller="forum" asp-action="category" asp-route-handler="@Model.ForumCategoryHandler">@SharedLocalizer["Discuss about this Jam on the forums."]</a>
+                    @if (!string.IsNullOrWhiteSpace(Model.DiscordUrl))
+                    {
+                        <text>&nbsp;</text>
+                        <a href="@Model.DiscordUrl" target="_blank">@SharedLocalizer["Or on Discord."]</a>
+                    }
+                </div>
+                <hr />
             }
-            else
+
+            @if (Model.ShowMainTheme && !string.IsNullOrWhiteSpace(Model.MainTheme))
             {
                 <div class="text-center mx-auto p-2 alert alert-dark">
-                    <span class="h4">@SharedLocalizer["Only participants can see the Theme before the results"]</span>
+                    <span class="h4">@SharedLocalizer["Theme: {0}", Model.MainTheme]</span>
+                </div>
+            }
+            else if (Model.CurrentPhase == GameJamPhase.Warmup && Model.CurrentUserJoined)
+            {
+                <div class="text-center mx-auto p-2 alert alert-dark">
+                    <span class="h4">@SharedLocalizer["The theme will be revealed when the jam starts"]</span>
                 </div>
             }
 
@@ -212,7 +218,7 @@
                             {
                                 if (Model.CurrentUserJoined)
                                 {
-                                    <a class="btn btn-lg btn-outline-success text-uppercase p-4" href="@Url.Action("myentry", "gamejam", new { area = "community", jamHandler = Model.Handler })">@SharedLocalizer["my entry"]</a>
+                                    <a class="btn btn-lg btn-outline-success text-uppercase p-4" href="@Url.Action("myentry", "gamejam", new { area = "community", jamHandler = Model.Handler })">@SharedLocalizer["my game"]</a>
                                 }
                                 else
                                 {
@@ -234,13 +240,6 @@
                             {
                                 <div class="mt-2 d-flex flex-row justify-content-center">
                                     <a href="@string.Format("https://www.twitter.com/hashtag/{0}", Model.HashTag)" target="_blank" rel="noopener" class="h5">@string.Format("#{0}", Model.HashTag)</a>
-                                </div>
-                            }
-
-                            @if (!string.IsNullOrWhiteSpace(Model.ForumCategoryHandler))
-                            {
-                                <div class="d-flex flex-row justify-content-center">
-                                    <a asp-area="community" asp-controller="forum" asp-action="category" asp-route-handler="@Model.ForumCategoryHandler">@SharedLocalizer["Discuss about this Jam on the forums."]</a>
                                 </div>
                             }
                         </div>

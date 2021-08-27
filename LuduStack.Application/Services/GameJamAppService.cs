@@ -427,6 +427,7 @@ namespace LuduStack.Application.Services
                             Id = entry.Id,
                             UserId = entry.UserId,
                             JoinDate = entry.JoinDate,
+                            IsTeam = entry.TeamMembers?.Count > 1,
                             SubmissionDate = entry.SubmissionDate,
                             JamHandler = jamHandler,
                             CreateDate = profile.CreateDate,
@@ -787,11 +788,9 @@ namespace LuduStack.Application.Services
             vm.JoinCount = entries.Count();
             vm.CurrentUserJoined = entries.Any(x => x == currentUserId);
             vm.ShowMainTheme =
-                (vm.CurrentPhase == GameJamPhase.Warmup && !vm.HideMainTheme && vm.CurrentUserJoined) ||
-                (vm.CurrentPhase == GameJamPhase.Submission && vm.CurrentUserJoined) ||
-                (vm.CurrentPhase == GameJamPhase.Voting && vm.CurrentUserJoined) ||
-                (vm.CurrentPhase == GameJamPhase.Results && vm.CurrentUserJoined) ||
-                (vm.CurrentPhase == GameJamPhase.Finished);
+                vm.UserId == currentUserId || vm.Judges.Any(x => x.UserId == currentUserId) ||
+                (vm.CurrentPhase == GameJamPhase.Warmup && !vm.HideMainTheme) ||
+                vm.CurrentPhase != GameJamPhase.Warmup;
         }
 
         private static void SetViewModelStates(Guid currentUserId, bool currentUserIsAdmin, IEnumerable<GameJamViewModel> vms)
@@ -1053,6 +1052,7 @@ namespace LuduStack.Application.Services
             vm.ShowCriteria = vm.Criteria != null && vm.Criteria.Any(x => x.Type != GameJamCriteriaType.Overall);
             vm.ShowFinalResults = vm.CurrentPhase == GameJamPhase.Finished && vm.HasWinners;
 
+            vm.Permissions.IsMe = sameUser;
             vm.Permissions.IsAdmin = currentUserIsAdmin;
             vm.Permissions.CanDelete = vm.Permissions.IsAdmin;
             vm.Permissions.CanSubmit = vm.CurrentPhase == GameJamPhase.Submission;
