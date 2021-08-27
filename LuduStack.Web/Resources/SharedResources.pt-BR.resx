@@ -3579,10 +3579,6 @@
     <value>Um participante enviou um jogo</value>
     <comment>Game Jam</comment>
   </data>
-  <data name="Only participants can see the Theme before the results" xml:space="preserve">
-    <value>Somente participantes podem ver o Tema antes do resultado</value>
-    <comment>Game Jam</comment>
-  </data>
   <data name="overview" xml:space="preserve">
     <value>geral</value>
     <comment>Game Jam</comment>
@@ -3669,10 +3665,6 @@
   </data>
   <data name="That Game Jam is gone now!" xml:space="preserve">
     <value>Essa Game Jam já era!</value>
-    <comment>Game Jam</comment>
-  </data>
-  <data name="The Theme was not set" xml:space="preserve">
-    <value>O Tema não foi definido</value>
     <comment>Game Jam</comment>
   </data>
   <data name="Theme" xml:space="preserve">
@@ -4296,6 +4288,14 @@
   </data>
   <data name="You didn't submit a game yet!" xml:space="preserve">
     <value>Você ainda não enviou um jogo!</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="The theme will be revealed when the jam starts" xml:space="preserve">
+    <value>O tema será revelado quando a Jam iniciar</value>
+    <comment>Game Jam</comment>
+  </data>
+  <data name="Theme: {0}" xml:space="preserve">
+    <value>Tema: {0}</value>
     <comment>Game Jam</comment>
   </data>
 </root>
