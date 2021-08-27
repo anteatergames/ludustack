@@ -427,6 +427,7 @@ namespace LuduStack.Application.Services
                             Id = entry.Id,
                             UserId = entry.UserId,
                             JoinDate = entry.JoinDate,
+                            IsTeam = entry.TeamMembers?.Count > 1,
                             SubmissionDate = entry.SubmissionDate,
                             JamHandler = jamHandler,
                             CreateDate = profile.CreateDate,

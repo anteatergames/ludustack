@@ -31,6 +31,15 @@ else
                 <div class="bordered hover">
                     <partial name="_UserCard" model="item" />
 
+                    @if (item.IsTeam)
+                    {
+                        <div class="text-center position-absolute fixed-top mt-n2 p-0">
+                            <div class="badge badge-light bordered text-uppercase text-bold p-2">
+                                @SharedLocalizer["Team"]
+                            </div>
+                        </div>
+                    }
+
                     <div class="col-12 px-2 mb-2 text-center text-uppercase">
                         <a asp-area="community" asp-controller="gamejam" asp-action="entry" asp-route-jamHandler="@item.JamHandler" asp-route-id="@item.Id" class="btn btn-block btn-default">@SharedLocalizer["Joined on {0}", item.JoinDate.ToString()]</a>
                     </div>
