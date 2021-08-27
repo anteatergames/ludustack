@@ -9,6 +9,8 @@ namespace LuduStack.Domain.Models
     {
         public string ForumCategoryHandler { get; set; }
 
+        public string DiscordUrl { get; set; }
+
         public GameJamType Type { get; set; }
 
         public GameJamParticipationType ParticipationType { get; set; }
