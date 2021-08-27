@@ -4298,4 +4298,8 @@
     <value>Tema: {0}</value>
     <comment>Game Jam</comment>
   </data>
+  <data name="my game" xml:space="preserve">
+    <value>meu jogo</value>
+    <comment>Game Jam</comment>
+  </data>
 </root>

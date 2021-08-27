@@ -109,7 +109,7 @@
                                 {
                                     if (Model.CurrentUserJoined)
                                     {
-                                        <a class="btn btn-lg btn-outline-success text-uppercase" href="@Url.Action("myentry", "gamejam", new { area = "community", jamHandler = Model.Handler })">@SharedLocalizer["my entry"]</a>
+                                        <a class="btn btn-lg btn-outline-success text-uppercase" href="@Url.Action("myentry", "gamejam", new { area = "community", jamHandler = Model.Handler })">@SharedLocalizer["my game"]</a>
                                     }
                                     else
                                     {
@@ -203,7 +203,7 @@
                             {
                                 if (Model.CurrentUserJoined)
                                 {
-                                    <a class="btn btn-lg btn-outline-success text-uppercase p-4" href="@Url.Action("myentry", "gamejam", new { area = "community", jamHandler = Model.Handler })">@SharedLocalizer["my entry"]</a>
+                                    <a class="btn btn-lg btn-outline-success text-uppercase p-4" href="@Url.Action("myentry", "gamejam", new { area = "community", jamHandler = Model.Handler })">@SharedLocalizer["my game"]</a>
                                 }
                                 else
                                 {
