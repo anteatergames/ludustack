@@ -244,7 +244,7 @@ namespace LuduStack.Application.Services
             vm.Counters.Comments = await mediator.Query<CountCommentsQuery, int>(new CountCommentsQuery(x => x.UserId == vm.UserId));
 
             vm.Counters.Followers = model.Followers.SafeCount();
-            vm.Counters.Following = profileDomainService.CountFollows(userId);
+            vm.Counters.Following = profileDomainService.CountFollows(vm.UserId);
             int connectionsToUser = profileDomainService.CountConnections(x => x.TargetUserId == vm.UserId && x.ApprovalDate.HasValue);
             int connectionsFromUser = profileDomainService.CountConnections(x => x.UserId == vm.UserId && x.ApprovalDate.HasValue);
 
