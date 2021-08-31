@@ -393,6 +393,8 @@ namespace LuduStack.Application.Services
                     }
 
                     vm.GameJam = gameJamVm;
+
+                    vm.CreateDate = vm.SubmissionDate.AddHours(vm.GameJam.TimeZoneDifference);
                 }
 
                 vmList = vmList.OrderBy(x => x.SubmissionDate).ToList();
@@ -725,6 +727,8 @@ namespace LuduStack.Application.Services
                 IEnumerable<GameJamTeamMember> allParticipantIds = await mediator.Query<GetGameJamParticipants, IEnumerable<GameJamTeamMember>>(new GetGameJamParticipants(gameJamVm.Id));
 
                 SetEntryPermissions(currentUserId, currentUserIsAdmin, gameJamVm, vm, allParticipantIds);
+
+                vm.SubmissionDateForDisplay = vm.SubmissionDate != default ? vm.SubmissionDate.AddHours(vm.GameJam.TimeZoneDifference) : default;
 
                 return new OperationResultVo<GameJamEntryViewModel>(vm);
             }

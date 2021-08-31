@@ -10,7 +10,7 @@
 
         bindAll();
 
-        loadBadges(objs.Id.val());
+        loadBadges(objs.UserId.val());
 
         loadTeams();
 

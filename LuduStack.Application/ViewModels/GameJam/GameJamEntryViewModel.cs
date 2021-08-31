@@ -79,5 +79,7 @@ namespace LuduStack.Application.ViewModels.GameJam
         public bool IsWinner { get; set; }
 
         public List<ProfileViewModel> TeamMembersProfiles { get; set; }
+
+        public DateTime SubmissionDateForDisplay { get; set; }
     }
 }
