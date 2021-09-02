@@ -32,6 +32,9 @@ namespace LuduStack.Domain.Core.Enums
         Html5,
 
         [UiInfo(Class = "apple")]
-        Mac
+        Mac,
+
+        [UiInfo(Class = "gamepad")]
+        NES
     }
 }
