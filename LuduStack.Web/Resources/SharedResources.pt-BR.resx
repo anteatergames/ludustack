@@ -4310,4 +4310,12 @@
     <value>A Equipe</value>
     <comment>Game Jam</comment>
   </data>
+  <data name="filter" xml:space="preserve">
+    <value>filtro</value>
+    <comment>Generic</comment>
+  </data>
+  <data name="Not Implemented" xml:space="preserve">
+    <value>Não implementado</value>
+    <comment>Generic</comment>
+  </data>
 </root>

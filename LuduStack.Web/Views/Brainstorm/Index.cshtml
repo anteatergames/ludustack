@@ -104,6 +104,17 @@
                 <div class="brainstorm-box">
                     <p>Here you can vote and discuss on suggestions from other users to improve the ludustack platform.. You can even create your own brainstorm session to discuss ideas from everyone about your own project.</p>
                 </div>
+                <div class="bg-white bordered mt-2">
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label class="col-form-label text-capitalize">@SharedLocalizer["filter"]</label>
+                            <select id="ddlFilter" asp-items="Html.GetEnumSelectList<BrainstormIdeaStatus>()" class="form-control" data-placeholder="@SharedLocalizer["Choose the status to filter"]">
+                                <option value="0">@SharedLocalizer["Not Implemented"]</option>
+                                <option value="99" class="text-capitalize">@SharedLocalizer["all"]</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
