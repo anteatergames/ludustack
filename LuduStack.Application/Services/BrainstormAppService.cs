@@ -293,11 +293,11 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public async Task<OperationResultListVo<BrainstormIdeaViewModel>> GetAllBySessionId(Guid userId, Guid sessionId)
+        public async Task<OperationResultListVo<BrainstormIdeaViewModel>> GetAllBySessionId(Guid userId, Guid sessionId, int? filter)
         {
             try
             {
-                IEnumerable<BrainstormIdea> allIdeas = await mediator.Query<GetBrainstormIdeaQuery, IEnumerable<BrainstormIdea>>(new GetBrainstormIdeaQuery(x => x.SessionId == sessionId));
+                IEnumerable<BrainstormIdea> allIdeas = await mediator.Query<GetBrainstormIdeaQuery, IEnumerable<BrainstormIdea>>(new GetBrainstormIdeaQuery(x => x.SessionId == sessionId, filter));
 
                 IEnumerable<BrainstormIdeaViewModel> vms = mapper.Map<IEnumerable<BrainstormIdea>, IEnumerable<BrainstormIdeaViewModel>>(allIdeas);
 
@@ -311,7 +311,7 @@ namespace LuduStack.Application.Services
                     idea.CommentCount = idea.Comments.Count;
                 }
 
-                vms = vms.OrderByDescending(x => x.Score).ThenByDescending(x => x.CreateDate);
+                vms = vms.OrderByDescending(x => x.Score).ThenByDescending(x => x.Status).ThenByDescending(x => x.CreateDate);
 
                 return new OperationResultListVo<BrainstormIdeaViewModel>(vms);
             }

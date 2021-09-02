@@ -53,6 +53,9 @@ namespace LuduStack.Domain.Core.Enums
         Metroidvania = 16,
 
         [UiInfo(Display = "MMORPG", Class = "navy")]
-        MmoRpg = 17
+        MmoRpg = 17,
+
+        [UiInfo(Display = "Puzzle", Class = "aqua")]
+        Puzzle = 18
     }
 }

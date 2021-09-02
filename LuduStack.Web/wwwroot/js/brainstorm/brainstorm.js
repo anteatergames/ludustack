@@ -20,7 +20,7 @@
         details = window.location.href.indexOf('details') > -1;
 
         if (!newIdea && !details) {
-            loadSession();
+            loadSession(0);
         }
 
         objs.ddlStatus.removeClass('invisible').show();
@@ -34,11 +34,13 @@
         selectors.btnSave = '.btn-save';
         selectors.form = $("#frmBrainstormIdeaSave");
         selectors.ddlStatus = '#ddlStatus';
+        selectors.ddlFilter = '#ddlFilter';
     }
 
     function cacheObjects() {
         objs.container = $(selectors.container);
         objs.ddlStatus = $(selectors.ddlStatus);
+        objs.ddlFilter = $(selectors.ddlFilter);
     }
 
     function bindAll() {
@@ -47,6 +49,7 @@
         bindBtnSave();
         bindBtnVote();
         bindStatusChange();
+        bindfilterChange();
     }
 
     function bindStatusChange() {
@@ -127,7 +130,13 @@
         });
     }
 
-    function loadSession() {
+    function bindfilterChange() {
+        objs.container.on('change', selectors.ddlFilter, function () {
+            loadSession($(this).val());
+        });
+    }
+
+    function loadSession(filter) {
         selectors.list.html(MAINMODULE.Default.Spinner);
 
         var url = "/list";
@@ -136,6 +145,10 @@
 
         if (sessionId) {
             url += '/' + sessionId;
+        }
+
+        if (filter !== null && filter !== undefined) {
+            url += '?filter=' + filter;
         }
 
         MAINMODULE.Ajax.LoadHtml(rootUrl + url, selectors.list);

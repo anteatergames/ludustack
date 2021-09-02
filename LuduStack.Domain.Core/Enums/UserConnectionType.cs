@@ -11,6 +11,9 @@ namespace LuduStack.Domain.Core.Enums
         Mentor = 2,
 
         [UiInfo(Display = "Pupil")]
-        Pupil = 3
+        Pupil = 3,
+
+        [UiInfo(Display = "Fellow Developer")]
+        FellowDeveloper = 4
     }
 }

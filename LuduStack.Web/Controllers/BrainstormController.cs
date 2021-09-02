@@ -110,9 +110,9 @@ namespace LuduStack.Web.Controllers
         [AllowAnonymous]
         [Route("brainstorm/list/{sessionId:guid}")]
         [Route("brainstorm/list")]
-        public async Task<PartialViewResult> List(Guid sessionId)
+        public async Task<PartialViewResult> List(Guid sessionId, int? filter)
         {
-            OperationResultListVo<BrainstormIdeaViewModel> serviceResult = await brainstormAppService.GetAllBySessionId(CurrentUserId, sessionId);
+            OperationResultListVo<BrainstormIdeaViewModel> serviceResult = await brainstormAppService.GetAllBySessionId(CurrentUserId, sessionId, filter);
 
             IEnumerable<BrainstormIdeaViewModel> items = serviceResult.Value;
 
