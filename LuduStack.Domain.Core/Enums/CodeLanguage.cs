@@ -17,6 +17,9 @@ namespace LuduStack.Domain.Core.Enums
         Javascript,
 
         [Display(Name = "GML")]
-        Gml
+        Gml,
+
+        [Display(Name = "Assembly")]
+        Assembly
     }
 }
