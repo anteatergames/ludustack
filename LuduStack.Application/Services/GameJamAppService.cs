@@ -363,7 +363,14 @@ namespace LuduStack.Application.Services
                         Game relatedGame = games.FirstOrDefault(x => x.Id == vm.GameId);
                         if (relatedGame != null)
                         {
-                            vm.FeaturedImage = UrlFormatter.FormatFeaturedImageUrl(relatedGame.UserId, relatedGame.ThumbnailUrl, ImageRenderType.Full);
+                            if (Constants.DefaultGameThumbnail.Contains(relatedGame.ThumbnailUrl))
+                            {
+                                vm.FeaturedImage = UrlFormatter.FormatFeaturedImageUrl(vm.UserId, Constants.DefaultGameThumbnail, ImageRenderType.Full);
+                            }
+                            else
+                            {
+                                vm.FeaturedImage = UrlFormatter.FormatFeaturedImageUrl(relatedGame.UserId, relatedGame.ThumbnailUrl, ImageRenderType.Full);
+                            }
                         }
                     }
                     else
