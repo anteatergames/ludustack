@@ -55,8 +55,8 @@ namespace LuduStack.Domain.Messaging.Queries.Brainstorm
 
         private static IQueryable<BrainstormIdea> ApplyFilter(IQueryable<BrainstormIdea> query, int? filter)
         {
-            var validStatus = Enum.GetValues(typeof(BrainstormIdeaStatus)).Cast<BrainstormIdeaStatus>();
-            var notImplementedStatuses = validStatus.Where(x => x != BrainstormIdeaStatus.Implemented);
+            IEnumerable<BrainstormIdeaStatus> validStatus = Enum.GetValues(typeof(BrainstormIdeaStatus)).Cast<BrainstormIdeaStatus>();
+            IEnumerable<BrainstormIdeaStatus> notImplementedStatuses = validStatus.Where(x => x != BrainstormIdeaStatus.Implemented);
 
             if (filter.HasValue)
             {

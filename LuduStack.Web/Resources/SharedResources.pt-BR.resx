@@ -4318,4 +4318,8 @@
     <value>Não implementado</value>
     <comment>Generic</comment>
   </data>
+  <data name="submission window" xml:space="preserve">
+    <value>janela de entrega</value>
+    <comment>Game Jam</comment>
+  </data>
 </root>
