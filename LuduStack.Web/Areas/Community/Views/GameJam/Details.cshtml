@@ -19,8 +19,11 @@
     var authorLink = string.Format("<a href=\"{0}\" class=\"boldlink text-nowrap\">{1}</a>", authorUrl, Model.AuthorName);
     var createDateLink = string.Format("<a class=\"text-muted\" target=\"_blank\" href=\"https://www.timeanddate.com/worldclock/fixedtime.html?iso={0}\">{1}</a>", Model.CreateDate.Date.ToUniversalTime().ToString("s", System.Globalization.CultureInfo.InvariantCulture), Model.CreateDateToDisplay.ToString());
     var startDateLink = string.Format("<a class=\"text-muted\" target=\"_blank\" href=\"https://www.timeanddate.com/worldclock/fixedtime.html?iso={0}\">{1}</a>", Model.StartDate.ToUniversalTime().ToString("s", System.Globalization.CultureInfo.InvariantCulture), Model.StartDateToDisplay.ToString());
-    var deadLineDateLink = string.Format("<a class=\"text-muted\" target=\"_blank\" href=\"https://www.timeanddate.com/worldclock/fixedtime.html?iso={0}\">{1}</a>", Model.EntryDeadline.ToUniversalTime().ToString("s", System.Globalization.CultureInfo.InvariantCulture), Model.EntryDeadlineToDisplay.ToString());
+    var deadLineDateLink = string.Format("<a class=\"text-muted\" target=\"_blank\" href=\"https://www.timeanddate.com/worldclock/fixedtime.html?iso={0}\">{1}</a>", Model.EntryDeadline.ToUniversalTime().AddSeconds(-1).ToString("s", System.Globalization.CultureInfo.InvariantCulture), Model.EntryDeadlineToDisplay.AddSeconds(-1).ToString());
+    var votingStatDateLink = string.Format("<a class=\"text-muted\" target=\"_blank\" href=\"https://www.timeanddate.com/worldclock/fixedtime.html?iso={0}\">{1}</a>", Model.EntryDeadline.ToUniversalTime().ToString("s", System.Globalization.CultureInfo.InvariantCulture), Model.EntryDeadlineToDisplay.ToString());
     var votingEndDateLink = string.Format("<a class=\"text-muted\" target=\"_blank\" href=\"https://www.timeanddate.com/worldclock/fixedtime.html?iso={0}\">{1}</a>", Model.VotingEndDateToDisplay.ToUniversalTime().ToString("s", System.Globalization.CultureInfo.InvariantCulture), Model.VotingEndDateToDisplay.ToString());
+
+
 
     Model.Permissions.CanJoin = Model.Permissions.CanJoin && User.Identity.IsAuthenticated;
 
@@ -278,7 +281,7 @@
                             </li>
                             <li class="progress__step@(Model.PhaseNumber > 3 ? " is-complete" : Model.PhaseNumber == 3 ? " is-active" : string.Empty)" data-step="3" data-container="body" data-toggle="popover" data-placement="top" title="@SharedLocalizer["Votings Start"]" data-content="@Model.EntryDeadlineToDisplay">
                                 <span class="d-block">@SharedLocalizer["Voting"]</span>
-                                <span class="d-none d-sm-block datetime">@Html.Raw(deadLineDateLink)</span>
+                                <span class="d-none d-sm-block datetime">@Html.Raw(votingStatDateLink)</span>
                             </li>
                             <li data-step="4" class="progress__last@(Model.PhaseNumber > 4 ? " is-complete" : Model.PhaseNumber == 4 ? " is-active" : string.Empty)" data-container="body" data-toggle="popover" data-placement="top" title="@SharedLocalizer["Results Date"]" data-content="@Model.ResultDateToDisplay">
                                 <span class="d-block">@SharedLocalizer["Results"]</span>
