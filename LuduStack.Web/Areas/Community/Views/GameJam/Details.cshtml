@@ -212,25 +212,28 @@
                         @Html.Raw(Model.Description)
                     </div>
 
-                    <div class="d-flex flex-row justify-content-center mt-n4">
-                        <div class="bg-white">
-                            @if (Model.Permissions.CanJoin)
-                            {
-                                if (Model.CurrentUserJoined)
+                    @if (Model.CurrentPhase == GameJamPhase.Warmup || Model.CurrentPhase == GameJamPhase.Submission)
+                    {
+                        <div class="d-flex flex-row justify-content-center mt-n4">
+                            <div class="bg-white">
+                                @if (Model.Permissions.CanJoin)
                                 {
-                                    <a class="btn btn-lg btn-outline-success text-uppercase p-4" href="@Url.Action("myentry", "gamejam", new { area = "community", jamHandler = Model.Handler })">@SharedLocalizer["my game"]</a>
+                                    if (Model.CurrentUserJoined)
+                                    {
+                                        <a class="btn btn-lg btn-outline-success text-uppercase p-4" href="@Url.Action("myentry", "gamejam", new { area = "community", jamHandler = Model.Handler })">@SharedLocalizer["my game"]</a>
+                                    }
+                                    else
+                                    {
+                                        <button class="btn btn-lg btn-success btn-join text-uppercase p-4" data-url="@Url.Action("join", "gamejam", new { area = "community", jamId = Model.Id, handler = Model.Handler })">@SharedLocalizer["join now"]</button>
+                                    }
                                 }
                                 else
                                 {
-                                    <button class="btn btn-lg btn-success btn-join text-uppercase p-4" data-url="@Url.Action("join", "gamejam", new { area = "community", jamId = Model.Id, handler = Model.Handler })">@SharedLocalizer["join now"]</button>
+                                    <button class="btn btn-lg btn-success disabled btn-cantjoin text-uppercase p-4" data-msg="@SharedLocalizer[Model.CantJoinMessage ?? string.Empty]">@SharedLocalizer["join now"]</button>
                                 }
-                            }
-                            else
-                            {
-                                <button class="btn btn-lg btn-success disabled btn-cantjoin text-uppercase p-4" data-msg="@SharedLocalizer[Model.CantJoinMessage ?? string.Empty]">@SharedLocalizer["join now"]</button>
-                            }
+                            </div>
                         </div>
-                    </div>
+                    }
 
                     <div class="mt-2">
                         <div class="w-100 text-center">
