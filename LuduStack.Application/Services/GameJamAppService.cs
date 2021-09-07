@@ -1079,34 +1079,36 @@ namespace LuduStack.Application.Services
 
             bool iAmJudge = gameJamVm.Judges != null && gameJamVm.Judges.Select(x => x.UserId).Any(x => x == currentUserId);
             bool jamPhaseAllowsVote = gameJamVm.CurrentPhase == GameJamPhase.Voting;
-            bool iCanVote = iAmJudge;
 
-            iCanVote = CheckCanVoteConditions(currentUserId, gameJamVm, allParticipantIds, iCanVote);
+            bool iCanVote = CheckCanVoteConditions(currentUserId, iAmJudge, gameJamVm.Voters, allParticipantIds);
 
             vm.Permissions.CanVote = !vm.Permissions.IsMe && jamPhaseAllowsVote && vm.GameId != Guid.Empty && iCanVote;
         }
 
-        private static bool CheckCanVoteConditions(Guid currentUserId, GameJamViewModel gameJamVm, IEnumerable<GameJamTeamMember> allParticipantIds, bool iCanVote)
+        private static bool CheckCanVoteConditions(Guid currentUserId, bool iAmJudge, GameJamVoters gameJamVoters, IEnumerable<GameJamTeamMember> allParticipantIds)
         {
-            switch (gameJamVm.Voters)
+            bool iCanVote = false;
+
+            switch (gameJamVoters)
             {
+                case GameJamVoters.JudgesOnly:
+                    iCanVote = currentUserId != Guid.Empty && iAmJudge;
+                    break;
+
                 case GameJamVoters.JudgesAndSubmitters:
-                    iCanVote = iCanVote || allParticipantIds.Any(x => x.IsSubmitter && x.UserId == currentUserId);
+                    iCanVote = currentUserId != Guid.Empty && allParticipantIds.Any(x => x.IsSubmitter && x.UserId == currentUserId);
                     break;
 
                 case GameJamVoters.JudgesAndTeamMembers:
-                    iCanVote = iCanVote || allParticipantIds.Any(x => x.UserId == currentUserId);
+                    iCanVote = currentUserId != Guid.Empty && allParticipantIds.Any(x => x.UserId == currentUserId);
                     break;
 
                 case GameJamVoters.JudgesAndNonParticipants:
-                    iCanVote = (iCanVote || !allParticipantIds.Any(x => x.UserId == currentUserId)) && currentUserId != Guid.Empty;
+                    iCanVote = currentUserId != Guid.Empty && !allParticipantIds.Any(x => x.UserId == currentUserId) && currentUserId != Guid.Empty;
                     break;
 
                 case GameJamVoters.JudgesAndTheWholeCommunity:
-                    iCanVote = iCanVote || currentUserId != Guid.Empty;
-                    break;
-                default:
-                    iCanVote = iCanVote || allParticipantIds.Any(x => x.IsSubmitter && x.UserId == currentUserId);
+                    iCanVote = currentUserId != Guid.Empty;
                     break;
             }
 
