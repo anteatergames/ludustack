@@ -714,7 +714,6 @@ namespace LuduStack.Application.Services
                 }
 
                 SetGameJamImagesToShow(gameJamVm, false);
-                vm.GameJam = gameJamVm;
 
                 UserProfileEssentialVo authorProfile = await mediator.Query<GetBasicUserProfileDataByUserIdQuery, UserProfileEssentialVo>(new GetBasicUserProfileDataByUserIdQuery(model.UserId));
 
@@ -733,7 +732,9 @@ namespace LuduStack.Application.Services
 
                 IEnumerable<GameJamTeamMember> allParticipantIds = await mediator.Query<GetGameJamParticipants, IEnumerable<GameJamTeamMember>>(new GetGameJamParticipants(gameJamVm.Id));
 
-                SetEntryPermissions(currentUserId, currentUserIsAdmin, gameJamVm, vm, allParticipantIds);
+                SetJamPermissions(currentUserId, currentUserIsAdmin, gameJamVm);
+                vm.GameJam = gameJamVm;
+                SetEntryPermissions(currentUserId, currentUserIsAdmin, vm, allParticipantIds);
 
                 vm.SubmissionDateForDisplay = vm.SubmissionDate != default ? vm.SubmissionDate.AddHours(vm.GameJam.TimeZoneDifference) : default;
 
@@ -787,9 +788,6 @@ namespace LuduStack.Application.Services
             }
 
             vm.TotalScore = medians.Any() ? medians.Median() : 0;
-
-            vm.CanShowFinalResults = gameJamVm.CurrentPhase == GameJamPhase.Finished;
-            vm.CanShowResults = vm.CanShowFinalResults || gameJamVm.CurrentPhase == GameJamPhase.Results || (gameJamVm.CurrentPhase == GameJamPhase.Voting && !gameJamVm.HideRealtimeResults);
 
             vm.IsOverallVote = !gameJamVm.Criteria.Any(x => x.Type != GameJamCriteriaType.Overall);
         }
@@ -933,7 +931,7 @@ namespace LuduStack.Application.Services
         private async Task SetProfiles(GameJamViewModel vm)
         {
             List<Guid> userIds = vm.Judges.Select(x => x.UserId).ToList();
-            //userIds.Add(vm.UserId);
+            userIds.Add(vm.UserId);
 
             IEnumerable<UserProfileEssentialVo> profiles = await mediator.Query<GetBasicUserProfileDataByUserIdsQuery, IEnumerable<UserProfileEssentialVo>>(new GetBasicUserProfileDataByUserIdsQuery(userIds));
 
@@ -1069,20 +1067,22 @@ namespace LuduStack.Application.Services
             vm.Permissions.CanSubmit = vm.CurrentPhase == GameJamPhase.Submission;
         }
 
-        private static void SetEntryPermissions(Guid currentUserId, bool currentUserIsAdmin, GameJamViewModel gameJamVm, GameJamEntryViewModel vm, IEnumerable<GameJamTeamMember> allParticipantIds)
+        private static void SetEntryPermissions(Guid currentUserId, bool currentUserIsAdmin, GameJamEntryViewModel vm, IEnumerable<GameJamTeamMember> allParticipantIds)
         {
-            SetJamPermissions(currentUserId, currentUserIsAdmin, gameJamVm);
 
             vm.Permissions.IsMe = currentUserId == vm.UserId || vm.TeamMembers.Any(x => x.UserId == currentUserId);
             vm.Permissions.IsAdmin = currentUserIsAdmin;
-            vm.Permissions.CanSubmit = vm.Permissions.IsMe && (gameJamVm.Permissions.CanSubmit || (gameJamVm.CurrentPhase == GameJamPhase.Voting && vm.LateSubmission));
+            vm.Permissions.CanSubmit = vm.Permissions.IsMe && (vm.GameJam.Permissions.CanSubmit || (vm.GameJam.CurrentPhase == GameJamPhase.Voting && vm.LateSubmission));
 
-            bool iAmJudge = gameJamVm.Judges != null && gameJamVm.Judges.Select(x => x.UserId).Any(x => x == currentUserId);
-            bool jamPhaseAllowsVote = gameJamVm.CurrentPhase == GameJamPhase.Voting;
+            bool iAmJudge = vm.GameJam.Judges != null && vm.GameJam.Judges.Select(x => x.UserId).Any(x => x == currentUserId);
+            bool jamPhaseAllowsVote = vm.GameJam.CurrentPhase == GameJamPhase.Voting;
 
-            bool iCanVote = CheckCanVoteConditions(currentUserId, iAmJudge, gameJamVm.Voters, allParticipantIds);
+            bool iCanVote = CheckCanVoteConditions(currentUserId, iAmJudge, vm.GameJam.Voters, allParticipantIds);
 
             vm.Permissions.CanVote = !vm.Permissions.IsMe && jamPhaseAllowsVote && vm.GameId != Guid.Empty && iCanVote;
+
+            vm.CanShowFinalResults = vm.GameJam.CurrentPhase == GameJamPhase.Finished;
+            vm.CanShowResults = vm.GameJam.Permissions.IsMe || vm.CanShowFinalResults || vm.GameJam.CurrentPhase == GameJamPhase.Results || (vm.GameJam.CurrentPhase == GameJamPhase.Voting && !vm.GameJam.HideRealtimeResults);
         }
 
         private static bool CheckCanVoteConditions(Guid currentUserId, bool iAmJudge, GameJamVoters gameJamVoters, IEnumerable<GameJamTeamMember> allParticipantIds)
