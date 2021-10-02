@@ -945,18 +945,21 @@ namespace LuduStack.Application.Services
             vm.JudgesProfiles = new List<ProfileViewModel>();
             foreach (UserProfileEssentialVo profileEssential in profiles)
             {
-                ProfileViewModel profile = new ProfileViewModel
+                if (vm.Judges.Any(x => x.UserId == profileEssential.UserId))
                 {
-                    UserId = profileEssential.UserId,
-                    Handler = profileEssential.Handler,
-                    Location = profileEssential.Location,
-                    CreateDate = profileEssential.CreateDate,
-                    Name = profileEssential.Name,
-                    ProfileImageUrl = UrlFormatter.ProfileImage(profileEssential.UserId, Constants.HugeAvatarSize),
-                    CoverImageUrl = UrlFormatter.ProfileCoverImage(profileEssential.UserId, profileEssential.Id, profileEssential.LastUpdateDate, profileEssential.HasCoverImage, Constants.ProfileCoverSize)
-                };
+                    ProfileViewModel profile = new ProfileViewModel
+                    {
+                        UserId = profileEssential.UserId,
+                        Handler = profileEssential.Handler,
+                        Location = profileEssential.Location,
+                        CreateDate = profileEssential.CreateDate,
+                        Name = profileEssential.Name,
+                        ProfileImageUrl = UrlFormatter.ProfileImage(profileEssential.UserId, Constants.HugeAvatarSize),
+                        CoverImageUrl = UrlFormatter.ProfileCoverImage(profileEssential.UserId, profileEssential.Id, profileEssential.LastUpdateDate, profileEssential.HasCoverImage, Constants.ProfileCoverSize)
+                    };
 
-                vm.JudgesProfiles.Add(profile);
+                    vm.JudgesProfiles.Add(profile);
+                }
             }
         }
 
