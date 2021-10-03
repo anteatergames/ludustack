@@ -68,7 +68,7 @@ namespace LuduStack.Domain.Messaging
 
             foreach (GameJamCriteria criteria in gameJam.Criteria)
             {
-                entryList = entryList.OrderByDescending(x => x.CriteriaResults.FirstOrDefault(y => y.Criteria == criteria.Type)?.Score).ToList();
+                entryList = entryList.OrderByDescending(x => x.CriteriaResults.FirstOrDefault(y => y.Criteria == criteria.Type)?.Score).ThenBy(x => x.SubmissionDate).ToList();
 
                 for (int i = 0; i < entryList.Count; i++)
                 {
@@ -100,6 +100,7 @@ namespace LuduStack.Domain.Messaging
 
         private void CalculateScoreForEntry(GameJam gameJam, GameJamEntry entry)
         {
+            int judgesCalculationThreshold = 3;
             List<decimal> medians = new List<decimal>();
             if (entry.CriteriaResults == null)
             {
@@ -113,7 +114,14 @@ namespace LuduStack.Domain.Messaging
                 IEnumerable<GameJamVote> allVotesForThisCategory = entry.Votes?.Where(x => x.CriteriaType == criteria.Type);
                 if (allVotesForThisCategory != null && allVotesForThisCategory.Any())
                 {
-                    median = allVotesForThisCategory.Median(x => (x.Score * criteria.Weight));
+                    if (gameJam.Judges.Count > judgesCalculationThreshold)
+                    {
+                        median = allVotesForThisCategory.Median(x => (x.Score * criteria.Weight));
+                    }
+                    else
+                    {
+                        median = allVotesForThisCategory.Average(x => (x.Score * criteria.Weight));
+                    }
                 }
 
                 medians.Add(median);
@@ -135,7 +143,14 @@ namespace LuduStack.Domain.Messaging
                 }
             }
 
-            entry.TotalScore = medians.Any() ? medians.Median() : 0;
+            if (gameJam.Judges.Count > judgesCalculationThreshold)
+            {
+                entry.TotalScore = medians.Any() ? medians.Median() : 0;
+            }
+            else
+            {
+                entry.TotalScore = medians.Any() ? medians.Average() : 0;
+            }
         }
     }
 }

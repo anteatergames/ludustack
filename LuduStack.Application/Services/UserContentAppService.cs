@@ -172,7 +172,7 @@ namespace LuduStack.Application.Services
                 UserContent model;
                 Poll pollModel = null;
 
-                bool isSpam = await CheckSpam(viewModel.Id, viewModel.Content);
+                bool isSpam = await CheckSpam(viewModel.Id, currentUserId, viewModel.Content);
 
                 bool isNew = viewModel.Id == Guid.Empty;
 
@@ -216,14 +216,14 @@ namespace LuduStack.Application.Services
             }
         }
 
-        private async Task<bool> CheckSpam(Guid id, string content)
+        private async Task<bool> CheckSpam(Guid id, Guid userId, string content)
         {
             IEnumerable<UserContent> all = await mediator.Query<GetUserContentQuery, IEnumerable<UserContent>>(new GetUserContentQuery());
 
             if (all.Any())
             {
                 UserContent latest = all.OrderBy(x => x.CreateDate).Last();
-                bool sameContent = latest.Content.Trim().ToLower().Replace(" ", string.Empty).Equals(content.Trim().ToLower().Replace(" ", string.Empty));
+                bool sameContent = latest.Content.Trim().ToLower().Replace(" ", string.Empty).Equals(content.Trim().ToLower().Replace(" ", string.Empty)) && latest.UserId == userId;
                 bool sameId = latest.Id == id;
 
                 return sameContent && !sameId;
