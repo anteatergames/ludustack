@@ -30,23 +30,23 @@ namespace LuduStack.Application.Interfaces
 
         Task<OperationResultVo> GetMyUntranslatedGames(Guid currentUserId);
 
-        Task<OperationResultVo> GetTranslations(Guid currentUserId, Guid projectId, SupportedLanguage language);
+        Task<OperationResultVo> GetTranslations(Guid currentUserId, Guid projectId, LocalizationLanguage language);
 
         Task<OperationResultVo> GetTerms(Guid currentUserId, Guid projectId);
 
         Task<OperationResultVo> SaveEntry(Guid currentUserId, Guid projectId, bool currentUserIsOwner, bool currentUserHelped, LocalizationEntryViewModel vm);
 
-        Task<OperationResultVo> ReadTermsSheet(Guid currentUserId, Guid projectId, IEnumerable<KeyValuePair<int, SupportedLanguage>> columns, IFormFile termsFile);
+        Task<OperationResultVo> ReadTermsSheet(Guid currentUserId, Guid projectId, IEnumerable<KeyValuePair<int, LocalizationLanguage>> columns, IFormFile termsFile);
 
         OperationResultVo SetTerms(Guid currentUserId, Guid projectId, IEnumerable<LocalizationTermViewModel> terms);
 
-        OperationResultVo SaveEntries(Guid currentUserId, Guid projectId, SupportedLanguage language, IEnumerable<LocalizationEntryViewModel> entries);
+        OperationResultVo SaveEntries(Guid currentUserId, Guid projectId, LocalizationLanguage language, IEnumerable<LocalizationEntryViewModel> entries);
 
         Task<OperationResultVo> GetStatsById(Guid currentUserId, Guid id);
 
         OperationResultVo GetPercentageByGameId(Guid currentUserId, Guid gameId);
 
-        OperationResultVo GetXml(Guid currentUserId, Guid projectId, SupportedLanguage? language, bool fillGaps);
+        OperationResultVo GetXml(Guid currentUserId, Guid projectId, LocalizationLanguage? language, bool fillGaps);
 
         Task<OperationResultVo> GetContributorsFile(Guid currentUserId, Guid projectId, ExportContributorsType type);
 

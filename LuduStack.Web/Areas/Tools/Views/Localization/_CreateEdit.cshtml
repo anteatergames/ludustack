@@ -8,7 +8,7 @@
 
     var userGames = ViewBag.UserGames as List<SelectListItem>;
 
-    var languages = Html.GetEnumSelectList<SupportedLanguage>().Where(x => x.Text != Model.PrimaryLanguage.ToString());
+    var languages = Html.GetEnumSelectList<LocalizationLanguage>().Where(x => x.Text != Model.PrimaryLanguage.ToString());
 
     var isNew = Model.Id == Guid.Empty;
 }
@@ -99,7 +99,7 @@
                             <span class="col-form-label">
                                 <i class="fas fa-exclamation-circle" data-container="body" data-toggle="popover" data-trigger="hover" data-placement="top" data-html="true" data-content="@SharedLocalizer["Select the language that you are writing your terms.<br />You won't be able to change this later."]" aria-hidden="true"></i>
                             </span>
-                            <select asp-for="PrimaryLanguage" asp-items="Html.GetEnumSelectList<SupportedLanguage>()" class="form-control select2" data-placeholder="@SharedLocalizer["Set the primary language"]" tabindex="-1" aria-hidden="true"></select>
+                            <select asp-for="PrimaryLanguage" asp-items="Html.GetEnumSelectList<LocalizationLanguage>()" class="form-control select2" data-placeholder="@SharedLocalizer["Set the primary language"]" tabindex="-1" aria-hidden="true"></select>
                             <span asp-validation-for="PrimaryLanguage" class="text-danger"></span>
                         }
                     </div>

@@ -8,7 +8,7 @@ namespace LuduStack.Domain.Models
     {
         public Guid TermId { get; set; }
 
-        public SupportedLanguage Language { get; set; }
+        public LocalizationLanguage Language { get; set; }
 
         public string Value { get; set; }
 

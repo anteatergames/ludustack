@@ -138,6 +138,8 @@ namespace LuduStack.Application.Services
                     return new OperationResultVo<LocalizationViewModel>("Translation Project not found!");
                 }
 
+                model.Terms = model.Terms.Where(x => !string.IsNullOrWhiteSpace(x.Key)).ToList();
+
                 UserProfileEssentialVo profile = await mediator.Query<GetBasicUserProfileDataByUserIdQuery, UserProfileEssentialVo>(new GetBasicUserProfileDataByUserIdQuery(model.UserId));
 
                 LocalizationViewModel vm = mapper.Map<LocalizationViewModel>(model);
@@ -262,7 +264,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public async Task<OperationResultVo> GetTranslations(Guid currentUserId, Guid projectId, SupportedLanguage language)
+        public async Task<OperationResultVo> GetTranslations(Guid currentUserId, Guid projectId, LocalizationLanguage language)
         {
             try
             {
@@ -329,7 +331,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo SaveEntries(Guid currentUserId, Guid projectId, SupportedLanguage language, IEnumerable<LocalizationEntryViewModel> entries)
+        public OperationResultVo SaveEntries(Guid currentUserId, Guid projectId, LocalizationLanguage language, IEnumerable<LocalizationEntryViewModel> entries)
         {
             try
             {
@@ -430,9 +432,9 @@ namespace LuduStack.Application.Services
 
                 vm.TermCount = model.Terms.Count;
 
-                IEnumerable<IGrouping<SupportedLanguage, LocalizationEntry>> languages = model.Entries.GroupBy(x => x.Language);
+                IEnumerable<IGrouping<LocalizationLanguage, LocalizationEntry>> languages = model.Entries.GroupBy(x => x.Language);
 
-                foreach (IGrouping<SupportedLanguage, LocalizationEntry> language in languages)
+                foreach (IGrouping<LocalizationLanguage, LocalizationEntry> language in languages)
                 {
                     TranslationStatsLanguageViewModel languageEntry = new TranslationStatsLanguageViewModel
                     {
@@ -481,7 +483,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public OperationResultVo GetXml(Guid currentUserId, Guid projectId, SupportedLanguage? language, bool fillGaps)
+        public OperationResultVo GetXml(Guid currentUserId, Guid projectId, LocalizationLanguage? language, bool fillGaps)
         {
             try
             {
@@ -541,7 +543,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public async Task<OperationResultVo> ReadTermsSheet(Guid currentUserId, Guid projectId, IEnumerable<KeyValuePair<int, SupportedLanguage>> columns, IFormFile termsFile)
+        public async Task<OperationResultVo> ReadTermsSheet(Guid currentUserId, Guid projectId, IEnumerable<KeyValuePair<int, LocalizationLanguage>> columns, IFormFile termsFile)
         {
             try
             {
@@ -844,13 +846,13 @@ namespace LuduStack.Application.Services
             return key;
         }
 
-        private static void FillEntries(DataTable dataTable, List<LocalizationTerm> terms, List<LocalizationEntry> entries, IEnumerable<KeyValuePair<int, SupportedLanguage>> columns)
+        private static void FillEntries(DataTable dataTable, List<LocalizationTerm> terms, List<LocalizationEntry> entries, IEnumerable<KeyValuePair<int, LocalizationLanguage>> columns)
         {
             foreach (DataRow row in dataTable.Rows)
             {
                 object term = row.ItemArray[0];
 
-                foreach (KeyValuePair<int, SupportedLanguage> col in columns)
+                foreach (KeyValuePair<int, LocalizationLanguage> col in columns)
                 {
                     int colNumber = col.Key - 1;
 

@@ -198,7 +198,7 @@ namespace LuduStack.Web.Areas.Tools.Controllers
         }
 
         [Route("tools/localization/exportxml/{projectId:guid}")]
-        public IActionResult ExportXml(Guid projectId, SupportedLanguage? language, bool fillGaps)
+        public IActionResult ExportXml(Guid projectId, LocalizationLanguage? language, bool fillGaps)
         {
             OperationResultVo result = translationAppService.GetXml(CurrentUserId, projectId, language, fillGaps);
 
@@ -391,7 +391,7 @@ namespace LuduStack.Web.Areas.Tools.Controllers
 
         [Authorize]
         [HttpPost("tools/localization/gettranslation/{projectId:guid}")]
-        public async Task<IActionResult> GetTranslation(Guid projectId, SupportedLanguage language)
+        public async Task<IActionResult> GetTranslation(Guid projectId, LocalizationLanguage language)
         {
             try
             {
@@ -444,7 +444,7 @@ namespace LuduStack.Web.Areas.Tools.Controllers
         [Authorize]
         [HttpPost("tools/localization/saveentries/{projectId:guid}")]
         [RequestFormLimits(ValueCountLimit = int.MaxValue)]
-        public IActionResult SaveEntries(Guid projectId, SupportedLanguage language, IEnumerable<LocalizationEntryViewModel> entries)
+        public IActionResult SaveEntries(Guid projectId, LocalizationLanguage language, IEnumerable<LocalizationEntryViewModel> entries)
         {
             try
             {
@@ -521,7 +521,7 @@ namespace LuduStack.Web.Areas.Tools.Controllers
         {
             try
             {
-                IEnumerable<KeyValuePair<int, SupportedLanguage>> kvList = columns.ToKeyValuePairs();
+                IEnumerable<KeyValuePair<int, LocalizationLanguage>> kvList = columns.ToKeyValuePairs();
 
                 OperationResultVo result = await translationAppService.ReadTermsSheet(CurrentUserId, projectId, kvList, termsFile);
 

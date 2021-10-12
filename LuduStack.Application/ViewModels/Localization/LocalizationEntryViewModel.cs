@@ -7,7 +7,7 @@ namespace LuduStack.Application.ViewModels.Localization
     {
         public Guid TermId { get; set; }
 
-        public SupportedLanguage Language { get; set; }
+        public LocalizationLanguage Language { get; set; }
 
         public string Value { get; set; }
 
