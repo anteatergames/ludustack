@@ -38,7 +38,7 @@ namespace LuduStack.Domain.Services
             return gameIds;
         }
 
-        public IEnumerable<LocalizationEntry> GetEntries(Guid projectId, SupportedLanguage language)
+        public IEnumerable<LocalizationEntry> GetEntries(Guid projectId, LocalizationLanguage language)
         {
             List<LocalizationEntry> entries = localizationRepository.GetEntries(projectId, language).ToList();
 
@@ -193,10 +193,10 @@ namespace LuduStack.Domain.Services
 
             Localization project = await localizationRepository.GetById(projectId);
 
-            List<SupportedLanguage> languages = project.Entries.Select(x => x.Language).Distinct().ToList();
+            List<LocalizationLanguage> languages = project.Entries.Select(x => x.Language).Distinct().ToList();
             languages.Add(project.PrimaryLanguage);
 
-            foreach (SupportedLanguage language in languages)
+            foreach (LocalizationLanguage language in languages)
             {
                 string xmlText = GenerateLanguageXml(project, language, fillGaps);
 
@@ -210,7 +210,7 @@ namespace LuduStack.Domain.Services
             return xmlTexts;
         }
 
-        public async Task<InMemoryFileVo> GetXmlById(Guid projectId, SupportedLanguage language, bool fillGaps)
+        public async Task<InMemoryFileVo> GetXmlById(Guid projectId, LocalizationLanguage language, bool fillGaps)
         {
             Localization project = await localizationRepository.GetById(projectId);
 
@@ -239,7 +239,7 @@ namespace LuduStack.Domain.Services
             return percentage > 100 ? 100 : percentage;
         }
 
-        private static string GenerateLanguageXml(Localization project, SupportedLanguage language, bool fillGaps)
+        private static string GenerateLanguageXml(Localization project, LocalizationLanguage language, bool fillGaps)
         {
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("<resources>");

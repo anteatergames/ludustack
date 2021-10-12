@@ -26,9 +26,9 @@ namespace LuduStack.Domain.Interfaces.Repository
 
         IQueryable<LocalizationEntry> GetEntries(Guid translationProjectId);
 
-        IQueryable<LocalizationEntry> GetEntries(Guid projectId, SupportedLanguage language);
+        IQueryable<LocalizationEntry> GetEntries(Guid projectId, LocalizationLanguage language);
 
-        IQueryable<LocalizationEntry> GetEntries(Guid projectId, SupportedLanguage language, Guid termId);
+        IQueryable<LocalizationEntry> GetEntries(Guid projectId, LocalizationLanguage language, Guid termId);
 
         Task<bool> AddEntry(Guid translationProjectId, LocalizationEntry entry);
 

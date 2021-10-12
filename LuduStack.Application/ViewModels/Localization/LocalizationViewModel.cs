@@ -12,7 +12,7 @@ namespace LuduStack.Application.ViewModels.Localization
         public string Introduction { get; set; }
 
         [Display(Name = "Primary Language")]
-        public SupportedLanguage PrimaryLanguage { get; set; }
+        public LocalizationLanguage PrimaryLanguage { get; set; }
 
         [Display(Name = "Term Count")]
         public int TermCount { get; set; }

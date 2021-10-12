@@ -17,7 +17,7 @@ namespace LuduStack.Domain.Interfaces.Services
 
         double CalculatePercentage(int totalTerms, int translatedCount, int languageCount);
 
-        IEnumerable<LocalizationEntry> GetEntries(Guid projectId, SupportedLanguage language);
+        IEnumerable<LocalizationEntry> GetEntries(Guid projectId, LocalizationLanguage language);
 
         DomainActionPerformed AddEntry(Guid projectId, LocalizationEntry entry);
 
@@ -31,7 +31,7 @@ namespace LuduStack.Domain.Interfaces.Services
 
         Task<List<InMemoryFileVo>> GetXmlById(Guid projectId, bool fillGaps);
 
-        Task<InMemoryFileVo> GetXmlById(Guid projectId, SupportedLanguage language, bool fillGaps);
+        Task<InMemoryFileVo> GetXmlById(Guid projectId, LocalizationLanguage language, bool fillGaps);
 
         Task<List<Guid>> GetContributors(Guid projectId, ExportContributorsType type);
 

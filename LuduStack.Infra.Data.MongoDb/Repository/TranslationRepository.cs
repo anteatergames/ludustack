@@ -112,14 +112,14 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
             return DbSet.AsQueryable().Where(x => x.Id == translationProjectId).SelectMany(x => x.Entries);
         }
 
-        public IQueryable<LocalizationEntry> GetEntries(Guid projectId, SupportedLanguage language)
+        public IQueryable<LocalizationEntry> GetEntries(Guid projectId, LocalizationLanguage language)
         {
             IQueryable<LocalizationEntry> translations = DbSet.AsQueryable().Where(x => x.Id == projectId).SelectMany(x => x.Entries).Where(x => x.Language == language);
 
             return translations;
         }
 
-        public IQueryable<LocalizationEntry> GetEntries(Guid projectId, SupportedLanguage language, Guid termId)
+        public IQueryable<LocalizationEntry> GetEntries(Guid projectId, LocalizationLanguage language, Guid termId)
         {
             IQueryable<LocalizationEntry> translations = DbSet.AsQueryable().Where(x => x.Id == projectId).SelectMany(x => x.Entries).Where(x => x.Language == language && x.TermId == termId);
 

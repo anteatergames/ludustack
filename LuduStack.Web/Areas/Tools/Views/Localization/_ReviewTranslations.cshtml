@@ -4,7 +4,7 @@
 
     string lang = (string)ViewData["language"];
 
-    var languages = Html.GetEnumSelectList<SupportedLanguage>().Where(x => x.Text != Model.PrimaryLanguage.ToString()).ToList();
+    var languages = Html.GetEnumSelectList<LocalizationLanguage>().Where(x => x.Text != Model.PrimaryLanguage.ToString()).ToList();
 
     languages.ForEach(x => x.Selected = (x.Value.Equals(lang)));
 

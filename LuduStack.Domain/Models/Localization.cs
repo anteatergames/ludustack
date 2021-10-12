@@ -9,7 +9,7 @@ namespace LuduStack.Domain.Models
     {
         public Guid GameId { get; set; }
 
-        public SupportedLanguage PrimaryLanguage { get; set; }
+        public LocalizationLanguage PrimaryLanguage { get; set; }
 
         public string Introduction { get; set; }
 

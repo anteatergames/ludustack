@@ -17,7 +17,7 @@ namespace LuduStack.Application.ViewModels.Localization
 
     public class TranslationStatsLanguageViewModel
     {
-        public SupportedLanguage Language { get; set; }
+        public LocalizationLanguage Language { get; set; }
 
         public int EntryCount { get; set; }
 
