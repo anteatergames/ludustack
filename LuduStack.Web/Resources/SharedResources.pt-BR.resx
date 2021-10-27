@@ -4322,4 +4322,8 @@
     <value>janela de entrega</value>
     <comment>Game Jam</comment>
   </data>
+  <data name="store" xml:space="preserve">
+    <value>loja</value>
+    <comment>Generic</comment>
+  </data>
 </root>

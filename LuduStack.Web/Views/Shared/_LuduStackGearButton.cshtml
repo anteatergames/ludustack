@@ -1,0 +1,16 @@
+﻿@model string
+@{
+    Layout = null;
+    var text = string.IsNullOrWhiteSpace(Model) ? "gear" : SharedLocalizer[Model];
+}
+
+<div class="flex-square clickable rectangle bg-ludustack">
+    <div class="flex-square-inner">
+        <a href="https://gear.ludustack.com" target="_blank" rel="noopener noreferrer">
+            <div class="flex-square-inner-content text-white">
+                <div><i class="fas fa-3x fa-tshirt" aria-hidden="true"></i></div>
+                <div>@text</div>
+            </div>
+        </a>
+    </div>
+</div>
