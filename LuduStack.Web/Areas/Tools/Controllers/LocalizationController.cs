@@ -287,11 +287,11 @@ namespace LuduStack.Web.Areas.Tools.Controllers
                     IEnumerable<SelectListItemVo> games = castResultGames.Value;
 
                     List<SelectListItem> gamesDropDown = games.ToSelectList();
-                    ViewBag.UserGames = gamesDropDown;
+                    ViewData["UserGames"] = gamesDropDown;
                 }
                 else
                 {
-                    ViewBag.UserGames = new List<SelectListItem>();
+                    ViewData["UserGames"] = new List<SelectListItem>();
                 }
 
                 return View("CreateEditWrapper", model);

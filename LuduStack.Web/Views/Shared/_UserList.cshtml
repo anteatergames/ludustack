@@ -4,7 +4,7 @@
     ViewData["Title"] = SharedLocalizer["Registered Users"];
     ViewData["Description"] = SharedLocalizer["The awesome people that enjoy participating on our community. Each and every member is important, be asured."];
 
-    var showAds = (bool)(ViewBag.ShowAds ?? false);
+    var showAds = (bool)(ViewData["ShowAds"] ?? false);
 }
 
 <h1 class="sr-only">@ViewData["Title"]</h1>

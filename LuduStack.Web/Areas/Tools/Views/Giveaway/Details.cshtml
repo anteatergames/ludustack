@@ -2,13 +2,13 @@
 @{
     ViewData["Title"] = Model.Name;
     ViewData["Description"] = Model.Description;
-    ViewData["Url"] = ViewBag.BaseUrl + Url.Action("details", "giveaway", new { area = "tools", id = Model.Id });
-    ViewData["OgImage"] = string.IsNullOrWhiteSpace(Model.FeaturedImage) || Model.FeaturedImage.Equals(Constants.DefaultGiveawayThumbnail) ? ViewBag.BaseUrl + "/images/og/oggiveaway.png" : Model.FeaturedImage;
+    ViewData["Url"] = ViewData["BaseUrl"] + Url.Action("details", "giveaway", new { area = "tools", id = Model.Id });
+    ViewData["OgImage"] = string.IsNullOrWhiteSpace(Model.FeaturedImage) || Model.FeaturedImage.Equals(Constants.DefaultGiveawayThumbnail) ? ViewData["BaseUrl"] + "/images/og/oggiveaway.png" : Model.FeaturedImage;
 
     var isAjax = ViewContext.HttpContext.Request.IsAjaxRequest();
     var canInteract = User.Identity.IsAuthenticated;
 
-    var showAds = (bool)(ViewBag.ShowAds ?? false);
+    var showAds = (bool)(ViewData["ShowAds"] ?? false);
 
     Layout = "_LayoutGiveaway";
 }

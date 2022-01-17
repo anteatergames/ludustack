@@ -9,10 +9,10 @@
 
     ViewData["Title"] = SharedLocalizer["Game Jams"];
     ViewData["Description"] = SharedLocalizer["Manage Game Jams"];
-    ViewData["Url"] = ViewBag.BaseUrl + Url.Action("index", "gamejam", new { area = "community" });
-    ViewData["OgImage"] = ViewBag.BaseUrl + "/images/og/oggamejam.png";
+    ViewData["Url"] = ViewData["BaseUrl"] + Url.Action("index", "gamejam", new { area = "community" });
+    ViewData["OgImage"] = ViewData["BaseUrl"] + "/images/og/oggamejam.png";
 
-    var showAds = (bool)(ViewBag.ShowAds ?? false);
+    var showAds = (bool)(ViewData["ShowAds"] ?? false);
 }
 
 @section ComponentStyles {

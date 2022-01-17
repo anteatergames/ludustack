@@ -2,8 +2,8 @@
 @{
     ViewData["Title"] = Model.Title;
     ViewData["Description"] = SharedLocalizer["Topic posted on {0}", Model.CreateDate.ToString()];
-    ViewData["Url"] = ViewBag.BaseUrl + Url.Action("viewtopic", "forum", new { area = "community", id = Model.Id });
-    ViewData["OgImage"] = ViewBag.BaseUrl + "/images/og/ogforums.png";
+    ViewData["Url"] = ViewData["BaseUrl"] + Url.Action("viewtopic", "forum", new { area = "community", id = Model.Id });
+    ViewData["OgImage"] = ViewData["BaseUrl"] + "/images/og/ogforums.png";
     ViewData["OgImageWidth"] = 1200;
     ViewData["OgImageHeight"] = 630;
 
@@ -77,7 +77,7 @@
         "author":{
         "@@type":"Person",
         "name":"@Model.AuthorName",
-        "url":"@(ViewBag.BaseUrl + "/u/" + Model.UserHandler)"
+        "url":"@(ViewData["BaseUrl"] + "/u/" + Model.UserHandler)"
         }
         },
         "sharedContent":{
@@ -141,7 +141,7 @@
 
                 <div class="d-flex p-3">
                     <div class="mr-2">
-                        <img class="rounded-circle" src="@ViewBag.ProfileImage" alt="This is @ViewBag.Username">
+                        <img class="rounded-circle" src="@ViewData["ProfileImage"]" alt="This is @ViewData["Username"]">
                     </div>
 
                     <div class="d-flex flex-fill flex-column">

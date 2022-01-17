@@ -3,8 +3,8 @@
 @{
     ViewData["Title"] = Model.Name;
     ViewData["Description"] = string.IsNullOrWhiteSpace(Model.ShortDescription) ? SharedLocalizer["Join this Game Jam and get involved with other fellow gamedevs to build great things, just for fun."] : Model.ShortDescription;
-    ViewData["Url"] = ViewBag.BaseUrl + Url.Action("details", "gamejam", new { area = "community", handler = Model.Handler });
-    ViewData["OgImage"] = Model.FeaturedImage ?? ViewBag.BaseUrl + "/images/og/oggamejam.png";
+    ViewData["Url"] = ViewData["BaseUrl"] + Url.Action("details", "gamejam", new { area = "community", handler = Model.Handler });
+    ViewData["OgImage"] = Model.FeaturedImage ?? ViewData["BaseUrl"] + "/images/og/oggamejam.png";
 
     if (!string.IsNullOrWhiteSpace(Model.BackgroundImage))
     {
@@ -35,7 +35,7 @@
 
     var criteriaToList = Model.Criteria.Where(x => x.Type != GameJamCriteriaType.Overall).OrderByDescending(x => x.Weight);
 
-    var showAds = (bool)(ViewBag.ShowAds ?? false);
+    var showAds = (bool)(ViewData["ShowAds"] ?? false);
 }
 
 @section Styles {

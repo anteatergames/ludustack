@@ -3,7 +3,7 @@
 @{
     var operation = Model.Id == Guid.Empty ? "Add" : "Edit";
     ViewData["Title"] = SharedLocalizer[operation + " Content"];
-    var userGames = ViewBag.UserGames as List<SelectListItem>;
+    var userGames = ViewData["UserGames"] as List<SelectListItem>;
 }
 
 @section Styles {

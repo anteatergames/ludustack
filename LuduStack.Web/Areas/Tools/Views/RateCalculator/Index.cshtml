@@ -3,13 +3,13 @@
 @{
     ViewData["Title"] = SharedLocalizer["Rate Calculator"];
     ViewData["Description"] = SharedLocalizer["Calculate how much you should charge for freelance jobs."];
-    ViewData["Url"] = ViewBag.BaseUrl + Url.Action("index", "ratecalculator", new { area = "tools" });
-    ViewData["OgImage"] = ViewBag.BaseUrl + "/images/og/ogratecalculator.png";
+    ViewData["Url"] = ViewData["BaseUrl"] + Url.Action("index", "ratecalculator", new { area = "tools" });
+    ViewData["OgImage"] = ViewData["BaseUrl"] + "/images/og/ogratecalculator.png";
 
     var isAjax = ViewContext.HttpContext.Request.IsAjaxRequest();
     var canInteract = User.Identity.IsAuthenticated;
 
-    var showAds = (bool)(ViewBag.ShowAds ?? false);
+    var showAds = (bool)(ViewData["ShowAds"] ?? false);
 }
 
 @section ComponentStyles {

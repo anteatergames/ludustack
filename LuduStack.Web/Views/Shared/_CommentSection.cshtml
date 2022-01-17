@@ -76,7 +76,7 @@
 
         <div class="align-middle pt-10 interaction-commentbox mt-2 @(isDetails ? string.Empty : "d-none")" data-fullname="@myFullName">
             <form action="#" method="post">
-                <img class="img-fluid rounded-circle img-sm" src="@ViewBag.ProfileImage" alt="Alt Text">
+                <img class="img-fluid rounded-circle img-sm" src="@ViewData["ProfileImage"]" alt="Alt Text">
                 <div class="img-push">
                     <label aria-label="Comment_@Model.Id" style="width:100%">
                         <textarea data-userContentId="@Model.Id" data-userContentType="@Model.UserContentType" aria-label="@SharedLocalizer["Comment"]" class="form-control commenttextarea input-sm commentbox" rows="1" placeholder="@SharedLocalizer["Press CTRL+ENTER to send"]"></textarea>

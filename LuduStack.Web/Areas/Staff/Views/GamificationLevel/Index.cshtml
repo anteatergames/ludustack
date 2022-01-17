@@ -9,7 +9,7 @@
 
     ViewData["Title"] = SharedLocalizer["Gamification Levels"];
     ViewData["Description"] = SharedLocalizer["Manage gamification levels"];
-    ViewData["Url"] = ViewBag.BaseUrl + Url.Action("index", "gamificationlevel", new { area = "tools" });
+    ViewData["Url"] = ViewData["BaseUrl"] + Url.Action("index", "gamificationlevel", new { area = "tools" });
 }
 
 @section ComponentStyles {

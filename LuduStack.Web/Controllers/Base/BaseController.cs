@@ -26,7 +26,7 @@ namespace LuduStack.Web.Controllers.Base
         {
             base.OnActionExecuting(context);
 
-            ViewBag.BaseUrl = GetBaseUrl();
+            ViewData["BaseUrl"] = GetBaseUrl();
         }
 
         protected string GetBaseUrl()

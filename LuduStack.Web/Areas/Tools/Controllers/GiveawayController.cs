@@ -357,7 +357,7 @@ namespace LuduStack.Web.Areas.Tools.Controllers
 
                 GiveawayParticipationViewModel model = castRestult.Value;
 
-                model.ShareUrl = string.Format("{0}{1}", ViewBag.BaseUrl, model.ShareUrl);
+                model.ShareUrl = string.Format("{0}{1}", ViewData["BaseUrl"], model.ShareUrl);
 
                 SetEntryOptions(model, id);
 
@@ -546,7 +546,7 @@ namespace LuduStack.Web.Areas.Tools.Controllers
                 timeZone.Selected = (!string.IsNullOrWhiteSpace(model.TimeZone) && model.TimeZone.Equals(timeZone.Value)) || timeZone.Value.Equals("0");
             }
 
-            ViewBag.TimeZones = timeZones;
+            ViewData["TimeZones"] = timeZones;
         }
 
         private void SetEntryOptions(GiveawayParticipationViewModel model, Guid giveawayId)

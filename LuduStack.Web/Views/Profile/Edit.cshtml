@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = Model.Name + " - Edit profile";
 
-    var countries = ViewBag.Countries as List<SelectListItem>;
+    var countries = ViewData["Countries"] as List<SelectListItem>;
 }
 
 @section Styles {

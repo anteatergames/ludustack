@@ -8,7 +8,7 @@
 @{
     ViewData["Title"] = Model.Name;
     ViewData["Description"] = String.Format("{0} - {1}", Model.Name, Model.Bio);
-    ViewData["Url"] = ViewBag.BaseUrl + Url.Action("details", "profile", new { area = string.Empty, userHandler = Model.Handler });
+    ViewData["Url"] = ViewData["BaseUrl"] + Url.Action("details", "profile", new { area = string.Empty, userHandler = Model.Handler });
     ViewData["OgType"] = "profile";
 
     string currentUserId = UserManager.GetUserId(User);
@@ -49,7 +49,7 @@
         "@@context": "http://schema.org",
         "@@type": "Person",
         "name": "@Model.Name",
-        "image": "@(ViewBag.BaseUrl + Model.ProfileImageUrl)",
+        "image": "@(ViewData["BaseUrl"] + Model.ProfileImageUrl)",
         "url": "@Url.Action("profile", "index", new { id = Model.Id })"
         }
     </script>

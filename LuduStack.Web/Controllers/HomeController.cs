@@ -44,11 +44,11 @@ namespace LuduStack.Web.Controllers
 
             IEnumerable<SelectListItemVo> games = await gameAppService.GetByUser(CurrentUserId);
             List<SelectListItem> gamesDropDown = games.ToSelectList();
-            ViewBag.UserGames = gamesDropDown;
+            ViewData["UserGames"] = gamesDropDown;
 
             SetEmailConfirmed();
 
-            ViewBag.BuildNumber = Environment.GetEnvironmentVariable("LUDUSTACK_BUILD_NUMBER") ?? "0.0.0";
+            ViewData["BuildNumber"] = Environment.GetEnvironmentVariable("LUDUSTACK_BUILD_NUMBER") ?? "0.0.0";
 
             return View();
         }
@@ -110,12 +110,12 @@ namespace LuduStack.Web.Controllers
             if (showFeatureCarouselResult.Success)
             {
                 bool showFeatureCarousel = showFeatureCarouselResult.Value.Value.Equals("1");
-                ViewBag.ShowFeatureCarousel = showFeatureCarousel;
+                ViewData["ShowFeatureCarousel"] = showFeatureCarousel;
 
                 if (showFeatureCarousel)
                 {
                     CarouselViewModel featured = await featuredContentAppService.GetFeaturedNow();
-                    ViewBag.Carousel = featured;
+                    ViewData["Carousel"] = featured;
                 }
             }
         }
@@ -126,7 +126,7 @@ namespace LuduStack.Web.Controllers
             if (showDonateButtonResult.Success)
             {
                 bool showDonateButton = showDonateButtonResult.Value.Value.Equals("1");
-                ViewBag.ShowDonateButton = showDonateButton;
+                ViewData["ShowDonateButton"] = showDonateButton;
             }
         }
 
@@ -151,7 +151,7 @@ namespace LuduStack.Web.Controllers
                 postModel.DefaultLanguage = base.SetLanguageFromCulture(base.CurrentLocale);
             }
 
-            ViewBag.PostFromHome = postModel;
+            ViewData["PostFromHome"] = postModel;
         }
 
         private static TimeLineItemViewModel GenerateTimeLineStart(DateTime date, string icon, string color, string title, string subtitle, string description)
@@ -180,8 +180,8 @@ namespace LuduStack.Web.Controllers
 
         private static TimeLineViewModel GenerateTimeline()
         {
-            DateTime startDate = new DateTime(2018, 08, 27);
-            TimeLineViewModel model = new TimeLineViewModel();
+            DateTime startDate = new(2018, 08, 27);
+            TimeLineViewModel model = new();
 
             model.Items.Add(GenerateTimeLineStart(startDate, "fas fa-asterisk", "success", "The Idea", startDate.ToShortDateString(), "This is where the whole idea began. We wrote a Google Document to sketch the idea and see the big picture forming."));
 

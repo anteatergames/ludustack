@@ -348,7 +348,7 @@ namespace LuduStack.Web.Areas.Staff.Controllers
 
                         IEnumerable<SelectListItemVo> myGames = await gameAppService.GetByUser(CurrentUserId);
                         List<SelectListItem> gamesDropDown = myGames.ToSelectList();
-                        ViewBag.UserGames = gamesDropDown;
+                        ViewData["UserGames"] = gamesDropDown;
                     }
 
                     return View("EntryDetails", model);
@@ -383,7 +383,7 @@ namespace LuduStack.Web.Areas.Staff.Controllers
 
                         IEnumerable<SelectListItemVo> myGames = await gameAppService.GetByUser(CurrentUserId);
                         List<SelectListItem> gamesDropDown = myGames.ToSelectList();
-                        ViewBag.UserGames = gamesDropDown;
+                        ViewData["UserGames"] = gamesDropDown;
                     }
 
                     return View("EntryDetails", model);
@@ -513,7 +513,7 @@ namespace LuduStack.Web.Areas.Staff.Controllers
                 timeZone.Selected = (!string.IsNullOrWhiteSpace(model.TimeZone) && model.TimeZone.Equals(timeZone.Value)) || timeZone.Value.Equals("0");
             }
 
-            ViewBag.TimeZones = timeZones;
+            ViewData["TimeZones"] = timeZones;
         }
 
         private void SetTimeZoneText(GameJamViewModel model)

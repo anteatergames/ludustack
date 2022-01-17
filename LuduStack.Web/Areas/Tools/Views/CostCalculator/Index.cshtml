@@ -3,13 +3,13 @@
 @{
     ViewData["Title"] = SharedLocalizer["Cost Calculator"];
     ViewData["Description"] = SharedLocalizer["Estimate how much your idea for a game would cost approximately."];
-    ViewData["Url"] = ViewBag.BaseUrl + Url.Action("index", "costcalculator", new { area = "tools" });
-    ViewData["OgImage"] = ViewBag.BaseUrl + "/images/og/ogcostcalculator.png";
+    ViewData["Url"] = ViewData["BaseUrl"] + Url.Action("index", "costcalculator", new { area = "tools" });
+    ViewData["OgImage"] = ViewData["BaseUrl"] + "/images/og/ogcostcalculator.png";
 
     var isAjax = ViewContext.HttpContext.Request.IsAjaxRequest();
     var canInteract = User.Identity.IsAuthenticated;
 
-    var showAds = (bool)(ViewBag.ShowAds ?? false);
+    var showAds = (bool)(ViewData["ShowAds"] ?? false);
 
     var visualDimensions = Html.GetEnumSelectList<Dimensions>();
     var artStyles = Html.GetEnumSelectList<ArtStyle>();

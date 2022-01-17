@@ -190,7 +190,7 @@
     <div data-device="xl" class="bootstrapbreakpointdetector device-xl d-none d-xl-block"></div>
 
     <input type="hidden" id="caninteract" value="@canInteract.ToString().ToLower()" />
-    <input type="hidden" id="locale" value="@ViewBag.Locale" />
+    <input type="hidden" id="locale" value="@ViewData["Locale"]" />
     @await Html.PartialAsync("_TagManagerBody")
     <div id="translatedJavascriptMessages" class="d-none">
         <span class="msg" data-msg-id="msgNeedLoginToLikeAndComment">@SharedLocalizer["You need to be logged in to be able to Like and Comment on posts."]</span>

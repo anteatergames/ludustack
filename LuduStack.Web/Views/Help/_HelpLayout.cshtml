@@ -3,7 +3,7 @@
     var title = ViewData["Title"] ?? SharedLocalizer["help"].Value.ToUpper();
     ViewData["Description"] = String.Format("{0} - {1}", title, SharedLocalizer["Get help on how LUDUSTACK works. Learn how to interact with other users and how to use the platform."]);
 
-    var showAds = (bool)(ViewBag.ShowAds ?? false);
+    var showAds = (bool)(ViewData["ShowAds"] ?? false);
 }
 
 @section Styles {

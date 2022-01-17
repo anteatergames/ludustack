@@ -84,8 +84,8 @@ namespace LuduStack.Web.Controllers.Base
                 string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 CurrentUserId = new Guid(userId);
 
-                ViewBag.CurrentUserId = CurrentUserId;
-                ViewBag.ProfileImage = UrlFormatter.ProfileImage(CurrentUserId, 38);
+                ViewData["CurrentUserId"] = CurrentUserId;
+                ViewData["ProfileImage"] = UrlFormatter.ProfileImage(CurrentUserId, 38);
 
                 Claim userIsAdmin = User.FindFirst(x => x.Type == ClaimTypes.Role && x.Value.Equals(Roles.Administrator.ToString()));
 
@@ -95,12 +95,12 @@ namespace LuduStack.Web.Controllers.Base
                     CurrentUserIsAdmin = true;
                 }
 
-                if (ViewBag.Username == null)
+                if (ViewData["Username"] == null)
                 {
                     string username = User.FindFirstValue(ClaimTypes.Name);
 
                     await SetProfileOnSession(CurrentUserId, username);
-                    ViewBag.Username = username ?? Constants.DefaultUsername;
+                    ViewData["Username"] = username ?? Constants.DefaultUsername;
                 }
 
                 string msg = context.HttpContext.Request.Query["msg"].FirstOrDefault();
@@ -123,7 +123,7 @@ namespace LuduStack.Web.Controllers.Base
             }
 
             CurrentLocale = await GetAspNetCultureCookie();
-            ViewBag.Locale = CurrentLocale;
+            ViewData["Locale"] = CurrentLocale;
 
             EnvName = string.Format("env-{0}", HostEnvironment.EnvironmentName);
 
@@ -137,7 +137,7 @@ namespace LuduStack.Web.Controllers.Base
             OperationResultVo<Application.ViewModels.PlatformSetting.PlatformSettingViewModel> showAdsResult = await PlatformSettingAppService.GetByElement(CurrentUserId, PlatformSettingElement.ShowAds);
             if (showAdsResult.Success)
             {
-                ViewBag.ShowAds = showAdsResult.Value.Value.Equals("1");
+                ViewData["ShowAds"] = showAdsResult.Value.Value.Equals("1");
             }
         }
 
@@ -234,7 +234,7 @@ namespace LuduStack.Web.Controllers.Base
 
         private void SetAspNetCultureCookie(RequestCulture culture)
         {
-            ViewBag.Locale = culture;
+            ViewData["Locale"] = culture;
 
             SetCookieValue(CookieRequestCultureProvider.DefaultCookieName, CookieRequestCultureProvider.MakeCookieValue(culture), 365, SameSiteMode.Strict);
         }

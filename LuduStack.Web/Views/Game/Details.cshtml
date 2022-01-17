@@ -5,7 +5,7 @@
 @{
     ViewData["Title"] = String.Format("{0} by {1}", Model.Title, Model.AuthorName ?? "unknown user");
     ViewData["Description"] = string.IsNullOrWhiteSpace(Model.Description) ? String.Format("{0} - {1}", Model.Title, Constants.DefaultDescription) : String.Format("{0} - {1}", Model.Title, Model.Description);
-    ViewData["Url"] = ViewBag.BaseUrl + Url.Action("details", "game", new { id = Model.Id });
+    ViewData["Url"] = ViewData["BaseUrl"] + Url.Action("details", "game", new { id = Model.Id });
     ViewData["CanonicalUrl"] = ViewData["Url"];
     ViewData["OgImage"] = Model.ThumbnailUrl;
 
@@ -80,7 +80,7 @@
         "author": {
         "@@type":"Person",
         "name":"@Model.AuthorName",
-        "url":"@(ViewBag.BaseUrl + "/u/" + Model.UserHandler)",
+        "url":"@(ViewData["BaseUrl"] + "/u/" + Model.UserHandler)",
         "image": "@Model.ThumbnailUrl"
         },
         "sameAs": [ @(Html.Raw(string.Join(", ", Model.ExternalLinks.Select(x => string.Format("\"{0}\"", x.Value))))) ]

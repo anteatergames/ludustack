@@ -95,11 +95,11 @@ namespace LuduStack.Web.Controllers
                 {
                     countriesDropDown.ForEach(x => x.Selected = x.Value.Equals(viewModel.Country));
                 }
-                ViewBag.Countries = countriesDropDown;
+                ViewData["Countries"] = countriesDropDown;
             }
             else
             {
-                ViewBag.Countries = new List<SelectListItem>();
+                ViewData["Countries"] = new List<SelectListItem>();
             }
 
             SetImagesToRefresh(viewModel, true);

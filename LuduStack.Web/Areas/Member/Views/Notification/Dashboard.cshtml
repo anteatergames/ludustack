@@ -9,7 +9,7 @@
 
     ViewData["Title"] = SharedLocalizer["Notifications"];
     ViewData["Description"] = SharedLocalizer["Manage Notifications"];
-    ViewData["Url"] = ViewBag.BaseUrl + Url.Action("index", "notification", new { area = "member" });
+    ViewData["Url"] = ViewData["BaseUrl"] + Url.Action("index", "notification", new { area = "member" });
 }
 
 @section ComponentStyles {

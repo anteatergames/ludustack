@@ -5,7 +5,7 @@
 
     var isNew = Model.Id == Guid.Empty;
 
-    var timeZoneList = (IEnumerable<SelectListItem>)ViewBag.TimeZones;
+    var timeZoneList = (IEnumerable<SelectListItem>)ViewData["TimeZones"];
 }
 
 <h1 class="sr-only">@ViewData["Title"]</h1>

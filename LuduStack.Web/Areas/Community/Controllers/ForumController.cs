@@ -195,7 +195,7 @@ namespace LuduStack.Web.Areas.Community.Controllers
 
                 ViewData["latest"] = false;
 
-                ViewBag.ProfileImage = UrlFormatter.ProfileImage(CurrentUserId, 64);
+                ViewData["ProfileImage"] = UrlFormatter.ProfileImage(CurrentUserId, 64);
 
                 return View("ViewTopic", viewModel);
             }
@@ -216,7 +216,7 @@ namespace LuduStack.Web.Areas.Community.Controllers
 
                 ViewData["latest"] = false;
 
-                ViewBag.ProfileImage = UrlFormatter.ProfileImage(CurrentUserId, 64);
+                ViewData["ProfileImage"] = UrlFormatter.ProfileImage(CurrentUserId, 64);
 
                 return PartialView("_ForumPostViewOnly", viewModel);
             }

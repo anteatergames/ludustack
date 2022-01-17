@@ -13,8 +13,8 @@
 
     ViewData["Title"] = SharedLocalizer["Localization"];
     ViewData["Description"] = SharedLocalizer["Help other gamedevs to translate their games."];
-    ViewData["Url"] = ViewBag.BaseUrl + Url.Action("index", "localization", new { area = "tools" });
-    ViewData["OgImage"] = ViewBag.BaseUrl + "/images/og/oglocalization.png";
+    ViewData["Url"] = ViewData["BaseUrl"] + Url.Action("index", "localization", new { area = "tools" });
+    ViewData["OgImage"] = ViewData["BaseUrl"] + "/images/og/oglocalization.png";
 }
 
 @section ComponentStyles {

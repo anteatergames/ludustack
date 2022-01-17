@@ -2,7 +2,7 @@
 @{
     Layout = null;
 
-    var userGames = ViewBag.UserGames as List<SelectListItem>;
+    var userGames = ViewData["UserGames"] as List<SelectListItem>;
 }
 
 <div class="box p-0 mb-2">
@@ -20,7 +20,7 @@
                         <div class="modal-body">
                             <form action="#" method="post">
                                 <input type="hidden" id="txtPostImages" />
-                                <img class="img-fluid rounded-circle img-sm" src="@ViewBag.ProfileImage" alt="Alt Text">
+                                <img class="img-fluid rounded-circle img-sm" src="@ViewData["ProfileImage"]" alt="Alt Text">
                                 <div class="img-push simplecontentpostarea">
                                     <textarea id="txtPostContent" aria-label="@SharedLocalizer["Comment"]" class="form-control posttextarea input-sm postbox" rows="1" placeholder="@SharedLocalizer["What is on your mind?"]"></textarea>
                                     <div class="comment-send-button">
