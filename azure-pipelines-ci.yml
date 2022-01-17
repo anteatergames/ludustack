@@ -11,7 +11,7 @@ pr:
 
 pool:
   name: Azure Pipelines
-  vmImage: 'ubuntu-latest'
+  vmImage: 'windows-2022'
 
 variables:
   solution: '**/*.sln'
