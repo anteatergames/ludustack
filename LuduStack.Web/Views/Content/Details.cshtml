@@ -2,14 +2,14 @@
 @{
     ViewData["Title"] = Model.Title;
     ViewData["Description"] = Model.Introduction.Contains(SharedLocalizer["Content posted on"]) ? SharedLocalizer["Content posted on"] + " " + Model.CreateDate.ToString() : String.Format("{0} - {1}", Model.Title, Model.Introduction);
-    ViewData["Url"] = ViewBag.BaseUrl + Url.Action("details", "content", new { id = Model.Id });
+    ViewData["Url"] = ViewData["BaseUrl"] + Url.Action("details", "content", new { id = Model.Id });
     ViewData["OgImage"] = Model.FeaturedImage;
     ViewData["OgType"] = "article";
 
     var hasFeaturedImage = !string.IsNullOrWhiteSpace(Model.FeaturedImage);
     var featuredImageIsYoutube = hasFeaturedImage && Model.FeaturedImage.Contains("youtu");
 
-    var showAds = (bool)(ViewBag.ShowAds ?? false);
+    var showAds = (bool)(ViewData["ShowAds"] ?? false);
 }
 
 @section OpenGraphMeta {
@@ -84,12 +84,12 @@
         "@@type":"SocialMediaPosting",
         "@@id":"@(ViewData["Url"])",
         "headline":"@(JavaScriptEncoder.Default.Encode(Model.Title))",
-        "image": "@((hasFeaturedImage && featuredImageIsYoutube) || !hasFeaturedImage ? ViewBag.BaseUrl + "/images/og/img_facebook600x315.png" : ViewBag.BaseUrl + Model.FeaturedImage)",
+        "image": "@((hasFeaturedImage && featuredImageIsYoutube) || !hasFeaturedImage ? ViewData["BaseUrl"] + "/images/og/img_facebook600x315.png" : ViewData["BaseUrl"] + Model.FeaturedImage)",
         "datePublished": "@Model.CreateDate.ToString("yyyy-MM-dd")",
         "author":{
         "@@type":"Person",
         "name":"@Model.AuthorName",
-        "url":"@(ViewBag.BaseUrl + "/u/" + Model.UserHandler)"
+        "url":"@(ViewData["BaseUrl"] + "/u/" + Model.UserHandler)"
         }
         },
         "sharedContent":{

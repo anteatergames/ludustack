@@ -89,7 +89,7 @@ namespace LuduStack.Web.Controllers
         {
             IEnumerable<GameListItemViewModel> latest = await gameAppService.GetLatest(CurrentUserId, 200, Guid.Empty, null, genre);
 
-            ViewBag.Games = latest;
+            ViewData["Games"] = latest;
             ViewData["Genre"] = genre;
 
             Dictionary<GameGenre, UiInfoAttribute> genreDict = Enum.GetValues(typeof(GameGenre)).Cast<GameGenre>().ToUiInfoDictionary();
@@ -346,7 +346,7 @@ namespace LuduStack.Web.Controllers
 
         private void SetNanoGallery(GameViewModel vm)
         {
-            List<NanoGalleryViewModel> gallery = new List<NanoGalleryViewModel>();
+            List<NanoGalleryViewModel> gallery = new();
 
             IEnumerable<MediaListItemVo> galleryItems = vm.Media.Where(x => x.Type == MediaType.Image || x.Type == MediaType.Youtube || x.Type == MediaType.Dailymotion); // need to add Vimeo with thumbnail
 

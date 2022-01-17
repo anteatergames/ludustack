@@ -13,14 +13,13 @@ namespace LuduStack.Domain.Core.Extensions
 
         public static void Shuffle<T>(this IList<T> list)
         {
-            RNGCryptoServiceProvider provider = new RNGCryptoServiceProvider();
             int n = list.Count;
             while (n > 1)
             {
-                byte[] box = new byte[1];
+                byte[] box;
                 do
                 {
-                    provider.GetBytes(box);
+                    box = RandomNumberGenerator.GetBytes(1);
                 }
                 while (!(box[0] < n * (byte.MaxValue / n)));
                 int k = (box[0] % n);

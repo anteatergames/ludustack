@@ -1,6 +1,6 @@
 ﻿@{
     var hasMessage = TempData["Message"] != null;
-    var games = ViewBag.Games as List<GameListItemViewModel>;
+    var games = ViewData["Games"] as List<GameListItemViewModel>;
     var genre = (GameGenre)(ViewData["Genre"] ?? 0);
     ViewData["Title"] = genre == 0 ? SharedLocalizer["Games"] : SharedLocalizer["{0} Games", genre.ToUiInfo().Display];
 
@@ -20,7 +20,7 @@
 
     var noItems = new ListNoItemsViewModel("fas fa-dizzy", "No results to show!");
 
-    var showAds = (bool)(ViewBag.ShowAds ?? false);
+    var showAds = (bool)(ViewData["ShowAds"] ?? false);
 }
 
 <div class="col-12">

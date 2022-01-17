@@ -6,7 +6,7 @@
 
     ViewData["Title"] = SharedLocalizer["{0} Translation Project", (Model.Id == Guid.Empty ? "New" : "Edit")];
 
-    var userGames = ViewBag.UserGames as List<SelectListItem>;
+    var userGames = ViewData["UserGames"] as List<SelectListItem>;
 
     var languages = Html.GetEnumSelectList<LocalizationLanguage>().Where(x => x.Text != Model.PrimaryLanguage.ToString());
 

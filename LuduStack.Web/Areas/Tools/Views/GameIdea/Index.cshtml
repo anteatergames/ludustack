@@ -1,8 +1,8 @@
 ﻿@{
     ViewData["Title"] = SharedLocalizer["Idea Machine"];
     ViewData["Description"] = SharedLocalizer["Generate random game ideas."];
-    ViewData["Url"] = ViewBag.BaseUrl + Url.Action("index", "gameidea", new { area = "tools" });
-    ViewData["OgImage"] = ViewBag.BaseUrl + "/images/og/ogcreativemachine.png";
+    ViewData["Url"] = ViewData["BaseUrl"] + Url.Action("index", "gameidea", new { area = "tools" });
+    ViewData["OgImage"] = ViewData["BaseUrl"] + "/images/og/ogcreativemachine.png";
 
     var isAjax = ViewContext.HttpContext.Request.IsAjaxRequest();
     var canInteract = User.Identity.IsAuthenticated;
@@ -12,7 +12,7 @@
         Layout = null;
     }
 
-    var showAds = (bool)(ViewBag.ShowAds ?? false);
+    var showAds = (bool)(ViewData["ShowAds"] ?? false);
 }
 
 @section ComponentStyles {

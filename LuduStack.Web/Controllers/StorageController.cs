@@ -10,6 +10,7 @@ using Microsoft.Net.Http.Headers;
 using System;
 using System.IO;
 using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace LuduStack.Web.Controllers
@@ -31,7 +32,7 @@ namespace LuduStack.Web.Controllers
 
         [ResponseCache(CacheProfileName = "Never")]
         [Route("userimage/{type:alpha}/{userId:guid}/{name?}")]
-        public IActionResult UserImage(ImageType type, Guid userId, string name, string v)
+        public async Task<IActionResult> UserImage(ImageType type, Guid userId, string name, string v)
         {
             if (string.IsNullOrWhiteSpace(name))
             {
@@ -43,19 +44,19 @@ namespace LuduStack.Web.Controllers
                 name = string.Format("{0}_Personal", userId);
             }
 
-            return GetImage(type, userId, name, v);
+            return await GetImage(type, userId, name, v);
         }
 
         [ResponseCache(CacheProfileName = "Default")]
         [Route("image/{type:alpha}/{userId:guid}/{name}")]
         [Route("image/{name}")]
         [Route("image")]
-        public IActionResult Image(ImageType type, Guid userId, string name, string v)
+        public async Task<IActionResult> Image(ImageType type, Guid userId, string name, string v)
         {
-            return GetImage(type, userId, name, v);
+            return await GetImage(type, userId, name, v);
         }
 
-        private IActionResult GetImage(ImageType type, Guid userId, string name, string v)
+        private async Task<IActionResult> GetImage(ImageType type, Guid userId, string name, string v)
         {
             string baseUrl = Constants.DefaultCdnPath;
             name = name.Replace(Constants.DefaultImagePath, string.Empty);
@@ -73,9 +74,9 @@ namespace LuduStack.Web.Controllers
 
                 byte[] data;
 
-                using (WebClient webClient = new WebClient())
+                using (HttpClient webClient = new HttpClient())
                 {
-                    data = webClient.DownloadData(url);
+                    data = await webClient.GetByteArrayAsync(url);
                 }
 
                 string etag = ETagGenerator.GetETag(httpContextAccessor.HttpContext.Request.Path.ToString(), data);

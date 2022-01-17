@@ -7,7 +7,7 @@
 
     var isNew = Model.Id == Guid.Empty;
 
-    var forumGroups = ViewBag.ForumGroups as List<SelectListItem>;
+    var forumGroups = ViewData["ForumGroups"] as List<SelectListItem>;
 }
 
 <h1 class="sr-only">@ViewData["Title"]</h1>

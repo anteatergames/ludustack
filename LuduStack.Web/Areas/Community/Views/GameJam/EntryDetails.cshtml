@@ -5,8 +5,8 @@
     {
         ViewData["Description"] = Model.Game.Description;
     }
-    ViewData["Url"] = ViewBag.BaseUrl + Url.Action("entry", "gamejam", new { area = "community", id = Model.Id, jamHandler = Model.GameJam.Handler });
-    ViewData["OgImage"] = Model.FeaturedImage ?? ViewBag.BaseUrl + "/images/og/oggamejam.png";
+    ViewData["Url"] = ViewData["BaseUrl"] + Url.Action("entry", "gamejam", new { area = "community", id = Model.Id, jamHandler = Model.GameJam.Handler });
+    ViewData["OgImage"] = Model.FeaturedImage ?? ViewData["BaseUrl"] + "/images/og/oggamejam.png";
 
     if (!string.IsNullOrWhiteSpace(Model.GameJam.BackgroundImage))
     {
@@ -22,12 +22,12 @@
     List<SelectListItem> userGames = new List<SelectListItem>();
     if (Model.Game == null)
     {
-        userGames = ViewBag.UserGames as List<SelectListItem>;
+        userGames = ViewData["UserGames"] as List<SelectListItem>;
     }
 
-    var currentUserId = ViewBag.CurrentUserId ?? Guid.Empty;
+    var currentUserId = (Guid)(ViewData["CurrentUserId"] ?? Guid.Empty);
 
-    var showAds = (bool)(ViewBag.ShowAds ?? false);
+    var showAds = (bool)(ViewData["ShowAds"] ?? false);
 
     var createGameUrl = Url.Action("add", "game", new { area = string.Empty });
     var createGameLink = string.Format("<a href=\"{0}\" class=\"boldlink text-nowrap\">{1}</a>", createGameUrl, SharedLocalizer["click here"].Value);
@@ -92,7 +92,7 @@
                 <div class="col-12 col-md-6 d-flex flex-row justify-content-center">
                     <div class=" d-flex flex-column justify-content-center">
                         <div class="p-3 row justify-content-center bg-white bordered hover">
-                            <partial name="_GameJamCounter" model="@new KeyValuePair<GameJamPhase, string>(Model.GameJam.CurrentPhase, Model.GameJam.CountDownMessage)" />
+                            <partial name="_GameJamCounter" model="@(new KeyValuePair<GameJamPhase, string>(Model.GameJam.CurrentPhase, Model.GameJam.CountDownMessage))" />
                         </div>
                         <div class="d-flex flex-row justify-content-center mt-n3">
                             <div class="bg-white">
@@ -238,7 +238,7 @@
 
                                                             @if (Model.Permissions.CanVote)
                                                             {
-                                                                <input id="txtScore" name="Score" type="number" class="d-none criteria-rating" step="1" value="@vote.Score.ToString(new System.Globalization.CultureInfo("en-US"))" data-url="@Url.Action("voteentry", "gamejam", new { area = "community", jamHandler = Model.GameJam.Handler, userId = ViewBag.CurrentUserId, entryId = Model.Id, criteriaType = vote.CriteriaType })">
+                                                                <input id="txtScore" name="Score" type="number" class="d-none criteria-rating" step="1" value="@vote.Score.ToString(new System.Globalization.CultureInfo("en-US"))" data-url="@Url.Action("voteentry", "gamejam", new { area = "community", jamHandler = Model.GameJam.Handler, userId = ViewData["CurrentUserId"], entryId = Model.Id, criteriaType = vote.CriteriaType })">
                                                             }
                                                             else
                                                             {

@@ -79,7 +79,7 @@ namespace LuduStack.Infra.CrossCutting.Notifications
 
             RestClient client = new RestClient("https://hooks.slack.com/services/TEH1D2GF4/B0123NPCQDD");
 
-            RestRequest request = new RestRequest("/M2YMReQBumxAp2DrHhdVDI9p", Method.POST);
+            RestRequest request = new RestRequest("/M2YMReQBumxAp2DrHhdVDI9p", Method.Post);
 
             DefaultContractResolver contractResolver = new DefaultContractResolver
             {

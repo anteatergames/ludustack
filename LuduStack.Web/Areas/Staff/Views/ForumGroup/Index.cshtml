@@ -9,7 +9,7 @@
 
     ViewData["Title"] = SharedLocalizer["Forum Groups"];
     ViewData["Description"] = SharedLocalizer["Manage Forum Groups"];
-    ViewData["Url"] = ViewBag.BaseUrl + Url.Action("index", "forumgroup", new { area = "staff" });
+    ViewData["Url"] = ViewData["BaseUrl"] + Url.Action("index", "forumgroup", new { area = "staff" });
 }
 
 @section ComponentStyles {

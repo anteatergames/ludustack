@@ -2,8 +2,8 @@
 @{
     ViewData["Title"] = SharedLocalizer["Export Translation for {0}", Model.Game.Title];
     ViewData["Description"] = ViewData["Title"];
-    ViewData["Url"] = ViewBag.BaseUrl + Url.Action("export", "localization", new { area = "tools", id = Model.Id });
-    ViewData["OgImage"] = ViewBag.BaseUrl + "/images/og/oglocalization.png";
+    ViewData["Url"] = ViewData["BaseUrl"] + Url.Action("export", "localization", new { area = "tools", id = Model.Id });
+    ViewData["OgImage"] = ViewData["BaseUrl"] + "/images/og/oglocalization.png";
 
     Model.Game.Title = string.Empty;
 

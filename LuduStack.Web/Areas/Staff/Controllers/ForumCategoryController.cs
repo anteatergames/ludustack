@@ -163,7 +163,7 @@ namespace LuduStack.Web.Areas.Staff.Controllers
         {
             IEnumerable<SelectListItemVo> groups = await forumGroupAppService.GetSelectList(CurrentUserId);
             List<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem> selectList = groups.ToSelectList();
-            ViewBag.ForumGroups = selectList;
+            ViewData["ForumGroups"] = selectList;
         }
 
         private void SetPermissions(ForumCategoryViewModel model)

@@ -1,6 +1,6 @@
 ﻿@{
     Layout = null;
-    var version = ViewBag.BuildNumber?.ToString();
+    var version = ViewData["BuildNumber"]?.ToString();
 
     version = version.StartsWith("v") ? version : String.Format("v{0}", version);
 }

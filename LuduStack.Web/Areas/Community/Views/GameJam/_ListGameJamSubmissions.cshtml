@@ -9,7 +9,7 @@
 
     var description = ViewData["ListDescription"] == null ? SharedLocalizer["submissions"].Value.FirstCharToUpper() : (string)ViewData["ListDescription"];
 
-    var currentUserId = ViewBag.CurrentUserId ?? Guid.Empty;
+    var currentUserId = (Guid)(ViewData["CurrentUserId"] ?? Guid.Empty);
 }
 
 @if (!Model.Any())

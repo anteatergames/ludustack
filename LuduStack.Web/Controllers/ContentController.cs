@@ -115,7 +115,7 @@ namespace LuduStack.Web.Controllers
 
             IEnumerable<SelectListItemVo> games = await gameAppService.GetByUser(vm.UserId);
             List<SelectListItem> gamesDropDown = games.ToSelectList();
-            ViewBag.UserGames = gamesDropDown;
+            ViewData["UserGames"] = gamesDropDown;
 
             if (gameId.HasValue)
             {
@@ -139,7 +139,7 @@ namespace LuduStack.Web.Controllers
 
             IEnumerable<SelectListItemVo> games = await gameAppService.GetByUser(viewModel.UserId);
             List<SelectListItem> gamesDropDown = games.ToSelectList();
-            ViewBag.UserGames = gamesDropDown;
+            ViewData["UserGames"] = gamesDropDown;
 
             if (!viewModel.HasFeaturedImage)
             {

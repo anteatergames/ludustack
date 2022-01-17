@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <UserSecretsId>aspnet-LuduStack.Web-A69BBD90-E5E3-45D7-B082-D224EBA61888</UserSecretsId>
     <TypeScriptToolsVersion>3.0</TypeScriptToolsVersion>
 	<MvcBuildViews>true</MvcBuildViews>
@@ -11,61 +11,23 @@
 	<DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="Areas\Member\Data\**" />
-    <Compile Remove="Areas\Member\Models\**" />
-    <Compile Remove="Areas\Staff\Data\**" />
-    <Compile Remove="Areas\Staff\Models\**" />
-    <Compile Remove="Areas\Work\Data\**" />
-    <Compile Remove="Areas\Work\Models\**" />
-    <Compile Remove="wwwroot\assets\**" />
-    <Compile Remove="wwwroot\js\NewFolder\**" />
-    <Content Remove="Areas\Member\Data\**" />
-    <Content Remove="Areas\Member\Models\**" />
-    <Content Remove="Areas\Staff\Data\**" />
-    <Content Remove="Areas\Staff\Models\**" />
-    <Content Remove="Areas\Work\Data\**" />
-    <Content Remove="Areas\Work\Models\**" />
-    <Content Remove="wwwroot\assets\**" />
-    <Content Remove="wwwroot\js\NewFolder\**" />
-    <EmbeddedResource Remove="Areas\Member\Data\**" />
-    <EmbeddedResource Remove="Areas\Member\Models\**" />
-    <EmbeddedResource Remove="Areas\Staff\Data\**" />
-    <EmbeddedResource Remove="Areas\Staff\Models\**" />
-    <EmbeddedResource Remove="Areas\Work\Data\**" />
-    <EmbeddedResource Remove="Areas\Work\Models\**" />
-    <EmbeddedResource Remove="wwwroot\assets\**" />
-    <EmbeddedResource Remove="wwwroot\js\NewFolder\**" />
-    <None Remove="Areas\Member\Data\**" />
-    <None Remove="Areas\Member\Models\**" />
-    <None Remove="Areas\Staff\Data\**" />
-    <None Remove="Areas\Staff\Models\**" />
-    <None Remove="Areas\Work\Data\**" />
-    <None Remove="Areas\Work\Models\**" />
-    <None Remove="wwwroot\assets\**" />
-    <None Remove="wwwroot\js\NewFolder\**" />
-  </ItemGroup>
-
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
     <PackageReference Include="BuildBundlerMinifier" Version="3.2.449" />
-    <PackageReference Include="MediatR" Version="9.0.0" />
-    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="5.0.10" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="5.0.10" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" Version="5.0.10" />
+    <PackageReference Include="MediatR" Version="10.0.1" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="6.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="6.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" Version="6.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="6.0.1" />
     
     <PackageReference Include="Microsoft.AspNetCore.Rewrite" Version="2.2.0" />
-    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="5.0.0" />
-    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.11.1" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.Web.LibraryManager.Build" Version="2.1.113" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="6.0.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.14.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.1" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.Web.LibraryManager.Build" Version="2.1.161" />
     <PackageReference Include="WebEssentials.AspNetCore.PWA" Version="1.0.65" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.4" />
   </ItemGroup>
 
   <ItemGroup>
@@ -75,282 +37,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="Areas\Community\Views\Forum\CreateEditPostWrapper.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Areas\Community\Views\GameJam\CreateEditWrapper.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Areas\Community\Views\_ViewImports.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Areas\Community\Views\_ViewStart.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Areas\Gamification\Views\_ViewImports.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Areas\Gamification\Views\_ViewStart.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Areas\Learn\Views\Course\_CourseDetails.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Areas\Learn\Views\Course\CourseDetailsWrapper.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Areas\Learn\Views\Course\CourseCreateEditWrapper.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Areas\Learn\Views\_ViewImports.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Areas\Learn\Views\_ViewStart.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Areas\Member\Views\BillRate\CreateEditWrapper.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Areas\Member\Views\Comics\CreateEditWrapper.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Areas\Member\Views\_ViewImports.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Areas\Member\Views\_ViewStart.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Areas\Staff\Views\FeaturedContent\_FeaturedContentItem.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Areas\Staff\Views\FeaturedContent\_List.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Areas\Staff\Views\PlatformSetting\CreateEditWrapper.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Areas\Staff\Views\ForumGroup\CreateEditWrapper.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Areas\Staff\Views\ForumCategory\CreateEditWrapper.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Areas\Staff\Views\GamificationLevel\CreateEditWrapper.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Areas\Tools\Views\Giveaway\CreateEditWrapper.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Areas\Tools\Views\Giveaway\YouAreIn.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Areas\Tools\Views\Giveaway\Details.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Areas\Tools\Views\Localization\Export.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Areas\Tools\Views\Localization\Details.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Areas\Tools\Views\Localization\ReviewWrapper.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Areas\Tools\Views\Localization\_Review.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Areas\Tools\Views\Localization\TranslateWrapper.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Areas\Tools\Views\Localization\CreateEditWrapper.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Areas\Tools\Views\Localization\_Terms.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Areas\Tools\Views\Localization\_ReviewTranslations.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Areas\Tools\Views\Localization\_TermsTranslation.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Areas\Tools\Views\Localization\_Translate.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Areas\Tools\Views\_ViewImports.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Areas\Tools\Views\_ViewStart.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Areas\Work\Views\JobPosition\_Details.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Areas\Work\Views\_ViewImports.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Areas\Work\Views\_ViewStart.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Views\Brainstorm\_CreateEditSession.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Views\Brainstorm\_ViewImports.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Views\Shared\_Pagination.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Views\Shared\_QrCode.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Views\Game\_GameStoreBadges.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Views\Help\Advertising.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Views\Help\Contributing.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Views\Help\SpecialThanks.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Views\Help\Partners.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Views\Help\Press.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Views\Help\_HelpLayout.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Views\Help\_Navigation.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Views\Home\Terms.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Areas\Member\Views\Preferences\Languages.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Views\Shared\Components\Counters\Default.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Views\Shared\Components\Feed\_Feed.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Views\Shared\Components\LatestGames\Default.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Views\Shared\Components\Notification\Default.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Views\Shared\Components\Feed\Default.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Views\Shared\_FacebookSdk.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Views\Shared\_AuthorDetails.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Views\Shared\_GameCard.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Views\Shared\_HomeRectangle.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Views\Shared\_TagManagerBody.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Views\Shared\_TagManagerHead.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Views\Shared\_InfoBox.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Views\Shared\_CookieConsentPartial.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Views\Shared\_LayoutLoginRegister.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Views\Shared\_HomeSquare.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Views\Shared\_SidebarMenuPartial.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Views\Profile\Edit.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Views\Profile\Details.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Views\Brainstorm\_Details.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Views\Shared\_ListNoItems.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Views\Team\_ListMine.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="Views\Team\_ViewImports.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-    <Content Update="wwwroot\css\forumgroup - Copy - Copy.min.css">
-      <DependentUpon>forumgroup.min.css</DependentUpon>
-    </Content>
-    <Content Update="wwwroot\css\forumgroup - Copy.min.css">
-      <DependentUpon>forumgroup.min.css</DependentUpon>
-    </Content>
-    <Content Update="wwwroot\css\ratecalculator - Copy.min.css">
-      <DependentUpon>ratecalculator.min.css</DependentUpon>
-    </Content>
-    <Content Update="wwwroot\js\calculators\ratecalculator - Copy.min.js">
-      <DependentUpon>ratecalculator.min.js</DependentUpon>
-    </Content>
-    <Content Update="wwwroot\js\staff\admintasks - Copy %282%29.min.js">
-      <DependentUpon>admintasks.min.js</DependentUpon>
-    </Content>
-    <Content Update="wwwroot\js\staff\admintasks - Copy - Copy.min.js">
-      <DependentUpon>admintasks - Copy.min.js</DependentUpon>
-    </Content>
-    <Content Update="wwwroot\js\staff\admintasks - Copy.min.js">
-      <DependentUpon>admintasks.min.js</DependentUpon>
-    </Content>
-    <Content Update="wwwroot\js\study\coursesexplore.min.js">
-      <DependentUpon>coursesexplore.js</DependentUpon>
-    </Content>
-    <Content Update="wwwroot\js\study\studentdashboard.min.js">
-      <DependentUpon>studentdashboard.js</DependentUpon>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\images\badges\" />
-    <Folder Include="wwwroot\lib\" />
-    <Folder Include="wwwroot\fonts\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Content Include="wwwroot\.well-known\**">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
 
   <ItemGroup>
-    <Content Remove="wwwroot\js\giveaway\giveawayyouarein.min.js" />
+	<!-- extends watching group to include *.cshtml files -->
+	<Watch Include="**\*.cshtml" Exclude="node_modules\**\*;**\*.js.map;obj\**\*;bin\**\*" />
   </ItemGroup>
-
-  <ItemGroup>
-    <_ContentIncludedByDefault Remove="wwwroot\js\giveaway\giveawayyouarein.min.js" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="wwwroot\js\giveaway\giveawayyouarein.min.js" />
-  </ItemGroup>
-
 </Project>

@@ -9,7 +9,7 @@
 
     ViewData["Title"] = SharedLocalizer["Platform Setting"];
     ViewData["Description"] = SharedLocalizer["Manage Platform Setting"];
-    ViewData["Url"] = ViewBag.BaseUrl + Url.Action("index", "platformsetting", new { area = "staff" });
+    ViewData["Url"] = ViewData["BaseUrl"] + Url.Action("index", "platformsetting", new { area = "staff" });
 }
 
 @section ComponentStyles {

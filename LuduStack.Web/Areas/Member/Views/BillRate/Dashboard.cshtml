@@ -9,7 +9,7 @@
 
     ViewData["Title"] = SharedLocalizer["Bill Rate"];
     ViewData["Description"] = SharedLocalizer["Manage your Bill Rates"];
-    ViewData["Url"] = ViewBag.BaseUrl + Url.Action("index", "billrate", new { area = "member" });
+    ViewData["Url"] = ViewData["BaseUrl"] + Url.Action("index", "billrate", new { area = "member" });
 }
 
 @section ComponentStyles {

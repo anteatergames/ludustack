@@ -5,7 +5,7 @@
     ViewData["Url"] = "https://www.ludustack.com/timeline";
     var count = 0;
 
-    var showAds = (bool)(ViewBag.ShowAds ?? false);
+    var showAds = (bool)(ViewData["ShowAds"] ?? false);
 }
 
 @section Styles{

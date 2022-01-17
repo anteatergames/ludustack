@@ -2,7 +2,7 @@
 @{
     ViewData["Title"] = Model.Title;
     ViewData["Description"] = Model.Content.Contains(SharedLocalizer["Content posted on"]) ? SharedLocalizer["Content posted on"] + " " + Model.CreateDate.ToString() : String.Format("{0} | LUDUSTACK", Model.Content);
-    ViewData["Url"] = ViewBag.BaseUrl + Url.Action("details", "comics", new { area = "member", id = Model.Id });
+    ViewData["Url"] = ViewData["BaseUrl"] + Url.Action("details", "comics", new { area = "member", id = Model.Id });
     ViewData["OgImage"] = Model.FeaturedImage;
 }
 
@@ -40,13 +40,13 @@
         "@@id":"@(ViewData["Url"])",
         "name": "@(JavaScriptEncoder.Default.Encode(Model.Title))",
         "description":"@(JavaScriptEncoder.Default.Encode(Model.Content))",
-        "image": "@(ViewBag.BaseUrl + Model.FeaturedImage)",
+        "image": "@(ViewData["BaseUrl"] + Model.FeaturedImage)",
         "datePublished": "@Model.PublishDate.ToString("yyyy-MM-dd")",
         "issueNumber": "@Model.IssueNumber",
         "author":{
         "@@type":"Person",
         "name":"@Model.AuthorName",
-        "url":"@(ViewBag.BaseUrl + "/u/" + Model.UserHandler)"
+        "url":"@(ViewData["BaseUrl"] + "/u/" + Model.UserHandler)"
         }
         }
     </script>

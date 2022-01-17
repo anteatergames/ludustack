@@ -9,7 +9,7 @@
 
     ViewData["Title"] = SharedLocalizer["Comics"];
     ViewData["Description"] = SharedLocalizer["Manage Comic Strips"];
-    ViewData["Url"] = ViewBag.BaseUrl + Url.Action("index", "comics", new { area = "member" });
+    ViewData["Url"] = ViewData["BaseUrl"] + Url.Action("index", "comics", new { area = "member" });
 }
 
 @section ComponentStyles {
