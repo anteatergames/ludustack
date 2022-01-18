@@ -4327,7 +4327,7 @@
     <comment>Generic</comment>
   </data>
   <data name="Are you in a creative block? Need an idea for a game? Here is where your problems end. Press the button below to generate an awesome brand new idea for you to work on. If you don't like one of the aspects the machine picked for you, just click on it to pick just that aspect again." xml:space="preserve">
-    <value>Você está em um bloqueio criativo? Precisa de uma ideia para um jogo? Seus problemas acabaram! Pressione o botão abaixo para gerar uma maravilhosa ideia novinha em folha para você. Se você não gostar dos aspectos que a máquina escolheu pra você, basta clicar em um deles para sortear aquele aspecto novamente.</value>
+    <value>Você está em um bloqueio criativo? Precisa de uma ideia para um jogo? Seus problemas acabaram! Pressione o botão abaixo para gerar uma maravilhosa ideia novinha em folha para você. Se você não gostar dos aspectos que a máquina escolheu pra você, basta clicar em um aspecto para sorteá-lo novamente.</value>
     <comment>GameIdea</comment>
   </data>
   <data name="Can you make this game?" xml:space="preserve">
