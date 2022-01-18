@@ -4326,4 +4326,68 @@
     <value>loja</value>
     <comment>Generic</comment>
   </data>
+  <data name="Are you in a creative block? Need an idea for a game? Here is where your problems end. Press the button below to generate an awesome brand new idea for you to work on. If you don't like one of the aspects the machine picked for you, just click on it to pick just that aspect again." xml:space="preserve">
+    <value>Você está em um bloqueio criativo? Precisa de uma ideia para um jogo? Seus problemas acabaram! Pressione o botão abaixo para gerar uma maravilhosa ideia novinha em folha para você. Se você não gostar dos aspectos que a máquina escolheu pra você, basta clicar em um deles para sortear aquele aspecto novamente.</value>
+    <comment>GameIdea</comment>
+  </data>
+  <data name="Can you make this game?" xml:space="preserve">
+    <value>Consegue fazer esse jogo?</value>
+    <comment>GameIdea</comment>
+  </data>
+  <data name="Check it out!" xml:space="preserve">
+    <value>Confira!</value>
+    <comment>GameIdea</comment>
+  </data>
+  <data name="clicking here" xml:space="preserve">
+    <value>clicando aqui</value>
+    <comment>GameIdea</comment>
+  </data>
+  <data name="Element of the game" xml:space="preserve">
+    <value>Elemento do jogo</value>
+    <comment>GameIdea</comment>
+  </data>
+  <data name="generate" xml:space="preserve">
+    <value>gerar</value>
+    <comment>GameIdea</comment>
+  </data>
+  <data name="Goal" xml:space="preserve">
+    <value>Objetivo</value>
+    <comment>GameIdea</comment>
+  </data>
+  <data name="Idea Machine" xml:space="preserve">
+    <value>Máquina de Ideias</value>
+    <comment>GameIdea</comment>
+  </data>
+  <data name="If you like this tool, consider joining our community by" xml:space="preserve">
+    <value>Se você gosta desta ferramenta, considere juntar-se à nossa comunidade</value>
+    <comment>GameIdea</comment>
+  </data>
+  <data name="Obstacle to overcome" xml:space="preserve">
+    <value>Obstáculo a superar</value>
+    <comment>GameIdea</comment>
+  </data>
+  <data name="Rule" xml:space="preserve">
+    <value>Regra</value>
+    <comment>GameIdea</comment>
+  </data>
+  <data name="The style of the game" xml:space="preserve">
+    <value>O estilo do jogo</value>
+    <comment>GameIdea</comment>
+  </data>
+  <data name="Thing" xml:space="preserve">
+    <value>Coisa</value>
+    <comment>GameIdea</comment>
+  </data>
+  <data name="Ultimate target" xml:space="preserve">
+    <value>Alvo principal</value>
+    <comment>GameIdea</comment>
+  </data>
+  <data name="Wanna know how much it would cost to produce this game?" xml:space="preserve">
+    <value>Quer saber quanto custaria produzir este jogo?</value>
+    <comment>GameIdea</comment>
+  </data>
+  <data name="What you must do" xml:space="preserve">
+    <value>O que fazer</value>
+    <comment>GameIdea</comment>
+  </data>
 </root>

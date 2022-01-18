@@ -70,7 +70,7 @@
                 </div>
             }
 
-            <div class="col-12 text-center"><span>@SharedLocalizer["Wanna know how much it would cost to produce this game?"]</span> <span class="font-weight-bold">@Html.ActionLink("Check it out!", "index", "costcalculator", new { area = "tools" })</span></div>
+            <div class="col-12 text-center"><span>@SharedLocalizer["Wanna know how much it would cost to produce this game?"]</span> <span class="font-weight-bold">@Html.ActionLink(SharedLocalizer["Check it out!"], "index", "costcalculator", new { area = "tools" })</span></div>
         </div>
 
         @if (showAds)
