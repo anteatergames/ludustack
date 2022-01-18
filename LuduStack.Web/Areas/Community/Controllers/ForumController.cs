@@ -183,7 +183,7 @@ namespace LuduStack.Web.Areas.Community.Controllers
         [Route("community/forum/topic/{id:guid}")]
         public async Task<IActionResult> ViewTopic(Guid id)
         {
-            OperationResultVo<ForumPostViewModel> result = await forumAppService.GetPostForDetails(CurrentUserId, id);
+            OperationResultVo<ForumPostViewModel> result = await forumAppService.GetPostForDetails(CurrentUserId, CurrentUserIsAdmin, id);
 
             if (result.Success)
             {
@@ -208,7 +208,7 @@ namespace LuduStack.Web.Areas.Community.Controllers
         [Route("community/forum/post/{id:guid}")]
         public async Task<IActionResult> ViewPost(Guid id)
         {
-            OperationResultVo<ForumPostViewModel> result = await forumAppService.GetPostForDetails(CurrentUserId, id);
+            OperationResultVo<ForumPostViewModel> result = await forumAppService.GetPostForDetails(CurrentUserId, CurrentUserIsAdmin, id);
 
             if (result.Success)
             {
@@ -237,7 +237,7 @@ namespace LuduStack.Web.Areas.Community.Controllers
         [Route("community/forum/topic/{id:guid}/latest")]
         public async Task<IActionResult> ViewTopicLatest(Guid id)
         {
-            OperationResultVo<ForumPostViewModel> result = await forumAppService.GetPostForDetails(CurrentUserId, id);
+            OperationResultVo<ForumPostViewModel> result = await forumAppService.GetPostForDetails(CurrentUserId, CurrentUserIsAdmin, id);
 
             if (result.Success)
             {

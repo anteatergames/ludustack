@@ -37,7 +37,13 @@
                     <a asp-area="community" asp-controller="forum" asp-action="postedit" asp-route-id="@Model.Id" class="btn btn-sm btn-outline-info btn-post-edit"><i class="fa fa-fw fa-pencil-alt" aria-hidden="true"></i></a>
                 </div>
             }
-            @if (Model.Permissions.CanDelete)
+            @if (Model.Permissions.IsAdmin && !Model.Permissions.IsMe)
+            {
+                <div class="text-center mt-1">
+                    <a class="btn btn-sm btn-danger btn-entity-delete" href="#" data-url="@Url.Action("deletepost", "forum", new { area = "community", id = Model.Id })" data-confirmationmessage="@SharedLocalizer["Are you sure you want to delete this post?"]" data-confirmationtitle="@SharedLocalizer["ATTENTION ADMIN!"]" data-confirmationbuttontext="@SharedLocalizer["Yes, delete it!"]" data-cancelbuttontext="@SharedLocalizer["Cancel"]"><i class="fa fa-fw fa-trash" aria-hidden="true"></i></a>
+                </div>
+            }
+            else if (Model.Permissions.CanDelete)
             {
                 <div class="text-center mt-1">
                     <a class="btn btn-sm btn-outline-danger btn-entity-delete" href="#" data-url="@Url.Action("deletepost", "forum", new { area = "community", id = Model.Id })" data-confirmationmessage="@SharedLocalizer["Are you sure you want to delete this post?"]" data-confirmationtitle="@SharedLocalizer["Are you sure?"]" data-confirmationbuttontext="@SharedLocalizer["Yes, delete it!"]" data-cancelbuttontext="@SharedLocalizer["Cancel"]"><i class="fa fa-fw fa-trash-alt" aria-hidden="true"></i></a>

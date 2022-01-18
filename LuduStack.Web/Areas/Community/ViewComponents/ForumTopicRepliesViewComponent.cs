@@ -36,7 +36,7 @@ namespace LuduStack.Web.Areas.Community.ViewComponents
                 Latest = latest
             };
 
-            OperationResultListVo<ForumPostViewModel> result = await forumAppService.GetTopicReplies(CurrentUserId, vm);
+            OperationResultListVo<ForumPostViewModel> result = await forumAppService.GetTopicReplies(CurrentUserId, CurrentUserIsAdmin, vm);
 
             result.Pagination.Area = "community";
             result.Pagination.Controller = "forum";

@@ -39,6 +39,14 @@ namespace LuduStack.Application.Services
             vm.Permissions.CanDelete = vm.UserId == currentUserId;
         }
 
+        protected static void SetBasePermissions(Guid currentUserId, bool currentUserIsAdmin, IBaseViewModel vm)
+        {
+            vm.Permissions.IsMe = vm.UserId == currentUserId;
+            vm.Permissions.CanEdit = vm.Permissions.IsMe;
+            vm.Permissions.CanDelete = vm.Permissions.IsMe || currentUserIsAdmin;
+            vm.Permissions.IsAdmin = currentUserIsAdmin;
+        }
+
         protected virtual void Dispose(bool disposing)
         {
             // dispose resources
