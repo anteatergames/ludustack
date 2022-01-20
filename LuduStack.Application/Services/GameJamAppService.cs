@@ -1072,7 +1072,6 @@ namespace LuduStack.Application.Services
 
         private static void SetEntryPermissions(Guid currentUserId, bool currentUserIsAdmin, GameJamEntryViewModel vm, IEnumerable<GameJamTeamMember> allParticipantIds)
         {
-
             vm.Permissions.IsMe = currentUserId == vm.UserId || vm.TeamMembers.Any(x => x.UserId == currentUserId);
             vm.Permissions.IsAdmin = currentUserIsAdmin;
             vm.Permissions.CanSubmit = vm.Permissions.IsMe && (vm.GameJam.Permissions.CanSubmit || (vm.GameJam.CurrentPhase == GameJamPhase.Voting && vm.LateSubmission));
@@ -1197,6 +1196,7 @@ namespace LuduStack.Application.Services
                 case GameJamParticipationType.IndividualsAndTeams:
                     vm.Highlights.Add(new GameJamHighlightsVo { Highlight = GameJamHighlight.IndividualsAndTeams });
                     break;
+
                 default:
                     vm.Highlights.Add(new GameJamHighlightsVo { Highlight = GameJamHighlight.IndividualsOnly });
                     break;

@@ -93,15 +93,15 @@
         font-size: 0.6em;
     }
 
-    .progresscircles > li:before {
-        width: 2em;
-        height: 2em;
-        line-height: 2em;
-    }
+        .progresscircles > li:before {
+            width: 2em;
+            height: 2em;
+            line-height: 2em;
+        }
 
-    .progresscircles > li:after {
-        top: 0.75em;
-    }
+        .progresscircles > li:after {
+            top: 0.75em;
+        }
 }
 
 @media (max-width: 575px) {

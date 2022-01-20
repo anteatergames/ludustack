@@ -36,9 +36,6 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using WebEssentials.AspNetCore.Pwa;
 
-
-
-
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 string[] supportedCultures = new[]
@@ -208,7 +205,6 @@ builder.Services.Configure<ConfigOptions>(myOptions =>
 
 builder.Services.AddMediatR(Assembly.GetExecutingAssembly(), typeof(SendNotificationRequestHandler).GetTypeInfo().Assembly, typeof(DeleteCourseCommandHandler).GetTypeInfo().Assembly);
 
-
 RegisterServices(builder.Services);
 
 WebApplication app = builder.Build();
@@ -311,7 +307,6 @@ app.UseEndpoints(routes =>
 app.MapRazorPages();
 
 app.Run();
-
 
 CreateUserRoles(app.Services).Wait();
 

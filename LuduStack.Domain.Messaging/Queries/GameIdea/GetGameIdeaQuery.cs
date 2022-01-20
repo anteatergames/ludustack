@@ -43,7 +43,6 @@ namespace LuduStack.Domain.Messaging.Queries.GameIdea
             {
                 result = repository.Get(request.Where);
 
-
                 if (request.Take > 0)
                 {
                     result = result.Take(request.Take);
@@ -54,7 +53,6 @@ namespace LuduStack.Domain.Messaging.Queries.GameIdea
             else if (request.Language.HasValue)
             {
                 result = repository.Get(x => x.Language == request.Language.Value);
-
 
                 if (request.Take > 0)
                 {

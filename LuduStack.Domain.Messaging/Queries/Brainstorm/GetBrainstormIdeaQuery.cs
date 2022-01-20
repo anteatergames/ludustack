@@ -65,21 +65,27 @@ namespace LuduStack.Domain.Messaging.Queries.Brainstorm
                     case 0:
                         query = query.Where(x => notImplementedStatuses.Contains(x.Status));
                         break;
+
                     case 1:
                         query = query.Where(x => x.Status == BrainstormIdeaStatus.Proposed);
                         break;
+
                     case 2:
                         query = query.Where(x => x.Status == BrainstormIdeaStatus.InAnalysis);
                         break;
+
                     case 3:
                         query = query.Where(x => x.Status == BrainstormIdeaStatus.Accepted);
                         break;
+
                     case 4:
                         query = query.Where(x => x.Status == BrainstormIdeaStatus.Rejected);
                         break;
+
                     case 5:
                         query = query.Where(x => x.Status == BrainstormIdeaStatus.Implemented);
                         break;
+
                     default:
                         break;
                 }
