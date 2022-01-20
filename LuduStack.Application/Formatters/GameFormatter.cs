@@ -58,38 +58,55 @@ namespace LuduStack.Application.Formatters
             {
                 case ExternalLinkProvider.Website:
                     return UrlFormatter.Website(item.Value);
+
                 case ExternalLinkProvider.Facebook:
                     return UrlFormatter.Facebook(item.Value);
+
                 case ExternalLinkProvider.Twitter:
                     return UrlFormatter.Twitter(item.Value);
+
                 case ExternalLinkProvider.Instagram:
                     return UrlFormatter.Instagram(item.Value);
+
                 case ExternalLinkProvider.Youtube:
                     return UrlFormatter.Youtube(item.Value);
+
                 case ExternalLinkProvider.XboxLive:
                     return UrlFormatter.XboxLiveGame(item.Value);
+
                 case ExternalLinkProvider.PlaystationStore:
                     return UrlFormatter.PlayStationStoreGame(item.Value);
+
                 case ExternalLinkProvider.Steam:
                     return UrlFormatter.SteamGame(item.Value);
+
                 case ExternalLinkProvider.GameJolt:
                     return UrlFormatter.GameJoltGame(item.Value);
+
                 case ExternalLinkProvider.ItchIo:
                     return UrlFormatter.ItchIoGame(itchProfile?.Value, item.Value);
+
                 case ExternalLinkProvider.GamedevNet:
                     return UrlFormatter.GamedevNetGame(item.Value);
+
                 case ExternalLinkProvider.IndieDb:
                     return UrlFormatter.IndieDbGame(item.Value);
+
                 case ExternalLinkProvider.UnityConnect:
                     return UrlFormatter.UnityConnectGame(item.Value);
+
                 case ExternalLinkProvider.GooglePlayStore:
                     return UrlFormatter.GooglePlayStoreGame(item.Value);
+
                 case ExternalLinkProvider.AppleAppStore:
                     return UrlFormatter.AppleAppStoreGame(item.Value);
+
                 case ExternalLinkProvider.IndiExpo:
                     return UrlFormatter.IndiExpoGame(item.Value);
+
                 case ExternalLinkProvider.Discord:
                     return UrlFormatter.DiscordGame(item.Value);
+
                 default:
                     return UrlFormatter.Website(item.Value);
             }

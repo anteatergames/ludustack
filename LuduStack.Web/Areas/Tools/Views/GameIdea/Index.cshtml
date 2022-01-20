@@ -28,15 +28,15 @@
 
 @section Scripts {
     <environment include="Development">
-        <script src="~/js/shared/gameidea.js"></script>
+        <script src="~/js/shared/gameideamachine.js"></script>
     </environment>
     <environment exclude="Development">
-        <script src="~/js/shared/gameidea.min.js" asp-append-version="true"></script>
+        <script src="~/js/shared/gameideamachine.min.js" asp-append-version="true"></script>
     </environment>
 
     <script>
         $(function () {
-            GAMEIDEA.Init();
+            GAMEIDEAMACHINE.Init();
         })
     </script>
 }
@@ -47,6 +47,8 @@
 
 <section class="content container">
     <div id="featurecontainer" class="pb-3 bg-light">
+        <input type="hidden" id="urls" value="urls"
+               data-url-get-elements="@Url.Action("getelements", "gameidea", new { area = "tools" })" />
         <input type="hidden" id="isajax" value="@isAjax.ToString().ToLower()" />
         <input type="hidden" id="gameIdeaStandalone" value="true" />
 
@@ -70,7 +72,7 @@
                 </div>
             }
 
-            <div class="col-12 text-center"><span>@SharedLocalizer["Wanna know how much it would cost to produce this game?"]</span> <span class="font-weight-bold">@Html.ActionLink("Check it out!", "index", "costcalculator", new { area = "tools" })</span></div>
+            <div class="col-12 text-center"><span>@SharedLocalizer["Wanna know how much it would cost to produce this game?"]</span> <span class="font-weight-bold">@Html.ActionLink(SharedLocalizer["Check it out!"], "index", "costcalculator", new { area = "tools" })</span></div>
         </div>
 
         @if (showAds)

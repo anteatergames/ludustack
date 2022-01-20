@@ -16,7 +16,7 @@
 
     .gameidea.gradient {
         color: #fff;
-        background: radial-gradient(circle, rgba(191, 208, 53, 1) 0%, rgba(82, 146, 150, 1) 100%);
+        background: radial-gradient(circle, rgb(255, 100, 0) 0%, rgb(255, 0, 0) 100%);
     }
 
     .gameidea.big .generatebutton {

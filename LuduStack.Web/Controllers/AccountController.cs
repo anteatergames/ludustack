@@ -24,7 +24,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Text.RegularExpressions;
@@ -89,10 +88,10 @@ namespace LuduStack.Web.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var isDev = hostingEnvironment.EnvironmentName.Equals("Development");
+                bool isDev = hostingEnvironment.EnvironmentName.Equals("Development");
                 if (isDev)
                 {
-                    var user = await _signInManager.UserManager.FindByNameAsync(model.UserName);
+                    ApplicationUser user = await _signInManager.UserManager.FindByNameAsync(model.UserName);
 
                     await _signInManager.RefreshSignInAsync(user);
 
@@ -302,7 +301,7 @@ namespace LuduStack.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(MvcRegisterViewModel model, string returnUrl = null)
         {
-            bool reCaptchaValid =await IsReCaptchValid();
+            bool reCaptchaValid = await IsReCaptchValid();
 
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid && reCaptchaValid)
@@ -608,19 +607,23 @@ namespace LuduStack.Web.Controllers
             if (ModelState.IsValid)
             {
                 ApplicationUser user = await _userManager.FindByEmailAsync(model.Email);
-                bool emailAlreadyConfirmed = await _userManager.IsEmailConfirmedAsync(user);
-                if (user == null || !emailAlreadyConfirmed)
+                if (user != null)
                 {
-                    // Don't reveal that the user does not exist or is not confirmed
-                    return RedirectToAction(nameof(ForgotPasswordConfirmation));
+                    bool emailAlreadyConfirmed = await _userManager.IsEmailConfirmedAsync(user);
+                    if (user == null || !emailAlreadyConfirmed)
+                    {
+                        // Don't reveal that the user does not exist or is not confirmed
+                        return RedirectToAction(nameof(ForgotPasswordConfirmation));
+                    }
+
+                    // For more information on how to enable account confirmation and password reset please
+                    // visit https://go.microsoft.com/fwlink/?LinkID=532713
+                    string code = await _userManager.GeneratePasswordResetTokenAsync(user);
+                    string callbackUrl = Url.ResetPasswordCallbackLink(user.Id, code, Request.Scheme);
+
+                    await NotificationSender.SendEmailPasswordResetAsync(model.Email, callbackUrl);
                 }
 
-                // For more information on how to enable account confirmation and password reset please
-                // visit https://go.microsoft.com/fwlink/?LinkID=532713
-                string code = await _userManager.GeneratePasswordResetTokenAsync(user);
-                string callbackUrl = Url.ResetPasswordCallbackLink(user.Id, code, Request.Scheme);
-
-                await NotificationSender.SendEmailPasswordResetAsync(model.Email, callbackUrl);
                 return RedirectToAction(nameof(ForgotPasswordConfirmation));
             }
 

@@ -45,7 +45,7 @@
 
             var btn = $(this);
 
-            MAINMODULE.Common.PostWithoutConfirmation(btn, handleResponse);
+            MAINMODULE.Common.PostWithoutConfirmation(btn, 'POST', handleResponse);
 
             return false;
         });

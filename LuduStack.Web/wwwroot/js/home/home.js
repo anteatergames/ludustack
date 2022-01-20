@@ -446,7 +446,7 @@
 
     function loadGameIdea() {
         MAINMODULE.Ajax.LoadHtml("/home/gameidea", selectors.divGameIdea).then(() => {
-            GAMEIDEA.Init();
+            GAMEIDEAMACHINE.Init();
         });
     }
 

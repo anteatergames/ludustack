@@ -1,0 +1,44 @@
+﻿@model GameIdeaListViewModel
+
+@{
+    var canInteract = User.Identity.IsAuthenticated;
+
+    Layout = null;
+
+    var noItemsModel = new ListNoItemsViewModel("fas fa-dizzy", "There are no elements here!");
+}
+
+@foreach (var element in Model.Elements)
+{
+    var elementTypeDisplayName = element.Key.ToUiInfo().Display;
+
+    <div class="bg-light py-3 mb-2">
+        <div class="col-12">
+            <h2>
+                @if (canInteract)
+                {
+                    <a asp-area="staff" asp-controller="gameidea" asp-action="add" asp-route-type="@((int)element.Key)" asp-route-language="@((int)Model.Language)" class="btn btn-sm btn-default"><i class="fas fa-fw fa-plus" aria-hidden="true"></i></a>
+                }
+                @SharedLocalizer[elementTypeDisplayName]<span class="float-right">@element.Value.Count()</span>
+            </h2>
+        </div>
+
+        <div class="col-12 bg-white square-top py-1">
+            @if (!element.Value.Any())
+            {
+                <partial name="_ListNoItems" model="noItemsModel" />
+            }
+            else
+            {
+                <div class="row">
+                    <div class="col-12 py-1">
+                        @foreach (var item in element.Value)
+                        {
+                            <a class="btn btn-sm btn-light btn-entity-delete" href="#" data-url="@Url.Action("delete", "GameIdea", new { area = "staff", id = item.Id })" data-skipconfirmation="true" data-confirmationmessage="@SharedLocalizer["Are you sure you want to delete this Game Idea?"]" data-confirmationtitle="@SharedLocalizer["Are you sure?"]" data-confirmationbuttontext="@SharedLocalizer["Yes, delete it!"]" data-cancelbuttontext="@SharedLocalizer["Cancel"]"><span>@item.Description</span></a>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}

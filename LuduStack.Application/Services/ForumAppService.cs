@@ -240,7 +240,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public async Task<OperationResultVo<ForumPostViewModel>> GetPostForDetails(Guid currentUserId, Guid id)
+        public async Task<OperationResultVo<ForumPostViewModel>> GetPostForDetails(Guid currentUserId, bool currentUserIsAdmin, Guid id)
         {
             try
             {
@@ -264,7 +264,7 @@ namespace LuduStack.Application.Services
 
                 SetProfiles(viewModel, userProfiles);
 
-                SetPermissions(currentUserId, viewModel);
+                SetPermissions(currentUserId, currentUserIsAdmin, viewModel);
 
                 HtmlSanitizer sanitizer = ContentHelper.GetHtmlSanitizer();
                 SanitizeHtmlToDisplay(viewModel, sanitizer);
@@ -300,7 +300,7 @@ namespace LuduStack.Application.Services
             }
         }
 
-        public async Task<OperationResultListVo<ForumPostViewModel>> GetTopicReplies(Guid currentUserId, GetForumTopicRepliesRequestViewModel viewModel)
+        public async Task<OperationResultListVo<ForumPostViewModel>> GetTopicReplies(Guid currentUserId, bool currentUserIsAdmin, GetForumTopicRepliesRequestViewModel viewModel)
         {
             try
             {
@@ -334,7 +334,7 @@ namespace LuduStack.Application.Services
 
                     SetProfiles(topicReply, userProfiles);
 
-                    SetPermissions(currentUserId, topicReply);
+                    SetPermissions(currentUserId, currentUserIsAdmin, topicReply);
 
                     SanitizeHtmlToDisplay(topicReply, sanitizer);
                 }
@@ -475,9 +475,9 @@ namespace LuduStack.Application.Services
             }
         }
 
-        private void SetPermissions(Guid currentUserId, ForumPostViewModel viewModel)
+        private void SetPermissions(Guid currentUserId, bool currentUserIsAdmin, ForumPostViewModel viewModel)
         {
-            SetBasePermissions(currentUserId, viewModel);
+            SetBasePermissions(currentUserId, currentUserIsAdmin, viewModel);
         }
 
         private static void SanitizeHtmlToDisplay(ForumPostViewModel viewModel, HtmlSanitizer sanitizer)

@@ -20,11 +20,11 @@ namespace LuduStack.Application.Interfaces
 
         Task<OperationResultVo<Guid>> SavePost(Guid currentUserId, ForumPostViewModel viewModel);
 
-        Task<OperationResultVo<ForumPostViewModel>> GetPostForDetails(Guid currentUserId, Guid id);
+        Task<OperationResultVo<ForumPostViewModel>> GetPostForDetails(Guid currentUserId, bool currentUserIsAdmin, Guid id);
 
         Task<OperationResultVo<ForumPostViewModel>> GetPostForEdit(Guid currentUserId, Guid id);
 
-        Task<OperationResultListVo<ForumPostViewModel>> GetTopicReplies(Guid currentUserId, GetForumTopicRepliesRequestViewModel viewModel);
+        Task<OperationResultListVo<ForumPostViewModel>> GetTopicReplies(Guid currentUserId, bool currentUserIsAdmin, GetForumTopicRepliesRequestViewModel viewModel);
 
         Task<OperationResultVo<ForumPostViewModel>> RemovePost(Guid currentUserId, Guid id);
 

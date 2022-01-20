@@ -1,5 +1,11 @@
 ﻿@{
     Layout = null;
+
+
+    var genreHtml = string.Format("<span class=\"game-idea-element game-idea-genre\">A video game</span>");
+    var actionHtml = string.Format("<span class=\"game-idea-element game-idea-action\">perform actions on</span>");
+    var thingHtml = string.Format("<span class=\"game-idea-element game-idea-things\">things</span>");
+    var goalHtml = string.Format("<span class=\"game-idea-element game-idea-goals\">to achieve goals</span>");
 }
 
 <link href='https://fonts.googleapis.com/css?family=Chelsea Market:700,400' rel='stylesheet' type='text/css'>
@@ -9,10 +15,6 @@
         <div class="col-12 p-0 title">
             <span>@SharedLocalizer["Random Game Idea"]</span>
         </div>
-        <span class="game-idea-element game-idea-genre text-capitalize">A video game</span>
-        game where you
-        <span class="game-idea-element game-idea-action">perform actions on</span>
-        <span class="game-idea-element game-idea-things">things</span>
-        <span class="game-idea-element game-idea-goals">to achieve goals</span>.
+        @Html.Raw(SharedLocalizer["<span class=\"text-capitalize\">{0}</span> game where you {1} {2} {3}.", genreHtml, actionHtml, thingHtml, goalHtml])
     </a>
 </div>
