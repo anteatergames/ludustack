@@ -1,4 +1,4 @@
-﻿var GAMEIDEA = (function () {
+﻿var GAMEIDEAMACHINE = (function () {
     "use strict";
 
     var selectors = {};
@@ -33,15 +33,20 @@
 
     var genre = ['beat\'em up', 'twin stick', 'management', 'sim', 'battle royale', 'dungeon crawler', 'racing', 'action', 'arcade', 'educational', 'top-down', 'adventure', 'strategy', 'rts', 'turn-based strategy', 'role-playing', 'platformer', 'puzzle', 'visual novel', 'social media', 'mobile', 'browser', 'fighting', 'artsy', 'open world', 'tycoon', 'one touch'];
 
-    var action = ['hide', 'evade', 'punch', 'kick', 'travel', 'carry', 'slice', 'ride', 'hunt', 'climb', 'break dance', 'skate', 'craft', 'lick', 'shoot', 'shoot at', 'play notes', 'grow', 'bounce', 'escape', 'rescue', 'go to war with', 'wage war on', 'unite', 'lead', 'build', 'destroy', 'conquer', 'invade', 'colonize', 'discover', 'explore', 'trade with', 'lead the rebels in', 'make peace with', 'investigate', 'collect gold from', 'collect crystals from', 'mine ore from', 'align', 'click on', 'match', 'throw', 'toss', 'fire pellets at', 'control', 'touch', 'stack', 'guess', 'memorize', 'rotate', 'swap', 'slide', 'avoid', 'drag and drop', 'tickle', 'race', 'challenge', 'collect', 'draw', 'unlock', 'cook', 'break', 'solve puzzles involving', 'collect', 'juggle'];
+    var action = ['hide', 'evade', 'punch', 'kick', 'travel', 'carry', 'slice', 'ride', 'hunt', 'climb', 'break dance', 'skate', 'craft', 'lick', 'shoot', 'shoot at', 'play notes', 'grow', 'bounce', 'escape', 'rescue', 'go to war with', 'wage war on', 'unite', 'lead', 'build', 'destroy', 'conquer', 'invade', 'colonize', 'discover', 'explore', 'trade with', 'lead the rebels in', 'make peace with', 'investigate', 'collect gold from', 'collect crystals from', 'mine ore from', 'align', 'click on', 'match', 'throw', 'toss', 'fire pellets at', 'control', 'touch', 'stack', 'guess', 'memorize', 'rotate', 'swap', 'slide', 'avoid', 'drag and drop', 'tickle', 'race', 'challenge', 'collect', 'draw', 'unlock', 'cook', 'break', 'collect', 'juggle'];
 
     var things = ['daggers', 'boomerangs', 'monsters', 'bicycles', 'motorbikes', 'ghosts', 'rings', 'lasers', 'rusty pipes', 'life', 'dead people', 'tanks', 'punky androids', 'bikes', 'origami', 'walls', 'website', 'farm', 'ancient history', 'turtles', 'music notes', 'jigsaw pieces', 'robots', 'water', 'politicians', 'colors', 'yo momma', 'countries', 'nations', 'dragons', 'castles', 'cities', 'strongholds', 'towers', 'dungeons', 'citadels', 'kingdoms', 'bombs', 'unknown worlds', 'other worlds', 'parallel worlds', 'other dimensions', 'alien worlds', 'heaven', 'hell', 'mythological places', 'historical places', 'islands', 'sanctuaries', 'temples', 'ruins', 'factories', 'caves', 'gems', 'diamonds', 'gold nuggets', 'bricks', 'bubbles', 'squares', 'triangles', 'treasure', 'blobs', 'kitchen appliances', 'nondescript fruits', 'animals', 'birds', 'baby animals', 'farm animals', 'exotic fruits', 'sentient plants', 'your friends', 'shapes', 'jewels', 'letters', 'words', 'numbers', 'tokens', 'coins', 'eggs', 'hats', 'candy', 'chocolate', 'shoes', 'clothing items', 'princesses', 'blocks', 'cubes', 'asteroids', 'stars', 'balls', 'spheres', 'magnets', 'riddles'];
 
-    var goals = ['to get rich', 'to fulfil a prophecy', 'to save your family', 'to impress girls', 'to get drunk', 'to gain levels', 'to build a business', 'to look cool', 'to get to the end', 'to survive', 'to win', 'for glory', 'in the name of love', 'to live forever', 'to rule the world', 'to form an empire', 'to win points', 'to reach the highscore', 'to unlock bonus items', 'to earn tokens', 'to unlock the next level', 'to become president', 'to earn discounts', 'to make your name', 'to pass exam', 'to never stop', 'to uncage a friend', 'to find the banana', 'to cook a meal'];
+    var goals = ['to get rich', 'to fulfil a prophecy', 'to save your family', 'to impress girls', 'to get drunk', 'to gain levels', 'to build a business', 'to look cool', 'to get to the end', 'to survive', 'to win', 'for glory', 'in the name of love', 'to live forever', 'to rule the world', 'to form an empire', 'to win points', 'to reach the highscore', 'to unlock bonus items', 'to earn tokens', 'to unlock the next level', 'to become president', 'to earn discounts', 'to make your name', 'to pass exam', 'to never stop', 'to uncage a friend', 'to find the banana', 'to cook a meal', 'solve puzzles involving'];
 
     var rules = ['no text', 'only 1 button', 'no UI', 'only 2 buttons', 'in 60 seconds', 'only 3 colors', 'avoid enemies', 'limited inventory', 'only one chance', 'cannot avoid', 'must fly', 'one life only', 'must not be seen', 'can\'t touch the floor', 'limited time', 'must wait', 'can\'t breath', 'object is radioactive', 'the end is near', 'no gravity', 'naked', 'limited ammo', 'must dig', 'can\'t lose', 'can\'t regenerate', 'health is depleating', 'can\'t jump', 'silently'];
 
+    var prefixes = ['to'];
+
+    var suffixes = ['with', 'on', 'involving', 'in', 'at', 'from'];
+
     function setSelectors() {
+        selectors.urls = '#urls';
         selectors.gameIdeaStandalone = '#gameIdeaStandalone';
         selectors.btnGenerateGameIdea = '#btnGenerateGameIdea';
         selectors.btnSlotGenre = '.btn-slot-genre';
@@ -57,6 +62,7 @@
     }
 
     function cacheObjs() {
+        objs.urls = $(selectors.urls);
         objs.gameIdeaStandalone = document.querySelector(selectors.gameIdeaStandalone);
         objs.btnGenerateGameIdea = document.querySelector(selectors.btnGenerateGameIdea);
         objs.btnSlotGenre = document.querySelector(selectors.btnSlotGenre);
@@ -79,7 +85,7 @@
     }
 
     function changeGenre() {
-        objs.genre.textContent = cleanElement(genre[firstGenre]);
+        objs.genre.textContent = cleanElement(genre[firstGenre], false, false);
         firstGenre = (firstGenre + 1) % genre.length;
 
         setVerticalPosition(objs.genre);
@@ -101,7 +107,7 @@
     }
 
     function changeAction() {
-        objs.action.textContent = cleanElement(action[firstAction]);
+        objs.action.textContent = cleanElement(action[firstAction], true, false);
         firstAction = (firstAction + 1) % action.length;
 
         setVerticalPosition(objs.action);
@@ -123,7 +129,7 @@
     }
 
     function changeThings() {
-        objs.things.textContent = cleanElement(things[firstThing]);
+        objs.things.textContent = cleanElement(things[firstThing], false, false);
         firstThing = (firstThing + 1) % things.length;
 
         setVerticalPosition(objs.things);
@@ -145,7 +151,7 @@
     }
 
     function changeGoals() {
-        objs.goals.textContent = cleanElement(goals[firstGoal]);
+        objs.goals.textContent = cleanElement(goals[firstGoal], false, false);
         firstGoal = (firstGoal + 1) % goals.length;
 
         setVerticalPosition(objs.goals);
@@ -167,7 +173,7 @@
     }
 
     function changeRules() {
-        objs.rules.textContent = cleanElement(rules[firstRule]);
+        objs.rules.textContent = cleanElement(rules[firstRule], false, false);
         firstRule = (firstRule + 1) % rules.length;
 
         setVerticalPosition(objs.rules);
@@ -187,14 +193,16 @@
 
         bindAll();
 
-        if (objs.gameIdeaStandalone) {
-            clickSound = new Audio("/sounds/click.mp3");
-            slotsSound = new Audio("/sounds/spin.mp3");
-        }
+        getElements(function () {
+            if (objs.gameIdeaStandalone) {
+                clickSound = new Audio("/sounds/click.mp3");
+                slotsSound = new Audio("/sounds/spin.mp3");
+            }
 
-        playSlotsSound();
+            playSlotsSound();
 
-        pick();
+            pick();
+        });
     }
 
     function bindAll() {
@@ -399,18 +407,21 @@
         }
     }
 
-    function cleanElement(str) {
-        if (objs.gameIdeaStandalone) {
-            var index = str.indexOf('to ');
-            if (index === 0) {
-                str = str.replace('to ', '');
+    function cleanElement(str, cleanPrefix, cleanSuffix) {
+        var res = str.split(" ");
+        var firstWord = res[0];
+        var lastWord = res[res.length - 1];
+
+        if (res.length > 1) {
+            if (objs.gameIdeaStandalone || cleanPrefix) {
+                if (prefixes.indexOf(firstWord) > -1) {
+                    res.shift();
+                    str = res.join(" ");
+                }
             }
 
-            var res = str.split(" ");
-            var lastWord = res[res.length - 1];
-
-            if (res.length > 1) {
-                if (lastWord === 'with' || lastWord === 'on' || lastWord === 'involving' || lastWord === 'in' || lastWord === 'at' || lastWord === 'from') {
+            if (objs.gameIdeaStandalone || cleanSuffix) {
+                if (suffixes.indexOf(lastWord) > -1) {
                     res.pop();
                     str = res.join(" ");
                 }
@@ -443,6 +454,58 @@
         }
         else {
             el.style.top = "14px";
+        }
+    }
+
+    function getElements(callback) {
+        var url = objs.urls.data('urlGetElements');
+        if (url) {
+            MAINMODULE.Ajax.Get(url, function (response) {
+                if (response.success) {
+                    var incomingGenres = response.value.elements.Genre;
+                    if (incomingGenres.length > 0) {
+                        genre = incomingGenres.map(x => x.description);
+                    }
+
+                    var incomingActions = response.value.elements.Action;
+                    if (incomingActions.length > 0) {
+                        action = incomingActions.map(x => x.description);
+                    }
+
+                    var incomingThings = response.value.elements.Thing;
+                    if (incomingThings.length > 0) {
+                        things = incomingThings.map(x => x.description);
+                    }
+
+                    var incomingGoals = response.value.elements.Goal;
+                    if (incomingGoals.length > 0) {
+                        goals = incomingGoals.map(x => x.description);
+                    }
+
+                    var incomingRules = response.value.elements.Rule;
+                    if (incomingRules.length > 0) {
+                        rules = incomingRules.map(x => x.description);
+                    }
+
+                    var incomingPrefixes = response.value.elements.Preffix;
+                    if (incomingPrefixes.length > 0) {
+                        prefixes = incomingPrefixes.map(x => x.description);
+                    }
+
+                    var incomingSuffixes = response.value.elements.Suffix;
+                    if (incomingSuffixes.length > 0) {
+                        suffixes = incomingSuffixes.map(x => x.description);
+                    }
+
+                    if (callback) {
+                        callback();
+                    }
+                }
+            });
+        } else {
+            if (callback) {
+                callback();
+            }
         }
     }
 

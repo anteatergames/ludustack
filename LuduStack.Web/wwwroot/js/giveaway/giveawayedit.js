@@ -101,7 +101,7 @@
 
             var btn = $(this);
 
-            MAINMODULE.Common.PostWithoutConfirmation(btn);
+            MAINMODULE.Common.PostWithoutConfirmation(btn, 'POST');
 
             return false;
         });

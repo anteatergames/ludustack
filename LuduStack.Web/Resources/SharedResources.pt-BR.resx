@@ -4390,4 +4390,20 @@
     <value>O que fazer</value>
     <comment>GameIdea</comment>
   </data>
+  <data name="Random Game Idea" xml:space="preserve">
+    <value>Ideia de jogo</value>
+    <comment>GameIdea</comment>
+  </data>
+  <data name="&lt;span class=&quot;text-capitalize&quot;&gt;{0}&lt;/span&gt; game where you {1} {2} {3}." xml:space="preserve">
+    <value>Jogo {0} onde você deve {1} {2} {3}.</value>
+    <comment>GameIdea</comment>
+  </data>
+  <data name="Preffix" xml:space="preserve">
+    <value>Prefixo</value>
+    <comment>GameIdea</comment>
+  </data>
+  <data name="Suffix" xml:space="preserve">
+    <value>Sufixo</value>
+    <comment>GameIdea</comment>
+  </data>
 </root>

@@ -202,6 +202,13 @@ namespace LuduStack.Infra.CrossCutting.IoC
 
             #endregion GameJam
 
+            #region GameIdea
+
+            services.AddScoped<IGameIdeaAppService, GameIdeaAppService>();
+            services.AddScoped<IGameIdeaRepository, GameIdeaRepository>();
+
+            #endregion GameIdea
+
             #region Common
 
             services.AddScoped<IBaseAppServiceCommon, BaseAppServiceCommon>();

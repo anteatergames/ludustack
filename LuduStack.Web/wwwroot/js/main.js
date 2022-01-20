@@ -438,25 +438,35 @@
     }
 
     function deleteEntity(btn, callback) {
-        postOrDeleteWithConfirmation(btn, 'DELETE', callback);
+        var skipConfirmation = btn.data('skipconfirmation');
+        if (skipConfirmation) {
+            postWithoutConfirmation(btn, 'DELETE', callback);
+        }
+        else {
+            ajaxSendWithConfirmation(btn, 'DELETE', callback);
+        }
     }
 
     function postWithConfirmation(btn, callback) {
-        postOrDeleteWithConfirmation(btn, 'POST', callback);
+        ajaxSendWithConfirmation(btn, 'POST', callback);
     }
 
-    function postWithoutConfirmation(btn, callback) {
+    function postWithoutConfirmation(btn, httpmethod, callback) {
         var url = btn.data('url');
+
+        if (!httpmethod) {
+            httpmethod = 'POST';
+        }
 
         $.ajax({
             url: url,
-            type: 'POST'
+            type: httpmethod
         }).done(function (response) {
             if (response.success) {
                 MAINMODULE.Common.HandleSuccessDefault(response);
 
                 if (callback) {
-                    callback(response);
+                    callback(response, btn);
                 }
             }
             else {
@@ -465,7 +475,7 @@
         });
     }
 
-    function postOrDeleteWithConfirmation(btn, httpmethod, callback) {
+    function ajaxSendWithConfirmation(btn, httpmethod, callback) {
         var url = btn.data('url');
 
         var msgs = MAINMODULE.Common.GetPostConfirmationMessages(btn);

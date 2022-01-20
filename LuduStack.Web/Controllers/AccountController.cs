@@ -24,7 +24,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Text.RegularExpressions;
@@ -89,10 +88,10 @@ namespace LuduStack.Web.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var isDev = hostingEnvironment.EnvironmentName.Equals("Development");
+                bool isDev = hostingEnvironment.EnvironmentName.Equals("Development");
                 if (isDev)
                 {
-                    var user = await _signInManager.UserManager.FindByNameAsync(model.UserName);
+                    ApplicationUser user = await _signInManager.UserManager.FindByNameAsync(model.UserName);
 
                     await _signInManager.RefreshSignInAsync(user);
 

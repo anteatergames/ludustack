@@ -1,15 +1,12 @@
-﻿using LuduStack.Infra.CrossCutting.Identity;
-using LuduStack.Infra.CrossCutting.Identity.Model;
-using LuduStack.Infra.CrossCutting.Identity.Models;
-using LuduStack.Infra.Data.MongoDb;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using LuduStack.Application.Requests.Notification;
+﻿using LuduStack.Application.Requests.Notification;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Messaging;
+using LuduStack.Infra.CrossCutting.Identity;
+using LuduStack.Infra.CrossCutting.Identity.Model;
+using LuduStack.Infra.CrossCutting.Identity.Models;
 using LuduStack.Infra.CrossCutting.IoC;
+using LuduStack.Infra.Data.MongoDb;
+using LuduStack.Web;
 using LuduStack.Web.Extensions;
 using LuduStack.Web.Middlewares;
 using LuduStack.Web.ModelBinders;
@@ -18,6 +15,8 @@ using LuduStack.Web.Services;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OAuth;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -25,6 +24,8 @@ using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Net.Http.Headers;
 using System;
 using System.Collections.Generic;
@@ -34,14 +35,13 @@ using System.Security.Claims;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using WebEssentials.AspNetCore.Pwa;
-using LuduStack.Web;
 
 
 
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
-var supportedCultures = new[]
+string[] supportedCultures = new[]
     {
         "en-US",
         "en",
@@ -211,7 +211,7 @@ builder.Services.AddMediatR(Assembly.GetExecutingAssembly(), typeof(SendNotifica
 
 RegisterServices(builder.Services);
 
-var app = builder.Build();
+WebApplication app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

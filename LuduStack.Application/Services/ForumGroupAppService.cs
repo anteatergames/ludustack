@@ -15,11 +15,11 @@ namespace LuduStack.Application.Services
 {
     public class ForumGroupAppService : BaseAppService, IForumGroupAppService
     {
-        protected IForumGroupDomainService gamificationLevelDomainService;
+        protected IForumGroupDomainService forumGroupDomainService;
 
-        public ForumGroupAppService(IBaseAppServiceCommon baseAppServiceCommon, IForumGroupDomainService gamificationLevelDomainService) : base(baseAppServiceCommon)
+        public ForumGroupAppService(IBaseAppServiceCommon baseAppServiceCommon, IForumGroupDomainService forumGroupDomainService) : base(baseAppServiceCommon)
         {
-            this.gamificationLevelDomainService = gamificationLevelDomainService;
+            this.forumGroupDomainService = forumGroupDomainService;
         }
 
         public virtual async Task<OperationResultVo<int>> Count(Guid currentUserId)
@@ -136,7 +136,7 @@ namespace LuduStack.Application.Services
         {
             try
             {
-                ForumGroup model = await gamificationLevelDomainService.GenerateNew(currentUserId);
+                ForumGroup model = await forumGroupDomainService.GenerateNew(currentUserId);
 
                 ForumGroupViewModel newVm = mapper.Map<ForumGroupViewModel>(model);
 

@@ -1,0 +1,72 @@
+﻿@model GameIdeaFilterViewModel
+
+@{
+    var isAjax = ViewContext.HttpContext.Request.IsAjaxRequest();
+    var canInteract = User.Identity.IsAuthenticated;
+
+    if (isAjax)
+    {
+        Layout = null;
+    }
+
+    ViewData["Title"] = SharedLocalizer["Game Ideas"];
+    ViewData["Description"] = SharedLocalizer["Manage Game Ideas"];
+    ViewData["Url"] = ViewData["BaseUrl"] + Url.Action("index", "gameidea", new { area = "staff" });
+
+    var languages = Html.GetEnumSelectList<SupportedLanguage>();
+}
+
+@section ComponentStyles {
+<environment include="Development">
+    <link rel="stylesheet" href="~/css/_feature.css">
+    <link rel="stylesheet" href="~/css/gameidea.css">
+</environment>
+<environment exclude="Development">
+    <link rel="stylesheet" href="~/css/gameidea.min.css" asp-append-version="true">
+</environment>
+}
+
+@section Scripts {
+<environment include="Development">
+    <script src="~/js/gameidea/gameideacommon.js"></script>
+    <script src="~/js/gameidea/gameidea.js"></script>
+</environment>
+<environment exclude="Development">
+    <script src="~/js/gameidea/gameidea.min.js" asp-append-version="true"></script>
+</environment>
+}
+
+@section TranslatedMessages {
+<span class="msg" data-msg-id="msgUrlPlaceholder">@SharedLocalizer["placeholder message"]</span>
+}
+
+<section class="content container">
+    <div id="featurecontainer" class="pb-3">
+        <input type="hidden" id="isajax" value="@isAjax.ToString().ToLower()" />
+        <input type="hidden" id="urls" value="urls"
+               data-url-list="@Url.Action("list", "gameidea", new { area = "staff" })" />
+
+        <div id="containerlist" class="row">
+            <div class="col-12 mb-2 text-uppercase">
+                <h1 class="h3"><i class="fas fa-fw fa-lightbulb" aria-hidden="true"></i> @ViewData["Title"]</h1>
+            </div>
+        </div>
+
+        <div class="row mb-2">
+            <div class="col-12">
+                <div class="p-2 bg-white">
+                    <div class="form-group">
+                        <label class="col-form-label text-capitalize">@SharedLocalizer["Language"]</label>
+                        <select asp-for="Language" id="ddlLanguage" asp-items="@languages" class="form-control select2"></select>
+                        <span asp-validation-for="Language" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+
+            <div id="divList" class="col-12"></div>
+        </div>
+    </div>
+</section>

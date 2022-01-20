@@ -17,67 +17,69 @@
 }
 
 @section Styles {
-    <environment include="Development">
-        <link rel="stylesheet" href="~/css/home.css" />
-        <link rel="stylesheet" href="~/css/polls.css" />
-        <link rel="stylesheet" href="~/lib/dropzone/dropzone.css" />
-    </environment>
-    <environment exclude="Development">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.7.2/min/dropzone.min.css"
-              asp-fallback-href="~/lib/dropzone/min/dropzone.min.css"
-              asp-fallback-test-class="dropzone"
-              asp-fallback-test-property="box-sizing"
-              asp-fallback-test-value="border-box"
-              integrity="sha512-bbUR1MeyQAnEuvdmss7V2LclMzO+R9BzRntEE57WIKInFVQjvX7l7QZSxjNDt8bg41Ww05oHSh0ycKFijqD7dA=="
-              crossorigin="anonymous" />
+<environment include="Development">
+    <link rel="stylesheet" href="~/css/home.css" />
+    <link rel="stylesheet" href="~/css/polls.css" />
+    <link rel="stylesheet" href="~/lib/dropzone/dropzone.css" />
+</environment>
+<environment exclude="Development">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.7.2/min/dropzone.min.css"
+          asp-fallback-href="~/lib/dropzone/min/dropzone.min.css"
+          asp-fallback-test-class="dropzone"
+          asp-fallback-test-property="box-sizing"
+          asp-fallback-test-value="border-box"
+          integrity="sha512-bbUR1MeyQAnEuvdmss7V2LclMzO+R9BzRntEE57WIKInFVQjvX7l7QZSxjNDt8bg41Ww05oHSh0ycKFijqD7dA=="
+          crossorigin="anonymous" />
 
-        <link rel="stylesheet" href="~/css/home.min.css" asp-append-version="true" />
-    </environment>
+    <link rel="stylesheet" href="~/css/home.min.css" asp-append-version="true" />
+</environment>
 }
 
 @section Scripts {
-    <environment include="Development">
-        <script src="~/lib/embedo/embedo.js" defer></script>
-        <script src="~/lib/dropzone/dropzone.js" defer></script>
-        <script src="~/js/shared/contentactions.js" defer></script>
-        <script src="~/js/shared/polls.js" defer></script>
-        <script src="~/js/shared/activityfeed.js" defer></script>
-        <script src="~/js/shared/gameidea.js" defer></script>
-        <script src="~/js/home/home.js" defer></script>
-    </environment>
-    <environment exclude="Development">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/embedo/1.13.0/embedo.min.js"
-                integrity="sha256-iV1+ZN2IJ5wgrZujdohJeFjfuJlKTLTrAIqFJ5ptftE="
-                crossorigin="anonymous" defer></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.7.2/min/dropzone.min.js"
-                asp-fallback-src="~/lib/dropzone/min/dropzone.min.js"
-                asp-fallback-test="window.Dropzone"
-                integrity="sha512-9WciDs0XP20sojTJ9E7mChDXy6pcO0qHpwbEJID1YVavz2H6QBz5eLoDD8lseZOb2yGT8xDNIV7HIe1ZbuiDWg=="
-                crossorigin="anonymous" defer></script>
+<environment include="Development">
+    <script src="~/lib/embedo/embedo.js" defer></script>
+    <script src="~/lib/dropzone/dropzone.js" defer></script>
+    <script src="~/js/shared/contentactions.js" defer></script>
+    <script src="~/js/shared/polls.js" defer></script>
+    <script src="~/js/shared/activityfeed.js" defer></script>
+    <script src="~/js/shared/gameideamachine.js" defer></script>
+    <script src="~/js/home/home.js" defer></script>
+</environment>
+<environment exclude="Development">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/embedo/1.13.0/embedo.min.js"
+            integrity="sha256-iV1+ZN2IJ5wgrZujdohJeFjfuJlKTLTrAIqFJ5ptftE="
+            crossorigin="anonymous" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.7.2/min/dropzone.min.js"
+            asp-fallback-src="~/lib/dropzone/min/dropzone.min.js"
+            asp-fallback-test="window.Dropzone"
+            integrity="sha512-9WciDs0XP20sojTJ9E7mChDXy6pcO0qHpwbEJID1YVavz2H6QBz5eLoDD8lseZOb2yGT8xDNIV7HIe1ZbuiDWg=="
+            crossorigin="anonymous" defer></script>
 
-        <script src="~/js/home/home.min.js" asp-append-version="true" defer></script>
-    </environment>
+    <script src="~/js/home/home.min.js" asp-append-version="true" defer></script>
+</environment>
 
-    <script type="application/ld+json">
-        {
-        "@@context": "http://schema.org",
-        "@@type": "WebSite",
-        "name": "@Constants.DefaultTitle",
-        "alternateName": "LuduStack",
-        "url": "@(ViewData["BaseUrl"])",
-        "sameAs" : ["https://www.facebook.com/ludustack/"],
-        "image": "@(ViewData["BaseUrl"])/images/og/img_facebook600x315.png",
-        "author": {
-        "@@type": "Person",
-        "name": "Daniel Gomes",
-        "email": "contact@ludustack.com",
-        "image": "@(ViewData["BaseUrl"])/images/profileimages/programad.jpg"
-        }
-        }
-    </script>
+<script type="application/ld+json">
+    {
+    "@@context": "http://schema.org",
+    "@@type": "WebSite",
+    "name": "@Constants.DefaultTitle",
+    "alternateName": "LuduStack",
+    "url": "@(ViewData["BaseUrl"])",
+    "sameAs" : ["https://www.facebook.com/ludustack/"],
+    "image": "@(ViewData["BaseUrl"])/images/og/img_facebook600x315.png",
+    "author": {
+    "@@type": "Person",
+    "name": "Daniel Gomes",
+    "email": "contact@ludustack.com",
+    "image": "@(ViewData["BaseUrl"])/images/profileimages/programad.jpg"
+    }
+    }
+</script>
 }
 
 <section class="content container">
+    <input type="hidden" id="urls" value="urls"
+           data-url-get-elements="@Url.Action("getelements", "gameidea", new { area = "tools" })" />
     <div class="row mt-0 mt-md-10 no-gutters px-0 px-lg-10">
 
         <h1 class="sr-only">@ViewData["Title"]</h1>

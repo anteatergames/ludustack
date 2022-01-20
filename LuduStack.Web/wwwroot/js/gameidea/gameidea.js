@@ -1,17 +1,17 @@
-﻿var GIVEAWAY = (function () {
+﻿var GAMEIDEA = (function () {
     "use strict";
 
     var selectors = {};
     var objs = {};
 
-    var urlGiveaways;
+    var urlList;
 
     function setSelectors() {
         selectors.urls = '#urls';
         selectors.container = '#featurecontainer';
         selectors.containerList = '#containerlist';
         selectors.list = '#divList';
-        selectors.btnDuplicate = '.btn-giveaway-duplicate';
+        selectors.filterLanguage = '#ddlLanguage';
     }
 
     function cacheObjs() {
@@ -20,6 +20,7 @@
         objs.containerDetails = $(selectors.containerDetails);
         objs.containerList = $(selectors.containerList);
         objs.list = $(selectors.list);
+        objs.filterLanguage = $(selectors.filterLanguage);
     }
 
     function init() {
@@ -28,37 +29,35 @@
 
         bindAll();
 
-        urlGiveaways = objs.urls.data('urlList');
+        loadItems();
 
-        loadItems(urlGiveaways);
-
-        GIVEAWAYCOMMON.Callback.DeleteEntity = handleResponse;
+        GAMEIDEACOMMON.Callback.DeleteEntity = deleteCallback;
     }
 
     function bindAll() {
-        bindDuplicateGiveaway();
+        bindLanguageChange();
     }
 
-    function bindDuplicateGiveaway() {
-        objs.container.on('click', selectors.btnDuplicate, function (e) {
-            e.preventDefault();
-
-            var btn = $(this);
-
-            MAINMODULE.Common.PostWithoutConfirmation(btn, 'POST', handleResponse);
-
-            return false;
-        });
+    function bindLanguageChange() {
+        objs.container.on('change', selectors.filterLanguage, languageChange);
     }
 
-    function loadItems(url) {
-        MAINMODULE.Ajax.LoadHtml(url, objs.list);
+    function loadItems() {
+        urlList = objs.urls.data('urlList');
+
+        urlList += objs.filterLanguage.val();
+
+        MAINMODULE.Ajax.LoadHtml(urlList, objs.list);
     }
 
-    function handleResponse(response) {
+    function deleteCallback(response, btn) {
         if (response.success) {
-            loadItems(urlGiveaways);
+            btn.remove();
         }
+    }
+
+    function languageChange(value) {
+        loadItems();
     }
 
     return {
@@ -67,5 +66,5 @@
 }());
 
 $(function () {
-    GIVEAWAY.Init();
+    GAMEIDEA.Init();
 });

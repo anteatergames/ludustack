@@ -1,0 +1,34 @@
+﻿@model GameIdeaViewModel
+@{
+    var isAjax = ViewContext.HttpContext.Request.IsAjaxRequest();
+    var canInteract = User.Identity.IsAuthenticated;
+}
+
+@section ComponentStyles {
+    <environment include="Development">
+        <link rel="stylesheet" href="~/css/gameidea.css">
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="~/css/gameidea.min.css" asp-append-version="true">
+    </environment>
+}
+
+@section Scripts {
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <environment include="Development">
+        <script src="~/js/common-edit.js"></script>
+        <script src="~/js/GameIdea/gameideacommon.js"></script>
+        <script src="~/js/GameIdea/gameideaedit.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/js/GameIdea/gameideaedit.min.js" asp-append-version="true"></script>
+    </environment>
+}
+
+<section class="content container">
+    <div id="featurecontainer" class="pb-3">
+        <partial name="_CreateEdit" model="Model" />
+    </div>
+</section>
