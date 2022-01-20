@@ -72,7 +72,7 @@
 
     function bindEnterPress() {
         objs.container.on('keypress', selectors.txtDescription, function (e) {
-            if (e.which == 13) {
+            if (e.which === 13) {
                 objs.btnSave.click();
             }
         });
