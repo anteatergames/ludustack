@@ -1,6 +1,4 @@
-﻿// https://sweetalert2.github.io
-
-var ALERTSYSTEM = (function () {
+﻿var ALERTSYSTEM = (function () {
     "use strict";
 
     function showInfoAlert(text, callback) {

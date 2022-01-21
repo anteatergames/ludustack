@@ -57,7 +57,7 @@ namespace LuduStack.Application.Services
                     }
                 }
 
-                model.Elements = model.Elements.OrderBy(x => x.Key).ToDictionary(x => x.Key, x => x.Value);
+                model.Elements = model.Elements.OrderBy(x => x.Key).ToDictionary(x => x.Key, x => x.Value.OrderBy(y => y.Description).ToList());
 
                 return new OperationResultVo<GameIdeaListViewModel>(model);
             }

@@ -4406,4 +4406,8 @@
     <value>Sufixo</value>
     <comment>GameIdea</comment>
   </data>
+  <data name="There are {0} possible combinations." xml:space="preserve">
+    <value>Existem {0} combinações possíveis.</value>
+    <comment>GameIdea</comment>
+  </data>
 </root>
