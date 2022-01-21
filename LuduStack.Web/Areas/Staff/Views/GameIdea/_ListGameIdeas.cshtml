@@ -34,7 +34,7 @@
                     <div class="col-12 py-1">
                         @foreach (var item in element.Value)
                         {
-                            <a class="btn btn-sm btn-light btn-entity-delete" href="#" data-url="@Url.Action("delete", "GameIdea", new { area = "staff", id = item.Id })" data-skipconfirmation="true" data-confirmationmessage="@SharedLocalizer["Are you sure you want to delete this Game Idea?"]" data-confirmationtitle="@SharedLocalizer["Are you sure?"]" data-confirmationbuttontext="@SharedLocalizer["Yes, delete it!"]" data-cancelbuttontext="@SharedLocalizer["Cancel"]"><span>@item.Description</span></a>
+                            <a class="btn btn-sm btn-light mb-1 btn-entity-delete" href="#" data-url="@Url.Action("delete", "GameIdea", new { area = "staff", id = item.Id })" data-skipconfirmation="true" data-confirmationmessage="@SharedLocalizer["Are you sure you want to delete this Game Idea?"]" data-confirmationtitle="@SharedLocalizer["Are you sure?"]" data-confirmationbuttontext="@SharedLocalizer["Yes, delete it!"]" data-cancelbuttontext="@SharedLocalizer["Cancel"]"><span>@item.Description</span></a>
                         }
                     </div>
                 </div>

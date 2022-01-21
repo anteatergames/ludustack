@@ -39,8 +39,8 @@
       "wwwroot/js/vanilla.extensions.js",
       "wwwroot/js/jquery.extensions.js",
       "wwwroot/js/template.js",
-      "wwwroot/js/main.js",
-      "wwwroot/js/shared/alertsystem.js"
+      "wwwroot/js/shared/alertsystem.js",
+      "wwwroot/js/main.js"
     ]
   },
   {

@@ -31,15 +31,15 @@
         pickingRulesInterval = 0,
         stopRulesInterval = 0;
 
-    var genre = ['beat\'em up', 'twin stick', 'management', 'sim', 'battle royale', 'dungeon crawler', 'racing', 'action', 'arcade', 'educational', 'top-down', 'adventure', 'strategy', 'rts', 'turn-based strategy', 'role-playing', 'platformer', 'puzzle', 'visual novel', 'social media', 'mobile', 'browser', 'fighting', 'artsy', 'open world', 'tycoon', 'one touch'];
+    var genre = ['beat\'em up', 'twin stick', 'management', 'sim', 'battle royale', 'dungeon crawler', 'racing', 'action', 'arcade', 'educational', 'top-down', 'adventure', 'strategy', 'rts', 'turn-based', 'role-playing', 'platformer', 'puzzle', 'visual novel', 'social media', 'mobile', 'browser', 'fighting', 'artsy', 'open world', 'tycoon', 'one touch'];
 
-    var action = ['hide', 'evade', 'punch', 'kick', 'travel', 'carry', 'slice', 'ride', 'hunt', 'climb', 'break dance', 'skate', 'craft', 'lick', 'shoot', 'shoot at', 'play notes', 'grow', 'bounce', 'escape', 'rescue', 'go to war with', 'wage war on', 'unite', 'lead', 'build', 'destroy', 'conquer', 'invade', 'colonize', 'discover', 'explore', 'trade with', 'lead the rebels in', 'make peace with', 'investigate', 'collect gold from', 'collect crystals from', 'mine ore from', 'align', 'click on', 'match', 'throw', 'toss', 'fire pellets at', 'control', 'touch', 'stack', 'guess', 'memorize', 'rotate', 'swap', 'slide', 'avoid', 'drag and drop', 'tickle', 'race', 'challenge', 'collect', 'draw', 'unlock', 'cook', 'break', 'collect', 'juggle'];
+    var action = ['hide', 'evade', 'punch', 'kick', 'travel', 'carry', 'slice', 'ride', 'hunt', 'climb', 'break dance', 'skate', 'craft', 'lick', 'shoot', 'shoot at', 'play notes', 'grow', 'bounce', 'escape', 'rescue', 'go to war with', 'wage war on', 'unite', 'lead', 'build', 'destroy', 'conquer', 'invade', 'colonize', 'discover', 'explore', 'trade with', 'lead the rebels in', 'make peace with', 'investigate', 'collect gold from', 'collect crystals from', 'mine ore from', 'align', 'click on', 'match', 'throw', 'toss', 'fire pellets at', 'control', 'touch', 'stack', 'guess', 'memorize', 'rotate', 'swap', 'slide', 'avoid', 'drag and drop', 'tickle', 'race', 'challenge', 'collect', 'draw', 'unlock', 'cook', 'break', 'juggle', 'solve puzzles involving'];
 
     var things = ['daggers', 'boomerangs', 'monsters', 'bicycles', 'motorbikes', 'ghosts', 'rings', 'lasers', 'rusty pipes', 'life', 'dead people', 'tanks', 'punky androids', 'bikes', 'origami', 'walls', 'website', 'farm', 'ancient history', 'turtles', 'music notes', 'jigsaw pieces', 'robots', 'water', 'politicians', 'colors', 'yo momma', 'countries', 'nations', 'dragons', 'castles', 'cities', 'strongholds', 'towers', 'dungeons', 'citadels', 'kingdoms', 'bombs', 'unknown worlds', 'other worlds', 'parallel worlds', 'other dimensions', 'alien worlds', 'heaven', 'hell', 'mythological places', 'historical places', 'islands', 'sanctuaries', 'temples', 'ruins', 'factories', 'caves', 'gems', 'diamonds', 'gold nuggets', 'bricks', 'bubbles', 'squares', 'triangles', 'treasure', 'blobs', 'kitchen appliances', 'nondescript fruits', 'animals', 'birds', 'baby animals', 'farm animals', 'exotic fruits', 'sentient plants', 'your friends', 'shapes', 'jewels', 'letters', 'words', 'numbers', 'tokens', 'coins', 'eggs', 'hats', 'candy', 'chocolate', 'shoes', 'clothing items', 'princesses', 'blocks', 'cubes', 'asteroids', 'stars', 'balls', 'spheres', 'magnets', 'riddles'];
 
-    var goals = ['to get rich', 'to fulfil a prophecy', 'to save your family', 'to impress girls', 'to get drunk', 'to gain levels', 'to build a business', 'to look cool', 'to get to the end', 'to survive', 'to win', 'for glory', 'in the name of love', 'to live forever', 'to rule the world', 'to form an empire', 'to win points', 'to reach the highscore', 'to unlock bonus items', 'to earn tokens', 'to unlock the next level', 'to become president', 'to earn discounts', 'to make your name', 'to pass exam', 'to never stop', 'to uncage a friend', 'to find the banana', 'to cook a meal', 'solve puzzles involving'];
+    var goals = ['to get rich', 'to fulfil a prophecy', 'to save your family', 'to impress girls', 'to get drunk', 'to gain levels', 'to build a business', 'to look cool', 'to get to the end', 'to survive', 'to win', 'for glory', 'in the name of love', 'to live forever', 'to rule the world', 'to form an empire', 'to win points', 'to reach the highscore', 'to unlock bonus items', 'to earn tokens', 'to unlock the next level', 'to become president', 'to earn discounts', 'to make your name', 'to pass exam', 'to never stop', 'to uncage a friend', 'to find the banana', 'to cook a meal'];
 
-    var rules = ['no text', 'only 1 button', 'no UI', 'only 2 buttons', 'in 60 seconds', 'only 3 colors', 'avoid enemies', 'limited inventory', 'only one chance', 'cannot avoid', 'must fly', 'one life only', 'must not be seen', 'can\'t touch the floor', 'limited time', 'must wait', 'can\'t breath', 'object is radioactive', 'the end is near', 'no gravity', 'naked', 'limited ammo', 'must dig', 'can\'t lose', 'can\'t regenerate', 'health is depleating', 'can\'t jump', 'silently'];
+    var rules = ['no text', 'only 1 button', 'no UI', 'only 2 buttons', 'in 60 seconds', 'only 3 colors', 'avoid enemies', 'limited inventory', 'only one chance', 'cannot avoid', 'must fly', 'one life only', 'must not be seen', 'can\'t touch the floor', 'limited time', 'must wait', 'can\'t breath', 'object is radioactive', 'the end is near', 'no gravity', 'naked', 'limited ammo', 'must dig', 'can\'t lose', 'can\'t regenerate', 'health is depleting', 'can\'t jump', 'silently'];
 
     var prefixes = ['to'];
 
@@ -59,6 +59,7 @@
         selectors.things = '.game-idea-things';
         selectors.goals = '.game-idea-goals';
         selectors.rules = '.game-idea-rules';
+        selectors.txtCombinations = '#txtCombinations';
     }
 
     function cacheObjs() {
@@ -75,6 +76,7 @@
         objs.things = document.querySelector(selectors.things);
         objs.goals = document.querySelector(selectors.goals);
         objs.rules = document.querySelector(selectors.rules);
+        objs.txtCombinations = document.querySelector(selectors.txtCombinations);
     }
 
     function randomGenre() {
@@ -496,6 +498,10 @@
                     if (incomingSuffixes.length > 0) {
                         suffixes = incomingSuffixes.map(x => x.description);
                     }
+
+                    var combinations = genre.length * action.length * things.length * goals.length * rules.length;
+
+                    objs.txtCombinations.textContent = new Intl.NumberFormat().format(combinations);
 
                     if (callback) {
                         callback();

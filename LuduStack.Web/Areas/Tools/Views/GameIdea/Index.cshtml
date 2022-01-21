@@ -61,6 +61,10 @@
                 <p>@SharedLocalizer["Are you in a creative block? Need an idea for a game? Here is where your problems end. Press the button below to generate an awesome brand new idea for you to work on. If you don't like one of the aspects the machine picked for you, just click on it to pick just that aspect again."]</p>
             </div>
 
+            <div class="col-12 px-4 text-center">
+                <p>@Html.Raw(SharedLocalizer["There are {0} possible combinations.", "<span id=\"txtCombinations\">999</span>"])</p>
+            </div>
+
             <div class="col-12 mb-4">
                 <partial name="_IdeaGenerator" />
             </div>
