@@ -501,7 +501,11 @@
 
                     var combinations = genre.length * action.length * things.length * goals.length * rules.length;
 
-                    objs.txtCombinations.textContent = new Intl.NumberFormat().format(combinations);
+                    console.log(objs.txtCombinations);
+
+                    if (objs.txtCombinations) {
+                        objs.txtCombinations.textContent = new Intl.NumberFormat().format(combinations);
+                    }
 
                     if (callback) {
                         callback();
