@@ -16,7 +16,7 @@
     <PackageReference Include="AutoMapper" Version="11.0.0" />
     <PackageReference Include="CloudinaryDotNet" Version="1.17.0" />
     <PackageReference Include="CountryData" Version="3.69.0" />
-    <PackageReference Include="HtmlSanitizer" Version="7.0.473" />
+    <PackageReference Include="HtmlSanitizer" Version="7.1.475" />
     <PackageReference Include="MediatR" Version="10.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.13" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.0" />
