@@ -9,17 +9,17 @@ namespace LuduStack.Application.Interfaces
     {
         Task<OperationResultVo<int>> Count(Guid currentUserId);
 
-        Task<OperationResultVo<TeamViewModel>> GetById(Guid currentUserId, Guid id);
+        Task<OperationResultVo<TeamViewModel>> GetById(Guid currentUserId, bool currentUserIsAdmin, Guid id);
 
         Task<OperationResultVo> Remove(Guid currentUserId, Guid id);
 
         Task<OperationResultVo<Guid>> Save(Guid currentUserId, TeamViewModel viewModel);
 
-        Task<OperationResultListVo<TeamViewModel>> GetAll(Guid currentUserId);
+        Task<OperationResultListVo<TeamViewModel>> GetAll(Guid currentUserId, bool currentUserIsAdmin);
 
         OperationResultVo<int> CountNotSingleMemberGroups(Guid currentUserId);
 
-        Task<OperationResultListVo<TeamViewModel>> GetNotSingleMemberGroups(Guid currentUserId);
+        Task<OperationResultListVo<TeamViewModel>> GetNotSingleMemberGroups(Guid currentUserId, bool currentUserIsAdmin);
 
         Task<OperationResultVo> GenerateNewTeam(Guid currentUserId);
 
@@ -27,7 +27,7 @@ namespace LuduStack.Application.Interfaces
 
         OperationResultVo RejectInvite(Guid teamId, Guid currentUserId);
 
-        Task<OperationResultListVo<TeamViewModel>> GetByUserId(Guid userId);
+        Task<OperationResultListVo<TeamViewModel>> GetByUserId(Guid userId, bool currentUserIsAdmin);
 
         OperationResultVo GetSelectListByUserId(Guid userId);
 

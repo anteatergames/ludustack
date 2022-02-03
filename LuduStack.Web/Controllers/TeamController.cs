@@ -42,7 +42,7 @@ namespace LuduStack.Web.Controllers
         [Route("list")]
         public async Task<IActionResult> List()
         {
-            OperationResultListVo<TeamViewModel> serviceResult = await teamAppService.GetAll(CurrentUserId);
+            OperationResultListVo<TeamViewModel> serviceResult = await teamAppService.GetAll(CurrentUserId, CurrentUserIsAdmin);
 
             List<TeamViewModel> model = serviceResult.Value.ToList();
 
@@ -53,7 +53,7 @@ namespace LuduStack.Web.Controllers
         [Route("list/user/{userId:guid}")]
         public async Task<IActionResult> ListByUser(Guid userId)
         {
-            OperationResultListVo<TeamViewModel> serviceResult = await teamAppService.GetByUserId(userId);
+            OperationResultListVo<TeamViewModel> serviceResult = await teamAppService.GetByUserId(userId, CurrentUserIsAdmin);
 
             List<TeamViewModel> model = serviceResult.Value.ToList();
 
@@ -90,7 +90,7 @@ namespace LuduStack.Web.Controllers
         {
             await notificationAppService.MarkAsRead(notificationclicked);
 
-            OperationResultVo<TeamViewModel> serviceResult = await teamAppService.GetById(CurrentUserId, teamId);
+            OperationResultVo<TeamViewModel> serviceResult = await teamAppService.GetById(CurrentUserId, CurrentUserIsAdmin, teamId);
 
             if (!serviceResult.Success)
             {
@@ -118,7 +118,7 @@ namespace LuduStack.Web.Controllers
         [Route("edit/{teamId:guid}")]
         public async Task<IActionResult> Edit(Guid teamId)
         {
-            OperationResultVo<TeamViewModel> service = await teamAppService.GetById(CurrentUserId, teamId);
+            OperationResultVo<TeamViewModel> service = await teamAppService.GetById(CurrentUserId, CurrentUserIsAdmin, teamId);
 
             TeamViewModel viewModel = service.Value;
 
