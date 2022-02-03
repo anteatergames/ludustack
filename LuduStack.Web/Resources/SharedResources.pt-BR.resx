@@ -4410,4 +4410,12 @@
     <value>Existem {0} combinações possíveis.</value>
     <comment>GameIdea</comment>
   </data>
+  <data name="member" xml:space="preserve">
+    <value>membro</value>
+    <comment>Teams</comment>
+  </data>
+  <data name="candidate" xml:space="preserve">
+    <value>candidato</value>
+    <comment>Teams</comment>
+  </data>
 </root>

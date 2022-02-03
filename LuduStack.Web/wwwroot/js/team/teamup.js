@@ -109,7 +109,7 @@
     }
 
     function bindSelect2() {
-        $('#frmTeamSave select.select2').each(function () {
+        $('select.select2').each(function () {
             const hasSelect2 = $(this).hasClass("select2-hidden-accessible");
 
             if (!hasSelect2) {

@@ -2,6 +2,7 @@
 @{
     Layout = null;
     var noItemsModel = new ListNoItemsViewModel("fas fa-users", "What? We have no Teams here! Hurry up, create one!");
+    var adminAction = !Model.Permissions.IsMe && Model.Permissions.IsAdmin;
 }
 @if (Model == null)
 {
@@ -16,7 +17,7 @@ else
                     <div class="badges">
                         @if (Model.Recruiting)
                         {
-                            <span class="badge badge-success ml-n2 mb-1 p-2"><i class="fas fa-exclamation" aria-hidden="true"></i> @SharedLocalizer["recruiting"]</span>
+                            <span class="badge badge-success ml-n2 mb-1 p-2 pr-3 text-uppercase"><i class="fas fa-fw fa-exclamation" aria-hidden="true"></i> @SharedLocalizer["Recruiting"]</span>
                         }
                     </div>
                     <div class="col">
@@ -32,7 +33,7 @@ else
                 @if (Model.Permissions.CanEdit || Model.Permissions.CanDelete)
                 {
                     <div class="btn-group">
-                        <button type="button" class="btn  btn-box-tool" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <button type="button" class="btn btn-box-tool@(adminAction ? " text-red" : string.Empty)" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fas fa-ellipsis-v" aria-hidden="true"></i>
                         </button>
                         <div class="dropdown-menu dropdown-menu-right btn-sm p-1" x-placement="bottom-start" style="position: absolute; transform: translate3d(-67px, 28px, 0px); top: 0px; left: 0px; will-change: transform;">
@@ -44,7 +45,7 @@ else
 
                             @if (Model.Permissions.CanDelete)
                             {
-                                <a class="btnDeleteTeam dropdown-item" href="#" data-url="@Url.Action("DeleteTeam", "Team", new { teamId = Model.Id })" data-confirmationmessage="@SharedLocalizer["Are you sure you want to delete this team?"]" data-confirmationtitle="@SharedLocalizer["Are you sure?"]" data-confirmationbuttontext="@SharedLocalizer["Yes, delete it!"]" data-cancelbuttontext="@SharedLocalizer["Cancel"]">@SharedLocalizer["delete"]</a>
+                                <a class="btnDeleteTeam dropdown-item@(adminAction ? " text-red" : string.Empty)" href="#" data-url="@Url.Action("DeleteTeam", "Team", new { teamId = Model.Id })" data-confirmationmessage="@SharedLocalizer["Are you sure you want to delete this team?"]" data-confirmationtitle="@SharedLocalizer["Are you sure?"]" data-confirmationbuttontext="@SharedLocalizer["Yes, delete it!"]" data-cancelbuttontext="@SharedLocalizer["Cancel"]">@SharedLocalizer["delete"]</a>
                             }
                         </div>
                     </div>
@@ -53,14 +54,16 @@ else
         </div>
         <div class="box-body">
             <div class="team-members">
-                <span class="h4 d-block">@SharedLocalizer["{0} {1}", Model.Members.Count, (Model.Members.Count == 1 ? "member" : "members")]</span>
+                <span class="h4 d-block">@SharedLocalizer["{0} {1}", Model.Members.Count, SharedLocalizer[(Model.Members.Count == 1 ? "member" : "members")]]</span>
                 @{int i = 0;}
                 @foreach (var member in Model.Members)
                 {
                     var memberId = String.Format("{0}_{1}", Model.Id.ToString().Replace("-", string.Empty), member.UserId.ToString().Replace("-", string.Empty));
+                    var pending = member.InvitationStatus == InvitationStatus.Invited || member.InvitationStatus == InvitationStatus.Candidate;
+
 
                     <a asp-area="" asp-controller="profile" asp-action="details" asp-route-userHandler="@member.UserHandler" data-toggle="popover" data-trigger="hover" data-target="#divPopOver@(memberId)">
-                        <img class="rounded-circle lazyload avatar" data-src="@member.ProfileImage" style="left: -@string.Format("{0}px", i * 30); z-index: @(Model.Members.Count - i)" src="@member.ProfileImage" alt="@member.Quote">
+                        <img class="rounded-circle lazyload avatar@(pending && !member.Permissions.IsMe ? " convidado" : string.Empty)" data-src="@member.ProfileImage" style="left: -@string.Format("{0}px", i * 30); z-index: @(Model.Members.Count - i)" src="@member.ProfileImage" alt="@member.Quote">
                     </a>
                     <div id="divPopOver@(memberId)" style="display:none">
                         @if (!string.IsNullOrWhiteSpace(member.Name))
@@ -69,6 +72,7 @@ else
                         }
                         @if (!string.IsNullOrWhiteSpace(member.Quote))
                         {
+                            <br />
                             <span class="small">@member.Quote</span>
                         }
                     </div>

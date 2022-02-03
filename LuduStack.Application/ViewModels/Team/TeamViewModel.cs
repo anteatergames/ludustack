@@ -32,5 +32,8 @@ namespace LuduStack.Application.ViewModels.Team
 
         [Display(Name = "Current User Is Member")]
         public bool CurrentUserIsMember { get; set; }
+
+        [Display(Name = "Current User Is leader")]
+        public bool CurrentUserIsLeader { get; set; }
     }
 }

@@ -16,5 +16,9 @@ namespace LuduStack.Domain.Interfaces.Repository
         void UpdateMembership(Guid teamId, TeamMember member);
 
         Task<bool> RemoveMember(Guid teamId, Guid userId);
+
+        Task AddMember(Guid teamId, TeamMember newMember);
+
+        Task<bool> AddMemberDirectly(Guid teamId, TeamMember newMember);
     }
 }

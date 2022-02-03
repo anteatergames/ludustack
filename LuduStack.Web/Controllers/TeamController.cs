@@ -46,6 +46,14 @@ namespace LuduStack.Web.Controllers
 
             List<TeamViewModel> model = serviceResult.Value.ToList();
 
+            foreach (var team in model)
+            {
+                if (team.Name.StartsWith("Team "))
+                {
+                    team.Name = team.Name.Replace("Team ", string.Format("{0} ", SharedLocalizer["Team"]));
+                }
+            }
+
             return PartialView("_List", model);
         }
 

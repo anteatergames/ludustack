@@ -111,7 +111,8 @@
     "inputFiles": [
       "wwwroot/css/progress.css",
       "wwwroot/css/polls.css",
-      "wwwroot/css/profiledetails.css"
+      "wwwroot/css/profiledetails.css",
+      "wwwroot/css/teamup.css"
     ]
   },
   {
