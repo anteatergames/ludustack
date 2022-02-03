@@ -336,9 +336,11 @@
     }
 
     function loadMyApplications(url) {
-        objs.myApplications.html(MAINMODULE.Default.SpinnerTop);
+        if (canInteract) {
+            objs.myApplications.html(MAINMODULE.Default.SpinnerTop);
 
-        MAINMODULE.Ajax.LoadHtml(url, objs.myApplications);
+            MAINMODULE.Ajax.LoadHtml(url, objs.myApplications);
+        }
     }
 
     function apply(url, callback) {

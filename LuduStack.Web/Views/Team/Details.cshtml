@@ -58,9 +58,11 @@
             <div id="divMembers">
                 @foreach (var member in Model.Members)
                 {
+                    var pending = (Model.CurrentUserIsLeader &&  member.InvitationStatus == InvitationStatus.Invited) || (!Model.CurrentUserIsLeader && (member.InvitationStatus == InvitationStatus.Invited || member.InvitationStatus == InvitationStatus.Candidate));
+                    var candidate = member.InvitationStatus == InvitationStatus.Candidate;
                     var iWasInvited = member.Permissions.IsMe && member.InvitationStatus == InvitationStatus.Invited;
 
-                    <div class="row m-3 team-member @(member.InvitationStatus == InvitationStatus.Invited && !member.Permissions.IsMe ? " convidado" : string.Empty)">
+                    <div class="row m-3 team-member @(pending && !member.Permissions.IsMe ? " convidado" : string.Empty)@(candidate ? " candidato" : string.Empty)">
                         <div class="div-avatar">
                             <a asp-area="" asp-controller="profile" asp-action="details" asp-route-userHandler="@member.UserHandler">
                                 <img class="rounded-circle lazyload avatar" data-src="@member.ProfileImage" src="@Constants.DefaultAvatar" alt="@member.Quote">

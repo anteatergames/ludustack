@@ -312,7 +312,7 @@ namespace LuduStack.Web.Controllers
         {
             if (vm.Team == null && vm.TeamId.HasValue)
             {
-                OperationResultVo<Application.ViewModels.Team.TeamViewModel> teamResult = await teamAppService.GetById(CurrentUserId, vm.TeamId.Value);
+                OperationResultVo<Application.ViewModels.Team.TeamViewModel> teamResult = await teamAppService.GetById(CurrentUserId, CurrentUserIsAdmin, vm.TeamId.Value);
 
                 if (teamResult.Success)
                 {

@@ -103,6 +103,7 @@ namespace LuduStack.Web.Areas.Work.Controllers
             }
         }
 
+        [AllowAnonymous]
         [Route("work/jobposition/list/{employerId:guid?}")]
         [Route("work/jobposition/list")]
         public async Task<PartialViewResult> List(Guid? employerId)

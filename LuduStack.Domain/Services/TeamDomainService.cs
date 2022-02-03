@@ -33,6 +33,11 @@ namespace LuduStack.Domain.Services
             return obj;
         }
 
+        public void AcceptCandidate(Guid teamId, Guid userId)
+        {
+            ChangeInvitationStatus(teamId, userId, InvitationStatus.Accepted, null);
+        }
+
         public void ChangeInvitationStatus(Guid teamId, Guid userId, InvitationStatus invitationStatus, string quote)
         {
             TeamMember member = teamRepository.GetMembership(teamId, userId);
@@ -40,7 +45,11 @@ namespace LuduStack.Domain.Services
             if (member != null)
             {
                 member.InvitationStatus = invitationStatus;
-                member.Quote = quote;
+
+                if (!string.IsNullOrWhiteSpace(quote))
+                {
+                    member.Quote = quote;
+                }
             }
 
             teamRepository.UpdateMembership(teamId, member);
@@ -54,6 +63,11 @@ namespace LuduStack.Domain.Services
             {
                 teamRepository.RemoveMember(teamId, userId);
             }
+        }
+
+        public void AddMember(Guid teamId, TeamMember newMember)
+        {
+            teamRepository.AddMember(teamId, newMember);
         }
 
         public IEnumerable<Team> GetTeamsByMemberUserId(Guid userId)

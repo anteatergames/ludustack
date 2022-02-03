@@ -13,9 +13,13 @@ namespace LuduStack.Domain.Interfaces.Services
 
         IQueryable<TeamMember> GetAllMembershipsByUser(Guid userId);
 
+        void AcceptCandidate(Guid teamId, Guid userId);
+
         void ChangeInvitationStatus(Guid teamId, Guid userId, InvitationStatus invitationStatus, string quote);
 
         void RemoveMember(Guid teamId, Guid userId);
+
+        void AddMember(Guid teamId, TeamMember newMember);
 
         IEnumerable<Team> GetTeamsByMemberUserId(Guid userId);
 
