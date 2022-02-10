@@ -23,10 +23,6 @@ namespace LuduStack.Application.ViewModels
         public string ShareUrl { get; set; }
 
         public string ShareText { get; set; }
-
-        protected UserGeneratedBaseViewModel()
-        {
-        }
     }
 
     public abstract class UserGeneratedCommentBaseViewModel : UserGeneratedBaseViewModel
@@ -55,7 +51,7 @@ namespace LuduStack.Application.ViewModels
             set => commentCount = value;
         }
 
-        protected UserGeneratedCommentBaseViewModel()
+        protected UserGeneratedCommentBaseViewModel() : base()
         {
             Comments = new List<CommentViewModel>();
             Likes = new List<Guid>();

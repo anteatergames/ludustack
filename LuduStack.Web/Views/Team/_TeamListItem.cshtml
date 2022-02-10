@@ -2,7 +2,7 @@
 @{
     Layout = null;
     var noItemsModel = new ListNoItemsViewModel("fas fa-users", "What? We have no Teams here! Hurry up, create one!");
-    var adminAction = !Model.Permissions.IsMe && Model.Permissions.IsAdmin;
+    var adminAction = Model != null && !Model.Permissions.IsMe && Model.Permissions.IsAdmin;
 }
 @if (Model == null)
 {
