@@ -51,7 +51,7 @@ namespace LuduStack.Application.ViewModels
             set => commentCount = value;
         }
 
-        protected UserGeneratedCommentBaseViewModel() : base()
+        protected UserGeneratedCommentBaseViewModel()
         {
             Comments = new List<CommentViewModel>();
             Likes = new List<Guid>();

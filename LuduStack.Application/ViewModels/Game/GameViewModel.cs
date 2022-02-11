@@ -71,7 +71,7 @@ namespace LuduStack.Application.ViewModels.Game
 
         public string NanoGaleryJson { get; set; }
 
-        public GameViewModel() : base()
+        public GameViewModel()
         {
             ExternalLinks = new List<ExternalLinkBaseViewModel>();
         }
