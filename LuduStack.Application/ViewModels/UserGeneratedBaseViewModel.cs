@@ -23,10 +23,6 @@ namespace LuduStack.Application.ViewModels
         public string ShareUrl { get; set; }
 
         public string ShareText { get; set; }
-
-        protected UserGeneratedBaseViewModel()
-        {
-        }
     }
 
     public abstract class UserGeneratedCommentBaseViewModel : UserGeneratedBaseViewModel

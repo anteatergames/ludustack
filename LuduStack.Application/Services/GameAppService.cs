@@ -110,6 +110,8 @@ namespace LuduStack.Application.Services
                     vm.ThumbnailUrl = Constants.DefaultGameThumbnail;
                 }
 
+                SetPermissions(currentUserId, vm);
+
                 return new OperationResultVo<GameViewModel>(vm);
             }
             catch (Exception ex)
@@ -365,6 +367,11 @@ namespace LuduStack.Application.Services
             }
 
             vm.ExternalLinks = vm.ExternalLinks.OrderByDescending(x => x.Type).ThenBy(x => x.Provider).ToList();
+        }
+
+        private void SetPermissions(Guid currentUserId, GameViewModel vm)
+        {
+            SetBasePermissions(currentUserId, vm);
         }
     }
 }

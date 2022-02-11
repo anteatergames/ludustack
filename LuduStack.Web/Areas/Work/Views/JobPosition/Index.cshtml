@@ -76,7 +76,7 @@
                     <div class="col-12">
                         <button id="btn-jobposition-new-external" class="btn btn-primary btn-block btn-jobposition-new" data-url="@Url.Action("New", "JobPosition", new { area = "Work", origin = JobPositionOrigin.External })">@SharedLocalizer["New External Position"]</button>
                     </div>
-                    if (jobProfile == JobProfile.Company)
+                    @if (jobProfile == JobProfile.Company)
                     {
                     <div class="jobposition-box">
                         <h3>@SharedLocalizer["Employer Panel"]</h3>
