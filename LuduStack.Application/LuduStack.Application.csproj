@@ -13,13 +13,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="11.0.0" />
+    <PackageReference Include="AutoMapper" Version="11.0.1" />
     <PackageReference Include="CloudinaryDotNet" Version="1.17.0" />
-    <PackageReference Include="CountryData" Version="3.69.0" />
-    <PackageReference Include="HtmlSanitizer" Version="7.0.473" />
+    <PackageReference Include="CountryData" Version="3.71.0" />
+    <PackageReference Include="HtmlSanitizer" Version="7.1.488" />
     <PackageReference Include="MediatR" Version="10.0.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.13" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.15" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="NPOI" Version="2.5.5" />
   </ItemGroup>
