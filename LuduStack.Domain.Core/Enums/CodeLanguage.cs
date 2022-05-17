@@ -20,6 +20,9 @@ namespace LuduStack.Domain.Core.Enums
         Gml,
 
         [Display(Name = "Assembly")]
-        Assembly
+        Assembly,
+
+        [Display(Name = "GDScript")]
+        Gdscript
     }
 }
