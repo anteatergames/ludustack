@@ -9,6 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="AutoMapper\ViewModelToDomainMappingProfile.cs~RF3c7d13b.TMP" />
     <None Remove="ViewModels\Content\CommentViewModel" />
   </ItemGroup>
 
@@ -18,10 +19,10 @@
     <PackageReference Include="CountryData" Version="3.72.0" />
     <PackageReference Include="HtmlSanitizer" Version="7.1.488" />
     <PackageReference Include="MediatR" Version="10.0.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.15" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.16" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="NPOI" Version="2.5.5" />
+    <PackageReference Include="NPOI" Version="2.5.6" />
   </ItemGroup>
 
   <ItemGroup>

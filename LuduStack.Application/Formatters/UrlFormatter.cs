@@ -768,11 +768,24 @@ namespace LuduStack.Application.Formatters
             }
         }
 
-        internal static string DiscordProfile(string handler)
+        public static string DiscordProfile(string handler)
         {
             if (!string.IsNullOrWhiteSpace(handler) && !handler.Contains("discord.gg"))
             {
                 return string.Format("https://discord.gg/{0}", handler);
+            }
+            else
+            {
+                handler = CompleteUrlCommon(handler);
+                return handler;
+            }
+        }
+
+        public static string StoreProduct(string handler)
+        {
+            if (!string.IsNullOrWhiteSpace(handler) && !handler.Contains("gear.ludustack.com"))
+            {
+                return string.Format("https://gear.ludustack.com/produtos/{0}/", handler);
             }
             else
             {

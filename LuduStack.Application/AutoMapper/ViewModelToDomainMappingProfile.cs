@@ -18,6 +18,7 @@ using LuduStack.Application.ViewModels.Notification;
 using LuduStack.Application.ViewModels.PlatformSetting;
 using LuduStack.Application.ViewModels.Poll;
 using LuduStack.Application.ViewModels.ShortUrl;
+using LuduStack.Application.ViewModels.Store;
 using LuduStack.Application.ViewModels.Study;
 using LuduStack.Application.ViewModels.Team;
 using LuduStack.Application.ViewModels.User;
@@ -218,6 +219,26 @@ namespace LuduStack.Application.AutoMapper
             CreateMap<GameIdeaViewModel, GameIdea>();
 
             #endregion GameIdea
+
+            #region Store
+
+            CreateMap<ProductViewModel, Product>()
+                    .ForMember(dest => dest.Variants, opt => opt.Ignore());
+
+            CreateMap<ProductVariantViewModel, ProductVariant>();
+
+            CreateMap<StorePartnerViewModel, StorePartner>();
+
+            CreateMap<OrderViewModel, Order>()
+                    .ForMember(dest => dest.Items, opt => opt.Ignore());
+
+            CreateMap<OrderProductViewModel, OrderProduct>();
+
+            CreateMap<StorePartnershipViewModel, StorePartnership>();
+
+            CreateMap<StorePartnershipTransactionViewModel, StorePartnershipTransaction>();
+
+            #endregion Store
         }
     }
 }

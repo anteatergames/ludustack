@@ -1,0 +1,173 @@
+﻿@model ProductViewModel
+@{
+    var isAjax = ViewContext.HttpContext.Request.IsAjaxRequest();
+    var canInteract = User.Identity.IsAuthenticated;
+}
+
+@section ComponentStyles {
+<environment include="Development">
+    <link rel="stylesheet" href="~/lib/select2/css/select2.css">
+    <link rel="stylesheet" href="~/css/product.css">
+</environment>
+<environment exclude="Development">
+    <link rel="stylesheet" href="~/lib/select2/css/select2.min.css">
+    <link rel="stylesheet" href="~/css/product.min.css" asp-append-version="true">
+</environment>
+}
+
+@section Scripts {
+    @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
+
+<environment include="Development">
+    <script src="~/js/shared/messages.js"></script>
+    <script src="~/lib/select2/js/select2.full.js"></script>
+    <script src="~/js/common-edit.js"></script>
+    <script src="~/js/product/productcommon.js"></script>
+    <script src="~/js/product/productedit.js"></script>
+</environment>
+<environment exclude="Development">
+    <script src="~/lib/select2/js/select2.full.min.js"></script>
+    <script src="~/js/product/productedit.min.js" asp-append-version="true"></script>
+</environment>
+}
+
+@section TranslatedMessages {
+<span class="msg" data-msg-id="msgAlreadyOwner">@SharedLocalizer["Already an owner"]</span>
+}
+
+<section class="content container">
+    <div id="featurecontainer" class="pb-3">
+
+        <h1 class="sr-only">@ViewData["Title"]</h1>
+
+        <div class="box bg-white">
+
+            <div class="box-header with-border">
+                <div class="float-left mr-3">
+                    <a asp-area="member" asp-controller="store" asp-action="index" class="btn btn-default"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
+                </div>
+                <h3 class="card-title">@SharedLocalizer["You are viewing a Product"]</h3>
+                <span class="card-subtitle">
+                    @SharedLocalizer["This is your Product."]
+                </span>
+            </div>
+
+            <div class="box-body p-0 px-md-2">
+                <form id="frmSave" asp-area="staff" asp-controller="Product" asp-action="save" method="post">
+                    <input type="hidden" asp-for="Id" />
+                    <input type="hidden" asp-for="UserId" />
+                    <input type="hidden" asp-for="CreateDate" />
+                    <input type="hidden" asp-for="Type" />
+
+                    <div class="row">
+                        <div class="col-12">
+                            <h2 class="text-capitalize">@SharedLocalizer["Basic Information"]</h2>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="col-form-label text-capitalize">@SharedLocalizer["SKU"]</label>
+                                <input asp-for="Code" class="form-control" tabindex="0" autofocus placeholder="@SharedLocalizer["Code"]" readonly />
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label asp-for="Name" class="col-form-label"></label>
+                                <span asp-description-for="Name" class="col-form-label"></span>
+                                <input asp-for="Name" class="form-control" tabindex="0" autofocus placeholder="@SharedLocalizer["Describe the Product here"]" readonly />
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label asp-for="StoreHandler" class="col-form-label"></label>
+                                <span asp-description-for="StoreHandler" class="col-form-label"></span>
+                                <input asp-for="StoreHandler" class="form-control" tabindex="0" autofocus placeholder="@SharedLocalizer["URL for the product on the live store"]" readonly />
+                                <span asp-validation-for="StoreHandler" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label asp-for="Price" class="col-form-label"></label>
+                                <span asp-description-for="Price" class="col-form-label"></span>
+                                <input name="Price" value="@Model.Price.ToString()" class="form-control" tabindex="0" autofocus placeholder="@SharedLocalizer["Price of the product"]" readonly />
+                                <span asp-validation-for="Price" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <label class="col col-form-label">@SharedLocalizer["Variants"]</label>
+                            @if (!Model.Variants.Any())
+                            {
+                                <span class="col">@SharedLocalizer["No Variants"]</span>
+                            }
+                            else
+                            {
+                                <div class="col">
+                                    @foreach (var variant in Model.Variants)
+                                    {
+                                        <div class="row border-bottom rounded-0">
+                                            <div class="col">@variant.Code</div>
+                                            <div class="col">@variant.Name</div>
+                                        </div>
+                                    }
+                                </div>
+                            }
+                        </div>
+
+                        <div class="col-12 text-center">
+                            <br />
+                            <h2 class="text-capitalize">@SharedLocalizer["Product Owners"]</h2>
+                        </div>
+
+                        <div class="col-12">
+
+                            <div id="divOwners" class="row justify-content-center">
+                                @for (int i = 0; i < Model.OwnersProfiles.Count; i++)
+                                {
+                                    var owner = Model.OwnersProfiles.ElementAt(i);
+
+                                    <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-3 owner">
+                                        <input type="hidden" name="Owners[@i].UserId" value="@owner.UserId" class="ownerid" />
+                                        <div class="bordered">
+                                            <partial name="_UserCard" model="owner" />
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-lg-6 offset-lg-6 col-xl-4 offset-xl-8 mt-1 mb-2">
+                            <a class="btn btn-lg btn-success btn-block" href="@Model.StoreUrl" target="_blank"><i class="fas fa-fw fa-shopping-bag" aria-hidden="true"></i> @SharedLocalizer["visit"]</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+@{
+    var templateProfile = new ProfileViewModel
+            {
+                Name = "placeholder",
+                Location = "placeholder",
+                CoverImageUrl = Constants.DefaultProfileCoverImage
+            };
+}
+
+<div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-3 owner template" aria-hidden="true">
+    <input type="hidden" name="owners[99].UserId" value="placeholder" class="ownerid">
+    <div class="bordered square-bottom border-bottom-0">
+        <partial name="_UserCard" model="@templateProfile" />
+    </div>
+    <div class="w-100 square-top">
+        <button type="button" class="btn btn-block btn-outline-danger square-top btn-owner-delete"><i class="fas fa-trash-alt" aria-hidden="true"></i></button>
+    </div>
+</div>

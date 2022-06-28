@@ -407,7 +407,7 @@
                     callback(response);
                 }
 
-                if (options !== undefined && options.showSuccessMessage === true) {
+                if (!!options && options.showSuccessMessage === true) {
                     ALERTSYSTEM.ShowSuccessMessage(response.message, function () {
                         MAINMODULE.Ajax.HandleUrlResponse(response);
                     });
@@ -502,7 +502,11 @@
             objs.locale = $(selectors.locale);
         }
 
-        return objs.locale.val();
+        return objs.locale.val() || window.navigator.userLanguage || window.navigator.language;
+    }
+
+    function toLocaleNumber(numberValue, decimalPlaces) {
+        return numberValue.toLocaleString(MAINMODULE.GetLocale(), { minimumFractionDigits: (decimalPlaces ?? 2) })
     }
 
     function getSelectedFileUrl(files, done) {
@@ -623,7 +627,8 @@
             DataURItoBlob: dataURItoBlob,
             GetSelectedFileUrl: getSelectedFileUrl,
             ScrollTo: scrollTo,
-            ScrollToTop: scrollToTop
+            ScrollToTop: scrollToTop,
+            ToLocaleNumber: toLocaleNumber,
         }
     };
 }());

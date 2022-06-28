@@ -123,7 +123,7 @@
             hdn.val(data.id);
             name.text(data.text);
             location.text(data.location);
-            sincedate.text(data.createDateText);
+            sincedate.text(data.createDateTimeText);
             coverImg.css('background-image', `url(${data.coverImageUrl})`);
             avatarImg.attr('data-src', data.profileImageUrl);
 

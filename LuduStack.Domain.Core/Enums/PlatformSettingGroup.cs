@@ -20,5 +20,9 @@ namespace LuduStack.Domain.Core.Enums
         [UiInfo(Display = "Forum")]
         [Display(Name = "Forum")]
         Forum = 4,
+
+        [UiInfo(Display = "Store")]
+        [Display(Name = "Store")]
+        Store = 5,
     }
 }

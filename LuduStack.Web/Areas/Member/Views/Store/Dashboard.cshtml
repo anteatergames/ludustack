@@ -1,0 +1,143 @@
+﻿@model StorePartnershipViewModel
+@{
+    var isAjax = ViewContext.HttpContext.Request.IsAjaxRequest();
+    var canInteract = User.Identity.IsAuthenticated;
+
+    if (isAjax)
+    {
+        Layout = null;
+    }
+
+
+    var noTransactionsModel = new ListNoItemsViewModel("fas fa-dizzy", "No transactions to show");
+
+    ViewData["Title"] = SharedLocalizer["Dashboard"];
+    ViewData["Description"] = SharedLocalizer["Manage Store"];
+    ViewData["Url"] = ViewData["BaseUrl"] + Url.Action("index", "store", new { area = "member" });
+}
+
+@section ComponentStyles {
+<environment include="Development">
+    <link rel="stylesheet" href="~/css/_feature.css">
+    <link rel="stylesheet" href="~/css/memberstore.css">
+</environment>
+<environment exclude="Development">
+    <link rel="stylesheet" href="~/css/memberstore.min.css" asp-append-version="true">
+</environment>
+}
+
+@section Scripts {
+<environment include="Development">
+    <script src="~/js/store/memberstorecommon.js"></script>
+    <script src="~/js/store/memberstore.js"></script>
+</environment>
+<environment exclude="Development">
+    <script src="~/js/store/memberstore.min.js" asp-append-version="true"></script>
+</environment>
+}
+
+@section TranslatedMessages {
+<span class="msg" data-msg-id="msgUrlPlaceholder">@SharedLocalizer["placeholder message"]</span>
+}
+
+<section class="content container">
+    <div id="featurecontainer" class="pb-3">
+        <input type="hidden" id="isajax" value="@isAjax.ToString().ToLower()" />
+        <input type="hidden" id="urls" value="urls"
+               data-url-list="@Url.Action("listmyproducts", "store", new { area = "member" })"
+               data-url-partnership-data="@Url.Action("mypartnershipdata", "store", new { area = "member" })" />
+
+        <div id="containerlist" class="row">
+            <div class="col-12 mb-2 text-uppercase">
+                <h1 class="h3"><i class="fas fa-fw fa-shopping-bag" aria-hidden="true"></i> @ViewData["Title"]</h1>
+            </div>
+            <div class="col-12 mb-3">
+                @if (canInteract)
+                {
+                    <div class="col-lg-12 mb-2 p-0 text-right mt-n5">
+                        <a asp-area="member" asp-controller="store" asp-action="sync" class="btn btn-sm btn-danger btn-sync-memberstore"><i class="fas fa-sync" aria-hidden="true"></i> @SharedLocalizer["Sync"]</a>
+                    </div>
+                }
+            </div>
+
+            <div class="col-12 mb-2 text-uppercase">
+                <div class="bg-white py-3">
+                    <div class="row  text-center text-uppercase">
+                        <div class="col-12 col-lg-4">
+                            <div class="col text-muted">@SharedLocalizer["total"]</div>
+                            <div class="col h1 text-nowrap">R$ <span id="spanFundsTotal">@Model.FundsTotal</span></div>
+                        </div>
+                        <div class="col-12 col-lg-4">
+                            <div class="col text-muted">@SharedLocalizer["available"]</div>
+                            <div class="col h1 text-nowrap">R$ <span id="spanFundsAvailable">@Model.FundsAvailable</span></div>
+                        </div>
+                        <div class="col-12 col-lg-4">
+                            <div class="col text-muted">@SharedLocalizer["withdrawn"]</div>
+                            <div class="col h1 text-nowrap">R$ <span id="spanFundsWithdrawn">@Model.FundsWithdrawn</span></div>
+                        </div>
+                        <div class="col-12">
+                            <button class="btn btn-success btn-withdraw text-uppercase disabled">@SharedLocalizer["withdraw"]</button>
+                            <button class="btn btn-info btn-history text-uppercase">@SharedLocalizer["history"]</button>
+                        </div>
+                    </div>
+
+                    <div id="divWithdraw" class="col-12 col-md-6 offset-md-3 bordered mt-3 d-none">
+                        <div class="row">
+                            <div class="form-group col-12 col-md-6">
+                                <label class="col-form-label">@SharedLocalizer["Value"]</label>
+                                <input id="txtWithdrawValue" type="number" step="0.1" class="form-control" />
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <label class="col-form-label d-sm-none d-md-block">&nbsp;</label>
+                                <button type="button" id="btnWithdrawConfirm" class="btn btn-success btn-block">@SharedLocalizer["Request"]</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div id="divList" class="col-12"></div>
+        </div>
+    </div>
+</section>
+
+
+<div class="modal fade" id="modalHistory" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalLabel">@SharedLocalizer["Partner Transactions"]</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <partial name="_ListNoItems" model="noTransactionsModel" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-block" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalWithdraw" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalLabel">@SharedLocalizer["Withdraw Funds"]</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input id="txtWithdrawValue" type="number" step="0.1" class="form-control" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnWithdrawConfirm" class="btn btn-success btn-block">@SharedLocalizer["Withdraw"]</button>
+            </div>
+        </div>
+    </div>
+</div>
