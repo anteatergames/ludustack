@@ -13,7 +13,7 @@ namespace LuduStack.Application.Services
     {
         public async Task<UploadResultVo> StoreMediaAsync(string container, string fileName, string extension, byte[] image, params string[] tags)
         {
-            Cloudinary cloudinary = new Cloudinary();
+            Cloudinary cloudinary = new Cloudinary(ConfigHelper.ConfigOptions.CloudinaryUrl);
 
             string fileNameFull = string.Format("{0}.{1}", fileName, extension);
 
@@ -65,7 +65,7 @@ namespace LuduStack.Application.Services
 
         public async Task<string> DeleteImageAsync(string container, string fileName)
         {
-            Cloudinary cloudinary = new Cloudinary();
+            Cloudinary cloudinary = new Cloudinary(ConfigHelper.ConfigOptions.CloudinaryUrl);
 
             string publicId = string.Format("{0}/{1}", container, fileName);
 
