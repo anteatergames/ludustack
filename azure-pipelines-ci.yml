@@ -27,7 +27,7 @@ steps:
         gitHubServiceConnection: 'githubindievisible'
         configPath: '.releaserc'
         cwd: '$(Build.Repository.LocalPath)'
-        versionOverwrite: 'semantic-release@18'
+        versionOverwrite: 'semantic-release@19'
 
     - task: gittagloader@1
       inputs:
