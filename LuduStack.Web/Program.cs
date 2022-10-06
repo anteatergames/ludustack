@@ -1,4 +1,6 @@
-﻿using LuduStack.Application.Requests.Notification;
+﻿using LuduStack.Application;
+using LuduStack.Application.Helpers;
+using LuduStack.Application.Requests.Notification;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Messaging;
 using LuduStack.Infra.CrossCutting.Identity;
@@ -201,6 +203,9 @@ builder.Services.Configure<ConfigOptions>(myOptions =>
 {
     myOptions.FacebookAppId = builder.Configuration["Authentication:Facebook:AppId"];
     myOptions.ReCaptchaSiteKey = builder.Configuration["ReCaptcha:SiteKey"];
+    myOptions.CloudinaryUrl = builder.Configuration["CLOUDINARY_URL"];
+
+    ConfigHelper.SetConfigOptions(myOptions);
 });
 
 builder.Services.AddMediatR(Assembly.GetExecutingAssembly(), typeof(SendNotificationRequestHandler).GetTypeInfo().Assembly, typeof(DeleteCourseCommandHandler).GetTypeInfo().Assembly);
