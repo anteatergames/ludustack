@@ -18,7 +18,7 @@
     <PackageReference Include="MediatR" Version="11.0.0" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="6.0.9" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="6.0.9" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="6.0.10" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" Version="6.0.9" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="6.0.9" />
     
