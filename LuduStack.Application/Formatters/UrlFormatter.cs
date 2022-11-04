@@ -1,9 +1,14 @@
 ﻿using CloudinaryDotNet;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Core.Extensions;
+using Microsoft.Extensions.Options;
 using System;
 using System.Linq;
 using System.Text;
+using LuduStack.Domain.Core;
+using Microsoft.AspNetCore.Http;
+using System.Runtime.CompilerServices;
+using LuduStack.Application.Helpers;
 
 namespace LuduStack.Application.Formatters
 {
@@ -191,7 +196,7 @@ namespace LuduStack.Application.Formatters
             {
                 string publicId = GetPublicId(userId, ref fileName);
 
-                Cloudinary cloudinary = new Cloudinary();
+                Cloudinary cloudinary = new Cloudinary(ConfigHelper.ConfigOptions.CloudinaryUrl);
 
                 if (responsive)
                 {
@@ -245,7 +250,7 @@ namespace LuduStack.Application.Formatters
         {
             string publicId = GetPublicId(userId, ref featuredVideo);
 
-            Cloudinary cloudinary = new Cloudinary();
+            Cloudinary cloudinary = new Cloudinary(ConfigHelper.ConfigOptions.CloudinaryUrl);
 
             Transformation transformation = new Transformation().FetchFormat("auto");
 
