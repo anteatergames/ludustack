@@ -25,7 +25,9 @@ namespace LuduStack.Application.ViewModels
 
         public PermissionsVo Permissions { get; set; }
 
-        public string CreateDateText => CreateDate.ToString();
+        public string CreateDateText => CreateDate.ToShortDateString();
+
+        public string CreateDateTimeText => CreateDate.ToString();
 
         public string CreatedRelativeTime { get; set; }
 

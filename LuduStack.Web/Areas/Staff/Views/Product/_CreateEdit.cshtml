@@ -1,0 +1,155 @@
+﻿@model ProductViewModel
+
+@{
+    Layout = null;
+
+    ViewData["Title"] = SharedLocalizer["{0} Product", (Model.Id == Guid.Empty ? "New" : "Edit")];
+
+    var isNew = Model.Id == Guid.Empty;
+}
+
+<h1 class="sr-only">@ViewData["Title"]</h1>
+
+<div class="box bg-white">
+
+    <div class="box-header with-border">
+        <div class="float-left mr-3">
+            <a asp-area="staff" asp-controller="Product" asp-action="index" class="btn btn-default"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
+        </div>
+        <h3 class="card-title">@SharedLocalizer["You are {0} a Product", (isNew ? SharedLocalizer["creating"] : SharedLocalizer["editing"])]</h3>
+        <span class="card-subtitle">
+            @SharedLocalizer["Tell us about the Product."]
+        </span>
+        @if (!isNew)
+        {
+            <div class="box-tools">
+                <div class="btn-group">
+                    <button type="button" class="btn  btn-box-tool" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-ellipsis-v" aria-hidden="true"></i>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-right btn-sm p-1" x-placement="bottom-start" style="position: absolute; transform: translate3d(-67px, 28px, 0px); top: 0px; left: 0px; will-change: transform;">
+                        @if (!string.IsNullOrWhiteSpace(Model.StoreHandler))
+                        {
+                            <a class="dropdown-item text-success" href="@Model.StoreUrl" target="_blank"><i class="fas fa-fw fa-shopping-bag" aria-hidden="true"></i> @SharedLocalizer["visit"]</a>
+                        }
+                        @if (Model.Permissions.CanDelete)
+                        {
+                            <a class="dropdown-item btn-entity-delete" href="#" data-url="@Url.Action("delete", "product", new { area = "staff", id = Model.Id, edit = true })" data-confirmationmessage="@SharedLocalizer["Are you sure you want to delete this Product?"]" data-confirmationtitle="@SharedLocalizer["Are you sure?"]" data-confirmationbuttontext="@SharedLocalizer["Yes, delete it!"]" data-cancelbuttontext="@SharedLocalizer["Cancel"]">@SharedLocalizer["delete"]</a>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="box-body p-0 px-md-2">
+        <form id="frmSave" asp-area="staff" asp-controller="Product" asp-action="save" method="post">
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="UserId" />
+            <input type="hidden" asp-for="CreateDate" />
+            <input type="hidden" asp-for="Type" />
+
+            <div class="row">
+                <div class="col-12">
+                    <h2 class="text-capitalize">@SharedLocalizer["Basic Information"]</h2>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="col-form-label text-capitalize">@SharedLocalizer["SKU"]</label>
+                        <input asp-for="Code" class="form-control" tabindex="0" autofocus placeholder="@SharedLocalizer["Code"]" readonly />
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label asp-for="Name" class="col-form-label"></label>
+                        <span asp-description-for="Name" class="col-form-label"></span>
+                        <input asp-for="Name" class="form-control" tabindex="0" autofocus placeholder="@SharedLocalizer["Describe the Product here"]" readonly />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label asp-for="StoreHandler" class="col-form-label"></label>
+                        <span asp-description-for="StoreHandler" class="col-form-label"></span>
+                        <input asp-for="StoreHandler" class="form-control" tabindex="0" autofocus placeholder="@SharedLocalizer["URL for the product on the live store"]" />
+                        <span asp-validation-for="StoreHandler" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label asp-for="Price" class="col-form-label"></label>
+                        <span asp-description-for="Price" class="col-form-label"></span>
+                        <input name="Price" value="@Model.Price.ToString()" class="form-control" tabindex="0" autofocus placeholder="@SharedLocalizer["Price of the product"]" readonly/>
+                        <span asp-validation-for="Price" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <label class="col col-form-label">@SharedLocalizer["Variants"]</label>
+                    @if (!Model.Variants.Any())
+                    {
+                        <span class="col">@SharedLocalizer["No Variants"]</span>
+                    }
+                    else
+                    {
+                        <div class="col">
+                            @foreach (var variant in Model.Variants)
+                            {
+                                <div class="row border-bottom rounded-0">
+                                    <div class="col">@variant.Code</div>
+                                    <div class="col">@variant.Name</div>
+                                </div>
+                            }
+                        </div>
+                    }
+                </div>
+
+                <div class="col-12">
+                    <br />
+                    <h2 class="text-capitalize">@SharedLocalizer["Product Owners"]</h2>
+                </div>
+
+                <div class="col-12">
+                    <div class="col p-0 mb-3">
+                        <div class="d-flex flex-row justify-content-center">
+                            <div class="d-flex flex-column justify-content-center">
+                                <label asp-for="Owners" class="col-form-label"></label>
+                            </div>
+                            <div class="d-flex flex-column justify-content-center">
+                                <span asp-description-for="Owners" class="col-form-label ml-1" />
+                            </div>
+                            <div class="col pr-0">
+                                <select id="ddlSearchUsers" class="form-control" data-placeholder="@SharedLocalizer["Search for Users"]" data-ajax-url="@Url.Action("searchusercard", "user")"></select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="divOwners" class="row justify-content-center">
+                        @for (int i = 0; i < Model.OwnersProfiles.Count; i++)
+                        {
+                            var owner = Model.OwnersProfiles.ElementAt(i);
+
+                            <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-3 owner">
+                                <input type="hidden" name="Owners[@i].UserId" value="@owner.UserId" class="ownerid" />
+                                <div class="bordered square-bottom border-bottom-0">
+                                    <partial name="_UserCard" model="owner" />
+                                </div>
+                                <div class="w-100 square-top">
+                                    <button type="button" class="btn btn-block btn-outline-danger square-top btn-owner-delete"><i class="fas fa-trash-alt" aria-hidden="true"></i></button>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <div class="col-12 col-lg-6 offset-lg-6 col-xl-4 offset-xl-8 mt-1 mb-2">
+                    <button type="button" id="btnSave" class="btn btn-lg btn-primary btn-block" data-error-msg="<i class='fas fa-exclamation-circle' aria-hidden='true'></i> @SharedLocalizer["Something is missing!"]"><i class="fas fa-save" aria-hidden="true"></i> @SharedLocalizer["Save"]</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

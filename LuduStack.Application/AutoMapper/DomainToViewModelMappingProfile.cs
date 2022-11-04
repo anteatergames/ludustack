@@ -19,6 +19,7 @@ using LuduStack.Application.ViewModels.Notification;
 using LuduStack.Application.ViewModels.PlatformSetting;
 using LuduStack.Application.ViewModels.Search;
 using LuduStack.Application.ViewModels.ShortUrl;
+using LuduStack.Application.ViewModels.Store;
 using LuduStack.Application.ViewModels.Study;
 using LuduStack.Application.ViewModels.Team;
 using LuduStack.Application.ViewModels.User;
@@ -234,6 +235,24 @@ namespace LuduStack.Application.AutoMapper
             CreateMap<GameIdea, GameIdeaViewModel>();
 
             #endregion GameIdea
+
+            #region Store
+
+            CreateMap<Product, ProductViewModel>();
+
+            CreateMap<ProductVariant, ProductVariantViewModel>();
+
+            CreateMap<StorePartner, StorePartnerViewModel>();
+
+            CreateMap<Order, OrderViewModel>();
+
+            CreateMap<OrderProduct, OrderProductViewModel>();
+
+            CreateMap<StorePartnership, StorePartnershipViewModel>();
+
+            CreateMap<StorePartnershipTransaction, StorePartnershipTransactionViewModel>();
+
+            #endregion Store
         }
     }
 }

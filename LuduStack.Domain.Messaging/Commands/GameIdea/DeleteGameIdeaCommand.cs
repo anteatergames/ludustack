@@ -24,21 +24,21 @@ namespace LuduStack.Domain.Messaging
     public class DeleteGameIdeaCommandHandler : CommandHandler, IRequestHandler<DeleteGameIdeaCommand, CommandResult>
     {
         protected readonly IUnitOfWork unitOfWork;
-        protected readonly IGameIdeaRepository gamificationLevelRepository;
+        protected readonly IGameIdeaRepository gameIdeaRepository;
 
-        public DeleteGameIdeaCommandHandler(IUnitOfWork unitOfWork, IGameIdeaRepository gamificationLevelRepository)
+        public DeleteGameIdeaCommandHandler(IUnitOfWork unitOfWork, IGameIdeaRepository gameIdeaRepository)
         {
             this.unitOfWork = unitOfWork;
-            this.gamificationLevelRepository = gamificationLevelRepository;
+            this.gameIdeaRepository = gameIdeaRepository;
         }
 
         public async Task<CommandResult> Handle(DeleteGameIdeaCommand request, CancellationToken cancellationToken)
         {
             if (!request.IsValid()) { return request.Result; }
 
-            Models.GameIdea gamificationLevel = await gamificationLevelRepository.GetById(request.Id);
+            Models.GameIdea gameIdea = await gameIdeaRepository.GetById(request.Id);
 
-            if (gamificationLevel is null)
+            if (gameIdea is null)
             {
                 AddError("The Game Idea doesn't exist.");
                 return request.Result;
@@ -46,7 +46,7 @@ namespace LuduStack.Domain.Messaging
 
             // AddDomainEvent here
 
-            gamificationLevelRepository.Remove(gamificationLevel.Id);
+            gameIdeaRepository.Remove(gameIdea.Id);
 
             FluentValidation.Results.ValidationResult validation = await Commit(unitOfWork);
 

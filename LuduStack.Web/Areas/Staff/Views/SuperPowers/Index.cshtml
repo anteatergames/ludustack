@@ -4,16 +4,21 @@
 }
 
 @section Styles {
-    <environment include="Development">
-        <link rel="stylesheet" href="~/css/memberpowers.css" />
-    </environment>
-    <environment exclude="Development">
-        <link rel="stylesheet" href="~/css/memberpowers.min.css" asp-append-version="true" />
-    </environment>
+<environment include="Development">
+    <link rel="stylesheet" href="~/css/memberpowers.css" />
+</environment>
+<environment exclude="Development">
+    <link rel="stylesheet" href="~/css/memberpowers.min.css" asp-append-version="true" />
+</environment>
 }
 
 <div class="col-12">
     <div class="row">
+
+        <div class="col-12 mt-5">
+            <h2>@SharedLocalizer["Admin"]</h2>
+        </div>
+
         @if (isAdmin)
         {
             <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 p-2">
@@ -41,6 +46,17 @@
                 </div>
             </div>
         }
+    </div>
+</div>
+
+
+<div class="col-12">
+    <div class="row">
+
+        <div class="col-12 mt-5">
+            <h2>@SharedLocalizer["Staff"]</h2>
+        </div>
+
         <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 p-2">
             <div class="flex-square clickable rectangle bordered hover m-0 bg-green">
                 <div class="flex-square-inner">
@@ -113,6 +129,42 @@
                         <div class="flex-square-inner-content text-white">
                             <div><i class="fas fa-3x fa-lightbulb" aria-hidden="true"></i></div>
                             <div>@SharedLocalizer["game ideas"]</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="col-12">
+    <div class="row">
+
+        <div class="col-12 mt-5">
+            <h2>@SharedLocalizer["Store"]</h2>
+        </div>
+
+        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 p-2">
+            <div class="flex-square clickable rectangle bordered hover m-0 m-0 bg-green">
+                <div class="flex-square-inner">
+                    <a asp-area="staff" asp-controller="product" asp-action="index">
+                        <div class="flex-square-inner-content text-white">
+                            <div><i class="fas fa-3x fa-shopping-bag" aria-hidden="true"></i></div>
+                            <div>@SharedLocalizer["products"]</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 p-2">
+            <div class="flex-square clickable rectangle bordered hover m-0 m-0 bg-teal">
+                <div class="flex-square-inner">
+                    <a asp-area="staff" asp-controller="order" asp-action="index">
+                        <div class="flex-square-inner-content text-white">
+                            <div><i class="fas fa-3x fa-store" aria-hidden="true"></i></div>
+                            <div>@SharedLocalizer["orders"]</div>
                         </div>
                     </a>
                 </div>

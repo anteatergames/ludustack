@@ -174,7 +174,7 @@
         entryAuthorButton.find('img').attr('data-src', urlAvatar);
         entryAuthorButton.attr('title', entry.authorName);
         entryAuthorButton.closest(selectors.entryAuthor).find(selectors.entryAuthorName).html(entry.authorName);
-        entryAuthorButton.closest(selectors.entryAuthor).find(selectors.entryTranslationDate).html(entry.createDateText);
+        entryAuthorButton.closest(selectors.entryAuthor).find(selectors.entryTranslationDate).html(entry.createDateTimeText);
         entryAuthorButton.attr('href', objs.urls.data('urlProfile') + entry.userHandler);
 
         var rejectBtn = newEntryObj.find(selectors.entryReject);

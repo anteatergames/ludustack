@@ -6,6 +6,7 @@ namespace LuduStack.Application.Interfaces
     public interface IBaseViewModel : IEntityBase
     {
         string CreateDateText { get; }
+        string CreateDateTimeText { get; }
         bool CurrentUserFollowing { get; set; }
         bool CurrentUserIsOwner { get; set; }
         bool CurrentUserLiked { get; set; }

@@ -18,7 +18,7 @@
     <PackageReference Include="MediatR" Version="11.0.0" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="6.0.9" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="6.0.9" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="6.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" Version="6.0.9" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="6.0.9" />
     
@@ -45,5 +45,19 @@
   <ItemGroup>
 	<!-- extends watching group to include *.cshtml files -->
 	<Watch Include="**\*.cshtml" Exclude="node_modules\**\*;**\*.js.map;obj\**\*;bin\**\*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Watch Remove="Areas\Member\Views\Store\Dashboard.cshtml" />
+    <Watch Remove="Areas\Member\Views\Store\ProductView.cshtml" />
+    <Watch Remove="Areas\Member\Views\Store\_ListProducts.cshtml" />
+    <Watch Remove="Areas\Staff\Views\Order\CreateEditWrapper.cshtml" />
+    <Watch Remove="Areas\Staff\Views\Order\Index.cshtml" />
+    <Watch Remove="Areas\Staff\Views\Order\_CreateEdit.cshtml" />
+    <Watch Remove="Areas\Staff\Views\Order\_ListOrders.cshtml" />
+    <Watch Remove="Areas\Staff\Views\Product\CreateEditWrapper.cshtml" />
+    <Watch Remove="Areas\Staff\Views\Product\Index.cshtml" />
+    <Watch Remove="Areas\Staff\Views\Product\_CreateEdit.cshtml" />
+    <Watch Remove="Areas\Staff\Views\Product\_ListProducts.cshtml" />
   </ItemGroup>
 </Project>
