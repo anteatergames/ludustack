@@ -506,7 +506,16 @@
     }
 
     function toLocaleNumber(numberValue, decimalPlaces) {
-        return numberValue.toLocaleString(MAINMODULE.GetLocale(), { minimumFractionDigits: (decimalPlaces ?? 2) })
+        // this is causing build error. Need to be investigated
+        //    var options = { minimumFractionDigits: (decimalPlaces ?? 2) };
+
+        //    var locale = MAINMODULE.GetLocale();
+        //    console.log(locale);
+
+        //    var result = numberValue.toLocaleString(locale, options);
+
+        //    return result;
+        return numberValue
     }
 
     function getSelectedFileUrl(files, done) {
