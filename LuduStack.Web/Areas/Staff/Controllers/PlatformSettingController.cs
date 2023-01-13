@@ -69,6 +69,21 @@ namespace LuduStack.Web.Areas.Staff.Controllers
             return View("CreateEditWrapper", viewModel);
         }
 
+        [HttpPost("toggle/{element}")]
+        public async Task<JsonResult> Toggle(PlatformSettingElement element)
+        {
+            try
+            {
+                OperationResultVo serviceResult = await platformSettingAppService.Toggle(CurrentUserId, element);
+                
+                return Json(serviceResult);
+            }
+            catch (Exception ex)
+            {
+                return Json(new OperationResultVo(ex.Message));
+            }
+        }
+
         [HttpPost("save")]
         public async Task<JsonResult> Save(PlatformSettingViewModel vm)
         {

@@ -164,7 +164,31 @@ namespace LuduStack.Application.Services
                     UiInfoAttribute uiInfo = result.Result.Element.ToUiInfo();
 
                     cacheService.Set(result.Result.Element, uiInfo.DefaultValue);
-                    return new OperationResultVo(true, "That Platform Setting is gone now!");
+                    return new OperationResultVo(true, "Platform Setting reset to the default value!");
+                }
+            }
+            catch (Exception ex)
+            {
+                return new OperationResultVo(ex.Message);
+            }
+        }
+
+        public async Task<OperationResultVo> Toggle(Guid currentUserId, PlatformSettingElement element)
+        {
+            try
+            {
+                CommandResult<PlatformSetting> result = await mediator.SendCommand<TogglePlatformSettingCommand, PlatformSetting>(new TogglePlatformSettingCommand(currentUserId, element));
+
+                if (!result.Validation.IsValid)
+                {
+                    return new OperationResultVo(result.Validation.Errors.First().ErrorMessage);
+                }
+                else
+                {
+                    UiInfoAttribute uiInfo = result.Result.Element.ToUiInfo();
+
+                    cacheService.Set(result.Result.Element, result.Result.Value);
+                    return new OperationResultVo(true, "Value changed!");
                 }
             }
             catch (Exception ex)
