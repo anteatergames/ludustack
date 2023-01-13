@@ -138,7 +138,6 @@
     }
 
     function handlePointsEarned(response) {
-        console.log(response);
         if (response.pointsEarned > 0) {
             var msg = translatedMessages['mgsPointsEarned'];
             msg = msg.replace('0', response.pointsEarned);
@@ -447,8 +446,8 @@
         }
     }
 
-    function postWithConfirmation(btn, callback) {
-        ajaxSendWithConfirmation(btn, 'POST', callback);
+    function postWithConfirmation(btn, callback, precall) {
+        ajaxSendWithConfirmation(btn, 'POST', callback, precall);
     }
 
     function postWithoutConfirmation(btn, httpmethod, callback) {
@@ -475,16 +474,22 @@
         });
     }
 
-    function ajaxSendWithConfirmation(btn, httpmethod, callback) {
+    function ajaxSendWithConfirmation(btn, httpmethod, callback, precall) {
         var url = btn.data('url');
 
         var msgs = MAINMODULE.Common.GetPostConfirmationMessages(btn);
 
         ALERTSYSTEM.ShowConfirmMessage(msgs.confirmationTitle, msgs.msg, msgs.confirmationButtonText, msgs.cancelButtonText, function () {
+
+            if (precall) {
+                precall();
+            }
+
             $.ajax({
                 url: url,
                 type: httpmethod
             }).done(function (response) {
+                console.log(response);
                 if (response.success) {
                     MAINMODULE.Common.HandleSuccessDefault(response, null, function (response2) {
                         callback(response2, btn);

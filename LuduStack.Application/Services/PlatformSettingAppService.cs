@@ -33,7 +33,7 @@ namespace LuduStack.Application.Services
 
                 foreach (PlatformSettingElement setting in allSettings)
                 {
-                    Domain.Core.Attributes.UiInfoAttribute uiInfo = setting.ToUiInfo();
+                    UiInfoAttribute uiInfo = setting.ToUiInfo();
 
                     PlatformSettingViewModel vm = new PlatformSettingViewModel
                     {

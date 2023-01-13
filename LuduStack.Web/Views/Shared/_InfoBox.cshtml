@@ -3,6 +3,11 @@
     var version = ViewData["BuildNumber"]?.ToString();
 
     version = version.StartsWith("v") ? version : String.Format("v{0}", version);
+    var facebookUrl = (string)ViewData["FacebookUrl"];
+    // https://www.facebook.com/ludustack
+    var discordUrl = (string)ViewData["DiscordUrl"];
+    // https://discord.gg/X5Z8dTH
+    var twitterUrl = (string)ViewData["TwitterUrl"];
 }
 
 <div id="infobox" class="col-12 px-1">
@@ -29,27 +34,42 @@
                 </ul>
             </div>
         </div>
-        <div class="row p-2 border-top rounded-0">
-            <div class="col-12">
-                <div class="user-social-acount text-center">
-                    <a href="https://www.facebook.com/ludustack" target="_blank" class="mt-1 btn rounded-circle btn-social-icon btn-facebook" rel="noopener noreferrer" aria-label="Facebook Page">
-                        <i class="fab fa-facebook-f" aria-hidden="true"></i>
-                    </a>
-                    @*<a href="https://www.twitter.com/programad" target="_blank" class="mt-1 btn rounded-circle btn-social-icon btn-twitter" rel="noopener noreferrer">
-                            <i class="fab fa-twitter" aria-hidden="true"></i>
-                        </a>*@
-                    <a href="https://discord.gg/X5Z8dTH" target="_blank" class="mt-1 btn rounded-circle btn-social-icon btn-discord" rel="noopener noreferrer" aria-label="Discord Server">
-                        <i class="fab fa-discord" aria-hidden="true"></i>
-                    </a>
+        @if (!String.IsNullOrWhiteSpace(facebookUrl) || !String.IsNullOrWhiteSpace(twitterUrl) || !String.IsNullOrWhiteSpace(discordUrl))
+        {
+            <div class="row p-2 border-top rounded-0">
+                <div class="col-12">
+                    <div class="user-social-acount text-center">
+                        @if (!String.IsNullOrWhiteSpace(facebookUrl))
+                        {
+                            <a href="@facebookUrl" target="_blank" class="mt-1 btn rounded-circle btn-social-icon btn-facebook" rel="noopener noreferrer" aria-label="Facebook Page">
+                                <i class="fab fa-facebook-f" aria-hidden="true"></i>
+                            </a>
+                        }
+
+
+                        @if (!String.IsNullOrWhiteSpace(twitterUrl))
+                        {
+                            <a href="@twitterUrl" target="_blank" class="mt-1 btn rounded-circle btn-social-icon btn-twitter" rel="noopener noreferrer">
+                                <i class="fab fa-twitter" aria-hidden="true"></i>
+                            </a>
+                        }
+
+                        @if (!String.IsNullOrWhiteSpace(discordUrl))
+                        {
+                            <a href="@discordUrl" target="_blank" class="mt-1 btn rounded-circle btn-social-icon btn-discord" rel="noopener noreferrer" aria-label="Discord Server">
+                                <i class="fab fa-discord" aria-hidden="true"></i>
+                            </a>
+                        }
+                    </div>
                 </div>
             </div>
-        </div>
+        }
         <div class="row pt-2 border-top rounded-0">
             <div class="col-12 text-capitalize">
                 <a asp-area="" asp-controller="home" asp-action="terms">@SharedLocalizer["terms"]</a> | <a asp-area="" asp-controller="home" asp-action="privacy">@SharedLocalizer["policies"]</a>
             </div>
             <div class="col-12 pt-2">
-                Copyright &copy; 2021 <a href="https://www.ludustack.com/" rel="noopener noreferrer">ludustack</a>.
+                Copyright &copy; 2021 <a href="https://www.ludustack.com/" rel="noopener noreferrer">LUDUSTACK</a>.
             </div>
         </div>
 

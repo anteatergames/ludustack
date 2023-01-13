@@ -60,9 +60,13 @@
 
         loadCounters();
 
-        loadGameIdea();
+        if (showIdeaGenerator) {
+            loadGameIdea();
+        }
 
-        loadLatestGames();
+        if (showGames) {
+            loadLatestGames();
+        }
 
         defaultTxtPostContentHeight = Math.ceil(objs.txtPostContent.height());
 

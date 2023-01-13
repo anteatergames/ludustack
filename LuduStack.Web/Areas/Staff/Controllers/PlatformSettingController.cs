@@ -38,7 +38,7 @@ namespace LuduStack.Web.Areas.Staff.Controllers
             {
                 OperationResultListVo<PlatformSettingViewModel> castResult = serviceResult as OperationResultListVo<PlatformSettingViewModel>;
 
-                model = castResult.Value.ToList();
+                model = castResult.Value.OrderBy(x => (int)x.Type).ToList();
             }
             else
             {

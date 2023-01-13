@@ -1,4 +1,5 @@
-﻿using LuduStack.Domain.Core;
+﻿using LuduStack.Application.ViewModels.PlatformSetting;
+using LuduStack.Domain.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,9 @@ namespace LuduStack.Application.Helpers
 {
     public static class ConfigHelper
     {
-        public static ConfigOptions ConfigOptions { get; private set; }
+        private static ConfigOptions configOptions;
+
+        public static ConfigOptions ConfigOptions { get { return configOptions ?? new ConfigOptions();  } private set { configOptions = value; } }
 
         public static void SetConfigOptions(ConfigOptions configOptions)
         {

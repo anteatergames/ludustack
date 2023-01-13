@@ -5,24 +5,29 @@ namespace LuduStack.Domain.Core.Enums
 {
     public enum PlatformSettingGroup
     {
+
+        [UiInfo(Display = "Feature")]
+        [Display(Name = "Feature")]
+        Feature = 1,
+
         [UiInfo(Display = "General")]
         [Display(Name = "General")]
-        General = 1,
+        General = 2,
 
         [UiInfo(Display = "Home")]
         [Display(Name = "Home")]
-        Home = 2,
+        Home = 3,
 
         [UiInfo(Display = "Feed")]
         [Display(Name = "Feed")]
-        Feed = 3,
+        Feed = 4,
 
         [UiInfo(Display = "Forum")]
         [Display(Name = "Forum")]
-        Forum = 4,
+        Forum = 5,
 
         [UiInfo(Display = "Store")]
         [Display(Name = "Store")]
-        Store = 5,
+        Store = 6,
     }
 }
