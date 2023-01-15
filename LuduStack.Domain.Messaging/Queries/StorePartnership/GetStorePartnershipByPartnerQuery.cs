@@ -31,6 +31,11 @@ namespace LuduStack.Domain.Messaging.Queries.Store
         {
             StorePartnership obj = await productRepository.GetByPartner(request.PartnerUserId);
 
+            if (obj == null)
+            {
+                obj = new StorePartnership();
+            }
+
             obj.FundsAvailable = obj.FundsTotal - obj.FundsWithdrawn;
 
             return obj;
