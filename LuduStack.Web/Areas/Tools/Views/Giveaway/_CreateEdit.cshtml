@@ -178,7 +178,7 @@
                                 var image = Model.ImageList[i];
 
                                 <div class="col px-1">
-                                    <img src="@image" class="img-fluid imagelistitem@(image.Contains(Constants.DefaultGiveawayThumbnail) ? " default" : String.Empty)" width="720" height="360" data-placeholder="@Constants.DefaultGiveawayThumbnail" />
+                                    <img src="@image" class="img-fluid imagelistitem@(image.Contains(Constants.DefaultGiveawayThumbnail) ? " default" : String.Empty)" width="720" height="360" data-placeholder="@Constants.DefaultGiveawayThumbnail" alt="@String.Format("Thumbnail {0}", Model.Name)" />
                                     <input asp-for="ImageList[i]" type="hidden" class="imagelistitem@(image.Contains(Constants.DefaultGiveawayThumbnail) ? " default" : String.Empty)" />
                                     <button class="btn btn-sm btn-outline-danger btn-image-delete@(image.Contains(Constants.DefaultGiveawayThumbnail) ? " d-none" : String.Empty)"><i class="fas fa-trash" aria-hidden="true"></i></button>
                                     <div class="featuredlabel d-none"><span class="px-2 pb-1">@SharedLocalizer["featured"]</span></div>

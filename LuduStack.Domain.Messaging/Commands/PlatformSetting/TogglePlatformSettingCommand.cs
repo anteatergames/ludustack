@@ -72,7 +72,7 @@ namespace LuduStack.Domain.Messaging
             {
                 bool value = existing.First().Value.Equals("1") ? true : false;
 
-                platformSetting = existing.FirstOrDefault();
+                platformSetting = existing.First();
 
                 platformSetting.Value = Convert.ToInt32(!value).ToString();
 
