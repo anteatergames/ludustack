@@ -703,5 +703,18 @@
       "wwwroot/js/order/ordercommon.js",
       "wwwroot/js/order/orderedit.js"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/css/memberstore.min.css",
+    "inputFiles": [
+      "wwwroot/css/memberstore.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/store/memberstore.min.js",
+    "inputFiles": [
+      "wwwroot/js/store/memberstorecommon.js",
+      "wwwroot/js/store/memberstore.js"
+    ]
   }
 ]
