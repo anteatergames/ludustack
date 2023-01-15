@@ -4,7 +4,6 @@ using LuduStack.Infra.Data.MongoDb.Interfaces;
 using LuduStack.Infra.Data.MongoDb.Repository.Base;
 using MongoDB.Driver;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -18,7 +17,7 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
 
         public Task<StorePartnership> GetByPartner(Guid partnerUserId)
         {
-            var result = DbSet.AsQueryable().Where(x => x.PartnerUserId == partnerUserId).FirstOrDefault();
+            StorePartnership result = DbSet.AsQueryable().Where(x => x.PartnerUserId == partnerUserId).FirstOrDefault();
 
             return Task.FromResult(result);
         }

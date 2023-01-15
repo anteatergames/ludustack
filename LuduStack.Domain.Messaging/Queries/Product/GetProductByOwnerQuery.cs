@@ -1,5 +1,4 @@
 ﻿using LuduStack.Domain.Interfaces.Repository;
-using LuduStack.Domain.Messaging.Queries.Base;
 using LuduStack.Domain.Models;
 using LuduStack.Infra.CrossCutting.Messaging;
 using MediatR;
@@ -31,7 +30,7 @@ namespace LuduStack.Domain.Messaging.Queries.Store
 
         async Task<IEnumerable<Product>> IRequestHandler<GetProductByOwnerQuery, IEnumerable<Product>>.Handle(GetProductByOwnerQuery request, CancellationToken cancellationToken)
         {
-            var obj = await productRepository.GetByOwner(request.OwnerUserId);
+            List<Product> obj = await productRepository.GetByOwner(request.OwnerUserId);
 
             return obj;
         }

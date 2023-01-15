@@ -1,7 +1,5 @@
-﻿using LuduStack.Application.ViewModels.User;
-using LuduStack.Domain.Core.Enums;
+﻿using LuduStack.Domain.Core.Enums;
 using System;
-using System.Collections.Generic;
 
 namespace LuduStack.Application.ViewModels.Store
 {

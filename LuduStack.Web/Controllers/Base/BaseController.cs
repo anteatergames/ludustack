@@ -1,20 +1,17 @@
 ﻿using LuduStack.Application.Interfaces;
+using LuduStack.Application.ViewModels.PlatformSetting;
+using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.ValueObjects;
 using LuduStack.Web.Enums;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
+using System;
 using System.Net;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Microsoft.Extensions.DependencyInjection;
-using System;
-using LuduStack.Application.Helpers;
-using LuduStack.Domain.Core.Enums;
-using System.Threading.Tasks;
-using LuduStack.Application.ViewModels.PlatformSetting;
-using System.Linq;
 
 namespace LuduStack.Web.Controllers.Base
 {
@@ -46,16 +43,16 @@ namespace LuduStack.Web.Controllers.Base
         }
         private void SetPlatformSettings()
         {
-            var showDonateButton = PlatformSettingAppService.GetByElement(Guid.Empty, PlatformSettingElement.ShowDonateButton).Result.Value;
+            PlatformSettingViewModel showDonateButton = PlatformSettingAppService.GetByElement(Guid.Empty, PlatformSettingElement.ShowDonateButton).Result.Value;
             ViewData["ShowDonateButton"] = showDonateButton.Value.Equals("1") ? true : false;
 
-            var showIdeaGenerator = PlatformSettingAppService.GetByElement(Guid.Empty, PlatformSettingElement.ShowHomePageIdeaGenerator).Result.Value;
+            PlatformSettingViewModel showIdeaGenerator = PlatformSettingAppService.GetByElement(Guid.Empty, PlatformSettingElement.ShowHomePageIdeaGenerator).Result.Value;
             ViewData["ShowIdeaGenerator"] = showIdeaGenerator.Value.Equals("1") ? true : false;
 
-            var showStore = PlatformSettingAppService.GetByElement(Guid.Empty, PlatformSettingElement.ShowStore).Result.Value;
+            PlatformSettingViewModel showStore = PlatformSettingAppService.GetByElement(Guid.Empty, PlatformSettingElement.ShowStore).Result.Value;
             ViewData["ShowStore"] = showStore.Value.Equals("1") ? true : false;
 
-            var showGames = PlatformSettingAppService.GetByElement(Guid.Empty, PlatformSettingElement.ShowGames).Result.Value;
+            PlatformSettingViewModel showGames = PlatformSettingAppService.GetByElement(Guid.Empty, PlatformSettingElement.ShowGames).Result.Value;
             ViewData["ShowGames"] = showGames.Value.Equals("1") ? true : false;
 
             ViewData["FacebookUrl"] = PlatformSettingAppService.GetByElement(Guid.Empty, PlatformSettingElement.FacebookUrl).Result.Value.Value;

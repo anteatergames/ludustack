@@ -1,12 +1,12 @@
-﻿using RestSharp;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Configuration;
+﻿using LuduStack.Domain.Core.Enums;
+using LuduStack.Domain.Models;
 using LuduStack.Infra.CrossCutting.Abstractions;
 using LuduStack.Infra.CrossCutting.External.LuduStackGear;
-using System.Text.Json;
-using LuduStack.Domain.Models;
-using LuduStack.Domain.Core.Enums;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using RestSharp;
 using System.Globalization;
+using System.Text.Json;
 
 namespace LuduStack.Infra.CrossCutting.External
 {
@@ -77,7 +77,7 @@ namespace LuduStack.Infra.CrossCutting.External
 
                                 if (product.Variacoes != null)
                                 {
-                                    foreach (var variant in product.Variacoes)
+                                    foreach (BlingVariacao variant in product.Variacoes)
                                     {
                                         newProduct.Variants.Add(new ProductVariant
                                         {
@@ -144,7 +144,7 @@ namespace LuduStack.Infra.CrossCutting.External
 
                                 if (pedido.Itens != null)
                                 {
-                                    foreach (var item in pedido.Itens)
+                                    foreach (BlingItem item in pedido.Itens)
                                     {
                                         newOrder.Items.Add(new OrderProduct
                                         {

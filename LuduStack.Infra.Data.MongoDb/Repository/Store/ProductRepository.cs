@@ -18,7 +18,7 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
 
         public Task<List<Product>> GetByOwner(Guid ownerUserId)
         {
-            var result = DbSet.AsQueryable().Where(x => x.Owners.Any(x => x.UserId == ownerUserId)).ToList();
+            List<Product> result = DbSet.AsQueryable().Where(x => x.Owners.Any(x => x.UserId == ownerUserId)).ToList();
 
             return Task.FromResult(result);
         }

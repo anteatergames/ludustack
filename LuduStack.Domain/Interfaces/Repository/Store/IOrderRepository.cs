@@ -1,7 +1,4 @@
-﻿using LuduStack.Domain.Core.Enums;
-using LuduStack.Domain.Models;
-using LuduStack.Domain.ValueObjects;
-using System;
+﻿using LuduStack.Domain.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

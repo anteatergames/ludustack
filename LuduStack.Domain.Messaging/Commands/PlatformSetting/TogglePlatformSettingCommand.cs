@@ -10,7 +10,6 @@ using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -58,7 +57,7 @@ namespace LuduStack.Domain.Messaging
             if (!existing.Any())
             {
                 UiInfoAttribute uiInfo = request.Element.ToUiInfo();
-                var value = uiInfo.DefaultValue.Equals("1") ? true : false;
+                bool value = uiInfo.DefaultValue.Equals("1") ? true : false;
 
                 platformSetting = new PlatformSetting
                 {
@@ -71,7 +70,7 @@ namespace LuduStack.Domain.Messaging
             }
             else
             {
-                var value = existing.First().Value.Equals("1") ? true : false;
+                bool value = existing.First().Value.Equals("1") ? true : false;
 
                 platformSetting = existing.FirstOrDefault();
 

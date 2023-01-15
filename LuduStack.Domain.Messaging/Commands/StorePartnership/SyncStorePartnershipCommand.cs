@@ -67,7 +67,7 @@ namespace LuduStack.Domain.Messaging
 
             IEnumerable<Models.Order> partnerOrders = await this.orderRepository.GetByProductCodes(productCodes);
 
-            var fulfilledOrders = partnerOrders.Where(x => x.Situation == OrderSituation.Fulfilled);
+            IEnumerable<Models.Order> fulfilledOrders = partnerOrders.Where(x => x.Situation == OrderSituation.Fulfilled);
 
             if (storePartnership.Id == Guid.Empty)
             {
@@ -116,7 +116,7 @@ namespace LuduStack.Domain.Messaging
                     }
                 }
 
-                var existingTransaction = storePartnership.Transactions.FirstOrDefault(x => x.OrderId == order.Id);
+                Models.StorePartnershipTransaction existingTransaction = storePartnership.Transactions.FirstOrDefault(x => x.OrderId == order.Id);
                 if (existingTransaction != null)
                 {
                     FillTransaction(existingTransaction, order, orderTotalForThisPartner);

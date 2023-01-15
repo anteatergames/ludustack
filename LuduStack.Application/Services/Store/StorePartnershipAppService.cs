@@ -46,9 +46,9 @@ namespace LuduStack.Application.Services
 
                 IEnumerable<StorePartnershipViewModel> vms = mapper.Map<IEnumerable<StorePartnership>, IEnumerable<StorePartnershipViewModel>>(allModels);
 
-                var list = vms.ToList();
+                List<StorePartnershipViewModel> list = vms.ToList();
 
-                foreach (var vm in list)
+                foreach (StorePartnershipViewModel vm in list)
                 {
                     FormatToShow(vm);
                 }
@@ -67,7 +67,7 @@ namespace LuduStack.Application.Services
 
             try
             {
-                var storePartnership = await mediator.Query<GetStorePartnershipByPartnerQuery, StorePartnership>(new GetStorePartnershipByPartnerQuery(userId));
+                StorePartnership storePartnership = await mediator.Query<GetStorePartnershipByPartnerQuery, StorePartnership>(new GetStorePartnershipByPartnerQuery(userId));
 
                 if (storePartnership == null)
                 {
@@ -82,7 +82,7 @@ namespace LuduStack.Application.Services
                 }
 
                 FormatToShow(vm);
-                 
+
                 return new OperationResultVo<StorePartnershipViewModel>(vm);
             }
             catch (Exception ex)
@@ -196,7 +196,7 @@ namespace LuduStack.Application.Services
                 LastUpdateDate = profileEssential.LastUpdateDate,
                 Name = profileEssential.Name,
                 ProfileImageUrl = UrlFormatter.ProfileImage(profileEssential.UserId, Constants.HugeAvatarSize),
-                CoverImageUrl = UrlFormatter.ProfileCoverImage(profileEssential.UserId,   profileEssential.Id, profileEssential.LastUpdateDate, profileEssential.HasCoverImage, Constants.ProfileCoverSize)
+                CoverImageUrl = UrlFormatter.ProfileCoverImage(profileEssential.UserId, profileEssential.Id, profileEssential.LastUpdateDate, profileEssential.HasCoverImage, Constants.ProfileCoverSize)
             };
 
             vm.PartnerProfile = profile;
@@ -204,7 +204,7 @@ namespace LuduStack.Application.Services
 
         private void FormatToShow(StorePartnershipViewModel element)
         {
-            foreach (var transaction in element.Transactions)
+            foreach (StorePartnershipTransactionViewModel transaction in element.Transactions)
             {
                 transaction.TypeText = transaction.Type.ToUiInfo().Display;
             }

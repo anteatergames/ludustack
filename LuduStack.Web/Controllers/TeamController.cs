@@ -46,7 +46,7 @@ namespace LuduStack.Web.Controllers
 
             List<TeamViewModel> model = serviceResult.Value.ToList();
 
-            foreach (var team in model)
+            foreach (TeamViewModel team in model)
             {
                 if (team.Name.StartsWith("Team "))
                 {

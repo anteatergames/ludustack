@@ -1,12 +1,7 @@
-﻿using LuduStack.Application.Formatters;
-using LuduStack.Application.Interfaces;
+﻿using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels.Store;
-using LuduStack.Application.ViewModels.User;
-using LuduStack.Domain.Core.Enums;
-using LuduStack.Domain.Core.Extensions;
 using LuduStack.Domain.Messaging;
 using LuduStack.Domain.Messaging.Queries.Store;
-using LuduStack.Domain.Messaging.Queries.UserProfile;
 using LuduStack.Domain.Models;
 using LuduStack.Domain.ValueObjects;
 using LuduStack.Infra.CrossCutting.Messaging;
@@ -49,7 +44,7 @@ namespace LuduStack.Application.Services
 
                 model.Elements = vms.ToList();
 
-                foreach (var element in model.Elements)
+                foreach (OrderViewModel element in model.Elements)
                 {
                     FormatToShow(element);
                 }

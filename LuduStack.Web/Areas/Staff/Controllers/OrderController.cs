@@ -1,10 +1,8 @@
 ﻿using LuduStack.Application;
 using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels.Store;
-using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.ValueObjects;
 using LuduStack.Web.Areas.Staff.Controllers.Base;
-using LuduStack.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;

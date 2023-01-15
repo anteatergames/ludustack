@@ -21,7 +21,7 @@ namespace LuduStack.Infra.Data.MongoDb.Repository
 
             FilterDefinition<Order> filter = new ExpressionFilterDefinition<Order>(x => x.Items.Any(y => productCodes.Contains(y.Code)));
 
-            List<Order> orders = await(await DbSet.FindAsync(filter, findOptions)).ToListAsync();
+            List<Order> orders = await (await DbSet.FindAsync(filter, findOptions)).ToListAsync();
 
             return orders;
         }

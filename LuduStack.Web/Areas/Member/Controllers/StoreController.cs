@@ -1,16 +1,10 @@
 ﻿using LuduStack.Application;
 using LuduStack.Application.Interfaces;
-using LuduStack.Application.ViewModels.BillRate;
 using LuduStack.Application.ViewModels.Store;
-using LuduStack.Domain.Core.Attributes;
-using LuduStack.Domain.Core.Enums;
-using LuduStack.Domain.Core.Extensions;
 using LuduStack.Domain.ValueObjects;
 using LuduStack.Web.Areas.Member.Controllers.Base;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace LuduStack.Web.Areas.Member.Controllers
@@ -33,7 +27,7 @@ namespace LuduStack.Web.Areas.Member.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                var model = new StorePartnershipViewModel();
+                StorePartnershipViewModel model = new StorePartnershipViewModel();
 
                 return View("Dashboard", model);
             }

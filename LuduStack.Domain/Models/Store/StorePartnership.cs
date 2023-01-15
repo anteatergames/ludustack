@@ -1,5 +1,4 @@
-﻿using LuduStack.Domain.Core.Enums;
-using LuduStack.Domain.Core.Models;
+﻿using LuduStack.Domain.Core.Models;
 using System;
 using System.Collections.Generic;
 

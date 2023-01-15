@@ -75,7 +75,7 @@ namespace LuduStack.Web.Areas.Staff.Controllers
             try
             {
                 OperationResultVo serviceResult = await platformSettingAppService.Toggle(CurrentUserId, element);
-                
+
                 return Json(serviceResult);
             }
             catch (Exception ex)

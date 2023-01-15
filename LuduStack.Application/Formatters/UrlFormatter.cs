@@ -1,14 +1,10 @@
 ﻿using CloudinaryDotNet;
+using LuduStack.Application.Helpers;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Core.Extensions;
-using Microsoft.Extensions.Options;
 using System;
 using System.Linq;
 using System.Text;
-using LuduStack.Domain.Core;
-using Microsoft.AspNetCore.Http;
-using System.Runtime.CompilerServices;
-using LuduStack.Application.Helpers;
 
 namespace LuduStack.Application.Formatters
 {

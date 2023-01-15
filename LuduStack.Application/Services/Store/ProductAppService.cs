@@ -2,7 +2,6 @@
 using LuduStack.Application.Interfaces;
 using LuduStack.Application.ViewModels.Store;
 using LuduStack.Application.ViewModels.User;
-using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Core.Extensions;
 using LuduStack.Domain.Messaging;
 using LuduStack.Domain.Messaging.Queries.Store;
@@ -49,7 +48,7 @@ namespace LuduStack.Application.Services
 
                 model.Elements = vms.ToList();
 
-                foreach (var element in model.Elements)
+                foreach (ProductViewModel element in model.Elements)
                 {
                     FormatToShow(element);
                 }
@@ -66,16 +65,16 @@ namespace LuduStack.Application.Services
         {
             try
             {
-                var products = await mediator.Query<GetProductByOwnerQuery, IEnumerable<Product>>(new GetProductByOwnerQuery(userId));
+                IEnumerable<Product> products = await mediator.Query<GetProductByOwnerQuery, IEnumerable<Product>>(new GetProductByOwnerQuery(userId));
 
                 if (products == null)
                 {
                     return new OperationResultListVo<ProductViewModel>("Entity not found!");
                 }
 
-                var vms = mapper.Map<IEnumerable<ProductViewModel>>(products);
+                IEnumerable<ProductViewModel> vms = mapper.Map<IEnumerable<ProductViewModel>>(products);
 
-                foreach (var element in vms)
+                foreach (ProductViewModel element in vms)
                 {
                     FormatToShow(element);
                 }

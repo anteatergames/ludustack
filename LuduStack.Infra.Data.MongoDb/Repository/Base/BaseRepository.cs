@@ -95,7 +95,7 @@ namespace LuduStack.Infra.Data.MongoDb.Repository.Base
 
         public virtual bool Exists(Expression<Func<TEntity, bool>> where)
         {
-            var exists = DbSet.Find(where).Limit(1).Any();
+            bool exists = DbSet.Find(where).Limit(1).Any();
 
             return exists;
         }

@@ -1,5 +1,4 @@
 ﻿using LuduStack.Domain.Models;
-using System;
 
 namespace LuduStack.Domain.Messaging
 {

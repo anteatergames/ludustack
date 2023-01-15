@@ -1,11 +1,9 @@
 ﻿using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Interfaces;
 using LuduStack.Domain.Interfaces.Repository;
-using LuduStack.Domain.Interfaces.Services;
 using LuduStack.Infra.CrossCutting.Abstractions;
 using LuduStack.Infra.CrossCutting.Messaging;
 using MediatR;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -64,12 +62,12 @@ namespace LuduStack.Domain.Messaging
             {
                 if (allLocalProducts.Any(x => x.Code.Equals(product.Code)))
                 {
-                    var existingProduct = allLocalProducts.First(x => x.Code.Equals(product.Code));
+                    Models.Product existingProduct = allLocalProducts.First(x => x.Code.Equals(product.Code));
                     HandleExistingProduct(existingProduct, product);
                 }
                 else if (allLocalProducts.Any(x => x.Name.ToLower().Equals(product.Name.ToLower())))
                 {
-                    var existingProduct = allLocalProducts.First(x => x.Name.ToLower().Equals(product.Name.ToLower()));
+                    Models.Product existingProduct = allLocalProducts.First(x => x.Name.ToLower().Equals(product.Name.ToLower()));
                     HandleExistingProduct(existingProduct, product);
                 }
                 else

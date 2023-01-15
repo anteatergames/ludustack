@@ -1,6 +1,5 @@
 ﻿using LuduStack.Application.ViewModels.User;
 using LuduStack.Domain.Core.Enums;
-using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 

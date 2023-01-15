@@ -1,10 +1,8 @@
 ﻿using LuduStack.Domain.Interfaces.Repository;
-using LuduStack.Domain.Messaging.Queries.Base;
 using LuduStack.Domain.Models;
 using LuduStack.Infra.CrossCutting.Messaging;
 using MediatR;
 using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -31,7 +29,7 @@ namespace LuduStack.Domain.Messaging.Queries.Store
 
         async Task<StorePartnership> IRequestHandler<GetStorePartnershipByPartnerQuery, StorePartnership>.Handle(GetStorePartnershipByPartnerQuery request, CancellationToken cancellationToken)
         {
-            var obj = await productRepository.GetByPartner(request.PartnerUserId);
+            StorePartnership obj = await productRepository.GetByPartner(request.PartnerUserId);
 
             obj.FundsAvailable = obj.FundsTotal - obj.FundsWithdrawn;
 

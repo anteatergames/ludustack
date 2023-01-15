@@ -1,8 +1,4 @@
-﻿using LuduStack.Domain.Core.Enums;
-using LuduStack.Domain.Core.Models;
-using System.Collections.Generic;
-
-namespace LuduStack.Domain.Models
+﻿namespace LuduStack.Domain.Models
 {
     public class OrderProduct
     {

@@ -1,5 +1,4 @@
 ﻿using LuduStack.Application.ViewModels.Store;
-using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.ValueObjects;
 using System;
 using System.Threading.Tasks;
