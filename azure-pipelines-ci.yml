@@ -24,7 +24,7 @@ steps:
     - task: NodeTool@0
       inputs:
         versionSource: 'spec'
-        versionSpec: '8.x'
+        versionSpec: '18.x'
         checkLatest: true
     - task: freestyle@0
       displayName: Semantic Release
@@ -32,7 +32,7 @@ steps:
         gitHubServiceConnection: 'github.com_programad'
         configPath: '.releaserc'
         cwd: '$(Build.Repository.LocalPath)'
-        versionOverwrite: 'semantic-release@18'
+        versionOverwrite: 'semantic-release'
 
     - task: gittagloader@1
       inputs:
