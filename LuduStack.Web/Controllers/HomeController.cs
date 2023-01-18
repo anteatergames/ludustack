@@ -35,8 +35,6 @@ namespace LuduStack.Web.Controllers
         {
             await SetFeaturedCarousel();
 
-            await SetDonateButton();
-
             SetLanguage();
 
             Dictionary<GameGenre, UiInfoAttribute> genreDict = Enum.GetValues(typeof(GameGenre)).Cast<GameGenre>().ToUiInfoDictionary(true);
@@ -117,16 +115,6 @@ namespace LuduStack.Web.Controllers
                     CarouselViewModel featured = await featuredContentAppService.GetFeaturedNow();
                     ViewData["Carousel"] = featured;
                 }
-            }
-        }
-
-        private async Task SetDonateButton()
-        {
-            OperationResultVo<Application.ViewModels.PlatformSetting.PlatformSettingViewModel> showDonateButtonResult = await PlatformSettingAppService.GetByElement(CurrentUserId, PlatformSettingElement.ShowDonateButton);
-            if (showDonateButtonResult.Success)
-            {
-                bool showDonateButton = showDonateButtonResult.Value.Value.Equals("1");
-                ViewData["ShowDonateButton"] = showDonateButton;
             }
         }
 

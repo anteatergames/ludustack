@@ -16,6 +16,8 @@ namespace LuduStack.Application.Interfaces
 
         Task<OperationResultVo> Reset(Guid currentUserId, Guid id);
 
+        Task<OperationResultVo> Toggle(Guid currentUserId, PlatformSettingElement element);
+
         Task<OperationResultVo<Guid>> Save(Guid currentUserId, PlatformSettingViewModel viewModel);
     }
 }

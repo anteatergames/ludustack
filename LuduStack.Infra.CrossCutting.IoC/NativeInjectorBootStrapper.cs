@@ -6,6 +6,7 @@ using LuduStack.Domain.Interfaces.Repository;
 using LuduStack.Domain.Interfaces.Services;
 using LuduStack.Domain.Services;
 using LuduStack.Infra.CrossCutting.Abstractions;
+using LuduStack.Infra.CrossCutting.External;
 using LuduStack.Infra.CrossCutting.Messaging;
 using LuduStack.Infra.CrossCutting.Notifications;
 using LuduStack.Infra.Data.Cache;
@@ -209,6 +210,25 @@ namespace LuduStack.Infra.CrossCutting.IoC
 
             #endregion GameIdea
 
+            #region Store
+
+            services.AddScoped<IProductAppService, ProductAppService>();
+            services.AddScoped<IProductRepository, ProductRepository>();
+
+            services.AddScoped<IOrderAppService, OrderAppService>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
+
+            services.AddScoped<IStorePartnershipAppService, StorePartnershipAppService>();
+            services.AddScoped<IStorePartnershipRepository, StorePartnershipRepository>();
+
+            #endregion Store
+
+            #region SystemEvent
+
+            services.AddScoped<ISystemEventRepository, SystemEventRepository>();
+
+            #endregion SystemEvent
+
             #region Common
 
             services.AddScoped<IBaseAppServiceCommon, BaseAppServiceCommon>();
@@ -218,6 +238,7 @@ namespace LuduStack.Infra.CrossCutting.IoC
 
             // Infra
             services.AddTransient<INotificationSender, SendGridSlackNotificationService>();
+            services.AddTransient<IExternalStore, LuduStackGearStore>();
 
             services.AddTransient<IImageStorageService, CloudinaryService>();
 

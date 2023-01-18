@@ -660,5 +660,61 @@
       "wwwroot/js/gameidea/gameideacommon.js",
       "wwwroot/js/gameidea/gameideaedit.js"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/css/product.min.css",
+    "inputFiles": [
+      "wwwroot/css/product.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/product/product.min.js",
+    "inputFiles": [
+      "wwwroot/js/product/productcommon.js",
+      "wwwroot/js/product/product.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/product/productedit.min.js",
+    "inputFiles": [
+      "wwwroot/js/shared/messages.js",
+      "wwwroot/js/common-edit.js",
+      "wwwroot/js/product/productcommon.js",
+      "wwwroot/js/product/productedit.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/order.min.css",
+    "inputFiles": [
+      "wwwroot/css/order.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/order/order.min.js",
+    "inputFiles": [
+      "wwwroot/js/order/ordercommon.js",
+      "wwwroot/js/order/order.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/order/orderedit.min.js",
+    "inputFiles": [
+      "wwwroot/js/common-edit.js",
+      "wwwroot/js/order/ordercommon.js",
+      "wwwroot/js/order/orderedit.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/css/memberstore.min.css",
+    "inputFiles": [
+      "wwwroot/css/memberstore.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/store/memberstore.min.js",
+    "inputFiles": [
+      "wwwroot/js/store/memberstorecommon.js",
+      "wwwroot/js/store/memberstore.js"
+    ]
   }
 ]

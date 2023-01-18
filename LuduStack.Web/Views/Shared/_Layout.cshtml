@@ -26,7 +26,7 @@
     }
 
     string userId = UserManager.GetUserId(User);
-
+    
     var isAdmin = (ViewData["user_is_admin"]?.ToString() ?? "false").ToLower();
     var canInteract = User.Identity.IsAuthenticated;
 
@@ -36,6 +36,10 @@
     var backgroundImage = (string)(ViewData["BackgroundImage"] ?? string.Empty);
 
     var backgroundColor = (string)(ViewData["BackgroundColor"] ?? string.Empty);
+    
+    var showGames = (bool)(ViewData["ShowGames"] ?? false);
+
+    var showIdeaGenerator = (bool)(ViewData["ShowIdeaGenerator"] ?? false);
 
     System.Text.StringBuilder styleSb = null;
 
@@ -169,6 +173,8 @@
     <environment include="Development">
         <script>
             var isAdmin = @isAdmin;
+            var showGames = @showGames.ToString().ToLower();
+            var showIdeaGenerator = @showIdeaGenerator.ToString().ToLower();
         </script>
     </environment>
     <environment include="Production">
@@ -178,6 +184,8 @@
                 console.log("current user is admin");
                 ga('set', 'dimension1', 1);
             }
+            var showGames = @showGames.ToString().ToLower();
+            var showIdeaGenerator = @showIdeaGenerator.ToString().ToLower();
         </script>
     </environment>
 

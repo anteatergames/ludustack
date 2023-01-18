@@ -11,6 +11,7 @@
         selectors.container = '#featurecontainer';
         selectors.containerList = '#containerlist';
         selectors.list = '#divList';
+        selectors.btnToggle = '.btn-toggle';
     }
 
     function cacheObjs() {
@@ -30,10 +31,42 @@
         loadItems(urlList);
 
         PLATFORMSETTINGCOMMON.Callback.ResetEntity = deleteCallback;
+
+        bindAll();
+    }
+
+    function bindAll() {
+        bindToggle();
+    }
+
+    function bindToggle() {
+        console.log("bindToggle");
+        objs.container.on('click', selectors.btnToggle, function (e) {
+            console.log('clicked');
+            e.preventDefault();
+
+            if (MAINMODULE.CanInteract()) {
+                var btn = $(this);
+                var url = btn.attr('href');
+
+                MAINMODULE.Ajax.Post(url, null, null, toggleCallback);
+            }
+
+            return false;
+        });
     }
 
     function loadItems(url) {
         MAINMODULE.Ajax.LoadHtml(url, objs.list);
+    }
+
+    function toggleCallback(response) {
+        if (response.success) {
+            loadItems(urlList);
+        }
+        else {
+            MAINMODULE.Ajax.HandleErrorResponse(response);
+        }
     }
 
     function deleteCallback(response) {

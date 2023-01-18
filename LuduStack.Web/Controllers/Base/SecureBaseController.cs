@@ -30,9 +30,6 @@ namespace LuduStack.Web.Controllers.Base
 {
     public class SecureBaseController : BaseController
     {
-        private IServiceProvider services;
-        public IServiceProvider Services => services ??= HttpContext?.RequestServices.GetService<IServiceProvider>();
-
         private IWebHostEnvironment hostEnvironment;
         public IWebHostEnvironment HostEnvironment => hostEnvironment ??= Services.GetService<IWebHostEnvironment>();
 
@@ -54,10 +51,6 @@ namespace LuduStack.Web.Controllers.Base
         private IUserPreferencesAppService userPreferencesAppService;
 
         public IUserPreferencesAppService UserPreferencesAppService => userPreferencesAppService ??= Services.GetService<IUserPreferencesAppService>();
-
-        private IPlatformSettingAppService platformSettingAppService;
-
-        public IPlatformSettingAppService PlatformSettingAppService => platformSettingAppService ??= Services.GetService<IPlatformSettingAppService>();
 
         public Guid CurrentUserId { get; set; }
 

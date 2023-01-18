@@ -157,7 +157,7 @@
 
             var valid = objs.form.valid();
 
-            if (valid && canInteract && !btn.hasClass('disabled')) {
+            if (valid && canInteract) {
                 savePlans(btn, function (response) {
                     if (response.message) {
                         ALERTSYSTEM.Toastr.ShowWarning(response.message);
@@ -404,6 +404,7 @@
     }
 
     function savePlans(btn, callback) {
+        console.log('savePlans');
         var url = objs.urls.data('urlPlansSave');
 
         var plans = $(selectors.planItem + ':not(.template)');

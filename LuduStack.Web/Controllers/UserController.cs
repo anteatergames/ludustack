@@ -96,7 +96,7 @@ namespace LuduStack.Web.Controllers
                         Id = item.UserId.ToString(),
                         Text = item.Name,
                         Location = item.Location,
-                        CreateDateText = item.CreateDateText.Substring(0, 10),
+                        CreateDateText = item.CreateDateTimeText.Substring(0, 10),
                         ProfileImageUrl = item.ProfileImageUrl,
                         CoverImageUrl = item.CoverImageUrl
                     };

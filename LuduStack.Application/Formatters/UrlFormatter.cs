@@ -1,14 +1,10 @@
 ﻿using CloudinaryDotNet;
+using LuduStack.Application.Helpers;
 using LuduStack.Domain.Core.Enums;
 using LuduStack.Domain.Core.Extensions;
-using Microsoft.Extensions.Options;
 using System;
 using System.Linq;
 using System.Text;
-using LuduStack.Domain.Core;
-using Microsoft.AspNetCore.Http;
-using System.Runtime.CompilerServices;
-using LuduStack.Application.Helpers;
 
 namespace LuduStack.Application.Formatters
 {
@@ -773,11 +769,24 @@ namespace LuduStack.Application.Formatters
             }
         }
 
-        internal static string DiscordProfile(string handler)
+        public static string DiscordProfile(string handler)
         {
             if (!string.IsNullOrWhiteSpace(handler) && !handler.Contains("discord.gg"))
             {
                 return string.Format("https://discord.gg/{0}", handler);
+            }
+            else
+            {
+                handler = CompleteUrlCommon(handler);
+                return handler;
+            }
+        }
+
+        public static string StoreProduct(string handler)
+        {
+            if (!string.IsNullOrWhiteSpace(handler) && !handler.Contains("gear.ludustack.com"))
+            {
+                return string.Format("https://gear.ludustack.com/produtos/{0}/", handler);
             }
             else
             {

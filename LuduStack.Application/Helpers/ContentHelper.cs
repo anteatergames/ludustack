@@ -1,4 +1,4 @@
-﻿using Ganss.XSS;
+﻿using Ganss.Xss;
 using LuduStack.Domain.Core.Enums;
 using System;
 using System.Linq;

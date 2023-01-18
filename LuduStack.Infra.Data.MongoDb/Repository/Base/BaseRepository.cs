@@ -46,6 +46,21 @@ namespace LuduStack.Infra.Data.MongoDb.Repository.Base
             DbSet.InsertOneAsync(obj);
         }
 
+        public virtual async Task AddManyAsync(List<TEntity> list)
+        {
+            await AddManyAsync(list, true);
+        }
+
+        public virtual async Task AddManyAsync(List<TEntity> list, bool isOrdered)
+        {
+            //foreach (var obj in list)
+            //{
+            //    SetDefaultDates(obj);
+            //}
+
+            await DbSet.InsertManyAsync(list, new InsertManyOptions { IsOrdered = isOrdered });
+        }
+
         public virtual async Task<TEntity> GetById(Guid id)
         {
             IAsyncCursor<TEntity> data = await DbSet.FindAsync(Builders<TEntity>.Filter.Eq("_id", id));
@@ -76,6 +91,13 @@ namespace LuduStack.Infra.Data.MongoDb.Repository.Base
             long count = DbSet.CountDocuments(where);
 
             return (int)count;
+        }
+
+        public virtual bool Exists(Expression<Func<TEntity, bool>> where)
+        {
+            bool exists = DbSet.Find(where).Limit(1).Any();
+
+            return exists;
         }
 
         public virtual async Task<IEnumerable<TEntity>> GetAll()
@@ -118,6 +140,13 @@ namespace LuduStack.Infra.Data.MongoDb.Repository.Base
         public IQueryable<TEntity> Get()
         {
             IMongoQueryable<TEntity> result = DbSet.AsQueryable();
+
+            return result;
+        }
+
+        public IQueryable<TEntity> GetAggregate()
+        {
+            IMongoQueryable<TEntity> result = DbSet.AsQueryable(new AggregateOptions { AllowDiskUse = true });
 
             return result;
         }

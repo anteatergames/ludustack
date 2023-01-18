@@ -1,0 +1,64 @@
+﻿@model OperationResultListVo<ProductViewModel>
+
+@{
+    var canInteract = User.Identity.IsAuthenticated;
+
+    Layout = null;
+
+    var noItemsModel = new ListNoItemsViewModel("fas fa-dizzy", "You have no products on the store!");
+
+    var description = ViewData["ListDescription"] == null ? SharedLocalizer["My Products"] : (string)ViewData["ListDescription"];
+}
+
+<div class="bg-light pt-2 pb-3">
+    <div class="col-12">
+        <h2>@SharedLocalizer[description]<span class="float-right">@Model.Value.Count()</span></h2>
+    </div>
+
+    @if (!Model.Value.Any())
+    {
+        <partial name="_ListNoItems" model="noItemsModel" />
+    }
+    else
+    {
+        <div class="col-12 bg-white rounded-0 table-responsive pb-1">
+            <table class="table table-hover">
+                <caption class="sr-only">@SharedLocalizer["The available Products."]</caption>
+                <thead>
+                    <tr class="text-capitalize">
+                        <th scope="col">@SharedLocalizer["SKU"]</th>
+                        <th scope="col">@SharedLocalizer["Name"]</th>
+                        <th scope="col">@SharedLocalizer["Owner"]</th>
+
+                        <th scope="col" class="text-right text-wrap" style="width:1px">@SharedLocalizer["actions"]</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Value)
+                    {
+                        var owner = item.Owners.Count == 1 ? "Me" : String.Format("Me and {0}", item.Owners.Count - 1);
+
+                        <tr class="row-clickable">
+                            <td class="col-1"><span>@item.Code</span></td>
+                            <td class="col text-nowrap"><span>@item.Name</span></td>
+                            <td class="col text-nowrap"><span>@owner</span></td>
+
+                            <td class="text-right">
+                                @if (canInteract)
+                                {
+                                    <div class="btn-group  text-capitalize" role="group">
+                                        <a asp-area="member" asp-controller="store" asp-action="productview" asp-route-id="@item.Id" class="btn btn-sm btn-outline-info my-1"><span class="text-nowrap"><i class="fas fa-fw fa-eye" aria-hidden="true"></i> @SharedLocalizer["view"]</span></a>
+                                        @if (!string.IsNullOrWhiteSpace(item.StoreUrl))
+                                        {
+                                            <a class="btn btn-sm btn-outline-success my-1" href="@item.StoreUrl" target="_blank"><span class="text-nowrap"><i class="fas fa-fw fa-shopping-bag" aria-hidden="true"></i> @SharedLocalizer["visit"]</span></a>
+                                        }
+                                    </div>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

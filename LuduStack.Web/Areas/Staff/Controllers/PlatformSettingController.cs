@@ -38,7 +38,7 @@ namespace LuduStack.Web.Areas.Staff.Controllers
             {
                 OperationResultListVo<PlatformSettingViewModel> castResult = serviceResult as OperationResultListVo<PlatformSettingViewModel>;
 
-                model = castResult.Value.ToList();
+                model = castResult.Value.OrderBy(x => (int)x.Type).ToList();
             }
             else
             {
@@ -67,6 +67,21 @@ namespace LuduStack.Web.Areas.Staff.Controllers
             viewModel = castResult.Value;
 
             return View("CreateEditWrapper", viewModel);
+        }
+
+        [HttpPost("toggle/{element}")]
+        public async Task<JsonResult> Toggle(PlatformSettingElement element)
+        {
+            try
+            {
+                OperationResultVo serviceResult = await platformSettingAppService.Toggle(CurrentUserId, element);
+
+                return Json(serviceResult);
+            }
+            catch (Exception ex)
+            {
+                return Json(new OperationResultVo(ex.Message));
+            }
         }
 
         [HttpPost("save")]

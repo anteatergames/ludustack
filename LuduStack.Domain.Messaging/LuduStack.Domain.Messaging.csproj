@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
@@ -9,6 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\LuduStack.Infra.CrossCutting.Abstractions\LuduStack.Infra.CrossCutting.Abstractions.csproj" />
     <ProjectReference Include="..\LuduStack.Infra.CrossCutting.Messaging\LuduStack.Infra.CrossCutting.Messaging.csproj" />
   </ItemGroup>
 

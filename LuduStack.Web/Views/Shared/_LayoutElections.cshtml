@@ -1,0 +1,426 @@
+﻿@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@using LuduStack.Domain.Core
+@using Microsoft.Extensions.Options
+@using Microsoft.AspNetCore.Http.Features
+
+@inject IOptions<ConfigOptions> ConfigOptions
+
+@removeTagHelper Microsoft.AspNetCore.Mvc.Razor.TagHelpers.BodyTagHelper, Microsoft.AspNetCore.Mvc.Razor
+
+@{
+    var childTitle = ViewData["Title"]?.ToString();
+    var title = string.IsNullOrWhiteSpace(childTitle) || childTitle.Equals(Constants.DefaultTitle) ? Constants.DefaultTitle : ViewData["Title"].ToString();
+
+    if (title.Length <= 5)
+    {
+        title = string.Format("{0} - {1}", title, Constants.DefaultTitle);
+    }
+    else if (title.Length < 20)
+    {
+        title = string.Format("{0} | {1}", title, Constants.SiteName);
+    }
+    else if (title.Length > 50)
+    {
+        title = title.Replace(Constants.DefaultTitle, Constants.SiteName);
+    }
+
+    string userId = UserManager.GetUserId(User);
+
+    var isAdmin = (ViewData["user_is_admin"]?.ToString() ?? "false").ToLower();
+    var canInteract = User.Identity.IsAuthenticated;
+
+    var consentFeature = Context.Features.Get<ITrackingConsentFeature>();
+    var showCookieBanner = !consentFeature?.CanTrack ?? false;
+
+    var backgroundImage = (string)(ViewData["BackgroundImage"] ?? string.Empty);
+
+    var backgroundColor = (string)(ViewData["BackgroundColor"] ?? string.Empty);
+
+    System.Text.StringBuilder styleSb = null;
+
+    if (!string.IsNullOrWhiteSpace(backgroundImage) || !string.IsNullOrWhiteSpace(backgroundColor))
+    {
+        styleSb = new System.Text.StringBuilder();
+
+        styleSb.Append("style=");
+        if (!string.IsNullOrWhiteSpace(backgroundImage))
+        {
+            styleSb.Append($"background-image:url({Html.Raw(backgroundImage)});background-repeat:repeat;");
+        }
+        if (!string.IsNullOrWhiteSpace(backgroundColor))
+        {
+            styleSb.Append($"background-color:{Html.Raw(backgroundColor)};");
+        }
+    }
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head prefix="og: http://ogp.me/ns#">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="@(ViewData["Description"] ?? Constants.DefaultDescription)">
+    <meta name="keywords" content="indie game, indie game developers, development, game development, article, social networking, international collaboration" />
+    <meta name="author" content="Anteater Games">
+    <link rel="apple-touch-icon" sizes="180x180" href="~/images/icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="~/images/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="~/images/icons/favicon-16x16.png">
+    <link rel="manifest" href="~/manifest.json">
+    <link rel="mask-icon" href="~/images/icons/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#603cba">
+    <meta name="theme-color" content="#ffffff">
+
+    <meta property="fb:app_id" content="@ConfigOptions.Value.FacebookAppId" />
+
+    <meta property="og:title" content="@title">
+    <meta property="og:description" content="@(ViewData["Description"] ?? Constants.DefaultDescription)">
+    <meta property="og:url" content="@(ViewData["Url"] ?? "https://www.ludustack.com")">
+    <meta property="og:image" content="@(ViewData["OgImage"] ?? "https://www.ludustack.com/images/og/img_facebook600x315.png")">
+    <meta property="og:image:width" content="@(ViewData["OgImageWidth"] ?? 600)">
+    <meta property="og:image:height" content="@(ViewData["OgImageHeight"] ?? 315)">
+    <meta property="og:image" content="https://www.ludustack.com/images/og/img_facebook2.png">
+    <meta property="og:image:width" content="600">
+    <meta property="og:image:height" content="315">
+    <meta property="og:image" content="https://www.ludustack.com/images/og/logo512.png">
+    <meta property="og:image:width" content="512">
+    <meta property="og:image:height" content="512">
+    <meta property="og:type" content="@(ViewData["OgType"] ?? Constants.DefaultOgType)" />
+    @RenderSection("OpenGraphMeta", required: false)
+
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://img.youtube.com">
+    <link rel="preconnect" href="https://connect.facebook.net">
+    <link rel="preconnect" href="https://www.googletagmanager.com">
+
+    @if (ViewData["CanonicalUrl"] != null)
+    {
+        <link rel="canonical" href="@ViewData["CanonicalUrl"]" />
+    }
+    <link rel="alternate" href="https://www.ludustack.com/?culture=pt-BR" hreflang="pt-br" />
+    <link rel="alternate" href="https://www.ludustack.com/?culture=en" hreflang="en" />
+    <link rel="alternate" href="https://www.ludustack.com/?culture=ru" hreflang="ru" />
+
+    <title>@title</title>
+
+    <environment include="Development">
+        <link rel="stylesheet" href="~/lib/twitter-bootstrap/css/bootstrap.css">
+        <link rel="stylesheet" href="~/lib/font-awesome/css/all.css">
+        <link rel="stylesheet" href="~/lib/pace/themes/white/pace-theme-minimal.css">
+        @RenderSection("ComponentStyles", required: false)
+        <link rel="stylesheet" href="~/css/skins/ludustack-skin.css">
+        <link rel="stylesheet" href="~/css/bootstrap_overrides.css">
+        <link rel="stylesheet" href="~/css/main.css">
+        <link rel="stylesheet" href="~/css/master_style.css">
+        <link rel="stylesheet" href="~/css/animations.css">
+        <link rel="stylesheet" href="~/css/box.css">
+        <link rel="stylesheet" href="~/css/typography.css">
+        <link rel="stylesheet" href="~/css/social.css">
+        <link rel="stylesheet" href="~/thirdparty/tinyDrawyer/css/tinyDrawer.css">
+        <link rel="stylesheet" href="~/css/sidebar.css">
+        <link rel="stylesheet" href="~/css/userwidgets.css">
+        @RenderSection("Styles", required: false)
+        <link rel="stylesheet" href="~/css/gameidea.css" as="style">
+    </environment>
+    <environment exclude="Development">
+        <link rel="preload stylesheet" as="style"
+              href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.0/css/bootstrap.min.css"
+              asp-fallback-href="~/lib/twitter-bootstrap/css/bootstrap.min.css"
+              asp-fallback-test-class="sr-only"
+              asp-fallback-test-property="position"
+              asp-fallback-test-value="absolute"
+              integrity="sha256-/ykJw/wDxMa0AQhHDYfuMEwVb4JHMx9h4jD4XvHqVzU=" crossorigin="anonymous">
+
+        <link rel="preload stylesheet" as="style"
+              href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+              asp-fallback-href="~/lib/font-awesome/css/all.min.css"
+              asp-fallback-test-class="fa"
+              asp-fallback-test-property="display"
+              asp-fallback-test-value="inline-block"
+              integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
+              crossorigin="anonymous" />
+        <noscript><link rel="stylesheet" href="~/lib/font-awesome/css/all.min.css"></noscript>
+
+        <link rel="preload stylesheet" as="style"
+              onload="this.onload=null;this.rel='stylesheet'"
+              href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/themes/white/pace-theme-minimal.min.css"
+              asp-fallback-href="~/lib/pace/themes/white/pace-theme-minimal.min.css"
+              asp-fallback-test-class="pace"
+              asp-fallback-test-property="pointer-events"
+              asp-fallback-test-value="none"
+              integrity="sha256-E35gzLnIxEQ1I4i28fiuAR/kqvLZLqcCqvpefyJqjZs="
+              crossorigin="anonymous" />
+        <noscript><link rel="stylesheet" href="~/lib/pace/themes/white/pace-theme-minimal.min.css"></noscript>
+
+        <link rel="stylesheet" href="~/thirdparty/tinyDrawyer/css/tinyDrawer.min.css">
+        @RenderSection("ComponentStyles", required: false)
+        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true">
+        @RenderSection("Styles", required: false)
+    </environment>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js" integrity="sha512-UDJtJXfzfsiPPgnI5S1000FPLBHMhvzAMX15I+qG2E2OAzC9P1JzUwJOfnypXiOH7MRPaqzhPbBGDNNj7zBfoA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js" integrity="sha512-qWVvreMuH9i0DrugcOtifxdtZVBBL0X75r9YweXsdCHtXUidlctw7NXg5KVP3ITPtqZ2S575A0wFkvgS2anqSA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <![endif]-->
+
+    <environment include="Development">
+        <script>
+            var isAdmin = @isAdmin;
+        </script>
+    </environment>
+    <environment include="Production">
+        <script>
+            var isAdmin = @isAdmin;
+            if (isAdmin === 'true') {
+                console.log("current user is admin");
+                ga('set', 'dimension1', 1);
+            }
+        </script>
+    </environment>
+
+    @await Html.PartialAsync("_TagManagerHead")
+</head>
+<body class="hold-transition skin-ludustack sidebar-mini" @(styleSb == null ? string.Empty : styleSb.ToString())>
+    <div data-device="xs" class="bootstrapbreakpointdetector device-xs d-block d-sm-none "></div>
+    <div data-device="sm" class="bootstrapbreakpointdetector device-sm d-none d-sm-block d-md-none"></div>
+    <div data-device="md" class="bootstrapbreakpointdetector device-md d-none d-md-block d-lg-none"></div>
+    <div data-device="lg" class="bootstrapbreakpointdetector device-lg d-none d-lg-block d-xl-none"></div>
+    <div data-device="xl" class="bootstrapbreakpointdetector device-xl d-none d-xl-block"></div>
+
+    <input type="hidden" id="caninteract" value="@canInteract.ToString().ToLower()" />
+    <input type="hidden" id="locale" value="@ViewData["Locale"]" />
+    @await Html.PartialAsync("_TagManagerBody")
+    <div id="translatedJavascriptMessages" class="d-none">
+        <span class="msg" data-msg-id="msgNeedLoginToLikeAndComment">@SharedLocalizer["You need to be logged in to be able to Like and Comment on posts."]</span>
+        <span class="msg" data-msg-id="msgNotImplementedYet">@SharedLocalizer["Keep calm! This is not implemented yet!"]</span>
+        <span class="msg" data-msg-id="mgsPointsEarned">@SharedLocalizer["You earned 0 points. Awesome!"]</span>
+        @RenderSection("TranslatedMessages", required: false)
+    </div>
+
+    @if (TempData["Message"] != null)
+    {
+        var isModal = TempData["MessageModal"] != null ? (TempData["MessageModal"]).ToString().ToLower() : "false";
+        var pointsMessage = TempData["MessagePoints"] != null ? (TempData["MessagePoints"]).ToString() : string.Empty;
+
+        <span id="spanMessage" class="d-none" data-ismodal="@isModal" data-pointsmessage="@pointsMessage">@TempData["Message"]</span>
+    }
+
+    <div class="wrapper">
+        @*<header class="main-header">
+            <a asp-area="" asp-controller="home" asp-action="index" class="logo d-none d-md-block">
+                <span class="logo-mini">
+                    <img src="~/images/icon30h.png" alt="LUDUSTACK">
+                </span>
+                <div class="logo-lg">
+                    <img src="~/images/logomain.png" alt="LUDUSTACK">
+                </div>
+            </a>
+            <nav class="navbar navbar-static-top">
+                <a href="#" data-drawer-open class="btn-open sidebar-toggle" role="button">
+                    <i class="fas fa-bars" aria-hidden="true"></i>
+                    <span class="sr-only">Toggle navigation</span>
+                </a>
+                <a asp-area="" asp-controller="home" asp-action="index" class="d-md-none">
+                    <span class="logo-lg"><img src="~/images/logomain.png" alt="LUDUSTACK"></span>
+                </a>
+                <div id="divHeaderSearch" class="col d-none d-md-block">
+                    <form asp-controller="search" asp-action="index" method="get" class="search-form">
+                        <div class="input-group">
+                            <input type="text" name="q" aria-label="@SharedLocalizer["Search"]" class="form-control" placeholder="@SharedLocalizer["Search"]...">
+                            <div class="input-group-append">
+                                <button class="input-group-text" id="btn-search" aria-label="Search Button">
+                                    <i class="fa fa-search" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="navbar-custom-menu">
+                    <ul class="nav navbar-nav">
+
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            <li id="notificationsMenu" class="dropdown notifications-menu">
+                            </li>
+                            <li>
+                                <a aria-label="@SharedLocalizer["Open Sidebar"]" href="#" data-toggle="control-sidebar"><i class="fa fa-asterisk" aria-hidden="true"></i></a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </nav>
+        </header>
+
+        <drawer-menu class="menu">
+            <aside class="main-sidebar" aria-label="Sidebar">
+                <section class="sidebar">
+                    <div class="user-panel">
+                        @await Html.PartialAsync("_UserPanelPartial")
+                    </div>
+                    @await Html.PartialAsync("_SidebarMenuPartial")
+                </section>
+            </aside>
+        </drawer-menu>*@
+        <div id="contentwrapper" class="content-wrapper" style="margin-top:0 !important;">
+            @RenderBody()
+        </div>
+
+        <aside class="control-sidebar control-sidebar-dark" aria-label="ControlSidebar">
+            @if (SignInManager.IsSignedIn(User))
+            {
+
+                @if (User.IsInRole(Roles.Administrator.ToString()))
+                {
+                    <div class="col-12 mb-2">
+                        <span class="h4">@SharedLocalizer["Staff Actions"]</span>
+                    </div>
+                    <div class="col-12 mb-2">
+                        <a asp-area="staff" asp-controller="superpowers" asp-action="index" class="btn bg-transparent btn-block btn-outline-danger">
+                            <i class="fa fa-star" aria-hidden="true">&nbsp;</i>@SharedLocalizer["Staff Area"]
+                        </a>
+                    </div>
+                }
+
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <div class="col-12 mb-2">
+                        <span class="h4">@SharedLocalizer["Member Actions"]</span>
+                    </div>
+                    <div class="col-12 mb-2">
+                        <a asp-area="member" asp-controller="memberpowers" asp-action="index" class="btn bg-transparent btn-block btn-outline-warning">
+                            <i class="fa fa-star-o" aria-hidden="true">&nbsp;</i>@SharedLocalizer["Member Area"]
+                        </a>
+                    </div>
+                }
+
+                <div class="col-12 mb-2">
+                    @if (ViewData["ControlSidebarTitle"] != null)
+                    {
+                        if (ViewData["ControlSidebarUrl"] != null)
+                        {
+                            <a href="@ViewData["ControlSidebarUrl"]">
+                                <span>@ViewData["ControlSidebarTitle"]</span>
+                            </a>
+                        }
+                        else
+                        {
+                            <span>@ViewData["ControlSidebarTitle"]</span>
+                        }
+                    }
+
+                    @RenderSection("ControlSideBar", required: false)
+                </div>
+                <div class="col-12 mb-2">
+                    <span class="h4">@SharedLocalizer["Quick Actions"]</span>
+                </div>
+
+                <div class="col-12 mb-2">
+                    <a asp-area="" asp-controller="brainstorm" asp-action="newidea" class="btn btn-default bg-transparent btn-block" data-toggle="tooltip" data-title="@SharedLocalizer["Suggest new features to the LuduStack team. Tell us your best ideas!"]">@SharedLocalizer["New Suggestion"]</a>
+                </div>
+                <div class="col-12 mb-2">
+                    <a asp-area="" asp-controller="game" asp-action="add" class="btn btn-default bg-transparent btn-block" data-toggle="tooltip" data-title="@SharedLocalizer["Add your game to the platform."]">@SharedLocalizer["Add Game"]</a>
+                </div>
+                <div class="col-12 mb-2">
+                    <a asp-area="" asp-controller="content" asp-action="add" class="btn btn-default bg-transparent btn-block" data-toggle="tooltip" data-title="@SharedLocalizer["Post quality content to the platform."]">@SharedLocalizer["Post Content"]</a>
+                </div>
+            }
+        </aside>
+
+        <div class="control-sidebar-bg"></div>
+    </div>
+
+    <!--[if lt IE 11]>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/promise-polyfill/8.1.3/polyfill.min.js" integrity="sha512-jVOsf4v+eYZr+IkABBHh0mBbBn4BZn6t0W6yah9aKXgHK0tw++HH2yX8XObYImtg+B2Cytx/X3fFkiPums57BQ==" crossorigin="anonymous"></script>
+    <![endif]-->
+
+    <environment include="Development">
+        <script src="~/thirdparty/tinyDrawyer/js/tinyDrawer.js"></script>
+        <script src="~/lib/jquery/jquery.js"></script>
+        <script src="~/lib/jquery.sticky/jquery.sticky.min.js"></script>
+        <script src="~/lib/popper.js/umd/popper.js"></script>
+        <script src="~/lib/twitter-bootstrap/js/bootstrap.js"></script>
+        <script src="~/lib/pace/pace.js"></script>
+        <script src="~/lib/fastclick/fastclick.js"></script>
+        <script src="~/lib/limonte-sweetalert/sweetalert2.all.js"></script>
+
+        <script src="~/lib/lazysizes/lazysizes.js" async></script>
+        <script src="~/lib/lazysizes/plugins/blur-up/ls.blur-up.js" async></script>
+
+        <script src="~/js/vanilla.extensions.js" defer></script>
+        <script src="~/js/jquery.extensions.js" defer></script>
+        <script src="~/js/template.js" defer></script>
+        <script src="~/js/shared/alertsystem.js" defer></script>
+        <script src="~/js/main.js" defer></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/thirdparty/tinyDrawyer/js/tinyDrawer.min.js"></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+                asp-fallback-src="~/lib/jquery/jquery.min.js"
+                asp-fallback-test="window.jQuery"
+                integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
+                crossorigin="anonymous">
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.sticky/1.0.4/jquery.sticky.min.js"
+                asp-fallback-src="~/lib/jquery.sticky/jquery.sticky.min.js"
+                asp-fallback-test="window.jQuery"
+                integrity="sha384-f6WCX7JLO6ay45iRtjFII0kYlM1G+BB9mxCkCLU5P3zR6lDo819vCP+ER+ORuOJj"
+                crossorigin="anonymous">
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"
+                asp-fallback-src="~/lib/popper.js/umd/popper.min.js"
+                asp-fallback-test="window.Popper"
+                integrity="sha256-/ijcOLwFf26xEYAjW75FizKVo5tnTYiQddPZoLUHHZ8="
+                crossorigin="anonymous">
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.0/js/bootstrap.min.js"
+                asp-fallback-src="~/lib/twitter-bootstrap/js/bootstrap.min.js"
+                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+                integrity="sha256-oKpAiD7qu3bXrWRVxnXLV1h7FlNV+p5YJBIr8LOCFYw="
+                crossorigin="anonymous">
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/pace.min.js"
+                asp-fallback-src="~/lib/pace/pace.min.js"
+                asp-fallback-test="window.Pace"
+                integrity="sha384-5DyzDgtTHw1bbnR1u2aQPxi5+e1KVPsygV5Pioo5W+5ua3sN5AHF05kzM0QfXXqm"
+                crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js"
+                asp-fallback-src="~/lib/fastclick/fastclick.min.js"
+                asp-fallback-test="window.FastClick"
+                integrity="sha256-t6SrqvTQmKoGgi5LOl0AUy+lBRtIvEJ+++pLAsfAjWs="
+                crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/8.11.8/sweetalert2.all.min.js"
+                asp-fallback-src="~/lib/limonte-sweetalert/sweetalert2.all.min.js"
+                asp-fallback-test="window.swal"
+                integrity="sha256-2RS1U6UNZdLS0Bc9z2vsvV4yLIbJNKxyA4mrx5uossk="
+                crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.2.2/lazysizes.min.js"
+                integrity="sha256-+2SfyuYhd9/mPmcIHdzrgwtc4fBaQYTpu7fYesS49OU="
+                crossorigin="anonymous">
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.2.2/plugins/blur-up/ls.blur-up.min.js"
+                integrity="sha256-k3/42TDORKROMX/o7y1d5YMWTMsaCMLLAstACEPWVmo="
+                crossorigin="anonymous" async>
+        </script>
+
+        <script src="~/js/site.min.js" asp-append-version="true" defer></script>
+    </environment>
+
+    <script>
+        tinyDrawer();
+    </script>
+
+    @await Html.PartialAsync("_FacebookSdk")
+
+    @RenderSection("Scripts", required: false)
+
+    @if (showCookieBanner)
+    {
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent/3.1.1/cookieconsent.min.css" integrity="sha512-LQ97camar/lOliT/MqjcQs5kWgy6Qz/cCRzzRzUCfv0fotsCTC9ZHXaPQmJV8Xu/PVALfJZ7BDezl5lW3/qBxg==" crossorigin="anonymous" />
+        <partial name="_CookieConsentPartial" model="consentFeature" />
+    }
+</body>
+</html>

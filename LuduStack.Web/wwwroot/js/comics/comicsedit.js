@@ -185,7 +185,7 @@
     }
 
     function bindDateTimePickers() {
-        var defaultLocale = MAINMODULE.GetLocale() || window.navigator.userLanguage || window.navigator.language;
+        var defaultLocale = MAINMODULE.GetLocale();
 
         var locale = moment.locale(defaultLocale);
 

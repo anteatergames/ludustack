@@ -13,6 +13,10 @@ namespace LuduStack.Domain.Interfaces
 
         void AddDirectly(TEntity obj);
 
+        Task AddManyAsync(List<TEntity> list);
+
+        Task AddManyAsync(List<TEntity> list, bool isOrdered);
+
         Task<TEntity> GetById(Guid id);
 
         Task<IEnumerable<TEntity>> GetByUserId(Guid id);
@@ -23,7 +27,11 @@ namespace LuduStack.Domain.Interfaces
 
         int CountDirectly(Expression<Func<TEntity, bool>> where);
 
+        bool Exists(Expression<Func<TEntity, bool>> where);
+
         IQueryable<TEntity> Get();
+
+        IQueryable<TEntity> GetAggregate();
 
         IQueryable<TEntity> Get(Expression<Func<TEntity, bool>> where);
 

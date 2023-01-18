@@ -47,7 +47,14 @@
                                 @if (canInteract)
                                 {
                                     <div class="btn-group  text-capitalize" role="group">
-                                        <a asp-area="staff" asp-controller="platformsetting" asp-action="edit" asp-route-element="@item.Element" class="btn btn-sm btn-outline-info my-1"><span class="text-nowrap"><i class="fas fa-fw fa-edit" aria-hidden="true"></i> @SharedLocalizer["edit"]</span></a>
+                                        @if (item.Type == PlatformSettingType.Boolean)
+                                        {
+                                            <a asp-area="staff" asp-controller="platformsetting" asp-action="toggle" asp-route-element="@item.Element" class="btn btn-sm btn-outline-info my-1 btn-toggle"><span class="text-nowrap"><i class="fas fa-fw fa-toggle-on" aria-hidden="true"></i> @SharedLocalizer["toggle"]</span></a>
+                                        }
+                                        else
+                                        {
+                                            <a asp-area="staff" asp-controller="platformsetting" asp-action="edit" asp-route-element="@item.Element" class="btn btn-sm btn-outline-info my-1"><span class="text-nowrap"><i class="fas fa-fw fa-edit" aria-hidden="true"></i> @SharedLocalizer["edit"]</span></a>
+                                        }
                                         <button class="btn btn-sm btn-outline-info dropdown-toggle my-1" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
                                         <div class="dropdown-menu dropdown-menu-right btn-sm p-1" aria-labelledby="dropdownMenuButton" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(-30px, 38px, 0px);">
                                             <a class="dropdown-item btn-trash py-2@(item.Saved ? " text-danger btn-entity-reset" : " text-muted disabled")" href="#" data-url="@Url.Action("reset", "platformsetting", new { area = "staff", id = item.Id })" data-confirmationmessage="@SharedLocalizer["Are you sure you want to reset this Setting to its default value?"]" data-confirmationtitle="@SharedLocalizer["Are you sure?"]" data-confirmationbuttontext="@SharedLocalizer["Yes, do it!"]" data-cancelbuttontext="@SharedLocalizer["Cancel"]"><i class="fas fa-fw fa-trash-alt" aria-hidden="true"></i> @SharedLocalizer["reset"]</a>

@@ -138,7 +138,6 @@
     }
 
     function handlePointsEarned(response) {
-        console.log(response);
         if (response.pointsEarned > 0) {
             var msg = translatedMessages['mgsPointsEarned'];
             msg = msg.replace('0', response.pointsEarned);
@@ -407,7 +406,7 @@
                     callback(response);
                 }
 
-                if (options !== undefined && options.showSuccessMessage === true) {
+                if (!!options && options.showSuccessMessage === true) {
                     ALERTSYSTEM.ShowSuccessMessage(response.message, function () {
                         MAINMODULE.Ajax.HandleUrlResponse(response);
                     });
@@ -447,8 +446,8 @@
         }
     }
 
-    function postWithConfirmation(btn, callback) {
-        ajaxSendWithConfirmation(btn, 'POST', callback);
+    function postWithConfirmation(btn, callback, precall) {
+        ajaxSendWithConfirmation(btn, 'POST', callback, precall);
     }
 
     function postWithoutConfirmation(btn, httpmethod, callback) {
@@ -475,16 +474,22 @@
         });
     }
 
-    function ajaxSendWithConfirmation(btn, httpmethod, callback) {
+    function ajaxSendWithConfirmation(btn, httpmethod, callback, precall) {
         var url = btn.data('url');
 
         var msgs = MAINMODULE.Common.GetPostConfirmationMessages(btn);
 
         ALERTSYSTEM.ShowConfirmMessage(msgs.confirmationTitle, msgs.msg, msgs.confirmationButtonText, msgs.cancelButtonText, function () {
+
+            if (precall) {
+                precall();
+            }
+
             $.ajax({
                 url: url,
                 type: httpmethod
             }).done(function (response) {
+                console.log(response);
                 if (response.success) {
                     MAINMODULE.Common.HandleSuccessDefault(response, null, function (response2) {
                         callback(response2, btn);
@@ -502,7 +507,20 @@
             objs.locale = $(selectors.locale);
         }
 
-        return objs.locale.val();
+        return objs.locale.val() || window.navigator.userLanguage || window.navigator.language;
+    }
+
+    function toLocaleNumber(numberValue, decimalPlaces) {
+        // this is causing build error. Need to be investigated
+        //    var options = { minimumFractionDigits: (decimalPlaces ?? 2) };
+
+        //    var locale = MAINMODULE.GetLocale();
+        //    console.log(locale);
+
+        //    var result = numberValue.toLocaleString(locale, options);
+
+        //    return result;
+        return numberValue
     }
 
     function getSelectedFileUrl(files, done) {
@@ -623,7 +641,8 @@
             DataURItoBlob: dataURItoBlob,
             GetSelectedFileUrl: getSelectedFileUrl,
             ScrollTo: scrollTo,
-            ScrollToTop: scrollToTop
+            ScrollToTop: scrollToTop,
+            ToLocaleNumber: toLocaleNumber,
         }
     };
 }());
