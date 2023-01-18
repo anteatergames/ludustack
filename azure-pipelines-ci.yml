@@ -32,7 +32,7 @@ steps:
         gitHubServiceConnection: 'github.com_programad'
         configPath: '.releaserc'
         cwd: '$(Build.Repository.LocalPath)'
-        versionOverwrite: 'semantic-release'
+        versionOverwrite: 'semantic-release@15'
 
     - task: gittagloader@1
       inputs:
