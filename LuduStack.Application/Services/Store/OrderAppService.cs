@@ -114,7 +114,7 @@ namespace LuduStack.Application.Services
 
                 if (!result.Validation.IsValid)
                 {
-                    string message = result.Validation.Errors.FirstOrDefault().ErrorMessage;
+                    string message = result.Validation.Errors.FirstOrDefault()?.ErrorMessage;
                     return new OperationResultVo<Guid>(model.Id, false, message);
                 }
 
@@ -134,7 +134,7 @@ namespace LuduStack.Application.Services
 
                 if (!result.Validation.IsValid)
                 {
-                    string message = result.Validation.Errors.FirstOrDefault().ErrorMessage;
+                    string message = result.Validation.Errors.FirstOrDefault()?.ErrorMessage;
                     return new OperationResultVo(false, message);
                 }
 
