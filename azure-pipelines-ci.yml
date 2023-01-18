@@ -21,12 +21,18 @@ variables:
   isMain: $[eq(variables['Build.SourceBranch'], 'refs/heads/master')]
 
 steps:
+    - task: NodeTool@0
+      inputs:
+        versionSource: 'spec'
+        versionSpec: '10.x'
+        checkLatest: true
     - task: freestyle@0
       displayName: Semantic Release
       inputs:
-        gitHubServiceConnection: 'githubindievisible'
+        gitHubServiceConnection: 'github.com_programad'
         configPath: '.releaserc'
         cwd: '$(Build.Repository.LocalPath)'
+        versionOverwrite: 'semantic-release@15'
 
     - task: gittagloader@1
       inputs:
