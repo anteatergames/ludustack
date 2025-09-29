@@ -44,20 +44,20 @@ namespace LuduStack.Web.Controllers.Base
         private void SetPlatformSettings()
         {
             PlatformSettingViewModel showDonateButton = PlatformSettingAppService.GetByElement(Guid.Empty, PlatformSettingElement.ShowDonateButton).Result.Value;
-            ViewData["ShowDonateButton"] = showDonateButton.Value.Equals("1") ? true : false;
+            ViewData["ShowDonateButton"] = showDonateButton?.Value.Equals("1") ?? false;
 
             PlatformSettingViewModel showIdeaGenerator = PlatformSettingAppService.GetByElement(Guid.Empty, PlatformSettingElement.ShowHomePageIdeaGenerator).Result.Value;
-            ViewData["ShowIdeaGenerator"] = showIdeaGenerator.Value.Equals("1") ? true : false;
+            ViewData["ShowIdeaGenerator"] = showIdeaGenerator?.Value.Equals("1") ?? false;
 
             PlatformSettingViewModel showStore = PlatformSettingAppService.GetByElement(Guid.Empty, PlatformSettingElement.ShowStore).Result.Value;
-            ViewData["ShowStore"] = showStore.Value.Equals("1") ? true : false;
+            ViewData["ShowStore"] = showStore?.Value.Equals("1") ?? false;
 
             PlatformSettingViewModel showGames = PlatformSettingAppService.GetByElement(Guid.Empty, PlatformSettingElement.ShowGames).Result.Value;
-            ViewData["ShowGames"] = showGames.Value.Equals("1") ? true : false;
+            ViewData["ShowGames"] = showGames?.Value.Equals("1") ?? false;
 
-            ViewData["FacebookUrl"] = PlatformSettingAppService.GetByElement(Guid.Empty, PlatformSettingElement.FacebookUrl).Result.Value.Value;
+            ViewData["FacebookUrl"] = ""; //PlatformSettingAppService?.GetByElement(Guid.Empty, PlatformSettingElement.FacebookUrl).Result?.Value?.Value ?? "";
 
-            ViewData["DiscordUrl"] = PlatformSettingAppService.GetByElement(Guid.Empty, PlatformSettingElement.DiscordUrl).Result.Value.Value;
+            ViewData["DiscordUrl"] = ""; //PlatformSettingAppService?.GetByElement(Guid.Empty, PlatformSettingElement.DiscordUrl).Result?.Value?.Value ?? "";
         }
 
         protected string GetBaseUrl()

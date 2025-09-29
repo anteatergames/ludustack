@@ -1,20 +1,34 @@
-version: "3.4"
+version: "3.8"
+
 services:
-    ludustack-db:
-        image: mongo:latest
-        container_name: ludustack-db
-        hostname: ludustack-db
-        env_file:
-            - .env
-        environment:
-            MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
-            MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
-            MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE}
-            MONGO_REPLICA_SET_NAME: ${MONGO_REPLICA_SET_NAME}
-        ports:
-            - "27017:27017"
-        healthcheck:
-          test: test $$(echo "rs.initiate().ok || rs.status().ok" | mongo -u $${MONGO_INITDB_ROOT_USERNAME} -p $${MONGO_INITDB_ROOT_PASSWORD} --quiet) -eq 1
-          interval: 10s
-          start_period: 30s
-        command: ["--replSet", "${MONGO_REPLICA_SET_NAME}", "--bind_ip_all"]
+  ludustack-legacy-db:
+    container_name: ludustack-legacy-db
+    image: mongo:5.0.3
+    command: ["--replSet", "rs0", "--bind_ip_all", "--port", "27017"]
+    restart: always
+    ports:
+      - 27017:27017
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ""
+      MONGO_INITDB_ROOT_PASSWORD: ""
+    networks:
+      - ludustack-legacy-network
+    volumes:
+      - "ludustack-legacy-db_data:/data/db"
+      - "ludustack-legacy-db_config:/data/configdb"
+    healthcheck:
+      test: echo "try { rs.status() } catch (err) { rs.initiate({_id:'rs0',members:[{_id:0,host:'localhost:27017'}]}) }" | mongosh --port 27017 --quiet
+      interval: 5s
+      timeout: 30s
+      start_period: 0s
+      start_interval: 1s
+      retries: 30
+
+volumes:
+  ludustack-legacy-db_data:
+  ludustack-legacy-db_config:
+
+networks:
+  ludustack-legacy-network:

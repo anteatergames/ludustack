@@ -8,7 +8,7 @@ namespace LuduStack.Application.ViewModels.Game
     {
         [Required(ErrorMessage = "Which game are you seeking help for?")]
         [Display(Name = "Game")]
-        public new Guid Id { get; set; }
+        // Id property inherited from BaseViewModel
 
         public string Title { get; set; }
 

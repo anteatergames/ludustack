@@ -1,0 +1,19 @@
+{
+  "name": "ludustack-legacy-helper",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Helper scripts for Ludustack legacy (no Node build).",
+  "scripts": {
+    "cert:trust": "dotnet dev-certs https --trust -ep $HOME/.aspnet/https/aspnetapp.pfx -p SECRETPASSWORD",
+    "cert:ensure": "bash -c 'mkdir -p $HOME/.aspnet/https; if [ ! -f \"$HOME/.aspnet/https/aspnetapp.pfx\" ]; then openssl req -x509 -nodes -newkey rsa:2048 -keyout $HOME/.aspnet/https/dev.key -out $HOME/.aspnet/https/dev.crt -subj \"/CN=localhost\" -days 365 && openssl pkcs12 -export -out $HOME/.aspnet/https/aspnetapp.pfx -inkey $HOME/.aspnet/https/dev.key -in $HOME/.aspnet/https/dev.crt -passout pass:SECRETPASSWORD; fi'",
+    "db:up": "docker compose -f docker-compose.db.yml -p ludustack-legacy up -d",
+    "db:down": "docker compose -f docker-compose.db.yml -p ludustack-legacy down",
+    "db:import": "bash -c 'DB=LUDUSTACK_DEV; URI=\"mongodb://localhost:27017/?replicaSet=rs0\"; for f in ./db-backup/*.json; do coll=\"$(basename \"$f\" .json)\"; coll=\"${coll#LUDUSTACK.}\"; mongoimport --uri \"$URI\" --db \"$DB\" --collection \"$coll\" --file \"$f\" --jsonArray --drop; done'",
+    "web:start": "ASPNETCORE_ENVIRONMENT=Development MongoSettings__Connection=\"mongodb://localhost:27017/?replicaSet=rs0\" MongoSettings__DatabaseName=\"LUDUSTACK_DEV\" dotnet run --project LuduStack.Web --no-launch-profile",
+    "web:build": "dotnet build LuduStack.Web -c Release",
+    "docker:up": "docker compose -f docker-compose.yml -f docker-compose.override.yml -p ludustack-legacy up -d",
+    "docker:down": "docker compose -f docker-compose.yml -f docker-compose.override.yml -p ludustack-legacy down",
+    "dev": "bash -c 'npm run db:up && ASPNETCORE_ENVIRONMENT=Development MongoSettings__Connection=\"mongodb://localhost:27017/?replicaSet=rs0\" MongoSettings__DatabaseName=\"LUDUSTACK_DEV\" dotnet run --project LuduStack.Web --no-launch-profile'",
+    "dev:curl": "bash -c 'for i in {1..30}; do code=$(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:54354/ || true); if [ \"$code\" = \"200\" ] || [ \"$code\" = \"302\" ]; then echo OK; exit 0; fi; sleep 1; done; echo FAIL; exit 1'"
+  }
+}

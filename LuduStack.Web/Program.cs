@@ -28,6 +28,7 @@ using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.Net.Http.Headers;
 using System;
 using System.Collections.Generic;
@@ -39,6 +40,18 @@ using System.Threading.Tasks;
 using WebEssentials.AspNetCore.Pwa;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+
+// Force HTTP-only in Development
+if (builder.Environment.IsDevelopment())
+{
+    builder.WebHost.ConfigureKestrel(options =>
+    {
+        options.ListenLocalhost(54354, listenOptions =>
+        {
+            listenOptions.Protocols = Microsoft.AspNetCore.Server.Kestrel.Core.HttpProtocols.Http1AndHttp2;
+        });
+    });
+}
 
 string[] supportedCultures = new[]
     {
@@ -250,19 +263,22 @@ app.Use(async (context, next) =>
     await next();
 });
 
-app.UseHttpsRedirection();
-app.UseHsts();
+if (app.Environment.IsProduction())
+{
+    app.UseHttpsRedirection();
+    app.UseHsts();
+
+    RewriteOptions rewriteOptions = new RewriteOptions()
+        .AddRedirectToHttps()
+        .Add(new NonWwwRule())
+        .AddRedirectToWwwPermanent();
+
+    app.UseRewriter(rewriteOptions);
+}
 
 FileExtensionContentTypeProvider provider = new();
 provider.Mappings[".webmanifest"] = "application/manifest+json";
 provider.Mappings[".vtt"] = "text/vtt";
-
-RewriteOptions rewriteOptions = new RewriteOptions()
-    .AddRedirectToHttps()
-    .Add(new NonWwwRule())
-    .AddRedirectToWwwPermanent();
-
-app.UseRewriter(rewriteOptions);
 
 app.UseStaticFiles(new StaticFileOptions
 {
@@ -313,7 +329,21 @@ app.MapRazorPages();
 
 app.Run();
 
-CreateUserRoles(app.Services).Wait();
+// Initialize user roles asynchronously after app starts
+_ = Task.Run(async () =>
+{
+    try
+    {
+        await Task.Delay(2000); // Wait for app to fully start
+        using var scope = app.Services.CreateScope();
+        await CreateUserRoles(scope.ServiceProvider);
+    }
+    catch (Exception ex)
+    {
+        var logger = app.Services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "Failed to create user roles");
+    }
+});
 
 static void RegisterServices(IServiceCollection services)
 {

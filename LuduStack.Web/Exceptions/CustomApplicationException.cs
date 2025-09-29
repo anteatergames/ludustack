@@ -32,6 +32,8 @@ namespace LuduStack.Web.Exceptions
             validationErrors = (IList<string>)info.GetValue("CustomApplicationException.ValidationErrors", typeof(IList<string>));
         }
 
+        
+        [Obsolete("Use the constructor that receives the resource name and validation errors.")]
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             base.GetObjectData(info, context);

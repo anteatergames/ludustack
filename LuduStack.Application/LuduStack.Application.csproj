@@ -1,7 +1,7 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,14 +15,14 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="12.0.0" />
-    <PackageReference Include="CloudinaryDotNet" Version="1.20.0" />
-    <PackageReference Include="CountryData" Version="3.78.0" />
-    <PackageReference Include="HtmlSanitizer" Version="8.0.601" />
+    <PackageReference Include="CloudinaryDotNet" Version="1.26.2" />
+    <PackageReference Include="CountryData" Version="6.4.0" />
+    <PackageReference Include="HtmlSanitizer" Version="8.1.870" />
     <PackageReference Include="MediatR" Version="11.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
-    <PackageReference Include="NPOI" Version="2.6.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="NPOI" Version="2.7.1" />
   </ItemGroup>
 
   <ItemGroup>

@@ -93,10 +93,9 @@ namespace LuduStack.Web.Controllers
                 {
                     ApplicationUser user = await _signInManager.UserManager.FindByNameAsync(model.UserName);
 
-                    await _signInManager.RefreshSignInAsync(user);
-
-                    if (!string.IsNullOrWhiteSpace(model.UserName))
+                    if (user != null && !string.IsNullOrWhiteSpace(model.UserName))
                     {
+                        await _signInManager.RefreshSignInAsync(user);
                         return await ManageSuccessfullLogin(model, returnUrl);
                     }
                     else
@@ -862,7 +861,11 @@ namespace LuduStack.Web.Controllers
 
             string defaultImageNotRooted = UrlFormatter.GetDefaultImage(ImageType.ProfileImage);
 
-            string retorno = Path.Combine(hostingEnvironment.WebRootPath, defaultImageNotRooted);
+            System.Console.WriteLine(hostingEnvironment.ContentRootPath);
+
+            System.Console.WriteLine(defaultImageNotRooted);
+
+            string retorno = Path.Combine(hostingEnvironment.ContentRootPath, defaultImageNotRooted);
 
             byte[] bytes = System.IO.File.ReadAllBytes(retorno);
 

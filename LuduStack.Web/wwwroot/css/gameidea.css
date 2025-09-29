@@ -1,167 +1,188 @@
 ﻿html {
-    --border-color: #252523;
-    --genre-color: rgba(191, 208, 53, 1);
+  --border-color: #252523;
+  --genre-color: rgba(191, 208, 53, 1);
 }
 
 .gameidea {
-    margin: 0;
-    font-size: 1em;
-    font-family: 'Chelsea Market', sans-serif;
+  margin: 0;
+  font-size: 1em;
+  font-family: "Chelsea Market", sans-serif;
 }
 
-    .gameidea span, .gameidea h2 {
-        color: #fff;
-        font-family: 'Chelsea Market', sans-serif;
-    }
+.gameidea span,
+.gameidea h2 {
+  color: #fff;
+  font-family: "Chelsea Market", sans-serif;
+}
 
-    .gameidea.gradient {
-        color: #fff;
-        background: radial-gradient(circle, rgb(255, 100, 0) 0%, rgb(255, 0, 0) 100%);
-    }
+.gameidea.gradient {
+  color: #fff;
+  background: radial-gradient(circle, rgb(255, 100, 0) 0%, rgb(255, 0, 0) 100%);
+}
 
-    .gameidea.big .generatebutton {
-        font-size: 1.5em;
-    }
+.gameidea.big .generatebutton {
+  font-size: 1.5em;
+}
 
-    .gameidea .generatebutton {
-        color: #252523;
-        background-color: rgba(160, 210, 255, 1);
-        border: 5px solid rgba(82, 146, 150, 1);
-        border-radius: 50%;
-        height: 150px;
-        width: 150px;
-    }
+.gameidea .generatebutton {
+  color: #252523;
+  background-color: rgba(160, 210, 255, 1);
+  border: 5px solid rgba(82, 146, 150, 1);
+  border-radius: 50%;
+  height: 150px;
+  width: 150px;
+}
 
-        .gameidea .generatebutton:hover {
-            color: #fff;
-            background-color: rgba(191, 208, 53, 1);
-            border: 5px solid var(--border-color);
-        }
+.gameidea .generatebutton:hover {
+  color: #fff;
+  background-color: rgba(191, 208, 53, 1);
+  border: 5px solid var(--border-color);
+}
 
-    .gameidea .slot {
-        background-color: #fff;
-        border: 5px solid var(--border-color);
-        border-radius: 20px;
-        min-height: 128px;
-        position: relative;
-        cursor: pointer;
-    }
+.gameidea .slot {
+  background-color: #fff;
+  border: 5px solid var(--border-color);
+  border-radius: 20px;
+  min-height: 128px;
+  position: relative;
+  cursor: pointer;
+}
 
-        .gameidea .slot:hover {
-            border: 5px solid rgba(82, 146, 150, 1);
-        }
+.gameidea .slot:hover {
+  border: 5px solid rgba(82, 146, 150, 1);
+}
 
-        .gameidea .slot .game-idea-element {
-            margin: auto;
-            position: absolute;
-            top: 34px;
-            left: 0;
-            right: 0;
-        }
+.gameidea .slot .game-idea-element {
+  margin: auto;
+  position: absolute;
+  top: 34px;
+  left: 0;
+  right: 0;
+}
 
-    .gameidea .title {
-        font-weight: 400;
-        font-size: 12px;
-        text-align: center;
-        letter-spacing: 4px;
-    }
+.gameidea .title {
+  font-weight: 400;
+  font-size: 12px;
+  text-align: center;
+  letter-spacing: 4px;
+}
 
-        .gameidea .title span {
-            color: rgba(50, 60, 60, 0.6);
-        }
+.gameidea .title span {
+  color: rgba(50, 60, 60, 0.6);
+}
 
-    .gameidea a, .gameidea a:hover {
-        color: #fff;
-    }
+.gameidea a,
+.gameidea a:hover {
+  color: #fff;
+}
 
-    .gameidea .game-idea-element {
-        opacity: 1;
-        transition: all 0.2s ease;
-        display: inline-block;
-    }
+.gameidea .game-idea-element {
+  opacity: 1;
+  transition: all 0.2s ease;
+  display: inline-block;
+}
 
-    .gameidea.big .game-idea-element {
-        font-size: 2em;
-    }
+.gameidea.big .game-idea-element {
+  font-size: 2em;
+}
 
-    .gameidea .game-idea-genre {
-        color: rgba(191, 208, 53, 1);
-    }
+.gameidea .game-idea-genre {
+  color: rgba(191, 208, 53, 1);
+}
 
-    .gameidea .game-idea-action {
-        color: rgba(255, 205, 255, 1);
-    }
+.gameidea .game-idea-action {
+  color: rgba(255, 205, 255, 1);
+}
 
-    .gameidea .game-idea-things {
-        color: rgba(160, 210, 255, 1);
-    }
+.gameidea .game-idea-things {
+  color: rgba(160, 210, 255, 1);
+}
 
-    .gameidea .game-idea-goals {
-        color: rgba(105, 255, 205, 1);
-    }
+.gameidea .game-idea-goals {
+  color: rgba(105, 255, 205, 1);
+}
 
-    .gameidea .game-idea-rules {
-        color: rgba(50, 60, 60, 1);
-    }
+.gameidea .game-idea-rules {
+  color: rgba(50, 60, 60, 1);
+}
 
-    .gameidea .game-idea-element.picking {
-        cursor: pointer;
-        top: 34px;
-        animation: mov 0.12s infinite;
-    }
+.gameidea .game-idea-element.picking {
+  cursor: pointer;
+  top: 34px;
+  animation: mov 0.12s infinite;
+}
 
-    .gameidea .game-idea-element.game-idea-genre.picking {
-        color: rgba(191, 208, 53, 0.2);
-        text-shadow: 0 4px 4px rgba(191, 208, 53, 0.2), 0 6px 6px rgba(191, 208, 53, 0.4), 0 8px 18px rgba(191, 208, 53, 0.8), 0 22px 18px rgba(191, 208, 53, 0.5), 0 -4px 4px rgba(191, 208, 53, 0.2), 0 -6px 6px rgba(191, 208, 53, 0.4), 0 -8px 18px rgba(191, 208, 53, 0.8), 0 -22px 18px rgba(191, 208, 53, 0.5);
-    }
+.gameidea .game-idea-element.game-idea-genre.picking {
+  color: rgba(191, 208, 53, 0.2);
+  text-shadow: 0 4px 4px rgba(191, 208, 53, 0.2),
+    0 6px 6px rgba(191, 208, 53, 0.4), 0 8px 18px rgba(191, 208, 53, 0.8),
+    0 22px 18px rgba(191, 208, 53, 0.5), 0 -4px 4px rgba(191, 208, 53, 0.2),
+    0 -6px 6px rgba(191, 208, 53, 0.4), 0 -8px 18px rgba(191, 208, 53, 0.8),
+    0 -22px 18px rgba(191, 208, 53, 0.5);
+}
 
-    .gameidea .game-idea-element.game-idea-action.picking {
-        color: rgba(255, 205, 255, 0.2);
-        text-shadow: 0 4px 4px rgba(255, 205, 255, 0.2), 0 6px 6px rgba(255, 205, 255, 0.4), 0 8px 18px rgba(255, 205, 255, 0.8), 0 22px 18px rgba(255, 205, 255, 0.5), 0 -4px 4px rgba(255, 205, 255, 0.2), 0 -6px 6px rgba(255, 205, 255, 0.4), 0 -8px 18px rgba(255, 205, 255, 0.8), 0 -22px 18px rgba(255, 205, 255, 0.5);
-    }
+.gameidea .game-idea-element.game-idea-action.picking {
+  color: rgba(255, 205, 255, 0.2);
+  text-shadow: 0 4px 4px rgba(255, 205, 255, 0.2),
+    0 6px 6px rgba(255, 205, 255, 0.4), 0 8px 18px rgba(255, 205, 255, 0.8),
+    0 22px 18px rgba(255, 205, 255, 0.5), 0 -4px 4px rgba(255, 205, 255, 0.2),
+    0 -6px 6px rgba(255, 205, 255, 0.4), 0 -8px 18px rgba(255, 205, 255, 0.8),
+    0 -22px 18px rgba(255, 205, 255, 0.5);
+}
 
-    .gameidea .game-idea-element.game-idea-things.picking {
-        color: rgba(160, 210, 255, 0.2);
-        text-shadow: 0 4px 4px rgba(160, 210, 255, 0.2), 0 6px 6px rgba(160, 210, 255, 0.4), 0 8px 18px rgba(160, 210, 255, 0.8), 0 22px 18px rgba(160, 210, 255, 0.5), 0 -4px 4px rgba(160, 210, 255, 0.2), 0 -6px 6px rgba(160, 210, 255, 0.4), 0 -8px 18px rgba(160, 210, 255, 0.8), 0 -22px 18px rgba(160, 210, 255, 0.5);
-    }
+.gameidea .game-idea-element.game-idea-things.picking {
+  color: rgba(160, 210, 255, 0.2);
+  text-shadow: 0 4px 4px rgba(160, 210, 255, 0.2),
+    0 6px 6px rgba(160, 210, 255, 0.4), 0 8px 18px rgba(160, 210, 255, 0.8),
+    0 22px 18px rgba(160, 210, 255, 0.5), 0 -4px 4px rgba(160, 210, 255, 0.2),
+    0 -6px 6px rgba(160, 210, 255, 0.4), 0 -8px 18px rgba(160, 210, 255, 0.8),
+    0 -22px 18px rgba(160, 210, 255, 0.5);
+}
 
-    .gameidea .game-idea-element.game-idea-goals.picking {
-        color: rgba(105, 255, 205, 0.2);
-        text-shadow: 0 4px 4px rgba(105, 255, 205, 0.2), 0 6px 6px rgba(105, 255, 205, 0.4), 0 8px 18px rgba(105, 255, 205, 0.8), 0 22px 18px rgba(105, 255, 205, 0.5), 0 -4px 4px rgba(105, 255, 205, 0.2), 0 -6px 6px rgba(105, 255, 205, 0.4), 0 -8px 18px rgba(105, 255, 205, 0.8), 0 -22px 18px rgba(105, 255, 205, 0.5);
-    }
+.gameidea .game-idea-element.game-idea-goals.picking {
+  color: rgba(105, 255, 205, 0.2);
+  text-shadow: 0 4px 4px rgba(105, 255, 205, 0.2),
+    0 6px 6px rgba(105, 255, 205, 0.4), 0 8px 18px rgba(105, 255, 205, 0.8),
+    0 22px 18px rgba(105, 255, 205, 0.5), 0 -4px 4px rgba(105, 255, 205, 0.2),
+    0 -6px 6px rgba(105, 255, 205, 0.4), 0 -8px 18px rgba(105, 255, 205, 0.8),
+    0 -22px 18px rgba(105, 255, 205, 0.5);
+}
 
-    .gameidea .game-idea-element.game-idea-rules.picking {
-        color: rgba(50, 60, 60, 0.2);
-        text-shadow: 0 4px 4px rgba(50, 60, 60, 0.2), 0 6px 6px rgba(50, 60, 60, 0.4), 0 8px 18px rgba(50, 60, 60, 0.8), 0 22px 18px rgba(50, 60, 60, 0.5), 0 -4px 4px rgba(50, 60, 60, 0.2), 0 -6px 6px rgba(50, 60, 60, 0.4), 0 -8px 18px rgba(50, 60, 60, 0.8), 0 -22px 18px rgba(50, 60, 60, 0.5);
-    }
+.gameidea .game-idea-element.game-idea-rules.picking {
+  color: rgba(50, 60, 60, 0.2);
+  text-shadow: 0 4px 4px rgba(50, 60, 60, 0.2), 0 6px 6px rgba(50, 60, 60, 0.4),
+    0 8px 18px rgba(50, 60, 60, 0.8), 0 22px 18px rgba(50, 60, 60, 0.5),
+    0 -4px 4px rgba(50, 60, 60, 0.2), 0 -6px 6px rgba(50, 60, 60, 0.4),
+    0 -8px 18px rgba(50, 60, 60, 0.8), 0 -22px 18px rgba(50, 60, 60, 0.5);
+}
 
 @keyframes in {
-    0% {
-        transform: translateY(-30px);
-    }
+  0% {
+    transform: translateY(-30px);
+  }
 
-    50% {
-        transform: translateY(-15px);
-    }
+  50% {
+    transform: translateY(-15px);
+  }
 
-    100% {
-        transform: translateY(0);
-    }
+  100% {
+    transform: translateY(0);
+  }
 }
 
 @keyframes mov {
-    0% {
-        transform: translateY(-30px);
-        opacity: 0;
-    }
+  0% {
+    transform: translateY(-30px);
+    opacity: 0;
+  }
 
-    50% {
-        transform: translateY(-15px);
-        opacity: 1;
-    }
+  50% {
+    transform: translateY(-15px);
+    opacity: 1;
+  }
 
-    100% {
-        transform: translateY(25px);
-        opacity: 0;
-    }
+  100% {
+    transform: translateY(25px);
+    opacity: 0;
+  }
 }
